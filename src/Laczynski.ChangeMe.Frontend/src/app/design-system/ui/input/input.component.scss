@@ -11,7 +11,7 @@
 // INPUT CONTAINER
 // =============================================================================
 
-.ds-input {
+.ds-input-container {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-xs);
@@ -34,17 +34,18 @@
   &.required {
     .ds-input-required {
       color: var(--color-danger);
-      margin-left: var(--spacing-xs);
+      margin-left: 2px;
+      font-size: 0.875em;
     }
   }
 }
 
 .ds-input-required {
-  font-weight: var(--font-weight-bold);
+  font-weight: var(--font-weight-normal);
 }
 
 // =============================================================================
-// INPUT WRAPPER
+// INPUT WRAPPER - Minimalistic approach
 // =============================================================================
 
 .ds-input-wrapper {
@@ -54,40 +55,82 @@
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius-md);
-  transition: all var(--transition-fast);
+  transition: border-color var(--transition-fast);
   
   &:hover:not(:has(input:disabled)) {
-    border-color: var(--color-border-hover);
+    border-color: var(--color-text-secondary);
   }
   
   &:focus-within {
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 1px var(--color-primary-light);
+    // Removed shadow for cleaner look
   }
   
-  // Icon spacing adjustments
+  // Icon spacing adjustments - more consistent
   &.has-start-icon {
     .ds-input-field {
-      padding-left: var(--spacing-xl);
+      padding-left: calc(var(--spacing-lg) + var(--spacing-sm));
     }
   }
   
   &.has-end-icon {
     .ds-input-field {
-      padding-right: var(--spacing-xl);
+      padding-right: calc(var(--spacing-lg) + var(--spacing-sm));
     }
   }
   
   &.has-clear-button {
     .ds-input-field {
-      padding-right: calc(var(--spacing-xl) + var(--spacing-md));
+      padding-right: calc(var(--spacing-xl) + var(--spacing-xs));
     }
   }
   
   &.has-password-toggle {
     .ds-input-field {
-      padding-right: calc(var(--spacing-xl) + var(--spacing-md));
+      padding-right: calc(var(--spacing-xl) + var(--spacing-xs));
     }
+  }
+  
+  // Size variants
+  &--sm {
+    .ds-input-field {
+      @include mixins.input-size("sm");
+    }
+  }
+  
+  &--md {
+    .ds-input-field {
+      @include mixins.input-size("md");
+    }
+  }
+  
+  &--lg {
+    .ds-input-field {
+      @include mixins.input-size("lg");
+    }
+  }
+  
+  // State variants
+  &--error {
+    border-color: var(--color-danger);
+    
+    &:focus-within {
+      border-color: var(--color-danger);
+    }
+  }
+  
+  &--success {
+    border-color: var(--color-success);
+    
+    &:focus-within {
+      border-color: var(--color-success);
+    }
+  }
+  
+  &--disabled {
+    background-color: var(--color-surface-disabled);
+    border-color: var(--color-border);
+    opacity: 0.6;
   }
 }
 
@@ -107,12 +150,13 @@
   &::placeholder {
     color: var(--color-text-muted);
     opacity: 1;
+    font-style: italic;
   }
   
   &:disabled {
     cursor: not-allowed;
     color: var(--color-text-disabled);
-    background-color: var(--color-surface-disabled);
+    background-color: transparent;
     
     &::placeholder {
       color: var(--color-text-disabled);
@@ -121,12 +165,13 @@
   
   &:readonly {
     cursor: default;
-    background-color: var(--color-gray-50);
+    background-color: transparent;
+    color: var(--color-text-secondary);
   }
 }
 
 // =============================================================================
-// INPUT ICONS
+// INPUT ICONS - Refined positioning
 // =============================================================================
 
 .ds-input-icon {
@@ -134,21 +179,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-text-secondary);
+  color: var(--color-text-muted);
   pointer-events: none;
   z-index: 1;
+  width: 16px;
+  height: 16px;
   
   &--start {
-    left: var(--spacing-sm);
+    left: var(--spacing-md);
   }
   
   &--end {
-    right: var(--spacing-sm);
+    right: var(--spacing-md);
   }
 }
 
 // =============================================================================
-// ACTION BUTTONS
+// ACTION BUTTONS - Cleaner design
 // =============================================================================
 
 .ds-input-clear,
@@ -162,18 +209,20 @@
   height: 20px;
   border: none;
   background: none;
-  color: var(--color-text-secondary);
+  color: var(--color-text-muted);
   cursor: pointer;
   border-radius: var(--border-radius-sm);
-  transition: all var(--transition-fast);
+  transition: color var(--transition-fast);
   z-index: 2;
   
   &:hover {
     color: var(--color-text);
-    background-color: var(--color-surface-hover);
   }
   
-  @include mixins.focus-state;
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 1px;
+  }
 }
 
 .ds-input-clear {
@@ -186,7 +235,7 @@
 }
 
 // =============================================================================
-// HELPER TEXT & VALIDATION
+// HELPER TEXT & VALIDATION - More subtle
 // =============================================================================
 
 .ds-input-helper {
@@ -200,133 +249,28 @@
   }
 }
 
-// =============================================================================
-// CHARACTER COUNTER
-// =============================================================================
-
 .ds-input-counter {
   font-size: var(--font-size-xs);
   color: var(--color-text-muted);
   text-align: right;
   margin-top: var(--spacing-xs);
-  font-family: var(--font-family-mono);
-}
-
-// =============================================================================
-// SIZE VARIANTS
-// =============================================================================
-
-.ds-input--sm {
-  .ds-input-field {
-    @include mixins.input-size("sm");
+  
+  &.limit-warning {
+    color: var(--color-warning);
   }
   
-  .ds-input-icon {
-    font-size: 14px;
-  }
-  
-  &.has-start-icon .ds-input-field {
-    padding-left: var(--spacing-lg);
-  }
-  
-  &.has-end-icon .ds-input-field,
-  &.has-clear-button .ds-input-field,
-  &.has-password-toggle .ds-input-field {
-    padding-right: var(--spacing-lg);
-  }
-}
-
-.ds-input--md {
-  .ds-input-field {
-    @include mixins.input-size("md");
-  }
-  
-  .ds-input-icon {
-    font-size: 16px;
-  }
-}
-
-.ds-input--lg {
-  .ds-input-field {
-    @include mixins.input-size("lg");
-  }
-  
-  .ds-input-icon {
-    font-size: 18px;
-  }
-  
-  &.has-start-icon .ds-input-field {
-    padding-left: calc(var(--spacing-xl) + var(--spacing-xs));
-  }
-  
-  &.has-end-icon .ds-input-field,
-  &.has-clear-button .ds-input-field,
-  &.has-password-toggle .ds-input-field {
-    padding-right: calc(var(--spacing-xl) + var(--spacing-xs));
+  &.limit-exceeded {
+    color: var(--color-danger);
   }
 }
 
 // =============================================================================
-// STATE VARIANTS
+// FOCUS STATES & ACCESSIBILITY
 // =============================================================================
 
-.ds-input--error {
-  .ds-input-wrapper {
-    border-color: var(--color-danger);
-    
-    &:focus-within {
-      border-color: var(--color-danger);
-      box-shadow: 0 0 0 1px var(--color-danger-light);
-    }
-  }
-}
-
-.ds-input--disabled {
-  .ds-input-wrapper {
-    background-color: var(--color-surface-disabled);
-    border-color: var(--color-border-disabled);
-    cursor: not-allowed;
-  }
-  
-  .ds-input-label {
-    color: var(--color-text-disabled);
-  }
-  
-  .ds-input-icon,
-  .ds-input-clear,
-  .ds-input-password-toggle {
-    color: var(--color-text-disabled);
-    cursor: not-allowed;
-    pointer-events: none;
-  }
-}
-
-.ds-input--readonly {
-  .ds-input-wrapper {
-    background-color: var(--color-gray-50);
-    cursor: default;
-  }
-  
-  .ds-input-clear,
-  .ds-input-password-toggle {
-    display: none;
-  }
-}
-
-.ds-input--focused {
-  .ds-input-wrapper {
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 1px var(--color-primary-light);
-  }
-}
-
-// =============================================================================
-// RESPONSIVE ADJUSTMENTS
-// =============================================================================
-
-@include mixins.respond-to("sm") {
-  .ds-input--sm .ds-input-field {
-    @include mixins.input-size("md");
+.ds-input-field {
+  &:focus {
+    outline: none; // Handled by wrapper
   }
 }
 
@@ -334,46 +278,39 @@
 // THEME SUPPORT
 // =============================================================================
 
+// Dark Theme Adjustments
 [data-theme="dark"] {
   .ds-input-wrapper {
-    background-color: var(--color-gray-800);
-    border-color: var(--color-gray-600);
+    background-color: var(--color-surface);
+    border-color: var(--color-border);
     
     &:hover:not(:has(input:disabled)) {
-      border-color: var(--color-gray-500);
+      border-color: var(--color-border-hover);
+    }
+    
+    &:focus-within {
+      border-color: var(--color-primary);
     }
   }
   
   .ds-input-field {
-    color: var(--color-white);
+    color: var(--color-text);
     
-    &:readonly {
-      background-color: var(--color-gray-700);
-    }
-  }
-  
-  .ds-input-helper {
-    color: var(--color-gray-300);
-    
-    &.error {
-      color: var(--color-danger);
+    &::placeholder {
+      color: var(--color-text-muted);
     }
   }
 }
 
+// High Contrast Theme
 [data-theme="high-contrast"] {
   .ds-input-wrapper {
     border-width: 2px;
     
     &:focus-within {
-      border-color: var(--color-text);
-      box-shadow: 0 0 0 2px var(--color-text);
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
     }
-  }
-  
-  .ds-input--error .ds-input-wrapper {
-    border-color: var(--color-danger);
-    border-width: 2px;
   }
 }
 
@@ -382,10 +319,7 @@
 // =============================================================================
 
 @media (prefers-reduced-motion: reduce) {
-  .ds-input-wrapper {
-    transition: none;
-  }
-  
+  .ds-input-wrapper,
   .ds-input-clear,
   .ds-input-password-toggle {
     transition: none;

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { SelectComponent } from './select.component';
+import { ApiDocumentationComponent } from '../../shared/components';
 import {
   SelectOption,
   SelectVariant,
@@ -13,7 +14,12 @@ import {
   SelectFocusEvent,
   createSelectOption,
 } from './select.model';
-import { ShowcaseComponent, ComponentApiDocumentation } from '../../models/showcase.model';
+import {
+  ShowcaseComponent,
+  ComponentApiDocumentation,
+  createShowcaseConfig,
+  ShowcaseConfig,
+} from '../../models/showcase.model';
 
 /**
  * Select Component Showcase
@@ -24,13 +30,13 @@ import { ShowcaseComponent, ComponentApiDocumentation } from '../../models/showc
 @Component({
   selector: 'select-showcase',
   standalone: true,
-  imports: [CommonModule, FormsModule, SelectComponent],
+  imports: [CommonModule, FormsModule, SelectComponent, ApiDocumentationComponent],
   template: `
     <div class="showcase-container">
       <!-- Header -->
       <div class="showcase-header">
-        <h1>{{ componentName }}</h1>
-        <p class="showcase-description">{{ description }}</p>
+        <h1>{{ showcaseConfig().component.componentName }}</h1>
+        <p class="showcase-description">{{ showcaseConfig().component.description }}</p>
       </div>
 
       <!-- Variants Section -->
@@ -358,45 +364,7 @@ import { ShowcaseComponent, ComponentApiDocumentation } from '../../models/showc
       <!-- Component API -->
       <section class="showcase-section">
         <h2>Component API</h2>
-
-        <div class="showcase-api">
-          <h3>Inputs</h3>
-          <ul>
-            @for (input of apiDocumentation.inputs; track input.name) {
-              <li>
-                <code>{{ input.name }}: {{ input.type }}</code>
-                @if (input.defaultValue) {
-                  <span class="default-value">= {{ input.defaultValue }}</span>
-                }
-                <p>{{ input.description }}</p>
-              </li>
-            }
-          </ul>
-        </div>
-
-        <div class="showcase-api">
-          <h3>Outputs</h3>
-          <ul>
-            @for (output of apiDocumentation.outputs; track output.name) {
-              <li>
-                <code>{{ output.name }}: {{ output.type }}</code>
-                <p>{{ output.description }}</p>
-              </li>
-            }
-          </ul>
-        </div>
-
-        <div class="showcase-api">
-          <h3>Methods</h3>
-          <ul>
-            @for (method of apiDocumentation.methods || []; track method.name) {
-              <li>
-                <code>{{ method.signature }}</code>
-                <p>{{ method.description }}</p>
-              </li>
-            }
-          </ul>
-        </div>
+        <ds-api-documentation [api]="showcaseConfig().api" />
       </section>
     </div>
   `,
@@ -409,7 +377,7 @@ export class SelectShowcaseComponent implements ShowcaseComponent {
 
   componentName = 'Select Component';
   description =
-    'Advanced select component with single/multi-select, search, grouping, and accessibility features. Built with Angular Signals and modern web standards.';
+    'Advanced select component with search, multi-selection, grouping, and virtualization support. Highly customizable and accessible.';
 
   private lastActionSignal = signal<string>('');
 
@@ -604,152 +572,172 @@ export class SelectShowcaseComponent implements ShowcaseComponent {
   ];
 
   // =============================================================================
-  // API DOCUMENTATION
+  // SHOWCASE CONFIGURATION
   // =============================================================================
 
-  apiDocumentation: ComponentApiDocumentation = {
-    inputs: [
-      {
-        name: 'variant',
-        type: 'SelectVariant',
-        defaultValue: "'default'",
-        description: 'Select variant (default, filled, outlined)',
-        examples: ['default', 'filled', 'outlined'],
-      },
-      {
-        name: 'size',
-        type: 'SelectSize',
-        defaultValue: "'md'",
-        description: 'Select size variant',
-        examples: ['sm', 'md', 'lg'],
-      },
-      {
-        name: 'label',
-        type: 'string',
-        defaultValue: "''",
-        description: 'Select label text',
-      },
-      {
-        name: 'placeholder',
-        type: 'string',
-        defaultValue: "'Select...'",
-        description: 'Placeholder text when no option is selected',
-      },
-      {
-        name: 'options',
-        type: 'SelectOption<T>[]',
-        defaultValue: '[]',
-        description: 'Available options for selection',
-      },
-      {
-        name: 'value',
-        type: 'T | T[] | null',
-        defaultValue: 'null',
-        description: 'Selected value(s) - two-way binding',
-      },
-      {
-        name: 'disabled',
-        type: 'boolean',
-        defaultValue: 'false',
-        description: 'Whether select is disabled',
-      },
-      {
-        name: 'required',
-        type: 'boolean',
-        defaultValue: 'false',
-        description: 'Whether select is required',
-      },
-      {
-        name: 'multiple',
-        type: 'boolean',
-        defaultValue: 'false',
-        description: 'Whether multiple selection is allowed',
-      },
-      {
-        name: 'searchable',
-        type: 'boolean',
-        defaultValue: 'false',
-        description: 'Whether search functionality is enabled',
-      },
-      {
-        name: 'loading',
-        type: 'boolean',
-        defaultValue: 'false',
-        description: 'Whether to show loading state',
-      },
-      {
-        name: 'maxSelections',
-        type: 'number | null',
-        defaultValue: 'null',
-        description: 'Maximum number of selections (for multiple)',
-      },
-      {
-        name: 'showSelectedItems',
-        type: 'boolean',
-        defaultValue: 'true',
-        description: 'Whether to show selected items below select (for multiple)',
-      },
-      {
-        name: 'helperText',
-        type: 'string',
-        defaultValue: "''",
-        description: 'Helper text shown below select',
-      },
-    ],
-    outputs: [
-      {
-        name: 'selectionChange',
-        type: 'EventEmitter<SelectChangeEvent<T>>',
-        description: 'Emitted when selection changes',
-        examples: ['(selectionChange)="onSelectionChange($event)"'],
-      },
-      {
-        name: 'search',
-        type: 'EventEmitter<SelectSearchEvent>',
-        description: 'Emitted when user searches (if searchable)',
-        examples: ['(search)="onSearch($event)"'],
-      },
-      {
-        name: 'toggle',
-        type: 'EventEmitter<SelectToggleEvent>',
-        description: 'Emitted when dropdown is opened or closed',
-        examples: ['(toggle)="onToggle($event)"'],
-      },
-      {
-        name: 'focus',
-        type: 'EventEmitter<SelectFocusEvent>',
-        description: 'Emitted when select gains or loses focus',
-        examples: ['(focus)="onFocus($event)"'],
-      },
-    ],
-    methods: [
-      {
-        name: 'clear',
-        signature: 'clear(): void',
-        description: 'Clear all selections',
-      },
-      {
-        name: 'open',
-        signature: 'open(): void',
-        description: 'Open dropdown programmatically',
-      },
-      {
-        name: 'close',
-        signature: 'close(): void',
-        description: 'Close dropdown programmatically',
-      },
-      {
-        name: 'focusSelect',
-        signature: 'focusSelect(): void',
-        description: 'Focus the select trigger',
-      },
-      {
-        name: 'getValidationState',
-        signature: 'getValidationState(): SelectValidation',
-        description: 'Get current validation state',
-      },
-    ],
-  };
+  readonly showcaseConfig = computed<ShowcaseConfig>(() => {
+    const componentInfo: ShowcaseComponent = {
+      componentName: this.componentName,
+      description: this.description,
+      lastAction: this.lastAction,
+    };
+
+    const apiDocumentation: ComponentApiDocumentation = {
+      inputs: [
+        {
+          name: 'variant',
+          type: 'SelectVariant',
+          defaultValue: "'default'",
+          required: false,
+          description: 'Visual style variant of the select',
+          examples: ['default', 'filled', 'outlined'],
+        },
+        {
+          name: 'size',
+          type: 'SelectSize',
+          defaultValue: "'md'",
+          required: false,
+          description: 'Size of the select',
+          examples: ['sm', 'md', 'lg'],
+        },
+        {
+          name: 'label',
+          type: 'string',
+          required: false,
+          description: 'Label text for the select',
+        },
+        {
+          name: 'placeholder',
+          type: 'string',
+          required: false,
+          description: 'Placeholder text when no option is selected',
+        },
+        {
+          name: 'value',
+          type: 'any | any[]',
+          required: false,
+          description: 'Selected value(s) - single value or array for multiple selection',
+        },
+        {
+          name: 'options',
+          type: 'SelectOption[]',
+          defaultValue: '[]',
+          required: false,
+          description: 'Array of available options',
+        },
+        {
+          name: 'disabled',
+          type: 'boolean',
+          defaultValue: 'false',
+          required: false,
+          description: 'Whether the select is disabled',
+        },
+        {
+          name: 'required',
+          type: 'boolean',
+          defaultValue: 'false',
+          required: false,
+          description: 'Whether the select is required',
+        },
+        {
+          name: 'multiple',
+          type: 'boolean',
+          defaultValue: 'false',
+          required: false,
+          description: 'Whether multiple options can be selected',
+        },
+        {
+          name: 'searchable',
+          type: 'boolean',
+          defaultValue: 'false',
+          required: false,
+          description: 'Whether options can be searched/filtered',
+        },
+        {
+          name: 'loading',
+          type: 'boolean',
+          defaultValue: 'false',
+          required: false,
+          description: 'Whether the select is in loading state',
+        },
+        {
+          name: 'helperText',
+          type: 'string',
+          required: false,
+          description: 'Helper text to display below the select',
+        },
+        {
+          name: 'showSelectedItems',
+          type: 'boolean',
+          defaultValue: 'true',
+          required: false,
+          description: 'Whether to show selected items as chips in multiple mode',
+        },
+      ],
+      outputs: [
+        {
+          name: 'valueChange',
+          type: 'SelectChangeEvent',
+          description: 'Emitted when selection changes',
+          examples: ['{ value, option, options, selectElement, originalEvent }'],
+        },
+        {
+          name: 'search',
+          type: 'SelectSearchEvent',
+          description: 'Emitted when user searches for options',
+        },
+        {
+          name: 'toggle',
+          type: 'SelectToggleEvent',
+          description: 'Emitted when dropdown is opened or closed',
+        },
+        {
+          name: 'focused',
+          type: 'SelectFocusEvent',
+          description: 'Emitted when select receives focus',
+        },
+        {
+          name: 'blurred',
+          type: 'SelectFocusEvent',
+          description: 'Emitted when select loses focus',
+        },
+      ],
+      methods: [
+        {
+          name: 'focus',
+          signature: 'focus(): void',
+          description: 'Programmatically focus the select',
+        },
+        {
+          name: 'blur',
+          signature: 'blur(): void',
+          description: 'Programmatically blur the select',
+        },
+        {
+          name: 'open',
+          signature: 'open(): void',
+          description: 'Open the dropdown',
+        },
+        {
+          name: 'close',
+          signature: 'close(): void',
+          description: 'Close the dropdown',
+        },
+        {
+          name: 'clear',
+          signature: 'clear(): void',
+          description: 'Clear all selections',
+        },
+        {
+          name: 'selectOption',
+          signature: 'selectOption(value: any): void',
+          description: 'Programmatically select an option',
+        },
+      ],
+    };
+
+    return createShowcaseConfig(componentInfo, apiDocumentation);
+  });
 
   // =============================================================================
   // EVENT HANDLERS

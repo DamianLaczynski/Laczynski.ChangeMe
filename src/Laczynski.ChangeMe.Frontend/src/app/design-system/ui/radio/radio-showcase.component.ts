@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { RadioComponent } from './radio.component';
+import { ApiDocumentationComponent } from '../../shared/components';
 import {
   RadioOption,
   RadioVariant,
@@ -12,7 +13,12 @@ import {
   RadioFocusEvent,
   createRadioOption,
 } from './radio.model';
-import { ShowcaseComponent, ComponentApiDocumentation } from '../../models/showcase.model';
+import {
+  ShowcaseComponent,
+  ComponentApiDocumentation,
+  createShowcaseConfig,
+  ShowcaseConfig,
+} from '../../models/showcase.model';
 
 /**
  * Radio Component Showcase
@@ -23,13 +29,13 @@ import { ShowcaseComponent, ComponentApiDocumentation } from '../../models/showc
 @Component({
   selector: 'radio-showcase',
   standalone: true,
-  imports: [CommonModule, FormsModule, RadioComponent],
+  imports: [CommonModule, FormsModule, RadioComponent, ApiDocumentationComponent],
   template: `
     <div class="showcase-container">
       <!-- Header -->
       <div class="showcase-header">
-        <h1>{{ componentName }}</h1>
-        <p class="showcase-description">{{ description }}</p>
+        <h1>{{ showcaseConfig().component.componentName }}</h1>
+        <p class="showcase-description">{{ showcaseConfig().component.description }}</p>
       </div>
 
       <!-- Basic Radio Groups Section -->
@@ -366,45 +372,7 @@ import { ShowcaseComponent, ComponentApiDocumentation } from '../../models/showc
       <!-- Component API -->
       <section class="showcase-section">
         <h2>Component API</h2>
-
-        <div class="showcase-api">
-          <h3>Inputs</h3>
-          <ul>
-            @for (input of apiDocumentation.inputs; track input.name) {
-              <li>
-                <code>{{ input.name }}: {{ input.type }}</code>
-                @if (input.defaultValue) {
-                  <span class="default-value">= {{ input.defaultValue }}</span>
-                }
-                <p>{{ input.description }}</p>
-              </li>
-            }
-          </ul>
-        </div>
-
-        <div class="showcase-api">
-          <h3>Outputs</h3>
-          <ul>
-            @for (output of apiDocumentation.outputs; track output.name) {
-              <li>
-                <code>{{ output.name }}: {{ output.type }}</code>
-                <p>{{ output.description }}</p>
-              </li>
-            }
-          </ul>
-        </div>
-
-        <div class="showcase-api">
-          <h3>Methods</h3>
-          <ul>
-            @for (method of apiDocumentation.methods || []; track method.name) {
-              <li>
-                <code>{{ method.signature }}</code>
-                <p>{{ method.description }}</p>
-              </li>
-            }
-          </ul>
-        </div>
+        <ds-api-documentation [api]="showcaseConfig().api" />
       </section>
     </div>
   `,
@@ -417,7 +385,7 @@ export class RadioShowcaseComponent implements ShowcaseComponent {
 
   componentName = 'Radio Component';
   description =
-    'Radio button group component for single selection from a list of options. Built with Angular Signals API and comprehensive accessibility support including keyboard navigation.';
+    'Radio button component for single selection from multiple options. Supports groups, variants, and accessibility features.';
 
   private lastActionSignal = signal<string>('');
 
@@ -588,117 +556,132 @@ export class RadioShowcaseComponent implements ShowcaseComponent {
   ];
 
   // =============================================================================
-  // API DOCUMENTATION
+  // SHOWCASE CONFIGURATION
   // =============================================================================
 
-  apiDocumentation: ComponentApiDocumentation = {
-    inputs: [
-      {
-        name: 'variant',
-        type: 'RadioVariant',
-        defaultValue: "'default'",
-        description: 'Radio variant (default, filled, outlined)',
-        examples: ['default', 'filled', 'outlined'],
-      },
-      {
-        name: 'size',
-        type: 'RadioSize',
-        defaultValue: "'md'",
-        description: 'Radio size variant',
-        examples: ['sm', 'md', 'lg'],
-      },
-      {
-        name: 'label',
-        type: 'string',
-        defaultValue: "''",
-        description: 'Radio group label text',
-      },
-      {
-        name: 'value',
-        type: 'T | null',
-        defaultValue: 'null',
-        description: 'Selected value - two-way binding',
-      },
-      {
-        name: 'options',
-        type: 'RadioOption<T>[]',
-        defaultValue: '[]',
-        description: 'Array of radio options to display',
-      },
-      {
-        name: 'disabled',
-        type: 'boolean',
-        defaultValue: 'false',
-        description: 'Whether radio group is disabled',
-      },
-      {
-        name: 'required',
-        type: 'boolean',
-        defaultValue: 'false',
-        description: 'Whether radio group is required',
-      },
-      {
-        name: 'groupLayout',
-        type: 'RadioGroupLayout',
-        defaultValue: "'vertical'",
-        description: 'Layout for radio group',
-        examples: ['vertical', 'horizontal', 'grid'],
-      },
-      {
-        name: 'helperText',
-        type: 'string',
-        defaultValue: "''",
-        description: 'Helper text shown below radio group',
-      },
-      {
-        name: 'name',
-        type: 'string',
-        defaultValue: "''",
-        description: 'Group name for radio inputs',
-      },
-    ],
-    outputs: [
-      {
-        name: 'selectionChange',
-        type: 'EventEmitter<RadioChangeEvent<T>>',
-        description: 'Emitted when radio selection changes',
-        examples: ['(selectionChange)="onSelectionChange($event)"'],
-      },
-      {
-        name: 'focus',
-        type: 'EventEmitter<RadioFocusEvent>',
-        description: 'Emitted when radio gains or loses focus',
-        examples: ['(focus)="onFocus($event)"'],
-      },
-    ],
-    methods: [
-      {
-        name: 'clear',
-        signature: 'clear(): void',
-        description: 'Clear current selection',
-      },
-      {
-        name: 'selectByValue',
-        signature: 'selectByValue(value: T): void',
-        description: 'Select option by value',
-      },
-      {
-        name: 'focusGroup',
-        signature: 'focusGroup(): void',
-        description: 'Focus the radio group',
-      },
-      {
-        name: 'getValidationState',
-        signature: 'getValidationState(): RadioValidation',
-        description: 'Get current validation state',
-      },
-      {
-        name: 'getSelectedOption',
-        signature: 'getSelectedOption(): RadioOption<T> | null',
-        description: 'Get currently selected option',
-      },
-    ],
-  };
+  readonly showcaseConfig = computed<ShowcaseConfig>(() => {
+    const componentInfo: ShowcaseComponent = {
+      componentName: this.componentName,
+      description: this.description,
+      lastAction: this.lastAction,
+    };
+
+    const apiDocumentation: ComponentApiDocumentation = {
+      inputs: [
+        {
+          name: 'variant',
+          type: 'RadioVariant',
+          defaultValue: "'default'",
+          required: false,
+          description: 'Visual style variant of the radio',
+          examples: ['default', 'filled', 'outlined'],
+        },
+        {
+          name: 'size',
+          type: 'RadioSize',
+          defaultValue: "'md'",
+          required: false,
+          description: 'Size of the radio button',
+          examples: ['sm', 'md', 'lg'],
+        },
+        {
+          name: 'name',
+          type: 'string',
+          required: true,
+          description: 'Name attribute for radio group',
+        },
+        {
+          name: 'value',
+          type: 'any',
+          required: false,
+          description: 'Selected value from radio group',
+        },
+        {
+          name: 'options',
+          type: 'RadioOption[]',
+          defaultValue: '[]',
+          required: false,
+          description: 'Array of radio options',
+        },
+        {
+          name: 'groupLayout',
+          type: 'RadioGroupLayout',
+          defaultValue: "'vertical'",
+          required: false,
+          description: 'Layout for radio group',
+          examples: ['vertical', 'horizontal', 'grid'],
+        },
+        {
+          name: 'disabled',
+          type: 'boolean',
+          defaultValue: 'false',
+          required: false,
+          description: 'Whether the radio group is disabled',
+        },
+        {
+          name: 'required',
+          type: 'boolean',
+          defaultValue: 'false',
+          required: false,
+          description: 'Whether the radio group is required',
+        },
+        {
+          name: 'helperText',
+          type: 'string',
+          required: false,
+          description: 'Helper text to display below the radio group',
+        },
+        {
+          name: 'label',
+          type: 'string',
+          required: false,
+          description: 'Label for the radio group',
+        },
+      ],
+      outputs: [
+        {
+          name: 'valueChange',
+          type: 'RadioChangeEvent',
+          description: 'Emitted when radio selection changes',
+          examples: ['{ value, option, radioElement, originalEvent }'],
+        },
+        {
+          name: 'focused',
+          type: 'RadioFocusEvent',
+          description: 'Emitted when radio receives focus',
+        },
+        {
+          name: 'blurred',
+          type: 'RadioFocusEvent',
+          description: 'Emitted when radio loses focus',
+        },
+      ],
+      methods: [
+        {
+          name: 'focus',
+          signature: 'focus(): void',
+          description: 'Programmatically focus the first radio button',
+        },
+        {
+          name: 'blur',
+          signature: 'blur(): void',
+          description: 'Programmatically blur the focused radio button',
+        },
+        {
+          name: 'selectOption',
+          signature: 'selectOption(value: any): void',
+          description: 'Programmatically select an option by value',
+        },
+        {
+          name: 'clearSelection',
+          signature: 'clearSelection(): void',
+          description: 'Clear the current selection',
+        },
+      ],
+    };
+
+    return createShowcaseConfig(componentInfo, apiDocumentation);
+  });
 
   // =============================================================================
   // EVENT HANDLERS

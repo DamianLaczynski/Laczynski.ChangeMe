@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { ButtonComponent } from './button.component';
+import { ApiDocumentationComponent } from '../../shared/components';
 import {
   ShowcaseComponent,
   ComponentApiDocumentation,
@@ -26,7 +27,7 @@ import {
 @Component({
   selector: 'ds-button-showcase',
   standalone: true,
-  imports: [CommonModule, FormsModule, ButtonComponent],
+  imports: [CommonModule, FormsModule, ButtonComponent, ApiDocumentationComponent],
   template: `
     <div class="showcase-container">
       <!-- Header -->
@@ -188,51 +189,7 @@ import {
       <!-- Component API -->
       <section class="showcase-section">
         <h2>Component API</h2>
-        <div class="showcase-api">
-          <!-- Inputs -->
-          <div class="api-section">
-            <h3>Inputs</h3>
-            <ul>
-              @for (input of showcaseConfig().api.inputs; track input.name) {
-                <li>
-                  <code>{{ input.name }}: {{ input.type }}</code>
-                  @if (input.defaultValue) {
-                    <span class="default-value">= {{ input.defaultValue }}</span>
-                  }
-                  <p>{{ input.description }}</p>
-                </li>
-              }
-            </ul>
-          </div>
-
-          <!-- Outputs -->
-          <div class="api-section">
-            <h3>Outputs</h3>
-            <ul>
-              @for (output of showcaseConfig().api.outputs; track output.name) {
-                <li>
-                  <code>{{ output.name }}: {{ output.type }}</code>
-                  <p>{{ output.description }}</p>
-                </li>
-              }
-            </ul>
-          </div>
-
-          <!-- Methods -->
-          @if (showcaseConfig().api.methods?.length) {
-            <div class="api-section">
-              <h3>Methods</h3>
-              <ul>
-                @for (method of showcaseConfig().api.methods; track method.name) {
-                  <li>
-                    <code>{{ method.signature }}</code>
-                    <p>{{ method.description }}</p>
-                  </li>
-                }
-              </ul>
-            </div>
-          }
-        </div>
+        <ds-api-documentation [api]="showcaseConfig().api" />
       </section>
     </div>
   `,
@@ -299,6 +256,7 @@ export class ButtonShowcaseComponent implements ShowcaseComponent {
           name: 'variant',
           type: 'ButtonVariant',
           defaultValue: 'primary',
+          required: false,
           description: 'Visual style variant of the button',
           examples: ['primary', 'secondary', 'danger', 'ghost'],
         },
@@ -306,6 +264,7 @@ export class ButtonShowcaseComponent implements ShowcaseComponent {
           name: 'size',
           type: 'ButtonSize',
           defaultValue: 'md',
+          required: false,
           description: 'Size of the button',
           examples: ['sm', 'md', 'lg'],
         },
@@ -313,39 +272,46 @@ export class ButtonShowcaseComponent implements ShowcaseComponent {
           name: 'type',
           type: 'button | submit | reset',
           defaultValue: 'button',
+          required: false,
           description: 'HTML button type attribute',
         },
         {
           name: 'disabled',
           type: 'boolean',
           defaultValue: 'false',
+          required: false,
           description: 'Whether the button is disabled',
         },
         {
           name: 'loading',
           type: 'boolean',
           defaultValue: 'false',
+          required: false,
           description: 'Whether the button is in loading state',
         },
         {
           name: 'iconStart',
           type: 'string',
+          required: false,
           description: 'Icon to display at the start of button text',
         },
         {
           name: 'iconEnd',
           type: 'string',
+          required: false,
           description: 'Icon to display at the end of button text',
         },
         {
           name: 'fullWidth',
           type: 'boolean',
           defaultValue: 'false',
+          required: false,
           description: 'Whether button should take full width of container',
         },
         {
           name: 'ariaLabel',
           type: 'string',
+          required: false,
           description: 'ARIA label for accessibility',
         },
       ],

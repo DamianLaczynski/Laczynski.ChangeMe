@@ -7,8 +7,10 @@ import { InputComponent } from '../input/input.component';
 import { SelectComponent } from '../select/select.component';
 import { CheckboxComponent } from '../checkbox/checkbox.component';
 import { CheckboxChangeEvent } from '../checkbox/checkbox.model';
+import { SelectOption } from '../select/select.model';
 import { FormFieldComponent } from '../form-field/form-field.component';
 import { FormGroupComponent } from '../form-group/form-group.component';
+import { ApiDocumentationComponent } from '../../shared/components';
 
 import { TableComponent } from './table.component';
 import {
@@ -68,7 +70,7 @@ interface UserSearchParameters extends PaginationParameters {
 @Component({
   selector: 'ds-table-showcase',
   standalone: true,
-  imports: [CommonModule, TableComponent, ButtonComponent, FormsModule],
+  imports: [CommonModule, TableComponent, ButtonComponent, ApiDocumentationComponent, FormsModule],
   template: `
     <div class="showcase-container">
       <!-- Header -->
@@ -90,7 +92,7 @@ interface UserSearchParameters extends PaginationParameters {
             <div class="control-group">
               <label for="variant-select">Variant:</label>
               <select id="variant-select" [(ngModel)]="selectedVariant" class="control-input">
-                @for (option of variantOptions; track option.value) {
+                @for (option of variantSelectOptions; track option.value) {
                   <option [value]="option.value">{{ option.label }}</option>
                 }
               </select>
@@ -99,7 +101,7 @@ interface UserSearchParameters extends PaginationParameters {
             <div class="control-group">
               <label for="size-select">Size:</label>
               <select id="size-select" [(ngModel)]="selectedSize" class="control-input">
-                @for (option of sizeOptions; track option.value) {
+                @for (option of sizeSelectOptions; track option.value) {
                   <option [value]="option.value">{{ option.label }}</option>
                 }
               </select>
@@ -108,7 +110,7 @@ interface UserSearchParameters extends PaginationParameters {
             <div class="control-group">
               <label for="border-select">Border:</label>
               <select id="border-select" [(ngModel)]="selectedBorder" class="control-input">
-                @for (option of borderOptions; track option.value) {
+                @for (option of borderSelectOptions; track option.value) {
                   <option [value]="option.value">{{ option.label }}</option>
                 }
               </select>
@@ -279,51 +281,7 @@ interface UserSearchParameters extends PaginationParameters {
       <!-- Component API -->
       <section class="showcase-section">
         <h2>Component API</h2>
-        <div class="showcase-api">
-          <!-- Inputs -->
-          <div class="api-section">
-            <h3>Inputs</h3>
-            <ul>
-              @for (input of showcaseConfig().api.inputs; track input.name) {
-                <li>
-                  <code>{{ input.name }}: {{ input.type }}</code>
-                  @if (input.defaultValue) {
-                    <span class="default-value">= {{ input.defaultValue }}</span>
-                  }
-                  <p>{{ input.description }}</p>
-                </li>
-              }
-            </ul>
-          </div>
-
-          <!-- Outputs -->
-          <div class="api-section">
-            <h3>Outputs</h3>
-            <ul>
-              @for (output of showcaseConfig().api.outputs; track output.name) {
-                <li>
-                  <code>{{ output.name }}: {{ output.type }}</code>
-                  <p>{{ output.description }}</p>
-                </li>
-              }
-            </ul>
-          </div>
-
-          <!-- Methods -->
-          @if (showcaseConfig().api.methods?.length) {
-            <div class="api-section">
-              <h3>Methods</h3>
-              <ul>
-                @for (method of showcaseConfig().api.methods; track method.name) {
-                  <li>
-                    <code>{{ method.signature }}</code>
-                    <p>{{ method.description }}</p>
-                  </li>
-                }
-              </ul>
-            </div>
-          }
-        </div>
+        <ds-api-documentation [api]="showcaseConfig().api" />
       </section>
 
       <!-- Templates for custom columns -->
@@ -390,7 +348,7 @@ export class TableShowcaseComponent implements ShowcaseComponent, OnInit {
   // SHOWCASE DATA
   // =============================================================================
 
-  readonly variantOptions = [
+  readonly variantSelectOptions = [
     { value: 'default', label: 'Default' },
     { value: 'bordered', label: 'Bordered' },
     { value: 'borderless', label: 'Borderless' },
@@ -398,13 +356,13 @@ export class TableShowcaseComponent implements ShowcaseComponent, OnInit {
     { value: 'comfortable', label: 'Comfortable' },
   ];
 
-  readonly sizeOptions = [
+  readonly sizeSelectOptions = [
     { value: 'sm', label: 'Small' },
     { value: 'md', label: 'Medium' },
     { value: 'lg', label: 'Large' },
   ];
 
-  readonly borderOptions = [
+  readonly borderSelectOptions = [
     { value: 'none', label: 'None' },
     { value: 'horizontal', label: 'Horizontal' },
     { value: 'vertical', label: 'Vertical' },

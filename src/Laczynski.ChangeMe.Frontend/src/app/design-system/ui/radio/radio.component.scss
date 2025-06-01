@@ -21,7 +21,7 @@
 }
 
 // =============================================================================
-// RADIO GROUP
+// RADIO GROUP - Cleaner layout
 // =============================================================================
 
 .ds-radio-group {
@@ -35,15 +35,26 @@
 
 .ds-radio-group__legend {
   font-size: var(--font-size-base);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-medium);
   color: var(--color-text);
   line-height: var(--line-height-tight);
   padding: 0;
   margin: 0 0 var(--spacing-sm) 0;
   
-  .ds-radio-container--disabled & {
-    color: var(--color-text-disabled);
+  &.required {
+    .ds-radio-group__required {
+      color: var(--color-danger);
+      margin-left: 2px;
+      font-size: 0.875em;
+    }
   }
+}
+
+.ds-radio-group__description {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-md);
+  line-height: var(--line-height-normal);
 }
 
 .ds-radio-group__options {
@@ -52,27 +63,45 @@
   gap: var(--spacing-sm);
 }
 
+// Inline layout for radio group
+.ds-radio-group--inline {
+  .ds-radio-group__options {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--spacing-lg);
+  }
+}
+
+// Compact layout
+.ds-radio-group--compact {
+  gap: var(--spacing-sm);
+  
+  .ds-radio-group__options {
+    gap: var(--spacing-xs);
+  }
+}
+
 // =============================================================================
-// SINGLE RADIO
+// SINGLE RADIO - Minimalistic approach
 // =============================================================================
 
 .ds-radio {
   display: flex;
   align-items: flex-start;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-md);
   cursor: pointer;
   transition: all var(--transition-fast);
   position: relative;
   
   &:hover:not(.ds-radio--disabled) {
     .ds-radio__mark {
-      border-color: var(--color-primary);
+      border-color: var(--color-text-secondary);
     }
   }
   
   &.ds-radio--disabled {
     cursor: not-allowed;
-    opacity: 0.6;
+    opacity: 0.5;
   }
 }
 
@@ -87,10 +116,6 @@
   height: 0;
   pointer-events: none;
   
-  &:focus + .ds-radio__mark {
-    @include mixins.focus-state;
-  }
-  
   &:focus-visible + .ds-radio__mark {
     outline: 2px solid var(--color-primary);
     outline-offset: 2px;
@@ -98,37 +123,37 @@
 }
 
 // =============================================================================
-// RADIO MARK
+// RADIO MARK - Refined design
 // =============================================================================
 
 .ds-radio__mark {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--color-border);
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--color-border);
   border-radius: 50%;
   background-color: var(--color-surface);
   transition: all var(--transition-fast);
   flex-shrink: 0;
   position: relative;
   
-  // Radio dot
+  // Radio dot - simplified
   &::after {
     content: '';
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
     background-color: var(--color-white);
     transform: scale(0);
-    transition: all var(--transition-fast);
+    transition: transform var(--transition-fast);
     opacity: 0;
   }
 }
 
 // =============================================================================
-// RADIO STATES
+// RADIO STATES - Clean transitions
 // =============================================================================
 
 // Selected state
@@ -146,15 +171,15 @@
 .ds-radio--disabled {
   .ds-radio__mark {
     background-color: var(--color-surface-disabled);
-    border-color: var(--color-border-disabled);
+    border-color: var(--color-border);
   }
   
   .ds-radio__input:checked + .ds-radio__mark {
-    background-color: var(--color-border-disabled);
-    border-color: var(--color-border-disabled);
+    background-color: var(--color-gray-400);
+    border-color: var(--color-gray-400);
     
     &::after {
-      background-color: var(--color-text-disabled);
+      background-color: var(--color-white);
     }
   }
 }
@@ -172,7 +197,7 @@
 }
 
 // =============================================================================
-// RADIO CONTENT
+// RADIO CONTENT - Better typography
 // =============================================================================
 
 .ds-radio__content {
@@ -199,6 +224,7 @@
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
   line-height: var(--line-height-normal);
+  font-style: italic;
   
   .ds-radio--disabled & {
     color: var(--color-text-disabled);
@@ -207,37 +233,9 @@
 
 .ds-radio__required {
   color: var(--color-danger);
-  margin-left: var(--spacing-xs);
-  font-weight: var(--font-weight-bold);
-}
-
-// =============================================================================
-// GROUP LAYOUTS
-// =============================================================================
-
-// Vertical layout (default)
-.ds-radio-group--vertical {
-  .ds-radio-group__options {
-    flex-direction: column;
-  }
-}
-
-// Horizontal layout
-.ds-radio-group--horizontal {
-  .ds-radio-group__options {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: var(--spacing-md) var(--spacing-lg);
-  }
-}
-
-// Grid layout
-.ds-radio-group--grid {
-  .ds-radio-group__options {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: var(--spacing-sm) var(--spacing-md);
-  }
+  margin-left: 2px;
+  font-weight: var(--font-weight-normal);
+  font-size: 0.875em;
 }
 
 // =============================================================================
@@ -245,15 +243,13 @@
 // =============================================================================
 
 .ds-radio--sm {
-  gap: var(--spacing-xs);
-  
   .ds-radio__mark {
     width: 16px;
     height: 16px;
     
     &::after {
-      width: 6px;
-      height: 6px;
+      width: 4px;
+      height: 4px;
     }
   }
   
@@ -266,9 +262,7 @@
   }
 }
 
-.ds-radio--md {
-  gap: var(--spacing-sm);
-  
+.ds-radio--lg {
   .ds-radio__mark {
     width: 20px;
     height: 20px;
@@ -280,112 +274,26 @@
   }
   
   .ds-radio__label {
-    font-size: var(--font-size-base);
-  }
-  
-  .ds-radio__description {
-    font-size: var(--font-size-sm);
-  }
-}
-
-.ds-radio--lg {
-  gap: var(--spacing-md);
-  
-  .ds-radio__mark {
-    width: 24px;
-    height: 24px;
-    
-    &::after {
-      width: 10px;
-      height: 10px;
-    }
-  }
-  
-  .ds-radio__label {
     font-size: var(--font-size-lg);
   }
-  
-  .ds-radio__description {
-    font-size: var(--font-size-base);
-  }
 }
 
 // =============================================================================
-// VARIANT STYLES
+// VALIDATION STYLES
 // =============================================================================
 
-.ds-radio--filled {
-  .ds-radio__mark {
-    background-color: var(--color-gray-100);
-    border-color: transparent;
-    
-    &:hover {
-      background-color: var(--color-gray-200);
-    }
-  }
-  
-  .ds-radio__input:checked + .ds-radio__mark {
-    background-color: var(--color-primary);
-    border-color: var(--color-primary);
-  }
-}
-
-.ds-radio--outlined {
-  .ds-radio__mark {
-    border-width: 3px;
-    
-    &:focus {
-      border-width: 3px;
-    }
-  }
-}
-
-// =============================================================================
-// CONTAINER STATES
-// =============================================================================
-
-.ds-radio-container--disabled {
-  opacity: 0.6;
-  pointer-events: none;
-}
-
-.ds-radio-container--error {
-  .ds-radio__mark {
-    border-color: var(--color-danger);
-  }
-}
-
-// =============================================================================
-// HELPER TEXT
-// =============================================================================
-
-.ds-radio__helper {
+.ds-radio-group__validation,
+.ds-radio__validation {
   font-size: var(--font-size-xs);
-  color: var(--color-text-secondary);
-  line-height: var(--line-height-normal);
   margin-top: var(--spacing-xs);
+  line-height: var(--line-height-normal);
   
-  &.error {
+  &--error {
     color: var(--color-danger);
   }
-}
-
-// =============================================================================
-// RESPONSIVE ADJUSTMENTS
-// =============================================================================
-
-@include mixins.respond-to("sm") {
-  .ds-radio-group--horizontal {
-    .ds-radio-group__options {
-      flex-direction: column;
-      gap: var(--spacing-sm);
-    }
-  }
   
-  .ds-radio-group--grid {
-    .ds-radio-group__options {
-      grid-template-columns: 1fr;
-    }
+  &--success {
+    color: var(--color-success);
   }
 }
 
@@ -393,51 +301,29 @@
 // THEME SUPPORT
 // =============================================================================
 
+// Dark Theme Adjustments
 [data-theme="dark"] {
   .ds-radio__mark {
-    background-color: var(--color-gray-800);
-    border-color: var(--color-gray-600);
+    background-color: var(--color-surface);
+    border-color: var(--color-border);
   }
   
-  .ds-radio__input:checked + .ds-radio__mark {
-    background-color: var(--color-primary);
-    border-color: var(--color-primary);
-  }
-  
-  .ds-radio__label {
-    color: var(--color-white);
-  }
-  
-  .ds-radio__description {
-    color: var(--color-gray-300);
-  }
-  
-  .ds-radio-group__legend {
-    color: var(--color-white);
-  }
-  
-  .ds-radio__helper {
-    color: var(--color-gray-300);
-    
-    &.error {
-      color: var(--color-danger);
+  .ds-radio:hover:not(.ds-radio--disabled) {
+    .ds-radio__mark {
+      border-color: var(--color-border-hover);
     }
   }
 }
 
+// High Contrast Theme
 [data-theme="high-contrast"] {
   .ds-radio__mark {
-    border-width: 3px;
-    
-    &:focus {
-      outline: 3px solid var(--color-text);
-      outline-offset: 2px;
-    }
+    border-width: 2px;
   }
   
-  .ds-radio--error .ds-radio__mark {
-    border-color: var(--color-danger);
-    border-width: 3px;
+  .ds-radio__input:focus-visible + .ds-radio__mark {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 3px;
   }
 }
 
@@ -447,7 +333,10 @@
 
 @media (prefers-reduced-motion: reduce) {
   .ds-radio,
-  .ds-radio__mark,
+  .ds-radio__mark {
+    transition: none;
+  }
+  
   .ds-radio__mark::after {
     transition: none;
   }

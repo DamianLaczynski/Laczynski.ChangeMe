@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { InputComponent } from './input.component';
+import { ApiDocumentationComponent } from '../../shared/components';
 import {
   InputType,
   InputSize,
@@ -16,6 +17,7 @@ import {
   ShowcaseComponent,
   createShowcaseConfig,
   ComponentApiDocumentation,
+  ShowcaseConfig,
 } from '../../models/showcase.model';
 
 /**
@@ -27,13 +29,13 @@ import {
 @Component({
   selector: 'input-showcase',
   standalone: true,
-  imports: [CommonModule, FormsModule, InputComponent],
+  imports: [CommonModule, FormsModule, InputComponent, ApiDocumentationComponent],
   template: `
     <div class="showcase-container">
       <!-- Header -->
       <div class="showcase-header">
-        <h1>{{ componentName }}</h1>
-        <p class="showcase-description">{{ description }}</p>
+        <h1>{{ showcaseConfig().component.componentName }}</h1>
+        <p class="showcase-description">{{ showcaseConfig().component.description }}</p>
       </div>
 
       <!-- Variants Section -->
@@ -358,45 +360,7 @@ import {
       <!-- Component API -->
       <section class="showcase-section">
         <h2>Component API</h2>
-
-        <div class="showcase-api">
-          <h3>Inputs</h3>
-          <ul>
-            @for (input of apiDocumentation.inputs; track input.name) {
-              <li>
-                <code>{{ input.name }}: {{ input.type }}</code>
-                @if (input.defaultValue) {
-                  <span class="default-value">= {{ input.defaultValue }}</span>
-                }
-                <p>{{ input.description }}</p>
-              </li>
-            }
-          </ul>
-        </div>
-
-        <div class="showcase-api">
-          <h3>Outputs</h3>
-          <ul>
-            @for (output of apiDocumentation.outputs; track output.name) {
-              <li>
-                <code>{{ output.name }}: {{ output.type }}</code>
-                <p>{{ output.description }}</p>
-              </li>
-            }
-          </ul>
-        </div>
-
-        <div class="showcase-api">
-          <h3>Methods</h3>
-          <ul>
-            @for (method of apiDocumentation.methods || []; track method.name) {
-              <li>
-                <code>{{ method.signature }}</code>
-                <p>{{ method.description }}</p>
-              </li>
-            }
-          </ul>
-        </div>
+        <ds-api-documentation [api]="showcaseConfig().api" />
       </section>
     </div>
   `,
@@ -510,152 +474,169 @@ export class InputShowcaseComponent implements ShowcaseComponent {
   }
 
   // =============================================================================
-  // API DOCUMENTATION
+  // SHOWCASE CONFIGURATION
   // =============================================================================
 
-  apiDocumentation: ComponentApiDocumentation = {
-    inputs: [
-      {
-        name: 'type',
-        type: 'InputType',
-        defaultValue: "'text'",
-        description: 'Input type (text, email, password, number, search, tel, url)',
-        examples: ['text', 'email', 'password'],
-      },
-      {
-        name: 'size',
-        type: 'InputSize',
-        defaultValue: "'md'",
-        description: 'Input size variant',
-        examples: ['sm', 'md', 'lg'],
-      },
-      {
-        name: 'label',
-        type: 'string',
-        defaultValue: "''",
-        description: 'Input label text',
-      },
-      {
-        name: 'placeholder',
-        type: 'string',
-        defaultValue: "''",
-        description: 'Input placeholder text',
-      },
-      {
-        name: 'value',
-        type: 'string',
-        defaultValue: "''",
-        description: 'Input value (two-way binding)',
-      },
-      {
-        name: 'disabled',
-        type: 'boolean',
-        defaultValue: 'false',
-        description: 'Whether input is disabled',
-      },
-      {
-        name: 'readonly',
-        type: 'boolean',
-        defaultValue: 'false',
-        description: 'Whether input is readonly',
-      },
-      {
-        name: 'required',
-        type: 'boolean',
-        defaultValue: 'false',
-        description: 'Whether input is required',
-      },
-      {
-        name: 'clearable',
-        type: 'boolean',
-        defaultValue: 'false',
-        description: 'Whether input shows clear button',
-      },
-      {
-        name: 'showCounter',
-        type: 'boolean',
-        defaultValue: 'false',
-        description: 'Whether to show character counter',
-      },
-      {
-        name: 'maxLength',
-        type: 'number | null',
-        defaultValue: 'null',
-        description: 'Maximum character length',
-      },
-      {
-        name: 'startIcon',
-        type: 'string',
-        defaultValue: "''",
-        description: 'Icon HTML to show at start of input',
-      },
-      {
-        name: 'endIcon',
-        type: 'string',
-        defaultValue: "''",
-        description: 'Icon HTML to show at end of input',
-      },
-      {
-        name: 'helperText',
-        type: 'string',
-        defaultValue: "''",
-        description: 'Helper text shown below input',
-      },
-    ],
-    outputs: [
-      {
-        name: 'valueChange',
-        type: 'EventEmitter<InputChangeEvent>',
-        description: 'Emitted when input value changes',
-        examples: ['(valueChange)="onValueChange($event)"'],
-      },
-      {
-        name: 'focus',
-        type: 'EventEmitter<InputFocusEvent>',
-        description: 'Emitted when input gains or loses focus',
-        examples: ['(focus)="onFocus($event)"'],
-      },
-      {
-        name: 'clear',
-        type: 'EventEmitter<InputClearEvent>',
-        description: 'Emitted when clear button is clicked',
-        examples: ['(clear)="onClear($event)"'],
-      },
-      {
-        name: 'enterKey',
-        type: 'EventEmitter<InputEnterEvent>',
-        description: 'Emitted when Enter key is pressed',
-        examples: ['(enterKey)="onEnterKey($event)"'],
-      },
-    ],
-    methods: [
-      {
-        name: 'focusInput',
-        signature: 'focusInput(): void',
-        description: 'Programmatically focus the input',
-      },
-      {
-        name: 'blurInput',
-        signature: 'blurInput(): void',
-        description: 'Programmatically blur the input',
-      },
-      {
-        name: 'selectAll',
-        signature: 'selectAll(): void',
-        description: 'Select all text in the input',
-      },
-      {
-        name: 'clearInput',
-        signature: 'clearInput(): void',
-        description: 'Clear the input value',
-      },
-      {
-        name: 'getValidationState',
-        signature: 'getValidationState(): InputValidation',
-        description: 'Get current validation state',
-      },
-    ],
-  };
+  readonly showcaseConfig = computed<ShowcaseConfig>(() => {
+    const componentInfo: ShowcaseComponent = {
+      componentName: this.componentName,
+      description: this.description,
+      lastAction: this.lastAction,
+    };
+
+    const apiDocumentation: ComponentApiDocumentation = {
+      inputs: [
+        {
+          name: 'type',
+          type: 'InputType',
+          defaultValue: "'text'",
+          required: false,
+          description: 'Input type (text, email, password, number, search, tel, url)',
+          examples: ['text', 'email', 'password'],
+        },
+        {
+          name: 'size',
+          type: 'InputSize',
+          defaultValue: "'md'",
+          required: false,
+          description: 'Input size variant',
+          examples: ['sm', 'md', 'lg'],
+        },
+        {
+          name: 'label',
+          type: 'string',
+          defaultValue: "''",
+          required: false,
+          description: 'Input label text',
+        },
+        {
+          name: 'placeholder',
+          type: 'string',
+          defaultValue: "''",
+          required: false,
+          description: 'Input placeholder text',
+        },
+        {
+          name: 'value',
+          type: 'string',
+          defaultValue: "''",
+          required: false,
+          description: 'Input value (two-way binding)',
+        },
+        {
+          name: 'disabled',
+          type: 'boolean',
+          defaultValue: 'false',
+          required: false,
+          description: 'Whether the input is disabled',
+        },
+        {
+          name: 'readonly',
+          type: 'boolean',
+          defaultValue: 'false',
+          required: false,
+          description: 'Whether the input is readonly',
+        },
+        {
+          name: 'required',
+          type: 'boolean',
+          defaultValue: 'false',
+          required: false,
+          description: 'Whether the input is required',
+        },
+        {
+          name: 'clearable',
+          type: 'boolean',
+          defaultValue: 'false',
+          required: false,
+          description: 'Whether to show clear button when input has value',
+        },
+        {
+          name: 'helperText',
+          type: 'string',
+          required: false,
+          description: 'Helper text to display below the input',
+        },
+        {
+          name: 'startIcon',
+          type: 'string',
+          required: false,
+          description: 'Icon to display at the start of the input',
+        },
+        {
+          name: 'endIcon',
+          type: 'string',
+          required: false,
+          description: 'Icon to display at the end of the input',
+        },
+        {
+          name: 'maxLength',
+          type: 'number',
+          required: false,
+          description: 'Maximum number of characters allowed',
+        },
+        {
+          name: 'showCharacterCount',
+          type: 'boolean',
+          defaultValue: 'false',
+          required: false,
+          description: 'Whether to show character counter',
+        },
+      ],
+      outputs: [
+        {
+          name: 'valueChange',
+          type: 'InputChangeEvent',
+          description: 'Emitted when input value changes',
+          examples: ['{ value, inputElement, event }'],
+        },
+        {
+          name: 'focused',
+          type: 'InputFocusEvent',
+          description: 'Emitted when input receives focus',
+        },
+        {
+          name: 'blurred',
+          type: 'InputFocusEvent',
+          description: 'Emitted when input loses focus',
+        },
+        {
+          name: 'cleared',
+          type: 'InputClearEvent',
+          description: 'Emitted when clear button is clicked',
+        },
+        {
+          name: 'enterKey',
+          type: 'InputEnterEvent',
+          description: 'Emitted when Enter key is pressed',
+        },
+      ],
+      methods: [
+        {
+          name: 'focus',
+          signature: 'focus(): void',
+          description: 'Programmatically focus the input',
+        },
+        {
+          name: 'blur',
+          signature: 'blur(): void',
+          description: 'Programmatically blur the input',
+        },
+        {
+          name: 'clear',
+          signature: 'clear(): void',
+          description: 'Clear the input value',
+        },
+        {
+          name: 'select',
+          signature: 'select(): void',
+          description: 'Select all text in the input',
+        },
+      ],
+    };
+
+    return createShowcaseConfig(componentInfo, apiDocumentation);
+  });
 
   // =============================================================================
   // EVENT HANDLERS

@@ -35,17 +35,18 @@
   &.required {
     .ds-select-required {
       color: var(--color-danger);
-      margin-left: var(--spacing-xs);
+      margin-left: 2px;
+      font-size: 0.875em;
     }
   }
 }
 
 .ds-select-required {
-  font-weight: var(--font-weight-bold);
+  font-weight: var(--font-weight-normal);
 }
 
 // =============================================================================
-// SELECT WRAPPER & TRIGGER
+// SELECT WRAPPER & TRIGGER - Minimalistic approach
 // =============================================================================
 
 .ds-select-wrapper {
@@ -65,24 +66,24 @@
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius-md);
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: border-color var(--transition-fast);
   text-align: left;
   
   &:hover:not(:disabled) {
-    border-color: var(--color-border-hover);
+    border-color: var(--color-text-secondary);
   }
   
   &:focus {
     outline: none;
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 1px var(--color-primary-light);
   }
   
   &:disabled {
     cursor: not-allowed;
     background-color: var(--color-surface-disabled);
-    border-color: var(--color-border-disabled);
+    border-color: var(--color-border);
     color: var(--color-text-disabled);
+    opacity: 0.6;
   }
 }
 
@@ -98,46 +99,66 @@
   
   &.placeholder {
     color: var(--color-text-muted);
+    font-style: italic;
+  }
+}
+
+// Selected values display for multi-select
+.ds-select-selected-values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+  max-width: 100%;
+}
+
+.ds-select-selected-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: 2px var(--spacing-xs);
+  background-color: var(--color-gray-100);
+  color: var(--color-text);
+  border-radius: var(--border-radius-xs);
+  font-size: var(--font-size-xs);
+  line-height: 1.2;
+  
+  &__remove {
+    cursor: pointer;
+    color: var(--color-text-muted);
+    font-size: 0.75em;
+    
+    &:hover {
+      color: var(--color-danger);
+    }
   }
 }
 
 // =============================================================================
-// SELECT INDICATORS
+// SELECT INDICATORS - Cleaner design
 // =============================================================================
 
 .ds-select-arrow {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
-  color: var(--color-text-secondary);
-  transition: transform var(--transition-fast);
+  width: 16px;
+  height: 16px;
+  color: var(--color-text-muted);
+  transition: transform var(--transition-fast), color var(--transition-fast);
   font-size: var(--font-size-sm);
   
   &.open {
     transform: rotate(180deg);
+    color: var(--color-primary);
   }
 }
 
 .ds-select-loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  color: var(--color-text-secondary);
-  animation: spin 1s linear infinite;
-  font-size: var(--font-size-base);
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  @include mixins.spinner(16px, 2px, var(--color-primary));
 }
 
 // =============================================================================
-// DROPDOWN
+// DROPDOWN - Refined design
 // =============================================================================
 
 .ds-select-dropdown {
@@ -145,18 +166,25 @@
   top: 100%;
   left: 0;
   right: 0;
-  z-index: 1000;
-  margin-top: var(--spacing-xs);
+  z-index: var(--z-index-dropdown);
+  margin-top: 2px;
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius-md);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-sm);
   overflow: hidden;
-  max-height: 200px;
+  max-height: 240px;
+  
+  &.ds-select-dropdown--up {
+    top: auto;
+    bottom: 100%;
+    margin-top: 0;
+    margin-bottom: 2px;
+  }
 }
 
 // =============================================================================
-// SEARCH INPUT
+// SEARCH INPUT - Simplified
 // =============================================================================
 
 .ds-select-search {
@@ -169,57 +197,42 @@
   
   width: 100%;
   padding: var(--spacing-sm);
-  border: 1px solid var(--color-border);
-  border-radius: var(--border-radius-sm);
-  background-color: var(--color-surface);
+  border: none;
+  background-color: transparent;
   font-size: var(--font-size-sm);
   
   &:focus {
     outline: none;
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 1px var(--color-primary-light);
   }
   
   &::placeholder {
     color: var(--color-text-muted);
+    font-style: italic;
   }
 }
 
 // =============================================================================
-// OPTIONS LIST
+// OPTIONS LIST - Clean spacing
 // =============================================================================
 
 .ds-select-options {
   max-height: inherit;
   overflow-y: auto;
   padding: var(--spacing-xs) 0;
+  
+  @include mixins.custom-scrollbar();
 }
 
 .ds-select-no-options {
-  padding: var(--spacing-md);
+  padding: var(--spacing-lg);
   text-align: center;
   color: var(--color-text-muted);
-  font-size: var(--font-size-sm);
   font-style: italic;
+  font-size: var(--font-size-sm);
 }
 
 // =============================================================================
-// OPTION GROUPS
-// =============================================================================
-
-.ds-select-group-header {
-  padding: var(--spacing-sm) var(--spacing-md);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  background-color: var(--color-gray-50);
-  border-bottom: 1px solid var(--color-border);
-}
-
-// =============================================================================
-// OPTIONS
+// OPTION ITEM - Cleaner styling
 // =============================================================================
 
 .ds-select-option {
@@ -230,72 +243,142 @@
   cursor: pointer;
   transition: background-color var(--transition-fast);
   
-  &:hover:not(.disabled) {
-    background-color: var(--color-surface-hover);
-  }
-  
-  &.highlighted {
-    background-color: var(--color-primary-light);
+  &:hover {
+    background-color: var(--color-gray-50);
   }
   
   &.selected {
-    background-color: var(--color-primary-lighter);
-    color: var(--color-primary-dark);
+    background-color: var(--color-primary);
+    color: var(--color-white);
+  }
+  
+  &.highlighted {
+    background-color: var(--color-gray-100);
   }
   
   &.disabled {
     cursor: not-allowed;
-    color: var(--color-text-disabled);
-    background-color: transparent;
+    opacity: 0.5;
+    pointer-events: none;
   }
 }
 
-.ds-select-checkbox {
-  font-size: var(--font-size-base);
-  color: var(--color-primary);
-  
-  &.checked {
-    color: var(--color-primary);
-  }
-}
-
-.ds-select-option-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  color: var(--color-text-secondary);
-}
-
-.ds-select-option-content {
+.ds-select-option__content {
   flex: 1;
   min-width: 0;
 }
 
-.ds-select-option-label {
+.ds-select-option__label {
   font-size: var(--font-size-base);
-  font-weight: var(--font-weight-normal);
-  line-height: var(--line-height-tight);
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
+  line-height: var(--line-height-normal);
+  
+  @include mixins.text-truncate;
 }
 
-.ds-select-option-description {
+.ds-select-option__description {
   font-size: var(--font-size-xs);
-  color: var(--color-text-secondary);
-  line-height: var(--line-height-tight);
-  margin-top: var(--spacing-xs);
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
+  color: var(--color-text-muted);
+  line-height: var(--line-height-normal);
+  margin-top: 2px;
+  
+  @include mixins.text-truncate;
+  
+  .ds-select-option.selected & {
+    color: rgba(255, 255, 255, 0.8);
+  }
 }
 
-.ds-select-selected-indicator {
-  color: var(--color-primary);
-  font-weight: var(--font-weight-bold);
-  font-size: var(--font-size-sm);
+.ds-select-option__icon {
+  width: 16px;
+  height: 16px;
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+}
+
+.ds-select-option__checkbox {
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-xs);
+  background-color: var(--color-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  
+  &.checked {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-white);
+  }
+}
+
+// =============================================================================
+// SIZE VARIANTS
+// =============================================================================
+
+.ds-select--sm {
+  .ds-select-trigger {
+    @include mixins.input-size("sm");
+  }
+  
+  .ds-select-arrow,
+  .ds-select-loading {
+    width: 14px;
+    height: 14px;
+  }
+  
+  .ds-select-option {
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+  
+  .ds-select-option__label {
+    font-size: var(--font-size-sm);
+  }
+}
+
+.ds-select--lg {
+  .ds-select-trigger {
+    @include mixins.input-size("lg");
+  }
+  
+  .ds-select-arrow,
+  .ds-select-loading {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .ds-select-option {
+    padding: var(--spacing-md) var(--spacing-lg);
+  }
+  
+  .ds-select-option__label {
+    font-size: var(--font-size-lg);
+  }
+}
+
+// =============================================================================
+// STATE VARIANTS
+// =============================================================================
+
+.ds-select--error {
+  .ds-select-trigger {
+    border-color: var(--color-danger);
+    
+    &:focus {
+      border-color: var(--color-danger);
+    }
+  }
+}
+
+.ds-select--success {
+  .ds-select-trigger {
+    border-color: var(--color-success);
+    
+    &:focus {
+      border-color: var(--color-success);
+    }
+  }
 }
 
 // =============================================================================
@@ -311,181 +394,9 @@
   &.error {
     color: var(--color-danger);
   }
-}
-
-// =============================================================================
-// SELECTED ITEMS (MULTIPLE)
-// =============================================================================
-
-.ds-select-selected-items {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-xs);
-  margin-top: var(--spacing-sm);
-}
-
-.ds-select-selected-item {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  padding: var(--spacing-xs) var(--spacing-sm);
-  background-color: var(--color-primary-lighter);
-  color: var(--color-primary-dark);
-  border-radius: var(--border-radius-sm);
-  font-size: var(--font-size-sm);
-  line-height: var(--line-height-tight);
-}
-
-.ds-select-remove-item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 16px;
-  height: 16px;
-  border: none;
-  background: none;
-  color: var(--color-primary-dark);
-  cursor: pointer;
-  border-radius: var(--border-radius-sm);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-bold);
-  transition: all var(--transition-fast);
   
-  &:hover {
-    background-color: var(--color-primary);
-    color: var(--color-white);
-  }
-  
-  @include mixins.focus-state;
-}
-
-// =============================================================================
-// SIZE VARIANTS
-// =============================================================================
-
-.ds-select--sm {
-  .ds-select-trigger {
-    @include mixins.input-size("sm");
-  }
-  
-  .ds-select-option {
-    padding: var(--spacing-xs) var(--spacing-sm);
-    font-size: var(--font-size-sm);
-  }
-  
-  .ds-select-group-header {
-    padding: var(--spacing-xs) var(--spacing-sm);
-  }
-}
-
-.ds-select--md {
-  .ds-select-trigger {
-    @include mixins.input-size("md");
-  }
-}
-
-.ds-select--lg {
-  .ds-select-trigger {
-    @include mixins.input-size("lg");
-  }
-  
-  .ds-select-option {
-    padding: var(--spacing-md) var(--spacing-lg);
-    font-size: var(--font-size-lg);
-  }
-  
-  .ds-select-group-header {
-    padding: var(--spacing-sm) var(--spacing-lg);
-  }
-}
-
-// =============================================================================
-// VARIANT STYLES
-// =============================================================================
-
-.ds-select--filled {
-  .ds-select-trigger {
-    background-color: var(--color-gray-100);
-    border-color: transparent;
-    
-    &:hover:not(:disabled) {
-      background-color: var(--color-gray-200);
-    }
-    
-    &:focus {
-      background-color: var(--color-surface);
-      border-color: var(--color-primary);
-    }
-  }
-}
-
-.ds-select--outlined {
-  .ds-select-trigger {
-    border-width: 2px;
-    
-    &:focus {
-      border-width: 2px;
-      box-shadow: none;
-    }
-  }
-}
-
-// =============================================================================
-// STATE VARIANTS
-// =============================================================================
-
-.ds-select--error {
-  .ds-select-trigger {
-    border-color: var(--color-danger);
-    
-    &:focus {
-      border-color: var(--color-danger);
-      box-shadow: 0 0 0 1px var(--color-danger-light);
-    }
-  }
-}
-
-.ds-select--disabled {
-  .ds-select-trigger {
-    background-color: var(--color-surface-disabled);
-    border-color: var(--color-border-disabled);
-    cursor: not-allowed;
-  }
-  
-  .ds-select-label {
-    color: var(--color-text-disabled);
-  }
-  
-  .ds-select-arrow,
-  .ds-select-loading {
-    color: var(--color-text-disabled);
-  }
-}
-
-.ds-select--open {
-  .ds-select-trigger {
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 1px var(--color-primary-light);
-  }
-}
-
-.ds-select--loading {
-  .ds-select-trigger {
-    cursor: wait;
-  }
-}
-
-// =============================================================================
-// RESPONSIVE ADJUSTMENTS
-// =============================================================================
-
-@include mixins.respond-to("sm") {
-  .ds-select--sm .ds-select-trigger {
-    @include mixins.input-size("md");
-  }
-  
-  .ds-select-dropdown {
-    max-height: 150px;
+  &.success {
+    color: var(--color-success);
   }
 }
 
@@ -493,67 +404,50 @@
 // THEME SUPPORT
 // =============================================================================
 
+// Dark Theme Adjustments
 [data-theme="dark"] {
   .ds-select-trigger {
-    background-color: var(--color-gray-800);
-    border-color: var(--color-gray-600);
-    color: var(--color-white);
+    background-color: var(--color-surface);
+    border-color: var(--color-border);
     
     &:hover:not(:disabled) {
-      border-color: var(--color-gray-500);
+      border-color: var(--color-border-hover);
     }
   }
   
   .ds-select-dropdown {
-    background-color: var(--color-gray-800);
-    border-color: var(--color-gray-600);
+    background-color: var(--color-surface);
+    border-color: var(--color-border);
   }
   
-  .ds-select-search-input {
+  .ds-select-option:hover {
     background-color: var(--color-gray-700);
-    border-color: var(--color-gray-600);
-    color: var(--color-white);
   }
   
-  .ds-select-group-header {
+  .ds-select-option.highlighted {
+    background-color: var(--color-gray-600);
+  }
+  
+  .ds-select-selected-tag {
     background-color: var(--color-gray-700);
-    color: var(--color-gray-300);
-  }
-  
-  .ds-select-option {
-    color: var(--color-white);
-    
-    &:hover:not(.disabled) {
-      background-color: var(--color-gray-700);
-    }
-  }
-  
-  .ds-select-helper {
-    color: var(--color-gray-300);
-    
-    &.error {
-      color: var(--color-danger);
-    }
+    color: var(--color-text);
   }
 }
 
+// High Contrast Theme
 [data-theme="high-contrast"] {
   .ds-select-trigger {
     border-width: 2px;
     
     &:focus {
-      border-color: var(--color-text);
-      box-shadow: 0 0 0 2px var(--color-text);
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
     }
   }
   
-  .ds-select--error .ds-select-trigger {
-    border-color: var(--color-danger);
-    border-width: 2px;
-  }
-  
-  .ds-select-dropdown {
-    border-width: 2px;
+  .ds-select-option.selected {
+    outline: 2px solid var(--color-primary);
+    outline-offset: -2px;
   }
 }
 
@@ -564,8 +458,7 @@
 @media (prefers-reduced-motion: reduce) {
   .ds-select-trigger,
   .ds-select-arrow,
-  .ds-select-option,
-  .ds-select-remove-item {
+  .ds-select-option {
     transition: none;
   }
   

@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { CardComponent } from './card.component';
+import { ApiDocumentationComponent } from '../../shared/components';
 
 import {
   CardConfig,
@@ -50,7 +51,7 @@ import {
 @Component({
   selector: 'ds-card-showcase',
   standalone: true,
-  imports: [CommonModule, CardComponent, FormsModule],
+  imports: [CommonModule, CardComponent, FormsModule, ApiDocumentationComponent],
   template: `
     <div class="showcase-container">
       <!-- Header -->
@@ -363,36 +364,7 @@ import {
       <!-- Component API -->
       <section class="showcase-section">
         <h2>Component API</h2>
-        <div class="showcase-api">
-          <!-- Inputs -->
-          <div class="api-section">
-            <h3>Inputs</h3>
-            <ul>
-              @for (input of showcaseConfig().api.inputs; track input.name) {
-                <li>
-                  <code>{{ input.name }}: {{ input.type }}</code>
-                  @if (input.defaultValue) {
-                    <span class="default-value">= {{ input.defaultValue }}</span>
-                  }
-                  <p>{{ input.description }}</p>
-                </li>
-              }
-            </ul>
-          </div>
-
-          <!-- Outputs -->
-          <div class="api-section">
-            <h3>Outputs</h3>
-            <ul>
-              @for (output of showcaseConfig().api.outputs; track output.name) {
-                <li>
-                  <code>{{ output.name }}: {{ output.type }}</code>
-                  <p>{{ output.description }}</p>
-                </li>
-              }
-            </ul>
-          </div>
-        </div>
+        <ds-api-documentation [api]="showcaseConfig().api" />
       </section>
     </div>
   `,

@@ -15,6 +15,7 @@ import { SelectComponent } from '../select/select.component';
 import { CheckboxComponent } from '../checkbox/checkbox.component';
 import { RadioComponent } from '../radio/radio.component';
 import { ButtonComponent } from '../button/button.component';
+import { ApiDocumentationComponent } from '../../shared/components';
 
 import {
   FormGroupVariant,
@@ -24,6 +25,13 @@ import {
   FormGroupAction,
   createFormGroupAction,
 } from './form-group.model';
+
+import {
+  ShowcaseComponent,
+  ComponentApiDocumentation,
+  createShowcaseConfig,
+  ShowcaseConfig,
+} from '../../models/showcase.model';
 
 /**
  * Form Group Showcase Component
@@ -45,16 +53,14 @@ import {
     CheckboxComponent,
     RadioComponent,
     ButtonComponent,
+    ApiDocumentationComponent,
   ],
   template: `
     <div class="showcase-container">
       <!-- Header -->
       <div class="showcase-header">
-        <h1>Form Group Component</h1>
-        <p class="showcase-description">
-          Logical grouping component for related form fields with title, description, optional
-          collapsing, progress tracking, and various layout options.
-        </p>
+        <h1>{{ showcaseConfig().component.componentName }}</h1>
+        <p class="showcase-description">{{ showcaseConfig().component.description }}</p>
       </div>
 
       <!-- Basic Examples -->
@@ -464,149 +470,27 @@ import {
       <!-- Component API -->
       <section class="showcase-section">
         <h2>Component API</h2>
-        <div class="showcase-api">
-          <!-- Inputs -->
-          <div class="api-section">
-            <h3>Inputs</h3>
-            <ul>
-              <li>
-                <code>variant: FormGroupVariant</code>
-                <span class="default-value">= 'default'</span>
-                <p>Visual variant style ('default' | 'outlined' | 'filled' | 'flat')</p>
-              </li>
-              <li>
-                <code>size: FormGroupSize</code>
-                <span class="default-value">= 'md'</span>
-                <p>Size of the form group ('sm' | 'md' | 'lg')</p>
-              </li>
-              <li>
-                <code>layout: FormGroupLayout</code>
-                <span class="default-value">= 'vertical'</span>
-                <p>Layout orientation ('vertical' | 'horizontal' | 'grid')</p>
-              </li>
-              <li>
-                <code>spacing: FormGroupSpacing</code>
-                <span class="default-value">= 'normal'</span>
-                <p>Spacing between fields ('tight' | 'normal' | 'loose')</p>
-              </li>
-              <li>
-                <code>title: string</code>
-                <span class="default-value">= ''</span>
-                <p>Group title text</p>
-              </li>
-              <li>
-                <code>description: string</code>
-                <span class="default-value">= ''</span>
-                <p>Group description text</p>
-              </li>
-              <li>
-                <code>required: boolean</code>
-                <span class="default-value">= false</span>
-                <p>Whether group is required</p>
-              </li>
-              <li>
-                <code>disabled: boolean</code>
-                <span class="default-value">= false</span>
-                <p>Whether group is disabled</p>
-              </li>
-              <li>
-                <code>showBorder: boolean</code>
-                <span class="default-value">= true</span>
-                <p>Whether to show border around group</p>
-              </li>
-              <li>
-                <code>collapsible: boolean</code>
-                <span class="default-value">= false</span>
-                <p>Whether group can be collapsed</p>
-              </li>
-              <li>
-                <code>initiallyCollapsed: boolean</code>
-                <span class="default-value">= false</span>
-                <p>Whether group starts collapsed</p>
-              </li>
-              <li>
-                <code>showProgress: boolean</code>
-                <span class="default-value">= false</span>
-                <p>Whether to show progress bar</p>
-              </li>
-              <li>
-                <code>actions: FormGroupAction[]</code>
-                <span class="default-value">= []</span>
-                <p>Action buttons for the group</p>
-              </li>
-              <li>
-                <code>customClasses: string</code>
-                <span class="default-value">= ''</span>
-                <p>Custom CSS classes</p>
-              </li>
-              <li>
-                <code>groupId: string</code>
-                <span class="default-value">= ''</span>
-                <p>Group ID (auto-generated if not provided)</p>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Outputs -->
-          <div class="api-section">
-            <h3>Outputs</h3>
-            <ul>
-              <li>
-                <code>stateChange: FormGroupStateChangeEvent</code>
-                <p>Emitted when group state changes</p>
-              </li>
-              <li>
-                <code>toggleChange: FormGroupToggleEvent</code>
-                <p>Emitted when group is toggled (collapsed/expanded)</p>
-              </li>
-              <li>
-                <code>actionClick: FormGroupActionEvent</code>
-                <p>Emitted when an action button is clicked</p>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Methods -->
-          <div class="api-section">
-            <h3>Public Methods</h3>
-            <ul>
-              <li>
-                <code>expand(): void</code>
-                <p>Expand the group if it's collapsible and collapsed</p>
-              </li>
-              <li>
-                <code>collapse(): void</code>
-                <p>Collapse the group if it's collapsible and expanded</p>
-              </li>
-              <li>
-                <code>toggleGroup(): void</code>
-                <p>Toggle the collapsed state of the group</p>
-              </li>
-              <li>
-                <code>getState(): FormGroupState</code>
-                <p>Get current state of the group</p>
-              </li>
-              <li>
-                <code>getProgress(): FormGroupProgress</code>
-                <p>Get current progress information</p>
-              </li>
-              <li>
-                <code>isCollapsed(): boolean</code>
-                <p>Check if group is currently collapsed</p>
-              </li>
-              <li>
-                <code>isExpanded(): boolean</code>
-                <p>Check if group is currently expanded</p>
-              </li>
-            </ul>
-          </div>
-        </div>
+        <ds-api-documentation [api]="showcaseConfig().api" />
       </section>
     </div>
   `,
   styleUrl: '../../shared/styles/showcase.scss',
 })
-export class FormGroupShowcaseComponent {
+export class FormGroupShowcaseComponent implements ShowcaseComponent {
+  // =============================================================================
+  // SHOWCASE IMPLEMENTATION
+  // =============================================================================
+
+  componentName = 'Form Group Component';
+  description =
+    'Logical grouping component for related form fields with title, description, optional collapsing, progress tracking, and various layout options.';
+
+  lastActionSignal = signal<string>('');
+
+  get lastAction(): string {
+    return this.lastActionSignal();
+  }
+
   // =============================================================================
   // CONFIGURATION OPTIONS
   // =============================================================================
@@ -630,8 +514,6 @@ export class FormGroupShowcaseComponent {
     showProgress: false,
     required: false,
   };
-
-  lastActionSignal = signal<string>('');
 
   // =============================================================================
   // DEMO FORM
@@ -737,7 +619,7 @@ export class FormGroupShowcaseComponent {
   }
 
   onToggleChange(event: any): void {
-    this.lastActionSignal.set(`Group toggled: ${event.collapsed ? 'collapsed' : 'expanded'}`);
+    this.lastActionSignal.set(`Form group toggled: ${event ? 'expanded' : 'collapsed'}`);
   }
 
   onActionClick(event: any): void {
@@ -771,4 +653,138 @@ export class FormGroupShowcaseComponent {
 
     return errors;
   }
+
+  // =============================================================================
+  // SHOWCASE CONFIGURATION
+  // =============================================================================
+
+  readonly showcaseConfig = computed<ShowcaseConfig>(() => {
+    const componentInfo: ShowcaseComponent = {
+      componentName: this.componentName,
+      description: this.description,
+      lastAction: this.lastAction,
+    };
+
+    const apiDocumentation: ComponentApiDocumentation = {
+      inputs: [
+        {
+          name: 'variant',
+          type: 'FormGroupVariant',
+          defaultValue: "'default'",
+          required: false,
+          description: 'Visual style variant of the form group',
+          examples: ['default', 'outlined', 'filled', 'flat'],
+        },
+        {
+          name: 'size',
+          type: 'FormGroupSize',
+          defaultValue: "'md'",
+          required: false,
+          description: 'Size of the form group',
+          examples: ['sm', 'md', 'lg'],
+        },
+        {
+          name: 'layout',
+          type: 'FormGroupLayout',
+          defaultValue: "'vertical'",
+          required: false,
+          description: 'Layout orientation of form fields',
+          examples: ['vertical', 'horizontal', 'grid'],
+        },
+        {
+          name: 'spacing',
+          type: 'FormGroupSpacing',
+          defaultValue: "'normal'",
+          required: false,
+          description: 'Spacing between form fields',
+          examples: ['tight', 'normal', 'loose'],
+        },
+        {
+          name: 'title',
+          type: 'string',
+          required: false,
+          description: 'Title text for the form group',
+        },
+        {
+          name: 'description',
+          type: 'string',
+          required: false,
+          description: 'Description text for the form group',
+        },
+        {
+          name: 'required',
+          type: 'boolean',
+          defaultValue: 'false',
+          required: false,
+          description: 'Whether the form group contains required fields',
+        },
+        {
+          name: 'collapsible',
+          type: 'boolean',
+          defaultValue: 'false',
+          required: false,
+          description: 'Whether the form group can be collapsed',
+        },
+        {
+          name: 'initiallyCollapsed',
+          type: 'boolean',
+          defaultValue: 'false',
+          required: false,
+          description: 'Whether the form group starts collapsed',
+        },
+        {
+          name: 'disabled',
+          type: 'boolean',
+          defaultValue: 'false',
+          required: false,
+          description: 'Whether the form group is disabled',
+        },
+        {
+          name: 'actions',
+          type: 'FormGroupAction[]',
+          defaultValue: '[]',
+          required: false,
+          description: 'Array of action buttons for the form group',
+        },
+        {
+          name: 'showProgress',
+          type: 'boolean',
+          defaultValue: 'false',
+          required: false,
+          description: 'Whether to show completion progress',
+        },
+      ],
+      outputs: [
+        {
+          name: 'toggleChange',
+          type: 'boolean',
+          description: 'Emitted when form group is expanded or collapsed',
+        },
+        {
+          name: 'actionClick',
+          type: 'FormGroupAction',
+          description: 'Emitted when an action button is clicked',
+        },
+      ],
+      methods: [
+        {
+          name: 'expand',
+          signature: 'expand(): void',
+          description: 'Expand the form group if collapsible',
+        },
+        {
+          name: 'collapse',
+          signature: 'collapse(): void',
+          description: 'Collapse the form group if collapsible',
+        },
+        {
+          name: 'toggle',
+          signature: 'toggle(): void',
+          description: 'Toggle the expanded state if collapsible',
+        },
+      ],
+    };
+
+    return createShowcaseConfig(componentInfo, apiDocumentation);
+  });
 }

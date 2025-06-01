@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { CheckboxComponent } from './checkbox.component';
+import { ApiDocumentationComponent } from '../../shared/components';
 import {
   CheckboxOption,
   CheckboxVariant,
@@ -12,7 +13,12 @@ import {
   CheckboxFocusEvent,
   createCheckboxOption,
 } from './checkbox.model';
-import { ShowcaseComponent, ComponentApiDocumentation } from '../../models/showcase.model';
+import {
+  ShowcaseComponent,
+  ComponentApiDocumentation,
+  createShowcaseConfig,
+  ShowcaseConfig,
+} from '../../models/showcase.model';
 
 /**
  * Checkbox Component Showcase
@@ -23,13 +29,13 @@ import { ShowcaseComponent, ComponentApiDocumentation } from '../../models/showc
 @Component({
   selector: 'checkbox-showcase',
   standalone: true,
-  imports: [CommonModule, FormsModule, CheckboxComponent],
+  imports: [CommonModule, FormsModule, CheckboxComponent, ApiDocumentationComponent],
   template: `
     <div class="showcase-container">
       <!-- Header -->
       <div class="showcase-header">
-        <h1>{{ componentName }}</h1>
-        <p class="showcase-description">{{ description }}</p>
+        <h1>{{ showcaseConfig().component.componentName }}</h1>
+        <p class="showcase-description">{{ showcaseConfig().component.description }}</p>
       </div>
 
       <!-- Single Checkboxes Section -->
@@ -357,45 +363,7 @@ import { ShowcaseComponent, ComponentApiDocumentation } from '../../models/showc
       <!-- Component API -->
       <section class="showcase-section">
         <h2>Component API</h2>
-
-        <div class="showcase-api">
-          <h3>Inputs</h3>
-          <ul>
-            @for (input of apiDocumentation.inputs; track input.name) {
-              <li>
-                <code>{{ input.name }}: {{ input.type }}</code>
-                @if (input.defaultValue) {
-                  <span class="default-value">= {{ input.defaultValue }}</span>
-                }
-                <p>{{ input.description }}</p>
-              </li>
-            }
-          </ul>
-        </div>
-
-        <div class="showcase-api">
-          <h3>Outputs</h3>
-          <ul>
-            @for (output of apiDocumentation.outputs; track output.name) {
-              <li>
-                <code>{{ output.name }}: {{ output.type }}</code>
-                <p>{{ output.description }}</p>
-              </li>
-            }
-          </ul>
-        </div>
-
-        <div class="showcase-api">
-          <h3>Methods</h3>
-          <ul>
-            @for (method of apiDocumentation.methods || []; track method.name) {
-              <li>
-                <code>{{ method.signature }}</code>
-                <p>{{ method.description }}</p>
-              </li>
-            }
-          </ul>
-        </div>
+        <ds-api-documentation [api]="showcaseConfig().api" />
       </section>
     </div>
   `,
@@ -408,7 +376,7 @@ export class CheckboxShowcaseComponent implements ShowcaseComponent {
 
   componentName = 'Checkbox Component';
   description =
-    'Versatile checkbox component supporting single checkboxes, checkbox groups, indeterminate states, and comprehensive accessibility features. Built with Angular Signals and modern web standards.';
+    'Flexible checkbox component supporting single selections, groups, and advanced features like indeterminate state. Built with accessibility in mind.';
 
   private lastActionSignal = signal<string>('');
 
@@ -574,135 +542,159 @@ export class CheckboxShowcaseComponent implements ShowcaseComponent {
   ];
 
   // =============================================================================
-  // API DOCUMENTATION
+  // SHOWCASE CONFIGURATION
   // =============================================================================
 
-  apiDocumentation: ComponentApiDocumentation = {
-    inputs: [
-      {
-        name: 'variant',
-        type: 'CheckboxVariant',
-        defaultValue: "'default'",
-        description: 'Checkbox variant (default, filled, outlined)',
-        examples: ['default', 'filled', 'outlined'],
-      },
-      {
-        name: 'size',
-        type: 'CheckboxSize',
-        defaultValue: "'md'",
-        description: 'Checkbox size variant',
-        examples: ['sm', 'md', 'lg'],
-      },
-      {
-        name: 'label',
-        type: 'string',
-        defaultValue: "''",
-        description: 'Checkbox label text',
-      },
-      {
-        name: 'value',
-        type: 'boolean | T[]',
-        defaultValue: 'false',
-        description: 'Checked state (single) or selected values (group) - two-way binding',
-      },
-      {
-        name: 'disabled',
-        type: 'boolean',
-        defaultValue: 'false',
-        description: 'Whether checkbox is disabled',
-      },
-      {
-        name: 'required',
-        type: 'boolean',
-        defaultValue: 'false',
-        description: 'Whether checkbox is required',
-      },
-      {
-        name: 'indeterminate',
-        type: 'boolean',
-        defaultValue: 'false',
-        description: 'Whether checkbox is indeterminate (single checkbox only)',
-      },
-      {
-        name: 'isGroup',
-        type: 'boolean',
-        defaultValue: 'false',
-        description: 'Whether this is a checkbox group',
-      },
-      {
-        name: 'options',
-        type: 'CheckboxOption<T>[]',
-        defaultValue: '[]',
-        description: 'Options for checkbox group',
-      },
-      {
-        name: 'groupLayout',
-        type: 'CheckboxGroupLayout',
-        defaultValue: "'vertical'",
-        description: 'Layout for checkbox groups',
-        examples: ['vertical', 'horizontal', 'grid'],
-      },
-      {
-        name: 'showSelectAll',
-        type: 'boolean',
-        defaultValue: 'false',
-        description: 'Whether to show select all option (group only)',
-      },
-      {
-        name: 'selectAllText',
-        type: 'string',
-        defaultValue: "'Select All'",
-        description: 'Text for select all checkbox',
-      },
-      {
-        name: 'helperText',
-        type: 'string',
-        defaultValue: "''",
-        description: 'Helper text shown below checkbox',
-      },
-    ],
-    outputs: [
-      {
-        name: 'checkedChange',
-        type: 'EventEmitter<CheckboxChangeEvent<T>>',
-        description: 'Emitted when checkbox state changes',
-        examples: ['(checkedChange)="onCheckedChange($event)"'],
-      },
-      {
-        name: 'focus',
-        type: 'EventEmitter<CheckboxFocusEvent>',
-        description: 'Emitted when checkbox gains or loses focus',
-        examples: ['(focus)="onFocus($event)"'],
-      },
-    ],
-    methods: [
-      {
-        name: 'clear',
-        signature: 'clear(): void',
-        description: 'Clear all selections',
-      },
-      {
-        name: 'selectAll',
-        signature: 'selectAll(): void',
-        description: 'Select all options (group only)',
-      },
-      {
-        name: 'deselectAll',
-        signature: 'deselectAll(): void',
-        description: 'Deselect all options (group only)',
-      },
-      {
-        name: 'focusCheckbox',
-        signature: 'focusCheckbox(): void',
-        description: 'Focus the checkbox',
-      },
-      {
-        name: 'getValidationState',
-        signature: 'getValidationState(): CheckboxValidation',
-        description: 'Get current validation state',
-      },
-    ],
-  };
+  readonly showcaseConfig = computed<ShowcaseConfig>(() => {
+    const componentInfo: ShowcaseComponent = {
+      componentName: this.componentName,
+      description: this.description,
+      lastAction: this.lastAction,
+    };
+
+    const apiDocumentation: ComponentApiDocumentation = {
+      inputs: [
+        {
+          name: 'variant',
+          type: 'CheckboxVariant',
+          defaultValue: "'default'",
+          required: false,
+          description: 'Visual style variant of the checkbox',
+          examples: ['default', 'filled', 'outlined'],
+        },
+        {
+          name: 'size',
+          type: 'CheckboxSize',
+          defaultValue: "'md'",
+          required: false,
+          description: 'Size of the checkbox',
+          examples: ['sm', 'md', 'lg'],
+        },
+        {
+          name: 'label',
+          type: 'string',
+          required: false,
+          description: 'Label text for the checkbox',
+        },
+        {
+          name: 'value',
+          type: 'boolean | any[]',
+          defaultValue: 'false',
+          required: false,
+          description: 'Checkbox value (boolean for single, array for groups)',
+        },
+        {
+          name: 'disabled',
+          type: 'boolean',
+          defaultValue: 'false',
+          required: false,
+          description: 'Whether the checkbox is disabled',
+        },
+        {
+          name: 'required',
+          type: 'boolean',
+          defaultValue: 'false',
+          required: false,
+          description: 'Whether the checkbox is required',
+        },
+        {
+          name: 'indeterminate',
+          type: 'boolean',
+          defaultValue: 'false',
+          required: false,
+          description: 'Whether the checkbox is in indeterminate state',
+        },
+        {
+          name: 'helperText',
+          type: 'string',
+          required: false,
+          description: 'Helper text to display below the checkbox',
+        },
+        {
+          name: 'isGroup',
+          type: 'boolean',
+          defaultValue: 'false',
+          required: false,
+          description: 'Whether this is a checkbox group',
+        },
+        {
+          name: 'options',
+          type: 'CheckboxOption[]',
+          required: false,
+          description: 'Options for checkbox group',
+        },
+        {
+          name: 'groupLayout',
+          type: 'CheckboxGroupLayout',
+          defaultValue: "'vertical'",
+          required: false,
+          description: 'Layout for checkbox group',
+          examples: ['vertical', 'horizontal', 'grid'],
+        },
+        {
+          name: 'showSelectAll',
+          type: 'boolean',
+          defaultValue: 'false',
+          required: false,
+          description: 'Whether to show select all option in groups',
+        },
+        {
+          name: 'selectAllText',
+          type: 'string',
+          defaultValue: "'Select All'",
+          required: false,
+          description: 'Text for select all option',
+        },
+      ],
+      outputs: [
+        {
+          name: 'valueChange',
+          type: 'CheckboxChangeEvent',
+          description: 'Emitted when checkbox value changes',
+          examples: ['{ value, checked, checkboxElement, originalEvent }'],
+        },
+        {
+          name: 'focused',
+          type: 'CheckboxFocusEvent',
+          description: 'Emitted when checkbox receives focus',
+        },
+        {
+          name: 'blurred',
+          type: 'CheckboxFocusEvent',
+          description: 'Emitted when checkbox loses focus',
+        },
+      ],
+      methods: [
+        {
+          name: 'focus',
+          signature: 'focus(): void',
+          description: 'Programmatically focus the checkbox',
+        },
+        {
+          name: 'blur',
+          signature: 'blur(): void',
+          description: 'Programmatically blur the checkbox',
+        },
+        {
+          name: 'toggle',
+          signature: 'toggle(): void',
+          description: 'Toggle the checkbox state',
+        },
+        {
+          name: 'selectAll',
+          signature: 'selectAll(): void',
+          description: 'Select all options in group (group mode only)',
+        },
+        {
+          name: 'deselectAll',
+          signature: 'deselectAll(): void',
+          description: 'Deselect all options in group (group mode only)',
+        },
+      ],
+    };
+
+    return createShowcaseConfig(componentInfo, apiDocumentation);
+  });
 
   // =============================================================================
   // EVENT HANDLERS

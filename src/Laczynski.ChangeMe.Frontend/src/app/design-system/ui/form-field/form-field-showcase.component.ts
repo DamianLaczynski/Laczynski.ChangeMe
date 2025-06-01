@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 
 import { FormFieldComponent } from './form-field.component';
+import { ApiDocumentationComponent } from '../../shared/components';
 import { InputComponent } from '../input/input.component';
 import { SelectComponent } from '../select/select.component';
 import { CheckboxComponent } from '../checkbox/checkbox.component';
@@ -22,7 +23,16 @@ import {
   FormFieldLabelPosition,
   FormFieldHint,
   createFormFieldHint,
+  FormFieldValidationState,
+  createFormFieldConfig,
 } from './form-field.model';
+
+import {
+  ShowcaseComponent,
+  ComponentApiDocumentation,
+  createShowcaseConfig,
+  ShowcaseConfig,
+} from '../../models/showcase.model';
 
 /**
  * Form Field Showcase Component
@@ -38,6 +48,7 @@ import {
     ReactiveFormsModule,
     FormsModule,
     FormFieldComponent,
+    ApiDocumentationComponent,
     InputComponent,
     SelectComponent,
     CheckboxComponent,
@@ -48,11 +59,8 @@ import {
     <div class="showcase-container">
       <!-- Header -->
       <div class="showcase-header">
-        <h1>Form Field Component</h1>
-        <p class="showcase-description">
-          Wrapper component for form controls that provides consistent labeling, validation display,
-          help text, and layout options. Works with all form controls.
-        </p>
+        <h1>{{ showcaseConfig().component.componentName }}</h1>
+        <p class="showcase-description">{{ showcaseConfig().component.description }}</p>
       </div>
 
       <!-- Basic Examples -->
@@ -440,152 +448,27 @@ import {
       <!-- Component API -->
       <section class="showcase-section">
         <h2>Component API</h2>
-        <div class="showcase-api">
-          <!-- Inputs -->
-          <div class="api-section">
-            <h3>Inputs</h3>
-            <ul>
-              <li>
-                <code>variant: FormFieldVariant</code>
-                <span class="default-value">= 'default'</span>
-                <p>Visual variant style ('default' | 'outlined' | 'filled')</p>
-              </li>
-              <li>
-                <code>size: FormFieldSize</code>
-                <span class="default-value">= 'md'</span>
-                <p>Size of the form field ('sm' | 'md' | 'lg')</p>
-              </li>
-              <li>
-                <code>layout: FormFieldLayout</code>
-                <span class="default-value">= 'vertical'</span>
-                <p>Layout orientation ('vertical' | 'horizontal' | 'inline')</p>
-              </li>
-              <li>
-                <code>labelPosition: FormFieldLabelPosition</code>
-                <span class="default-value">= 'top'</span>
-                <p>Position of the label ('top' | 'left' | 'inside' | 'floating')</p>
-              </li>
-              <li>
-                <code>label: string</code>
-                <span class="default-value">= ''</span>
-                <p>Field label text</p>
-              </li>
-              <li>
-                <code>required: boolean</code>
-                <span class="default-value">= false</span>
-                <p>Whether field is required</p>
-              </li>
-              <li>
-                <code>disabled: boolean</code>
-                <span class="default-value">= false</span>
-                <p>Whether field is disabled</p>
-              </li>
-              <li>
-                <code>readonly: boolean</code>
-                <span class="default-value">= false</span>
-                <p>Whether field is readonly</p>
-              </li>
-              <li>
-                <code>loading: boolean</code>
-                <span class="default-value">= false</span>
-                <p>Whether field is loading</p>
-              </li>
-              <li>
-                <code>showValidation: boolean</code>
-                <span class="default-value">= true</span>
-                <p>Whether to show validation messages</p>
-              </li>
-              <li>
-                <code>showRequired: boolean</code>
-                <span class="default-value">= true</span>
-                <p>Whether to show required indicator</p>
-              </li>
-              <li>
-                <code>hint: FormFieldHint | null</code>
-                <span class="default-value">= null</span>
-                <p>Hint configuration object</p>
-              </li>
-              <li>
-                <code>validation: FormFieldValidation | null</code>
-                <span class="default-value">= null</span>
-                <p>External validation state</p>
-              </li>
-              <li>
-                <code>showCharacterCount: boolean</code>
-                <span class="default-value">= false</span>
-                <p>Whether to show character count</p>
-              </li>
-              <li>
-                <code>maxLength: number | null</code>
-                <span class="default-value">= null</span>
-                <p>Maximum character length</p>
-              </li>
-              <li>
-                <code>value: any</code>
-                <span class="default-value">= null</span>
-                <p>Current field value for character counting</p>
-              </li>
-              <li>
-                <code>customClasses: string</code>
-                <span class="default-value">= ''</span>
-                <p>Custom CSS classes</p>
-              </li>
-              <li>
-                <code>fieldId: string</code>
-                <span class="default-value">= ''</span>
-                <p>Field ID (auto-generated if not provided)</p>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Outputs -->
-          <div class="api-section">
-            <h3>Outputs</h3>
-            <ul>
-              <li>
-                <code>stateChange: FormFieldStateChangeEvent</code>
-                <p>Emitted when field state changes (focus, blur, validation, etc.)</p>
-              </li>
-              <li>
-                <code>validationChange: FormFieldValidationEvent</code>
-                <p>Emitted when validation state changes</p>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Methods -->
-          <div class="api-section">
-            <h3>Public Methods</h3>
-            <ul>
-              <li>
-                <code>focusControl(): void</code>
-                <p>Focus the form field control programmatically</p>
-              </li>
-              <li>
-                <code>getValidationState(): FormFieldValidation</code>
-                <p>Get current validation state of the field</p>
-              </li>
-              <li>
-                <code>getFieldState(): FormFieldState</code>
-                <p>Get current overall state of the field</p>
-              </li>
-              <li>
-                <code>validateField(): void</code>
-                <p>Manually trigger validation on the field</p>
-              </li>
-              <li>
-                <code>resetField(): void</code>
-                <p>Reset field state and validation</p>
-              </li>
-            </ul>
-          </div>
-        </div>
+        <ds-api-documentation [api]="showcaseConfig().api" />
       </section>
     </div>
   `,
   styleUrl: '../../shared/styles/showcase.scss',
 })
-export class FormFieldShowcaseComponent {
+export class FormFieldShowcaseComponent implements ShowcaseComponent {
+  // =============================================================================
+  // SHOWCASE IMPLEMENTATION
+  // =============================================================================
+
+  componentName = 'Form Field Component';
+  description =
+    'Wrapper component that provides consistent layout, validation, and accessibility features for form controls.';
+
+  private lastActionSignal = signal<string>('');
+
+  get lastAction(): string {
+    return this.lastActionSignal();
+  }
+
   // =============================================================================
   // CONFIGURATION OPTIONS
   // =============================================================================
@@ -795,4 +678,107 @@ export class FormFieldShowcaseComponent {
 
     return errors;
   }
+
+  // =============================================================================
+  // SHOWCASE CONFIGURATION
+  // =============================================================================
+
+  readonly showcaseConfig = computed<ShowcaseConfig>(() => {
+    const componentInfo: ShowcaseComponent = {
+      componentName: this.componentName,
+      description: this.description,
+      lastAction: this.lastAction,
+    };
+
+    const apiDocumentation: ComponentApiDocumentation = {
+      inputs: [
+        {
+          name: 'variant',
+          type: 'FormFieldVariant',
+          defaultValue: "'default'",
+          required: false,
+          description: 'Visual style variant of the form field',
+          examples: ['default', 'filled', 'outlined'],
+        },
+        {
+          name: 'size',
+          type: 'FormFieldSize',
+          defaultValue: "'md'",
+          required: false,
+          description: 'Size of the form field',
+          examples: ['sm', 'md', 'lg'],
+        },
+        {
+          name: 'orientation',
+          type: 'FormFieldLayout',
+          defaultValue: "'vertical'",
+          required: false,
+          description: 'Layout orientation of label and control',
+          examples: ['vertical', 'horizontal', 'inline'],
+        },
+        {
+          name: 'label',
+          type: 'string',
+          required: false,
+          description: 'Label text for the form field',
+        },
+        {
+          name: 'helperText',
+          type: 'string',
+          required: false,
+          description: 'Helper text to display below the control',
+        },
+        {
+          name: 'errorText',
+          type: 'string',
+          required: false,
+          description: 'Error message to display when validation fails',
+        },
+        {
+          name: 'validationState',
+          type: 'FormFieldValidationState',
+          defaultValue: "'none'",
+          required: false,
+          description: 'Current validation state',
+          examples: ['none', 'valid', 'invalid', 'warning'],
+        },
+        {
+          name: 'required',
+          type: 'boolean',
+          defaultValue: 'false',
+          required: false,
+          description: 'Whether the field is required',
+        },
+        {
+          name: 'disabled',
+          type: 'boolean',
+          defaultValue: 'false',
+          required: false,
+          description: 'Whether the field is disabled',
+        },
+        {
+          name: 'showRequiredIndicator',
+          type: 'boolean',
+          defaultValue: 'true',
+          required: false,
+          description: 'Whether to show asterisk for required fields',
+        },
+      ],
+      outputs: [],
+      methods: [
+        {
+          name: 'focusControl',
+          signature: 'focusControl(): void',
+          description: 'Focus the wrapped form control',
+        },
+        {
+          name: 'validate',
+          signature: 'validate(): void',
+          description: 'Trigger validation of the wrapped control',
+        },
+      ],
+    };
+
+    return createShowcaseConfig(componentInfo, apiDocumentation);
+  });
 }

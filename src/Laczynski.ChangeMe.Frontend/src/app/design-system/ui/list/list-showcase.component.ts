@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 
 import { ButtonComponent } from '../button/button.component';
 import { ListComponent } from './list.component';
+import { ApiDocumentationComponent } from '../../shared/components';
 
 import {
   ListConfig,
@@ -66,7 +67,7 @@ interface DemoTask {
 @Component({
   selector: 'ds-list-showcase',
   standalone: true,
-  imports: [CommonModule, ListComponent, ButtonComponent, FormsModule],
+  imports: [CommonModule, ListComponent, ButtonComponent, FormsModule, ApiDocumentationComponent],
   template: `
     <div class="showcase-container">
       <!-- Header -->
@@ -337,51 +338,7 @@ interface DemoTask {
       <!-- Component API -->
       <section class="showcase-section">
         <h2>Component API</h2>
-        <div class="showcase-api">
-          <!-- Inputs -->
-          <div class="api-section">
-            <h3>Inputs</h3>
-            <ul>
-              @for (input of showcaseConfig().api.inputs; track input.name) {
-                <li>
-                  <code>{{ input.name }}: {{ input.type }}</code>
-                  @if (input.defaultValue) {
-                    <span class="default-value">= {{ input.defaultValue }}</span>
-                  }
-                  <p>{{ input.description }}</p>
-                </li>
-              }
-            </ul>
-          </div>
-
-          <!-- Outputs -->
-          <div class="api-section">
-            <h3>Outputs</h3>
-            <ul>
-              @for (output of showcaseConfig().api.outputs; track output.name) {
-                <li>
-                  <code>{{ output.name }}: {{ output.type }}</code>
-                  <p>{{ output.description }}</p>
-                </li>
-              }
-            </ul>
-          </div>
-
-          <!-- Methods -->
-          @if (showcaseConfig().api.methods?.length) {
-            <div class="api-section">
-              <h3>Methods</h3>
-              <ul>
-                @for (method of showcaseConfig().api.methods; track method.name) {
-                  <li>
-                    <code>{{ method.signature }}</code>
-                    <p>{{ method.description }}</p>
-                  </li>
-                }
-              </ul>
-            </div>
-          }
-        </div>
+        <ds-api-documentation [api]="showcaseConfig().api" />
       </section>
 
       <!-- Templates -->
