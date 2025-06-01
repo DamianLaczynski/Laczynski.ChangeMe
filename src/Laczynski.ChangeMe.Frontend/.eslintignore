@@ -1,0 +1,4 @@
+# Ignore all test files
+**/*.spec.ts
+**/*.test.ts
+e2e/**/*

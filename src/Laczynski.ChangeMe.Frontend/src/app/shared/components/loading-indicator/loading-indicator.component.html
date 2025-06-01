@@ -1,0 +1,6 @@
+<div class="loading-indicator" [class]="'loading-' + size()">
+  <div class="loading-spinner" [style.border-top-color]="color()"></div>
+  @if (message() && showMessage()) {
+    <span class="loading-message">{{ message() }}</span>
+  }
+</div>

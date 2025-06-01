@@ -1,0 +1,158 @@
+<div class="data-grid-container">
+  <!-- Loading state -->
+  @if (state().isLoading) {
+    <div class="loading-container">
+      <div class="loading-spinner"></div>
+      <p>Ładowanie danych...</p>
+    </div>
+  } @else if (state().isError) {
+    <!-- Error state -->
+    <div class="error-container">
+      <div class="error-icon">⚠️</div>
+      <p class="error-message">{{ state().error || 'Wystąpił błąd podczas ładowania danych' }}</p>
+    </div>
+  } @else {
+    <!-- Table content -->
+    <!-- Table -->
+    <div class="table-wrapper">
+      <table class="data-table">
+        <!-- Header -->
+        <thead>
+          <tr>
+            @for (column of config().columns; track column.field) {
+              <th
+                [class.sortable]="column.sortable"
+                [class.hide-mobile]="column.hideOnMobile"
+                [style.width]="column.width"
+                (click)="column.sortable ? onSort(column.field.toString()) : null"
+              >
+                <div class="header-content">
+                  <span>{{ column.header }}</span>
+                  @if (column.sortable) {
+                    <span class="sort-icon">
+                      @if (config().params.sortField === column.field.toString()) {
+                        @if (config().params.ascending) {
+                          <span class="sort-asc">↑</span>
+                        } @else {
+                          <span class="sort-desc">↓</span>
+                        }
+                      } @else {
+                        <span class="sort-neutral">↕</span>
+                      }
+                    </span>
+                  }
+                </div>
+              </th>
+            }
+          </tr>
+        </thead>
+
+        <!-- Body -->
+        <tbody>
+          @if (state().data?.items && state().data!.items.length > 0) {
+            @for (row of state().data!.items; track row) {
+              <tr (click)="handleRowSelect(row)" class="data-row">
+                @for (column of config().columns; track column.field) {
+                  <td [class.hide-mobile]="column.hideOnMobile">
+                    @if (column.templateRef && columnTemplates()[column.templateRef]) {
+                      <ng-container
+                        *ngTemplateOutlet="
+                          columnTemplates()[column.templateRef];
+                          context: { $implicit: row, column: column }
+                        "
+                      ></ng-container>
+                    } @else {
+                      {{ getCellValue(row, column) }}
+                    }
+                  </td>
+                }
+              </tr>
+            }
+          } @else {
+            <tr class="empty-row">
+              <td [attr.colspan]="config().columns.length" class="empty-message">
+                {{ config().emptyStateMessage || 'No data found' }}
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination-container">
+      <div class="pagination-info">
+        @if (state().data?.totalCount && state().data!.totalCount > 0) {
+          <span>
+            Wyświetlono {{ getFirstRecord() }} do {{ getLastRecord() }} z
+            {{ state().data!.totalCount }} wpisów
+          </span>
+        }
+      </div>
+
+      <div class="pagination-controls">
+        <!-- Page size selector -->
+        <div class="page-size-selector">
+          <label for="pageSize">Wierszy na stronie:</label>
+          <select
+            id="pageSize"
+            [value]="state().data?.pageSize ?? 10"
+            (change)="onPageSizeChange($event)"
+          >
+            @for (size of config().pageSizeOptions || [5, 10, 25, 50]; track size) {
+              <option [value]="size">{{ size }}</option>
+            }
+          </select>
+        </div>
+
+        <!-- Page navigation -->
+        <div class="page-navigation">
+          <button
+            type="button"
+            class="page-button"
+            [disabled]="getCurrentPage() <= 1"
+            (click)="goToPage(1)"
+          >
+            ««
+          </button>
+          <button
+            type="button"
+            class="page-button"
+            [disabled]="getCurrentPage() <= 1"
+            (click)="goToPage(getCurrentPage() - 1)"
+          >
+            ‹
+          </button>
+
+          @for (page of getVisiblePages(); track page) {
+            <button
+              type="button"
+              class="page-button"
+              [class.active]="page === getCurrentPage()"
+              (click)="goToPage(page)"
+            >
+              {{ page }}
+            </button>
+          }
+
+          <button
+            type="button"
+            class="page-button"
+            [disabled]="getCurrentPage() >= getTotalPages()"
+            (click)="goToPage(getCurrentPage() + 1)"
+          >
+            ›
+          </button>
+          <button
+            type="button"
+            class="page-button"
+            [disabled]="getCurrentPage() >= getTotalPages()"
+            (click)="goToPage(getTotalPages())"
+          >
+            »»
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,69 @@
+version: "3.8"
+
+services:
+  # Frontend service
+  frontend:
+    build:
+      context: .
+      dockerfile: src/Laczynski.ChangeMe.Frontend/Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  # Backend service
+  backend:
+    build:
+      context: .
+      dockerfile: src/Laczynski.ChangeMe.Backend/Dockerfile
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres
+      - mailhog
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Host=postgres;Database=Laczynski.ChangeMe;Username=postgres;Password=postgres
+      - SmtpSettings__Host=mailhog
+      - SmtpSettings__Port=1025
+      - SmtpSettings__EnableSsl=false
+      - SmtpSettings__FromEmail=no-reply@laczynski.changeme.com
+      - SmtpSettings__FromName=Laczynski.ChangeMe System
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  # Database
+  postgres:
+    image: postgres:16
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=Laczynski.ChangeMe
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  # MailHog - SMTP server for development (only for testing)
+  mailhog:
+    image: mailhog/mailhog:latest
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - app-network
+    restart: unless-stopped
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres-data:

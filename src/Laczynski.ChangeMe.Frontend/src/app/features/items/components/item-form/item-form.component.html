@@ -1,0 +1,131 @@
+<div class="item-form-container">
+  <div class="form-header">
+    <h2>{{ isEditMode() ? 'Edytuj element' : 'Dodaj nowy element' }}</h2>
+  </div>
+
+  <!-- Loading state for item data -->
+  <app-state-container
+    [$state]="itemState()"
+    [$loadingMessage]="'Ładowanie danych elementu...'"
+    [$showEmptyState]="false"
+    [$minHeight]="'auto'"
+  >
+    <ng-template #contentTemplate>
+      <form [formGroup]="itemForm" (ngSubmit)="onSubmit()" class="item-form">
+        <!-- Name field -->
+        <div class="form-group">
+          <label for="name" class="form-label">Nazwa *</label>
+          <input
+            type="text"
+            id="name"
+            formControlName="name"
+            class="form-input"
+            [class.error]="hasFieldError('name')"
+            placeholder="Wprowadź nazwę elementu"
+          />
+          <div class="field-error" *ngIf="hasFieldError('name')">
+            {{ getFieldErrorMessage('Nazwa') }}
+          </div>
+        </div>
+
+        <!-- Description field -->
+        <div class="form-group">
+          <label for="description" class="form-label">Opis *</label>
+          <textarea
+            id="description"
+            formControlName="description"
+            class="form-textarea"
+            [class.error]="hasFieldError('description')"
+            placeholder="Wprowadź opis elementu"
+            rows="4"
+          ></textarea>
+          <div class="field-error" *ngIf="hasFieldError('description')">
+            {{ getFieldErrorMessage('Opis') }}
+          </div>
+        </div>
+
+        <!-- Price field -->
+        <div class="form-group">
+          <label for="price" class="form-label">Cena *</label>
+          <div class="price-input-container">
+            <input
+              type="number"
+              id="price"
+              formControlName="price"
+              class="form-input"
+              [class.error]="hasFieldError('price')"
+              placeholder="0.00"
+              step="0.01"
+              min="0"
+              max="999999.99"
+            />
+            <span class="currency-label">PLN</span>
+          </div>
+          <div class="field-error" *ngIf="hasFieldError('price')">
+            {{ getFieldErrorMessage('Cena') }}
+          </div>
+        </div>
+
+        <!-- Image URL field -->
+        <div class="form-group">
+          <label for="image" class="form-label">Adres URL obrazu *</label>
+          <input
+            type="url"
+            id="image"
+            formControlName="image"
+            class="form-input"
+            [class.error]="hasFieldError('image')"
+            placeholder="https://example.com/image.jpg"
+            (input)="onImageUrlChange()"
+          />
+          <div class="field-error" *ngIf="hasFieldError('image')">
+            {{ getFieldErrorMessage('Adres URL obrazu') }}
+          </div>
+
+          <!-- Image preview -->
+          <div
+            class="image-preview"
+            *ngIf="itemForm.get('image')?.value && !hasFieldError('image')"
+          >
+            <img
+              [src]="itemForm.get('image')?.value"
+              alt="Podgląd obrazu"
+              class="preview-image"
+              (error)="onImageError($event)"
+            />
+          </div>
+        </div>
+
+        <!-- Form actions -->
+        <div class="form-actions">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="onCancel()"
+            [disabled]="isSubmitting()"
+          >
+            Anuluj
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="itemForm.invalid || isSubmitting()"
+          >
+            <span *ngIf="isSubmitting()" class="loading-spinner"></span>
+            {{ isEditMode() ? 'Zaktualizuj' : 'Dodaj' }} element
+          </button>
+        </div>
+      </form>
+    </ng-template>
+  </app-state-container>
+
+  <!-- Submit state -->
+  <app-state-container
+    [$state]="submitState()"
+    [$loadingMessage]="isEditMode() ? 'Aktualizowanie elementu...' : 'Dodawanie elementu...'"
+    [$showEmptyState]="false"
+    [$minHeight]="'auto'"
+  >
+  </app-state-container>
+</div>

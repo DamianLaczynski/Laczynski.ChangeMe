@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="Ardalis.Result" />
+    <PackageReference Include="MediatR" />
+    <PackageReference Include="Microsoft.Extensions.Options" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Laczynski.ChangeMe.Backend.Shared\Laczynski.ChangeMe.Backend.Shared.csproj" />
+    <ProjectReference Include="..\Laczynski.ChangeMe.Backend.Core\Laczynski.ChangeMe.Backend.Core.csproj" />
+    <ProjectReference Include="..\Laczynski.ChangeMe.Backend.Infrastructure\Laczynski.ChangeMe.Backend.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

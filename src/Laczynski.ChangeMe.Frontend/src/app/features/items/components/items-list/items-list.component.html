@@ -1,0 +1,84 @@
+<div class="items-list-container">
+  <!-- Header with search -->
+  <div class="items-header">
+    <div class="header-title">
+      <h2>Lista elementów</h2>
+      <div class="view-switcher">
+        <a routerLink="/items" class="view-link active">📋 Tabela</a>
+        <a routerLink="/items/infinite" class="view-link">📱 Lista</a>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <div class="search-container">
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Szukaj elementów..."
+          [(ngModel)]="searchTerm"
+          (input)="onSearchChange()"
+        />
+      </div>
+
+      <button type="button" class="btn-primary" (click)="onAddNewItem()">
+        <span class="btn-icon">+</span>
+        Dodaj element
+      </button>
+    </div>
+  </div>
+
+  <!-- Direct table without state container wrapper -->
+  <div class="table-container">
+    <app-paginated-table
+      [config]="tableConfig()"
+      [columnTemplates]="getColumnTemplates()"
+      (rowSelect)="onItemSelect($event)"
+    ></app-paginated-table>
+  </div>
+
+  <!-- Custom column templates -->
+
+  <!-- Image template -->
+  <ng-template #imageTemplate let-item>
+    <div class="item-image">
+      <img
+        [src]="item.image"
+        [alt]="item.name"
+        class="item-thumbnail"
+        (error)="onImageError($event)"
+      />
+    </div>
+  </ng-template>
+
+  <!-- Price template -->
+  <ng-template #priceTemplate let-item>
+    <div class="item-price">
+      <span class="price-value">{{
+        item.price | currency: 'PLN' : 'symbol' : '1.2-2' : 'pl'
+      }}</span>
+    </div>
+  </ng-template>
+
+  <!-- Actions template -->
+  <ng-template #actionsTemplate let-item>
+    <div class="item-actions">
+      <button
+        type="button"
+        class="btn-action btn-edit"
+        [title]="'Edytuj ' + item.name"
+        (click)="onEditItem(item)"
+      >
+        ✏️
+      </button>
+
+      <button
+        type="button"
+        class="btn-action btn-delete"
+        [title]="'Usuń ' + item.name"
+        (click)="onDeleteItem(item)"
+      >
+        🗑️
+      </button>
+    </div>
+  </ng-template>
+</div>
