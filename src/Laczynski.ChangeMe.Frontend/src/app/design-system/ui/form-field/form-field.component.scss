@@ -1,0 +1,605 @@
+// =============================================================================
+// Form Field Component Styles
+// =============================================================================
+// Wrapper component for form controls with labeling, validation, and layout
+// Uses design tokens and mixins for consistency
+
+@use "../../../../styles/abstracts/variables";
+@use "../../../../styles/abstracts/mixins";
+
+// =============================================================================
+// FORM FIELD CONTAINER
+// =============================================================================
+
+.ds-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  width: 100%;
+  font-family: var(--font-family-primary);
+  position: relative;
+}
+
+// =============================================================================
+// LAYOUT VARIANTS
+// =============================================================================
+
+// Vertical layout (default)
+.ds-form-field--vertical {
+  flex-direction: column;
+  
+  .ds-form-field__label {
+    margin-bottom: var(--spacing-xs);
+  }
+}
+
+// Horizontal layout
+.ds-form-field--horizontal {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+  
+  .ds-form-field__label {
+    flex-shrink: 0;
+    width: 150px;
+    margin-bottom: 0;
+    padding-top: var(--spacing-xs);
+  }
+  
+  .ds-form-field__container {
+    flex: 1;
+  }
+}
+
+// Inline layout
+.ds-form-field--inline {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-sm);
+  
+  .ds-form-field__label {
+    flex-shrink: 0;
+    margin-bottom: 0;
+  }
+  
+  .ds-form-field__container {
+    flex: 1;
+  }
+}
+
+// =============================================================================
+// LABEL
+// =============================================================================
+
+.ds-form-field__label {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+  line-height: var(--line-height-normal);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  
+  &.required {
+    &::after {
+      content: '';
+    }
+  }
+  
+  .ds-form-field--disabled & {
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+  }
+}
+
+.ds-form-field__required {
+  color: var(--color-danger);
+  margin-left: var(--spacing-xs);
+  font-weight: var(--font-weight-bold);
+}
+
+// Floating label
+.ds-form-field__label--floating {
+  position: absolute;
+  top: 50%;
+  left: var(--spacing-sm);
+  transform: translateY(-50%);
+  background-color: var(--color-surface);
+  padding: 0 var(--spacing-xs);
+  pointer-events: none;
+  transition: all var(--transition-fast);
+  z-index: 1;
+  
+  .ds-form-field--focused &,
+  .ds-form-field--valid & {
+    top: 0;
+    transform: translateY(-50%);
+    font-size: var(--font-size-sm);
+    color: var(--color-primary);
+  }
+  
+  .ds-form-field--invalid & {
+    color: var(--color-danger);
+  }
+}
+
+// =============================================================================
+// FIELD CONTAINER
+// =============================================================================
+
+.ds-form-field__container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.ds-form-field__control {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  
+  // Ensure child components fill the container
+  > * {
+    width: 100%;
+  }
+}
+
+// =============================================================================
+// LOADING INDICATOR
+// =============================================================================
+
+.ds-form-field__loading {
+  position: absolute;
+  top: 50%;
+  right: var(--spacing-sm);
+  transform: translateY(-50%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.ds-form-field__spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--color-border);
+  border-radius: 50%;
+  border-top-color: var(--color-primary);
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// =============================================================================
+// HINT TEXT
+// =============================================================================
+
+.ds-form-field__hint {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-xs);
+  
+  &--info {
+    color: var(--color-text-secondary);
+  }
+  
+  &--success {
+    color: var(--color-success);
+  }
+  
+  &--warning {
+    color: var(--color-warning);
+  }
+  
+  &--error {
+    color: var(--color-danger);
+  }
+}
+
+.ds-form-field__hint-icon {
+  flex-shrink: 0;
+  font-size: var(--font-size-sm);
+  line-height: 1;
+}
+
+// =============================================================================
+// VALIDATION MESSAGES
+// =============================================================================
+
+.ds-form-field__validation {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-xs);
+  min-height: 20px;
+  transition: all var(--transition-fast);
+  
+  &--valid {
+    color: var(--color-success);
+  }
+  
+  &--invalid {
+    color: var(--color-danger);
+  }
+  
+  &--warning {
+    color: var(--color-warning);
+  }
+  
+  &--pending {
+    color: var(--color-text-secondary);
+  }
+}
+
+.ds-form-field__validation-icon {
+  flex-shrink: 0;
+  font-size: var(--font-size-sm);
+  line-height: 1;
+}
+
+// =============================================================================
+// CHARACTER COUNT
+// =============================================================================
+
+.ds-form-field__character-count {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  text-align: right;
+  margin-top: var(--spacing-xs);
+  
+  .ds-form-field--invalid & {
+    color: var(--color-danger);
+  }
+}
+
+// =============================================================================
+// SIZE VARIANTS
+// =============================================================================
+
+.ds-form-field--sm {
+  gap: var(--spacing-xs);
+  
+  .ds-form-field__label {
+    font-size: var(--font-size-sm);
+  }
+  
+  .ds-form-field__hint,
+  .ds-form-field__validation {
+    font-size: var(--font-size-xs);
+  }
+  
+  .ds-form-field__character-count {
+    font-size: 10px;
+  }
+  
+  &.ds-form-field--horizontal {
+    .ds-form-field__label {
+      width: 120px;
+    }
+  }
+}
+
+.ds-form-field--md {
+  gap: var(--spacing-sm);
+  
+  .ds-form-field__label {
+    font-size: var(--font-size-base);
+  }
+  
+  .ds-form-field__hint,
+  .ds-form-field__validation {
+    font-size: var(--font-size-sm);
+  }
+  
+  .ds-form-field__character-count {
+    font-size: var(--font-size-xs);
+  }
+  
+  &.ds-form-field--horizontal {
+    .ds-form-field__label {
+      width: 150px;
+    }
+  }
+}
+
+.ds-form-field--lg {
+  gap: var(--spacing-md);
+  
+  .ds-form-field__label {
+    font-size: var(--font-size-lg);
+  }
+  
+  .ds-form-field__hint,
+  .ds-form-field__validation {
+    font-size: var(--font-size-base);
+  }
+  
+  .ds-form-field__character-count {
+    font-size: var(--font-size-sm);
+  }
+  
+  &.ds-form-field--horizontal {
+    .ds-form-field__label {
+      width: 180px;
+    }
+  }
+}
+
+// =============================================================================
+// VARIANT STYLES
+// =============================================================================
+
+.ds-form-field--outlined {
+  .ds-form-field__container {
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background-color: var(--color-surface);
+    transition: all var(--transition-fast);
+    
+    &:hover {
+      border-color: var(--color-primary);
+    }
+  }
+  
+  &.ds-form-field--focused .ds-form-field__container {
+    border-color: var(--color-primary);
+    @include mixins.focus-state;
+  }
+  
+  &.ds-form-field--invalid .ds-form-field__container {
+    border-color: var(--color-danger);
+  }
+  
+  &.ds-form-field--disabled .ds-form-field__container {
+    background-color: var(--color-surface-disabled);
+    border-color: var(--color-border-disabled);
+  }
+}
+
+.ds-form-field--filled {
+  .ds-form-field__container {
+    background-color: var(--color-gray-100);
+    border: none;
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    transition: all var(--transition-fast);
+    
+    &:hover {
+      background-color: var(--color-gray-200);
+    }
+  }
+  
+  &.ds-form-field--focused .ds-form-field__container {
+    background-color: var(--color-surface);
+    @include mixins.focus-state;
+  }
+  
+  &.ds-form-field--invalid .ds-form-field__container {
+    background-color: rgba(var(--color-danger-rgb), 0.1);
+  }
+  
+  &.ds-form-field--disabled .ds-form-field__container {
+    background-color: var(--color-surface-disabled);
+  }
+}
+
+// =============================================================================
+// STATE STYLES
+// =============================================================================
+
+.ds-form-field--disabled {
+  opacity: 0.6;
+  pointer-events: none;
+  
+  .ds-form-field__label,
+  .ds-form-field__hint,
+  .ds-form-field__validation {
+    color: var(--color-text-disabled);
+  }
+}
+
+.ds-form-field--readonly {
+  .ds-form-field__container {
+    background-color: var(--color-gray-50);
+  }
+  
+  .ds-form-field__label {
+    color: var(--color-text-secondary);
+  }
+}
+
+.ds-form-field--loading {
+  .ds-form-field__control {
+    padding-right: calc(var(--spacing-lg) + 16px);
+  }
+}
+
+.ds-form-field--focused {
+  .ds-form-field__label {
+    color: var(--color-primary);
+  }
+}
+
+.ds-form-field--valid {
+  .ds-form-field__label {
+    color: var(--color-success);
+  }
+}
+
+.ds-form-field--invalid {
+  .ds-form-field__label {
+    color: var(--color-danger);
+  }
+}
+
+.ds-form-field--warning {
+  .ds-form-field__label {
+    color: var(--color-warning);
+  }
+}
+
+// =============================================================================
+// LABEL POSITION VARIANTS
+// =============================================================================
+
+.ds-form-field--label-top {
+  // Default - already handled above
+}
+
+.ds-form-field--label-left {
+  // Handled in horizontal layout
+}
+
+.ds-form-field--label-inside {
+  .ds-form-field__container {
+    position: relative;
+  }
+  
+  .ds-form-field__label {
+    position: absolute;
+    top: 50%;
+    left: var(--spacing-sm);
+    transform: translateY(-50%);
+    pointer-events: none;
+    z-index: 1;
+  }
+}
+
+.ds-form-field--label-floating {
+  .ds-form-field__container {
+    position: relative;
+    margin-top: var(--spacing-sm);
+  }
+}
+
+// =============================================================================
+// RESPONSIVE ADJUSTMENTS
+// =============================================================================
+
+@include mixins.respond-to("sm") {
+  .ds-form-field--horizontal,
+  .ds-form-field--inline {
+    flex-direction: column;
+    
+    .ds-form-field__label {
+      width: auto;
+      margin-bottom: var(--spacing-xs);
+      padding-top: 0;
+    }
+  }
+}
+
+// =============================================================================
+// THEME SUPPORT
+// =============================================================================
+
+[data-theme="dark"] {
+  .ds-form-field__label {
+    color: var(--color-white);
+  }
+  
+  .ds-form-field__hint {
+    &--info {
+      color: var(--color-gray-300);
+    }
+  }
+  
+  .ds-form-field__validation {
+    &--pending {
+      color: var(--color-gray-300);
+    }
+  }
+  
+  .ds-form-field__character-count {
+    color: var(--color-gray-300);
+  }
+  
+  .ds-form-field--outlined .ds-form-field__container {
+    background-color: var(--color-gray-800);
+    border-color: var(--color-gray-600);
+  }
+  
+  .ds-form-field--filled .ds-form-field__container {
+    background-color: var(--color-gray-700);
+    
+    &:hover {
+      background-color: var(--color-gray-600);
+    }
+  }
+  
+  .ds-form-field__label--floating {
+    background-color: var(--color-gray-800);
+  }
+}
+
+[data-theme="high-contrast"] {
+  .ds-form-field__label {
+    font-weight: var(--font-weight-bold);
+  }
+  
+  .ds-form-field--outlined .ds-form-field__container {
+    border-width: 2px;
+  }
+  
+  .ds-form-field--focused .ds-form-field__container {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+  
+  .ds-form-field--invalid .ds-form-field__container {
+    outline: 3px solid var(--color-danger);
+    outline-offset: 2px;
+  }
+}
+
+// =============================================================================
+// REDUCED MOTION SUPPORT
+// =============================================================================
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-form-field__label,
+  .ds-form-field__container,
+  .ds-form-field__validation,
+  .ds-form-field__label--floating {
+    transition: none;
+  }
+  
+  .ds-form-field__spinner {
+    animation: none;
+  }
+}
+
+// =============================================================================
+// PRINT STYLES
+// =============================================================================
+
+@media print {
+  .ds-form-field {
+    break-inside: avoid;
+  }
+  
+  .ds-form-field__loading {
+    display: none;
+  }
+  
+  .ds-form-field__validation,
+  .ds-form-field__hint {
+    font-size: 10px !important;
+  }
+  
+  .ds-form-field--outlined .ds-form-field__container,
+  .ds-form-field--filled .ds-form-field__container {
+    border: 1px solid #000 !important;
+    background-color: transparent !important;
+  }
+} 

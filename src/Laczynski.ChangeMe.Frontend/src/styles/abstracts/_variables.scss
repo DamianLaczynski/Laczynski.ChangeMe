@@ -1,0 +1,236 @@
+// =============================================================================
+// CSS Custom Properties - Design Tokens
+// =============================================================================
+// Color system, spacing, typography and other fundamental values
+// used throughout the Angular component library
+
+:root {
+  // =============================================================================
+  // COLORS - Main Color Palette
+  // =============================================================================
+  
+  // Primary Colors
+  --color-primary: #007bff;
+  --color-primary-hover: #0056b3;
+  --color-primary-active: #004085;
+  --color-primary-disabled: #cce7ff;
+  
+  // Secondary Colors  
+  --color-secondary: #6c757d;
+  --color-secondary-hover: #545b62;
+  --color-secondary-active: #3d4043;
+  --color-secondary-disabled: #e2e3e5;
+  
+  // Semantic Colors
+  --color-success: #28a745;
+  --color-success-hover: #218838;
+  --color-success-light: #d4edda;
+  
+  --color-warning: #ffc107;
+  --color-warning-hover: #e0a800;
+  --color-warning-light: #fff3cd;
+  
+  --color-danger: #dc3545;
+  --color-danger-hover: #c82333;
+  --color-danger-light: #f8d7da;
+  
+  --color-info: #17a2b8;
+  --color-info-hover: #138496;
+  --color-info-light: #d1ecf1;
+  
+  // Neutral Colors
+  --color-white: #ffffff;
+  --color-gray-50: #f8f9fa;
+  --color-gray-100: #f1f3f4;
+  --color-gray-200: #e9ecef;
+  --color-gray-300: #dee2e6;
+  --color-gray-400: #ced4da;
+  --color-gray-500: #adb5bd;
+  --color-gray-600: #6c757d;
+  --color-gray-700: #495057;
+  --color-gray-800: #343a40;
+  --color-gray-900: #212529;
+  --color-black: #000000;
+  
+  // =============================================================================
+  // SURFACE COLORS - Background & UI Elements
+  // =============================================================================
+  
+  --color-surface: var(--color-white);
+  --color-surface-hover: var(--color-gray-50);
+  --color-surface-active: var(--color-gray-100);
+  --color-surface-disabled: var(--color-gray-200);
+  
+  --color-background: var(--color-gray-50);
+  --color-background-alt: var(--color-white);
+  
+  // =============================================================================
+  // TEXT COLORS
+  // =============================================================================
+  
+  --color-text: var(--color-gray-900);
+  --color-text-secondary: var(--color-gray-600);
+  --color-text-muted: var(--color-gray-500);
+  --color-text-disabled: var(--color-gray-400);
+  --color-text-inverse: var(--color-white);
+  
+  // =============================================================================
+  // BORDER COLORS
+  // =============================================================================
+  
+  --color-border: var(--color-gray-300);
+  --color-border-hover: var(--color-gray-400);
+  --color-border-focus: var(--color-primary);
+  --color-border-error: var(--color-danger);
+  
+  // =============================================================================
+  // SPACING SYSTEM - 8px base unit
+  // =============================================================================
+  
+  --spacing-base: 0.5rem;        // 8px
+  --spacing-xs: 0.25rem;         // 4px
+  --spacing-sm: 0.5rem;          // 8px
+  --spacing-md: 1rem;            // 16px
+  --spacing-lg: 1.5rem;          // 24px
+  --spacing-xl: 2rem;            // 32px
+  --spacing-xxl: 3rem;           // 48px
+  --spacing-xxxl: 4rem;          // 64px
+  
+  // =============================================================================
+  // TYPOGRAPHY SYSTEM
+  // =============================================================================
+  
+  // Font Families
+  --font-family-primary: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", 
+                         Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-family-mono: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", 
+                      Consolas, "Courier New", monospace;
+  
+  // Font Sizes - Modular Scale (1.250 - Major Third)
+  --font-size-xs: 0.75rem;       // 12px
+  --font-size-sm: 0.875rem;      // 14px
+  --font-size-base: 1rem;        // 16px
+  --font-size-lg: 1.125rem;      // 18px
+  --font-size-xl: 1.25rem;       // 20px
+  --font-size-xxl: 1.5rem;       // 24px
+  --font-size-xxxl: 2rem;        // 32px
+  --font-size-display: 3rem;     // 48px
+  
+  // Font Weights
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  // Line Heights
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+  
+  // =============================================================================
+  // SHADOWS & ELEVATION
+  // =============================================================================
+  
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.04);
+  --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.25);
+  --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+  
+  // =============================================================================
+  // BORDER RADIUS
+  // =============================================================================
+  
+  --border-radius-none: 0;
+  --border-radius-xs: 0.125rem;   // 2px
+  --border-radius-sm: 0.25rem;    // 4px
+  --border-radius-md: 0.5rem;     // 8px
+  --border-radius-lg: 0.75rem;    // 12px
+  --border-radius-xl: 1rem;       // 16px
+  --border-radius-2xl: 1.5rem;    // 24px
+  --border-radius-full: 9999px;
+  
+  // =============================================================================
+  // Z-INDEX LAYERS
+  // =============================================================================
+  
+  --z-index-dropdown: 1000;
+  --z-index-sticky: 1020;
+  --z-index-fixed: 1030;
+  --z-index-modal-backdrop: 1040;
+  --z-index-modal: 1050;
+  --z-index-popover: 1060;
+  --z-index-tooltip: 1070;
+  --z-index-toast: 1080;
+  
+  // =============================================================================
+  // TRANSITIONS & ANIMATIONS
+  // =============================================================================
+  
+  --transition-fast: 0.15s ease-in-out;
+  --transition-base: 0.25s ease-in-out;
+  --transition-slow: 0.35s ease-in-out;
+  
+  --ease-in-out-cubic: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out-cubic: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-cubic: cubic-bezier(0.4, 0, 1, 1);
+  
+  // =============================================================================
+  // COMPONENT SPECIFIC TOKENS
+  // =============================================================================
+  
+  // Button Sizes
+  --button-height-sm: 2rem;       // 32px
+  --button-height-md: 2.5rem;     // 40px  
+  --button-height-lg: 3rem;       // 48px
+  
+  // Form Elements
+  --input-height-sm: 2rem;        // 32px
+  --input-height-md: 2.5rem;      // 40px
+  --input-height-lg: 3rem;        // 48px
+  
+  // Focus Ring
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+  --focus-ring-color: var(--color-primary);
+  --focus-ring-opacity: 0.5;
+}
+
+// =============================================================================
+// DARK THEME OVERRIDES
+// =============================================================================
+// Used when we implement theme switcher
+
+[data-theme="dark"] {
+  --color-surface: var(--color-gray-800);
+  --color-surface-hover: var(--color-gray-700);
+  --color-surface-active: var(--color-gray-600);
+  
+  --color-background: var(--color-gray-900);
+  --color-background-alt: var(--color-gray-800);
+  
+  --color-text: var(--color-gray-100);
+  --color-text-secondary: var(--color-gray-300);
+  --color-text-muted: var(--color-gray-400);
+  
+  --color-border: var(--color-gray-600);
+  --color-border-hover: var(--color-gray-500);
+}
+
+// =============================================================================
+// HIGH CONTRAST THEME
+// =============================================================================
+// Accessibility theme for users requiring high contrast
+
+[data-theme="high-contrast"] {
+  --color-primary: #0000ff;
+  --color-text: #000000;
+  --color-background: #ffffff;
+  --color-border: #000000;
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+} 

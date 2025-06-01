@@ -1,0 +1,811 @@
+// =============================================================================
+// Table Component Styles
+// =============================================================================
+// Modern data table component with sorting, pagination, filtering, and selection
+// Compatible with existing system while providing modern design system features
+
+@use "../../../../styles/abstracts/variables";
+@use "../../../../styles/abstracts/mixins";
+
+// =============================================================================
+// TABLE CONTAINER
+// =============================================================================
+
+.ds-table-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-family: var(--font-family-primary);
+  background-color: var(--color-surface);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+}
+
+// =============================================================================
+// CONTROLS SECTION
+// =============================================================================
+
+.ds-table__controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md) var(--spacing-lg);
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  gap: var(--spacing-md);
+
+  @include mixins.respond-to("sm") {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-sm);
+  }
+}
+
+.ds-table__search {
+  flex: 1;
+  min-width: 200px;
+  max-width: 400px;
+
+  @include mixins.respond-to("sm") {
+    min-width: auto;
+    max-width: none;
+  }
+}
+
+.ds-table__filters {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+}
+
+.ds-table__actions {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+}
+
+// =============================================================================
+// TABLE WRAPPER
+// =============================================================================
+
+.ds-table__wrapper {
+  position: relative;
+  overflow: hidden;
+
+  &--responsive {
+    overflow-x: auto;
+    
+    @include mixins.custom-scrollbar();
+  }
+}
+
+.ds-table__loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(var(--color-surface-rgb), 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-index-overlay);
+  backdrop-filter: blur(2px);
+}
+
+// =============================================================================
+// TABLE BASE STYLES
+// =============================================================================
+
+.ds-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+}
+
+// =============================================================================
+// SIZE VARIANTS
+// =============================================================================
+
+.ds-table--sm {
+  font-size: var(--font-size-xs);
+
+  .ds-table__header,
+  .ds-table__cell {
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+}
+
+.ds-table--md {
+  font-size: var(--font-size-sm);
+
+  .ds-table__header,
+  .ds-table__cell {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+}
+
+.ds-table--lg {
+  font-size: var(--font-size-base);
+
+  .ds-table__header,
+  .ds-table__cell {
+    padding: var(--spacing-md) var(--spacing-lg);
+  }
+}
+
+// =============================================================================
+// VARIANT STYLES
+// =============================================================================
+
+.ds-table--default {
+  background-color: var(--color-surface);
+}
+
+.ds-table--bordered {
+  border: 1px solid var(--color-border);
+
+  .ds-table__header,
+  .ds-table__cell {
+    border: 1px solid var(--color-border);
+  }
+}
+
+.ds-table--borderless {
+  .ds-table__header,
+  .ds-table__cell {
+    border: none;
+  }
+}
+
+.ds-table--compact {
+  .ds-table__header,
+  .ds-table__cell {
+    padding: var(--spacing-xs);
+  }
+}
+
+.ds-table--comfortable {
+  .ds-table__header,
+  .ds-table__cell {
+    padding: var(--spacing-lg);
+  }
+}
+
+// =============================================================================
+// BORDER STYLES
+// =============================================================================
+
+.ds-table--border-none {
+  .ds-table__header,
+  .ds-table__cell {
+    border: none;
+  }
+}
+
+.ds-table--border-horizontal {
+  .ds-table__row {
+    border-bottom: 1px solid var(--color-border);
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
+
+.ds-table--border-vertical {
+  .ds-table__header,
+  .ds-table__cell {
+    border-left: 1px solid var(--color-border);
+    border-right: 1px solid var(--color-border);
+
+    &:first-child {
+      border-left: none;
+    }
+
+    &:last-child {
+      border-right: none;
+    }
+  }
+}
+
+.ds-table--border-all {
+  .ds-table__header,
+  .ds-table__cell {
+    border: 1px solid var(--color-border);
+  }
+}
+
+.ds-table--border-outer {
+  border: 1px solid var(--color-border);
+}
+
+// =============================================================================
+// HEADER STYLES
+// =============================================================================
+
+.ds-table__head {
+  background-color: var(--color-gray-50);
+}
+
+.ds-table__header {
+  text-align: left;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  background-color: var(--color-gray-50);
+  border-bottom: 2px solid var(--color-border);
+  padding: var(--spacing-sm) var(--spacing-md);
+  white-space: nowrap;
+  position: relative;
+
+  &--sortable {
+    cursor: pointer;
+    user-select: none;
+    transition: background-color var(--transition-fast);
+
+    &:hover {
+      background-color: var(--color-gray-100);
+    }
+
+    @include mixins.focus-state;
+  }
+
+  &--sorted-asc,
+  &--sorted-desc {
+    background-color: var(--color-primary-50);
+  }
+
+  &--select {
+    width: 48px;
+    text-align: center;
+  }
+
+  &--center {
+    text-align: center;
+  }
+
+  &--right {
+    text-align: right;
+  }
+}
+
+.ds-table__header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-xs);
+}
+
+.ds-table__header-text {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ds-table__sort-icon {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  transition: color var(--transition-fast);
+  flex-shrink: 0;
+
+  &--asc,
+  &--desc {
+    color: var(--color-primary);
+  }
+
+  &--neutral {
+    opacity: 0.5;
+  }
+}
+
+// =============================================================================
+// BODY STYLES
+// =============================================================================
+
+.ds-table__body {
+  background-color: var(--color-surface);
+}
+
+.ds-table__row {
+  transition: background-color var(--transition-fast);
+
+  &--header {
+    background-color: var(--color-gray-50);
+  }
+
+  &--data {
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--color-surface-hover);
+    }
+
+    &--selected {
+      background-color: var(--color-primary-50);
+
+      &:hover {
+        background-color: var(--color-primary-100);
+      }
+    }
+
+    &--disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    &--striped {
+      background-color: var(--color-gray-25);
+
+      &:hover {
+        background-color: var(--color-surface-hover);
+      }
+    }
+  }
+
+  &--loading,
+  &--error,
+  &--empty {
+    .ds-table__cell {
+      text-align: center;
+      padding: var(--spacing-xl);
+    }
+  }
+}
+
+// =============================================================================
+// CELL STYLES
+// =============================================================================
+
+.ds-table__cell {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+  color: var(--color-text);
+  overflow: hidden;
+
+  &--center {
+    text-align: center;
+  }
+
+  &--right {
+    text-align: right;
+  }
+
+  &--select {
+    width: 48px;
+    text-align: center;
+  }
+
+  &--loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+    color: var(--color-text-secondary);
+  }
+
+  &--error {
+    color: var(--color-danger);
+  }
+
+  &--empty {
+    color: var(--color-text-secondary);
+  }
+
+  &--hide-mobile {
+    @include mixins.respond-to("sm") {
+      display: none;
+    }
+  }
+
+  &--hide-tablet {
+    @include mixins.respond-to("md") {
+      display: none;
+    }
+  }
+
+  &--sticky-left {
+    position: sticky;
+    left: 0;
+    background-color: inherit;
+    z-index: 1;
+  }
+
+  &--sticky-right {
+    position: sticky;
+    right: 0;
+    background-color: inherit;
+    z-index: 1;
+  }
+
+  &--frozen {
+    background-color: var(--color-gray-25);
+  }
+
+  // Column type styles
+  &--number,
+  &--currency {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &--date {
+    white-space: nowrap;
+  }
+
+  &--boolean {
+    text-align: center;
+  }
+
+  &--image {
+    padding: var(--spacing-xs);
+
+    img {
+      max-width: 48px;
+      max-height: 48px;
+      object-fit: cover;
+      border-radius: var(--border-radius-sm);
+    }
+  }
+
+  &--badge {
+    .badge {
+      font-size: var(--font-size-xs);
+      padding: var(--spacing-xs) var(--spacing-sm);
+      border-radius: var(--border-radius-full);
+      font-weight: var(--font-weight-medium);
+    }
+  }
+
+  &--actions {
+    text-align: center;
+    white-space: nowrap;
+
+    .ds-button {
+      margin: 0 var(--spacing-xs);
+    }
+  }
+}
+
+.ds-table__cell-content {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// =============================================================================
+// EMPTY, ERROR, AND LOADING STATES
+// =============================================================================
+
+.ds-table__empty,
+.ds-table__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-xl);
+  text-align: center;
+}
+
+.ds-table__empty-icon,
+.ds-table__error-icon {
+  font-size: var(--font-size-4xl);
+  opacity: 0.5;
+}
+
+.ds-table__empty-title,
+.ds-table__error-title {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+.ds-table__empty-message,
+.ds-table__error-message {
+  margin: 0;
+  color: var(--color-text-secondary);
+  max-width: 400px;
+}
+
+.ds-table__error {
+  color: var(--color-danger);
+
+  .ds-table__error-icon {
+    color: var(--color-danger);
+  }
+}
+
+// =============================================================================
+// PAGINATION
+// =============================================================================
+
+.ds-table__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md) var(--spacing-lg);
+  background-color: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  gap: var(--spacing-md);
+
+  @include mixins.respond-to("sm") {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-sm);
+  }
+}
+
+.ds-table__pagination-info {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.ds-table__pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+
+  @include mixins.respond-to("sm") {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-sm);
+  }
+}
+
+.ds-table__page-size {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+}
+
+.ds-table__page-size-label {
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.ds-table__page-size-select {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  transition: all var(--transition-fast);
+
+  &:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb), 0.2);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.ds-table__page-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+// =============================================================================
+// FEATURE STYLES
+// =============================================================================
+
+.ds-table--striped {
+  .ds-table__row--data:nth-child(even) {
+    background-color: var(--color-gray-25);
+
+    &:hover {
+      background-color: var(--color-surface-hover);
+    }
+
+    &.ds-table__row--selected {
+      background-color: var(--color-primary-50);
+
+      &:hover {
+        background-color: var(--color-primary-100);
+      }
+    }
+  }
+}
+
+.ds-table--hoverable {
+  .ds-table__row--data:hover {
+    background-color: var(--color-surface-hover);
+  }
+}
+
+// =============================================================================
+// RESPONSIVE ADJUSTMENTS
+// =============================================================================
+
+@include mixins.respond-to("sm") {
+  .ds-table-container {
+    border-radius: 0;
+  }
+
+  .ds-table {
+    font-size: var(--font-size-xs);
+  }
+
+  .ds-table__header,
+  .ds-table__cell {
+    padding: var(--spacing-xs) var(--spacing-sm);
+
+    &--hide-mobile {
+      display: none;
+    }
+  }
+
+  .ds-table__pagination {
+    padding: var(--spacing-sm);
+  }
+
+  .ds-table__pagination-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ds-table__page-nav {
+    justify-content: center;
+  }
+}
+
+@include mixins.respond-to("md") {
+  .ds-table__header,
+  .ds-table__cell {
+    &--hide-tablet {
+      display: none;
+    }
+  }
+}
+
+// =============================================================================
+// THEME SUPPORT
+// =============================================================================
+
+[data-theme="dark"] {
+  .ds-table-container {
+    background-color: var(--color-gray-800);
+  }
+
+  .ds-table__head {
+    background-color: var(--color-gray-700);
+  }
+
+  .ds-table__header {
+    background-color: var(--color-gray-700);
+    color: var(--color-white);
+    border-color: var(--color-gray-600);
+
+    &:hover {
+      background-color: var(--color-gray-600);
+    }
+
+    &--sorted-asc,
+    &--sorted-desc {
+      background-color: var(--color-primary-800);
+    }
+  }
+
+  .ds-table__body {
+    background-color: var(--color-gray-800);
+  }
+
+  .ds-table__row--data {
+    &:hover {
+      background-color: var(--color-gray-700);
+    }
+
+    &--selected {
+      background-color: var(--color-primary-800);
+
+      &:hover {
+        background-color: var(--color-primary-700);
+      }
+    }
+
+    &--striped {
+      background-color: var(--color-gray-750);
+    }
+  }
+
+  .ds-table__cell {
+    color: var(--color-white);
+    border-color: var(--color-gray-600);
+
+    &--frozen {
+      background-color: var(--color-gray-700);
+    }
+  }
+
+  .ds-table__page-size-select {
+    background-color: var(--color-gray-700);
+    border-color: var(--color-gray-600);
+    color: var(--color-white);
+  }
+}
+
+[data-theme="high-contrast"] {
+  .ds-table {
+    border: 2px solid var(--color-text);
+  }
+
+  .ds-table__header,
+  .ds-table__cell {
+    border-width: 2px;
+  }
+
+  .ds-table__header--sortable:focus {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  .ds-table__row--selected {
+    outline: 2px solid var(--color-primary);
+    outline-offset: -2px;
+  }
+}
+
+// =============================================================================
+// REDUCED MOTION SUPPORT
+// =============================================================================
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-table__header,
+  .ds-table__row,
+  .ds-table__sort-icon {
+    transition: none;
+  }
+
+  .ds-table__loading-overlay {
+    backdrop-filter: none;
+  }
+}
+
+// =============================================================================
+// PRINT STYLES
+// =============================================================================
+
+@media print {
+  .ds-table-container {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #000;
+  }
+
+  .ds-table__controls,
+  .ds-table__pagination {
+    display: none;
+  }
+
+  .ds-table__loading-overlay {
+    display: none;
+  }
+
+  .ds-table {
+    font-size: 10px;
+  }
+
+  .ds-table__header,
+  .ds-table__cell {
+    padding: 4px;
+    border: 1px solid #000;
+  }
+
+  .ds-table__row--data:hover {
+    background-color: transparent;
+  }
+
+  .ds-table__cell--hide-mobile,
+  .ds-table__cell--hide-tablet {
+    display: table-cell !important;
+  }
+} 

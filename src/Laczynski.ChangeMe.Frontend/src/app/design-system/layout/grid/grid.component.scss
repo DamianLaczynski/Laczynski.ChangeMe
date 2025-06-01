@@ -1,0 +1,690 @@
+// =============================================================================
+// Grid Component Styles
+// =============================================================================
+// Comprehensive styling for the Grid layout component
+// Supporting responsive design, CSS Grid features, and flexible layouts
+
+@use "../../../../styles/abstracts/variables";
+@use "../../../../styles/abstracts/mixins";
+
+// =============================================================================
+// BASE GRID STYLES
+// =============================================================================
+
+.ds-grid {
+  display: grid;
+  box-sizing: border-box;
+
+  // =============================================================================
+  // WIDTH CLASSES
+  // =============================================================================
+
+  &--width-full {
+    width: 100%;
+  }
+
+  &--width-fit {
+    width: fit-content;
+  }
+
+  &--width-screen {
+    width: 100vw;
+  }
+
+  // =============================================================================
+  // HEIGHT CLASSES
+  // =============================================================================
+
+  &--height-full {
+    height: 100%;
+  }
+
+  &--height-fit {
+    height: fit-content;
+  }
+
+  &--height-screen {
+    height: 100vh;
+  }
+
+  // =============================================================================
+  // GAP UTILITIES
+  // =============================================================================
+
+  &--gap-none {
+    gap: 0;
+  }
+
+  &--gap-xs {
+    gap: var(--spacing-xs);
+  }
+
+  &--gap-sm {
+    gap: var(--spacing-sm);
+  }
+
+  &--gap-md {
+    gap: var(--spacing-md);
+  }
+
+  &--gap-lg {
+    gap: var(--spacing-lg);
+  }
+
+  &--gap-xl {
+    gap: var(--spacing-xl);
+  }
+
+  &--gap-xxl {
+    gap: var(--spacing-xxl);
+  }
+
+  // =============================================================================
+  // JUSTIFY CONTENT (HORIZONTAL ALIGNMENT)
+  // =============================================================================
+
+  &--justify-start {
+    justify-content: start;
+  }
+
+  &--justify-end {
+    justify-content: end;
+  }
+
+  &--justify-center {
+    justify-content: center;
+  }
+
+  &--justify-stretch {
+    justify-content: stretch;
+  }
+
+  &--justify-space-between {
+    justify-content: space-between;
+  }
+
+  &--justify-space-around {
+    justify-content: space-around;
+  }
+
+  &--justify-space-evenly {
+    justify-content: space-evenly;
+  }
+
+  // =============================================================================
+  // ALIGN CONTENT (VERTICAL ALIGNMENT)
+  // =============================================================================
+
+  &--align-start {
+    align-content: start;
+  }
+
+  &--align-end {
+    align-content: end;
+  }
+
+  &--align-center {
+    align-content: center;
+  }
+
+  &--align-stretch {
+    align-content: stretch;
+  }
+
+  &--align-baseline {
+    align-content: baseline;
+  }
+
+  // =============================================================================
+  // JUSTIFY ITEMS (GRID ITEMS HORIZONTAL ALIGNMENT)
+  // =============================================================================
+
+  &--justify-items-start {
+    justify-items: start;
+  }
+
+  &--justify-items-end {
+    justify-items: end;
+  }
+
+  &--justify-items-center {
+    justify-items: center;
+  }
+
+  &--justify-items-stretch {
+    justify-items: stretch;
+  }
+
+  // =============================================================================
+  // ALIGN ITEMS (GRID ITEMS VERTICAL ALIGNMENT)
+  // =============================================================================
+
+  &--align-items-start {
+    align-items: start;
+  }
+
+  &--align-items-end {
+    align-items: end;
+  }
+
+  &--align-items-center {
+    align-items: center;
+  }
+
+  &--align-items-stretch {
+    align-items: stretch;
+  }
+
+  &--align-items-baseline {
+    align-items: baseline;
+  }
+
+  // =============================================================================
+  // GRID FEATURES
+  // =============================================================================
+
+  &--auto-fit {
+    // Auto-fit columns will be handled in component styles
+  }
+
+  &--auto-fill {
+    // Auto-fill columns will be handled in component styles
+  }
+
+  &--dense {
+    grid-auto-flow: dense;
+  }
+
+  // =============================================================================
+  // RESPONSIVE BREAKPOINTS
+  // =============================================================================
+
+  // Extra small devices (phones, 576px and down)
+  @include mixins.respond-to("xs") {
+    // Force single column on very small screens
+    &--responsive-xs-single {
+      grid-template-columns: 1fr;
+    }
+
+    // Reduce gaps on small screens
+    &--gap-lg,
+    &--gap-xl,
+    &--gap-xxl {
+      gap: var(--spacing-md);
+    }
+  }
+
+  // Small devices (landscape phones, 576px and up)
+  @include mixins.respond-to("sm") {
+    &--responsive-sm-two {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    &--responsive-sm-three {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  // Medium devices (tablets, 768px and up)
+  @include mixins.respond-to("md") {
+    &--responsive-md-three {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    &--responsive-md-four {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    &--responsive-md-six {
+      grid-template-columns: repeat(6, 1fr);
+    }
+  }
+
+  // Large devices (desktops, 992px and up)
+  @include mixins.respond-to("lg") {
+    &--responsive-lg-four {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    &--responsive-lg-six {
+      grid-template-columns: repeat(6, 1fr);
+    }
+
+    &--responsive-lg-twelve {
+      grid-template-columns: repeat(12, 1fr);
+    }
+  }
+
+  // Extra large devices (large desktops, 1200px and up)
+  @include mixins.respond-to("xl") {
+    &--responsive-xl-six {
+      grid-template-columns: repeat(6, 1fr);
+    }
+
+    &--responsive-xl-twelve {
+      grid-template-columns: repeat(12, 1fr);
+    }
+  }
+}
+
+// =============================================================================
+// GRID ITEM STYLES
+// =============================================================================
+
+.ds-grid__item {
+  box-sizing: border-box;
+
+  // =============================================================================
+  // COLUMN SPAN UTILITIES
+  // =============================================================================
+
+  &--col-1 { grid-column: span 1; }
+  &--col-2 { grid-column: span 2; }
+  &--col-3 { grid-column: span 3; }
+  &--col-4 { grid-column: span 4; }
+  &--col-5 { grid-column: span 5; }
+  &--col-6 { grid-column: span 6; }
+  &--col-7 { grid-column: span 7; }
+  &--col-8 { grid-column: span 8; }
+  &--col-9 { grid-column: span 9; }
+  &--col-10 { grid-column: span 10; }
+  &--col-11 { grid-column: span 11; }
+  &--col-12 { grid-column: span 12; }
+
+  // Full span
+  &--col-full {
+    grid-column: 1 / -1;
+  }
+
+  // =============================================================================
+  // ROW SPAN UTILITIES
+  // =============================================================================
+
+  &--row-1 { grid-row: span 1; }
+  &--row-2 { grid-row: span 2; }
+  &--row-3 { grid-row: span 3; }
+  &--row-4 { grid-row: span 4; }
+  &--row-5 { grid-row: span 5; }
+  &--row-6 { grid-row: span 6; }
+
+  // =============================================================================
+  // ITEM ALIGNMENT
+  // =============================================================================
+
+  &--align-auto {
+    align-self: auto;
+  }
+
+  &--align-start {
+    align-self: start;
+  }
+
+  &--align-end {
+    align-self: end;
+  }
+
+  &--align-center {
+    align-self: center;
+  }
+
+  &--align-stretch {
+    align-self: stretch;
+  }
+
+  &--align-baseline {
+    align-self: baseline;
+  }
+
+  // =============================================================================
+  // ITEM JUSTIFICATION
+  // =============================================================================
+
+  &--justify-auto {
+    justify-self: auto;
+  }
+
+  &--justify-start {
+    justify-self: start;
+  }
+
+  &--justify-end {
+    justify-self: end;
+  }
+
+  &--justify-center {
+    justify-self: center;
+  }
+
+  &--justify-stretch {
+    justify-self: stretch;
+  }
+
+  // =============================================================================
+  // RESPONSIVE GRID ITEM UTILITIES
+  // =============================================================================
+
+  // Small devices - reduce spans
+  @include mixins.respond-to("sm") {
+    &--col-6,
+    &--col-7,
+    &--col-8,
+    &--col-9,
+    &--col-10,
+    &--col-11,
+    &--col-12 {
+      grid-column: span 6;
+    }
+  }
+
+  // Extra small devices - full width
+  @include mixins.respond-to("xs") {
+    &--col-2,
+    &--col-3,
+    &--col-4,
+    &--col-5,
+    &--col-6,
+    &--col-7,
+    &--col-8,
+    &--col-9,
+    &--col-10,
+    &--col-11,
+    &--col-12 {
+      grid-column: span 1;
+    }
+  }
+}
+
+// =============================================================================
+// GRID ITEM COMPONENT (for standalone use)
+// =============================================================================
+
+.ds-grid-item {
+  @extend .ds-grid__item;
+}
+
+// =============================================================================
+// COMMON GRID PATTERNS
+// =============================================================================
+
+// Auto-fit grid
+.ds-grid--auto-responsive {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+// Masonry-like grid
+.ds-grid--masonry {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-auto-flow: dense;
+}
+
+// Card grid
+.ds-grid--cards {
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--spacing-lg);
+
+  @include mixins.respond-to("sm") {
+    gap: var(--spacing-md);
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+
+  @include mixins.respond-to("xs") {
+    gap: var(--spacing-sm);
+    grid-template-columns: 1fr;
+  }
+}
+
+// Equal height rows
+.ds-grid--equal-rows {
+  grid-auto-rows: 1fr;
+}
+
+// Minimum height rows
+.ds-grid--min-rows {
+  grid-auto-rows: minmax(200px, auto);
+}
+
+// =============================================================================
+// LAYOUT TEMPLATES
+// =============================================================================
+
+// Holy Grail Layout
+.ds-grid--holy-grail {
+  grid-template-areas:
+    "header header header"
+    "sidebar main aside"
+    "footer footer footer";
+  grid-template-columns: 200px 1fr 200px;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+
+  @include mixins.respond-to("md") {
+    grid-template-areas:
+      "header"
+      "main"
+      "sidebar"
+      "aside"
+      "footer";
+    grid-template-columns: 1fr;
+  }
+}
+
+// Dashboard Layout
+.ds-grid--dashboard {
+  grid-template-areas:
+    "header header header header"
+    "sidebar main main aside"
+    "sidebar main main aside";
+  grid-template-columns: 250px 1fr 1fr 250px;
+  grid-template-rows: 60px 1fr 1fr;
+  gap: var(--spacing-md);
+
+  @include mixins.respond-to("lg") {
+    grid-template-areas:
+      "header header"
+      "main main"
+      "main main";
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @include mixins.respond-to("md") {
+    grid-template-areas:
+      "header"
+      "main"
+      "main";
+    grid-template-columns: 1fr;
+  }
+}
+
+// =============================================================================
+// ACCESSIBILITY ENHANCEMENTS
+// =============================================================================
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .ds-grid {
+    outline: 1px solid transparent;
+  }
+
+  .ds-grid__item {
+    outline: 1px solid transparent;
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .ds-grid {
+    transition: none;
+  }
+
+  .ds-grid__item {
+    transition: none;
+  }
+}
+
+// Print styles
+@media print {
+  .ds-grid {
+    display: block;
+    
+    .ds-grid__item {
+      display: block;
+      break-inside: avoid;
+      margin-bottom: var(--spacing-sm);
+    }
+  }
+}
+
+// =============================================================================
+// DEMO STYLES FOR SHOWCASE
+// =============================================================================
+
+.demo-grid {
+  border: 1px dashed var(--color-border);
+  border-radius: var(--border-radius-md);
+  min-height: 120px;
+
+  &--small {
+    min-height: 80px;
+  }
+
+  &--positioned {
+    min-height: 200px;
+  }
+
+  &--dashboard {
+    height: 300px;
+    border: 2px solid var(--color-primary-200);
+  }
+}
+
+.demo-grid-item {
+  background: linear-gradient(135deg, var(--color-primary-100), var(--color-primary-200));
+  border: 1px solid var(--color-primary-300);
+  border-radius: var(--border-radius-sm);
+  padding: var(--spacing-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-primary-800);
+  min-height: 60px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: linear-gradient(135deg, var(--color-primary-200), var(--color-primary-300));
+    transform: translateY(-1px);
+  }
+
+  &--large {
+    min-height: 120px;
+  }
+
+  &--small {
+    min-height: 40px;
+    font-size: var(--font-size-sm);
+  }
+
+  // Layout-specific demo items
+  &--header {
+    background: linear-gradient(135deg, var(--color-success-100), var(--color-success-200));
+    border-color: var(--color-success-300);
+    color: var(--color-success-800);
+  }
+
+  &--sidebar {
+    background: linear-gradient(135deg, var(--color-warning-100), var(--color-warning-200));
+    border-color: var(--color-warning-300);
+    color: var(--color-warning-800);
+  }
+
+  &--main {
+    background: linear-gradient(135deg, var(--color-info-100), var(--color-info-200));
+    border-color: var(--color-info-300);
+    color: var(--color-info-800);
+  }
+
+  &--aside {
+    background: linear-gradient(135deg, var(--color-secondary-100), var(--color-secondary-200));
+    border-color: var(--color-secondary-300);
+    color: var(--color-secondary-800);
+  }
+
+  &--footer {
+    background: linear-gradient(135deg, var(--color-gray-100), var(--color-gray-200));
+    border-color: var(--color-gray-300);
+    color: var(--color-gray-800);
+  }
+}
+
+// Masonry demo items
+.demo-masonry-item {
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &--short {
+    min-height: 120px;
+  }
+
+  &--normal {
+    min-height: 160px;
+  }
+
+  &--tall {
+    min-height: 220px;
+  }
+}
+
+// Dark theme for demo items
+[data-theme="dark"] {
+  .demo-grid {
+    border-color: var(--color-gray-600);
+    
+    &--dashboard {
+      border-color: var(--color-primary-600);
+    }
+  }
+
+  .demo-grid-item {
+    background: linear-gradient(135deg, var(--color-primary-800), var(--color-primary-700));
+    border-color: var(--color-primary-600);
+    color: var(--color-primary-100);
+
+    &:hover {
+      background: linear-gradient(135deg, var(--color-primary-700), var(--color-primary-600));
+    }
+
+    &--header {
+      background: linear-gradient(135deg, var(--color-success-800), var(--color-success-700));
+      border-color: var(--color-success-600);
+      color: var(--color-success-100);
+    }
+
+    &--sidebar {
+      background: linear-gradient(135deg, var(--color-warning-800), var(--color-warning-700));
+      border-color: var(--color-warning-600);
+      color: var(--color-warning-100);
+    }
+
+    &--main {
+      background: linear-gradient(135deg, var(--color-info-800), var(--color-info-700));
+      border-color: var(--color-info-600);
+      color: var(--color-info-100);
+    }
+
+    &--aside {
+      background: linear-gradient(135deg, var(--color-secondary-800), var(--color-secondary-700));
+      border-color: var(--color-secondary-600);
+      color: var(--color-secondary-100);
+    }
+
+    &--footer {
+      background: linear-gradient(135deg, var(--color-gray-700), var(--color-gray-600));
+      border-color: var(--color-gray-500);
+      color: var(--color-gray-100);
+    }
+  }
+} 

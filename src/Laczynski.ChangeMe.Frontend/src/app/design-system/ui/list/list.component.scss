@@ -1,0 +1,583 @@
+// =============================================================================
+// List Component Styles
+// =============================================================================
+// Comprehensive styling for the modern List component
+// Supporting all variants, sizes, and interaction states
+
+@use "../../../../styles/abstracts/variables";
+@use "../../../../styles/abstracts/mixins";
+
+// =============================================================================
+// BASE LIST STYLES
+// =============================================================================
+
+.ds-list {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-surface);
+  border-radius: var(--border-radius-md);
+  font-family: var(--font-family-base);
+  width: 100%;
+  position: relative;
+
+  // =============================================================================
+  // VARIANT STYLES
+  // =============================================================================
+
+  &--default {
+    border: 1px solid var(--color-border);
+  }
+
+  &--minimal {
+    border: none;
+    background-color: transparent;
+  }
+
+  &--bordered {
+    border: 2px solid var(--color-border);
+  }
+
+  &--elevated {
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-sm);
+  }
+
+  &--flush {
+    border: none;
+    border-radius: 0;
+  }
+
+  // =============================================================================
+  // SIZE STYLES
+  // =============================================================================
+
+  &--sm {
+    font-size: var(--font-size-sm);
+  }
+
+  &--md {
+    font-size: var(--font-size-base);
+  }
+
+  &--lg {
+    font-size: var(--font-size-lg);
+  }
+
+  // =============================================================================
+  // LAYOUT STYLES
+  // =============================================================================
+
+  &--horizontal {
+    .ds-list__items {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+
+    .ds-list__item {
+      flex: 0 0 auto;
+      margin-right: var(--spacing-sm);
+      margin-bottom: var(--spacing-sm);
+    }
+  }
+
+  &--grid {
+    .ds-list__items {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: var(--spacing-md);
+    }
+  }
+
+  &--masonry {
+    .ds-list__items {
+      columns: 3;
+      column-gap: var(--spacing-md);
+      column-fill: balance;
+    }
+
+    .ds-list__item {
+      break-inside: avoid;
+      margin-bottom: var(--spacing-md);
+    }
+  }
+
+  // =============================================================================
+  // FEATURE STYLES
+  // =============================================================================
+
+  &--striped {
+    .ds-list__item:nth-child(even) {
+      background-color: var(--color-gray-50);
+    }
+  }
+
+  &--hoverable {
+    .ds-list__item {
+      transition: background-color 0.2s ease, transform 0.1s ease;
+
+      &:hover:not(.ds-list__item--disabled) {
+        background-color: var(--color-gray-100);
+        transform: translateY(-1px);
+      }
+    }
+  }
+
+  &--scrollable {
+    .ds-list__content {
+      overflow-y: auto;
+      @include mixins.custom-scrollbar;
+    }
+  }
+
+  &--dividers {
+    .ds-list__item:not(:last-child) {
+      border-bottom: 1px solid var(--color-border);
+    }
+  }
+
+  &--virtual {
+    .ds-list__content {
+      position: relative;
+      overflow-y: auto;
+    }
+
+    .ds-list__items {
+      position: relative;
+    }
+
+    .ds-list__virtual-spacer {
+      width: 100%;
+      pointer-events: none;
+    }
+  }
+
+  &--infinite {
+    .ds-list__content {
+      overflow-y: auto;
+    }
+  }
+}
+
+// =============================================================================
+// LIST HEADER
+// =============================================================================
+
+.ds-list__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-gray-25);
+  border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
+
+  @include mixins.respond-to("sm") {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-sm);
+  }
+}
+
+.ds-list__search {
+  flex: 1;
+  min-width: 200px;
+
+  &-input {
+    @include mixins.input-base;
+    @include mixins.input-size("sm");
+    width: 100%;
+    background-color: var(--color-surface);
+  }
+}
+
+.ds-list__selection-controls {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.ds-list__custom-header {
+  flex: 0 0 auto;
+}
+
+// =============================================================================
+// LIST CONTENT
+// =============================================================================
+
+.ds-list__content {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+}
+
+.ds-list__items {
+  display: flex;
+  flex-direction: column;
+}
+
+// =============================================================================
+// LIST ITEMS
+// =============================================================================
+
+.ds-list__item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  position: relative;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease;
+
+  &:focus-visible {
+    box-shadow: 0 0 0 2px var(--color-primary-100);
+    z-index: 1;
+  }
+
+  // Size variants
+  &--sm {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    min-height: 32px;
+    font-size: var(--font-size-sm);
+  }
+
+  &--md {
+    padding: var(--spacing-sm) var(--spacing-md);
+    min-height: 48px;
+    font-size: var(--font-size-base);
+  }
+
+  &--lg {
+    padding: var(--spacing-md) var(--spacing-lg);
+    min-height: 64px;
+    font-size: var(--font-size-lg);
+  }
+
+  // State variants
+  &--selected {
+    background-color: var(--color-primary-50);
+    border-left: 3px solid var(--color-primary);
+    color: var(--color-primary-700);
+
+    &:hover {
+      background-color: var(--color-primary-100);
+    }
+  }
+
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    color: var(--color-text-muted);
+
+    &:hover {
+      background-color: transparent !important;
+      transform: none !important;
+    }
+  }
+}
+
+.ds-list__item-selection {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+.ds-list__item-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+
+.ds-list__item-default {
+  @include mixins.text-truncate;
+  line-height: var(--line-height-normal);
+}
+
+.ds-list__item-actions {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+
+  .ds-list__item:hover & {
+    opacity: 1;
+  }
+
+  .ds-list__item--selected & {
+    opacity: 1;
+  }
+}
+
+// =============================================================================
+// LIST STATES
+// =============================================================================
+
+.ds-list__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl);
+  color: var(--color-text-secondary);
+}
+
+.ds-list__empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl);
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+.ds-list__empty-content {
+  max-width: 300px;
+}
+
+.ds-list__empty-icon {
+  font-size: 48px;
+  margin-bottom: var(--spacing-md);
+  opacity: 0.6;
+}
+
+.ds-list__empty-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  margin: 0 0 var(--spacing-sm) 0;
+  color: var(--color-text);
+}
+
+.ds-list__empty-message {
+  font-size: var(--font-size-base);
+  margin: 0 0 var(--spacing-lg) 0;
+  line-height: var(--line-height-relaxed);
+}
+
+.ds-list__infinite-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md);
+  border-top: 1px solid var(--color-border);
+}
+
+// =============================================================================
+// LIST FOOTER
+// =============================================================================
+
+.ds-list__footer {
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-top: 1px solid var(--color-border);
+  background-color: var(--color-gray-25);
+  border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
+}
+
+// =============================================================================
+// RESPONSIVE DESIGN
+// =============================================================================
+
+@include mixins.respond-to("sm") {
+  .ds-list {
+    &--grid {
+      .ds-list__items {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    &--masonry {
+      .ds-list__items {
+        columns: 1;
+      }
+    }
+
+    &--horizontal {
+      .ds-list__items {
+        flex-direction: column;
+      }
+
+      .ds-list__item {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .ds-list__item {
+    &--sm {
+      padding: var(--spacing-xs);
+    }
+
+    &--md {
+      padding: var(--spacing-sm);
+    }
+
+    &--lg {
+      padding: var(--spacing-md);
+    }
+  }
+
+  .ds-list__item-actions {
+    opacity: 1; // Always show actions on mobile
+  }
+}
+
+@include mixins.respond-to("md") {
+  .ds-list {
+    &--grid {
+      .ds-list__items {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      }
+    }
+
+    &--masonry {
+      .ds-list__items {
+        columns: 2;
+      }
+    }
+  }
+}
+
+@include mixins.respond-to("lg") {
+  .ds-list {
+    &--grid {
+      .ds-list__items {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      }
+    }
+
+    &--masonry {
+      .ds-list__items {
+        columns: 3;
+      }
+    }
+  }
+}
+
+// =============================================================================
+// DARK THEME SUPPORT
+// =============================================================================
+
+[data-theme="dark"] {
+  .ds-list {
+    background-color: var(--color-gray-800);
+    border-color: var(--color-gray-600);
+
+    &--elevated {
+      box-shadow: var(--shadow-dark-sm);
+    }
+
+    &--striped {
+      .ds-list__item:nth-child(even) {
+        background-color: var(--color-gray-750);
+      }
+    }
+
+    &--hoverable {
+      .ds-list__item:hover:not(.ds-list__item--disabled) {
+        background-color: var(--color-gray-700);
+      }
+    }
+  }
+
+  .ds-list__header {
+    background-color: var(--color-gray-800);
+    border-color: var(--color-gray-600);
+  }
+
+  .ds-list__search-input {
+    background-color: var(--color-gray-700);
+    border-color: var(--color-gray-600);
+    color: var(--color-text);
+
+    &::placeholder {
+      color: var(--color-text-muted);
+    }
+  }
+
+  .ds-list__item {
+    &--selected {
+      background-color: var(--color-primary-900);
+      color: var(--color-primary-200);
+
+      &:hover {
+        background-color: var(--color-primary-800);
+      }
+    }
+
+    &:focus-visible {
+      box-shadow: 0 0 0 2px var(--color-primary-400);
+    }
+  }
+
+  .ds-list__footer {
+    background-color: var(--color-gray-800);
+    border-color: var(--color-gray-600);
+  }
+
+  .ds-list__infinite-loading {
+    border-color: var(--color-gray-600);
+  }
+}
+
+// =============================================================================
+// ACCESSIBILITY ENHANCEMENTS
+// =============================================================================
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .ds-list {
+    border-width: 2px;
+  }
+
+  .ds-list__item {
+    &--selected {
+      border-left-width: 4px;
+    }
+
+    &:focus-visible {
+      box-shadow: 0 0 0 3px var(--color-primary);
+    }
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .ds-list__item {
+    transition: none;
+  }
+
+  .ds-list__item-actions {
+    transition: none;
+  }
+
+  .ds-list--hoverable .ds-list__item {
+    transition: none;
+
+    &:hover:not(.ds-list__item--disabled) {
+      transform: none;
+    }
+  }
+}
+
+// Print styles
+@media print {
+  .ds-list {
+    border: 1px solid #000;
+    box-shadow: none;
+  }
+
+  .ds-list__item-actions {
+    display: none;
+  }
+
+  .ds-list__search {
+    display: none;
+  }
+
+  .ds-list__selection-controls {
+    display: none;
+  }
+} 

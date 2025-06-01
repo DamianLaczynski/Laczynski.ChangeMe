@@ -1,0 +1,575 @@
+// =============================================================================
+// Form Group Component Styles
+// =============================================================================
+// Logical grouping component for related form fields with title, description,
+// collapsing functionality, progress tracking, and various layout options
+
+@use "../../../../styles/abstracts/variables";
+@use "../../../../styles/abstracts/mixins";
+
+// =============================================================================
+// FORM GROUP CONTAINER
+// =============================================================================
+
+.ds-form-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-family: var(--font-family-primary);
+  border: none;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+}
+
+// =============================================================================
+// VARIANT STYLES
+// =============================================================================
+
+.ds-form-group--default {
+  background-color: transparent;
+}
+
+.ds-form-group--outlined {
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  background-color: var(--color-surface);
+}
+
+.ds-form-group--filled {
+  background-color: var(--color-gray-50);
+  border-radius: var(--border-radius-lg);
+  border: 1px solid transparent;
+}
+
+.ds-form-group--flat {
+  background-color: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  border-radius: 0;
+}
+
+// =============================================================================
+// SIZE VARIANTS
+// =============================================================================
+
+.ds-form-group--sm {
+  .ds-form-group__header {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  .ds-form-group__content {
+    padding: var(--spacing-sm) var(--spacing-md) var(--spacing-md);
+  }
+
+  .ds-form-group__title {
+    font-size: var(--font-size-lg);
+  }
+
+  .ds-form-group__description {
+    font-size: var(--font-size-sm);
+  }
+}
+
+.ds-form-group--md {
+  .ds-form-group__header {
+    padding: var(--spacing-md) var(--spacing-lg);
+  }
+
+  .ds-form-group__content {
+    padding: var(--spacing-md) var(--spacing-lg) var(--spacing-lg);
+  }
+
+  .ds-form-group__title {
+    font-size: var(--font-size-xl);
+  }
+
+  .ds-form-group__description {
+    font-size: var(--font-size-base);
+  }
+}
+
+.ds-form-group--lg {
+  .ds-form-group__header {
+    padding: var(--spacing-lg) var(--spacing-xl);
+  }
+
+  .ds-form-group__content {
+    padding: var(--spacing-lg) var(--spacing-xl) var(--spacing-xl);
+  }
+
+  .ds-form-group__title {
+    font-size: var(--font-size-2xl);
+  }
+
+  .ds-form-group__description {
+    font-size: var(--font-size-lg);
+  }
+}
+
+// =============================================================================
+// HEADER
+// =============================================================================
+
+.ds-form-group__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  position: relative;
+
+  &--with-actions {
+    .ds-form-group__title-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+}
+
+.ds-form-group__title-container {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.ds-form-group__title {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  line-height: var(--line-height-tight);
+  margin: 0;
+  
+  &--collapsible {
+    cursor: pointer;
+    transition: color var(--transition-fast);
+
+    &:hover {
+      color: var(--color-primary);
+    }
+  }
+
+  &--has-errors {
+    color: var(--color-danger);
+  }
+}
+
+.ds-form-group__required {
+  color: var(--color-danger);
+  margin-left: var(--spacing-xs);
+  font-weight: var(--font-weight-bold);
+}
+
+.ds-form-group__status {
+  flex-shrink: 0;
+  font-size: var(--font-size-base);
+  line-height: 1;
+}
+
+.ds-form-group__description {
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-normal);
+  margin: 0;
+}
+
+// =============================================================================
+// TOGGLE FUNCTIONALITY
+// =============================================================================
+
+.ds-form-group__toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  width: 100%;
+  text-align: left;
+  transition: all var(--transition-fast);
+
+  &:hover {
+    color: var(--color-primary);
+  }
+
+  &:focus {
+    outline: none;
+    @include mixins.focus-state;
+    border-radius: var(--border-radius-sm);
+  }
+
+  .ds-form-group__title {
+    flex: 1;
+  }
+}
+
+.ds-form-group__toggle-icon {
+  flex-shrink: 0;
+  font-size: var(--font-size-sm);
+  transition: transform var(--transition-fast);
+  line-height: 1;
+  width: 16px;
+  text-align: center;
+
+  .ds-form-group--collapsed & {
+    transform: rotate(0deg);
+  }
+
+  .ds-form-group:not(.ds-form-group--collapsed) & {
+    transform: rotate(90deg);
+  }
+}
+
+// =============================================================================
+// PROGRESS BAR
+// =============================================================================
+
+.ds-form-group__progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.ds-form-group__progress-bar {
+  width: 100%;
+  height: 6px;
+  background-color: var(--color-gray-200);
+  border-radius: var(--border-radius-sm);
+  overflow: hidden;
+  position: relative;
+}
+
+.ds-form-group__progress-fill {
+  height: 100%;
+  background-color: var(--color-primary);
+  border-radius: var(--border-radius-sm);
+  transition: width var(--transition-normal);
+
+  .ds-form-group--has-errors & {
+    background-color: var(--color-danger);
+  }
+}
+
+.ds-form-group__progress-text {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  text-align: right;
+}
+
+// =============================================================================
+// ACTIONS
+// =============================================================================
+
+.ds-form-group__actions {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+  margin-left: auto;
+
+  @include mixins.respond-to("sm") {
+    margin-left: 0;
+    margin-top: var(--spacing-sm);
+  }
+}
+
+// =============================================================================
+// CONTENT
+// =============================================================================
+
+.ds-form-group__content {
+  transition: all var(--transition-normal);
+
+  .ds-form-group--collapsed & {
+    display: none;
+  }
+
+  &--vertical {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  &--horizontal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+
+    > * {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    @include mixins.respond-to("md") {
+      flex-direction: column;
+    }
+  }
+
+  &--grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-md);
+
+    @include mixins.respond-to("sm") {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+// =============================================================================
+// SPACING VARIANTS
+// =============================================================================
+
+.ds-form-group--spacing-tight {
+  .ds-form-group__content--vertical {
+    gap: var(--spacing-sm);
+  }
+
+  .ds-form-group__content--horizontal,
+  .ds-form-group__content--grid {
+    gap: var(--spacing-sm);
+  }
+}
+
+.ds-form-group--spacing-normal {
+  .ds-form-group__content--vertical {
+    gap: var(--spacing-md);
+  }
+
+  .ds-form-group__content--horizontal,
+  .ds-form-group__content--grid {
+    gap: var(--spacing-md);
+  }
+}
+
+.ds-form-group--spacing-loose {
+  .ds-form-group__content--vertical {
+    gap: var(--spacing-lg);
+  }
+
+  .ds-form-group__content--horizontal,
+  .ds-form-group__content--grid {
+    gap: var(--spacing-lg);
+  }
+}
+
+// =============================================================================
+// LAYOUT VARIANTS
+// =============================================================================
+
+.ds-form-group--vertical {
+  // Default - already handled above
+}
+
+.ds-form-group--horizontal {
+  .ds-form-group__header {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .ds-form-group__title-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.ds-form-group--grid {
+  // Content grid handled in content classes
+}
+
+// =============================================================================
+// STATE STYLES
+// =============================================================================
+
+.ds-form-group--disabled {
+  opacity: 0.6;
+  pointer-events: none;
+  
+  .ds-form-group__title,
+  .ds-form-group__description {
+    color: var(--color-text-disabled);
+  }
+}
+
+.ds-form-group--collapsed {
+  .ds-form-group__content {
+    max-height: 0;
+    overflow: hidden;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
+.ds-form-group--has-errors {
+  .ds-form-group__title {
+    color: var(--color-danger);
+  }
+
+  &.ds-form-group--outlined {
+    border-color: var(--color-danger);
+  }
+
+  &.ds-form-group--filled {
+    background-color: rgba(var(--color-danger-rgb), 0.05);
+    border-color: var(--color-danger);
+  }
+}
+
+.ds-form-group--bordered {
+  // Already handled in variant styles
+}
+
+.ds-form-group--collapsible {
+  .ds-form-group__title-container {
+    cursor: pointer;
+  }
+}
+
+// =============================================================================
+// RESPONSIVE ADJUSTMENTS
+// =============================================================================
+
+@include mixins.respond-to("sm") {
+  .ds-form-group {
+    &--sm .ds-form-group__header,
+    &--md .ds-form-group__header,
+    &--lg .ds-form-group__header {
+      padding-left: var(--spacing-md);
+      padding-right: var(--spacing-md);
+    }
+
+    &--sm .ds-form-group__content,
+    &--md .ds-form-group__content,
+    &--lg .ds-form-group__content {
+      padding-left: var(--spacing-md);
+      padding-right: var(--spacing-md);
+    }
+  }
+
+  .ds-form-group__header--with-actions {
+    .ds-form-group__title-container {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .ds-form-group__actions {
+      align-self: stretch;
+      justify-content: flex-start;
+    }
+  }
+}
+
+// =============================================================================
+// THEME SUPPORT
+// =============================================================================
+
+[data-theme="dark"] {
+  .ds-form-group--outlined {
+    background-color: var(--color-gray-800);
+    border-color: var(--color-gray-600);
+  }
+
+  .ds-form-group--filled {
+    background-color: var(--color-gray-700);
+  }
+
+  .ds-form-group--flat {
+    background-color: var(--color-gray-800);
+    border-color: var(--color-gray-600);
+  }
+
+  .ds-form-group__title {
+    color: var(--color-white);
+  }
+
+  .ds-form-group__description {
+    color: var(--color-gray-300);
+  }
+
+  .ds-form-group__progress-bar {
+    background-color: var(--color-gray-600);
+  }
+
+  .ds-form-group__progress-text {
+    color: var(--color-gray-300);
+  }
+}
+
+[data-theme="high-contrast"] {
+  .ds-form-group--outlined,
+  .ds-form-group--filled,
+  .ds-form-group--flat {
+    border-width: 2px;
+  }
+
+  .ds-form-group__title {
+    font-weight: var(--font-weight-bold);
+  }
+
+  .ds-form-group__toggle:focus {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  .ds-form-group--has-errors {
+    &.ds-form-group--outlined,
+    &.ds-form-group--filled {
+      outline: 2px solid var(--color-danger);
+      outline-offset: 1px;
+    }
+  }
+}
+
+// =============================================================================
+// REDUCED MOTION SUPPORT
+// =============================================================================
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-form-group__toggle-icon,
+  .ds-form-group__progress-fill,
+  .ds-form-group__content {
+    transition: none;
+  }
+
+  .ds-form-group--collapsed .ds-form-group__content {
+    transition: none;
+  }
+}
+
+// =============================================================================
+// PRINT STYLES
+// =============================================================================
+
+@media print {
+  .ds-form-group {
+    break-inside: avoid;
+  }
+
+  .ds-form-group__toggle {
+    display: none;
+  }
+
+  .ds-form-group--collapsed .ds-form-group__content {
+    display: block !important;
+    max-height: none !important;
+    overflow: visible !important;
+    padding: var(--spacing-md) !important;
+  }
+
+  .ds-form-group__progress {
+    display: none;
+  }
+
+  .ds-form-group__actions {
+    display: none;
+  }
+
+  .ds-form-group--outlined,
+  .ds-form-group--filled,
+  .ds-form-group--flat {
+    border: 1px solid #000 !important;
+    background-color: transparent !important;
+  }
+} 
