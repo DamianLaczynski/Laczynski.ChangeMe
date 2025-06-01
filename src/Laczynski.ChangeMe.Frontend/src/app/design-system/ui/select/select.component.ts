@@ -12,6 +12,7 @@ import {
   OnInit,
   ElementRef,
   HostListener,
+  effect,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -320,6 +321,23 @@ export class SelectComponent<T = any> implements ControlValueAccessor, OnInit {
 
   /** Internal selected values */
   protected internalValue = signal<T | T[] | null>(null);
+
+  constructor() {
+    // Watch for external value changes
+    effect(
+      () => {
+        const externalValue = this.value();
+        const currentInternal = this.internalValue();
+
+        // Only update if values are different
+        if (JSON.stringify(externalValue) !== JSON.stringify(currentInternal)) {
+          this.internalValue.set(externalValue);
+          this.validateSelection(externalValue);
+        }
+      },
+      { allowSignalWrites: true },
+    );
+  }
 
   // =============================================================================
   // COMPUTED VALUES

@@ -8,7 +8,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { CardComponent } from './card.component';
-import { ApiDocumentationComponent } from '../../shared/components';
+import { ApiDocumentationComponent, InteractiveExampleComponent } from '../../shared/components';
+import {
+  InteractiveExampleConfig,
+  InteractiveConfigChangeEvent,
+  createSelectControl,
+  createCheckboxControl,
+} from '../../shared/components/interactive-example/interactive-example.model';
 
 import {
   CardConfig,
@@ -36,6 +42,23 @@ import {
   ShowcaseConfig,
 } from '../../models/showcase.model';
 
+// =============================================================================
+// CARD INTERACTIVE CONFIG TYPE
+// =============================================================================
+
+interface CardInteractiveConfig {
+  variant: CardVariant;
+  size: CardSize;
+  elevation: CardElevation;
+  background: CardBackground;
+  interactive: boolean;
+  showHeader: boolean;
+  showFooter: boolean;
+  showMedia: boolean;
+  bordered: boolean;
+  loading: boolean;
+}
+
 /**
  * Card Showcase Component
  *
@@ -51,7 +74,13 @@ import {
 @Component({
   selector: 'ds-card-showcase',
   standalone: true,
-  imports: [CommonModule, CardComponent, FormsModule, ApiDocumentationComponent],
+  imports: [
+    CommonModule,
+    CardComponent,
+    FormsModule,
+    ApiDocumentationComponent,
+    InteractiveExampleComponent,
+  ],
   template: `
     <div class="showcase-container">
       <!-- Header -->
@@ -62,129 +91,36 @@ import {
         </p>
       </div>
 
-      <!-- Interactive Example -->
-      <section class="showcase-section">
-        <h2>Interactive Example</h2>
-        <p>Try different configurations and features:</p>
-
-        <div class="showcase-interactive">
-          <!-- Configuration Panel -->
-          <div class="interactive-controls">
-            <div class="control-group">
-              <label for="variant-select">Variant:</label>
-              <select id="variant-select" [(ngModel)]="selectedVariant" class="control-input">
-                @for (option of variantOptions; track option.value) {
-                  <option [value]="option.value">{{ option.label }}</option>
-                }
-              </select>
-            </div>
-
-            <div class="control-group">
-              <label for="size-select">Size:</label>
-              <select id="size-select" [(ngModel)]="selectedSize" class="control-input">
-                @for (option of sizeOptions; track option.value) {
-                  <option [value]="option.value">{{ option.label }}</option>
-                }
-              </select>
-            </div>
-
-            <div class="control-group">
-              <label for="elevation-select">Elevation:</label>
-              <select id="elevation-select" [(ngModel)]="selectedElevation" class="control-input">
-                @for (option of elevationOptions; track option.value) {
-                  <option [value]="option.value">{{ option.label }}</option>
-                }
-              </select>
-            </div>
-
-            <div class="control-group">
-              <label for="background-select">Background:</label>
-              <select id="background-select" [(ngModel)]="selectedBackground" class="control-input">
-                @for (option of backgroundOptions; track option.value) {
-                  <option [value]="option.value">{{ option.label }}</option>
-                }
-              </select>
-            </div>
-
-            <div class="control-group">
-              <label>
-                <input type="checkbox" [(ngModel)]="interactive" />
-                Interactive
-              </label>
-            </div>
-
-            <div class="control-group">
-              <label>
-                <input type="checkbox" [(ngModel)]="showHeader" />
-                Show Header
-              </label>
-            </div>
-
-            <div class="control-group">
-              <label>
-                <input type="checkbox" [(ngModel)]="showFooter" />
-                Show Footer
-              </label>
-            </div>
-
-            <div class="control-group">
-              <label>
-                <input type="checkbox" [(ngModel)]="showMedia" />
-                Show Media
-              </label>
-            </div>
-
-            <div class="control-group">
-              <label>
-                <input type="checkbox" [(ngModel)]="bordered" />
-                Bordered
-              </label>
-            </div>
-
-            <div class="control-group">
-              <label>
-                <input type="checkbox" [(ngModel)]="loading" />
-                Loading
-              </label>
-            </div>
-          </div>
-
-          <!-- Interactive Card -->
-          <div class="interactive-preview">
-            <ds-card
-              [variant]="selectedVariant()"
-              [size]="selectedSize()"
-              [elevation]="selectedElevation()"
-              [background]="selectedBackground()"
-              [interactive]="interactive()"
-              [bordered]="bordered()"
-              [loading]="loading()"
-              [header]="showHeader() ? demoHeader() : null"
-              [footer]="showFooter() ? demoFooter() : null"
-              [media]="showMedia() ? demoMedia() : null"
-              (cardClick)="onCardClick($event)"
-              (cardAction)="onCardAction($event)"
-              (cardHover)="onCardHover($event)"
-            >
-              <h4>Interactive Card Content</h4>
-              <p>
-                This is an example of card content that can be customized using the controls on the
-                left.
-              </p>
-              <p>
-                Cards can contain any content including text, images, lists, and other components.
-              </p>
-            </ds-card>
-          </div>
-
-          <!-- Action Info -->
-          @if (lastActionSignal()) {
-            <div class="showcase-output">
-              <strong>Last Action:</strong> {{ lastActionSignal() }}
-            </div>
-          }
-        </div>
-      </section>
+      <!-- Interactive Example using new component -->
+      <ds-interactive-example
+        [config]="interactiveConfig()"
+        [currentConfig]="interactiveCardConfig()"
+        [lastAction]="lastAction"
+        (configChange)="onInteractiveConfigChange($event)"
+      >
+        <ds-card
+          [variant]="interactiveCardConfig().variant"
+          [size]="interactiveCardConfig().size"
+          [elevation]="interactiveCardConfig().elevation"
+          [background]="interactiveCardConfig().background"
+          [interactive]="interactiveCardConfig().interactive"
+          [bordered]="interactiveCardConfig().bordered"
+          [loading]="interactiveCardConfig().loading"
+          [header]="interactiveCardConfig().showHeader ? demoHeader() : null"
+          [footer]="interactiveCardConfig().showFooter ? demoFooter() : null"
+          [media]="interactiveCardConfig().showMedia ? demoMedia() : null"
+          (cardClick)="onCardClick($event)"
+          (cardAction)="onCardAction($event)"
+          (cardHover)="onCardHover($event)"
+        >
+          <h4>Interactive Card Content</h4>
+          <p>
+            This is an example of card content that can be customized using the controls on the
+            left.
+          </p>
+          <p>Cards can contain any content including text, images, lists, and other components.</p>
+        </ds-card>
+      </ds-interactive-example>
 
       <!-- Variants -->
       <section class="showcase-section">
@@ -207,15 +143,15 @@ import {
       <!-- Sizes -->
       <section class="showcase-section">
         <h2>Card Sizes</h2>
-        <p>Different sizes for various layouts:</p>
+        <p>Different card sizes for various layouts and content density:</p>
 
         <div class="showcase-grid">
           @for (size of sizes; track size.value) {
             <div class="showcase-item">
               <h3>{{ size.label }}</h3>
-              <ds-card [size]="size.value" [variant]="'elevated'">
+              <ds-card [variant]="'elevated'" [size]="size.value">
                 <h4>{{ size.label }} Card</h4>
-                <p>This demonstrates a {{ size.label.toLowerCase() }} sized card.</p>
+                <p>This card demonstrates the {{ size.label.toLowerCase() }} size variant.</p>
               </ds-card>
             </div>
           }
@@ -225,15 +161,15 @@ import {
       <!-- Elevations -->
       <section class="showcase-section">
         <h2>Elevation Levels</h2>
-        <p>Different shadow depths:</p>
+        <p>Different shadow depths for creating visual hierarchy:</p>
 
         <div class="showcase-grid">
           @for (elevation of elevations; track elevation.value) {
             <div class="showcase-item">
               <h3>{{ elevation.label }}</h3>
-              <ds-card [elevation]="elevation.value" [variant]="'default'">
+              <ds-card [variant]="'elevated'" [elevation]="elevation.value" [size]="'md'">
                 <h4>{{ elevation.label }} Elevation</h4>
-                <p>This card has {{ elevation.label.toLowerCase() }} elevation.</p>
+                <p>This card shows {{ elevation.value }} elevation level.</p>
               </ds-card>
             </div>
           }
@@ -373,56 +309,22 @@ import {
 export class CardShowcaseComponent implements ShowcaseComponent, OnInit {
   componentName = 'Card Component';
   description =
-    'Flexible container component for displaying content with headers, footers, media, and actions. Supports multiple variants, sizes, and interactive states.';
+    'A flexible container component for grouping related content and actions. Supports headers, footers, media, and various visual styles.';
 
   // =============================================================================
   // SHOWCASE DATA
   // =============================================================================
 
-  readonly variantOptions = [
-    { value: 'default', label: 'Default' },
-    { value: 'outlined', label: 'Outlined' },
-    { value: 'filled', label: 'Filled' },
-    { value: 'elevated', label: 'Elevated' },
-    { value: 'ghost', label: 'Ghost' },
-  ];
-
-  readonly sizeOptions = [
-    { value: 'sm', label: 'Small' },
-    { value: 'md', label: 'Medium' },
-    { value: 'lg', label: 'Large' },
-    { value: 'xl', label: 'Extra Large' },
-  ];
-
-  readonly elevationOptions = [
-    { value: 'none', label: 'None' },
-    { value: 'sm', label: 'Small' },
-    { value: 'md', label: 'Medium' },
-    { value: 'lg', label: 'Large' },
-    { value: 'xl', label: 'Extra Large' },
-  ];
-
-  readonly backgroundOptions = [
-    { value: 'default', label: 'Default' },
-    { value: 'muted', label: 'Muted' },
-    { value: 'accent', label: 'Accent' },
-    { value: 'gradient', label: 'Gradient' },
-    { value: 'transparent', label: 'Transparent' },
-  ];
-
   readonly variants = [
-    { value: 'default' as CardVariant, label: 'Default' },
+    { value: 'elevated' as CardVariant, label: 'Elevated' },
     { value: 'outlined' as CardVariant, label: 'Outlined' },
     { value: 'filled' as CardVariant, label: 'Filled' },
-    { value: 'elevated' as CardVariant, label: 'Elevated' },
-    { value: 'ghost' as CardVariant, label: 'Ghost' },
   ];
 
   readonly sizes = [
     { value: 'sm' as CardSize, label: 'Small' },
     { value: 'md' as CardSize, label: 'Medium' },
     { value: 'lg' as CardSize, label: 'Large' },
-    { value: 'xl' as CardSize, label: 'Extra Large' },
   ];
 
   readonly elevations = [
@@ -434,74 +336,96 @@ export class CardShowcaseComponent implements ShowcaseComponent, OnInit {
   ];
 
   // =============================================================================
-  // INTERACTIVE CONTROLS
+  // INTERACTIVE EXAMPLE CONFIGURATION
   // =============================================================================
 
-  selectedVariant = signal<CardVariant>('elevated');
-  selectedSize = signal<CardSize>('md');
-  selectedElevation = signal<CardElevation>('md');
-  selectedBackground = signal<CardBackground>('default');
-  interactive = signal<boolean>(true);
-  showHeader = signal<boolean>(true);
-  showFooter = signal<boolean>(true);
-  showMedia = signal<boolean>(false);
-  bordered = signal<boolean>(false);
-  loading = signal<boolean>(false);
+  private interactiveCardConfigSignal = signal<CardInteractiveConfig>({
+    variant: 'elevated',
+    size: 'md',
+    elevation: 'md',
+    background: 'default',
+    interactive: true,
+    showHeader: true,
+    showFooter: true,
+    showMedia: false,
+    bordered: false,
+    loading: false,
+  });
+
+  readonly interactiveCardConfig = computed(() => this.interactiveCardConfigSignal());
+
+  readonly interactiveConfig = computed<InteractiveExampleConfig>(() => ({
+    title: 'Interactive Card Example',
+    description: 'Customize the card properties using the controls below.',
+    controls: [
+      createSelectControl('variant', 'Variant', 'variant', [
+        { value: 'elevated', label: 'Elevated' },
+        { value: 'outlined', label: 'Outlined' },
+        { value: 'filled', label: 'Filled' },
+      ]),
+      createSelectControl('size', 'Size', 'size', [
+        { value: 'sm', label: 'Small' },
+        { value: 'md', label: 'Medium' },
+        { value: 'lg', label: 'Large' },
+      ]),
+      createSelectControl('elevation', 'Elevation', 'elevation', [
+        { value: 'none', label: 'None' },
+        { value: 'sm', label: 'Small' },
+        { value: 'md', label: 'Medium' },
+        { value: 'lg', label: 'Large' },
+        { value: 'xl', label: 'Extra Large' },
+      ]),
+      createSelectControl('background', 'Background', 'background', [
+        { value: 'default', label: 'Default' },
+        { value: 'paper', label: 'Paper' },
+        { value: 'surface', label: 'Surface' },
+      ]),
+      createCheckboxControl('interactive', 'Interactive', 'interactive'),
+      createCheckboxControl('showHeader', 'Show Header', 'showHeader'),
+      createCheckboxControl('showFooter', 'Show Footer', 'showFooter'),
+      createCheckboxControl('showMedia', 'Show Media', 'showMedia'),
+      createCheckboxControl('bordered', 'Bordered', 'bordered'),
+      createCheckboxControl('loading', 'Loading', 'loading'),
+    ],
+    showOutput: true,
+  }));
 
   // =============================================================================
-  // SHOWCASE STATE
+  // STATE MANAGEMENT
   // =============================================================================
 
   protected readonly lastActionSignal = signal<string>('');
 
-  // Getter to implement ShowcaseComponent interface
   get lastAction(): string {
     return this.lastActionSignal();
   }
 
   // =============================================================================
-  // DEMO DATA
+  // COMPUTED PROPERTIES
   // =============================================================================
 
   readonly demoHeader = computed<CardHeader>(() =>
     createCardHeader({
-      title: 'Interactive Card',
-      subtitle: 'Configurable example',
-      avatar: {
-        type: 'initials',
-        initials: 'IC',
-        size: 'md',
-        shape: 'circle',
-      },
-      actions: [
-        createCardAction('Settings', () => this.onDemoAction('settings'), {
-          icon: '⚙️',
-          variant: 'ghost',
-        }),
-      ],
+      title: 'Card Title',
+      subtitle: 'Card subtitle with additional information',
     }),
   );
 
   readonly demoFooter = computed<CardFooter>(() =>
     createCardFooter({
+      text: 'Footer content with additional actions or information.',
       actions: [
-        createCardAction('Cancel', () => this.onDemoAction('cancel'), {
-          variant: 'secondary',
-        }),
-        createCardAction('Save', () => this.onDemoAction('save'), {
-          variant: 'primary',
-        }),
+        createCardAction('Cancel', () => this.onDemoAction('cancel'), { variant: 'secondary' }),
+        createCardAction('Save', () => this.onDemoAction('save'), { variant: 'primary' }),
       ],
-      align: 'right',
     }),
   );
 
   readonly demoMedia = computed<CardMedia>(() => ({
     type: 'image',
-    src: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    src: 'https://via.placeholder.com/400x200',
     alt: 'Demo image',
     position: 'top',
-    aspectRatio: '16/9',
   }));
 
   // Static demo headers
@@ -659,66 +583,29 @@ export class CardShowcaseComponent implements ShowcaseComponent, OnInit {
         {
           name: 'variant',
           type: 'CardVariant',
-          defaultValue: 'default',
+          defaultValue: 'elevated',
           description: 'Visual style variant of the card',
-          examples: ['default', 'outlined', 'filled', 'elevated', 'ghost'],
+          examples: ['elevated', 'outlined', 'filled'],
         },
         {
           name: 'size',
           type: 'CardSize',
           defaultValue: 'md',
           description: 'Size of the card',
-          examples: ['sm', 'md', 'lg', 'xl'],
+          examples: ['sm', 'md', 'lg'],
         },
         {
           name: 'elevation',
           type: 'CardElevation',
-          defaultValue: 'sm',
+          defaultValue: 'md',
           description: 'Shadow depth level',
           examples: ['none', 'sm', 'md', 'lg', 'xl'],
-        },
-        {
-          name: 'background',
-          type: 'CardBackground',
-          defaultValue: 'default',
-          description: 'Background style',
-          examples: ['default', 'muted', 'accent', 'gradient', 'transparent'],
         },
         {
           name: 'interactive',
           type: 'boolean',
           defaultValue: 'false',
           description: 'Whether the card is clickable',
-        },
-        {
-          name: 'selected',
-          type: 'boolean',
-          defaultValue: 'false',
-          description: 'Whether the card is selected',
-        },
-        {
-          name: 'disabled',
-          type: 'boolean',
-          defaultValue: 'false',
-          description: 'Whether the card is disabled',
-        },
-        {
-          name: 'loading',
-          type: 'boolean',
-          defaultValue: 'false',
-          description: 'Whether to show loading state',
-        },
-        {
-          name: 'bordered',
-          type: 'boolean',
-          defaultValue: 'false',
-          description: 'Whether to show enhanced border',
-        },
-        {
-          name: 'padded',
-          type: 'boolean',
-          defaultValue: 'true',
-          description: 'Whether card content has padding',
         },
         {
           name: 'header',
@@ -762,11 +649,11 @@ export class CardShowcaseComponent implements ShowcaseComponent, OnInit {
   });
 
   // =============================================================================
-  // LIFECYCLE
+  // LIFECYCLE HOOKS
   // =============================================================================
 
   ngOnInit(): void {
-    // Initialize component
+    this.lastActionSignal.set('Component initialized');
   }
 
   // =============================================================================
@@ -774,29 +661,27 @@ export class CardShowcaseComponent implements ShowcaseComponent, OnInit {
   // =============================================================================
 
   onCardClick(event: CardClickEvent): void {
-    const timestamp = new Date().toLocaleTimeString();
-    this.lastActionSignal.set(`Card clicked at ${timestamp}`);
+    this.lastActionSignal.set(`Card clicked`);
   }
 
   onCardAction(event: CardActionEvent): void {
-    const timestamp = new Date().toLocaleTimeString();
-    this.lastActionSignal.set(`Action "${event.action.label}" triggered at ${timestamp}`);
+    this.lastActionSignal.set(`Card action: ${event.action.label}`);
   }
 
   onCardHover(event: CardHoverEvent): void {
-    if (event.hovered) {
-      const timestamp = new Date().toLocaleTimeString();
-      this.lastActionSignal.set(`Card hovered at ${timestamp}`);
-    }
+    this.lastActionSignal.set(`Card hover: ${event.hovered ? 'entered' : 'left'}`);
+  }
+
+  onInteractiveConfigChange(event: InteractiveConfigChangeEvent<CardInteractiveConfig>): void {
+    this.interactiveCardConfigSignal.set(event.config);
+    this.lastActionSignal.set(`Configuration changed: ${event.property} = ${event.value}`);
   }
 
   onDemoCardClick(cardType: string): void {
-    const timestamp = new Date().toLocaleTimeString();
-    this.lastActionSignal.set(`${cardType} card clicked at ${timestamp}`);
+    this.lastActionSignal.set(`Demo ${cardType} card clicked`);
   }
 
   onDemoAction(action: string): void {
-    const timestamp = new Date().toLocaleTimeString();
-    this.lastActionSignal.set(`Demo action "${action}" at ${timestamp}`);
+    this.lastActionSignal.set(`Demo action: ${action}`);
   }
 }

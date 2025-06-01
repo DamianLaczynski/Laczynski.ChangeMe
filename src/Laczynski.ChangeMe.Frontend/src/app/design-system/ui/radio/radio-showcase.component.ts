@@ -3,7 +3,15 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { RadioComponent } from './radio.component';
-import { ApiDocumentationComponent } from '../../shared/components';
+import { ApiDocumentationComponent, InteractiveExampleComponent } from '../../shared/components';
+import {
+  InteractiveExampleConfig,
+  InteractiveConfigChangeEvent,
+  createSelectControl,
+  createTextControl,
+  createCheckboxControl,
+} from '../../shared/components/interactive-example/interactive-example.model';
+
 import {
   RadioOption,
   RadioVariant,
@@ -20,6 +28,21 @@ import {
   ShowcaseConfig,
 } from '../../models/showcase.model';
 
+// =============================================================================
+// RADIO INTERACTIVE CONFIG TYPE
+// =============================================================================
+
+interface RadioInteractiveConfig {
+  variant: RadioVariant;
+  size: RadioSize;
+  label: string;
+  helperText: string;
+  disabled: boolean;
+  required: boolean;
+  groupLayout: RadioGroupLayout;
+  value: string | null;
+}
+
 /**
  * Radio Component Showcase
  *
@@ -29,7 +52,13 @@ import {
 @Component({
   selector: 'radio-showcase',
   standalone: true,
-  imports: [CommonModule, FormsModule, RadioComponent, ApiDocumentationComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RadioComponent,
+    ApiDocumentationComponent,
+    InteractiveExampleComponent,
+  ],
   template: `
     <div class="showcase-container">
       <!-- Header -->
@@ -37,6 +66,28 @@ import {
         <h1>{{ showcaseConfig().component.componentName }}</h1>
         <p class="showcase-description">{{ showcaseConfig().component.description }}</p>
       </div>
+
+      <!-- Interactive Example using new component -->
+      <ds-interactive-example
+        [config]="interactiveConfig()"
+        [currentConfig]="interactiveRadioConfig()"
+        [lastAction]="lastAction"
+        (configChange)="onInteractiveConfigChange($event)"
+      >
+        <ds-radio
+          [variant]="interactiveRadioConfig().variant"
+          [size]="interactiveRadioConfig().size"
+          [label]="interactiveRadioConfig().label"
+          [helperText]="interactiveRadioConfig().helperText"
+          [disabled]="interactiveRadioConfig().disabled"
+          [required]="interactiveRadioConfig().required"
+          [groupLayout]="interactiveRadioConfig().groupLayout"
+          [value]="interactiveRadioConfig().value"
+          [options]="demoOptions()"
+          (selectionChange)="onSelectionChange($event)"
+          (focus)="onFocus($event)"
+        />
+      </ds-interactive-example>
 
       <!-- Basic Radio Groups Section -->
       <section class="showcase-section">
@@ -271,104 +322,6 @@ import {
         </div>
       </section>
 
-      <!-- Interactive Example -->
-      <section class="showcase-section">
-        <h2>Interactive Example</h2>
-
-        <div class="interactive-controls">
-          <div class="control-group">
-            <label>
-              Variant:
-              <select [(ngModel)]="demoConfigVariantValue" class="control-input">
-                @for (variant of radioVariants; track variant) {
-                  <option [value]="variant">{{ variant | titlecase }}</option>
-                }
-              </select>
-            </label>
-          </div>
-
-          <div class="control-group">
-            <label>
-              Size:
-              <select [(ngModel)]="demoConfigSizeValue" class="control-input">
-                @for (size of radioSizes; track size) {
-                  <option [value]="size">{{ size | uppercase }}</option>
-                }
-              </select>
-            </label>
-          </div>
-
-          <div class="control-group">
-            <label>
-              Layout:
-              <select [(ngModel)]="demoConfigGroupLayoutValue" class="control-input">
-                @for (layout of groupLayouts; track layout) {
-                  <option [value]="layout">{{ layout | titlecase }}</option>
-                }
-              </select>
-            </label>
-          </div>
-
-          <div class="control-group">
-            <label>
-              Label:
-              <input
-                type="text"
-                [(ngModel)]="demoConfigLabelValue"
-                class="control-input"
-                placeholder="Enter label..."
-              />
-            </label>
-          </div>
-
-          <div class="control-group">
-            <label>
-              Helper Text:
-              <input
-                type="text"
-                [(ngModel)]="demoConfigHelperTextValue"
-                class="control-input"
-                placeholder="Enter helper text..."
-              />
-            </label>
-          </div>
-
-          <div class="control-group">
-            <label>
-              <input type="checkbox" [(ngModel)]="demoConfigDisabledValue" />
-              Disabled
-            </label>
-          </div>
-
-          <div class="control-group">
-            <label>
-              <input type="checkbox" [(ngModel)]="demoConfigRequiredValue" />
-              Required
-            </label>
-          </div>
-        </div>
-
-        <div class="interactive-preview">
-          <ds-radio
-            [variant]="demoConfigVariant()"
-            [size]="demoConfigSize()"
-            [label]="demoConfigLabel()"
-            [helperText]="demoConfigHelperText()"
-            [disabled]="demoConfigDisabled()"
-            [required]="demoConfigRequired()"
-            [options]="demoOptions()"
-            [groupLayout]="demoConfigGroupLayout()"
-            [value]="demoValue()"
-            (selectionChange)="onSelectionChange($event)"
-            (focus)="onFocus($event)"
-          />
-        </div>
-
-        <div class="showcase-output">
-          {{ lastAction || 'Interact with the radio group above to see events...' }}
-        </div>
-      </section>
-
       <!-- Component API -->
       <section class="showcase-section">
         <h2>Component API</h2>
@@ -401,7 +354,56 @@ export class RadioShowcaseComponent implements ShowcaseComponent {
   radioSizes: RadioSize[] = ['sm', 'md', 'lg'];
   groupLayouts: RadioGroupLayout[] = ['vertical', 'horizontal', 'grid'];
 
-  // Individual signals for demo configuration
+  // =============================================================================
+  // INTERACTIVE EXAMPLE CONFIGURATION
+  // =============================================================================
+
+  private interactiveRadioConfigSignal = signal<RadioInteractiveConfig>({
+    variant: 'default',
+    size: 'md',
+    label: 'Demo Radio Group',
+    helperText: '',
+    disabled: false,
+    required: false,
+    groupLayout: 'vertical',
+    value: null,
+  });
+
+  readonly interactiveRadioConfig = computed(() => this.interactiveRadioConfigSignal());
+
+  readonly interactiveConfig = computed<InteractiveExampleConfig>(() => ({
+    title: 'Interactive Radio Example',
+    description: 'Customize the radio group properties using the controls below.',
+    controls: [
+      createSelectControl('variant', 'Variant', 'variant', [
+        { value: 'default', label: 'Default' },
+        { value: 'filled', label: 'Filled' },
+        { value: 'outlined', label: 'Outlined' },
+      ]),
+      createSelectControl('size', 'Size', 'size', [
+        { value: 'sm', label: 'Small' },
+        { value: 'md', label: 'Medium' },
+        { value: 'lg', label: 'Large' },
+      ]),
+      createSelectControl('groupLayout', 'Layout', 'groupLayout', [
+        { value: 'vertical', label: 'Vertical' },
+        { value: 'horizontal', label: 'Horizontal' },
+        { value: 'grid', label: 'Grid' },
+      ]),
+      createTextControl('label', 'Label', 'label', { placeholder: 'Enter label...' }),
+      createTextControl('helperText', 'Helper Text', 'helperText', {
+        placeholder: 'Enter helper text...',
+      }),
+      createCheckboxControl('disabled', 'Disabled', 'disabled'),
+      createCheckboxControl('required', 'Required', 'required'),
+    ],
+    showOutput: true,
+  }));
+
+  // =============================================================================
+  // LEGACY DEMO CONFIG (keeping for backward compatibility)
+  // =============================================================================
+
   demoConfigVariant = signal<RadioVariant>('default');
   demoConfigSize = signal<RadioSize>('md');
   demoConfigLabel = signal<string>('Demo Radio Group');
@@ -695,9 +697,12 @@ export class RadioShowcaseComponent implements ShowcaseComponent {
   }
 
   onFocus(event: RadioFocusEvent): void {
-    this.lastActionSignal.set(
-      `Radio ${event.direction === 'in' ? 'focused' : 'blurred'} ${event.value ? `(${event.value})` : ''}`,
-    );
+    this.lastActionSignal.set(`Radio ${event.direction === 'in' ? 'focused' : 'blurred'}`);
+  }
+
+  onInteractiveConfigChange(event: InteractiveConfigChangeEvent<RadioInteractiveConfig>): void {
+    this.interactiveRadioConfigSignal.set(event.config);
+    this.lastActionSignal.set(`Configuration changed: ${event.property} = ${event.value}`);
   }
 
   // =============================================================================

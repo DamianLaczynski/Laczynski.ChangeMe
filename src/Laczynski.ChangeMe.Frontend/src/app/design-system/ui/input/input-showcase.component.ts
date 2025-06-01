@@ -3,7 +3,15 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { InputComponent } from './input.component';
-import { ApiDocumentationComponent } from '../../shared/components';
+import { ApiDocumentationComponent, InteractiveExampleComponent } from '../../shared/components';
+import {
+  InteractiveExampleConfig,
+  InteractiveConfigChangeEvent,
+  createSelectControl,
+  createTextControl,
+  createCheckboxControl,
+} from '../../shared/components/interactive-example/interactive-example.model';
+
 import {
   InputType,
   InputSize,
@@ -20,6 +28,24 @@ import {
   ShowcaseConfig,
 } from '../../models/showcase.model';
 
+// =============================================================================
+// INPUT INTERACTIVE CONFIG TYPE
+// =============================================================================
+
+interface InputInteractiveConfig {
+  type: InputType;
+  size: InputSize;
+  label: string;
+  placeholder: string;
+  disabled: boolean;
+  readonly: boolean;
+  required: boolean;
+  clearable: boolean;
+  showCounter: boolean;
+  helperText: string;
+  value: string;
+}
+
 /**
  * Input Component Showcase
  *
@@ -29,7 +55,13 @@ import {
 @Component({
   selector: 'input-showcase',
   standalone: true,
-  imports: [CommonModule, FormsModule, InputComponent, ApiDocumentationComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    InputComponent,
+    ApiDocumentationComponent,
+    InteractiveExampleComponent,
+  ],
   template: `
     <div class="showcase-container">
       <!-- Header -->
@@ -38,7 +70,33 @@ import {
         <p class="showcase-description">{{ showcaseConfig().component.description }}</p>
       </div>
 
-      <!-- Variants Section -->
+      <!-- Interactive Example using new component -->
+      <ds-interactive-example
+        [config]="interactiveConfig()"
+        [currentConfig]="interactiveInputConfig()"
+        [lastAction]="lastAction"
+        (configChange)="onInteractiveConfigChange($event)"
+      >
+        <ds-input
+          [type]="interactiveInputConfig().type"
+          [size]="interactiveInputConfig().size"
+          [label]="interactiveInputConfig().label"
+          [placeholder]="interactiveInputConfig().placeholder"
+          [disabled]="interactiveInputConfig().disabled"
+          [readonly]="interactiveInputConfig().readonly"
+          [required]="interactiveInputConfig().required"
+          [clearable]="interactiveInputConfig().clearable"
+          [showCounter]="interactiveInputConfig().showCounter"
+          [helperText]="interactiveInputConfig().helperText"
+          [value]="interactiveInputConfig().value"
+          (valueChange)="onValueChange($event)"
+          (focus)="onFocus($event)"
+          (clear)="onClear($event)"
+          (enterKey)="onEnterKey($event)"
+        />
+      </ds-interactive-example>
+
+      <!-- Input Types Section -->
       <section class="showcase-section">
         <h2>Input Types</h2>
         <div class="showcase-grid">
@@ -244,119 +302,6 @@ import {
         </div>
       </section>
 
-      <!-- Interactive Example -->
-      <section class="showcase-section">
-        <h2>Interactive Example</h2>
-
-        <div class="interactive-controls">
-          <div class="control-group">
-            <label>
-              Type:
-              <select [(ngModel)]="demoConfigTypeValue" class="control-input">
-                @for (type of inputTypes; track type) {
-                  <option [value]="type">{{ type | titlecase }}</option>
-                }
-              </select>
-            </label>
-          </div>
-
-          <div class="control-group">
-            <label>
-              Size:
-              <select [(ngModel)]="demoConfigSizeValue" class="control-input">
-                @for (size of inputSizes; track size) {
-                  <option [value]="size">{{ size | uppercase }}</option>
-                }
-              </select>
-            </label>
-          </div>
-
-          <div class="control-group">
-            <label>
-              Label:
-              <input
-                type="text"
-                [(ngModel)]="demoConfigLabelValue"
-                class="control-input"
-                placeholder="Enter label..."
-              />
-            </label>
-          </div>
-
-          <div class="control-group">
-            <label>
-              Placeholder:
-              <input
-                type="text"
-                [(ngModel)]="demoConfigPlaceholderValue"
-                class="control-input"
-                placeholder="Enter placeholder..."
-              />
-            </label>
-          </div>
-
-          <div class="control-group">
-            <label>
-              <input type="checkbox" [(ngModel)]="demoConfigDisabledValue" />
-              Disabled
-            </label>
-          </div>
-
-          <div class="control-group">
-            <label>
-              <input type="checkbox" [(ngModel)]="demoConfigReadonlyValue" />
-              Readonly
-            </label>
-          </div>
-
-          <div class="control-group">
-            <label>
-              <input type="checkbox" [(ngModel)]="demoConfigRequiredValue" />
-              Required
-            </label>
-          </div>
-
-          <div class="control-group">
-            <label>
-              <input type="checkbox" [(ngModel)]="demoConfigClearableValue" />
-              Clearable
-            </label>
-          </div>
-
-          <div class="control-group">
-            <label>
-              <input type="checkbox" [(ngModel)]="demoConfigShowCounterValue" />
-              Show Counter
-            </label>
-          </div>
-        </div>
-
-        <div class="interactive-preview">
-          <ds-input
-            [type]="demoConfigType()"
-            [size]="demoConfigSize()"
-            [label]="demoConfigLabel()"
-            [placeholder]="demoConfigPlaceholder()"
-            [disabled]="demoConfigDisabled()"
-            [readonly]="demoConfigReadonly()"
-            [required]="demoConfigRequired()"
-            [clearable]="demoConfigClearable()"
-            [showCounter]="demoConfigShowCounter()"
-            [maxLength]="demoConfigShowCounter() ? 100 : null"
-            [helperText]="demoConfigHelperText()"
-            [value]="demoValueInput"
-            (valueChange)="onValueChange($event)"
-            (focus)="onFocus($event)"
-            (clear)="onClear($event)"
-            (enterKey)="onEnterKey($event)"
-          />
-        </div>
-
-        <div class="showcase-output">
-          {{ lastAction || 'Interact with the input above to see events...' }}
-        </div>
-      </section>
-
       <!-- Component API -->
       <section class="showcase-section">
         <h2>Component API</h2>
@@ -388,7 +333,65 @@ export class InputShowcaseComponent implements ShowcaseComponent {
   inputTypes: InputType[] = ['text', 'email', 'password', 'number', 'search', 'tel', 'url'];
   inputSizes: InputSize[] = ['sm', 'md', 'lg'];
 
-  // Individual signals for demo configuration
+  // =============================================================================
+  // INTERACTIVE EXAMPLE CONFIGURATION
+  // =============================================================================
+
+  private interactiveInputConfigSignal = signal<InputInteractiveConfig>({
+    type: 'text',
+    size: 'md',
+    label: 'Demo Input',
+    placeholder: 'Enter text...',
+    disabled: false,
+    readonly: false,
+    required: false,
+    clearable: false,
+    showCounter: false,
+    helperText: '',
+    value: '',
+  });
+
+  readonly interactiveInputConfig = computed(() => this.interactiveInputConfigSignal());
+
+  readonly interactiveConfig = computed<InteractiveExampleConfig>(() => ({
+    title: 'Interactive Input Example',
+    description: 'Customize the input properties using the controls below.',
+    controls: [
+      createSelectControl('type', 'Type', 'type', [
+        { value: 'text', label: 'Text' },
+        { value: 'email', label: 'Email' },
+        { value: 'password', label: 'Password' },
+        { value: 'number', label: 'Number' },
+        { value: 'search', label: 'Search' },
+        { value: 'tel', label: 'Tel' },
+        { value: 'url', label: 'URL' },
+      ]),
+      createSelectControl('size', 'Size', 'size', [
+        { value: 'sm', label: 'Small' },
+        { value: 'md', label: 'Medium' },
+        { value: 'lg', label: 'Large' },
+      ]),
+      createTextControl('label', 'Label', 'label', { placeholder: 'Enter label...' }),
+      createTextControl('placeholder', 'Placeholder', 'placeholder', {
+        placeholder: 'Enter placeholder...',
+      }),
+      createTextControl('helperText', 'Helper Text', 'helperText', {
+        placeholder: 'Enter helper text...',
+      }),
+      createTextControl('value', 'Value', 'value', { placeholder: 'Enter value...' }),
+      createCheckboxControl('disabled', 'Disabled', 'disabled'),
+      createCheckboxControl('readonly', 'Readonly', 'readonly'),
+      createCheckboxControl('required', 'Required', 'required'),
+      createCheckboxControl('clearable', 'Clearable', 'clearable'),
+      createCheckboxControl('showCounter', 'Show Counter', 'showCounter'),
+    ],
+    showOutput: true,
+  }));
+
+  // =============================================================================
+  // LEGACY DEMO CONFIG (keeping for backward compatibility)
+  // =============================================================================
+
   demoConfigType = signal<InputType>('text');
   demoConfigSize = signal<InputSize>('md');
   demoConfigLabel = signal<string>('Demo Input');
@@ -662,6 +665,11 @@ export class InputShowcaseComponent implements ShowcaseComponent {
 
   onEnterKey(event: InputEnterEvent): void {
     this.lastActionSignal.set(`Enter key pressed with value: "${event.value}"`);
+  }
+
+  onInteractiveConfigChange(event: InteractiveConfigChangeEvent<InputInteractiveConfig>): void {
+    this.interactiveInputConfigSignal.set(event.config);
+    this.lastActionSignal.set(`Configuration changed: ${event.property} = ${event.value}`);
   }
 
   // =============================================================================

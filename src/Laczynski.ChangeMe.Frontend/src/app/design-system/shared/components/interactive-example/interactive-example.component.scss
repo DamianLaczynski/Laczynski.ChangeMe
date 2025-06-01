@@ -1,0 +1,880 @@
+// =============================================================================
+// Interactive Example Component Styles - Modern & Professional Design
+// =============================================================================
+// Enhanced interactive example component with glass morphism, smooth transitions,
+// and excellent UX patterns matching the modernized component design
+
+@use "../../../../../styles/abstracts/variables";
+@use "../../../../../styles/abstracts/mixins";
+
+// =============================================================================
+// MAIN CONTAINER - Enhanced Glass Morphism
+// =============================================================================
+
+.showcase-interactive {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+  margin-top: var(--spacing-xl);
+  font-family: var(--font-family-primary);
+}
+
+// =============================================================================
+// INTERACTIVE CONTROLS - Enhanced Design
+// =============================================================================
+
+.interactive-controls {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-xl);
+  background: linear-gradient(145deg, var(--color-gray-50), var(--color-gray-100));
+  border-radius: var(--border-radius-lg);
+  border: 1.5px solid var(--color-border);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition-base);
+
+  // Subtle inner highlight for depth
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+    opacity: 0.8;
+    z-index: 1;
+  }
+
+  &:hover {
+    border-color: var(--color-primary);
+    background: linear-gradient(145deg, var(--color-gray-100), var(--color-gray-200));
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  }
+
+  @include mixins.respond-to("lg") {
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg);
+  }
+
+  @include mixins.respond-to("md") {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+  }
+
+  @include mixins.respond-to("sm") {
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
+  }
+}
+
+// =============================================================================
+// CONTROL GROUP - Enhanced Layout
+// =============================================================================
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  position: relative;
+  z-index: 2;
+  transition: all var(--transition-fast);
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+
+  label {
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-base);
+    color: var(--color-text);
+    margin-bottom: var(--spacing-xs);
+    line-height: var(--line-height-normal);
+    transition: color var(--transition-fast);
+    cursor: pointer;
+
+    &:hover {
+      color: var(--color-primary);
+    }
+
+    // Checkbox/radio labels - Enhanced Interactive Design
+    &:has(input[type="checkbox"]),
+    &:has(input[type="radio"]) {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      font-weight: var(--font-weight-normal);
+      cursor: pointer;
+      padding: var(--spacing-xs) var(--spacing-sm);
+      border-radius: var(--border-radius-md);
+      transition: all var(--transition-fast);
+
+      &:hover {
+        background: linear-gradient(145deg, rgba(0, 123, 255, 0.05), rgba(0, 123, 255, 0.1));
+        transform: translateX(2px);
+      }
+
+      input {
+        margin: 0;
+        transform: scale(1.1);
+        transition: transform var(--transition-fast);
+
+        &:hover {
+          transform: scale(1.15);
+        }
+      }
+    }
+  }
+
+  // Radio group fieldset - Enhanced Glass Design
+  fieldset {
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-lg);
+    background: linear-gradient(145deg, var(--color-surface), var(--color-gray-50));
+    backdrop-filter: blur(4px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: all var(--transition-fast);
+    position: relative;
+    overflow: hidden;
+
+    // Subtle inner highlight
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+      opacity: 0.8;
+      z-index: 1;
+    }
+
+    &:hover {
+      border-color: var(--color-primary);
+      background: linear-gradient(145deg, var(--color-surface), var(--color-white));
+      box-shadow: 0 4px 12px rgba(0, 123, 255, 0.1);
+    }
+
+    &:focus-within {
+      border-color: var(--color-primary);
+      box-shadow: 
+        0 0 0 3px rgba(0, 123, 255, 0.15),
+        0 4px 12px rgba(0, 123, 255, 0.1);
+    }
+
+    legend {
+      padding: 0 var(--spacing-sm);
+      font-weight: var(--font-weight-medium);
+      font-size: var(--font-size-base);
+      color: var(--color-text);
+      background: linear-gradient(145deg, var(--color-surface), var(--color-gray-50));
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius-sm);
+      backdrop-filter: blur(4px);
+      transition: all var(--transition-fast);
+      position: relative;
+      z-index: 2;
+    }
+
+    &:hover legend {
+      color: var(--color-primary);
+      background: linear-gradient(145deg, var(--color-surface), var(--color-white));
+      border-color: var(--color-primary);
+    }
+
+    label {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      padding: var(--spacing-xs) var(--spacing-sm);
+      font-weight: var(--font-weight-normal);
+      cursor: pointer;
+      border-radius: var(--border-radius-sm);
+      transition: all var(--transition-fast);
+      position: relative;
+      z-index: 2;
+
+      &:hover {
+        background: linear-gradient(145deg, rgba(0, 123, 255, 0.05), rgba(0, 123, 255, 0.1));
+        transform: translateX(2px);
+      }
+
+      input[type="radio"] {
+        margin: 0;
+        transform: scale(1.1);
+        transition: transform var(--transition-fast);
+
+        &:hover {
+          transform: scale(1.15);
+        }
+      }
+    }
+  }
+}
+
+// =============================================================================
+// CONTROL INPUTS - Enhanced Styling
+// =============================================================================
+
+.control-input {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  background: linear-gradient(145deg, var(--color-surface), var(--color-gray-50));
+  color: var(--color-text);
+  font-size: var(--font-size-base);
+  font-family: var(--font-family-primary);
+  line-height: var(--line-height-normal);
+  transition: all var(--transition-base) var(--ease-out-cubic);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+  &:hover {
+    border-color: var(--color-primary);
+    background: linear-gradient(145deg, var(--color-surface), var(--color-white));
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.1);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    background: var(--color-white);
+    box-shadow: 
+      0 0 0 3px rgba(0, 123, 255, 0.15),
+      0 4px 12px rgba(0, 123, 255, 0.1);
+    transform: translateY(-2px);
+  }
+
+  &:disabled {
+    background: var(--color-surface-disabled);
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+    opacity: 0.6;
+    transform: none;
+
+    &:hover {
+      border-color: var(--color-border);
+      background: var(--color-surface-disabled);
+      transform: none;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+  }
+}
+
+// Select specific styles - Enhanced Dropdown
+select.control-input {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23007bff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right var(--spacing-sm) center;
+  background-repeat: no-repeat;
+  background-size: 1.25em 1.25em;
+  padding-right: calc(var(--spacing-lg) + 1.25em);
+  appearance: none;
+
+  &:hover {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23007bff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  }
+
+  &:focus {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23007bff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  }
+}
+
+// Textarea specific styles - Enhanced Layout
+textarea.control-textarea {
+  resize: vertical;
+  min-height: 100px;
+  font-family: inherit;
+  line-height: var(--line-height-relaxed);
+  
+  &:hover,
+  &:focus {
+    resize: both;
+  }
+}
+
+// Range input specific styles - Modern Slider
+.control-range {
+  padding: var(--spacing-sm) 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  height: 20px;
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+  // Webkit styles
+  &::-webkit-slider-runnable-track {
+    height: 6px;
+    background: linear-gradient(145deg, var(--color-gray-200), var(--color-gray-300));
+    border-radius: var(--border-radius-full);
+    border: 1px solid var(--color-border);
+    transition: background var(--transition-fast);
+  }
+
+  &:hover::-webkit-slider-runnable-track {
+    background: linear-gradient(145deg, var(--color-gray-300), var(--color-gray-400));
+  }
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, var(--color-primary), var(--color-primary-hover));
+    cursor: pointer;
+    margin-top: -8px;
+    border: 2px solid var(--color-white);
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+    transition: all var(--transition-fast);
+  }
+
+  &:hover::-webkit-slider-thumb {
+    background: linear-gradient(145deg, var(--color-primary-hover), var(--color-primary-active));
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+  }
+
+  // Firefox styles
+  &::-moz-range-track {
+    height: 6px;
+    background: linear-gradient(145deg, var(--color-gray-200), var(--color-gray-300));
+    border-radius: var(--border-radius-full);
+    border: 1px solid var(--color-border);
+  }
+
+  &::-moz-range-thumb {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, var(--color-primary), var(--color-primary-hover));
+    cursor: pointer;
+    border: 2px solid var(--color-white);
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+    transition: all var(--transition-fast);
+  }
+
+  &:hover::-moz-range-thumb {
+    background: linear-gradient(145deg, var(--color-primary-hover), var(--color-primary-active));
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+  }
+}
+
+// Color input specific styles - Enhanced Color Picker
+.control-color {
+  width: 80px;
+  height: 48px;
+  padding: var(--spacing-xs);
+  cursor: pointer;
+  border-radius: var(--border-radius-md);
+  background: linear-gradient(145deg, var(--color-surface), var(--color-gray-50));
+  transition: all var(--transition-fast);
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  &::-webkit-color-swatch-wrapper {
+    padding: 0;
+    border-radius: calc(var(--border-radius-md) - var(--spacing-xs));
+    overflow: hidden;
+  }
+
+  &::-webkit-color-swatch {
+    border: none;
+    border-radius: calc(var(--border-radius-md) - var(--spacing-xs));
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  &::-moz-color-swatch {
+    border: none;
+    border-radius: calc(var(--border-radius-md) - var(--spacing-xs));
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// =============================================================================
+// HELP TEXT - Enhanced Information Display
+// =============================================================================
+
+.control-help {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-top: var(--spacing-xs);
+  line-height: var(--line-height-relaxed);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: linear-gradient(145deg, var(--color-gray-25), var(--color-gray-50));
+  border-radius: var(--border-radius-sm);
+  border-left: 3px solid var(--color-info);
+  transition: all var(--transition-fast);
+  
+  &::before {
+    content: '💡 ';
+    margin-right: var(--spacing-xs);
+    font-size: 0.9em;
+  }
+  
+  &:hover {
+    background: linear-gradient(145deg, rgba(0, 123, 255, 0.05), rgba(0, 123, 255, 0.1));
+    border-left-color: var(--color-primary);
+    transform: translateX(2px);
+  }
+}
+
+// =============================================================================
+// INTERACTIVE PREVIEW - Enhanced Showcase Area
+// =============================================================================
+
+.interactive-preview {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xxl);
+  min-height: 300px;
+  max-height: 400px;
+  background: linear-gradient(145deg, var(--color-surface), var(--color-gray-50));
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  position: relative;
+  transition: all var(--transition-base);
+
+  // Subtle inner highlight for depth
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+    opacity: 0.8;
+    z-index: 1;
+  }
+
+  &:hover {
+    border-color: var(--color-primary);
+    background: linear-gradient(145deg, var(--color-surface), var(--color-white));
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  }
+  
+  // Stabilize content size and ensure it's above highlight
+  > * {
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  @include mixins.respond-to("sm") {
+    padding: var(--spacing-lg);
+    min-height: 200px;
+    max-height: 300px;
+  }
+}
+
+// =============================================================================
+// OUTPUT DISPLAY - Enhanced Code Display
+// =============================================================================
+
+.showcase-output {
+  width: 100%;
+  padding: var(--spacing-lg);
+  background: linear-gradient(145deg, var(--color-gray-25), var(--color-gray-75));
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-top: var(--spacing-lg);
+  white-space: pre-wrap;
+  word-break: break-all;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition-fast);
+
+  // Subtle inner highlight
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    opacity: 0.8;
+    z-index: 1;
+  }
+
+  &:hover {
+    border-color: var(--color-primary);
+    background: linear-gradient(145deg, var(--color-gray-50), var(--color-gray-100));
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.1);
+  }
+
+  strong {
+    color: var(--color-text);
+    font-weight: var(--font-weight-semibold);
+    background: linear-gradient(145deg, rgba(0, 123, 255, 0.1), rgba(0, 123, 255, 0.15));
+    padding: 0.125em 0.25em;
+    border-radius: var(--border-radius-xs);
+    transition: all var(--transition-fast);
+    position: relative;
+    z-index: 2;
+  }
+
+  strong:hover {
+    background: linear-gradient(145deg, rgba(0, 123, 255, 0.15), rgba(0, 123, 255, 0.2));
+    transform: scale(1.02);
+  }
+}
+
+// =============================================================================
+// ENHANCED THEME SUPPORT
+// =============================================================================
+
+// Dark Theme Adjustments
+:where([data-theme="dark"]) {
+  .interactive-controls {
+    background: linear-gradient(145deg, var(--color-gray-700), var(--color-gray-600));
+    border-color: var(--color-gray-600);
+
+    &::before {
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    }
+
+    &:hover {
+      background: linear-gradient(145deg, var(--color-gray-600), var(--color-gray-500));
+      box-shadow: 0 8px 25px rgba(0, 123, 255, 0.2);
+    }
+  }
+
+  .control-group {
+    label:has(input[type="checkbox"]),
+    label:has(input[type="radio"]) {
+      &:hover {
+        background: linear-gradient(145deg, rgba(0, 123, 255, 0.1), rgba(0, 123, 255, 0.2));
+      }
+    }
+
+    fieldset {
+      background: linear-gradient(145deg, var(--color-gray-800), var(--color-gray-700));
+      border-color: var(--color-gray-600);
+
+      &::before {
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      }
+
+      &:hover {
+        background: linear-gradient(145deg, var(--color-gray-700), var(--color-gray-600));
+        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+      }
+
+      legend {
+        background: linear-gradient(145deg, var(--color-gray-800), var(--color-gray-700));
+        border-color: var(--color-gray-600);
+        color: var(--color-white);
+
+        &:hover {
+          background: linear-gradient(145deg, var(--color-gray-700), var(--color-gray-600));
+        }
+      }
+
+      label:hover {
+        background: linear-gradient(145deg, rgba(0, 123, 255, 0.1), rgba(0, 123, 255, 0.2));
+      }
+    }
+  }
+
+  .control-input {
+    background: linear-gradient(145deg, var(--color-gray-700), var(--color-gray-600));
+    border-color: var(--color-gray-600);
+    color: var(--color-white);
+
+    &:hover {
+      background: linear-gradient(145deg, var(--color-gray-600), var(--color-gray-500));
+      box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+    }
+
+    &:focus {
+      background: var(--color-gray-700);
+      box-shadow: 
+        0 0 0 3px rgba(0, 123, 255, 0.25),
+        0 4px 12px rgba(0, 123, 255, 0.2);
+    }
+
+    &:disabled {
+      background: var(--color-gray-800);
+      color: var(--color-gray-400);
+
+      &:hover {
+        background: var(--color-gray-800);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+
+  .control-color {
+    background: linear-gradient(145deg, var(--color-gray-700), var(--color-gray-600));
+  }
+
+  .control-help {
+    background: linear-gradient(145deg, var(--color-gray-750), var(--color-gray-700));
+    color: var(--color-gray-300);
+
+    &:hover {
+      background: linear-gradient(145deg, rgba(0, 123, 255, 0.1), rgba(0, 123, 255, 0.2));
+    }
+  }
+
+  .interactive-preview {
+    background: linear-gradient(145deg, var(--color-gray-800), var(--color-gray-700));
+    border-color: var(--color-gray-600);
+
+    &::before {
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    }
+
+    &:hover {
+      background: linear-gradient(145deg, var(--color-gray-700), var(--color-gray-600));
+      box-shadow: 0 8px 25px rgba(0, 123, 255, 0.2);
+    }
+  }
+
+  .showcase-output {
+    background: linear-gradient(145deg, var(--color-gray-750), var(--color-gray-700));
+    border-color: var(--color-gray-600);
+    color: var(--color-gray-300);
+
+    &::before {
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    }
+
+    &:hover {
+      background: linear-gradient(145deg, var(--color-gray-700), var(--color-gray-600));
+      box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+    }
+
+    strong {
+      color: var(--color-white);
+      background: linear-gradient(145deg, rgba(0, 123, 255, 0.2), rgba(0, 123, 255, 0.3));
+
+      &:hover {
+        background: linear-gradient(145deg, rgba(0, 123, 255, 0.3), rgba(0, 123, 255, 0.4));
+      }
+    }
+  }
+}
+
+// High Contrast Theme
+:where([data-theme="high-contrast"]) {
+  .interactive-controls,
+  .interactive-preview,
+  .showcase-output {
+    border-width: 2px;
+    background: var(--color-white);
+
+    &::before {
+      display: none;
+    }
+  }
+
+  .control-group fieldset {
+    border-width: 2px;
+    background: var(--color-white);
+
+    &::before {
+      display: none;
+    }
+
+    legend {
+      background: var(--color-white);
+      border-width: 2px;
+    }
+  }
+
+  .control-input {
+    border-width: 2px;
+    background: var(--color-white);
+
+    &:focus {
+      outline: 3px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+  }
+
+  .interactive-preview:hover,
+  .interactive-controls:hover {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+}
+
+// =============================================================================
+// RESPONSIVE ADJUSTMENTS
+// =============================================================================
+
+@include mixins.respond-to("sm") {
+  .showcase-interactive {
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-lg);
+  }
+
+  .interactive-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+  }
+
+  .control-group {
+    &:hover {
+      transform: none;
+    }
+
+    label:has(input[type="checkbox"]),
+    label:has(input[type="radio"]) {
+      &:hover {
+        transform: none;
+      }
+    }
+
+    fieldset {
+      padding: var(--spacing-md);
+
+      label:hover {
+        transform: none;
+      }
+    }
+  }
+
+  .control-input {
+    &:hover,
+    &:focus {
+      transform: none;
+    }
+  }
+
+  .control-help {
+    &:hover {
+      transform: none;
+    }
+  }
+
+  .interactive-preview {
+    &:hover {
+      transform: none;
+    }
+  }
+
+  .showcase-output {
+    padding: var(--spacing-md);
+    margin-top: var(--spacing-md);
+
+    &:hover {
+      transform: none;
+    }
+  }
+}
+
+// =============================================================================
+// ANIMATION ENHANCEMENTS
+// =============================================================================
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+// Loading state for controls
+.control-group--loading {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: shimmer 2s infinite;
+    pointer-events: none;
+    z-index: 3;
+  }
+}
+
+// Entry animation for interactive elements
+.showcase-interactive {
+  animation: fadeIn 0.6s ease-out;
+}
+
+// =============================================================================
+// REDUCED MOTION SUPPORT
+// =============================================================================
+
+@media (prefers-reduced-motion: reduce) {
+  .showcase-interactive,
+  .interactive-controls,
+  .control-group,
+  .control-input,
+  .control-range::-webkit-slider-thumb,
+  .control-range::-moz-range-thumb,
+  .control-color,
+  .control-help,
+  .interactive-preview,
+  .showcase-output,
+  .showcase-output strong {
+    transition: none;
+    animation: none;
+    transform: none;
+  }
+
+  .control-group:hover,
+  .control-input:hover,
+  .control-input:focus,
+  .control-help:hover,
+  .interactive-preview:hover,
+  .showcase-output:hover {
+    transform: none;
+  }
+
+  .control-group--loading::after {
+    animation: none;
+  }
+} 

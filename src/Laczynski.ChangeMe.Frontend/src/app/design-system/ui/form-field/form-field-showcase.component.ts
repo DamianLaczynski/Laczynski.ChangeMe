@@ -9,7 +9,13 @@ import {
 } from '@angular/forms';
 
 import { FormFieldComponent } from './form-field.component';
-import { ApiDocumentationComponent } from '../../shared/components';
+import { ApiDocumentationComponent, InteractiveExampleComponent } from '../../shared/components';
+import {
+  InteractiveExampleConfig,
+  InteractiveConfigChangeEvent,
+  createSelectControl,
+  createCheckboxControl,
+} from '../../shared/components/interactive-example/interactive-example.model';
 import { InputComponent } from '../input/input.component';
 import { SelectComponent } from '../select/select.component';
 import { CheckboxComponent } from '../checkbox/checkbox.component';
@@ -34,6 +40,21 @@ import {
   ShowcaseConfig,
 } from '../../models/showcase.model';
 
+// =============================================================================
+// FORM FIELD INTERACTIVE CONFIG TYPE
+// =============================================================================
+
+interface FormFieldInteractiveConfig {
+  variant: FormFieldVariant;
+  size: FormFieldSize;
+  layout: FormFieldLayout;
+  labelPosition: FormFieldLabelPosition;
+  required: boolean;
+  disabled: boolean;
+  loading: boolean;
+  showCharacterCount: boolean;
+}
+
 /**
  * Form Field Showcase Component
  *
@@ -49,6 +70,7 @@ import {
     FormsModule,
     FormFieldComponent,
     ApiDocumentationComponent,
+    InteractiveExampleComponent,
     InputComponent,
     SelectComponent,
     CheckboxComponent,
@@ -62,6 +84,34 @@ import {
         <h1>{{ showcaseConfig().component.componentName }}</h1>
         <p class="showcase-description">{{ showcaseConfig().component.description }}</p>
       </div>
+
+      <!-- Interactive Example using new component -->
+      <ds-interactive-example
+        [config]="interactiveConfig()"
+        [currentConfig]="interactiveFormFieldConfig()"
+        [lastAction]="lastAction"
+        (configChange)="onInteractiveConfigChange($event)"
+      >
+        <ds-form-field
+          [variant]="interactiveFormFieldConfig().variant"
+          [size]="interactiveFormFieldConfig().size"
+          [layout]="interactiveFormFieldConfig().layout"
+          [labelPosition]="interactiveFormFieldConfig().labelPosition"
+          [required]="interactiveFormFieldConfig().required"
+          [disabled]="interactiveFormFieldConfig().disabled"
+          [loading]="interactiveFormFieldConfig().loading"
+          label="Interactive Form Field"
+          [hint]="interactiveHint()"
+        >
+          <ds-input
+            placeholder="Enter text..."
+            [value]="interactiveValue()"
+            [maxLength]="interactiveFormFieldConfig().showCharacterCount ? 50 : null"
+            [showCounter]="interactiveFormFieldConfig().showCharacterCount"
+            (valueChange)="updateInteractiveValue($event)"
+          />
+        </ds-form-field>
+      </ds-interactive-example>
 
       <!-- Basic Examples -->
       <section class="showcase-section">
@@ -275,122 +325,6 @@ import {
         </div>
       </section>
 
-      <!-- Interactive Example -->
-      <section class="showcase-section">
-        <h2>Interactive Example</h2>
-        <p>Try different configurations and see real-time changes.</p>
-
-        <div class="showcase-interactive">
-          <div class="interactive-controls">
-            <div class="control-group">
-              <label for="variant-select">Variant:</label>
-              <select
-                id="variant-select"
-                [(ngModel)]="currentInteractiveConfig.variant"
-                class="control-input"
-              >
-                @for (variant of variants(); track variant) {
-                  <option [value]="variant">{{ variant | titlecase }}</option>
-                }
-              </select>
-            </div>
-
-            <div class="control-group">
-              <label for="size-select">Size:</label>
-              <select
-                id="size-select"
-                [(ngModel)]="currentInteractiveConfig.size"
-                class="control-input"
-              >
-                @for (size of sizes(); track size) {
-                  <option [value]="size">{{ size | uppercase }}</option>
-                }
-              </select>
-            </div>
-
-            <div class="control-group">
-              <label for="layout-select">Layout:</label>
-              <select
-                id="layout-select"
-                [(ngModel)]="currentInteractiveConfig.layout"
-                class="control-input"
-              >
-                @for (layout of layouts(); track layout) {
-                  <option [value]="layout">{{ layout | titlecase }}</option>
-                }
-              </select>
-            </div>
-
-            <div class="control-group">
-              <label for="position-select">Label Position:</label>
-              <select
-                id="position-select"
-                [(ngModel)]="currentInteractiveConfig.labelPosition"
-                class="control-input"
-              >
-                @for (position of labelPositions(); track position) {
-                  <option [value]="position">{{ position | titlecase }}</option>
-                }
-              </select>
-            </div>
-
-            <div class="control-group">
-              <label>
-                <input type="checkbox" [(ngModel)]="currentInteractiveConfig.required" /> Required
-              </label>
-            </div>
-
-            <div class="control-group">
-              <label>
-                <input type="checkbox" [(ngModel)]="currentInteractiveConfig.disabled" /> Disabled
-              </label>
-            </div>
-
-            <div class="control-group">
-              <label>
-                <input type="checkbox" [(ngModel)]="currentInteractiveConfig.loading" /> Loading
-              </label>
-            </div>
-
-            <div class="control-group">
-              <label>
-                <input type="checkbox" [(ngModel)]="currentInteractiveConfig.showCharacterCount" />
-                Character Count
-              </label>
-            </div>
-          </div>
-
-          <div class="interactive-preview">
-            <ds-form-field
-              [variant]="currentInteractiveConfig.variant"
-              [size]="currentInteractiveConfig.size"
-              [layout]="currentInteractiveConfig.layout"
-              [labelPosition]="currentInteractiveConfig.labelPosition"
-              [required]="currentInteractiveConfig.required"
-              [disabled]="currentInteractiveConfig.disabled"
-              [loading]="currentInteractiveConfig.loading"
-              [showCharacterCount]="currentInteractiveConfig.showCharacterCount"
-              [maxLength]="50"
-              [value]="interactiveValue()"
-              label="Interactive Field"
-              [hint]="interactiveHint()"
-            >
-              <ds-input
-                placeholder="Type here to test..."
-                [value]="interactiveValue()"
-                [disabled]="currentInteractiveConfig.disabled"
-                (valueChange)="updateInteractiveValue($event)"
-              />
-            </ds-form-field>
-          </div>
-
-          <div class="showcase-output">
-            <h4>Current Configuration:</h4>
-            <pre>{{ currentInteractiveConfig | json }}</pre>
-          </div>
-        </div>
-      </section>
-
       <!-- Form Integration -->
       <section class="showcase-section">
         <h2>Form Integration</h2>
@@ -479,7 +413,57 @@ export class FormFieldShowcaseComponent implements ShowcaseComponent {
   labelPositions = signal<FormFieldLabelPosition[]>(['top', 'left', 'inside', 'floating']);
 
   // =============================================================================
-  // INTERACTIVE CONFIGURATION
+  // INTERACTIVE EXAMPLE CONFIGURATION
+  // =============================================================================
+
+  private interactiveFormFieldConfigSignal = signal<FormFieldInteractiveConfig>({
+    variant: 'default',
+    size: 'md',
+    layout: 'vertical',
+    labelPosition: 'top',
+    required: false,
+    disabled: false,
+    loading: false,
+    showCharacterCount: false,
+  });
+
+  readonly interactiveFormFieldConfig = computed(() => this.interactiveFormFieldConfigSignal());
+
+  readonly interactiveConfig = computed<InteractiveExampleConfig>(() => ({
+    title: 'Interactive Form Field Example',
+    description: 'Customize the form field properties using the controls below.',
+    controls: [
+      createSelectControl('variant', 'Variant', 'variant', [
+        { value: 'default', label: 'Default' },
+        { value: 'outlined', label: 'Outlined' },
+        { value: 'filled', label: 'Filled' },
+      ]),
+      createSelectControl('size', 'Size', 'size', [
+        { value: 'sm', label: 'Small' },
+        { value: 'md', label: 'Medium' },
+        { value: 'lg', label: 'Large' },
+      ]),
+      createSelectControl('layout', 'Layout', 'layout', [
+        { value: 'vertical', label: 'Vertical' },
+        { value: 'horizontal', label: 'Horizontal' },
+        { value: 'inline', label: 'Inline' },
+      ]),
+      createSelectControl('labelPosition', 'Label Position', 'labelPosition', [
+        { value: 'top', label: 'Top' },
+        { value: 'left', label: 'Left' },
+        { value: 'inside', label: 'Inside' },
+        { value: 'floating', label: 'Floating' },
+      ]),
+      createCheckboxControl('required', 'Required', 'required'),
+      createCheckboxControl('disabled', 'Disabled', 'disabled'),
+      createCheckboxControl('loading', 'Loading', 'loading'),
+      createCheckboxControl('showCharacterCount', 'Show Character Count', 'showCharacterCount'),
+    ],
+    showOutput: true,
+  }));
+
+  // =============================================================================
+  // LEGACY INTERACTIVE CONFIGURATION (keeping for backward compatibility)
   // =============================================================================
 
   currentInteractiveConfig = {
@@ -649,6 +633,7 @@ export class FormFieldShowcaseComponent implements ShowcaseComponent {
 
   updateInteractiveValue(value: string): void {
     this.interactiveValue.set(value);
+    this.lastActionSignal.set(`Interactive value changed: "${value}"`);
   }
 
   resetForm(): void {
@@ -781,4 +766,9 @@ export class FormFieldShowcaseComponent implements ShowcaseComponent {
 
     return createShowcaseConfig(componentInfo, apiDocumentation);
   });
+
+  onInteractiveConfigChange(event: InteractiveConfigChangeEvent<FormFieldInteractiveConfig>): void {
+    this.interactiveFormFieldConfigSignal.set(event.config);
+    this.lastActionSignal.set(`Configuration changed: ${event.property} = ${event.value}`);
+  }
 }

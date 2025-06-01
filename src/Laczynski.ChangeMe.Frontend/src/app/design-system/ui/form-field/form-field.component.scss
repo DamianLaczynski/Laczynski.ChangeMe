@@ -1,14 +1,14 @@
 // =============================================================================
-// Form Field Component Styles
+// Form Field Component Styles - Modern & Professional Design
 // =============================================================================
-// Wrapper component for form controls with labeling, validation, and layout
-// Uses design tokens and mixins for consistency
+// Enhanced form field component with advanced styling, smooth transitions,
+// and excellent UX patterns matching the input component design
 
 @use "../../../../styles/abstracts/variables";
 @use "../../../../styles/abstracts/mixins";
 
 // =============================================================================
-// FORM FIELD CONTAINER
+// FORM FIELD CONTAINER - Modern Design
 // =============================================================================
 
 .ds-form-field {
@@ -18,10 +18,11 @@
   width: 100%;
   font-family: var(--font-family-primary);
   position: relative;
+  transition: all var(--transition-base) var(--ease-out-cubic);
 }
 
 // =============================================================================
-// LAYOUT VARIANTS
+// LAYOUT VARIANTS - Enhanced Layouts
 // =============================================================================
 
 // Vertical layout (default)
@@ -49,6 +50,16 @@
   .ds-form-field__container {
     flex: 1;
   }
+
+  @include mixins.respond-to("sm") {
+    flex-direction: column;
+    
+    .ds-form-field__label {
+      width: auto;
+      padding-top: 0;
+      margin-bottom: var(--spacing-xs);
+    }
+  }
 }
 
 // Inline layout
@@ -65,10 +76,19 @@
   .ds-form-field__container {
     flex: 1;
   }
+
+  @include mixins.respond-to("sm") {
+    flex-direction: column;
+    align-items: stretch;
+    
+    .ds-form-field__label {
+      margin-bottom: var(--spacing-xs);
+    }
+  }
 }
 
 // =============================================================================
-// LABEL
+// LABEL - Enhanced Typography
 // =============================================================================
 
 .ds-form-field__label {
@@ -78,6 +98,7 @@
   line-height: var(--line-height-normal);
   cursor: pointer;
   transition: all var(--transition-fast);
+  position: relative;
   
   &.required {
     &::after {
@@ -85,9 +106,23 @@
     }
   }
   
+  .ds-form-field--focused & {
+    color: var(--color-primary);
+    transform: translateY(-1px);
+  }
+  
   .ds-form-field--disabled & {
     color: var(--color-text-disabled);
     cursor: not-allowed;
+    transform: none;
+  }
+
+  .ds-form-field--invalid & {
+    color: var(--color-danger);
+  }
+
+  .ds-form-field--valid & {
+    color: var(--color-success);
   }
 }
 
@@ -95,35 +130,55 @@
   color: var(--color-danger);
   margin-left: var(--spacing-xs);
   font-weight: var(--font-weight-bold);
+  animation: pulse 2s infinite;
 }
 
-// Floating label
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+// Floating label - Enhanced Animation
 .ds-form-field__label--floating {
   position: absolute;
   top: 50%;
   left: var(--spacing-sm);
   transform: translateY(-50%);
-  background-color: var(--color-surface);
+  background: linear-gradient(145deg, var(--color-surface), var(--color-gray-50));
   padding: 0 var(--spacing-xs);
   pointer-events: none;
-  transition: all var(--transition-fast);
+  transition: all var(--transition-base) var(--ease-out-cubic);
   z-index: 1;
+  border-radius: var(--border-radius-sm);
+  backdrop-filter: blur(4px);
   
   .ds-form-field--focused &,
   .ds-form-field--valid & {
     top: 0;
-    transform: translateY(-50%);
+    transform: translateY(-50%) scale(0.85);
     font-size: var(--font-size-sm);
     color: var(--color-primary);
+    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.1);
   }
   
   .ds-form-field--invalid & {
     color: var(--color-danger);
+    background: linear-gradient(145deg, rgba(220, 53, 69, 0.05), rgba(220, 53, 69, 0.1));
+    
+    &.ds-form-field--focused,
+    &.ds-form-field--valid {
+      box-shadow: 0 2px 4px rgba(220, 53, 69, 0.2);
+    }
+  }
+
+  .ds-form-field--disabled & {
+    background: var(--color-surface-disabled);
+    color: var(--color-text-disabled);
   }
 }
 
 // =============================================================================
-// FIELD CONTAINER
+// FIELD CONTAINER - Enhanced Layout
 // =============================================================================
 
 .ds-form-field__container {
@@ -131,6 +186,7 @@
   display: flex;
   align-items: center;
   width: 100%;
+  transition: all var(--transition-fast);
 }
 
 .ds-form-field__control {
@@ -146,7 +202,75 @@
 }
 
 // =============================================================================
-// LOADING INDICATOR
+// FIELD STATES - Enhanced Visual Feedback
+// =============================================================================
+
+.ds-form-field {
+  &--focused {
+    .ds-form-field__container {
+      transform: translateY(-1px);
+    }
+  }
+
+  &--disabled {
+    opacity: 0.7;
+    pointer-events: none;
+    
+    .ds-form-field__container {
+      transform: none;
+    }
+  }
+
+  &--loading {
+    .ds-form-field__container {
+      position: relative;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        animation: shimmer 2s infinite;
+        pointer-events: none;
+        z-index: 1;
+      }
+    }
+  }
+
+  &--invalid {
+    .ds-form-field__container {
+      animation: shake 0.3s ease-in-out;
+    }
+  }
+
+  &--valid {
+    .ds-form-field__container {
+      animation: bounce 0.3s ease-in-out;
+    }
+  }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+// =============================================================================
+// LOADING INDICATOR - Enhanced Design
 // =============================================================================
 
 .ds-form-field__loading {
@@ -156,6 +280,7 @@
   transform: translateY(-50%);
   z-index: 2;
   pointer-events: none;
+  transition: opacity var(--transition-fast);
 }
 
 .ds-form-field__spinner {
@@ -165,7 +290,8 @@
   border: 2px solid var(--color-border);
   border-radius: 50%;
   border-top-color: var(--color-primary);
-  animation: spin 1s ease-in-out infinite;
+  animation: spin 1s linear infinite;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
 }
 
 @keyframes spin {
@@ -175,7 +301,7 @@
 }
 
 // =============================================================================
-// HINT TEXT
+// HINT TEXT - Enhanced UX
 // =============================================================================
 
 .ds-form-field__hint {
@@ -185,84 +311,135 @@
   align-items: flex-start;
   gap: var(--spacing-xs);
   margin-top: var(--spacing-xs);
+  transition: all var(--transition-fast);
+  opacity: 0;
+  transform: translateY(-4px);
+  animation: slideIn 0.3s ease-out forwards;
   
   &--info {
     color: var(--color-text-secondary);
+    
+    &::before {
+      content: 'ℹ️';
+      margin-right: var(--spacing-xs);
+      font-size: 0.9em;
+    }
   }
   
   &--success {
     color: var(--color-success);
+    font-weight: var(--font-weight-medium);
+    
+    &::before {
+      content: '✓';
+      margin-right: var(--spacing-xs);
+      font-weight: var(--font-weight-bold);
+      font-size: 0.9em;
+    }
   }
   
   &--warning {
     color: var(--color-warning);
+    font-weight: var(--font-weight-medium);
+    
+    &::before {
+      content: '⚠️';
+      margin-right: var(--spacing-xs);
+      font-size: 0.9em;
+    }
   }
   
   &--error {
     color: var(--color-danger);
+    font-weight: var(--font-weight-medium);
+    
+    &::before {
+      content: '❌';
+      margin-right: var(--spacing-xs);
+      font-size: 0.9em;
+    }
   }
 }
 
-.ds-form-field__hint-icon {
-  flex-shrink: 0;
-  font-size: var(--font-size-sm);
-  line-height: 1;
+@keyframes slideIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 // =============================================================================
-// VALIDATION MESSAGES
+// VALIDATION STATES - Enhanced Visual Feedback
 // =============================================================================
 
-.ds-form-field__validation {
+.ds-form-field__validation-icon {
+  position: absolute;
+  top: 50%;
+  right: var(--spacing-sm);
+  transform: translateY(-50%);
+  z-index: 2;
   font-size: var(--font-size-sm);
-  line-height: var(--line-height-normal);
-  display: flex;
-  align-items: flex-start;
-  gap: var(--spacing-xs);
-  margin-top: var(--spacing-xs);
-  min-height: 20px;
   transition: all var(--transition-fast);
+  pointer-events: none;
   
-  &--valid {
+  &--success {
     color: var(--color-success);
+    animation: popIn 0.3s ease-out;
   }
   
-  &--invalid {
+  &--error {
     color: var(--color-danger);
+    animation: popIn 0.3s ease-out;
   }
   
   &--warning {
     color: var(--color-warning);
+    animation: popIn 0.3s ease-out;
+  }
+}
+
+@keyframes popIn {
+  0% { transform: translateY(-50%) scale(0); }
+  100% { transform: translateY(-50%) scale(1); }
+}
+
+// =============================================================================
+// FIELD GROUPS - Enhanced Layout
+// =============================================================================
+
+.ds-form-field__group {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: flex-end;
+  
+  .ds-form-field {
+    flex: 1;
   }
   
-  &--pending {
-    color: var(--color-text-secondary);
+  &--equal {
+    .ds-form-field {
+      flex: 1 1 0;
+    }
   }
-}
-
-.ds-form-field__validation-icon {
-  flex-shrink: 0;
-  font-size: var(--font-size-sm);
-  line-height: 1;
-}
-
-// =============================================================================
-// CHARACTER COUNT
-// =============================================================================
-
-.ds-form-field__character-count {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-secondary);
-  text-align: right;
-  margin-top: var(--spacing-xs);
   
-  .ds-form-field--invalid & {
-    color: var(--color-danger);
+  &--auto {
+    .ds-form-field {
+      flex: 0 1 auto;
+    }
+  }
+
+  @include mixins.respond-to("sm") {
+    flex-direction: column;
+    align-items: stretch;
+    
+    .ds-form-field {
+      flex: none;
+    }
   }
 }
 
 // =============================================================================
-// SIZE VARIANTS
+// SIZE VARIANTS - Enhanced Spacing
 // =============================================================================
 
 .ds-form-field--sm {
@@ -272,293 +449,230 @@
     font-size: var(--font-size-sm);
   }
   
-  .ds-form-field__hint,
-  .ds-form-field__validation {
+  .ds-form-field__hint {
     font-size: var(--font-size-xs);
+    margin-top: 2px;
   }
   
-  .ds-form-field__character-count {
-    font-size: 10px;
-  }
-  
-  &.ds-form-field--horizontal {
-    .ds-form-field__label {
-      width: 120px;
-    }
+  .ds-form-field__spinner {
+    width: 14px;
+    height: 14px;
   }
 }
 
 .ds-form-field--md {
-  gap: var(--spacing-sm);
+  gap: var(--spacing-xs);
   
   .ds-form-field__label {
     font-size: var(--font-size-base);
   }
   
-  .ds-form-field__hint,
-  .ds-form-field__validation {
+  .ds-form-field__hint {
     font-size: var(--font-size-sm);
   }
   
-  .ds-form-field__character-count {
-    font-size: var(--font-size-xs);
-  }
-  
-  &.ds-form-field--horizontal {
-    .ds-form-field__label {
-      width: 150px;
-    }
+  .ds-form-field__spinner {
+    width: 16px;
+    height: 16px;
   }
 }
 
 .ds-form-field--lg {
-  gap: var(--spacing-md);
+  gap: var(--spacing-sm);
   
   .ds-form-field__label {
     font-size: var(--font-size-lg);
   }
   
-  .ds-form-field__hint,
-  .ds-form-field__validation {
+  .ds-form-field__hint {
     font-size: var(--font-size-base);
   }
   
-  .ds-form-field__character-count {
-    font-size: var(--font-size-sm);
-  }
-  
-  &.ds-form-field--horizontal {
-    .ds-form-field__label {
-      width: 180px;
-    }
+  .ds-form-field__spinner {
+    width: 18px;
+    height: 18px;
   }
 }
 
 // =============================================================================
-// VARIANT STYLES
+// FIELD ADDON - Enhanced Styling
 // =============================================================================
 
-.ds-form-field--outlined {
-  .ds-form-field__container {
-    border: 1px solid var(--color-border);
-    border-radius: var(--border-radius-md);
-    padding: var(--spacing-xs) var(--spacing-sm);
-    background-color: var(--color-surface);
-    transition: all var(--transition-fast);
-    
-    &:hover {
-      border-color: var(--color-primary);
-    }
+.ds-form-field__addon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, var(--color-gray-50), var(--color-gray-100));
+  border: 1.5px solid var(--color-border);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  min-width: 40px;
+  padding: 0 var(--spacing-sm);
+  transition: all var(--transition-fast);
+  backdrop-filter: blur(4px);
+  
+  &--start {
+    border-top-left-radius: var(--border-radius-md);
+    border-bottom-left-radius: var(--border-radius-md);
+    border-right: none;
   }
   
-  &.ds-form-field--focused .ds-form-field__container {
+  &--end {
+    border-top-right-radius: var(--border-radius-md);
+    border-bottom-right-radius: var(--border-radius-md);
+    border-left: none;
+  }
+  
+  .ds-form-field--focused & {
     border-color: var(--color-primary);
-    @include mixins.focus-state;
-  }
-  
-  &.ds-form-field--invalid .ds-form-field__container {
-    border-color: var(--color-danger);
-  }
-  
-  &.ds-form-field--disabled .ds-form-field__container {
-    background-color: var(--color-surface-disabled);
-    border-color: var(--color-border-disabled);
-  }
-}
-
-.ds-form-field--filled {
-  .ds-form-field__container {
-    background-color: var(--color-gray-100);
-    border: none;
-    border-radius: var(--border-radius-md);
-    padding: var(--spacing-xs) var(--spacing-sm);
-    transition: all var(--transition-fast);
-    
-    &:hover {
-      background-color: var(--color-gray-200);
-    }
-  }
-  
-  &.ds-form-field--focused .ds-form-field__container {
-    background-color: var(--color-surface);
-    @include mixins.focus-state;
-  }
-  
-  &.ds-form-field--invalid .ds-form-field__container {
-    background-color: rgba(var(--color-danger-rgb), 0.1);
-  }
-  
-  &.ds-form-field--disabled .ds-form-field__container {
-    background-color: var(--color-surface-disabled);
-  }
-}
-
-// =============================================================================
-// STATE STYLES
-// =============================================================================
-
-.ds-form-field--disabled {
-  opacity: 0.6;
-  pointer-events: none;
-  
-  .ds-form-field__label,
-  .ds-form-field__hint,
-  .ds-form-field__validation {
-    color: var(--color-text-disabled);
-  }
-}
-
-.ds-form-field--readonly {
-  .ds-form-field__container {
-    background-color: var(--color-gray-50);
-  }
-  
-  .ds-form-field__label {
-    color: var(--color-text-secondary);
-  }
-}
-
-.ds-form-field--loading {
-  .ds-form-field__control {
-    padding-right: calc(var(--spacing-lg) + 16px);
-  }
-}
-
-.ds-form-field--focused {
-  .ds-form-field__label {
+    background: linear-gradient(145deg, rgba(0, 123, 255, 0.05), rgba(0, 123, 255, 0.1));
     color: var(--color-primary);
+    transform: translateY(-1px);
   }
-}
-
-.ds-form-field--valid {
-  .ds-form-field__label {
-    color: var(--color-success);
-  }
-}
-
-.ds-form-field--invalid {
-  .ds-form-field__label {
+  
+  .ds-form-field--invalid & {
+    border-color: var(--color-danger);
+    background: linear-gradient(145deg, rgba(220, 53, 69, 0.05), rgba(220, 53, 69, 0.1));
     color: var(--color-danger);
   }
+  
+  .ds-form-field--valid & {
+    border-color: var(--color-success);
+    background: linear-gradient(145deg, rgba(40, 167, 69, 0.05), rgba(40, 167, 69, 0.1));
+    color: var(--color-success);
+  }
+  
+  .ds-form-field--disabled & {
+    background: var(--color-surface-disabled);
+    border-color: var(--color-border);
+    color: var(--color-text-disabled);
+    transform: none;
+  }
 }
 
-.ds-form-field--warning {
-  .ds-form-field__label {
+// =============================================================================
+// HELP TEXT - Enhanced Information Display
+// =============================================================================
+
+.ds-form-field__help {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-relaxed);
+  margin-top: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: linear-gradient(145deg, var(--color-gray-25), var(--color-gray-50));
+  border-radius: var(--border-radius-sm);
+  border-left: 3px solid var(--color-primary);
+  transition: all var(--transition-fast);
+  opacity: 0;
+  transform: translateY(-4px);
+  animation: slideIn 0.3s ease-out forwards;
+  
+  &::before {
+    content: '💡';
+    margin-right: var(--spacing-xs);
+    font-size: 0.9em;
+  }
+  
+  .ds-form-field--focused & {
+    background: linear-gradient(145deg, rgba(0, 123, 255, 0.05), rgba(0, 123, 255, 0.1));
+    border-left-color: var(--color-primary);
+    transform: translateY(0) translateX(2px);
+  }
+}
+
+// =============================================================================
+// CHARACTER COUNT - Enhanced Feedback
+// =============================================================================
+
+.ds-form-field__counter {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  text-align: right;
+  margin-top: var(--spacing-xs);
+  font-variant-numeric: tabular-nums;
+  transition: color var(--transition-fast);
+  
+  &--warning {
     color: var(--color-warning);
+    font-weight: var(--font-weight-medium);
+  }
+  
+  &--error {
+    color: var(--color-danger);
+    font-weight: var(--font-weight-medium);
+    animation: pulse 1s infinite;
   }
 }
 
 // =============================================================================
-// LABEL POSITION VARIANTS
+// ENHANCED THEME SUPPORT
 // =============================================================================
 
-.ds-form-field--label-top {
-  // Default - already handled above
-}
-
-.ds-form-field--label-left {
-  // Handled in horizontal layout
-}
-
-.ds-form-field--label-inside {
-  .ds-form-field__container {
-    position: relative;
-  }
-  
-  .ds-form-field__label {
-    position: absolute;
-    top: 50%;
-    left: var(--spacing-sm);
-    transform: translateY(-50%);
-    pointer-events: none;
-    z-index: 1;
-  }
-}
-
-.ds-form-field--label-floating {
-  .ds-form-field__container {
-    position: relative;
-    margin-top: var(--spacing-sm);
-  }
-}
-
-// =============================================================================
-// RESPONSIVE ADJUSTMENTS
-// =============================================================================
-
-@include mixins.respond-to("sm") {
-  .ds-form-field--horizontal,
-  .ds-form-field--inline {
-    flex-direction: column;
-    
-    .ds-form-field__label {
-      width: auto;
-      margin-bottom: var(--spacing-xs);
-      padding-top: 0;
-    }
-  }
-}
-
-// =============================================================================
-// THEME SUPPORT
-// =============================================================================
-
-[data-theme="dark"] {
-  .ds-form-field__label {
-    color: var(--color-white);
-  }
-  
-  .ds-form-field__hint {
-    &--info {
-      color: var(--color-gray-300);
-    }
-  }
-  
-  .ds-form-field__validation {
-    &--pending {
-      color: var(--color-gray-300);
-    }
-  }
-  
-  .ds-form-field__character-count {
-    color: var(--color-gray-300);
-  }
-  
-  .ds-form-field--outlined .ds-form-field__container {
-    background-color: var(--color-gray-800);
-    border-color: var(--color-gray-600);
-  }
-  
-  .ds-form-field--filled .ds-form-field__container {
-    background-color: var(--color-gray-700);
-    
-    &:hover {
-      background-color: var(--color-gray-600);
-    }
-  }
-  
+// Dark Theme Adjustments
+:where([data-theme="dark"]) {
   .ds-form-field__label--floating {
-    background-color: var(--color-gray-800);
+    background: linear-gradient(145deg, var(--color-gray-800), var(--color-gray-700));
+    
+    .ds-form-field--focused &,
+    .ds-form-field--valid & {
+      box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
+    }
+    
+    .ds-form-field--invalid & {
+      background: linear-gradient(145deg, rgba(220, 53, 69, 0.1), rgba(220, 53, 69, 0.2));
+      
+      &.ds-form-field--focused,
+      &.ds-form-field--valid {
+        box-shadow: 0 2px 4px rgba(220, 53, 69, 0.4);
+      }
+    }
+  }
+  
+  .ds-form-field__addon {
+    background: linear-gradient(145deg, var(--color-gray-700), var(--color-gray-600));
+    border-color: var(--color-gray-600);
+    
+    .ds-form-field--focused & {
+      background: linear-gradient(145deg, rgba(0, 123, 255, 0.1), rgba(0, 123, 255, 0.2));
+      box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
+    }
+  }
+  
+  .ds-form-field__help {
+    background: linear-gradient(145deg, var(--color-gray-750), var(--color-gray-700));
+    
+    .ds-form-field--focused & {
+      background: linear-gradient(145deg, rgba(0, 123, 255, 0.1), rgba(0, 123, 255, 0.2));
+    }
   }
 }
 
-[data-theme="high-contrast"] {
+// High Contrast Theme
+:where([data-theme="high-contrast"]) {
   .ds-form-field__label {
     font-weight: var(--font-weight-bold);
   }
   
-  .ds-form-field--outlined .ds-form-field__container {
+  .ds-form-field__label--floating {
+    background: var(--color-white);
+    border: 1px solid var(--color-text);
+    
+    .ds-form-field--focused &,
+    .ds-form-field--valid & {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 1px;
+    }
+  }
+  
+  .ds-form-field__addon {
+    background: var(--color-white);
     border-width: 2px;
   }
   
-  .ds-form-field--focused .ds-form-field__container {
-    outline: 3px solid var(--color-primary);
-    outline-offset: 2px;
-  }
-  
-  .ds-form-field--invalid .ds-form-field__container {
-    outline: 3px solid var(--color-danger);
-    outline-offset: 2px;
+  .ds-form-field__hint {
+    font-weight: var(--font-weight-medium);
   }
 }
 
@@ -567,39 +681,33 @@
 // =============================================================================
 
 @media (prefers-reduced-motion: reduce) {
+  .ds-form-field,
   .ds-form-field__label,
+  .ds-form-field__label--floating,
   .ds-form-field__container,
-  .ds-form-field__validation,
-  .ds-form-field__label--floating {
+  .ds-form-field__hint,
+  .ds-form-field__help,
+  .ds-form-field__addon,
+  .ds-form-field__validation-icon,
+  .ds-form-field__spinner,
+  .ds-form-field__required,
+  .ds-form-field__counter {
     transition: none;
-  }
-  
-  .ds-form-field__spinner {
     animation: none;
-  }
-}
-
-// =============================================================================
-// PRINT STYLES
-// =============================================================================
-
-@media print {
-  .ds-form-field {
-    break-inside: avoid;
+    transform: none;
   }
   
-  .ds-form-field__loading {
-    display: none;
+  .ds-form-field--focused {
+    .ds-form-field__container,
+    .ds-form-field__label,
+    .ds-form-field__addon {
+      transform: none;
+    }
   }
   
-  .ds-form-field__validation,
-  .ds-form-field__hint {
-    font-size: 10px !important;
-  }
-  
-  .ds-form-field--outlined .ds-form-field__container,
-  .ds-form-field--filled .ds-form-field__container {
-    border: 1px solid #000 !important;
-    background-color: transparent !important;
+  .ds-form-field--loading {
+    .ds-form-field__container::after {
+      animation: none;
+    }
   }
 } 

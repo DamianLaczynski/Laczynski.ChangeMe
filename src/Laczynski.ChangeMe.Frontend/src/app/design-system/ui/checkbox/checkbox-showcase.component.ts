@@ -3,7 +3,15 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { CheckboxComponent } from './checkbox.component';
-import { ApiDocumentationComponent } from '../../shared/components';
+import { ApiDocumentationComponent, InteractiveExampleComponent } from '../../shared/components';
+import {
+  InteractiveExampleConfig,
+  InteractiveConfigChangeEvent,
+  createSelectControl,
+  createTextControl,
+  createCheckboxControl,
+} from '../../shared/components/interactive-example/interactive-example.model';
+
 import {
   CheckboxOption,
   CheckboxVariant,
@@ -20,6 +28,24 @@ import {
   ShowcaseConfig,
 } from '../../models/showcase.model';
 
+// =============================================================================
+// CHECKBOX INTERACTIVE CONFIG TYPE
+// =============================================================================
+
+interface CheckboxInteractiveConfig {
+  variant: CheckboxVariant;
+  size: CheckboxSize;
+  label: string;
+  helperText: string;
+  disabled: boolean;
+  required: boolean;
+  indeterminate: boolean;
+  isGroup: boolean;
+  groupLayout: CheckboxGroupLayout;
+  showSelectAll: boolean;
+  value: boolean | any[];
+}
+
 /**
  * Checkbox Component Showcase
  *
@@ -29,7 +55,13 @@ import {
 @Component({
   selector: 'checkbox-showcase',
   standalone: true,
-  imports: [CommonModule, FormsModule, CheckboxComponent, ApiDocumentationComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    CheckboxComponent,
+    ApiDocumentationComponent,
+    InteractiveExampleComponent,
+  ],
   template: `
     <div class="showcase-container">
       <!-- Header -->
@@ -37,6 +69,31 @@ import {
         <h1>{{ showcaseConfig().component.componentName }}</h1>
         <p class="showcase-description">{{ showcaseConfig().component.description }}</p>
       </div>
+
+      <!-- Interactive Example using new component -->
+      <ds-interactive-example
+        [config]="interactiveConfig()"
+        [currentConfig]="interactiveCheckboxConfig()"
+        [lastAction]="lastAction"
+        (configChange)="onInteractiveConfigChange($event)"
+      >
+        <ds-checkbox
+          [variant]="interactiveCheckboxConfig().variant"
+          [size]="interactiveCheckboxConfig().size"
+          [label]="interactiveCheckboxConfig().label"
+          [helperText]="interactiveCheckboxConfig().helperText"
+          [disabled]="interactiveCheckboxConfig().disabled"
+          [required]="interactiveCheckboxConfig().required"
+          [indeterminate]="interactiveCheckboxConfig().indeterminate"
+          [isGroup]="interactiveCheckboxConfig().isGroup"
+          [groupLayout]="interactiveCheckboxConfig().groupLayout"
+          [showSelectAll]="interactiveCheckboxConfig().showSelectAll"
+          [value]="interactiveCheckboxConfig().value"
+          [options]="interactiveCheckboxConfig().isGroup ? demoOptions() : []"
+          (checkedChange)="onCheckedChange($event)"
+          (focus)="onFocus($event)"
+        />
+      </ds-interactive-example>
 
       <!-- Single Checkboxes Section -->
       <section class="showcase-section">
@@ -236,130 +293,6 @@ import {
         </div>
       </section>
 
-      <!-- Interactive Example -->
-      <section class="showcase-section">
-        <h2>Interactive Example</h2>
-
-        <div class="interactive-controls">
-          <div class="control-group">
-            <label>
-              Variant:
-              <select [(ngModel)]="demoConfigVariantValue" class="control-input">
-                @for (variant of checkboxVariants; track variant) {
-                  <option [value]="variant">{{ variant | titlecase }}</option>
-                }
-              </select>
-            </label>
-          </div>
-
-          <div class="control-group">
-            <label>
-              Size:
-              <select [(ngModel)]="demoConfigSizeValue" class="control-input">
-                @for (size of checkboxSizes; track size) {
-                  <option [value]="size">{{ size | uppercase }}</option>
-                }
-              </select>
-            </label>
-          </div>
-
-          <div class="control-group">
-            <label>
-              Label:
-              <input
-                type="text"
-                [(ngModel)]="demoConfigLabelValue"
-                class="control-input"
-                placeholder="Enter label..."
-              />
-            </label>
-          </div>
-
-          <div class="control-group">
-            <label>
-              Helper Text:
-              <input
-                type="text"
-                [(ngModel)]="demoConfigHelperTextValue"
-                class="control-input"
-                placeholder="Enter helper text..."
-              />
-            </label>
-          </div>
-
-          <div class="control-group">
-            <label>
-              <input type="checkbox" [(ngModel)]="demoConfigDisabledValue" />
-              Disabled
-            </label>
-          </div>
-
-          <div class="control-group">
-            <label>
-              <input type="checkbox" [(ngModel)]="demoConfigRequiredValue" />
-              Required
-            </label>
-          </div>
-
-          <div class="control-group">
-            <label>
-              <input type="checkbox" [(ngModel)]="demoConfigIndeterminateValue" />
-              Indeterminate
-            </label>
-          </div>
-
-          <div class="control-group">
-            <label>
-              <input type="checkbox" [(ngModel)]="demoConfigIsGroupValue" />
-              Group Mode
-            </label>
-          </div>
-
-          @if (demoConfigIsGroup()) {
-            <div class="control-group">
-              <label>
-                Group Layout:
-                <select [(ngModel)]="demoConfigGroupLayoutValue" class="control-input">
-                  @for (layout of groupLayouts; track layout) {
-                    <option [value]="layout">{{ layout | titlecase }}</option>
-                  }
-                </select>
-              </label>
-            </div>
-
-            <div class="control-group">
-              <label>
-                <input type="checkbox" [(ngModel)]="demoConfigShowSelectAllValue" />
-                Show Select All
-              </label>
-            </div>
-          }
-        </div>
-
-        <div class="interactive-preview">
-          <ds-checkbox
-            [variant]="demoConfigVariant()"
-            [size]="demoConfigSize()"
-            [label]="demoConfigLabel()"
-            [helperText]="demoConfigHelperText()"
-            [disabled]="demoConfigDisabled()"
-            [required]="demoConfigRequired()"
-            [indeterminate]="demoConfigIndeterminate()"
-            [isGroup]="demoConfigIsGroup()"
-            [options]="demoOptions()"
-            [groupLayout]="demoConfigGroupLayout()"
-            [showSelectAll]="demoConfigShowSelectAll()"
-            [value]="demoValue()"
-            (checkedChange)="onCheckedChange($event)"
-            (focus)="onFocus($event)"
-          />
-        </div>
-
-        <div class="showcase-output">
-          {{ lastAction || 'Interact with the checkbox above to see events...' }}
-        </div>
-      </section>
-
       <!-- Component API -->
       <section class="showcase-section">
         <h2>Component API</h2>
@@ -392,7 +325,62 @@ export class CheckboxShowcaseComponent implements ShowcaseComponent {
   checkboxSizes: CheckboxSize[] = ['sm', 'md', 'lg'];
   groupLayouts: CheckboxGroupLayout[] = ['vertical', 'horizontal', 'grid'];
 
-  // Individual signals for demo configuration
+  // =============================================================================
+  // INTERACTIVE EXAMPLE CONFIGURATION
+  // =============================================================================
+
+  private interactiveCheckboxConfigSignal = signal<CheckboxInteractiveConfig>({
+    variant: 'default',
+    size: 'md',
+    label: 'Demo Checkbox',
+    helperText: '',
+    disabled: false,
+    required: false,
+    indeterminate: false,
+    isGroup: false,
+    groupLayout: 'vertical',
+    showSelectAll: false,
+    value: false,
+  });
+
+  readonly interactiveCheckboxConfig = computed(() => this.interactiveCheckboxConfigSignal());
+
+  readonly interactiveConfig = computed<InteractiveExampleConfig>(() => ({
+    title: 'Interactive Checkbox Example',
+    description: 'Customize the checkbox properties using the controls below.',
+    controls: [
+      createSelectControl('variant', 'Variant', 'variant', [
+        { value: 'default', label: 'Default' },
+        { value: 'filled', label: 'Filled' },
+        { value: 'outlined', label: 'Outlined' },
+      ]),
+      createSelectControl('size', 'Size', 'size', [
+        { value: 'sm', label: 'Small' },
+        { value: 'md', label: 'Medium' },
+        { value: 'lg', label: 'Large' },
+      ]),
+      createTextControl('label', 'Label', 'label', { placeholder: 'Enter label...' }),
+      createTextControl('helperText', 'Helper Text', 'helperText', {
+        placeholder: 'Enter helper text...',
+      }),
+      createCheckboxControl('disabled', 'Disabled', 'disabled'),
+      createCheckboxControl('required', 'Required', 'required'),
+      createCheckboxControl('indeterminate', 'Indeterminate', 'indeterminate'),
+      createCheckboxControl('isGroup', 'Group Mode', 'isGroup'),
+      createSelectControl('groupLayout', 'Group Layout', 'groupLayout', [
+        { value: 'vertical', label: 'Vertical' },
+        { value: 'horizontal', label: 'Horizontal' },
+        { value: 'grid', label: 'Grid' },
+      ]),
+      createCheckboxControl('showSelectAll', 'Show Select All', 'showSelectAll'),
+    ],
+    showOutput: true,
+  }));
+
+  // =============================================================================
+  // LEGACY DEMO CONFIG (keeping for backward compatibility)
+  // =============================================================================
+
   demoConfigVariant = signal<CheckboxVariant>('default');
   demoConfigSize = signal<CheckboxSize>('md');
   demoConfigLabel = signal<string>('Demo Checkbox');
@@ -713,6 +701,11 @@ export class CheckboxShowcaseComponent implements ShowcaseComponent {
 
   onFocus(event: CheckboxFocusEvent): void {
     this.lastActionSignal.set(`Checkbox ${event.direction === 'in' ? 'focused' : 'blurred'}`);
+  }
+
+  onInteractiveConfigChange(event: InteractiveConfigChangeEvent<CheckboxInteractiveConfig>): void {
+    this.interactiveCheckboxConfigSignal.set(event.config);
+    this.lastActionSignal.set(`Configuration changed: ${event.property} = ${event.value}`);
   }
 
   // =============================================================================

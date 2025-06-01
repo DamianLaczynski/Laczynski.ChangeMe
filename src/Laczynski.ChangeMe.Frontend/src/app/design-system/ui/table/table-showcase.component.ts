@@ -10,7 +10,13 @@ import { CheckboxChangeEvent } from '../checkbox/checkbox.model';
 import { SelectOption } from '../select/select.model';
 import { FormFieldComponent } from '../form-field/form-field.component';
 import { FormGroupComponent } from '../form-group/form-group.component';
-import { ApiDocumentationComponent } from '../../shared/components';
+import { ApiDocumentationComponent, InteractiveExampleComponent } from '../../shared/components';
+import {
+  InteractiveExampleConfig,
+  InteractiveConfigChangeEvent,
+  createSelectControl,
+  createCheckboxControl,
+} from '../../shared/components/interactive-example/interactive-example.model';
 
 import { TableComponent } from './table.component';
 import {
@@ -55,6 +61,20 @@ interface UserSearchParameters extends PaginationParameters {
   department?: string;
 }
 
+// =============================================================================
+// TABLE INTERACTIVE CONFIG TYPE
+// =============================================================================
+
+interface TableInteractiveConfig {
+  variant: TableVariant;
+  size: TableSize;
+  border: TableBorder;
+  showSearch: boolean;
+  striped: boolean;
+  hoverable: boolean;
+  responsive: boolean;
+}
+
 /**
  * Table Showcase Component
  *
@@ -70,7 +90,14 @@ interface UserSearchParameters extends PaginationParameters {
 @Component({
   selector: 'ds-table-showcase',
   standalone: true,
-  imports: [CommonModule, TableComponent, ButtonComponent, ApiDocumentationComponent, FormsModule],
+  imports: [
+    CommonModule,
+    TableComponent,
+    ButtonComponent,
+    ApiDocumentationComponent,
+    InteractiveExampleComponent,
+    FormsModule,
+  ],
   template: `
     <div class="showcase-container">
       <!-- Header -->
@@ -81,99 +108,34 @@ interface UserSearchParameters extends PaginationParameters {
         </p>
       </div>
 
-      <!-- Interactive Example -->
-      <section class="showcase-section">
-        <h2>Interactive Example</h2>
-        <p>Try different configurations and features:</p>
-
-        <div class="showcase-interactive">
-          <!-- Configuration Panel -->
-          <div class="interactive-controls">
-            <div class="control-group">
-              <label for="variant-select">Variant:</label>
-              <select id="variant-select" [(ngModel)]="selectedVariant" class="control-input">
-                @for (option of variantSelectOptions; track option.value) {
-                  <option [value]="option.value">{{ option.label }}</option>
-                }
-              </select>
-            </div>
-
-            <div class="control-group">
-              <label for="size-select">Size:</label>
-              <select id="size-select" [(ngModel)]="selectedSize" class="control-input">
-                @for (option of sizeSelectOptions; track option.value) {
-                  <option [value]="option.value">{{ option.label }}</option>
-                }
-              </select>
-            </div>
-
-            <div class="control-group">
-              <label for="border-select">Border:</label>
-              <select id="border-select" [(ngModel)]="selectedBorder" class="control-input">
-                @for (option of borderSelectOptions; track option.value) {
-                  <option [value]="option.value">{{ option.label }}</option>
-                }
-              </select>
-            </div>
-
-            <div class="control-group">
-              <label>
-                <input type="checkbox" [(ngModel)]="showSearch" />
-                Show Search
-              </label>
-            </div>
-
-            <div class="control-group">
-              <label>
-                <input type="checkbox" [(ngModel)]="striped" />
-                Striped Rows
-              </label>
-            </div>
-
-            <div class="control-group">
-              <label>
-                <input type="checkbox" [(ngModel)]="hoverable" />
-                Hoverable Rows
-              </label>
-            </div>
-          </div>
-
-          <!-- Interactive Table -->
-          <div class="interactive-preview">
-            <ds-table
-              [variant]="selectedVariant()"
-              [size]="selectedSize()"
-              [border]="selectedBorder()"
-              [striped]="striped()"
-              [hoverable]="hoverable()"
-              [responsive]="responsive()"
-              [showSearch]="showSearch()"
-              [showRefresh]="true"
-              [showPagination]="true"
-              [showPageSizeSelector]="true"
-              [columns]="demoColumns()"
-              [dataState]="demoDataState"
-              [columnTemplates]="getColumnTemplates()"
-              (rowSelect)="onRowSelect($event)"
-              (sortChange)="onSortChange($event)"
-              (pageChange)="onPageChange($event)"
-              (filterChange)="onFilterChange($event)"
-              (refresh)="onRefresh()"
-            />
-          </div>
-
-          <!-- Selection Info -->
-          @if (selectedRows().length > 0) {
-            <div class="showcase-output">
-              <strong>Selected {{ selectedRows().length }} row(s):</strong>
-              {{ getSelectedNames() }}
-              <ds-button variant="secondary" size="sm" (clicked)="clearSelection()">
-                Clear Selection
-              </ds-button>
-            </div>
-          }
-        </div>
-      </section>
+      <!-- Interactive Example using new component -->
+      <ds-interactive-example
+        [config]="interactiveConfig()"
+        [currentConfig]="interactiveTableConfig()"
+        [lastAction]="lastAction"
+        (configChange)="onInteractiveConfigChange($event)"
+      >
+        <ds-table
+          [variant]="interactiveTableConfig().variant"
+          [size]="interactiveTableConfig().size"
+          [border]="interactiveTableConfig().border"
+          [striped]="interactiveTableConfig().striped"
+          [hoverable]="interactiveTableConfig().hoverable"
+          [responsive]="interactiveTableConfig().responsive"
+          [showSearch]="interactiveTableConfig().showSearch"
+          [showRefresh]="true"
+          [showPagination]="true"
+          [showPageSizeSelector]="true"
+          [columns]="demoColumns()"
+          [dataState]="demoDataState"
+          [columnTemplates]="getColumnTemplates()"
+          (rowSelect)="onRowSelect($event)"
+          (sortChange)="onSortChange($event)"
+          (pageChange)="onPageChange($event)"
+          (filterChange)="onFilterChange($event)"
+          (refresh)="onRefresh()"
+        />
+      </ds-interactive-example>
 
       <!-- Variants -->
       <section class="showcase-section">
@@ -372,10 +334,9 @@ export class TableShowcaseComponent implements ShowcaseComponent, OnInit {
 
   readonly variants = [
     { value: 'default' as TableVariant, label: 'Default' },
+    { value: 'striped' as TableVariant, label: 'Striped' },
     { value: 'bordered' as TableVariant, label: 'Bordered' },
     { value: 'borderless' as TableVariant, label: 'Borderless' },
-    { value: 'compact' as TableVariant, label: 'Compact' },
-    { value: 'comfortable' as TableVariant, label: 'Comfortable' },
   ];
 
   readonly sizes = [
@@ -385,16 +346,49 @@ export class TableShowcaseComponent implements ShowcaseComponent, OnInit {
   ];
 
   // =============================================================================
-  // INTERACTIVE CONTROLS
+  // INTERACTIVE EXAMPLE CONFIGURATION
   // =============================================================================
 
-  selectedVariant = signal<TableVariant>('default');
-  selectedSize = signal<TableSize>('md');
-  selectedBorder = signal<TableBorder>('horizontal');
-  showSearch = signal<boolean>(true);
-  striped = signal<boolean>(false);
-  hoverable = signal<boolean>(true);
-  responsive = signal<boolean>(true);
+  private interactiveTableConfigSignal = signal<TableInteractiveConfig>({
+    variant: 'default',
+    size: 'md',
+    border: 'horizontal',
+    showSearch: true,
+    striped: false,
+    hoverable: true,
+    responsive: true,
+  });
+
+  readonly interactiveTableConfig = computed(() => this.interactiveTableConfigSignal());
+
+  readonly interactiveConfig = computed<InteractiveExampleConfig>(() => ({
+    title: 'Interactive Table Example',
+    description: 'Customize the table properties using the controls below.',
+    controls: [
+      createSelectControl('variant', 'Variant', 'variant', [
+        { value: 'default', label: 'Default' },
+        { value: 'striped', label: 'Striped' },
+        { value: 'bordered', label: 'Bordered' },
+        { value: 'borderless', label: 'Borderless' },
+      ]),
+      createSelectControl('size', 'Size', 'size', [
+        { value: 'sm', label: 'Small' },
+        { value: 'md', label: 'Medium' },
+        { value: 'lg', label: 'Large' },
+      ]),
+      createSelectControl('border', 'Border', 'border', [
+        { value: 'none', label: 'None' },
+        { value: 'horizontal', label: 'Horizontal' },
+        { value: 'vertical', label: 'Vertical' },
+        { value: 'all', label: 'All' },
+      ]),
+      createCheckboxControl('showSearch', 'Show Search', 'showSearch'),
+      createCheckboxControl('striped', 'Striped Rows', 'striped'),
+      createCheckboxControl('hoverable', 'Hoverable Rows', 'hoverable'),
+      createCheckboxControl('responsive', 'Responsive', 'responsive'),
+    ],
+    showOutput: true,
+  }));
 
   // =============================================================================
   // SHOWCASE STATE
@@ -750,8 +744,8 @@ export class TableShowcaseComponent implements ShowcaseComponent, OnInit {
   }
 
   onRefresh(): void {
-    const timestamp = new Date().toLocaleTimeString();
-    this.lastActionSignal.set(`Table refreshed at ${timestamp}`);
+    this.lastActionSignal.set('Table refreshed');
+    this.initializeDataStates();
   }
 
   clearSelection(): void {
@@ -768,6 +762,11 @@ export class TableShowcaseComponent implements ShowcaseComponent, OnInit {
   deleteUser(user: DemoUser): void {
     const timestamp = new Date().toLocaleTimeString();
     this.lastActionSignal.set(`Delete user "${user.name}" at ${timestamp}`);
+  }
+
+  onInteractiveConfigChange(event: InteractiveConfigChangeEvent<TableInteractiveConfig>): void {
+    this.interactiveTableConfigSignal.set(event.config);
+    this.lastActionSignal.set(`Configuration changed: ${event.property} = ${event.value}`);
   }
 
   // =============================================================================

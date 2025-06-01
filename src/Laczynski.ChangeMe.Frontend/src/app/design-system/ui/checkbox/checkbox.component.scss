@@ -1,8 +1,8 @@
 // =============================================================================
-// Checkbox Component Styles
+// Checkbox Component Styles - Modern & Professional Design
 // =============================================================================
-// Modern checkbox component with custom styling, group support, and accessibility
-// Uses design tokens and mixins for consistency
+// Enhanced checkbox component with advanced styling, smooth transitions,
+// and excellent UX patterns matching the input component design
 
 @use "../../../../styles/abstracts/variables";
 @use "../../../../styles/abstracts/mixins";
@@ -14,14 +14,13 @@
 .ds-checkbox-container {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xs);
   width: 100%;
   font-family: var(--font-family-primary);
   position: relative;
 }
 
 // =============================================================================
-// SINGLE CHECKBOX - Minimalistic approach
+// SINGLE CHECKBOX - Modern Interactive Design
 // =============================================================================
 
 .ds-checkbox {
@@ -29,18 +28,26 @@
   align-items: flex-start;
   gap: var(--spacing-md);
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: all var(--transition-base) var(--ease-out-cubic);
   position: relative;
+  padding: var(--spacing-xs);
+  border-radius: var(--border-radius-md);
   
   &:hover:not(.ds-checkbox--disabled) {
+    background: linear-gradient(145deg, transparent, rgba(0, 123, 255, 0.03));
+    transform: translateX(2px);
+    
     .ds-checkbox__checkmark {
-      border-color: var(--color-text-secondary);
+      border-color: var(--color-primary);
+      box-shadow: 0 2px 8px rgba(0, 123, 255, 0.15);
+      transform: scale(1.05);
     }
   }
   
   &.ds-checkbox--disabled {
     cursor: not-allowed;
-    opacity: 0.5;
+    opacity: 0.7;
+    transform: none;
   }
 }
 
@@ -58,82 +65,124 @@
   &:focus-visible + .ds-checkbox__checkmark {
     outline: 2px solid var(--color-primary);
     outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.15);
   }
 }
 
 // =============================================================================
-// CHECKBOX CHECKMARK - Refined design
+// CHECKBOX CHECKMARK - Modern Glass Morphism Design
 // =============================================================================
 
 .ds-checkbox__checkmark {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 18px;
-  height: 18px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--border-radius-xs);
-  background-color: var(--color-surface);
-  transition: all var(--transition-fast);
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--border-radius-sm);
+  background: linear-gradient(145deg, var(--color-surface), var(--color-gray-50));
+  transition: all var(--transition-base) var(--ease-out-cubic);
   flex-shrink: 0;
   position: relative;
+  backdrop-filter: blur(4px);
+  overflow: hidden;
   
-  // Checkmark icon - simplified
+  // Subtle inner highlight for depth
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+    opacity: 0.6;
+  }
+  
+  // Enhanced checkmark icon
   &::after {
     content: '';
-    width: 4px;
-    height: 8px;
+    width: 5px;
+    height: 9px;
     border: solid var(--color-white);
-    border-width: 0 1.5px 1.5px 0;
+    border-width: 0 2px 2px 0;
     transform: rotate(45deg) scale(0);
-    transition: transform var(--transition-fast);
+    transition: all var(--transition-fast) var(--ease-out-cubic);
     opacity: 0;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
   }
 }
 
 // =============================================================================
-// CHECKBOX STATES - Clean transitions
+// CHECKBOX STATES - Enhanced Transitions
 // =============================================================================
 
 // Checked state
 .ds-checkbox__input:checked + .ds-checkbox__checkmark {
-  background-color: var(--color-primary);
+  background: linear-gradient(145deg, var(--color-primary), var(--color-primary-hover));
   border-color: var(--color-primary);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+  transform: scale(1.05);
   
   &::after {
     transform: rotate(45deg) scale(1);
     opacity: 1;
+    animation: checkmarkPop 0.3s var(--ease-out-cubic);
   }
+}
+
+@keyframes checkmarkPop {
+  0% { transform: rotate(45deg) scale(0); }
+  50% { transform: rotate(45deg) scale(1.2); }
+  100% { transform: rotate(45deg) scale(1); }
 }
 
 // Indeterminate state
 .ds-checkbox__input:indeterminate + .ds-checkbox__checkmark {
-  background-color: var(--color-primary);
+  background: linear-gradient(145deg, var(--color-primary), var(--color-primary-hover));
   border-color: var(--color-primary);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+  transform: scale(1.05);
   
   &::after {
     content: '';
-    width: 8px;
-    height: 1.5px;
+    width: 10px;
+    height: 2px;
     border: none;
     background-color: var(--color-white);
     transform: rotate(0) scale(1);
     opacity: 1;
-    border-radius: 1px;
+    border-radius: 2px;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+    animation: indeterminatePop 0.3s var(--ease-out-cubic);
   }
+}
+
+@keyframes indeterminatePop {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
 }
 
 // Disabled state
 .ds-checkbox--disabled {
   .ds-checkbox__checkmark {
-    background-color: var(--color-surface-disabled);
+    background: var(--color-surface-disabled);
     border-color: var(--color-border);
+    transform: none;
+    
+    &::before {
+      display: none;
+    }
   }
   
   .ds-checkbox__input:checked + .ds-checkbox__checkmark,
   .ds-checkbox__input:indeterminate + .ds-checkbox__checkmark {
-    background-color: var(--color-gray-400);
+    background: var(--color-gray-400);
     border-color: var(--color-gray-400);
+    box-shadow: none;
+    transform: none;
   }
 }
 
@@ -141,17 +190,19 @@
 .ds-checkbox--error {
   .ds-checkbox__checkmark {
     border-color: var(--color-danger);
+    background-color: rgba(220, 53, 69, 0.03);
   }
   
   .ds-checkbox__input:checked + .ds-checkbox__checkmark,
   .ds-checkbox__input:indeterminate + .ds-checkbox__checkmark {
-    background-color: var(--color-danger);
+    background: linear-gradient(145deg, var(--color-danger), var(--color-danger-hover));
     border-color: var(--color-danger);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
   }
 }
 
 // =============================================================================
-// CHECKBOX CONTENT - Better typography
+// CHECKBOX CONTENT - Enhanced Typography
 // =============================================================================
 
 .ds-checkbox__content {
@@ -160,17 +211,23 @@
   gap: var(--spacing-xs);
   flex: 1;
   min-width: 0;
+  transition: all var(--transition-fast);
 }
 
 .ds-checkbox__label {
   font-size: var(--font-size-base);
-  font-weight: var(--font-weight-normal);
+  font-weight: var(--font-weight-medium);
   color: var(--color-text);
   line-height: var(--line-height-normal);
   cursor: inherit;
+  transition: color var(--transition-fast);
   
   .ds-checkbox--disabled & {
     color: var(--color-text-disabled);
+  }
+  
+  .ds-checkbox:hover:not(.ds-checkbox--disabled) & {
+    color: var(--color-primary);
   }
 }
 
@@ -178,7 +235,7 @@
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
   line-height: var(--line-height-normal);
-  font-style: italic;
+  transition: color var(--transition-fast);
   
   .ds-checkbox--disabled & {
     color: var(--color-text-disabled);
@@ -188,12 +245,18 @@
 .ds-checkbox__required {
   color: var(--color-danger);
   margin-left: 2px;
-  font-weight: var(--font-weight-normal);
-  font-size: 0.875em;
+  font-weight: var(--font-weight-bold);
+  font-size: 1em;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
 }
 
 // =============================================================================
-// CHECKBOX GROUP - Cleaner layout
+// CHECKBOX GROUP - Enhanced Layout
 // =============================================================================
 
 .ds-checkbox-group {
@@ -202,23 +265,29 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
+  gap: var(--spacing-sm);
 }
 
 .ds-checkbox-group__legend {
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-medium);
   color: var(--color-text);
-  margin-bottom: var(--spacing-sm);
+  line-height: var(--line-height-tight);
   padding: 0;
+  margin: 0 0 var(--spacing-sm) 0;
+  transition: color var(--transition-fast);
   
   &.required {
-    .ds-checkbox-group__required {
-      color: var(--color-danger);
-      margin-left: 2px;
-      font-size: 0.875em;
-    }
+    position: relative;
   }
+}
+
+.ds-checkbox-group__required {
+  color: var(--color-danger);
+  margin-left: 2px;
+  font-weight: var(--font-weight-bold);
+  font-size: 1em;
+  animation: pulse 2s infinite;
 }
 
 .ds-checkbox-group__description {
@@ -226,6 +295,7 @@
   color: var(--color-text-secondary);
   margin-bottom: var(--spacing-md);
   line-height: var(--line-height-normal);
+  padding-left: var(--spacing-xs);
 }
 
 .ds-checkbox-group__options {
@@ -250,6 +320,10 @@
   .ds-checkbox-group__options {
     gap: var(--spacing-xs);
   }
+  
+  .ds-checkbox {
+    padding: var(--spacing-xs) 0;
+  }
 }
 
 // =============================================================================
@@ -257,48 +331,46 @@
 // =============================================================================
 
 .ds-checkbox--sm {
+  gap: var(--spacing-sm);
+  
   .ds-checkbox__checkmark {
     width: 16px;
     height: 16px;
     
     &::after {
-      width: 3px;
-      height: 6px;
-      border-width: 0 1px 1px 0;
+      width: 4px;
+      height: 7px;
+      border-width: 0 1.5px 1.5px 0;
     }
   }
   
-  // Indeterminate size adjustment
   .ds-checkbox__input:indeterminate + .ds-checkbox__checkmark::after {
-    width: 6px;
-    height: 1px;
+    width: 8px;
+    height: 1.5px;
   }
   
   .ds-checkbox__label {
     font-size: var(--font-size-sm);
   }
-  
-  .ds-checkbox__description {
-    font-size: var(--font-size-xs);
-  }
 }
 
 .ds-checkbox--lg {
+  gap: var(--spacing-lg);
+  
   .ds-checkbox__checkmark {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     
     &::after {
-      width: 5px;
-      height: 9px;
-      border-width: 0 2px 2px 0;
+      width: 6px;
+      height: 11px;
+      border-width: 0 2.5px 2.5px 0;
     }
   }
   
-  // Indeterminate size adjustment
   .ds-checkbox__input:indeterminate + .ds-checkbox__checkmark::after {
-    width: 10px;
-    height: 2px;
+    width: 12px;
+    height: 3px;
   }
   
   .ds-checkbox__label {
@@ -307,38 +379,49 @@
 }
 
 // =============================================================================
-// VALIDATION STYLES
+// HELPER TEXT & VALIDATION
 // =============================================================================
 
-.ds-checkbox-group__validation,
-.ds-checkbox__validation {
+.ds-checkbox-helper {
   font-size: var(--font-size-xs);
-  margin-top: var(--spacing-xs);
+  color: var(--color-text-secondary);
   line-height: var(--line-height-normal);
+  margin-top: var(--spacing-xs);
+  padding-left: var(--spacing-xs);
+  transition: color var(--transition-fast);
   
-  &--error {
+  &.error {
     color: var(--color-danger);
-  }
-  
-  &--success {
-    color: var(--color-success);
+    font-weight: var(--font-weight-medium);
+    
+    &::before {
+      content: '⚠️ ';
+      margin-right: var(--spacing-xs);
+    }
   }
 }
 
 // =============================================================================
-// THEME SUPPORT
+// ENHANCED THEME SUPPORT
 // =============================================================================
 
 // Dark Theme Adjustments
 [data-theme="dark"] {
   .ds-checkbox__checkmark {
-    background-color: var(--color-surface);
-    border-color: var(--color-border);
+    background: linear-gradient(145deg, var(--color-gray-800), var(--color-gray-700));
+    border-color: var(--color-gray-600);
+    
+    &::before {
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    }
   }
   
   .ds-checkbox:hover:not(.ds-checkbox--disabled) {
+    background: linear-gradient(145deg, transparent, rgba(0, 123, 255, 0.1));
+    
     .ds-checkbox__checkmark {
-      border-color: var(--color-border-hover);
+      background: linear-gradient(145deg, var(--color-gray-700), var(--color-gray-600));
+      box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
     }
   }
 }
@@ -347,11 +430,14 @@
 [data-theme="high-contrast"] {
   .ds-checkbox__checkmark {
     border-width: 2px;
+    background: var(--color-white);
   }
   
-  .ds-checkbox__input:focus-visible + .ds-checkbox__checkmark {
-    outline: 3px solid var(--color-primary);
-    outline-offset: 3px;
+  .ds-checkbox__input:checked + .ds-checkbox__checkmark,
+  .ds-checkbox__input:indeterminate + .ds-checkbox__checkmark {
+    background: var(--color-primary);
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
   }
 }
 
@@ -361,12 +447,30 @@
 
 @media (prefers-reduced-motion: reduce) {
   .ds-checkbox,
-  .ds-checkbox__checkmark {
+  .ds-checkbox__checkmark,
+  .ds-checkbox__content,
+  .ds-checkbox__label,
+  .ds-checkbox__required {
     transition: none;
+    animation: none;
+    transform: none;
   }
   
-  .ds-checkbox__checkmark::after {
-    transition: none;
+  .ds-checkbox:hover:not(.ds-checkbox--disabled) {
+    transform: none;
+    
+    .ds-checkbox__checkmark {
+      transform: none;
+    }
+  }
+  
+  .ds-checkbox__input:checked + .ds-checkbox__checkmark,
+  .ds-checkbox__input:indeterminate + .ds-checkbox__checkmark {
+    transform: none;
+    
+    &::after {
+      animation: none;
+    }
   }
 }
 

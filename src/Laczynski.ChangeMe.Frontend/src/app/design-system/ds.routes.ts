@@ -23,11 +23,25 @@ export const DS_ROUTES: Routes = [
     path: '',
     component: DesignSystemLayoutComponent,
     children: [
-      // Default redirect to button (our first implemented component)
+      // Default redirect to overview
       {
         path: '',
-        redirectTo: 'ui/button',
+        redirectTo: 'overview',
         pathMatch: 'full',
+      },
+
+      // =============================================================================
+      // OVERVIEW SECTION
+      // =============================================================================
+      {
+        path: 'overview',
+        loadComponent: () => import('./overview/overview.component').then(m => m.OverviewComponent),
+        data: {
+          title: 'Overview',
+          category: 'overview',
+          description:
+            'Complete overview of the design system with components, principles, and getting started guide',
+        },
       },
 
       // =============================================================================
@@ -143,6 +157,40 @@ export const DS_ROUTES: Routes = [
       },
 
       // =============================================================================
+      // FEEDBACK COMPONENTS (Implemented)
+      // =============================================================================
+      {
+        path: 'feedback/modal',
+        loadComponent: () => import('./feedback/modal').then(m => m.ModalShowcaseComponent),
+        data: {
+          title: 'Modal Component',
+          category: 'feedback',
+          description:
+            'Modal dialog component with multiple variants, sizes, and accessibility features',
+        },
+      },
+
+      {
+        path: 'feedback/toast',
+        loadComponent: () => import('./feedback/toast').then(m => m.ToastShowcaseComponent),
+        data: {
+          title: 'Toast Component',
+          category: 'feedback',
+          description: 'Notification component for displaying temporary messages',
+        },
+      },
+
+      {
+        path: 'feedback/alert',
+        loadComponent: () => import('./feedback/alert').then(m => m.AlertShowcaseComponent),
+        data: {
+          title: 'Alert Component',
+          category: 'feedback',
+          description: 'Alert component for displaying important messages and notifications',
+        },
+      },
+
+      // =============================================================================
       // LAYOUT COMPONENTS
       // =============================================================================
       {
@@ -169,7 +217,7 @@ export const DS_ROUTES: Routes = [
       // Fallback route
       {
         path: '**',
-        redirectTo: 'ui/button',
+        redirectTo: 'overview',
       },
     ],
   },

@@ -1,14 +1,14 @@
 // =============================================================================
-// Form Group Component Styles
+// Form Group Component Styles - Modern & Professional Design
 // =============================================================================
-// Logical grouping component for related form fields with title, description,
-// collapsing functionality, progress tracking, and various layout options
+// Enhanced form group component with advanced styling, smooth transitions,
+// and excellent UX patterns matching the input component design
 
 @use "../../../../styles/abstracts/variables";
 @use "../../../../styles/abstracts/mixins";
 
 // =============================================================================
-// FORM GROUP CONTAINER
+// FORM GROUP CONTAINER - Modern Glass Morphism Design
 // =============================================================================
 
 .ds-form-group {
@@ -19,38 +19,108 @@
   border: none;
   margin: 0;
   padding: 0;
-  background-color: transparent;
+  background: transparent;
+  transition: all var(--transition-base) var(--ease-out-cubic);
+  position: relative;
 }
 
 // =============================================================================
-// VARIANT STYLES
+// VARIANT STYLES - Enhanced Glass Effects
 // =============================================================================
 
 .ds-form-group--default {
-  background-color: transparent;
+  background: transparent;
 }
 
 .ds-form-group--outlined {
-  border: 1px solid var(--color-border);
+  border: 1.5px solid var(--color-border);
   border-radius: var(--border-radius-lg);
-  background-color: var(--color-surface);
+  background: linear-gradient(145deg, var(--color-surface), var(--color-gray-50));
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  
+  // Subtle inner highlight for depth
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+    opacity: 0.8;
+    z-index: 1;
+  }
 }
 
 .ds-form-group--filled {
-  background-color: var(--color-gray-50);
+  background: linear-gradient(145deg, var(--color-gray-25), var(--color-gray-75));
   border-radius: var(--border-radius-lg);
-  border: 1px solid transparent;
+  border: 1.5px solid transparent;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+    opacity: 0.8;
+    z-index: 1;
+  }
 }
 
 .ds-form-group--flat {
-  background-color: var(--color-surface);
-  border-top: 1px solid var(--color-border);
-  border-bottom: 1px solid var(--color-border);
+  background: linear-gradient(145deg, var(--color-surface), var(--color-gray-50));
+  border-top: 1.5px solid var(--color-border);
+  border-bottom: 1.5px solid var(--color-border);
   border-radius: 0;
+  backdrop-filter: blur(4px);
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    opacity: 0.8;
+  }
+}
+
+.ds-form-group--elevated {
+  background: linear-gradient(145deg, var(--color-surface), var(--color-gray-50));
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  box-shadow: 
+    0 10px 25px rgba(0, 0, 0, 0.1),
+    0 4px 12px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(8px);
+  transform: translateY(-2px);
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+    opacity: 0.8;
+    z-index: 1;
+  }
 }
 
 // =============================================================================
-// SIZE VARIANTS
+// SIZE VARIANTS - Enhanced Spacing
 // =============================================================================
 
 .ds-form-group--sm {
@@ -108,7 +178,7 @@
 }
 
 // =============================================================================
-// HEADER
+// HEADER - Enhanced Interactive Design
 // =============================================================================
 
 .ds-form-group__header {
@@ -116,6 +186,10 @@
   flex-direction: column;
   gap: var(--spacing-sm);
   position: relative;
+  z-index: 2;
+  background: linear-gradient(145deg, transparent, rgba(255, 255, 255, 0.05));
+  backdrop-filter: blur(4px);
+  transition: all var(--transition-fast);
 
   &--with-actions {
     .ds-form-group__title-container {
@@ -124,12 +198,22 @@
       justify-content: space-between;
     }
   }
+
+  .ds-form-group--collapsible & {
+    cursor: pointer;
+    
+    &:hover {
+      background: linear-gradient(145deg, rgba(0, 123, 255, 0.05), rgba(0, 123, 255, 0.1));
+      transform: translateY(-1px);
+    }
+  }
 }
 
 .ds-form-group__title-container {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
+  transition: all var(--transition-fast);
 }
 
 .ds-form-group__title {
@@ -137,41 +221,107 @@
   color: var(--color-text);
   line-height: var(--line-height-tight);
   margin: 0;
+  transition: all var(--transition-fast);
+  position: relative;
   
   &--collapsible {
     cursor: pointer;
-    transition: color var(--transition-fast);
 
     &:hover {
       color: var(--color-primary);
+      transform: translateX(2px);
     }
   }
 
   &--has-errors {
     color: var(--color-danger);
+    animation: pulse 2s infinite;
   }
+
+  &--completed {
+    color: var(--color-success);
+    
+    &::before {
+      content: '✓ ';
+      margin-right: var(--spacing-xs);
+      font-weight: var(--font-weight-bold);
+    }
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
 }
 
 .ds-form-group__required {
   color: var(--color-danger);
   margin-left: var(--spacing-xs);
   font-weight: var(--font-weight-bold);
+  animation: pulse 2s infinite;
 }
 
 .ds-form-group__status {
   flex-shrink: 0;
   font-size: var(--font-size-base);
   line-height: 1;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-full);
+  font-weight: var(--font-weight-medium);
+  transition: all var(--transition-fast);
+  
+  &--pending {
+    background: linear-gradient(145deg, var(--color-gray-100), var(--color-gray-200));
+    color: var(--color-text-secondary);
+  }
+  
+  &--progress {
+    background: linear-gradient(145deg, rgba(0, 123, 255, 0.1), rgba(0, 123, 255, 0.2));
+    color: var(--color-primary);
+  }
+  
+  &--completed {
+    background: linear-gradient(145deg, var(--color-success), var(--color-success-hover));
+    color: var(--color-white);
+    animation: checkmark 0.5s ease-out;
+  }
+  
+  &--error {
+    background: linear-gradient(145deg, var(--color-danger), var(--color-danger-hover));
+    color: var(--color-white);
+    animation: shake 0.3s ease-in-out;
+  }
+}
+
+@keyframes checkmark {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
 }
 
 .ds-form-group__description {
   color: var(--color-text-secondary);
-  line-height: var(--line-height-normal);
+  line-height: var(--line-height-relaxed);
   margin: 0;
+  transition: color var(--transition-fast);
+  
+  .ds-form-group--has-errors & {
+    color: var(--color-danger);
+  }
+  
+  .ds-form-group--completed & {
+    color: var(--color-success);
+  }
 }
 
 // =============================================================================
-// TOGGLE FUNCTIONALITY
+// TOGGLE FUNCTIONALITY - Enhanced Interaction
 // =============================================================================
 
 .ds-form-group__toggle {
@@ -187,244 +337,446 @@
   width: 100%;
   text-align: left;
   transition: all var(--transition-fast);
+  border-radius: var(--border-radius-sm);
 
   &:hover {
     color: var(--color-primary);
+    transform: translateX(2px);
   }
 
   &:focus {
     outline: none;
-    @include mixins.focus-state;
-    border-radius: var(--border-radius-sm);
+    box-shadow: 
+      0 0 0 3px rgba(0, 123, 255, 0.15),
+      0 2px 8px rgba(0, 0, 0, 0.05);
+    background: rgba(0, 123, 255, 0.05);
   }
 
-  .ds-form-group__title {
-    flex: 1;
+  &:active {
+    transform: translateX(1px);
+    transition-duration: var(--transition-fast);
   }
 }
 
 .ds-form-group__toggle-icon {
-  flex-shrink: 0;
   font-size: var(--font-size-sm);
-  transition: transform var(--transition-fast);
-  line-height: 1;
-  width: 16px;
-  text-align: center;
-
+  color: var(--color-text-secondary);
+  transition: all var(--transition-base) var(--ease-out-cubic);
+  
   .ds-form-group--collapsed & {
+    transform: rotate(-90deg);
+  }
+  
+  .ds-form-group--expanded & {
     transform: rotate(0deg);
   }
-
-  .ds-form-group:not(.ds-form-group--collapsed) & {
-    transform: rotate(90deg);
+  
+  .ds-form-group__toggle:hover & {
+    color: var(--color-primary);
+    transform: scale(1.1) rotate(0deg);
+  }
+  
+  .ds-form-group--collapsed .ds-form-group__toggle:hover & {
+    transform: scale(1.1) rotate(-90deg);
   }
 }
 
 // =============================================================================
-// PROGRESS BAR
+// CONTENT AREA - Enhanced Layout
+// =============================================================================
+
+.ds-form-group__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  transition: all var(--transition-base) var(--ease-out-cubic);
+  position: relative;
+  
+  .ds-form-group--collapsed & {
+    max-height: 0;
+    opacity: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    overflow: hidden;
+    transform: translateY(-10px);
+  }
+  
+  .ds-form-group--expanded & {
+    max-height: none;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .ds-form-group--animating & {
+    overflow: hidden;
+  }
+}
+
+// =============================================================================
+// FIELD LAYOUT - Enhanced Grid System
+// =============================================================================
+
+.ds-form-group__fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  
+  &--grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-md);
+    
+    @include mixins.respond-to("sm") {
+      grid-template-columns: 1fr;
+      gap: var(--spacing-sm);
+    }
+  }
+  
+  &--inline {
+    flex-direction: row;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    
+    > * {
+      flex: 1;
+      min-width: 200px;
+    }
+    
+    @include mixins.respond-to("sm") {
+      flex-direction: column;
+      align-items: stretch;
+      
+      > * {
+        min-width: auto;
+      }
+    }
+  }
+  
+  &--two-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md);
+    
+    @include mixins.respond-to("md") {
+      grid-template-columns: 1fr;
+      gap: var(--spacing-sm);
+    }
+  }
+  
+  &--three-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: var(--spacing-md);
+    
+    @include mixins.respond-to("lg") {
+      grid-template-columns: 1fr 1fr;
+    }
+    
+    @include mixins.respond-to("md") {
+      grid-template-columns: 1fr;
+      gap: var(--spacing-sm);
+    }
+  }
+}
+
+// =============================================================================
+// PROGRESS INDICATOR - Enhanced Visual Feedback
 // =============================================================================
 
 .ds-form-group__progress {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: linear-gradient(145deg, var(--color-gray-25), var(--color-gray-50));
+  border-radius: var(--border-radius-sm);
+  margin-top: var(--spacing-sm);
+  transition: all var(--transition-fast);
+  
+  &--completed {
+    background: linear-gradient(145deg, rgba(40, 167, 69, 0.1), rgba(40, 167, 69, 0.15));
+    border: 1px solid var(--color-success);
+  }
+  
+  &--error {
+    background: linear-gradient(145deg, rgba(220, 53, 69, 0.1), rgba(220, 53, 69, 0.15));
+    border: 1px solid var(--color-danger);
+  }
+}
+
+.ds-form-group__progress-bar {
+  flex: 1;
+  height: 4px;
+  background: var(--color-gray-200);
+  border-radius: var(--border-radius-full);
+  overflow: hidden;
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-primary-hover));
+    border-radius: inherit;
+    transition: width var(--transition-base) var(--ease-out-cubic);
+    width: var(--progress-width, 0%);
+  }
+  
+  .ds-form-group__progress--completed & {
+    &::after {
+      background: linear-gradient(90deg, var(--color-success), var(--color-success-hover));
+      animation: progressComplete 0.5s ease-out;
+    }
+  }
+  
+  .ds-form-group__progress--error & {
+    &::after {
+      background: linear-gradient(90deg, var(--color-danger), var(--color-danger-hover));
+    }
+  }
+}
+
+@keyframes progressComplete {
+  0% { transform: scaleX(0); }
+  100% { transform: scaleX(1); }
+}
+
+.ds-form-group__progress-text {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+  
+  .ds-form-group__progress--completed & {
+    color: var(--color-success);
+  }
+  
+  .ds-form-group__progress--error & {
+    color: var(--color-danger);
+  }
+}
+
+// =============================================================================
+// ACTION BUTTONS - Enhanced Styling
+// =============================================================================
+
+.ds-form-group__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex-shrink: 0;
+  
+  .ds-form-group__header & {
+    margin-left: auto;
+  }
+}
+
+.ds-form-group__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: linear-gradient(145deg, var(--color-gray-50), var(--color-gray-100));
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  backdrop-filter: blur(4px);
+  
+  &:hover {
+    background: linear-gradient(145deg, var(--color-gray-100), var(--color-gray-200));
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  &:active {
+    transform: translateY(0);
+    transition-duration: var(--transition-fast);
+  }
+  
+  &:focus {
+    outline: none;
+    box-shadow: 
+      0 0 0 3px rgba(0, 123, 255, 0.15),
+      0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  &--primary {
+    background: linear-gradient(145deg, var(--color-primary), var(--color-primary-hover));
+    color: var(--color-white);
+    border-color: var(--color-primary);
+    
+    &:hover {
+      background: linear-gradient(145deg, var(--color-primary-hover), var(--color-primary-active));
+      box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+    }
+  }
+  
+  &--danger {
+    background: linear-gradient(145deg, var(--color-danger), var(--color-danger-hover));
+    color: var(--color-white);
+    border-color: var(--color-danger);
+    
+    &:hover {
+      background: linear-gradient(145deg, var(--color-danger-hover), var(--color-danger-active));
+      box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+    }
+  }
+}
+
+// =============================================================================
+// VALIDATION SUMMARY - Enhanced Error Display
+// =============================================================================
+
+.ds-form-group__validation {
+  margin-top: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background: linear-gradient(145deg, rgba(220, 53, 69, 0.05), rgba(220, 53, 69, 0.1));
+  border: 1.5px solid var(--color-danger);
+  border-radius: var(--border-radius-md);
+  animation: slideIn 0.3s ease-out;
+  
+  &--success {
+    background: linear-gradient(145deg, rgba(40, 167, 69, 0.05), rgba(40, 167, 69, 0.1));
+    border-color: var(--color-success);
+  }
+  
+  &--warning {
+    background: linear-gradient(145deg, rgba(255, 193, 7, 0.05), rgba(255, 193, 7, 0.1));
+    border-color: var(--color-warning);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ds-form-group__validation-title {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-danger);
+  margin: 0 0 var(--spacing-xs) 0;
+  
+  &::before {
+    content: '❌ ';
+    margin-right: var(--spacing-xs);
+  }
+  
+  .ds-form-group__validation--success & {
+    color: var(--color-success);
+    
+    &::before {
+      content: '✅ ';
+    }
+  }
+  
+  .ds-form-group__validation--warning & {
+    color: var(--color-warning);
+    
+    &::before {
+      content: '⚠️ ';
+    }
+  }
+}
+
+.ds-form-group__validation-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-xs);
 }
 
-.ds-form-group__progress-bar {
-  width: 100%;
-  height: 6px;
-  background-color: var(--color-gray-200);
-  border-radius: var(--border-radius-sm);
-  overflow: hidden;
-  position: relative;
-}
-
-.ds-form-group__progress-fill {
-  height: 100%;
-  background-color: var(--color-primary);
-  border-radius: var(--border-radius-sm);
-  transition: width var(--transition-normal);
-
-  .ds-form-group--has-errors & {
-    background-color: var(--color-danger);
-  }
-}
-
-.ds-form-group__progress-text {
+.ds-form-group__validation-item {
   font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
-  text-align: right;
-}
-
-// =============================================================================
-// ACTIONS
-// =============================================================================
-
-.ds-form-group__actions {
+  color: var(--color-danger);
   display: flex;
-  gap: var(--spacing-sm);
-  align-items: center;
-  margin-left: auto;
-
-  @include mixins.respond-to("sm") {
-    margin-left: 0;
-    margin-top: var(--spacing-sm);
-  }
-}
-
-// =============================================================================
-// CONTENT
-// =============================================================================
-
-.ds-form-group__content {
-  transition: all var(--transition-normal);
-
-  .ds-form-group--collapsed & {
-    display: none;
-  }
-
-  &--vertical {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
-  }
-
-  &--horizontal {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-md);
-
-    > * {
-      flex: 1;
-      min-width: 200px;
-    }
-
-    @include mixins.respond-to("md") {
-      flex-direction: column;
-    }
-  }
-
-  &--grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: var(--spacing-md);
-
-    @include mixins.respond-to("sm") {
-      grid-template-columns: 1fr;
-    }
-  }
-}
-
-// =============================================================================
-// SPACING VARIANTS
-// =============================================================================
-
-.ds-form-group--spacing-tight {
-  .ds-form-group__content--vertical {
-    gap: var(--spacing-sm);
-  }
-
-  .ds-form-group__content--horizontal,
-  .ds-form-group__content--grid {
-    gap: var(--spacing-sm);
-  }
-}
-
-.ds-form-group--spacing-normal {
-  .ds-form-group__content--vertical {
-    gap: var(--spacing-md);
-  }
-
-  .ds-form-group__content--horizontal,
-  .ds-form-group__content--grid {
-    gap: var(--spacing-md);
-  }
-}
-
-.ds-form-group--spacing-loose {
-  .ds-form-group__content--vertical {
-    gap: var(--spacing-lg);
-  }
-
-  .ds-form-group__content--horizontal,
-  .ds-form-group__content--grid {
-    gap: var(--spacing-lg);
-  }
-}
-
-// =============================================================================
-// LAYOUT VARIANTS
-// =============================================================================
-
-.ds-form-group--vertical {
-  // Default - already handled above
-}
-
-.ds-form-group--horizontal {
-  .ds-form-group__header {
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-between;
-  }
-
-  .ds-form-group__title-container {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-}
-
-.ds-form-group--grid {
-  // Content grid handled in content classes
-}
-
-// =============================================================================
-// STATE STYLES
-// =============================================================================
-
-.ds-form-group--disabled {
-  opacity: 0.6;
-  pointer-events: none;
+  align-items: flex-start;
+  gap: var(--spacing-xs);
   
-  .ds-form-group__title,
-  .ds-form-group__description {
-    color: var(--color-text-disabled);
+  &::before {
+    content: '•';
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  
+  .ds-form-group__validation--success & {
+    color: var(--color-success);
+  }
+  
+  .ds-form-group__validation--warning & {
+    color: var(--color-warning);
   }
 }
 
-.ds-form-group--collapsed {
-  .ds-form-group__content {
-    max-height: 0;
-    overflow: hidden;
-    padding-top: 0;
-    padding-bottom: 0;
-    margin-top: 0;
-    margin-bottom: 0;
+// =============================================================================
+// STATE MODIFIERS - Enhanced Visual Feedback
+// =============================================================================
+
+.ds-form-group {
+  &--disabled {
+    opacity: 0.7;
+    pointer-events: none;
+    
+    .ds-form-group__header {
+      background: var(--color-surface-disabled);
+    }
+  }
+  
+  &--loading {
+    position: relative;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      animation: shimmer 2s infinite;
+      pointer-events: none;
+      z-index: 1;
+    }
+  }
+  
+  &--has-errors {
+    .ds-form-group__header {
+      background: linear-gradient(145deg, rgba(220, 53, 69, 0.05), rgba(220, 53, 69, 0.1));
+      border-bottom: 2px solid var(--color-danger);
+    }
+  }
+  
+  &--completed {
+    .ds-form-group__header {
+      background: linear-gradient(145deg, rgba(40, 167, 69, 0.05), rgba(40, 167, 69, 0.1));
+      border-bottom: 2px solid var(--color-success);
+    }
   }
 }
 
-.ds-form-group--has-errors {
-  .ds-form-group__title {
-    color: var(--color-danger);
-  }
-
-  &.ds-form-group--outlined {
-    border-color: var(--color-danger);
-  }
-
-  &.ds-form-group--filled {
-    background-color: rgba(var(--color-danger-rgb), 0.05);
-    border-color: var(--color-danger);
-  }
-}
-
-.ds-form-group--bordered {
-  // Already handled in variant styles
-}
-
-.ds-form-group--collapsible {
-  .ds-form-group__title-container {
-    cursor: pointer;
-  }
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
 
 // =============================================================================
@@ -433,91 +785,124 @@
 
 @include mixins.respond-to("sm") {
   .ds-form-group {
-    &--sm .ds-form-group__header,
-    &--md .ds-form-group__header,
-    &--lg .ds-form-group__header {
-      padding-left: var(--spacing-md);
-      padding-right: var(--spacing-md);
-    }
+    &--sm,
+    &--md,
+    &--lg {
+      .ds-form-group__header {
+        padding: var(--spacing-sm);
+      }
 
-    &--sm .ds-form-group__content,
-    &--md .ds-form-group__content,
-    &--lg .ds-form-group__content {
-      padding-left: var(--spacing-md);
-      padding-right: var(--spacing-md);
+      .ds-form-group__content {
+        padding: var(--spacing-sm);
+      }
     }
   }
-
-  .ds-form-group__header--with-actions {
-    .ds-form-group__title-container {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .ds-form-group__actions {
-      align-self: stretch;
-      justify-content: flex-start;
-    }
+  
+  .ds-form-group__title-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+  }
+  
+  .ds-form-group__actions {
+    align-self: stretch;
+    justify-content: space-between;
   }
 }
 
 // =============================================================================
-// THEME SUPPORT
+// ENHANCED THEME SUPPORT
 // =============================================================================
 
-[data-theme="dark"] {
-  .ds-form-group--outlined {
-    background-color: var(--color-gray-800);
+// Dark Theme Adjustments
+:where([data-theme="dark"]) {
+  .ds-form-group--outlined,
+  .ds-form-group--elevated {
+    background: linear-gradient(145deg, var(--color-gray-800), var(--color-gray-700));
     border-color: var(--color-gray-600);
+    
+    &::before {
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    }
   }
-
+  
   .ds-form-group--filled {
-    background-color: var(--color-gray-700);
+    background: linear-gradient(145deg, var(--color-gray-750), var(--color-gray-700));
+    
+    &::before {
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    }
   }
-
+  
   .ds-form-group--flat {
-    background-color: var(--color-gray-800);
+    background: linear-gradient(145deg, var(--color-gray-800), var(--color-gray-700));
     border-color: var(--color-gray-600);
   }
-
-  .ds-form-group__title {
+  
+  .ds-form-group__header {
+    background: linear-gradient(145deg, transparent, rgba(255, 255, 255, 0.05));
+    
+    .ds-form-group--collapsible &:hover {
+      background: linear-gradient(145deg, rgba(0, 123, 255, 0.1), rgba(0, 123, 255, 0.2));
+    }
+  }
+  
+  .ds-form-group__action {
+    background: linear-gradient(145deg, var(--color-gray-700), var(--color-gray-600));
+    border-color: var(--color-gray-600);
     color: var(--color-white);
+    
+    &:hover {
+      background: linear-gradient(145deg, var(--color-gray-600), var(--color-gray-500));
+      box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
+    }
   }
-
-  .ds-form-group__description {
-    color: var(--color-gray-300);
+  
+  .ds-form-group__progress {
+    background: linear-gradient(145deg, var(--color-gray-750), var(--color-gray-700));
   }
-
-  .ds-form-group__progress-bar {
-    background-color: var(--color-gray-600);
-  }
-
-  .ds-form-group__progress-text {
-    color: var(--color-gray-300);
+  
+  .ds-form-group__validation {
+    background: linear-gradient(145deg, rgba(220, 53, 69, 0.1), rgba(220, 53, 69, 0.2));
+    
+    &--success {
+      background: linear-gradient(145deg, rgba(40, 167, 69, 0.1), rgba(40, 167, 69, 0.2));
+    }
+    
+    &--warning {
+      background: linear-gradient(145deg, rgba(255, 193, 7, 0.1), rgba(255, 193, 7, 0.2));
+    }
   }
 }
 
-[data-theme="high-contrast"] {
+// High Contrast Theme
+:where([data-theme="high-contrast"]) {
   .ds-form-group--outlined,
   .ds-form-group--filled,
-  .ds-form-group--flat {
+  .ds-form-group--elevated {
     border-width: 2px;
+    background: var(--color-white);
+    
+    &::before {
+      display: none;
+    }
   }
-
+  
   .ds-form-group__title {
     font-weight: var(--font-weight-bold);
   }
-
+  
   .ds-form-group__toggle:focus {
     outline: 3px solid var(--color-primary);
     outline-offset: 2px;
   }
-
-  .ds-form-group--has-errors {
-    &.ds-form-group--outlined,
-    &.ds-form-group--filled {
-      outline: 2px solid var(--color-danger);
-      outline-offset: 1px;
+  
+  .ds-form-group__action {
+    border-width: 2px;
+    
+    &:focus {
+      outline: 3px solid var(--color-primary);
+      outline-offset: 2px;
     }
   }
 }
@@ -527,49 +912,27 @@
 // =============================================================================
 
 @media (prefers-reduced-motion: reduce) {
+  .ds-form-group,
+  .ds-form-group__header,
+  .ds-form-group__title,
+  .ds-form-group__toggle,
   .ds-form-group__toggle-icon,
-  .ds-form-group__progress-fill,
-  .ds-form-group__content {
+  .ds-form-group__content,
+  .ds-form-group__status,
+  .ds-form-group__action,
+  .ds-form-group__progress-bar,
+  .ds-form-group__validation,
+  .ds-form-group__required {
     transition: none;
+    animation: none;
+    transform: none;
   }
-
+  
   .ds-form-group--collapsed .ds-form-group__content {
-    transition: none;
-  }
-}
-
-// =============================================================================
-// PRINT STYLES
-// =============================================================================
-
-@media print {
-  .ds-form-group {
-    break-inside: avoid;
-  }
-
-  .ds-form-group__toggle {
     display: none;
   }
-
-  .ds-form-group--collapsed .ds-form-group__content {
-    display: block !important;
-    max-height: none !important;
-    overflow: visible !important;
-    padding: var(--spacing-md) !important;
-  }
-
-  .ds-form-group__progress {
-    display: none;
-  }
-
-  .ds-form-group__actions {
-    display: none;
-  }
-
-  .ds-form-group--outlined,
-  .ds-form-group--filled,
-  .ds-form-group--flat {
-    border: 1px solid #000 !important;
-    background-color: transparent !important;
+  
+  .ds-form-group--expanded .ds-form-group__content {
+    display: flex;
   }
 } 

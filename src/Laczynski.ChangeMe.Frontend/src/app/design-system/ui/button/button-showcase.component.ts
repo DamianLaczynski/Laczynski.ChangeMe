@@ -3,13 +3,16 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { ButtonComponent } from './button.component';
-import { ApiDocumentationComponent } from '../../shared/components';
+import { ApiDocumentationComponent, InteractiveExampleComponent } from '../../shared/components';
 import {
-  ShowcaseComponent,
-  ComponentApiDocumentation,
-  createShowcaseConfig,
-  ShowcaseConfig,
-} from '../../models/showcase.model';
+  InteractiveExampleConfig,
+  InteractiveConfigChangeEvent,
+  createVariantControl,
+  createSizeControl,
+  createCheckboxControl,
+  createTextControl,
+} from '../../shared/components/interactive-example/interactive-example.model';
+
 import {
   ButtonVariant,
   ButtonSize,
@@ -17,6 +20,26 @@ import {
   BUTTON_VARIANTS,
   BUTTON_SIZES,
 } from './button.model';
+
+import {
+  ShowcaseComponent,
+  ComponentApiDocumentation,
+  createShowcaseConfig,
+  ShowcaseConfig,
+} from '../../models/showcase.model';
+
+// =============================================================================
+// BUTTON INTERACTIVE CONFIG TYPE
+// =============================================================================
+
+interface ButtonInteractiveConfig {
+  variant: ButtonVariant;
+  size: ButtonSize;
+  disabled: boolean;
+  loading: boolean;
+  fullWidth: boolean;
+  icon: string;
+}
 
 /**
  * Button Component Showcase
@@ -27,7 +50,13 @@ import {
 @Component({
   selector: 'ds-button-showcase',
   standalone: true,
-  imports: [CommonModule, FormsModule, ButtonComponent, ApiDocumentationComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ButtonComponent,
+    ApiDocumentationComponent,
+    InteractiveExampleComponent,
+  ],
   template: `
     <div class="showcase-container">
       <!-- Header -->
@@ -48,7 +77,11 @@ import {
             <div class="showcase-item">
               <h3>{{ variant.label }}</h3>
               <p>{{ variant.description }}</p>
-              <ds-button [variant]="variant.name" [size]="'md'">
+              <ds-button
+                [variant]="variant.name"
+                [size]="'md'"
+                (clicked)="handleVariantClick(variant.name)"
+              >
                 {{ variant.label }} Button
               </ds-button>
             </div>
@@ -65,7 +98,11 @@ import {
           @for (size of buttonSizes; track size.name) {
             <div class="showcase-item">
               <h3>{{ size.label }} ({{ size.height }}px)</h3>
-              <ds-button [variant]="'primary'" [size]="size.name">
+              <ds-button
+                [variant]="'primary'"
+                [size]="size.name"
+                (clicked)="handleSizeClick(size.name)"
+              >
                 {{ size.label }} Button
               </ds-button>
             </div>
@@ -106,85 +143,25 @@ import {
         </div>
       </section>
 
-      <!-- Interactive Example -->
-      <section class="showcase-section">
-        <h2>Interactive Example</h2>
-        <p>Try different configurations and see real-time behavior.</p>
-
-        <div class="showcase-interactive">
-          <div class="interactive-controls">
-            <div class="control-group">
-              <label for="variant-select">Variant:</label>
-              <select id="variant-select" [(ngModel)]="selectedVariant" class="control-input">
-                @for (variant of buttonVariants; track variant.name) {
-                  <option [value]="variant.name">{{ variant.label }}</option>
-                }
-              </select>
-            </div>
-
-            <div class="control-group">
-              <label for="size-select">Size:</label>
-              <select id="size-select" [(ngModel)]="selectedSize" class="control-input">
-                @for (size of buttonSizes; track size.name) {
-                  <option [value]="size.name">{{ size.label }}</option>
-                }
-              </select>
-            </div>
-
-            <div class="control-group">
-              <label>
-                <input type="checkbox" [(ngModel)]="isDisabled" />
-                Disabled
-              </label>
-            </div>
-
-            <div class="control-group">
-              <label>
-                <input type="checkbox" [(ngModel)]="isLoading" />
-                Loading
-              </label>
-            </div>
-
-            <div class="control-group">
-              <label>
-                <input type="checkbox" [(ngModel)]="isFullWidth" />
-                Full Width
-              </label>
-            </div>
-
-            <div class="control-group">
-              <label for="icon-input">Icon:</label>
-              <input
-                id="icon-input"
-                type="text"
-                [(ngModel)]="iconText"
-                placeholder="➕ 🔗 ⚙️"
-                class="control-input"
-              />
-            </div>
-          </div>
-
-          <div class="interactive-preview">
-            <ds-button
-              [variant]="selectedVariant()"
-              [size]="selectedSize()"
-              [disabled]="isDisabled()"
-              [loading]="isLoading()"
-              [fullWidth]="isFullWidth()"
-              [iconStart]="iconText() || undefined"
-              (clicked)="handleInteractiveClick($event)"
-            >
-              {{ buttonText() }}
-            </ds-button>
-          </div>
-
-          <div class="showcase-output">
-            @if (lastActionSignal()) {
-              {{ lastActionSignal() }}
-            }
-          </div>
-        </div>
-      </section>
+      <!-- Interactive Example using new component -->
+      <ds-interactive-example
+        [config]="interactiveConfig()"
+        [currentConfig]="interactiveButtonConfig()"
+        [lastAction]="lastAction"
+        (configChange)="onInteractiveConfigChange($event)"
+      >
+        <ds-button
+          [variant]="interactiveButtonConfig().variant"
+          [size]="interactiveButtonConfig().size"
+          [disabled]="interactiveButtonConfig().disabled"
+          [loading]="interactiveButtonConfig().loading"
+          [fullWidth]="interactiveButtonConfig().fullWidth"
+          [iconStart]="interactiveButtonConfig().icon || undefined"
+          (clicked)="handleInteractiveClick($event)"
+        >
+          {{ buttonText() }}
+        </ds-button>
+      </ds-interactive-example>
 
       <!-- Component API -->
       <section class="showcase-section">
@@ -208,23 +185,51 @@ export class ButtonShowcaseComponent implements ShowcaseComponent {
   readonly buttonSizes = Object.values(BUTTON_SIZES);
 
   // =============================================================================
-  // INTERACTIVE CONTROLS
+  // INTERACTIVE EXAMPLE CONFIGURATION
   // =============================================================================
 
-  selectedVariant = signal<ButtonVariant>('primary');
-  selectedSize = signal<ButtonSize>('md');
-  isDisabled = signal(false);
-  isLoading = signal(false);
-  isFullWidth = signal(false);
-  iconText = signal('');
+  private interactiveButtonConfigSignal = signal<ButtonInteractiveConfig>({
+    variant: 'primary',
+    size: 'md',
+    disabled: false,
+    loading: false,
+    fullWidth: false,
+    icon: '',
+  });
+
+  readonly interactiveButtonConfig = computed(() => this.interactiveButtonConfigSignal());
+
+  readonly interactiveConfig = computed<InteractiveExampleConfig>(() => ({
+    title: 'Interactive Button Configuration',
+    description: 'Try different configurations and see real-time behavior.',
+    showOutput: true,
+    controls: [
+      createVariantControl(
+        this.buttonVariants.map(v => ({ value: v.name, label: v.label })),
+        'variant',
+      ),
+      createSizeControl(
+        this.buttonSizes.map(s => ({ value: s.name, label: s.label })),
+        'size',
+      ),
+      createCheckboxControl('disabled-control', 'Disabled', 'disabled'),
+      createCheckboxControl('loading-control', 'Loading', 'loading'),
+      createCheckboxControl('fullwidth-control', 'Full Width', 'fullWidth'),
+      createTextControl('icon-control', 'Icon', 'icon', {
+        placeholder: '➕ 🔗 ⚙️',
+        helpText: 'Enter an emoji or icon character',
+      }),
+    ],
+  }));
 
   // =============================================================================
   // COMPUTED VALUES
   // =============================================================================
 
   buttonText = computed(() => {
-    const variant = this.selectedVariant();
-    const size = this.selectedSize();
+    const config = this.interactiveButtonConfig();
+    const variant = config.variant;
+    const size = config.size;
     return `${variant.charAt(0).toUpperCase() + variant.slice(1)} ${size.toUpperCase()} Button`;
   });
 
@@ -365,13 +370,30 @@ export class ButtonShowcaseComponent implements ShowcaseComponent {
   // EVENT HANDLERS
   // =============================================================================
 
+  handleVariantClick(variant: ButtonVariant): void {
+    this.interactiveButtonConfigSignal.update(config => ({ ...config, variant }));
+  }
+
+  handleSizeClick(size: ButtonSize): void {
+    this.interactiveButtonConfigSignal.update(config => ({ ...config, size }));
+  }
+
   handleInteractiveClick(event: ButtonClickEvent): void {
     const timestamp = new Date().toLocaleTimeString();
-    const variant = this.selectedVariant();
-    const size = this.selectedSize();
+    const variant = this.interactiveButtonConfig().variant;
+    const size = this.interactiveButtonConfig().size;
 
     this.lastActionSignal.set(
       `Button clicked at ${timestamp} - Variant: ${variant}, Size: ${size}`,
+    );
+  }
+
+  onInteractiveConfigChange(event: InteractiveConfigChangeEvent<ButtonInteractiveConfig>): void {
+    this.interactiveButtonConfigSignal.set(event.config);
+
+    const timestamp = new Date().toLocaleTimeString();
+    this.lastActionSignal.set(
+      `Configuration changed at ${timestamp} - ${event.property}: ${event.value}`,
     );
   }
 }

@@ -10,7 +10,14 @@ import { FormsModule } from '@angular/forms';
 import { GridComponent } from './grid.component';
 import { GridItemComponent } from './grid-item.component';
 import { CardComponent } from '../../ui/card/card.component';
-import { ApiDocumentationComponent } from '../../shared/components';
+import { ApiDocumentationComponent, InteractiveExampleComponent } from '../../shared/components';
+import {
+  InteractiveExampleConfig,
+  InteractiveConfigChangeEvent,
+  createSelectControl,
+  createTextControl,
+  createCheckboxControl,
+} from '../../shared/components/interactive-example/interactive-example.model';
 
 import {
   GridConfig,
@@ -33,6 +40,20 @@ import {
   ShowcaseConfig,
 } from '../../models/showcase.model';
 
+// =============================================================================
+// GRID INTERACTIVE CONFIG TYPE
+// =============================================================================
+
+interface GridInteractiveConfig {
+  columns: number;
+  gap: GridGap;
+  horizontalAlign: GridHorizontalAlignment;
+  verticalAlign: GridVerticalAlignment;
+  autoFit: boolean;
+  dense: boolean;
+  minWidth: string;
+}
+
 /**
  * Grid Showcase Component
  *
@@ -54,6 +75,7 @@ import {
     CardComponent,
     FormsModule,
     ApiDocumentationComponent,
+    InteractiveExampleComponent,
   ],
   template: `
     <div class="showcase-container">
@@ -65,125 +87,46 @@ import {
         </p>
       </div>
 
-      <!-- Interactive Example -->
-      <section class="showcase-section">
-        <h2>Interactive Grid Configuration</h2>
-        <p>Configure the grid and see how it responds:</p>
-
-        <div class="showcase-interactive">
-          <!-- Configuration Panel -->
-          <div class="interactive-controls">
-            <div class="control-group">
-              <label for="columns-input">Columns:</label>
-              <input
-                id="columns-input"
-                type="number"
-                [(ngModel)]="interactiveColumns"
-                min="1"
-                max="12"
-                class="control-input"
-              />
-            </div>
-
-            <div class="control-group">
-              <label for="gap-select">Gap:</label>
-              <select id="gap-select" [(ngModel)]="interactiveGap" class="control-input">
-                @for (option of gapOptions; track option.value) {
-                  <option [value]="option.value">{{ option.label }}</option>
-                }
-              </select>
-            </div>
-
-            <div class="control-group">
-              <label for="horizontal-align-select">Horizontal Align:</label>
-              <select
-                id="horizontal-align-select"
-                [(ngModel)]="interactiveHorizontalAlign"
-                class="control-input"
-              >
-                @for (option of horizontalAlignOptions; track option.value) {
-                  <option [value]="option.value">{{ option.label }}</option>
-                }
-              </select>
-            </div>
-
-            <div class="control-group">
-              <label for="vertical-align-select">Vertical Align:</label>
-              <select
-                id="vertical-align-select"
-                [(ngModel)]="interactiveVerticalAlign"
-                class="control-input"
-              >
-                @for (option of verticalAlignOptions; track option.value) {
-                  <option [value]="option.value">{{ option.label }}</option>
-                }
-              </select>
-            </div>
-
-            <div class="control-group">
-              <label>
-                <input type="checkbox" [(ngModel)]="interactiveAutoFit" />
-                Auto Fit
-              </label>
-            </div>
-
-            <div class="control-group">
-              <label>
-                <input type="checkbox" [(ngModel)]="interactiveDense" />
-                Dense Layout
-              </label>
-            </div>
-
-            <div class="control-group">
-              <label for="min-width-input">Min Column Width:</label>
-              <input
-                id="min-width-input"
-                type="text"
-                [(ngModel)]="interactiveMinWidth"
-                placeholder="250px"
-                class="control-input"
-              />
-            </div>
-          </div>
-
-          <!-- Interactive Grid -->
-          <div class="interactive-preview">
-            <ds-grid
-              [columns]="interactiveAutoFit() ? 'auto-fit' : interactiveColumns()"
-              [gap]="interactiveGap()"
-              [horizontalAlign]="interactiveHorizontalAlign()"
-              [verticalAlign]="interactiveVerticalAlign()"
-              [autoFit]="interactiveAutoFit()"
-              [dense]="interactiveDense()"
-              [minColumnWidth]="interactiveMinWidth()"
-              (layoutChange)="onLayoutChange($event)"
-              class="demo-grid"
+      <!-- Interactive Example using new component -->
+      <ds-interactive-example
+        [config]="interactiveConfig()"
+        [currentConfig]="interactiveGridConfig()"
+        [lastAction]="lastAction"
+        (configChange)="onInteractiveConfigChange($event)"
+      >
+        <ds-grid
+          [columns]="interactiveGridConfig().autoFit ? 'auto-fit' : interactiveGridConfig().columns"
+          [gap]="interactiveGridConfig().gap"
+          [horizontalAlign]="interactiveGridConfig().horizontalAlign"
+          [verticalAlign]="interactiveGridConfig().verticalAlign"
+          [autoFit]="interactiveGridConfig().autoFit"
+          [dense]="interactiveGridConfig().dense"
+          [minColumnWidth]="interactiveGridConfig().minWidth"
+          (layoutChange)="onLayoutChange($event)"
+          class="demo-grid"
+        >
+          @for (item of demoItems(); track item.id) {
+            <ds-card
+              [variant]="item.variant"
+              [size]="'sm'"
+              [class]="'demo-grid-item demo-grid-item--' + item.size"
             >
-              @for (item of demoItems(); track item.id) {
-                <ds-card
-                  [variant]="item.variant"
-                  [size]="'sm'"
-                  [class]="'demo-grid-item demo-grid-item--' + item.size"
-                >
-                  <h4>{{ item.title }}</h4>
-                  <p>{{ item.content }}</p>
-                </ds-card>
-              }
-            </ds-grid>
-          </div>
-
-          <!-- Layout Info -->
-          @if (lastLayoutInfoSignal()) {
-            <div class="showcase-output">
-              <strong>Current Layout:</strong>
-              {{ lastLayoutInfoSignal()!.columns }} columns on
-              {{ lastLayoutInfoSignal()!.breakpoint }} breakpoint ({{
-                lastLayoutInfoSignal()!.dimensions.width
-              }}x{{ lastLayoutInfoSignal()!.dimensions.height }})
-            </div>
+              <h4>{{ item.title }}</h4>
+              <p>{{ item.content }}</p>
+            </ds-card>
           }
-        </div>
-      </section>
+        </ds-grid>
+
+        <!-- Layout Info -->
+        @if (lastLayoutInfo) {
+          <div class="showcase-output">
+            <strong>Current Layout:</strong>
+            {{ lastLayoutInfo.columns }} columns on {{ lastLayoutInfo.breakpoint }} breakpoint ({{
+              lastLayoutInfo.dimensions.width
+            }}x{{ lastLayoutInfo.dimensions.height }})
+          </div>
+        }
+      </ds-interactive-example>
 
       <!-- Basic Layouts -->
       <section class="showcase-section">
@@ -446,7 +389,64 @@ export class GridShowcaseComponent implements ShowcaseComponent, OnInit {
   ];
 
   // =============================================================================
-  // INTERACTIVE CONTROLS
+  // INTERACTIVE EXAMPLE CONFIGURATION
+  // =============================================================================
+
+  private interactiveGridConfigSignal = signal<GridInteractiveConfig>({
+    columns: 3,
+    gap: 'md',
+    horizontalAlign: 'start',
+    verticalAlign: 'start',
+    autoFit: false,
+    dense: false,
+    minWidth: '250px',
+  });
+
+  readonly interactiveGridConfig = computed(() => this.interactiveGridConfigSignal());
+
+  readonly interactiveConfig = computed<InteractiveExampleConfig>(() => ({
+    title: 'Interactive Grid Configuration',
+    description: 'Configure the grid and see how it responds.',
+    controls: [
+      createSelectControl('columns', 'Columns', 'columns', [
+        { value: 1, label: '1' },
+        { value: 2, label: '2' },
+        { value: 3, label: '3' },
+        { value: 4, label: '4' },
+        { value: 6, label: '6' },
+        { value: 12, label: '12' },
+      ]),
+      createSelectControl('gap', 'Gap', 'gap', [
+        { value: 'none', label: 'None' },
+        { value: 'xs', label: 'Extra Small' },
+        { value: 'sm', label: 'Small' },
+        { value: 'md', label: 'Medium' },
+        { value: 'lg', label: 'Large' },
+        { value: 'xl', label: 'Extra Large' },
+        { value: 'xxl', label: 'Extra Extra Large' },
+      ]),
+      createSelectControl('horizontalAlign', 'Horizontal Align', 'horizontalAlign', [
+        { value: 'start', label: 'Start' },
+        { value: 'end', label: 'End' },
+        { value: 'center', label: 'Center' },
+        { value: 'stretch', label: 'Stretch' },
+      ]),
+      createSelectControl('verticalAlign', 'Vertical Align', 'verticalAlign', [
+        { value: 'start', label: 'Start' },
+        { value: 'end', label: 'End' },
+        { value: 'center', label: 'Center' },
+        { value: 'stretch', label: 'Stretch' },
+        { value: 'baseline', label: 'Baseline' },
+      ]),
+      createTextControl('minWidth', 'Min Column Width', 'minWidth', { placeholder: '250px' }),
+      createCheckboxControl('autoFit', 'Auto Fit', 'autoFit'),
+      createCheckboxControl('dense', 'Dense Layout', 'dense'),
+    ],
+    showOutput: true,
+  }));
+
+  // =============================================================================
+  // LEGACY INTERACTIVE CONTROLS (keeping for backward compatibility)
   // =============================================================================
 
   interactiveColumns = signal<number>(3);
@@ -694,5 +694,10 @@ export class GridShowcaseComponent implements ShowcaseComponent, OnInit {
     this.lastLayoutInfoSignal.set(event);
     const timestamp = new Date().toLocaleTimeString();
     this.lastActionSignal.set(`Layout changed to ${event.columns} columns at ${timestamp}`);
+  }
+
+  onInteractiveConfigChange(event: InteractiveConfigChangeEvent<GridInteractiveConfig>): void {
+    this.interactiveGridConfigSignal.set(event.config);
+    this.lastActionSignal.set(`Configuration changed: ${event.property} = ${event.value}`);
   }
 }

@@ -9,7 +9,13 @@ import { FormsModule } from '@angular/forms';
 
 import { ButtonComponent } from '../button/button.component';
 import { ListComponent } from './list.component';
-import { ApiDocumentationComponent } from '../../shared/components';
+import { ApiDocumentationComponent, InteractiveExampleComponent } from '../../shared/components';
+import {
+  InteractiveExampleConfig,
+  InteractiveConfigChangeEvent,
+  createSelectControl,
+  createCheckboxControl,
+} from '../../shared/components/interactive-example/interactive-example.model';
 
 import {
   ListConfig,
@@ -50,6 +56,23 @@ interface DemoTask {
   disabled?: boolean;
 }
 
+// =============================================================================
+// LIST INTERACTIVE CONFIG TYPE
+// =============================================================================
+
+interface ListInteractiveConfig {
+  variant: ListVariant;
+  size: ListSize;
+  layout: ListLayout;
+  selectionMode: ListSelectionMode;
+  showSearch: boolean;
+  striped: boolean;
+  hoverable: boolean;
+  showDividers: boolean;
+  virtualScroll: boolean;
+  infiniteScroll: boolean;
+}
+
 /**
  * List Showcase Component
  *
@@ -67,7 +90,14 @@ interface DemoTask {
 @Component({
   selector: 'ds-list-showcase',
   standalone: true,
-  imports: [CommonModule, ListComponent, ButtonComponent, FormsModule, ApiDocumentationComponent],
+  imports: [
+    CommonModule,
+    ListComponent,
+    ButtonComponent,
+    FormsModule,
+    ApiDocumentationComponent,
+    InteractiveExampleComponent,
+  ],
   template: `
     <div class="showcase-container">
       <!-- Header -->
@@ -78,136 +108,37 @@ interface DemoTask {
         </p>
       </div>
 
-      <!-- Interactive Example -->
-      <section class="showcase-section">
-        <h2>Interactive Example</h2>
-        <p>Try different configurations and features:</p>
-
-        <div class="showcase-interactive">
-          <!-- Configuration Panel -->
-          <div class="interactive-controls">
-            <div class="control-group">
-              <label for="variant-select">Variant:</label>
-              <select id="variant-select" [(ngModel)]="selectedVariant" class="control-input">
-                @for (option of variantOptions; track option.value) {
-                  <option [value]="option.value">{{ option.label }}</option>
-                }
-              </select>
-            </div>
-
-            <div class="control-group">
-              <label for="size-select">Size:</label>
-              <select id="size-select" [(ngModel)]="selectedSize" class="control-input">
-                @for (option of sizeOptions; track option.value) {
-                  <option [value]="option.value">{{ option.label }}</option>
-                }
-              </select>
-            </div>
-
-            <div class="control-group">
-              <label for="layout-select">Layout:</label>
-              <select id="layout-select" [(ngModel)]="selectedLayout" class="control-input">
-                @for (option of layoutOptions; track option.value) {
-                  <option [value]="option.value">{{ option.label }}</option>
-                }
-              </select>
-            </div>
-
-            <div class="control-group">
-              <label for="selection-select">Selection Mode:</label>
-              <select
-                id="selection-select"
-                [(ngModel)]="selectedSelectionMode"
-                class="control-input"
-              >
-                @for (option of selectionModeOptions; track option.value) {
-                  <option [value]="option.value">{{ option.label }}</option>
-                }
-              </select>
-            </div>
-
-            <div class="control-group">
-              <label>
-                <input type="checkbox" [(ngModel)]="showSearch" />
-                Show Search
-              </label>
-            </div>
-
-            <div class="control-group">
-              <label>
-                <input type="checkbox" [(ngModel)]="striped" />
-                Striped
-              </label>
-            </div>
-
-            <div class="control-group">
-              <label>
-                <input type="checkbox" [(ngModel)]="hoverable" />
-                Hoverable
-              </label>
-            </div>
-
-            <div class="control-group">
-              <label>
-                <input type="checkbox" [(ngModel)]="showDividers" />
-                Show Dividers
-              </label>
-            </div>
-
-            <div class="control-group">
-              <label>
-                <input type="checkbox" [(ngModel)]="virtualScroll" />
-                Virtual Scroll
-              </label>
-            </div>
-
-            <div class="control-group">
-              <label>
-                <input type="checkbox" [(ngModel)]="infiniteScroll" />
-                Infinite Scroll
-              </label>
-            </div>
-          </div>
-
-          <!-- Interactive List -->
-          <div class="interactive-preview">
-            <ds-list
-              [variant]="selectedVariant()"
-              [size]="selectedSize()"
-              [layout]="selectedLayout()"
-              [selectionMode]="selectedSelectionMode()"
-              [striped]="striped()"
-              [hoverable]="hoverable()"
-              [showDividers]="showDividers()"
-              [showSearch]="showSearch()"
-              [showSelectAll]="selectedSelectionMode() === 'multiple'"
-              [virtualScroll]="virtualScroll()"
-              [infiniteScroll]="infiniteScroll()"
-              [containerHeight]="'400px'"
-              [items]="demoTasks()"
-              [itemTemplate]="taskTemplate"
-              [searchFields]="['title', 'description', 'assignee']"
-              [selectedItems]="selectedTasks()"
-              (itemClick)="onItemClick($event)"
-              (itemSelect)="onItemSelect($event)"
-              (searchChange)="onSearchChange($event)"
-              (scroll)="onScroll($event)"
-              (loadMore)="onLoadMore($event)"
-            />
-          </div>
-
-          <!-- Selection Info -->
-          @if (selectedTasks().length > 0) {
-            <div class="showcase-output">
-              <strong>Selected {{ selectedTasks().length }} task(s):</strong>
-              {{ getSelectedTaskTitles() }}
-              <ds-button variant="secondary" size="sm" (clicked)="clearSelection()">
-                Clear Selection
-              </ds-button>
-            </div>
-          }
-        </div>
-      </section>
+      <!-- Interactive Example using new component -->
+      <ds-interactive-example
+        [config]="interactiveConfig()"
+        [currentConfig]="interactiveListConfig()"
+        [lastAction]="lastAction"
+        (configChange)="onInteractiveConfigChange($event)"
+      >
+        <ds-list
+          [variant]="interactiveListConfig().variant"
+          [size]="interactiveListConfig().size"
+          [layout]="interactiveListConfig().layout"
+          [selectionMode]="interactiveListConfig().selectionMode"
+          [striped]="interactiveListConfig().striped"
+          [hoverable]="interactiveListConfig().hoverable"
+          [showDividers]="interactiveListConfig().showDividers"
+          [showSearch]="interactiveListConfig().showSearch"
+          [showSelectAll]="interactiveListConfig().selectionMode === 'multiple'"
+          [virtualScroll]="interactiveListConfig().virtualScroll"
+          [infiniteScroll]="interactiveListConfig().infiniteScroll"
+          [containerHeight]="'400px'"
+          [items]="demoTasks()"
+          [itemTemplate]="taskTemplate"
+          [searchFields]="['title', 'description', 'assignee']"
+          [selectedItems]="selectedTasks()"
+          (itemClick)="onItemClick($event)"
+          (itemSelect)="onItemSelect($event)"
+          (searchChange)="onSearchChange($event)"
+          (scroll)="onScroll($event)"
+          (loadMore)="onLoadMore($event)"
+        />
+      </ds-interactive-example>
 
       <!-- Variants -->
       <section class="showcase-section">
@@ -481,19 +412,59 @@ export class ListShowcaseComponent implements ShowcaseComponent, OnInit {
   ];
 
   // =============================================================================
-  // INTERACTIVE CONTROLS
+  // INTERACTIVE EXAMPLE CONFIGURATION
   // =============================================================================
 
-  selectedVariant = signal<ListVariant>('default');
-  selectedSize = signal<ListSize>('md');
-  selectedLayout = signal<ListLayout>('vertical');
-  selectedSelectionMode = signal<ListSelectionMode>('multiple');
-  showSearch = signal<boolean>(true);
-  striped = signal<boolean>(false);
-  hoverable = signal<boolean>(true);
-  showDividers = signal<boolean>(true);
-  virtualScroll = signal<boolean>(false);
-  infiniteScroll = signal<boolean>(false);
+  private interactiveListConfigSignal = signal<ListInteractiveConfig>({
+    variant: 'default',
+    size: 'md',
+    layout: 'vertical',
+    selectionMode: 'multiple',
+    showSearch: true,
+    striped: false,
+    hoverable: true,
+    showDividers: true,
+    virtualScroll: false,
+    infiniteScroll: false,
+  });
+
+  readonly interactiveListConfig = computed(() => this.interactiveListConfigSignal());
+
+  readonly interactiveConfig = computed<InteractiveExampleConfig>(() => ({
+    title: 'Interactive List Example',
+    description: 'Customize the list properties using the controls below.',
+    controls: [
+      createSelectControl('variant', 'Variant', 'variant', [
+        { value: 'default', label: 'Default' },
+        { value: 'outlined', label: 'Outlined' },
+        { value: 'filled', label: 'Filled' },
+        { value: 'elevated', label: 'Elevated' },
+      ]),
+      createSelectControl('size', 'Size', 'size', [
+        { value: 'sm', label: 'Small' },
+        { value: 'md', label: 'Medium' },
+        { value: 'lg', label: 'Large' },
+      ]),
+      createSelectControl('layout', 'Layout', 'layout', [
+        { value: 'vertical', label: 'Vertical' },
+        { value: 'horizontal', label: 'Horizontal' },
+        { value: 'grid', label: 'Grid' },
+        { value: 'masonry', label: 'Masonry' },
+      ]),
+      createSelectControl('selectionMode', 'Selection Mode', 'selectionMode', [
+        { value: 'none', label: 'None' },
+        { value: 'single', label: 'Single' },
+        { value: 'multiple', label: 'Multiple' },
+      ]),
+      createCheckboxControl('showSearch', 'Show Search', 'showSearch'),
+      createCheckboxControl('striped', 'Striped', 'striped'),
+      createCheckboxControl('hoverable', 'Hoverable', 'hoverable'),
+      createCheckboxControl('showDividers', 'Show Dividers', 'showDividers'),
+      createCheckboxControl('virtualScroll', 'Virtual Scroll', 'virtualScroll'),
+      createCheckboxControl('infiniteScroll', 'Infinite Scroll', 'infiniteScroll'),
+    ],
+    showOutput: true,
+  }));
 
   // =============================================================================
   // SHOWCASE STATE
@@ -779,9 +750,8 @@ export class ListShowcaseComponent implements ShowcaseComponent, OnInit {
   }
 
   onLoadMore(event: ListLoadMoreEvent): void {
-    const timestamp = new Date().toLocaleTimeString();
     this.lastActionSignal.set(
-      `Load more triggered at ${timestamp} - Page: ${event.nextPage}/${event.totalPages}`,
+      `Load more requested - next page: ${event.nextPage}, total pages: ${event.totalPages}`,
     );
   }
 
@@ -806,6 +776,11 @@ export class ListShowcaseComponent implements ShowcaseComponent, OnInit {
     this.demoTasksData.push(newTask);
     const timestamp = new Date().toLocaleTimeString();
     this.lastActionSignal.set(`Sample task created at ${timestamp}`);
+  }
+
+  onInteractiveConfigChange(event: InteractiveConfigChangeEvent<ListInteractiveConfig>): void {
+    this.interactiveListConfigSignal.set(event.config);
+    this.lastActionSignal.set(`Configuration changed: ${event.property} = ${event.value}`);
   }
 
   // =============================================================================

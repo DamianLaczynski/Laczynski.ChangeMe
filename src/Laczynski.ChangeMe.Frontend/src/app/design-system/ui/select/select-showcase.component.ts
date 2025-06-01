@@ -3,7 +3,15 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { SelectComponent } from './select.component';
-import { ApiDocumentationComponent } from '../../shared/components';
+import { ApiDocumentationComponent, InteractiveExampleComponent } from '../../shared/components';
+import {
+  InteractiveExampleConfig,
+  InteractiveConfigChangeEvent,
+  createSelectControl,
+  createTextControl,
+  createCheckboxControl,
+} from '../../shared/components/interactive-example/interactive-example.model';
+
 import {
   SelectOption,
   SelectVariant,
@@ -21,6 +29,24 @@ import {
   ShowcaseConfig,
 } from '../../models/showcase.model';
 
+// =============================================================================
+// SELECT INTERACTIVE CONFIG TYPE
+// =============================================================================
+
+interface SelectInteractiveConfig {
+  variant: SelectVariant;
+  size: SelectSize;
+  label: string;
+  placeholder: string;
+  disabled: boolean;
+  required: boolean;
+  multiple: boolean;
+  searchable: boolean;
+  loading: boolean;
+  helperText: string;
+  value: any;
+}
+
 /**
  * Select Component Showcase
  *
@@ -30,7 +56,13 @@ import {
 @Component({
   selector: 'select-showcase',
   standalone: true,
-  imports: [CommonModule, FormsModule, SelectComponent, ApiDocumentationComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    SelectComponent,
+    ApiDocumentationComponent,
+    InteractiveExampleComponent,
+  ],
   template: `
     <div class="showcase-container">
       <!-- Header -->
@@ -38,6 +70,33 @@ import {
         <h1>{{ showcaseConfig().component.componentName }}</h1>
         <p class="showcase-description">{{ showcaseConfig().component.description }}</p>
       </div>
+
+      <!-- Interactive Example using new component -->
+      <ds-interactive-example
+        [config]="interactiveConfig()"
+        [currentConfig]="interactiveSelectConfig()"
+        [lastAction]="lastAction"
+        (configChange)="onInteractiveConfigChange($event)"
+      >
+        <ds-select
+          [variant]="interactiveSelectConfig().variant"
+          [size]="interactiveSelectConfig().size"
+          [label]="interactiveSelectConfig().label"
+          [placeholder]="interactiveSelectConfig().placeholder"
+          [disabled]="interactiveSelectConfig().disabled"
+          [required]="interactiveSelectConfig().required"
+          [multiple]="interactiveSelectConfig().multiple"
+          [searchable]="interactiveSelectConfig().searchable"
+          [loading]="interactiveSelectConfig().loading"
+          [helperText]="interactiveSelectConfig().helperText"
+          [value]="interactiveSelectConfig().value"
+          [options]="demoOptions()"
+          (selectionChange)="onSelectionChange($event)"
+          (search)="onSearch($event)"
+          (toggle)="onToggle($event)"
+          (focus)="onFocus($event)"
+        />
+      </ds-interactive-example>
 
       <!-- Variants Section -->
       <section class="showcase-section">
@@ -248,119 +307,6 @@ import {
         </div>
       </section>
 
-      <!-- Interactive Example -->
-      <section class="showcase-section">
-        <h2>Interactive Example</h2>
-
-        <div class="interactive-controls">
-          <div class="control-group">
-            <label>
-              Variant:
-              <select [(ngModel)]="demoConfigVariantValue" class="control-input">
-                @for (variant of selectVariants; track variant) {
-                  <option [value]="variant">{{ variant | titlecase }}</option>
-                }
-              </select>
-            </label>
-          </div>
-
-          <div class="control-group">
-            <label>
-              Size:
-              <select [(ngModel)]="demoConfigSizeValue" class="control-input">
-                @for (size of selectSizes; track size) {
-                  <option [value]="size">{{ size | uppercase }}</option>
-                }
-              </select>
-            </label>
-          </div>
-
-          <div class="control-group">
-            <label>
-              Label:
-              <input
-                type="text"
-                [(ngModel)]="demoConfigLabelValue"
-                class="control-input"
-                placeholder="Enter label..."
-              />
-            </label>
-          </div>
-
-          <div class="control-group">
-            <label>
-              Placeholder:
-              <input
-                type="text"
-                [(ngModel)]="demoConfigPlaceholderValue"
-                class="control-input"
-                placeholder="Enter placeholder..."
-              />
-            </label>
-          </div>
-
-          <div class="control-group">
-            <label>
-              <input type="checkbox" [(ngModel)]="demoConfigDisabledValue" />
-              Disabled
-            </label>
-          </div>
-
-          <div class="control-group">
-            <label>
-              <input type="checkbox" [(ngModel)]="demoConfigRequiredValue" />
-              Required
-            </label>
-          </div>
-
-          <div class="control-group">
-            <label>
-              <input type="checkbox" [(ngModel)]="demoConfigMultipleValue" />
-              Multiple
-            </label>
-          </div>
-
-          <div class="control-group">
-            <label>
-              <input type="checkbox" [(ngModel)]="demoConfigSearchableValue" />
-              Searchable
-            </label>
-          </div>
-
-          <div class="control-group">
-            <label>
-              <input type="checkbox" [(ngModel)]="demoConfigLoadingValue" />
-              Loading
-            </label>
-          </div>
-        </div>
-
-        <div class="interactive-preview">
-          <ds-select
-            [variant]="demoConfigVariant()"
-            [size]="demoConfigSize()"
-            [label]="demoConfigLabel()"
-            [placeholder]="demoConfigPlaceholder()"
-            [disabled]="demoConfigDisabled()"
-            [required]="demoConfigRequired()"
-            [multiple]="demoConfigMultiple()"
-            [searchable]="demoConfigSearchable()"
-            [loading]="demoConfigLoading()"
-            [options]="demoOptions()"
-            [value]="demoValue"
-            [helperText]="demoConfigHelperText()"
-            (selectionChange)="onSelectionChange($event)"
-            (search)="onSearch($event)"
-            (toggle)="onToggle($event)"
-            (focus)="onFocus($event)"
-          />
-        </div>
-
-        <div class="showcase-output">
-          {{ lastAction || 'Interact with the select above to see events...' }}
-        </div>
-      </section>
-
       <!-- Component API -->
       <section class="showcase-section">
         <h2>Component API</h2>
@@ -392,7 +338,60 @@ export class SelectShowcaseComponent implements ShowcaseComponent {
   selectVariants: SelectVariant[] = ['default', 'filled', 'outlined'];
   selectSizes: SelectSize[] = ['sm', 'md', 'lg'];
 
-  // Individual signals for demo configuration
+  // =============================================================================
+  // INTERACTIVE EXAMPLE CONFIGURATION
+  // =============================================================================
+
+  private interactiveSelectConfigSignal = signal<SelectInteractiveConfig>({
+    variant: 'default',
+    size: 'md',
+    label: 'Demo Select',
+    placeholder: 'Choose an option...',
+    disabled: false,
+    required: false,
+    multiple: false,
+    searchable: false,
+    loading: false,
+    helperText: '',
+    value: null,
+  });
+
+  readonly interactiveSelectConfig = computed(() => this.interactiveSelectConfigSignal());
+
+  readonly interactiveConfig = computed<InteractiveExampleConfig>(() => ({
+    title: 'Interactive Select Example',
+    description: 'Customize the select properties using the controls below.',
+    controls: [
+      createSelectControl('variant', 'Variant', 'variant', [
+        { value: 'default', label: 'Default' },
+        { value: 'filled', label: 'Filled' },
+        { value: 'outlined', label: 'Outlined' },
+      ]),
+      createSelectControl('size', 'Size', 'size', [
+        { value: 'sm', label: 'Small' },
+        { value: 'md', label: 'Medium' },
+        { value: 'lg', label: 'Large' },
+      ]),
+      createTextControl('label', 'Label', 'label', { placeholder: 'Enter label...' }),
+      createTextControl('placeholder', 'Placeholder', 'placeholder', {
+        placeholder: 'Enter placeholder...',
+      }),
+      createTextControl('helperText', 'Helper Text', 'helperText', {
+        placeholder: 'Enter helper text...',
+      }),
+      createCheckboxControl('disabled', 'Disabled', 'disabled'),
+      createCheckboxControl('required', 'Required', 'required'),
+      createCheckboxControl('multiple', 'Multiple', 'multiple'),
+      createCheckboxControl('searchable', 'Searchable', 'searchable'),
+      createCheckboxControl('loading', 'Loading', 'loading'),
+    ],
+    showOutput: true,
+  }));
+
+  // =============================================================================
+  // LEGACY DEMO CONFIG (keeping for backward compatibility)
+  // =============================================================================
+
   demoConfigVariant = signal<SelectVariant>('default');
   demoConfigSize = signal<SelectSize>('md');
   demoConfigLabel = signal<string>('Demo Select');
@@ -760,6 +759,11 @@ export class SelectShowcaseComponent implements ShowcaseComponent {
 
   onFocus(event: SelectFocusEvent): void {
     this.lastActionSignal.set(`Select ${event.direction === 'in' ? 'focused' : 'blurred'}`);
+  }
+
+  onInteractiveConfigChange(event: InteractiveConfigChangeEvent<SelectInteractiveConfig>): void {
+    this.interactiveSelectConfigSignal.set(event.config);
+    this.lastActionSignal.set(`Configuration changed: ${event.property} = ${event.value}`);
   }
 
   // =============================================================================

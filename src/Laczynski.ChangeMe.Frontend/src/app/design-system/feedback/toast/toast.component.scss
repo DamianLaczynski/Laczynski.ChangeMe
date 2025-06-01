@@ -1,0 +1,85 @@
+// =============================================================================
+// Toast Component Styles - Modern & Professional Design
+// =============================================================================
+
+@use "../../../../styles/abstracts/variables";
+@use "../../../../styles/abstracts/mixins";
+
+.ds-toast {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  background: linear-gradient(145deg, var(--color-surface), rgba(255, 255, 255, 0.95));
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all var(--transition-fast);
+  
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.ds-toast-icon {
+  font-size: var(--font-size-lg);
+  flex-shrink: 0;
+}
+
+.ds-toast-content {
+  flex: 1;
+}
+
+.ds-toast-title {
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--spacing-xs);
+}
+
+.ds-toast-message {
+  color: var(--color-text-secondary);
+}
+
+.ds-toast-close {
+  background: none;
+  border: none;
+  font-size: var(--font-size-lg);
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  border-radius: var(--border-radius-sm);
+  transition: all var(--transition-fast);
+  
+  &:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Variants
+.ds-toast--success {
+  border-color: var(--color-success);
+  .ds-toast-title {
+    color: var(--color-success);
+  }
+}
+
+.ds-toast--error {
+  border-color: var(--color-danger);
+  .ds-toast-title {
+    color: var(--color-danger);
+  }
+}
+
+.ds-toast--warning {
+  border-color: var(--color-warning);
+  .ds-toast-title {
+    color: var(--color-warning-700);
+  }
+}
+
+.ds-toast--info {
+  border-color: var(--color-info);
+  .ds-toast-title {
+    color: var(--color-info);
+  }
+} 

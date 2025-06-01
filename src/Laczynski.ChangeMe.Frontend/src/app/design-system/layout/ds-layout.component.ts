@@ -94,7 +94,7 @@ export class DesignSystemLayoutComponent {
         label: 'Overview',
         path: '/design-system/overview',
         category: 'overview',
-        implemented: false,
+        implemented: true,
       },
     ],
     ui: [
@@ -168,19 +168,19 @@ export class DesignSystemLayoutComponent {
         label: 'Modal',
         path: '/design-system/feedback/modal',
         category: 'feedback',
-        implemented: false,
+        implemented: true,
       },
       {
         label: 'Toast',
         path: '/design-system/feedback/toast',
         category: 'feedback',
-        implemented: false,
+        implemented: true,
       },
       {
         label: 'Alert',
         path: '/design-system/feedback/alert',
         category: 'feedback',
-        implemented: false,
+        implemented: true,
       },
     ],
     forms: [

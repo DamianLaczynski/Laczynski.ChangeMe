@@ -15,7 +15,13 @@ import { SelectComponent } from '../select/select.component';
 import { CheckboxComponent } from '../checkbox/checkbox.component';
 import { RadioComponent } from '../radio/radio.component';
 import { ButtonComponent } from '../button/button.component';
-import { ApiDocumentationComponent } from '../../shared/components';
+import { ApiDocumentationComponent, InteractiveExampleComponent } from '../../shared/components';
+import {
+  InteractiveExampleConfig,
+  InteractiveConfigChangeEvent,
+  createSelectControl,
+  createCheckboxControl,
+} from '../../shared/components/interactive-example/interactive-example.model';
 
 import {
   FormGroupVariant,
@@ -32,6 +38,21 @@ import {
   createShowcaseConfig,
   ShowcaseConfig,
 } from '../../models/showcase.model';
+
+// =============================================================================
+// FORM GROUP INTERACTIVE CONFIG TYPE
+// =============================================================================
+
+interface FormGroupInteractiveConfig {
+  variant: FormGroupVariant;
+  size: FormGroupSize;
+  layout: FormGroupLayout;
+  spacing: FormGroupSpacing;
+  collapsible: boolean;
+  showBorder: boolean;
+  showProgress: boolean;
+  required: boolean;
+}
 
 /**
  * Form Group Showcase Component
@@ -54,6 +75,7 @@ import {
     RadioComponent,
     ButtonComponent,
     ApiDocumentationComponent,
+    InteractiveExampleComponent,
   ],
   template: `
     <div class="showcase-container">
@@ -62,6 +84,38 @@ import {
         <h1>{{ showcaseConfig().component.componentName }}</h1>
         <p class="showcase-description">{{ showcaseConfig().component.description }}</p>
       </div>
+
+      <!-- Interactive Example using new component -->
+      <ds-interactive-example
+        [config]="interactiveConfig()"
+        [currentConfig]="interactiveFormGroupConfig()"
+        [lastAction]="lastAction"
+        (configChange)="onInteractiveConfigChange($event)"
+      >
+        <ds-form-group
+          [variant]="interactiveFormGroupConfig().variant"
+          [size]="interactiveFormGroupConfig().size"
+          [layout]="interactiveFormGroupConfig().layout"
+          [spacing]="interactiveFormGroupConfig().spacing"
+          [collapsible]="interactiveFormGroupConfig().collapsible"
+          [required]="interactiveFormGroupConfig().required"
+          title="Interactive Form Group"
+          description="Configure this form group using the controls on the left"
+          [actions]="interactiveActions()"
+          (toggleChange)="onToggleChange($event)"
+          (actionClick)="onActionClick($event)"
+        >
+          <ds-form-field label="First Name" [required]="true">
+            <ds-input placeholder="Enter first name" [value]="''" />
+          </ds-form-field>
+          <ds-form-field label="Email" [required]="true">
+            <ds-input type="email" placeholder="Enter email" [value]="''" />
+          </ds-form-field>
+          <ds-form-field label="Country">
+            <ds-select [options]="countryOptions()" placeholder="Select country" />
+          </ds-form-field>
+        </ds-form-group>
+      </ds-interactive-example>
 
       <!-- Basic Examples -->
       <section class="showcase-section">
@@ -284,111 +338,6 @@ import {
         </div>
       </section>
 
-      <!-- Interactive Example -->
-      <section class="showcase-section">
-        <h2>Interactive Example</h2>
-        <p>Try different configurations and see real-time changes.</p>
-
-        <div class="showcase-interactive">
-          <div class="interactive-controls">
-            <div class="control-group">
-              <label for="variant-select">Variant:</label>
-              <select id="variant-select" [(ngModel)]="currentConfig.variant" class="control-input">
-                @for (variant of variants(); track variant) {
-                  <option [value]="variant">{{ variant | titlecase }}</option>
-                }
-              </select>
-            </div>
-
-            <div class="control-group">
-              <label for="size-select">Size:</label>
-              <select id="size-select" [(ngModel)]="currentConfig.size" class="control-input">
-                @for (size of sizes(); track size) {
-                  <option [value]="size">{{ size | uppercase }}</option>
-                }
-              </select>
-            </div>
-
-            <div class="control-group">
-              <label for="layout-select">Layout:</label>
-              <select id="layout-select" [(ngModel)]="currentConfig.layout" class="control-input">
-                @for (layout of layouts(); track layout) {
-                  <option [value]="layout">{{ layout | titlecase }}</option>
-                }
-              </select>
-            </div>
-
-            <div class="control-group">
-              <label for="spacing-select">Spacing:</label>
-              <select id="spacing-select" [(ngModel)]="currentConfig.spacing" class="control-input">
-                @for (spacing of spacingOptions(); track spacing) {
-                  <option [value]="spacing">{{ spacing | titlecase }}</option>
-                }
-              </select>
-            </div>
-
-            <div class="control-group">
-              <label>
-                <input type="checkbox" [(ngModel)]="currentConfig.collapsible" /> Collapsible
-              </label>
-            </div>
-
-            <div class="control-group">
-              <label>
-                <input type="checkbox" [(ngModel)]="currentConfig.showBorder" /> Show Border
-              </label>
-            </div>
-
-            <div class="control-group">
-              <label>
-                <input type="checkbox" [(ngModel)]="currentConfig.showProgress" /> Show Progress
-              </label>
-            </div>
-
-            <div class="control-group">
-              <label>
-                <input type="checkbox" [(ngModel)]="currentConfig.required" /> Required
-              </label>
-            </div>
-          </div>
-
-          <div class="interactive-preview">
-            <ds-form-group
-              [variant]="currentConfig.variant"
-              [size]="currentConfig.size"
-              [layout]="currentConfig.layout"
-              [spacing]="currentConfig.spacing"
-              [collapsible]="currentConfig.collapsible"
-              [showBorder]="currentConfig.showBorder"
-              [showProgress]="currentConfig.showProgress"
-              [required]="currentConfig.required"
-              [actions]="interactiveActions()"
-              title="Interactive Form Group"
-              description="Configure this group using the controls on the left"
-              (toggleChange)="onToggleChange($event)"
-              (actionClick)="onActionClick($event)"
-            >
-              <ds-form-field label="Sample Field 1" [required]="true">
-                <ds-input placeholder="Type here..." [value]="''" />
-              </ds-form-field>
-              <ds-form-field label="Sample Field 2">
-                <ds-select [options]="sampleOptions()" placeholder="Select option" />
-              </ds-form-field>
-              <ds-form-field label="Sample Field 3">
-                <ds-checkbox label="Enable this feature" />
-              </ds-form-field>
-            </ds-form-group>
-          </div>
-
-          <div class="showcase-output">
-            @if (lastActionSignal()) {
-              <h4>Last Action:</h4>
-              <pre>{{ lastActionSignal() }}</pre>
-            }
-          </div>
-        </div>
-      </section>
-
       <!-- Real-world Example -->
       <section class="showcase-section">
         <h2>Real-world Example</h2>
@@ -492,7 +441,57 @@ export class FormGroupShowcaseComponent implements ShowcaseComponent {
   }
 
   // =============================================================================
-  // CONFIGURATION OPTIONS
+  // INTERACTIVE EXAMPLE CONFIGURATION
+  // =============================================================================
+
+  private interactiveFormGroupConfigSignal = signal<FormGroupInteractiveConfig>({
+    variant: 'default',
+    size: 'md',
+    layout: 'vertical',
+    spacing: 'normal',
+    collapsible: false,
+    showBorder: true,
+    showProgress: false,
+    required: false,
+  });
+
+  readonly interactiveFormGroupConfig = computed(() => this.interactiveFormGroupConfigSignal());
+
+  readonly interactiveConfig = computed<InteractiveExampleConfig>(() => ({
+    title: 'Interactive Form Group Example',
+    description: 'Customize the form group properties using the controls below.',
+    controls: [
+      createSelectControl('variant', 'Variant', 'variant', [
+        { value: 'default', label: 'Default' },
+        { value: 'outlined', label: 'Outlined' },
+        { value: 'filled', label: 'Filled' },
+        { value: 'flat', label: 'Flat' },
+      ]),
+      createSelectControl('size', 'Size', 'size', [
+        { value: 'sm', label: 'Small' },
+        { value: 'md', label: 'Medium' },
+        { value: 'lg', label: 'Large' },
+      ]),
+      createSelectControl('layout', 'Layout', 'layout', [
+        { value: 'vertical', label: 'Vertical' },
+        { value: 'horizontal', label: 'Horizontal' },
+        { value: 'grid', label: 'Grid' },
+      ]),
+      createSelectControl('spacing', 'Spacing', 'spacing', [
+        { value: 'tight', label: 'Tight' },
+        { value: 'normal', label: 'Normal' },
+        { value: 'loose', label: 'Loose' },
+      ]),
+      createCheckboxControl('collapsible', 'Collapsible', 'collapsible'),
+      createCheckboxControl('showBorder', 'Show Border', 'showBorder'),
+      createCheckboxControl('showProgress', 'Show Progress', 'showProgress'),
+      createCheckboxControl('required', 'Required', 'required'),
+    ],
+    showOutput: true,
+  }));
+
+  // =============================================================================
+  // LEGACY CONFIGURATION OPTIONS (keeping for backward compatibility)
   // =============================================================================
 
   variants = signal<FormGroupVariant[]>(['default', 'outlined', 'filled', 'flat']);
@@ -501,7 +500,7 @@ export class FormGroupShowcaseComponent implements ShowcaseComponent {
   spacingOptions = signal<FormGroupSpacing[]>(['tight', 'normal', 'loose']);
 
   // =============================================================================
-  // INTERACTIVE CONFIGURATION
+  // LEGACY INTERACTIVE CONFIGURATION (keeping for backward compatibility)
   // =============================================================================
 
   currentConfig = {
@@ -787,4 +786,9 @@ export class FormGroupShowcaseComponent implements ShowcaseComponent {
 
     return createShowcaseConfig(componentInfo, apiDocumentation);
   });
+
+  onInteractiveConfigChange(event: InteractiveConfigChangeEvent<FormGroupInteractiveConfig>): void {
+    this.interactiveFormGroupConfigSignal.set(event.config);
+    this.lastActionSignal.set(`Configuration changed: ${event.property} = ${event.value}`);
+  }
 }
