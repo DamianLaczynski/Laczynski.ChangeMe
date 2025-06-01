@@ -20,7 +20,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './paginated-table.component.html',
-  styleUrls: ['./paginated-table.component.scss'],
 })
 export class PaginatedTableComponent<T, P extends PaginationParameters = PaginationParameters>
   implements OnInit

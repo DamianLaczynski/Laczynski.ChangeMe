@@ -1,7 +1,7 @@
 import { Injectable, Signal, WritableSignal, signal } from '@angular/core';
 import { Observable, catchError, tap } from 'rxjs';
 import { State, errorState, initialState, loadedState, loadingState } from '../models/state.model';
-import { PaginationResult } from '@core/data-grid/models/pagination-result.model';
+import { PaginationResult } from '@shared/data';
 
 @Injectable({
   providedIn: 'root',

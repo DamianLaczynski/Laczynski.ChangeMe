@@ -2,17 +2,16 @@ import { Component, OnInit, inject, input, signal, computed, WritableSignal } fr
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { StateContainerComponent, State, StateService } from '@core/state';
-import { ApiErrorService } from '@core/api';
+import { StateContainerComponent, State, StateService } from '@shared/state';
 import { ItemsService } from '../../services/items.service';
 import { Item, CreateItemRequest, UpdateItemRequest } from '../../models/item.model';
+import { ApiErrorService } from '@shared/api';
 
 @Component({
   selector: 'app-item-form',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, StateContainerComponent],
   templateUrl: './item-form.component.html',
-  styleUrls: ['./item-form.component.scss'],
 })
 export class ItemFormComponent implements OnInit {
   private readonly fb = inject(FormBuilder);

@@ -1,4 +1,4 @@
-import { PaginationParameters } from '@core/data-grid/models/pagination-parameters.model';
+import { PaginationParameters } from '@shared/data';
 
 /**
  * Item model matching the backend ItemDto structure

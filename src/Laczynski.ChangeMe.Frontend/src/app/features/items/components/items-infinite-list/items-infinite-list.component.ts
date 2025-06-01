@@ -16,8 +16,8 @@ import {
   InfinityListConfig,
   createInfinityListConfig,
   PaginationResult,
-} from '@core/data-grid';
-import { StateContainerComponent, State, StateService } from '@core/state';
+} from '@shared/data';
+import { StateContainerComponent, State, StateService } from '@shared/state';
 import { ItemsService } from '../../services/items.service';
 import { Item, ItemSearchParameters } from '../../models/item.model';
 
@@ -32,7 +32,6 @@ import { Item, ItemSearchParameters } from '../../models/item.model';
     StateContainerComponent,
   ],
   templateUrl: './items-infinite-list.component.html',
-  styleUrls: ['./items-infinite-list.component.scss'],
 })
 export class ItemsInfiniteListComponent implements OnInit, AfterViewInit {
   private readonly itemsService = inject(ItemsService);

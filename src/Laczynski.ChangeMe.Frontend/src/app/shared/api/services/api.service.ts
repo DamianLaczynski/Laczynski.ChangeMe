@@ -6,7 +6,7 @@ import { environment } from '../../../../environments/environment';
 import { Result, ResultStatus } from '../models/api-response.model';
 import { ApiErrorService } from './api-error.service';
 import { State, StateService } from '../../state';
-import { PaginationParameters, PaginationResult } from '@core/data-grid';
+import { PaginationParameters, PaginationResult } from '@shared/data';
 
 @Injectable({
   providedIn: 'root',

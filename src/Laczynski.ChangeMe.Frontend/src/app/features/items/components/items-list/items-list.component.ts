@@ -16,8 +16,8 @@ import {
   createPaginatedTableConfig,
   DataGridColumn,
   PaginationResult,
-} from '@core/data-grid';
-import { State, StateService } from '@core/state';
+} from '@shared/data';
+import { State, StateService } from '@shared/state';
 import { ItemsService } from '../../services/items.service';
 import { Item, ItemSearchParameters } from '../../models/item.model';
 
@@ -26,7 +26,6 @@ import { Item, ItemSearchParameters } from '../../models/item.model';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule, PaginatedTableComponent],
   templateUrl: './items-list.component.html',
-  styleUrls: ['./items-list.component.scss'],
 })
 export class ItemsListComponent implements OnInit {
   private readonly itemsService = inject(ItemsService);

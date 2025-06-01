@@ -7,7 +7,6 @@ import { State } from '../../models/state.model';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './state-container.component.html',
-  styleUrls: ['./state-container.component.scss'],
 })
 export class StateContainerComponent<T> {
   $state = input.required<State<T>>();

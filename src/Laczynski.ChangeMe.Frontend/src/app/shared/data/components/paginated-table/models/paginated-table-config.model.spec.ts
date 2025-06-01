@@ -1,8 +1,8 @@
 import { createPaginatedTableConfig } from './paginated-table-config.model';
 import { PaginationResult } from '../../../models/pagination-result.model';
 import { DataGridColumn } from './data-grid-column.model';
-import { State, loadedState } from '@core/state';
 import { Signal, signal } from '@angular/core';
+import { State, loadedState } from '@shared/state';
 
 describe('PaginatedTableConfig', () => {
   interface TestItem {

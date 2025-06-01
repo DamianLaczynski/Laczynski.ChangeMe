@@ -1,14 +1,14 @@
 import { Injectable, inject, WritableSignal } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiService } from '@core/api';
-import { State } from '@core/state';
-import { PaginationResult } from '@core/data-grid';
+import { ApiService } from '@shared/api';
 import {
   Item,
   CreateItemRequest,
   UpdateItemRequest,
   ItemSearchParameters,
 } from '../models/item.model';
+import { PaginationResult } from '@shared/data';
+import { State } from '@shared/state';
 
 @Injectable({
   providedIn: 'root',

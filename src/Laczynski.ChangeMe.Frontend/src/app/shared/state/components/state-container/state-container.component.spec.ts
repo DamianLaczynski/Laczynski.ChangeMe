@@ -2,16 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, ViewChild } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
-import { signal } from '@angular/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
-import {
-  initialState,
-  loadedState,
-  loadingState,
-  errorState,
-  State,
-} from '../../models/state.model';
+import { initialState, loadedState, loadingState, errorState } from '../../models/state.model';
 import { StateContainerComponent } from './state-container.component';
 
 // Mock the LoadingIndicatorComponent since it's an external dependency

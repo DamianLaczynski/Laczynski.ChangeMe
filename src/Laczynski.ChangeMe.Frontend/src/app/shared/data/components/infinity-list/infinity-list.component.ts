@@ -18,7 +18,6 @@ import { InfinityListConfig } from './models/infinity-list-config.model';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './infinity-list.component.html',
-  styleUrls: ['./infinity-list.component.scss'],
 })
 export class InfinityListComponent<T, P extends PaginationParameters = PaginationParameters>
   implements OnInit

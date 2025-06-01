@@ -1,7 +1,7 @@
 import { of } from 'rxjs';
 import { PaginationParameters } from '../../../models/pagination-parameters.model';
-import { DataGridBaseConfig } from '@core/data-grid/models/data-grid-base-config.model';
 import { TemplateRef } from '@angular/core';
+import { DataGridBaseConfig } from '@shared/data/models/data-grid-base-config.model';
 
 /**
  * Configuration for the infinity list component

@@ -1,8 +1,8 @@
-import { State } from '@core/state';
-import { PaginationResult } from './pagination-result.model';
+import { Signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PaginationParameters } from './pagination-parameters.model';
-import { Signal } from '@angular/core';
+import { PaginationResult } from './pagination-result.model';
+import { State } from '@shared/state';
 /**
  * Base configuration for data grid components
  */
