@@ -37,7 +37,7 @@ import {
   ComponentApiDocumentation,
   createShowcaseConfig,
   ShowcaseConfig,
-} from '../../models/showcase.model';
+} from '../../showcases/showcase.model';
 
 // =============================================================================
 // FORM GROUP INTERACTIVE CONFIG TYPE

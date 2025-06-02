@@ -4,16 +4,16 @@
 // Routes for design system components and showcases
 
 import { Routes } from '@angular/router';
-import { ButtonShowcaseComponent } from './ui/button/button-showcase.component';
-import { InputShowcaseComponent } from './ui/input/input-showcase.component';
-import { SelectShowcaseComponent } from './ui/select/select-showcase.component';
-import { CheckboxShowcaseComponent } from './ui/checkbox/checkbox-showcase.component';
-import { RadioShowcaseComponent } from './ui/radio/radio-showcase.component';
-import { DesignSystemLayoutComponent } from './layout/ds-layout.component';
-import { FormFieldShowcaseComponent } from './ui/form-field';
-import { FormGroupShowcaseComponent } from './ui/form-group';
-import { TableShowcaseComponent } from './ui/table';
-import { ListShowcaseComponent } from './ui/list';
+import { InputShowcaseComponent } from './input/input-showcase.component';
+import { SelectShowcaseComponent } from './select/select-showcase.component';
+import { CheckboxShowcaseComponent } from './checkbox/checkbox-showcase.component';
+import { RadioShowcaseComponent } from './radio/radio-showcase.component';
+import { TableShowcaseComponent } from './table';
+import { ListShowcaseComponent } from './list';
+import { CardShowcaseComponent } from './card';
+import { OverviewComponent } from './showcases/overview';
+import { ButtonShowcaseComponent } from './button';
+import { DesignSystemLayoutComponent } from './showcases/layout/ds-layout.component';
 
 /**
  * Design System routes with layout wrapper
@@ -23,7 +23,6 @@ export const DS_ROUTES: Routes = [
     path: '',
     component: DesignSystemLayoutComponent,
     children: [
-      // Default redirect to overview
       {
         path: '',
         redirectTo: 'overview',
@@ -35,184 +34,78 @@ export const DS_ROUTES: Routes = [
       // =============================================================================
       {
         path: 'overview',
-        loadComponent: () => import('./overview/overview.component').then(m => m.OverviewComponent),
-        data: {
-          title: 'Overview',
-          category: 'overview',
-          description:
-            'Complete overview of the design system with components, principles, and getting started guide',
-        },
+        component: OverviewComponent,
       },
 
       // =============================================================================
-      // UI COMPONENTS (Implemented)
+      // ACTIONS COMPONENTS
       // =============================================================================
       {
-        path: 'ui/button',
+        path: 'actions/button',
         component: ButtonShowcaseComponent,
-        data: {
-          title: 'Button Component',
-          category: 'ui',
-          description: 'Interactive button component with multiple variants and states',
-        },
       },
 
+      // =============================================================================
+      // FORMS COMPONENTS
+      // =============================================================================
+
       {
-        path: 'ui/input',
+        path: 'forms/input',
         component: InputShowcaseComponent,
-        data: {
-          title: 'Input Component',
-          category: 'ui',
-          description: 'Versatile input component with validation, icons, and accessibility',
-        },
       },
 
       {
-        path: 'ui/select',
+        path: 'forms/select',
         component: SelectShowcaseComponent,
-        data: {
-          title: 'Select Component',
-          category: 'ui',
-          description: 'Advanced select component with search, multi-select, and grouping',
-        },
       },
 
       {
-        path: 'ui/checkbox',
+        path: 'forms/checkbox',
         component: CheckboxShowcaseComponent,
-        data: {
-          title: 'Checkbox Component',
-          category: 'ui',
-          description:
-            'Versatile checkbox component with groups, indeterminate states, and accessibility',
-        },
       },
 
       {
-        path: 'ui/radio',
+        path: 'forms/radio',
         component: RadioShowcaseComponent,
-        data: {
-          title: 'Radio Component',
-          category: 'ui',
-          description:
-            'Radio button group component for single selection with keyboard navigation and accessibility',
-        },
       },
 
       // =============================================================================
-      // FORM COMPONENTS (Implemented)
-      // =============================================================================
-      {
-        path: 'forms/form-field',
-        component: FormFieldShowcaseComponent,
-        data: {
-          title: 'Form Field',
-          category: 'forms',
-          description: 'Wrapper component for form controls with labeling, validation, and layout',
-        },
-      },
-
-      {
-        path: 'forms/form-group',
-        component: FormGroupShowcaseComponent,
-        data: {
-          title: 'Form Group',
-          category: 'forms',
-          description:
-            'Logical grouping component for related form fields with collapsible functionality',
-        },
-      },
-
-      // =============================================================================
-      // DATA COMPONENTS (Implemented)
+      // DATA COMPONENTS
       // =============================================================================
       {
         path: 'data/table',
-        loadComponent: () => import('./ui/table').then(m => m.TableShowcaseComponent),
-        data: {
-          title: 'Table Component',
-          category: 'data',
-          description: 'Modern data table with sorting, pagination, filtering, and selection',
-        },
+        component: TableShowcaseComponent,
       },
 
       {
         path: 'data/list',
-        loadComponent: () => import('./ui/list').then(m => m.ListShowcaseComponent),
-        data: {
-          title: 'List Component',
-          category: 'data',
-          description: 'Flexible list with virtual scrolling, infinite scroll, and selection',
-        },
+        component: ListShowcaseComponent,
       },
 
       {
         path: 'data/card',
-        loadComponent: () => import('./ui/card').then(m => m.CardShowcaseComponent),
-        data: {
-          title: 'Card Component',
-          category: 'data',
-          description: 'Flexible container with headers, footers, media, and actions',
-        },
-      },
-
-      // =============================================================================
-      // FEEDBACK COMPONENTS (Implemented)
-      // =============================================================================
-      {
-        path: 'feedback/modal',
-        loadComponent: () => import('./feedback/modal').then(m => m.ModalShowcaseComponent),
-        data: {
-          title: 'Modal Component',
-          category: 'feedback',
-          description:
-            'Modal dialog component with multiple variants, sizes, and accessibility features',
-        },
-      },
-
-      {
-        path: 'feedback/toast',
-        loadComponent: () => import('./feedback/toast').then(m => m.ToastShowcaseComponent),
-        data: {
-          title: 'Toast Component',
-          category: 'feedback',
-          description: 'Notification component for displaying temporary messages',
-        },
-      },
-
-      {
-        path: 'feedback/alert',
-        loadComponent: () => import('./feedback/alert').then(m => m.AlertShowcaseComponent),
-        data: {
-          title: 'Alert Component',
-          category: 'feedback',
-          description: 'Alert component for displaying important messages and notifications',
-        },
+        component: CardShowcaseComponent,
       },
 
       // =============================================================================
       // LAYOUT COMPONENTS
       // =============================================================================
-      {
-        path: 'layout/grid',
-        loadComponent: () => import('./layout/grid').then(m => m.GridShowcaseComponent),
-        data: {
-          title: 'Grid Layout System',
-          category: 'layout',
-          description: 'Flexible grid system with responsive design and CSS Grid features',
-        },
-      },
 
       // =============================================================================
-      // PLACEHOLDER ROUTES (To be implemented)
+      // OVERLAY COMPONENTS
       // =============================================================================
-      // These will be uncommented as we implement each component
 
-      // {
-      //   path: 'overview',
-      //   loadComponent: () =>
-      //     import('./overview/overview.component').then((m) => m.OverviewComponent),
-      // },
+      // =============================================================================
+      // FEEDBACK COMPONENTS
+      // =============================================================================
+
+      // =============================================================================
+      // NAVIGATION COMPONENTS
+      // =============================================================================
+
+      // =============================================================================
+      // NAVIGATION COMPONENTS
+      // =============================================================================
 
       // Fallback route
       {

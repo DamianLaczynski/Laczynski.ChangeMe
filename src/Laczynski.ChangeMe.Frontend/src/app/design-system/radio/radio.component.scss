@@ -1,0 +1,457 @@
+// =============================================================================
+// Radio Component Styles - Modern & Professional Design
+// =============================================================================
+// Enhanced radio component with advanced styling, smooth transitions,
+// and excellent UX patterns matching the input component design
+
+@use "../../../styles/abstracts/variables";
+@use "../../../styles/abstracts/mixins";
+
+// =============================================================================
+// RADIO CONTAINER
+// =============================================================================
+
+.ds-radio-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-family: var(--font-family-primary);
+  position: relative;
+}
+
+// =============================================================================
+// RADIO GROUP - Enhanced Layout
+// =============================================================================
+
+.ds-radio-group {
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.ds-radio-group__legend {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+  line-height: var(--line-height-tight);
+  padding: 0;
+  margin: 0 0 var(--spacing-sm) 0;
+  transition: color var(--transition-fast);
+  
+  &.required {
+    position: relative;
+  }
+}
+
+.ds-radio-group__required {
+  color: var(--color-danger);
+  margin-left: 2px;
+  font-weight: var(--font-weight-bold);
+  font-size: 1em;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.ds-radio-group__description {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-md);
+  line-height: var(--line-height-normal);
+  padding-left: var(--spacing-xs);
+}
+
+.ds-radio-group__options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+// Inline layout for radio group
+.ds-radio-group--inline {
+  .ds-radio-group__options {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--spacing-lg);
+  }
+}
+
+// Compact layout
+.ds-radio-group--compact {
+  gap: var(--spacing-sm);
+  
+  .ds-radio-group__options {
+    gap: var(--spacing-xs);
+  }
+  
+  .ds-radio {
+    padding: var(--spacing-xs) 0;
+  }
+}
+
+// =============================================================================
+// SINGLE RADIO - Modern Interactive Design
+// =============================================================================
+
+.ds-radio {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+  cursor: pointer;
+  transition: all var(--transition-base) var(--ease-out-cubic);
+  position: relative;
+  padding: var(--spacing-xs);
+  border-radius: var(--border-radius-md);
+  
+  &:hover:not(.ds-radio--disabled) {
+    background: linear-gradient(145deg, transparent, rgba(0, 123, 255, 0.03));
+    transform: translateX(2px);
+    
+    .ds-radio__mark {
+      border-color: var(--color-primary);
+      box-shadow: 0 2px 8px rgba(0, 123, 255, 0.15);
+      transform: scale(1.05);
+    }
+  }
+  
+  &.ds-radio--disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+    transform: none;
+  }
+}
+
+// =============================================================================
+// RADIO INPUT (HIDDEN)
+// =============================================================================
+
+.ds-radio__input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  
+  &:focus-visible + .ds-radio__mark {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.15);
+  }
+}
+
+// =============================================================================
+// RADIO MARK - Modern Glass Morphism Design
+// =============================================================================
+
+.ds-radio__mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid var(--color-border);
+  border-radius: 50%;
+  background: linear-gradient(145deg, var(--color-surface), var(--color-gray-50));
+  transition: all var(--transition-base) var(--ease-out-cubic);
+  flex-shrink: 0;
+  position: relative;
+  backdrop-filter: blur(4px);
+  overflow: hidden;
+  
+  // Subtle inner highlight for depth
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+    opacity: 0.6;
+  }
+  
+  // Enhanced radio dot
+  &::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--color-white);
+    transform: scale(0);
+    transition: all var(--transition-fast) var(--ease-out-cubic);
+    opacity: 0;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+  }
+}
+
+// =============================================================================
+// RADIO STATES - Enhanced Transitions
+// =============================================================================
+
+// Selected state
+.ds-radio__input:checked + .ds-radio__mark {
+  background: linear-gradient(145deg, var(--color-primary), var(--color-primary-hover));
+  border-color: var(--color-primary);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+  transform: scale(1.05);
+  
+  &::after {
+    transform: scale(1);
+    opacity: 1;
+    animation: radioDotPop 0.3s var(--ease-out-cubic);
+  }
+}
+
+@keyframes radioDotPop {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+// Disabled state
+.ds-radio--disabled {
+  .ds-radio__mark {
+    background: var(--color-surface-disabled);
+    border-color: var(--color-border);
+    transform: none;
+    
+    &::before {
+      display: none;
+    }
+  }
+  
+  .ds-radio__input:checked + .ds-radio__mark {
+    background: var(--color-gray-400);
+    border-color: var(--color-gray-400);
+    box-shadow: none;
+    transform: none;
+    
+    &::after {
+      background-color: var(--color-white);
+    }
+  }
+}
+
+// Error state
+.ds-radio--error {
+  .ds-radio__mark {
+    border-color: var(--color-danger);
+    background-color: rgba(220, 53, 69, 0.03);
+  }
+  
+  .ds-radio__input:checked + .ds-radio__mark {
+    background: linear-gradient(145deg, var(--color-danger), var(--color-danger-hover));
+    border-color: var(--color-danger);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+  }
+}
+
+// =============================================================================
+// RADIO CONTENT - Enhanced Typography
+// =============================================================================
+
+.ds-radio__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  flex: 1;
+  min-width: 0;
+  transition: all var(--transition-fast);
+}
+
+.ds-radio__label {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+  line-height: var(--line-height-normal);
+  cursor: inherit;
+  transition: color var(--transition-fast);
+  
+  .ds-radio--disabled & {
+    color: var(--color-text-disabled);
+  }
+  
+  .ds-radio:hover:not(.ds-radio--disabled) & {
+    color: var(--color-primary);
+  }
+}
+
+.ds-radio__description {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-normal);
+  transition: color var(--transition-fast);
+  
+  .ds-radio--disabled & {
+    color: var(--color-text-disabled);
+  }
+}
+
+.ds-radio__required {
+  color: var(--color-danger);
+  margin-left: 2px;
+  font-weight: var(--font-weight-bold);
+  font-size: 1em;
+  animation: pulse 2s infinite;
+}
+
+// =============================================================================
+// SIZE VARIANTS
+// =============================================================================
+
+.ds-radio--sm {
+  gap: var(--spacing-sm);
+  
+  .ds-radio__mark {
+    width: 16px;
+    height: 16px;
+    
+    &::after {
+      width: 6px;
+      height: 6px;
+    }
+  }
+  
+  .ds-radio__label {
+    font-size: var(--font-size-sm);
+  }
+}
+
+.ds-radio--lg {
+  gap: var(--spacing-lg);
+  
+  .ds-radio__mark {
+    width: 24px;
+    height: 24px;
+    
+    &::after {
+      width: 10px;
+      height: 10px;
+    }
+  }
+  
+  .ds-radio__label {
+    font-size: var(--font-size-lg);
+  }
+}
+
+// =============================================================================
+// HELPER TEXT & VALIDATION
+// =============================================================================
+
+.ds-radio-helper {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-normal);
+  margin-top: var(--spacing-xs);
+  padding-left: var(--spacing-xs);
+  transition: color var(--transition-fast);
+  
+  &.error {
+    color: var(--color-danger);
+    font-weight: var(--font-weight-medium);
+    
+    &::before {
+      content: '⚠️ ';
+      margin-right: var(--spacing-xs);
+    }
+  }
+}
+
+// =============================================================================
+// ENHANCED THEME SUPPORT
+// =============================================================================
+
+// Dark Theme Adjustments
+[data-theme="dark"] {
+  .ds-radio__mark {
+    background: linear-gradient(145deg, var(--color-gray-800), var(--color-gray-700));
+    border-color: var(--color-gray-600);
+    
+    &::before {
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    }
+  }
+  
+  .ds-radio:hover:not(.ds-radio--disabled) {
+    background: linear-gradient(145deg, transparent, rgba(0, 123, 255, 0.1));
+    
+    .ds-radio__mark {
+      background: linear-gradient(145deg, var(--color-gray-700), var(--color-gray-600));
+      box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+    }
+  }
+}
+
+// High Contrast Theme
+[data-theme="high-contrast"] {
+  .ds-radio__mark {
+    border-width: 2px;
+    background: var(--color-white);
+  }
+  
+  .ds-radio__input:checked + .ds-radio__mark {
+    background: var(--color-primary);
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+}
+
+// =============================================================================
+// REDUCED MOTION SUPPORT
+// =============================================================================
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-radio,
+  .ds-radio__mark,
+  .ds-radio__content,
+  .ds-radio__label,
+  .ds-radio-group__required,
+  .ds-radio__required {
+    transition: none;
+    animation: none;
+    transform: none;
+  }
+  
+  .ds-radio:hover:not(.ds-radio--disabled) {
+    transform: none;
+    
+    .ds-radio__mark {
+      transform: none;
+    }
+  }
+  
+  .ds-radio__input:checked + .ds-radio__mark {
+    transform: none;
+    
+    &::after {
+      animation: none;
+    }
+  }
+}
+
+// =============================================================================
+// PRINT STYLES
+// =============================================================================
+
+@media print {
+  .ds-radio__mark {
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+  }
+  
+  .ds-radio__input:checked + .ds-radio__mark {
+    background-color: #000 !important;
+    border-color: #000 !important;
+    
+    &::after {
+      background-color: #fff !important;
+    }
+  }
+} 

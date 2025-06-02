@@ -20,7 +20,6 @@ import { InputComponent } from '../input/input.component';
 import { SelectComponent } from '../select/select.component';
 import { CheckboxComponent } from '../checkbox/checkbox.component';
 import { RadioComponent } from '../radio/radio.component';
-import { ButtonComponent } from '../button/button.component';
 
 import {
   FormFieldVariant,
@@ -38,7 +37,8 @@ import {
   ComponentApiDocumentation,
   createShowcaseConfig,
   ShowcaseConfig,
-} from '../../models/showcase.model';
+} from '../../showcases/showcase.model';
+import { ButtonComponent } from '../../button';
 
 // =============================================================================
 // FORM FIELD INTERACTIVE CONFIG TYPE

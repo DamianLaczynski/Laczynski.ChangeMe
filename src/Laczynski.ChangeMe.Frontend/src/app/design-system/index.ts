@@ -4,24 +4,21 @@
 // Main export file for the design system
 
 // =============================================================================
-// LAYOUT COMPONENTS
-// =============================================================================
-export { DesignSystemLayoutComponent } from './layout/ds-layout.component';
-
-// =============================================================================
 // UI COMPONENTS
 // =============================================================================
-export * from './ui/button';
-export * from './ui/input';
-export * from './ui/select';
-export * from './ui/checkbox';
-export * from './ui/radio';
-export * from './ui/form-field';
+export * from './button';
+export * from './input';
+export * from './select';
+export * from './checkbox';
+export * from './radio';
+export * from './table';
+export * from './list';
+export * from './card';
 
 // =============================================================================
 // MODELS & TYPES
 // =============================================================================
-export * from './models/showcase.model';
+export * from './showcases/showcase.model';
 
 // =============================================================================
 // ROUTES

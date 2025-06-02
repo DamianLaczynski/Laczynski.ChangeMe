@@ -8,13 +8,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { ListComponent } from './list.component';
-import { ApiDocumentationComponent, InteractiveExampleComponent } from '../../shared/components';
+import { ApiDocumentationComponent } from '../showcases/api-documentation';
 import {
-  InteractiveExampleConfig,
   InteractiveConfigChangeEvent,
-  createSelectControl,
-  createCheckboxControl,
-} from '../../shared/components/interactive-example/interactive-example.model';
+  InteractiveExampleComponent,
+  InteractiveExampleConfig,
+} from '../showcases/interactive-example';
+import { createCheckboxControl, createSelectControl } from '../showcases/interactive-example';
 
 import {
   ListConfig,
@@ -37,10 +37,10 @@ import {
   ComponentApiDocumentation,
   createShowcaseConfig,
   ShowcaseConfig,
-} from '../../showcases/showcase.model';
+} from '../showcases/showcase.model';
 
-import { StateService } from '../../../shared/state/services/state.service';
-import { ButtonComponent } from '../../button';
+import { StateService } from '../../shared/state/services/state.service';
+import { ButtonComponent } from '../button';
 
 // Demo data interfaces
 interface DemoTask {
@@ -338,7 +338,7 @@ interface ListInteractiveConfig {
       </ng-template>
     </div>
   `,
-  styleUrl: '../../shared/styles/showcase.scss',
+  styleUrl: '../showcases/showcase.scss',
 })
 export class ListShowcaseComponent implements ShowcaseComponent, OnInit {
   componentName = 'List Component';
