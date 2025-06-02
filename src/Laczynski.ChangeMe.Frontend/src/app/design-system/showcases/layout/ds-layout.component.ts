@@ -126,13 +126,13 @@ export class DesignSystemLayoutComponent {
         label: 'Switch',
         path: '/design-system/forms/switch',
         category: 'forms',
-        implemented: false,
+        implemented: true,
       },
       {
         label: 'Textarea',
         path: '/design-system/forms/textarea',
         category: 'forms',
-        implemented: false,
+        implemented: true,
       },
       {
         label: 'Radio',

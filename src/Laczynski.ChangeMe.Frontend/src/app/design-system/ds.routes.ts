@@ -8,12 +8,14 @@ import { InputShowcaseComponent } from './input/input-showcase.component';
 import { SelectShowcaseComponent } from './select/select-showcase.component';
 import { CheckboxShowcaseComponent } from './checkbox/checkbox-showcase.component';
 import { RadioShowcaseComponent } from './radio/radio-showcase.component';
+import { SwitchShowcaseComponent } from './switch';
 import { TableShowcaseComponent } from './table';
 import { ListShowcaseComponent } from './list';
 import { CardShowcaseComponent } from './card';
 import { OverviewComponent } from './showcases/overview';
 import { ButtonShowcaseComponent } from './button';
 import { DesignSystemLayoutComponent } from './showcases/layout/ds-layout.component';
+import { TextareaShowcaseComponent } from './textarea/textarea-showcase.component';
 
 /**
  * Design System routes with layout wrapper
@@ -67,6 +69,16 @@ export const DS_ROUTES: Routes = [
       {
         path: 'forms/radio',
         component: RadioShowcaseComponent,
+      },
+
+      {
+        path: 'forms/switch',
+        component: SwitchShowcaseComponent,
+      },
+
+      {
+        path: 'forms/textarea',
+        component: TextareaShowcaseComponent,
       },
 
       // =============================================================================
