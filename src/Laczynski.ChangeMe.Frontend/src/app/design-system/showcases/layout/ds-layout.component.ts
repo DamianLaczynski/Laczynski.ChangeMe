@@ -278,14 +278,6 @@ export class DesignSystemLayoutComponent {
       items: this.navigation['overlay'],
     },
     {
-      title: 'Navigation Components',
-      items: this.navigation['navigation'],
-    },
-    {
-      title: 'Feedback Components',
-      items: this.navigation['feedback'],
-    },
-    {
       title: 'Foundation Components',
       items: this.navigation['foundation'],
     },

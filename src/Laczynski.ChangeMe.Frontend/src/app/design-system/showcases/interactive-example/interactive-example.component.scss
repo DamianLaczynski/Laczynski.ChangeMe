@@ -35,10 +35,8 @@
   background: linear-gradient(145deg, var(--color-gray-50), var(--color-gray-100));
   border-radius: var(--border-radius-lg);
   border: 1.5px solid var(--color-border);
-  backdrop-filter: blur(8px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   position: relative;
-  overflow: hidden;
   transition: all var(--transition-base);
 
   // Subtle inner highlight for depth
@@ -91,7 +89,7 @@
   transition: all var(--transition-fast);
 
   &:hover {
-    transform: translateY(-1px);
+    // transform: translateY(-1px); // REMOVED - Creates stacking context issues
   }
 
   label {
@@ -142,11 +140,10 @@
     border-radius: var(--border-radius-md);
     padding: var(--spacing-lg);
     background: linear-gradient(145deg, var(--color-surface), var(--color-gray-50));
-    backdrop-filter: blur(4px);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     transition: all var(--transition-fast);
     position: relative;
-    overflow: hidden;
+    z-index: 2;
 
     // Subtle inner highlight
     &::before {
@@ -182,7 +179,6 @@
       background: linear-gradient(145deg, var(--color-surface), var(--color-gray-50));
       border: 1px solid var(--color-border);
       border-radius: var(--border-radius-sm);
-      backdrop-filter: blur(4px);
       transition: all var(--transition-fast);
       position: relative;
       z-index: 2;
@@ -225,112 +221,124 @@
 }
 
 // =============================================================================
-// CONTROL INPUTS - Enhanced Styling
+// CONTROL INPUTS - Enhanced Styling Matching Main Components
 // =============================================================================
 
 .control-input {
-  padding: var(--spacing-sm) var(--spacing-md);
-  border: 1.5px solid var(--color-border);
+  display: block;
+  width: 100%;
+  border: 1px solid var(--color-border);
   border-radius: var(--border-radius-md);
-  background: linear-gradient(145deg, var(--color-surface), var(--color-gray-50));
+  background-color: var(--color-surface);
   color: var(--color-text);
-  font-size: var(--font-size-base);
   font-family: var(--font-family-primary);
+  font-size: var(--font-size-base);
   line-height: var(--line-height-normal);
-  transition: all var(--transition-base) var(--ease-out-cubic);
-  backdrop-filter: blur(4px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-
-  &:hover {
-    border-color: var(--color-primary);
-    background: linear-gradient(145deg, var(--color-surface), var(--color-white));
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.1);
+  padding: var(--spacing-sm) var(--spacing-md);
+  min-height: var(--input-height-md);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  
+  &:hover:not(:disabled) {
+    border-color: var(--color-border-hover);
+    background: var(--color-surface-hover);
   }
-
+  
   &:focus {
     outline: none;
-    border-color: var(--color-primary);
-    background: var(--color-white);
-    box-shadow: 
-      0 0 0 3px rgba(0, 123, 255, 0.15),
-      0 4px 12px rgba(0, 123, 255, 0.1);
-    transform: translateY(-2px);
+    border-color: var(--color-border-focus);
+    background: var(--color-surface);
+    box-shadow: var(--focus-shadow);
+  }
+
+  &::placeholder {
+    color: var(--color-text-muted);
   }
 
   &:disabled {
-    background: var(--color-surface-disabled);
-    color: var(--color-text-disabled);
     cursor: not-allowed;
     opacity: 0.6;
-    transform: none;
+    background-color: var(--color-surface-disabled);
+    color: var(--color-text-disabled);
+    
+    &::placeholder {
+      color: var(--color-text-disabled);
+    }
+  }
 
-    &:hover {
-      border-color: var(--color-border);
-      background: var(--color-surface-disabled);
-      transform: none;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  &[aria-invalid="true"] {
+    border-color: var(--color-border-error);
+    
+    &:focus {
+      box-shadow: var(--focus-shadow-error);
     }
   }
 }
 
-// Select specific styles - Enhanced Dropdown
+// Select specific styles - Enhanced Dropdown Matching Design System
 select.control-input {
   cursor: pointer;
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23007bff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-  background-position: right var(--spacing-sm) center;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right var(--spacing-md) center;
   background-repeat: no-repeat;
-  background-size: 1.25em 1.25em;
-  padding-right: calc(var(--spacing-lg) + 1.25em);
+  background-size: 1em 1em;
+  padding-right: calc(var(--spacing-lg) + 1em);
   appearance: none;
 
   &:hover {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23007bff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%230066cc' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
   }
 
   &:focus {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23007bff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%230066cc' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  }
+
+  &:disabled {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2394a3b8' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
   }
 }
 
-// Textarea specific styles - Enhanced Layout
-textarea.control-textarea {
+// Textarea specific styles - Enhanced Layout Matching Design System
+.control-textarea {
+  @extend .control-input;
   resize: vertical;
   min-height: 100px;
-  font-family: inherit;
   line-height: var(--line-height-relaxed);
+  font-family: var(--font-family-primary);
   
   &:hover,
   &:focus {
     resize: both;
   }
+  
+  &:disabled {
+    resize: none;
+  }
 }
 
-// Range input specific styles - Modern Slider
+// Range input specific styles - Modern Slider Matching Design System
 .control-range {
+  width: 100%;
+  height: var(--input-height-md);
   padding: var(--spacing-sm) 0;
   background: transparent;
   border: none;
   cursor: pointer;
-  width: 100%;
-  height: 20px;
+  appearance: none;
 
   &:focus {
     outline: none;
-    box-shadow: none;
   }
 
   // Webkit styles
   &::-webkit-slider-runnable-track {
-    height: 6px;
-    background: linear-gradient(145deg, var(--color-gray-200), var(--color-gray-300));
+    height: 4px;
+    background: var(--color-border);
     border-radius: var(--border-radius-full);
-    border: 1px solid var(--color-border);
-    transition: background var(--transition-fast);
+    transition: background-color var(--transition-fast);
   }
 
   &:hover::-webkit-slider-runnable-track {
-    background: linear-gradient(145deg, var(--color-gray-300), var(--color-gray-400));
+    background: var(--color-border-hover);
   }
 
   &::-webkit-slider-thumb {
@@ -339,59 +347,93 @@ textarea.control-textarea {
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    background: linear-gradient(145deg, var(--color-primary), var(--color-primary-hover));
+    background: var(--color-primary);
     cursor: pointer;
     margin-top: -8px;
-    border: 2px solid var(--color-white);
-    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+    border: 2px solid var(--color-surface);
+    box-shadow: var(--shadow-sm);
     transition: all var(--transition-fast);
   }
 
   &:hover::-webkit-slider-thumb {
-    background: linear-gradient(145deg, var(--color-primary-hover), var(--color-primary-active));
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+    background: var(--color-primary-hover);
+    box-shadow: var(--shadow-md);
+  }
+
+  &:focus::-webkit-slider-thumb {
+    box-shadow: var(--focus-shadow);
+  }
+
+  &:disabled::-webkit-slider-thumb {
+    background: var(--color-text-disabled);
+    cursor: not-allowed;
   }
 
   // Firefox styles
   &::-moz-range-track {
-    height: 6px;
-    background: linear-gradient(145deg, var(--color-gray-200), var(--color-gray-300));
+    height: 4px;
+    background: var(--color-border);
     border-radius: var(--border-radius-full);
-    border: 1px solid var(--color-border);
+    border: none;
   }
 
   &::-moz-range-thumb {
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    background: linear-gradient(145deg, var(--color-primary), var(--color-primary-hover));
+    background: var(--color-primary);
     cursor: pointer;
-    border: 2px solid var(--color-white);
-    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+    border: 2px solid var(--color-surface);
+    box-shadow: var(--shadow-sm);
     transition: all var(--transition-fast);
   }
 
   &:hover::-moz-range-thumb {
-    background: linear-gradient(145deg, var(--color-primary-hover), var(--color-primary-active));
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+    background: var(--color-primary-hover);
+    box-shadow: var(--shadow-md);
+  }
+
+  &:focus::-moz-range-thumb {
+    box-shadow: var(--focus-shadow);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    
+    &::-moz-range-thumb {
+      background: var(--color-text-disabled);
+      cursor: not-allowed;
+    }
   }
 }
 
-// Color input specific styles - Enhanced Color Picker
+// Color input specific styles - Enhanced Color Picker Matching Design System
 .control-color {
   width: 80px;
-  height: 48px;
+  height: var(--input-height-md);
   padding: var(--spacing-xs);
-  cursor: pointer;
+  border: 1px solid var(--color-border);
   border-radius: var(--border-radius-md);
-  background: linear-gradient(145deg, var(--color-surface), var(--color-gray-50));
+  background: var(--color-surface);
+  cursor: pointer;
   transition: all var(--transition-fast);
 
-  &:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  &:hover:not(:disabled) {
+    border-color: var(--color-border-hover);
+    box-shadow: var(--shadow-sm);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--color-border-focus);
+    box-shadow: var(--focus-shadow);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    background: var(--color-surface-disabled);
   }
 
   &::-webkit-color-swatch-wrapper {
@@ -403,41 +445,35 @@ textarea.control-textarea {
   &::-webkit-color-swatch {
     border: none;
     border-radius: calc(var(--border-radius-md) - var(--spacing-xs));
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
   &::-moz-color-swatch {
     border: none;
     border-radius: calc(var(--border-radius-md) - var(--spacing-xs));
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 }
 
 // =============================================================================
-// HELP TEXT - Enhanced Information Display
+// HELP TEXT - Enhanced Information Display Matching Design System
 // =============================================================================
 
 .control-help {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-xs);
   color: var(--color-text-secondary);
+  line-height: var(--line-height-normal);
   margin-top: var(--spacing-xs);
-  line-height: var(--line-height-relaxed);
-  padding: var(--spacing-xs) var(--spacing-sm);
-  background: linear-gradient(145deg, var(--color-gray-25), var(--color-gray-50));
-  border-radius: var(--border-radius-sm);
-  border-left: 3px solid var(--color-info);
-  transition: all var(--transition-fast);
+  transition: color var(--transition-fast);
   
-  &::before {
-    content: '💡 ';
-    margin-right: var(--spacing-xs);
-    font-size: 0.9em;
+  &.error {
+    color: var(--color-danger);
   }
   
-  &:hover {
-    background: linear-gradient(145deg, rgba(0, 123, 255, 0.05), rgba(0, 123, 255, 0.1));
-    border-left-color: var(--color-primary);
-    transform: translateX(2px);
+  &.success {
+    color: var(--color-success);
+  }
+  
+  &.warning {
+    color: var(--color-warning);
   }
 }
 
@@ -452,12 +488,9 @@ textarea.control-textarea {
   justify-content: center;
   padding: var(--spacing-xxl);
   min-height: 300px;
-  max-height: 400px;
   background: linear-gradient(145deg, var(--color-surface), var(--color-gray-50));
   border: 1.5px solid var(--color-border);
   border-radius: var(--border-radius-lg);
-  overflow: hidden;
-  backdrop-filter: blur(8px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   position: relative;
   transition: all var(--transition-base);
@@ -491,7 +524,6 @@ textarea.control-textarea {
   @include mixins.respond-to("sm") {
     padding: var(--spacing-lg);
     min-height: 200px;
-    max-height: 300px;
   }
 }
 
@@ -511,10 +543,8 @@ textarea.control-textarea {
   margin-top: var(--spacing-lg);
   white-space: pre-wrap;
   word-break: break-all;
-  backdrop-filter: blur(4px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   position: relative;
-  overflow: hidden;
   transition: all var(--transition-fast);
 
   // Subtle inner highlight
@@ -611,43 +641,49 @@ textarea.control-textarea {
   }
 
   .control-input {
-    background: linear-gradient(145deg, var(--color-gray-700), var(--color-gray-600));
-    border-color: var(--color-gray-600);
-    color: var(--color-white);
+    background: var(--color-surface);
+    border-color: var(--color-border);
+    color: var(--color-text);
 
-    &:hover {
-      background: linear-gradient(145deg, var(--color-gray-600), var(--color-gray-500));
-      box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+    &:hover:not(:disabled) {
+      border-color: var(--color-border-hover);
+      background: var(--color-surface-hover);
     }
 
     &:focus {
-      background: var(--color-gray-700);
-      box-shadow: 
-        0 0 0 3px rgba(0, 123, 255, 0.25),
-        0 4px 12px rgba(0, 123, 255, 0.2);
+      border-color: var(--color-border-focus);
+      background: var(--color-surface);
+      box-shadow: var(--focus-shadow);
     }
 
     &:disabled {
-      background: var(--color-gray-800);
-      color: var(--color-gray-400);
+      background: var(--color-surface-disabled);
+      color: var(--color-text-disabled);
+    }
 
-      &:hover {
-        background: var(--color-gray-800);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-      }
+    &::placeholder {
+      color: var(--color-text-muted);
     }
   }
 
   .control-color {
-    background: linear-gradient(145deg, var(--color-gray-700), var(--color-gray-600));
+    background: var(--color-surface);
+    border-color: var(--color-border);
   }
 
   .control-help {
-    background: linear-gradient(145deg, var(--color-gray-750), var(--color-gray-700));
-    color: var(--color-gray-300);
+    color: var(--color-text-secondary);
 
-    &:hover {
-      background: linear-gradient(145deg, rgba(0, 123, 255, 0.1), rgba(0, 123, 255, 0.2));
+    &.error {
+      color: var(--color-danger);
+    }
+
+    &.success {
+      color: var(--color-success);
+    }
+
+    &.warning {
+      color: var(--color-warning);
     }
   }
 
@@ -686,6 +722,38 @@ textarea.control-textarea {
       &:hover {
         background: linear-gradient(145deg, rgba(0, 123, 255, 0.3), rgba(0, 123, 255, 0.4));
       }
+    }
+  }
+
+  .control-range {
+    &::-webkit-slider-runnable-track {
+      background: var(--color-border);
+    }
+
+    &:hover::-webkit-slider-runnable-track {
+      background: var(--color-border-hover);
+    }
+
+    &::-webkit-slider-thumb {
+      background: var(--color-primary);
+      border-color: var(--color-surface);
+    }
+
+    &:hover::-webkit-slider-thumb {
+      background: var(--color-primary-hover);
+    }
+
+    &::-moz-range-track {
+      background: var(--color-border);
+    }
+
+    &::-moz-range-thumb {
+      background: var(--color-primary);
+      border-color: var(--color-surface);
+    }
+
+    &:hover::-moz-range-thumb {
+      background: var(--color-primary-hover);
     }
   }
 }
@@ -753,13 +821,13 @@ textarea.control-textarea {
 
   .control-group {
     &:hover {
-      transform: none;
+      // transform: none; // REMOVED - Creates stacking context issues
     }
 
     label:has(input[type="checkbox"]),
     label:has(input[type="radio"]) {
       &:hover {
-        transform: none;
+        // transform: none; // REMOVED - Creates stacking context issues
       }
     }
 
@@ -767,7 +835,7 @@ textarea.control-textarea {
       padding: var(--spacing-md);
 
       label:hover {
-        transform: none;
+        // transform: none; // REMOVED - Creates stacking context issues
       }
     }
   }
@@ -775,19 +843,19 @@ textarea.control-textarea {
   .control-input {
     &:hover,
     &:focus {
-      transform: none;
+      // transform: none; // REMOVED - Creates stacking context issues
     }
   }
 
   .control-help {
     &:hover {
-      transform: none;
+      // transform: none; // REMOVED - Creates stacking context issues
     }
   }
 
   .interactive-preview {
     &:hover {
-      transform: none;
+      // transform: none; // REMOVED - Creates stacking context issues
     }
   }
 
@@ -796,7 +864,7 @@ textarea.control-textarea {
     margin-top: var(--spacing-md);
 
     &:hover {
-      transform: none;
+      // transform: none; // REMOVED - Creates stacking context issues
     }
   }
 }
