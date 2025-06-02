@@ -4,6 +4,40 @@
 // Type definitions and interfaces for the Select component
 // Supports single and multi-select with search, grouping, and async loading
 
+import {
+  ComponentSize,
+  ComponentVariant,
+  ComponentState,
+  FormComponentState,
+  ComponentChangeEvent,
+  ComponentFocusEvent,
+  AccessibilityConfig,
+  ValidationResult,
+  ValidationRule,
+  generateComponentId,
+  mergeClasses,
+  createAccessibilityAttributes,
+  getSizeConfiguration,
+  isValidComponentSize,
+  isValidComponentVariant,
+} from '../shared';
+
+// =============================================================================
+// SELECT-SPECIFIC TYPES
+// =============================================================================
+
+/**
+ * Select variants extending base component variants
+ */
+export type SelectVariant =
+  | Extract<ComponentVariant, 'primary' | 'secondary' | 'success' | 'warning' | 'danger'>
+  | 'default';
+
+/**
+ * Select states
+ */
+export type SelectState = 'default' | 'error' | 'success' | 'warning' | 'disabled' | 'loading';
+
 // =============================================================================
 // CORE SELECT INTERFACES
 // =============================================================================
@@ -51,6 +85,10 @@ export interface SelectOptionGroup<T = any> {
   disabled?: boolean;
 }
 
+// =============================================================================
+// COMPONENT CONFIGURATION
+// =============================================================================
+
 /**
  * Select component configuration
  */
@@ -59,7 +97,7 @@ export interface SelectConfig {
   variant: SelectVariant;
 
   /** Select size */
-  size: SelectSize;
+  size: ComponentSize;
 
   /** Whether multiple selection is allowed */
   multiple: boolean;
@@ -75,74 +113,41 @@ export interface SelectConfig {
 
   /** Virtual scrolling for large datasets */
   virtual: boolean;
+
+  /** Animation duration in milliseconds */
+  animationDuration: number;
+
+  /** Whether to show validation icons */
+  showValidationIcons: boolean;
 }
 
 /**
- * Select validation state
+ * Select state extending form component state
  */
-export interface SelectValidation {
-  /** Whether selection is valid */
-  valid: boolean;
+export interface SelectComponentState extends FormComponentState {
+  /** Whether dropdown is open */
+  isOpen: boolean;
 
-  /** Validation error message */
-  errorMessage?: string;
+  /** Current search query */
+  searchQuery: string;
 
-  /** Custom validation rules */
-  customRules?: SelectValidationRule[];
-}
+  /** Currently highlighted option index */
+  highlightedIndex: number;
 
-/**
- * Custom validation rule for select
- */
-export interface SelectValidationRule {
-  /** Rule name */
-  name: string;
-
-  /** Validation function */
-  validator: (value: any | any[]) => boolean;
-
-  /** Error message if validation fails */
-  errorMessage: string;
+  /** Current select visual state */
+  selectState: SelectState;
 }
 
 // =============================================================================
-// SELECT TYPES & VARIANTS
-// =============================================================================
-
-/**
- * Select variants
- */
-export type SelectVariant = 'default' | 'filled' | 'outlined';
-
-/**
- * Select size variants
- */
-export type SelectSize = 'sm' | 'md' | 'lg';
-
-/**
- * Select states
- */
-export type SelectState = 'default' | 'error' | 'success' | 'warning' | 'disabled' | 'loading';
-
-// =============================================================================
-// SELECT EVENTS
+// EVENTS
 // =============================================================================
 
 /**
  * Select change event
  */
-export interface SelectChangeEvent<T = any> {
-  /** New selected value(s) */
-  value: T | T[];
-
+export interface SelectChangeEvent<T = any> extends ComponentChangeEvent<T | T[], HTMLElement> {
   /** Selected option(s) */
   option: SelectOption<T> | SelectOption<T>[];
-
-  /** Previous value(s) */
-  previousValue: T | T[];
-
-  /** Original DOM event */
-  originalEvent?: Event;
 }
 
 /**
@@ -173,12 +178,29 @@ export interface SelectToggleEvent {
 /**
  * Select focus event
  */
-export interface SelectFocusEvent {
+export interface SelectFocusEvent extends ComponentFocusEvent<HTMLElement> {
   /** Focus direction */
   direction: 'in' | 'out';
+}
 
-  /** Original focus event */
-  originalEvent: FocusEvent;
+// =============================================================================
+// VALIDATION
+// =============================================================================
+
+/**
+ * Select validation result
+ */
+export interface SelectValidation extends ValidationResult {
+  /** Custom validation rules */
+  customRules?: SelectValidationRule[];
+}
+
+/**
+ * Custom validation rule for select
+ */
+export interface SelectValidationRule extends ValidationRule<any | any[]> {
+  /** Validation function specific to select */
+  validator: (value: any | any[]) => boolean | Promise<boolean>;
 }
 
 // =============================================================================
@@ -195,28 +217,57 @@ export const DEFAULT_SELECT_CONFIG: SelectConfig = {
   searchable: false,
   async: false,
   virtual: false,
+  animationDuration: 200,
+  showValidationIcons: true,
 };
 
 /**
- * Select size configurations
+ * Select variant definitions
+ */
+export const SELECT_VARIANTS: Record<SelectVariant, { className: string; label: string }> = {
+  default: {
+    className: 'ds-select--default',
+    label: 'Default',
+  },
+  primary: {
+    className: 'ds-select--primary',
+    label: 'Primary',
+  },
+  secondary: {
+    className: 'ds-select--secondary',
+    label: 'Secondary',
+  },
+  success: {
+    className: 'ds-select--success',
+    label: 'Success',
+  },
+  warning: {
+    className: 'ds-select--warning',
+    label: 'Warning',
+  },
+  danger: {
+    className: 'ds-select--danger',
+    label: 'Danger',
+  },
+};
+
+/**
+ * Select size configurations extending base size config
  */
 export const SELECT_SIZE_CONFIG = {
   sm: {
-    height: '32px',
-    fontSize: '14px',
-    padding: '0 12px',
+    ...getSizeConfiguration('sm'),
+    dropdownMaxHeight: '200px',
     optionHeight: '32px',
   },
   md: {
-    height: '40px',
-    fontSize: '16px',
-    padding: '0 16px',
+    ...getSizeConfiguration('md'),
+    dropdownMaxHeight: '250px',
     optionHeight: '40px',
   },
   lg: {
-    height: '48px',
-    fontSize: '18px',
-    padding: '0 20px',
+    ...getSizeConfiguration('lg'),
+    dropdownMaxHeight: '300px',
     optionHeight: '48px',
   },
 } as const;
@@ -261,13 +312,39 @@ export function createSelectOption<T = any>(
 }
 
 /**
+ * Create select component state
+ */
+export function createSelectState(
+  partial: Partial<SelectComponentState> = {},
+): SelectComponentState {
+  return {
+    isFocused: false,
+    isHovered: false,
+    isActive: false,
+    isDisabled: false,
+    isLoading: false,
+    isInvalid: false,
+    isRequired: false,
+    isReadonly: false,
+    isOpen: false,
+    searchQuery: '',
+    highlightedIndex: -1,
+    variant: 'primary',
+    size: 'md',
+    selectState: 'default',
+    ...partial,
+  };
+}
+
+/**
  * Group options by group property
  */
 export function groupOptions<T = any>(options: SelectOption<T>[]): SelectOptionGroup<T>[] {
   const grouped = new Map<string, SelectOption<T>[]>();
   const ungrouped: SelectOption<T>[] = [];
 
-  for (const option of options) {
+  // Separate grouped and ungrouped options
+  options.forEach(option => {
     if (option.group) {
       if (!grouped.has(option.group)) {
         grouped.set(option.group, []);
@@ -276,27 +353,27 @@ export function groupOptions<T = any>(options: SelectOption<T>[]): SelectOptionG
     } else {
       ungrouped.push(option);
     }
-  }
+  });
 
   const groups: SelectOptionGroup<T>[] = [];
 
   // Add ungrouped options first
   if (ungrouped.length > 0) {
     groups.push({
-      id: '__ungrouped__',
+      id: 'ungrouped',
       label: '',
       options: ungrouped,
     });
   }
 
   // Add grouped options
-  for (const [groupId, groupOptions] of grouped.entries()) {
+  grouped.forEach((groupOptions, groupLabel) => {
     groups.push({
-      id: groupId,
-      label: groupId,
+      id: groupLabel,
+      label: groupLabel,
       options: groupOptions,
     });
-  }
+  });
 
   return groups;
 }
@@ -310,13 +387,13 @@ export function filterOptions<T = any>(
 ): SelectOption<T>[] {
   if (!query.trim()) return options;
 
-  const searchTerm = query.toLowerCase().trim();
+  const searchTerm = query.toLowerCase();
+  return options.filter(option => {
+    const label = option.label.toLowerCase();
+    const description = option.description?.toLowerCase() || '';
 
-  return options.filter(
-    option =>
-      option.label.toLowerCase().includes(searchTerm) ||
-      (option.description && option.description.toLowerCase().includes(searchTerm)),
-  );
+    return label.includes(searchTerm) || description.includes(searchTerm);
+  });
 }
 
 /**
@@ -338,38 +415,43 @@ export function validateSelectValue<T = any>(
   required: boolean = false,
   customRules: SelectValidationRule[] = [],
 ): SelectValidation {
-  const validation: SelectValidation = {
-    valid: true,
-  };
+  let valid = true;
+  let errorMessage = '';
 
   // Required validation
   if (required) {
-    const isEmpty = Array.isArray(value) ? value.length === 0 : value == null;
-    if (isEmpty) {
-      validation.valid = false;
-      validation.errorMessage = 'Please select an option';
-      return validation;
+    if (Array.isArray(value)) {
+      valid = value.length > 0;
+      errorMessage = valid ? '' : 'At least one option must be selected';
+    } else {
+      valid = value !== null && value !== undefined && value !== '';
+      errorMessage = valid ? '' : 'This field is required';
     }
   }
 
   // Custom validation rules
-  for (const rule of customRules) {
-    if (!rule.validator(value)) {
-      validation.valid = false;
-      validation.errorMessage = rule.errorMessage;
-      break;
+  if (valid && customRules.length > 0) {
+    for (const rule of customRules) {
+      if (!rule.validator(value)) {
+        valid = false;
+        errorMessage = rule.errorMessage;
+        break;
+      }
     }
   }
 
-  return validation;
+  return {
+    valid,
+    errorMessage,
+    customRules,
+  };
 }
 
 /**
  * Get select state from validation
  */
 export function getSelectStateFromValidation(validation: SelectValidation): SelectState {
-  if (!validation.valid) return 'error';
-  return 'default';
+  return validation.valid ? 'default' : 'error';
 }
 
 /**
@@ -383,12 +465,13 @@ export function isOptionSelected<T = any>(option: SelectOption<T>, value: T | T[
 }
 
 /**
- * Get display text for selected values
+ * Get display text for selection
  */
 export function getSelectionDisplayText<T = any>(
   options: SelectOption<T>[],
   values: T | T[],
   placeholder: string = 'Select...',
+  maxDisplayItems: number = 3,
 ): string {
   const selectedOptions = getSelectedOptions(options, values);
 
@@ -400,29 +483,78 @@ export function getSelectionDisplayText<T = any>(
     return selectedOptions[0].label;
   }
 
-  return `${selectedOptions.length} items selected`;
+  if (selectedOptions.length <= maxDisplayItems) {
+    return selectedOptions.map(option => option.label).join(', ');
+  }
+
+  const displayed = selectedOptions.slice(0, maxDisplayItems).map(option => option.label);
+  const remaining = selectedOptions.length - maxDisplayItems;
+
+  return `${displayed.join(', ')} +${remaining} more`;
 }
 
 /**
- * Get accessibility attributes for select
+ * Get select ARIA attributes
  */
 export function getSelectAriaAttributes(
   validation: SelectValidation,
   isOpen: boolean,
   describedBy: string[] = [],
 ): Record<string, string> {
-  const attrs: Record<string, string> = {
-    'aria-haspopup': 'listbox',
-    'aria-expanded': isOpen.toString(),
+  const config: AccessibilityConfig = {
+    ariaInvalid: !validation.valid,
+    ariaExpanded: isOpen,
+    ariaDescribedBy: describedBy.length > 0 ? describedBy.join(' ') : undefined,
   };
 
-  if (!validation.valid) {
-    attrs['aria-invalid'] = 'true';
-  }
+  const rawAttributes = createAccessibilityAttributes(config);
 
-  if (describedBy.length > 0) {
-    attrs['aria-describedby'] = describedBy.join(' ');
-  }
+  // Filter out null values and ensure all values are strings
+  const attributes: Record<string, string> = {};
 
-  return attrs;
+  Object.entries(rawAttributes).forEach(([key, value]) => {
+    if (value !== null && value !== undefined) {
+      attributes[key] = value;
+    }
+  });
+
+  // Add select-specific attributes
+  attributes['aria-haspopup'] = 'listbox';
+
+  return attributes;
+}
+
+/**
+ * Get select CSS classes
+ */
+export function getSelectClasses(config: SelectConfig, state: SelectComponentState): string[] {
+  const sizeConfig = getSizeConfiguration(config.size);
+  const variantConfig = SELECT_VARIANTS[config.variant];
+
+  const classes = ['ds-select', sizeConfig.className, variantConfig.className];
+
+  if (state.isDisabled) classes.push('ds-select--disabled');
+  if (state.isOpen) classes.push('ds-select--open');
+  if (state.isFocused) classes.push('ds-select--focused');
+  if (state.isHovered) classes.push('ds-select--hovered');
+  if (state.isInvalid) classes.push('ds-select--invalid');
+  if (state.isLoading) classes.push('ds-select--loading');
+  if (config.multiple) classes.push('ds-select--multiple');
+  if (config.searchable) classes.push('ds-select--searchable');
+
+  return classes;
+}
+
+/**
+ * Generate unique select ID
+ */
+export function generateSelectId(): string {
+  return generateComponentId('ds-select');
+}
+
+/**
+ * Check if a string is a valid select variant
+ */
+export function isValidSelectVariant(variant: string): variant is SelectVariant {
+  return Object.keys(SELECT_VARIANTS).includes(variant);
 }

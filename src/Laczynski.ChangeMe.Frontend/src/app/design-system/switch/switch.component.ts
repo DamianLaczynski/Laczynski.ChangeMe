@@ -15,15 +15,27 @@ import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
+import { ComponentSize } from '../shared';
+
 import {
-  SwitchSize,
+  SwitchConfig,
   SwitchVariant,
+  SwitchState,
   SwitchChangeEvent,
   SwitchFocusEvent,
   SwitchKeyboardEvent,
+  SwitchValidation,
+  SwitchComponentState,
+  createSwitchConfig,
+  createSwitchState,
   createSwitchChangeEvent,
   createSwitchFocusEvent,
   createSwitchKeyboardEvent,
+  validateSwitchValue,
+  getSwitchState,
+  getSwitchAriaAttributes,
+  getSwitchClasses,
+  generateSwitchId,
   isValidSwitchSize,
   isValidSwitchVariant,
 } from './switch.model';
@@ -56,38 +68,38 @@ import {
     },
   ],
   template: `
-    <div class="switch-container" [class]="containerClasses()">
-      <label class="switch-wrapper" [class.disabled]="disabled()">
-        <div class="switch-track" [class]="trackClasses()">
-          <input
-            #switchInput
-            type="checkbox"
-            class="switch-input"
-            [checked]="checked()"
-            [disabled]="disabled() || readonly()"
-            [required]="required()"
-            [attr.aria-label]="ariaLabel() || label()"
-            [attr.aria-describedby]="helperText() ? elementId() + '-helper' : null"
-            (change)="onInputChange($event)"
-            (focus)="onInputFocus($event)"
-            (blur)="onInputBlur($event)"
-            (keydown)="onInputKeydown($event)"
-          />
-          <div class="switch-thumb" [class]="thumbClasses()"></div>
-        </div>
+    <div class="ds-switch-container" [class]="containerClasses()">
+      <label class="ds-switch" [class.ds-switch--disabled]="disabled()">
+        <input
+          #switchInput
+          type="checkbox"
+          class="ds-switch__input"
+          [checked]="checked()"
+          [disabled]="disabled() || readonly()"
+          [required]="required()"
+          [attr.aria-label]="ariaLabel() || label()"
+          [attr.aria-describedby]="helperText() ? elementId() + '-helper' : null"
+          (change)="onInputChange($event)"
+          (focus)="onInputFocus($event)"
+          (blur)="onInputBlur($event)"
+          (keydown)="onInputKeydown($event)"
+        />
+        <div class="ds-switch__track" [class]="trackClasses()"></div>
 
         @if (label()) {
-          <span class="switch-label">
-            {{ label() }}
-            @if (required()) {
-              <span class="switch-required" aria-label="Required">*</span>
-            }
-          </span>
+          <div class="ds-switch__content">
+            <span class="ds-switch__label">
+              {{ label() }}
+              @if (required()) {
+                <span class="ds-switch__required" aria-label="Required">*</span>
+              }
+            </span>
+          </div>
         }
       </label>
 
       @if (helperText()) {
-        <div class="switch-helper" [id]="elementId() + '-helper'" [class.error]="hasError()">
+        <div class="ds-switch-helper" [id]="elementId() + '-helper'" [class.error]="hasError()">
           {{ helperText() }}
         </div>
       }
@@ -108,7 +120,7 @@ export class SwitchComponent implements ControlValueAccessor {
   // =============================================================================
 
   /** Switch size */
-  size = input<SwitchSize>('md');
+  size = input<ComponentSize>('md');
 
   /** Switch variant */
   variant = input<SwitchVariant>('default');
@@ -195,7 +207,7 @@ export class SwitchComponent implements ControlValueAccessor {
 
   /** Container CSS classes */
   containerClasses = computed(() => {
-    const classes = ['switch-container'];
+    const classes = ['ds-switch-container'];
 
     if (this.className()) {
       classes.push(this.className()!);
@@ -206,29 +218,29 @@ export class SwitchComponent implements ControlValueAccessor {
 
   /** Track CSS classes */
   trackClasses = computed(() => {
-    const classes = ['switch-track'];
+    const classes = ['ds-switch__track'];
 
-    classes.push(`switch-track--${this.size()}`);
-    classes.push(`switch-track--${this.variant()}`);
+    classes.push(`ds-switch__track--${this.size()}`);
+    classes.push(`ds-switch__track--${this.variant()}`);
 
     if (this.checked()) {
-      classes.push('switch-track--checked');
+      classes.push('ds-switch__track--checked');
     }
 
     if (this.disabled()) {
-      classes.push('switch-track--disabled');
+      classes.push('ds-switch__track--disabled');
     }
 
     if (this.readonly()) {
-      classes.push('switch-track--readonly');
+      classes.push('ds-switch__track--readonly');
     }
 
     if (this.focused()) {
-      classes.push('switch-track--focused');
+      classes.push('ds-switch__track--focused');
     }
 
     if (this.hasError()) {
-      classes.push('switch-track--error');
+      classes.push('ds-switch__track--error');
     }
 
     return classes.join(' ');
@@ -236,16 +248,16 @@ export class SwitchComponent implements ControlValueAccessor {
 
   /** Thumb CSS classes */
   thumbClasses = computed(() => {
-    const classes = ['switch-thumb'];
+    const classes = ['ds-switch-thumb'];
 
-    classes.push(`switch-thumb--${this.size()}`);
+    classes.push(`ds-switch-thumb--${this.size()}`);
 
     if (this.checked()) {
-      classes.push('switch-thumb--checked');
+      classes.push('ds-switch-thumb--checked');
     }
 
     if (this.disabled()) {
-      classes.push('switch-thumb--disabled');
+      classes.push('ds-switch-thumb--disabled');
     }
 
     return classes.join(' ');
@@ -279,10 +291,8 @@ export class SwitchComponent implements ControlValueAccessor {
   // EVENT HANDLERS
   // =============================================================================
 
-  /** Handle input change event */
+  /** Handle input change */
   onInputChange(event: Event): void {
-    if (this.disabled() || this.readonly()) return;
-
     const target = event.target as HTMLInputElement;
     const checked = target.checked;
 
@@ -290,45 +300,75 @@ export class SwitchComponent implements ControlValueAccessor {
     this.value.set(checked);
     this.onChange(checked);
 
-    const changeEvent = createSwitchChangeEvent(checked, event);
+    const changeEvent = createSwitchChangeEvent(checked, event, this.switchInput.nativeElement);
+
     this.checkedChange.emit(changeEvent);
   }
 
-  /** Handle input focus event */
+  /** Handle input focus */
   onInputFocus(event: FocusEvent): void {
     this.focusedSignal.set(true);
 
-    const focusEvent = createSwitchFocusEvent(this.checked(), 'focus', event);
+    const focusEvent = createSwitchFocusEvent(
+      'in',
+      this.checked(),
+      event,
+      this.switchInput.nativeElement,
+    );
+
     this.focusChange.emit(focusEvent);
   }
 
-  /** Handle input blur event */
+  /** Handle input blur */
   onInputBlur(event: FocusEvent): void {
     this.focusedSignal.set(false);
     this.onTouched();
 
-    const focusEvent = createSwitchFocusEvent(this.checked(), 'blur', event);
+    const focusEvent = createSwitchFocusEvent(
+      'out',
+      this.checked(),
+      event,
+      this.switchInput.nativeElement,
+    );
+
     this.focusChange.emit(focusEvent);
   }
 
   /** Handle keyboard events */
   onInputKeydown(event: KeyboardEvent): void {
-    const keyboardEvent = createSwitchKeyboardEvent(this.checked(), event);
+    const keyboardEvent = createSwitchKeyboardEvent(
+      this.checked(),
+      event,
+      this.switchInput.nativeElement,
+    );
+
     this.keyboardEvent.emit(keyboardEvent);
 
-    // Handle Space and Enter keys
+    // Handle space and enter keys
     if (event.key === ' ' || event.key === 'Enter') {
       event.preventDefault();
-      if (!this.disabled() && !this.readonly()) {
-        const newValue = !this.checked();
-        this.checkedSignal.set(newValue);
-        this.value.set(newValue);
-        this.onChange(newValue);
-
-        const changeEvent = createSwitchChangeEvent(newValue, event);
-        this.checkedChange.emit(changeEvent);
-      }
+      this.toggle();
     }
+  }
+
+  /** Toggle switch state programmatically */
+  toggle(): void {
+    if (this.disabled() || this.readonly()) {
+      return;
+    }
+
+    const newValue = !this.checked();
+    this.checkedSignal.set(newValue);
+    this.value.set(newValue);
+    this.onChange(newValue);
+
+    const changeEvent = createSwitchChangeEvent(
+      newValue,
+      new Event('change'),
+      this.switchInput.nativeElement,
+    );
+
+    this.checkedChange.emit(changeEvent);
   }
 
   // =============================================================================
@@ -343,19 +383,6 @@ export class SwitchComponent implements ControlValueAccessor {
   /** Programmatically blur the switch */
   blur(): void {
     this.switchInput?.nativeElement?.blur();
-  }
-
-  /** Toggle the switch state */
-  toggle(): void {
-    if (this.disabled() || this.readonly()) return;
-
-    const newValue = !this.checked();
-    this.checkedSignal.set(newValue);
-    this.value.set(newValue);
-    this.onChange(newValue);
-
-    const changeEvent = createSwitchChangeEvent(newValue, new Event('toggle'));
-    this.checkedChange.emit(changeEvent);
   }
 
   /** Set error state */

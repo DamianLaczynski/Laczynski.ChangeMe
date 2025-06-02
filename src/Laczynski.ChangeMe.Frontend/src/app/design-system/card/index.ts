@@ -22,7 +22,6 @@ export type {
 
   // Type variants
   CardVariant,
-  CardSize,
   CardElevation,
   CardBackground,
 
@@ -38,6 +37,7 @@ export {
   DEFAULT_CARD_CONFIG,
   CARD_SIZE_CONFIG,
   CARD_ELEVATION_CONFIG,
+  CARD_VARIANTS,
 
   // Utility functions
   createCardConfig,
@@ -49,4 +49,11 @@ export {
   getActionClasses,
   generateCardId,
   calculateCardColumns,
+  isValidCardVariant,
+  getCardVariantLabel,
+  getCardSizeLabel,
+  getCardAriaAttributes,
+  createCardClickEvent,
+  createCardActionEvent,
+  createCardHoverEvent,
 } from './card.model';

@@ -6,82 +6,92 @@
 
 :root {
   // =============================================================================
-  // COLORS - Main Color Palette
+  // COLORS - Main Color Palette (Updated for better consistency)
   // =============================================================================
   
-  // Primary Colors
-  --color-primary: #007bff;
-  --color-primary-hover: #0056b3;
-  --color-primary-active: #004085;
-  --color-primary-disabled: #cce7ff;
+  // Primary Colors - Modern blue palette
+  --color-primary: #0066cc;
+  --color-primary-hover: #0052a3;
+  --color-primary-active: #003d7a;
+  --color-primary-disabled: #cce6ff;
+  --color-primary-light: #e6f3ff;
   
   // Secondary Colors  
-  --color-secondary: #6c757d;
-  --color-secondary-hover: #545b62;
-  --color-secondary-active: #3d4043;
-  --color-secondary-disabled: #e2e3e5;
+  --color-secondary: #64748b;
+  --color-secondary-hover: #475569;
+  --color-secondary-active: #334155;
+  --color-secondary-disabled: #e2e8f0;
+  --color-secondary-light: #f1f5f9;
   
-  // Semantic Colors
-  --color-success: #28a745;
-  --color-success-hover: #218838;
-  --color-success-light: #d4edda;
+  // Semantic Colors - Refined palette
+  --color-success: #059669;
+  --color-success-hover: #047857;
+  --color-success-active: #065f46;
+  --color-success-light: #dcfdf7;
   
-  --color-warning: #ffc107;
-  --color-warning-hover: #e0a800;
-  --color-warning-light: #fff3cd;
+  --color-warning: #d97706;
+  --color-warning-hover: #b45309;
+  --color-warning-active: #92400e;
+  --color-warning-light: #fef3c7;
   
-  --color-danger: #dc3545;
-  --color-danger-hover: #c82333;
-  --color-danger-light: #f8d7da;
+  --color-danger: #dc2626;
+  --color-danger-hover: #b91c1c;
+  --color-danger-active: #991b1b;
+  --color-danger-light: #fee2e2;
   
-  --color-info: #17a2b8;
-  --color-info-hover: #138496;
-  --color-info-light: #d1ecf1;
+  --color-info: #0891b2;
+  --color-info-hover: #0e7490;
+  --color-info-active: #155e75;
+  --color-info-light: #cffafe;
   
-  // Neutral Colors
+  // Neutral Colors - Better contrast and accessibility
   --color-white: #ffffff;
-  --color-gray-50: #f8f9fa;
-  --color-gray-100: #f1f3f4;
-  --color-gray-200: #e9ecef;
-  --color-gray-300: #dee2e6;
-  --color-gray-400: #ced4da;
-  --color-gray-500: #adb5bd;
-  --color-gray-600: #6c757d;
-  --color-gray-700: #495057;
-  --color-gray-800: #343a40;
-  --color-gray-900: #212529;
+  --color-gray-25: #fcfcfd;
+  --color-gray-50: #f8fafc;
+  --color-gray-100: #f1f5f9;
+  --color-gray-200: #e2e8f0;
+  --color-gray-300: #cbd5e1;
+  --color-gray-400: #94a3b8;
+  --color-gray-500: #64748b;
+  --color-gray-600: #475569;
+  --color-gray-700: #334155;
+  --color-gray-800: #1e293b;
+  --color-gray-900: #0f172a;
   --color-black: #000000;
   
   // =============================================================================
-  // SURFACE COLORS - Background & UI Elements
+  // SURFACE COLORS - Simplified for better consistency
   // =============================================================================
   
   --color-surface: var(--color-white);
   --color-surface-hover: var(--color-gray-50);
   --color-surface-active: var(--color-gray-100);
-  --color-surface-disabled: var(--color-gray-200);
+  --color-surface-disabled: var(--color-gray-100);
+  --color-surface-subtle: var(--color-gray-25);
   
   --color-background: var(--color-gray-50);
   --color-background-alt: var(--color-white);
   
   // =============================================================================
-  // TEXT COLORS
+  // TEXT COLORS - Improved accessibility
   // =============================================================================
   
   --color-text: var(--color-gray-900);
-  --color-text-secondary: var(--color-gray-600);
+  --color-text-secondary: var(--color-gray-700);
   --color-text-muted: var(--color-gray-500);
   --color-text-disabled: var(--color-gray-400);
   --color-text-inverse: var(--color-white);
+  --color-text-on-primary: var(--color-white);
   
   // =============================================================================
-  // BORDER COLORS
+  // BORDER COLORS - Refined for subtlety
   // =============================================================================
   
-  --color-border: var(--color-gray-300);
-  --color-border-hover: var(--color-gray-400);
+  --color-border: var(--color-gray-200);
+  --color-border-hover: var(--color-gray-300);
   --color-border-focus: var(--color-primary);
   --color-border-error: var(--color-danger);
+  --color-border-subtle: var(--color-gray-100);
   
   // =============================================================================
   // SPACING SYSTEM - 8px base unit
@@ -97,7 +107,7 @@
   --spacing-xxxl: 4rem;          // 64px
   
   // =============================================================================
-  // TYPOGRAPHY SYSTEM
+  // TYPOGRAPHY SYSTEM - Enhanced readability
   // =============================================================================
   
   // Font Families
@@ -106,7 +116,7 @@
   --font-family-mono: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", 
                       Consolas, "Courier New", monospace;
   
-  // Font Sizes - Modular Scale (1.250 - Major Third)
+  // Font Sizes - Better scale and hierarchy
   --font-size-xs: 0.75rem;       // 12px
   --font-size-sm: 0.875rem;      // 14px
   --font-size-base: 1rem;        // 16px
@@ -129,19 +139,23 @@
   --line-height-relaxed: 1.75;
   
   // =============================================================================
-  // SHADOWS & ELEVATION
+  // SHADOWS & ELEVATION - More subtle and refined
   // =============================================================================
   
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
-  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.04);
-  --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.25);
-  --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.06), 0 4px 6px rgba(0, 0, 0, 0.04);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.08), 0 10px 10px rgba(0, 0, 0, 0.04);
+  --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.15);
+  --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.04);
+  
+  // Focus shadows
+  --focus-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.1);
+  --focus-shadow-error: 0 0 0 3px rgba(var(--color-danger-rgb), 0.1);
   
   // =============================================================================
-  // BORDER RADIUS
+  // BORDER RADIUS - Consistent and modern
   // =============================================================================
   
   --border-radius-none: 0;
@@ -157,6 +171,7 @@
   // Z-INDEX LAYERS
   // =============================================================================
   
+  --z-index-base: 0;
   --z-index-dropdown: 1000;
   --z-index-sticky: 1020;
   --z-index-fixed: 1030;
@@ -165,18 +180,20 @@
   --z-index-popover: 1060;
   --z-index-tooltip: 1070;
   --z-index-toast: 1080;
+  --z-index-overlay: 1090;
   
   // =============================================================================
-  // TRANSITIONS & ANIMATIONS
+  // TRANSITIONS & ANIMATIONS - Smoother and more refined
   // =============================================================================
   
-  --transition-fast: 0.15s ease-in-out;
-  --transition-base: 0.25s ease-in-out;
-  --transition-slow: 0.35s ease-in-out;
+  --transition-fast: 0.15s ease-out;
+  --transition-base: 0.2s ease-out;
+  --transition-slow: 0.3s ease-out;
   
   --ease-in-out-cubic: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-out-cubic: cubic-bezier(0, 0, 0.2, 1);
   --ease-in-cubic: cubic-bezier(0.4, 0, 1, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
   
   // =============================================================================
   // COMPONENT SPECIFIC TOKENS
@@ -192,11 +209,17 @@
   --input-height-md: 2.5rem;      // 40px
   --input-height-lg: 3rem;        // 48px
   
-  // Focus Ring
+  // Focus Ring - More accessible
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;
   --focus-ring-color: var(--color-primary);
   --focus-ring-opacity: 0.5;
+  
+  // Color RGB values for rgba usage
+  --color-primary-rgb: 0, 102, 204;
+  --color-danger-rgb: 220, 38, 38;
+  --color-success-rgb: 5, 150, 105;
+  --color-warning-rgb: 217, 119, 6;
 }
 
 // =============================================================================

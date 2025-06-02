@@ -1,8 +1,7 @@
 // =============================================================================
-// Select Component Styles - Modern & Professional Design
+// Select Component Styles - Clean & Professional Design
 // =============================================================================
-// Enhanced select component with advanced styling, smooth transitions,
-// and excellent UX patterns matching the input component design
+// Modern select component focused on usability, accessibility, and consistency
 
 @use "../../../styles/abstracts/variables";
 @use "../../../styles/abstracts/mixins";
@@ -20,7 +19,7 @@
 }
 
 // =============================================================================
-// SELECT LABEL - Enhanced Typography
+// SELECT LABEL - Clean Typography
 // =============================================================================
 
 .ds-select-label {
@@ -42,22 +41,17 @@
   margin-left: 2px;
   font-size: 1em;
   font-weight: var(--font-weight-bold);
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
 }
 
 // =============================================================================
-// SELECT WRAPPER & TRIGGER - Modern Glass Morphism
+// SELECT WRAPPER & TRIGGER - Clean Modern Design
 // =============================================================================
 
 .ds-select-wrapper {
   position: relative;
   display: flex;
   flex-direction: column;
+  z-index: 1;
 }
 
 .ds-select-trigger {
@@ -66,13 +60,12 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  background: linear-gradient(145deg, var(--color-surface), var(--color-gray-50));
-  border: 1.5px solid var(--color-border);
-  border-radius: var(--border-radius-lg);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
   cursor: pointer;
-  transition: all var(--transition-base) var(--ease-out-cubic);
+  transition: all var(--transition-fast);
   text-align: left;
-  backdrop-filter: blur(8px);
   overflow: hidden;
   font-size: var(--font-size-base);
   color: var(--color-text);
@@ -80,33 +73,16 @@
   padding: var(--spacing-sm) var(--spacing-md);
   min-height: var(--input-height-md);
   
-  // Subtle inner highlight for depth
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
-    opacity: 0.8;
-  }
-  
   &:hover:not(:disabled) {
-    border-color: var(--color-primary);
-    background: linear-gradient(145deg, var(--color-surface), var(--color-white));
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.1);
+    border-color: var(--color-border-hover);
+    background: var(--color-surface-hover);
   }
   
   &:focus {
     outline: none;
-    border-color: var(--color-primary);
-    background: var(--color-white);
-    box-shadow: 
-      0 0 0 3px rgba(0, 123, 255, 0.15),
-      0 8px 25px rgba(0, 123, 255, 0.1);
-    transform: translateY(-2px);
+    border-color: var(--color-border-focus);
+    background: var(--color-surface);
+    box-shadow: var(--focus-shadow);
   }
   
   &:disabled {
@@ -114,17 +90,12 @@
     background: var(--color-surface-disabled);
     border-color: var(--color-border);
     color: var(--color-text-disabled);
-    opacity: 0.7;
-    transform: none;
-    
-    &::before {
-      display: none;
-    }
+    opacity: 0.6;
   }
 }
 
 // =============================================================================
-// SELECT VALUE DISPLAY - Enhanced
+// SELECT VALUE DISPLAY - Clean and Accessible
 // =============================================================================
 
 .ds-select-value {
@@ -132,12 +103,10 @@
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  transition: opacity var(--transition-fast);
+  transition: color var(--transition-fast);
   
   &.placeholder {
     color: var(--color-text-muted);
-    opacity: 0.8;
-    font-style: normal;
   }
 }
 
@@ -154,16 +123,15 @@
   align-items: center;
   gap: var(--spacing-xs);
   padding: 2px var(--spacing-xs);
-  background: linear-gradient(145deg, var(--color-primary), var(--color-primary-hover));
-  color: var(--color-white);
-  border-radius: var(--border-radius-md);
+  background: var(--color-primary);
+  color: var(--color-text-on-primary);
+  border-radius: var(--border-radius-sm);
   font-size: var(--font-size-xs);
   line-height: 1.2;
   transition: all var(--transition-fast);
   
   &:hover {
-    transform: scale(1.05);
-    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+    background: var(--color-primary-hover);
   }
   
   &__remove {
@@ -173,14 +141,13 @@
     transition: color var(--transition-fast);
     
     &:hover {
-      color: var(--color-white);
-      transform: scale(1.2);
+      color: var(--color-text-on-primary);
     }
   }
 }
 
 // =============================================================================
-// SELECT INDICATORS - Enhanced Design
+// SELECT INDICATORS - Clean Design
 // =============================================================================
 
 .ds-select-arrow {
@@ -197,20 +164,11 @@
     transform: rotate(180deg);
     color: var(--color-primary);
   }
-  
-  // Icon animation on focus
-  .ds-select-trigger:focus & {
-    color: var(--color-primary);
-    transform: scale(1.1);
-    
-    &.open {
-      transform: rotate(180deg) scale(1.1);
-    }
-  }
 }
 
 .ds-select-loading {
-  @include mixins.spinner(16px, 2px, var(--color-primary));
+  color: var(--color-primary);
+  font-size: 16px;
   animation: spin 1s linear infinite;
 }
 
@@ -219,7 +177,7 @@
 }
 
 // =============================================================================
-// DROPDOWN - Modern Design with Glass Morphism
+// DROPDOWN - Clean Modern Design with Enhanced Z-Index Management
 // =============================================================================
 
 .ds-select-dropdown {
@@ -227,25 +185,28 @@
   top: 100%;
   left: 0;
   right: 0;
-  z-index: var(--z-index-dropdown);
+  z-index: var(--z-index-popover);
   margin-top: 4px;
-  background: linear-gradient(145deg, var(--color-surface), var(--color-gray-50));
-  border: 1.5px solid var(--color-border);
-  border-radius: var(--border-radius-lg);
-  box-shadow: 
-    0 10px 25px rgba(0, 0, 0, 0.1),
-    0 4px 12px rgba(0, 0, 0, 0.05);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-lg);
   overflow: hidden;
   max-height: 240px;
-  backdrop-filter: blur(12px);
-  animation: slideInUp 0.2s var(--ease-out-cubic);
+  animation: slideInUp 0.2s ease-out;
+  transform: translateZ(0);
+  isolation: isolate;
   
   &.ds-select-dropdown--up {
     top: auto;
     bottom: 100%;
     margin-top: 0;
     margin-bottom: 4px;
-    animation: slideInDown 0.2s var(--ease-out-cubic);
+    animation: slideInDown 0.2s ease-out;
+  }
+  
+  @media screen {
+    z-index: 9999 !important;
   }
 }
 
@@ -272,13 +233,13 @@
 }
 
 // =============================================================================
-// SEARCH INPUT - Enhanced Design
+// SEARCH INPUT - Clean Design
 // =============================================================================
 
 .ds-select-search {
   padding: var(--spacing-sm);
   border-bottom: 1px solid var(--color-border);
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--color-surface-subtle);
 }
 
 .ds-select-search-input {
@@ -296,19 +257,11 @@
   
   &::placeholder {
     color: var(--color-text-muted);
-    opacity: 0.8;
-    font-style: normal;
-    transition: opacity var(--transition-fast);
-  }
-  
-  &:focus::placeholder {
-    opacity: 0.5;
-    transform: translateX(4px);
   }
 }
 
 // =============================================================================
-// OPTIONS LIST - Enhanced Scrolling
+// OPTIONS LIST - Clean Scrolling
 // =============================================================================
 
 .ds-select-options {
@@ -320,16 +273,15 @@
 }
 
 .ds-select-no-options {
-  padding: var(--spacing-lg);
+  padding: var(--spacing-md);
   text-align: center;
   color: var(--color-text-muted);
-  font-style: italic;
   font-size: var(--font-size-sm);
-  opacity: 0.8;
+  font-style: italic;
 }
 
 // =============================================================================
-// OPTION ITEM - Modern Interactive Design
+// OPTION ITEM - Clean Interactive Design
 // =============================================================================
 
 .ds-select-option {
@@ -338,30 +290,26 @@
   gap: var(--spacing-sm);
   padding: var(--spacing-sm) var(--spacing-md);
   cursor: pointer;
-  transition: all var(--transition-fast) var(--ease-out-cubic);
+  transition: all var(--transition-fast);
   position: relative;
   
   &:hover {
-    background: linear-gradient(145deg, var(--color-gray-50), var(--color-white));
-    transform: translateX(4px);
+    background: var(--color-surface-hover);
   }
   
   &.selected {
-    background: linear-gradient(145deg, var(--color-primary), var(--color-primary-hover));
-    color: var(--color-white);
-    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+    background: var(--color-primary-light);
+    color: var(--color-primary);
   }
   
   &.highlighted {
-    background: linear-gradient(145deg, var(--color-gray-100), var(--color-gray-50));
-    transform: translateX(2px);
+    background: var(--color-surface-hover);
   }
   
   &.disabled {
     cursor: not-allowed;
     opacity: 0.5;
     pointer-events: none;
-    transform: none;
   }
 }
 
@@ -387,7 +335,7 @@
   @include mixins.text-truncate;
   
   .ds-select-option.selected & {
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--color-primary);
   }
 }
 
@@ -401,18 +349,17 @@
   .ds-select-option:hover &,
   .ds-select-option.highlighted & {
     color: var(--color-primary);
-    transform: scale(1.1);
   }
   
   .ds-select-option.selected & {
-    color: var(--color-white);
+    color: var(--color-primary);
   }
 }
 
 .ds-select-option__checkbox {
   width: 16px;
   height: 16px;
-  border: 1.5px solid var(--color-border);
+  border: 1px solid var(--color-border);
   border-radius: var(--border-radius-sm);
   background-color: var(--color-surface);
   display: flex;
@@ -422,12 +369,16 @@
   transition: all var(--transition-fast);
   
   &.checked {
-    background: linear-gradient(145deg, var(--color-primary), var(--color-primary-hover));
+    background: var(--color-primary);
     border-color: var(--color-primary);
-    color: var(--color-white);
-    transform: scale(1.1);
-    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
+    color: var(--color-text-on-primary);
   }
+}
+
+.ds-select-selected-indicator {
+  color: var(--color-primary);
+  font-size: var(--font-size-sm);
+  margin-left: auto;
 }
 
 // =============================================================================
@@ -482,32 +433,71 @@
 // STATE VARIANTS
 // =============================================================================
 
+.ds-select--open {
+  z-index: var(--z-index-dropdown);
+  
+  .ds-select-trigger {
+    border-color: var(--color-border-focus);
+    box-shadow: var(--focus-shadow);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .ds-select-wrapper {
+    z-index: var(--z-index-dropdown);
+    isolation: isolate;
+  }
+  
+  .ds-select-arrow {
+    transform: rotate(180deg);
+    color: var(--color-primary);
+  }
+}
+
+.ds-select--multiple {
+  .ds-select-trigger {
+    min-height: auto;
+    padding: var(--spacing-xs) var(--spacing-md);
+  }
+  
+  .ds-select-value {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+    align-items: center;
+  }
+}
+
+.ds-select--loading {
+  .ds-select-trigger {
+    cursor: wait;
+  }
+}
+
 .ds-select--error {
   .ds-select-trigger {
-    border-color: var(--color-danger);
-    background-color: rgba(220, 53, 69, 0.03);
+    border-color: var(--color-border-error);
     
     &:focus {
-      border-color: var(--color-danger);
-      box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15);
+      border-color: var(--color-border-error);
+      box-shadow: var(--focus-shadow-error);
     }
   }
 }
 
-.ds-select--success {
+.ds-select--disabled {
   .ds-select-trigger {
-    border-color: var(--color-success);
-    background-color: rgba(40, 167, 69, 0.03);
-    
-    &:focus {
-      border-color: var(--color-success);
-      box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.15);
-    }
+    cursor: not-allowed;
+    background: var(--color-surface-disabled);
+    color: var(--color-text-disabled);
+    opacity: 0.6;
   }
 }
 
 // =============================================================================
-// HELPER TEXT & VALIDATION - Enhanced UX
+// HELPER TEXT & VALIDATION
 // =============================================================================
 
 .ds-select-helper {
@@ -515,124 +505,222 @@
   color: var(--color-text-secondary);
   line-height: var(--line-height-normal);
   margin-top: var(--spacing-xs);
-  padding-left: var(--spacing-xs);
   transition: color var(--transition-fast);
   
   &.error {
     color: var(--color-danger);
-    font-weight: var(--font-weight-medium);
-    
-    &::before {
-      content: '⚠️ ';
-      margin-right: var(--spacing-xs);
-    }
-  }
-  
-  &.success {
-    color: var(--color-success);
-    font-weight: var(--font-weight-medium);
-    
-    &::before {
-      content: '✓ ';
-      margin-right: var(--spacing-xs);
-    }
   }
 }
 
 // =============================================================================
-// ENHANCED THEME SUPPORT
+// SELECTED ITEMS (for multiple selection)
 // =============================================================================
 
-// Dark Theme Adjustments
-[data-theme="dark"] {
-  .ds-select-trigger {
-    background: linear-gradient(145deg, var(--color-gray-800), var(--color-gray-700));
-    border-color: var(--color-gray-600);
-    
-    &::before {
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    }
-    
-    &:hover:not(:disabled) {
-      background: linear-gradient(145deg, var(--color-gray-700), var(--color-gray-600));
-      box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
-    }
-    
-    &:focus {
-      background: var(--color-gray-700);
-      box-shadow: 
-        0 0 0 3px rgba(0, 123, 255, 0.3),
-        0 8px 25px rgba(0, 123, 255, 0.15);
-    }
-  }
+.ds-select-selected-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-sm);
+}
+
+.ds-select-selected-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-xs);
+  line-height: 1.2;
+}
+
+.ds-select-remove-item {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  cursor: pointer;
+  font-size: var(--font-size-xs);
+  padding: 0;
+  margin-left: var(--spacing-xs);
+  transition: color var(--transition-fast);
   
+  &:hover {
+    color: var(--color-danger);
+  }
+}
+
+// =============================================================================
+// RESPONSIVE DESIGN
+// =============================================================================
+
+@include mixins.respond-to("sm") {
   .ds-select-dropdown {
-    background: linear-gradient(145deg, var(--color-gray-800), var(--color-gray-700));
-    border-color: var(--color-gray-600);
+    border-radius: var(--border-radius-sm);
   }
   
-  .ds-select-option:hover {
-    background: linear-gradient(145deg, var(--color-gray-700), var(--color-gray-600));
-  }
-  
-  .ds-select-option.highlighted {
-    background: linear-gradient(145deg, var(--color-gray-600), var(--color-gray-500));
-  }
-  
-  .ds-select-selected-tag {
-    background: linear-gradient(145deg, var(--color-primary), var(--color-primary-hover));
-  }
-}
-
-// High Contrast Theme
-[data-theme="high-contrast"] {
   .ds-select-trigger {
-    border-width: 2px;
-    background: var(--color-white);
-    
-    &:focus {
-      outline: 3px solid var(--color-primary);
-      outline-offset: 2px;
-    }
-  }
-  
-  .ds-select-option.selected {
-    outline: 2px solid var(--color-primary);
-    outline-offset: -2px;
-  }
-  
-  .ds-select-option__checkbox {
-    border: 2px solid currentColor;
+    border-radius: var(--border-radius-sm);
   }
 }
 
 // =============================================================================
-// REDUCED MOTION SUPPORT
+// ACCESSIBILITY ENHANCEMENTS
 // =============================================================================
+
+.ds-select-trigger:focus,
+.ds-select-option:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+}
 
 @media (prefers-reduced-motion: reduce) {
   .ds-select-trigger,
-  .ds-select-arrow,
   .ds-select-option,
   .ds-select-dropdown,
-  .ds-select-selected-tag,
-  .ds-select-option__icon,
-  .ds-select-option__checkbox {
+  .ds-select-loading {
     transition: none;
     animation: none;
-    transform: none;
+    }
+}
+
+// =============================================================================
+// VARIANT STYLES
+// =============================================================================
+
+.ds-select--default {
+  // Default styles already applied in base
+}
+
+.ds-select--primary {
+  .ds-select-trigger {
+    &:focus {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.1);
+    }
   }
   
-  .ds-select-trigger:hover,
-  .ds-select-trigger:focus {
-    transform: none;
+  .ds-select-arrow.open {
+    color: var(--color-primary);
+  }
+}
+
+.ds-select--secondary {
+  .ds-select-trigger {
+    &:focus {
+      border-color: var(--color-secondary);
+      box-shadow: 0 0 0 3px rgba(100, 116, 139, 0.1);
+    }
   }
   
-  .ds-select-option:hover {
-    transform: none;
+  .ds-select-arrow.open {
+    color: var(--color-secondary);
+  }
   }
   
+.ds-select--success {
+  .ds-select-trigger {
+    border-color: var(--color-success);
+    
+    &:focus {
+      border-color: var(--color-success);
+      box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+    }
+  }
+  
+  .ds-select-arrow.open {
+    color: var(--color-success);
+  }
+}
+
+.ds-select--warning {
+  .ds-select-trigger {
+    border-color: var(--color-warning);
+    
+    &:focus {
+      border-color: var(--color-warning);
+      box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.1);
+    }
+  }
+  
+  .ds-select-arrow.open {
+    color: var(--color-warning);
+  }
+}
+
+.ds-select--danger {
+  .ds-select-trigger {
+    border-color: var(--color-danger);
+    
+    &:focus {
+      border-color: var(--color-danger);
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+    }
+  }
+  
+  .ds-select-arrow.open {
+    color: var(--color-danger);
+  }
+}
+
+// =============================================================================
+// SIZE VARIANTS
+// =============================================================================
+
+.ds-select--sm {
+  .ds-select-trigger {
+    padding: var(--spacing-xs) var(--spacing-md);
+    min-height: var(--input-height-sm);
+    font-size: var(--font-size-sm);
+  }
+  
+  .ds-select-arrow,
   .ds-select-loading {
-    animation: none;
+    width: 14px;
+    height: 14px;
   }
+  
+  .ds-select-option {
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+  
+  .ds-select-option__label {
+    font-size: var(--font-size-sm);
+  }
+  }
+  
+.ds-select--lg {
+  .ds-select-trigger {
+    padding: var(--spacing-md) var(--spacing-lg);
+    min-height: var(--input-height-lg);
+    font-size: var(--font-size-lg);
+  }
+  
+  .ds-select-arrow,
+  .ds-select-loading {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .ds-select-option {
+    padding: var(--spacing-md) var(--spacing-lg);
+  }
+  
+  .ds-select-option__label {
+    font-size: var(--font-size-lg);
+  }
+}
+
+.ds-select-group-header {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--color-surface-subtle);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--color-border-subtle);
+  position: sticky;
+  top: 0;
+  z-index: 1;
 } 

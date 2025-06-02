@@ -93,8 +93,8 @@ interface InputInteractiveConfig {
           [helperText]="interactiveInputConfig().helperText"
           [value]="interactiveInputConfig().value"
           (valueChange)="onValueChange($event)"
-          (focus)="onFocus($event)"
-          (clear)="onClear($event)"
+          (focused)="onFocus($event)"
+          (cleared)="onClear($event)"
           (enterKey)="onEnterKey($event)"
         />
       </ds-interactive-example>
@@ -658,12 +658,12 @@ export class InputShowcaseComponent implements ShowcaseComponent {
     }
   }
 
-  onFocus(event: InputFocusEvent): void {
-    this.lastActionSignal.set(`Input ${event.direction === 'in' ? 'focused' : 'blurred'}`);
+  onFocus(event: any): void {
+    this.lastActionSignal.set('Input focused');
   }
 
-  onClear(event: InputClearEvent): void {
-    this.lastActionSignal.set(`Input cleared (previous value: "${event.previousValue}")`);
+  onClear(event: any): void {
+    this.lastActionSignal.set('Input cleared');
   }
 
   onEnterKey(event: InputEnterEvent): void {

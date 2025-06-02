@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { SelectComponent } from './select.component';
+import { ComponentSize } from '../shared';
 
 import {
   SelectOption,
   SelectVariant,
-  SelectSize,
   SelectChangeEvent,
   SelectSearchEvent,
   SelectToggleEvent,
@@ -36,7 +36,7 @@ import {
 
 interface SelectInteractiveConfig {
   variant: SelectVariant;
-  size: SelectSize;
+  size: ComponentSize;
   label: string;
   placeholder: string;
   disabled: boolean;
@@ -336,8 +336,15 @@ export class SelectShowcaseComponent implements ShowcaseComponent {
   // DEMO CONFIGURATION
   // =============================================================================
 
-  selectVariants: SelectVariant[] = ['default', 'filled', 'outlined'];
-  selectSizes: SelectSize[] = ['sm', 'md', 'lg'];
+  selectVariants: SelectVariant[] = [
+    'default',
+    'primary',
+    'secondary',
+    'success',
+    'warning',
+    'danger',
+  ];
+  selectSizes: ComponentSize[] = ['sm', 'md', 'lg'];
 
   // =============================================================================
   // INTERACTIVE EXAMPLE CONFIGURATION
@@ -394,7 +401,7 @@ export class SelectShowcaseComponent implements ShowcaseComponent {
   // =============================================================================
 
   demoConfigVariant = signal<SelectVariant>('default');
-  demoConfigSize = signal<SelectSize>('md');
+  demoConfigSize = signal<ComponentSize>('md');
   demoConfigLabel = signal<string>('Demo Select');
   demoConfigPlaceholder = signal<string>('Choose an option...');
   demoConfigDisabled = signal<boolean>(false);
@@ -414,10 +421,10 @@ export class SelectShowcaseComponent implements ShowcaseComponent {
     this.demoConfigVariant.set(value);
   }
 
-  get demoConfigSizeValue(): SelectSize {
+  get demoConfigSizeValue(): ComponentSize {
     return this.demoConfigSize();
   }
-  set demoConfigSizeValue(value: SelectSize) {
+  set demoConfigSizeValue(value: ComponentSize) {
     this.demoConfigSize.set(value);
   }
 
@@ -594,7 +601,7 @@ export class SelectShowcaseComponent implements ShowcaseComponent {
         },
         {
           name: 'size',
-          type: 'SelectSize',
+          type: 'ComponentSize',
           defaultValue: "'md'",
           required: false,
           description: 'Size of the select',
@@ -771,7 +778,7 @@ export class SelectShowcaseComponent implements ShowcaseComponent {
   // UTILITY METHODS
   // =============================================================================
 
-  getSizeLabel(size: SelectSize): string {
+  getSizeLabel(size: ComponentSize): string {
     return `${size.toUpperCase()} Size`;
   }
 }

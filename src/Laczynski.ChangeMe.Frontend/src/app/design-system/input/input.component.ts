@@ -10,21 +10,32 @@ import {
   forwardRef,
   DestroyRef,
   OnInit,
+  effect,
+  ElementRef,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import {
+  ComponentSize,
+  ComponentChangeEvent,
+  ComponentFocusEvent,
+  FormComponentState,
+  AccessibilityConfig,
+  ValidationResult,
+  generateComponentId,
+  mergeClasses,
+  createAccessibilityAttributes,
+  getSizeConfiguration,
+  isValidComponentSize,
+} from '../shared';
+
+import {
   InputConfig,
   InputType,
-  InputSize,
   InputState,
   InputIconPosition,
-  InputChangeEvent,
-  InputFocusEvent,
-  InputClearEvent,
-  InputEnterEvent,
   InputValidation,
   createInputConfig,
   validateInputValue,
@@ -33,6 +44,45 @@ import {
   isInputClearable,
   getInputAriaAttributes,
 } from './input.model';
+
+/**
+ * Input change event payload
+ */
+export interface InputChangeEvent extends ComponentChangeEvent<string, HTMLInputElement> {
+  /** Input validity state */
+  valid: boolean;
+}
+
+/**
+ * Input focus event payload
+ */
+export interface InputFocusEvent extends ComponentFocusEvent<HTMLInputElement> {}
+
+/**
+ * Input clear event payload
+ */
+export interface InputClearEvent {
+  /** Input element reference */
+  element: HTMLInputElement;
+  /** Previous value before clear */
+  previousValue: string;
+  /** Timestamp when clear occurred */
+  timestamp: number;
+}
+
+/**
+ * Input enter key event payload
+ */
+export interface InputEnterEvent {
+  /** Current input value */
+  value: string;
+  /** Input element reference */
+  element: HTMLInputElement;
+  /** Original keyboard event */
+  originalEvent: KeyboardEvent;
+  /** Timestamp when enter was pressed */
+  timestamp: number;
+}
 
 /**
  * Input Component
@@ -67,14 +117,19 @@ import {
       <div class="ds-input-wrapper" [class]="wrapperClasses()">
         <!-- Start Icon -->
         @if (startIcon()) {
-          <span class="ds-input-icon ds-input-icon--start" [innerHTML]="startIcon()"></span>
+          <span
+            class="ds-input-icon ds-input-icon--start"
+            aria-hidden="true"
+            [innerHTML]="startIcon()"
+          >
+          </span>
         }
 
         <!-- Input Element -->
         <input
           #inputElement
           [id]="inputId()"
-          [type]="inputType()"
+          [type]="effectiveInputType()"
           [value]="internalValue()"
           [placeholder]="placeholder()"
           [disabled]="disabled()"
@@ -85,74 +140,92 @@ import {
           [step]="step() || null"
           [autocomplete]="autocomplete()"
           [attr.inputmode]="inputMode()"
+          [style.cursor]="computedCursor()"
           class="ds-input-field"
           (input)="onInput($event)"
           (focus)="onFocus($event)"
           (blur)="onBlur($event)"
           (keydown.enter)="onEnterKey($event)"
-          [attr.aria-invalid]="ariaAttributes()['aria-invalid'] || null"
-          [attr.aria-describedby]="ariaAttributes()['aria-describedby'] || null"
+          [attr.aria-invalid]="accessibilityAttributes()['aria-invalid']"
+          [attr.aria-describedby]="accessibilityAttributes()['aria-describedby']"
+          [attr.aria-label]="accessibilityAttributes()['aria-label']"
         />
 
         <!-- Clear Button -->
         @if (showClearButton()) {
           <button
             type="button"
-            class="ds-input-clear"
+            class="ds-input-button ds-input-button--clear"
             (click)="clearInput()"
             [attr.aria-label]="'Clear ' + (label() || 'input')"
             tabindex="-1"
           >
-            ✕
+            <span aria-hidden="true">✕</span>
           </button>
         }
 
         <!-- End Icon -->
         @if (endIcon()) {
-          <span class="ds-input-icon ds-input-icon--end" [innerHTML]="endIcon()"></span>
+          <span class="ds-input-icon ds-input-icon--end" aria-hidden="true" [innerHTML]="endIcon()">
+          </span>
         }
 
         <!-- Password Toggle -->
         @if (type() === 'password') {
           <button
             type="button"
-            class="ds-input-password-toggle"
+            class="ds-input-button ds-input-button--password-toggle"
             (click)="togglePasswordVisibility()"
             [attr.aria-label]="passwordVisible() ? 'Hide password' : 'Show password'"
             tabindex="-1"
           >
-            {{ passwordVisible() ? '🙈' : '👁️' }}
+            <span aria-hidden="true">{{ passwordVisible() ? '🙈' : '👁️' }}</span>
           </button>
         }
       </div>
 
       <!-- Helper Text / Error Message -->
       @if (helperText() || validationState().errorMessage) {
-        <div class="ds-input-helper" [class.error]="!validationState().valid" [id]="helperTextId()">
+        <div
+          class="ds-input-helper"
+          [class.error]="!validationState().valid"
+          [id]="helperTextId()"
+          [attr.role]="validationState().valid ? null : 'alert'"
+        >
           {{ validationState().errorMessage || helperText() }}
         </div>
       }
 
       <!-- Character Counter -->
       @if (showCounter() && maxLength()) {
-        <div class="ds-input-counter">{{ internalValue().length }} / {{ maxLength() }}</div>
+        <div class="ds-input-counter" [class.warning]="isNearMaxLength()">
+          {{ internalValue().length }} / {{ maxLength() }}
+        </div>
       }
     </div>
   `,
   styleUrl: './input.component.scss',
+  host: {
+    '[class.ds-input-host]': 'true',
+    '[class.ds-input-host--disabled]': 'disabled()',
+    '[class.ds-input-host--readonly]': 'readonly()',
+    '[class.ds-input-host--invalid]': '!validationState().valid',
+    '[class.ds-input-host--focused]': 'componentState().isFocused',
+    '[class.ds-input-host--has-value]': 'hasValue()',
+  },
 })
 export class InputComponent implements ControlValueAccessor, OnInit {
   private readonly destroyRef = inject(DestroyRef);
 
   // =============================================================================
-  // INPUTS
+  // INPUT SIGNALS
   // =============================================================================
 
   /** Input type */
   type = input<InputType>('text');
 
   /** Input size */
-  size = input<InputSize>('md');
+  size = input<ComponentSize>('md');
 
   /** Input label */
   label = input<string>('');
@@ -199,73 +272,97 @@ export class InputComponent implements ControlValueAccessor, OnInit {
   /** Custom CSS classes */
   customClasses = input<string>('');
 
-  /** Autocomplete attribute value */
+  /** Autocomplete attribute */
   autocomplete = input<string>('off');
 
+  /** ARIA label for accessibility */
+  ariaLabel = input<string>('');
+
+  /** ARIA described by for accessibility */
+  ariaDescribedBy = input<string>('');
+
   // =============================================================================
-  // MODEL & OUTPUTS
+  // MODEL SIGNALS
   // =============================================================================
 
-  /** Input value - two-way binding */
+  /** Input value model */
   value = model<string>('');
 
-  /** Value change event */
+  // =============================================================================
+  // OUTPUT SIGNALS
+  // =============================================================================
+
+  /** Emitted when input value changes */
   valueChange = output<InputChangeEvent>();
 
-  /** Focus events */
-  focus = output<InputFocusEvent>();
+  /** Emitted when input receives focus */
+  focused = output<InputFocusEvent>();
 
-  /** Clear event */
-  clear = output<InputClearEvent>();
+  /** Emitted when input loses focus */
+  blurred = output<InputFocusEvent>();
 
-  /** Enter key event */
+  /** Emitted when clear button is clicked */
+  cleared = output<InputClearEvent>();
+
+  /** Emitted when enter key is pressed */
   enterKey = output<InputEnterEvent>();
 
   // =============================================================================
-  // VIEW CHILDREN
+  // VIEW CHILD SIGNALS
   // =============================================================================
 
   /** Input element reference */
-  private inputElement = viewChild.required<HTMLInputElement>('inputElement');
+  private inputElement = viewChild.required<ElementRef<HTMLInputElement>>('inputElement');
 
   // =============================================================================
   // COMPONENT STATE
   // =============================================================================
 
-  /** Internal value state */
+  /** Unique component ID */
+  componentId = signal(generateComponentId('ds-input'));
+
+  /** Internal value signal */
   protected internalValue = signal<string>('');
 
-  /** Whether input is focused */
-  protected focused = signal<boolean>(false);
-
-  /** Password visibility toggle */
+  /** Password visibility state */
   protected passwordVisible = signal<boolean>(false);
-
-  /** Component ID for accessibility */
-  private componentId = signal<string>(`ds-input-${Math.random().toString(36).substr(2, 9)}`);
 
   /** Validation state */
   protected validationState = signal<InputValidation>({ valid: true });
 
+  /** Component state */
+  componentState = signal<FormComponentState>({
+    isFocused: false,
+    isHovered: false,
+    isActive: false,
+    isDisabled: false,
+    isLoading: false,
+    isInvalid: false,
+    isRequired: false,
+    isReadonly: false,
+    variant: 'primary',
+    size: 'md',
+  });
+
   // =============================================================================
-  // COMPUTED VALUES
+  // COMPUTED SIGNALS
   // =============================================================================
 
-  /** Input ID for accessibility */
+  /** Input ID */
   inputId = computed(() => this.componentId());
 
-  /** Helper text ID for accessibility */
+  /** Helper text ID */
   helperTextId = computed(() => `${this.componentId()}-helper`);
 
-  /** Input type with password visibility logic */
-  inputType = computed(() => {
-    if (this.type() === 'password') {
-      return this.passwordVisible() ? 'text' : 'password';
+  /** Effective input type considering password visibility */
+  effectiveInputType = computed(() => {
+    if (this.type() === 'password' && this.passwordVisible()) {
+      return 'text';
     }
     return this.type();
   });
 
-  /** Input mode attribute */
+  /** Input mode based on type */
   inputMode = computed(() => {
     switch (this.type()) {
       case 'email':
@@ -274,10 +371,10 @@ export class InputComponent implements ControlValueAccessor, OnInit {
         return 'numeric';
       case 'tel':
         return 'tel';
-      case 'search':
-        return 'search';
       case 'url':
         return 'url';
+      case 'search':
+        return 'search';
       default:
         return 'text';
     }
@@ -287,49 +384,63 @@ export class InputComponent implements ControlValueAccessor, OnInit {
   showClearButton = computed(() => {
     return (
       this.clearable() &&
-      this.internalValue().length > 0 &&
+      this.hasValue() &&
       !this.disabled() &&
       !this.readonly() &&
       isInputClearable(this.type())
     );
   });
 
+  /** Whether input has value */
+  hasValue = computed(() => this.internalValue().length > 0);
+
+  /** Whether near max length (80% threshold) */
+  isNearMaxLength = computed(() => {
+    const maxLen = this.maxLength();
+    if (!maxLen) return false;
+    return this.internalValue().length >= maxLen * 0.8;
+  });
+
+  /** Computed cursor style */
+  computedCursor = computed(() => {
+    if (this.disabled()) return 'not-allowed';
+    if (this.readonly()) return 'default';
+    return 'text';
+  });
+
   /** Container CSS classes */
   containerClasses = computed(() => {
-    const classes = ['ds-input'];
-
-    classes.push(`ds-input--${this.size()}`);
+    const classes = ['ds-input-container', `ds-input--${this.size()}`];
 
     if (this.disabled()) classes.push('ds-input--disabled');
     if (this.readonly()) classes.push('ds-input--readonly');
-    if (this.focused()) classes.push('ds-input--focused');
     if (!this.validationState().valid) classes.push('ds-input--error');
-    if (this.customClasses()) classes.push(this.customClasses());
+    if (this.componentState().isFocused) classes.push('ds-input--focused');
+    if (this.hasValue()) classes.push('ds-input--has-value');
 
-    return classes.join(' ');
+    return mergeClasses(...classes, this.customClasses());
   });
 
   /** Wrapper CSS classes */
   wrapperClasses = computed(() => {
     const classes = ['ds-input-wrapper'];
 
-    if (this.startIcon()) classes.push('has-start-icon');
-    if (this.endIcon()) classes.push('has-end-icon');
-    if (this.showClearButton()) classes.push('has-clear-button');
-    if (this.type() === 'password') classes.push('has-password-toggle');
+    if (this.startIcon()) classes.push('ds-input-wrapper--has-start-icon');
+    if (this.endIcon()) classes.push('ds-input-wrapper--has-end-icon');
+    if (this.showClearButton()) classes.push('ds-input-wrapper--has-clear');
+    if (this.type() === 'password') classes.push('ds-input-wrapper--has-password-toggle');
 
     return classes.join(' ');
   });
 
-  /** ARIA attributes for accessibility */
-  ariaAttributes = computed(() => {
-    const describedBy: string[] = [];
-
-    if (this.helperText() || this.validationState().errorMessage) {
-      describedBy.push(this.helperTextId());
-    }
-
-    return getInputAriaAttributes(this.validationState(), describedBy);
+  /** Accessibility attributes */
+  accessibilityAttributes = computed(() => {
+    const config: AccessibilityConfig = {
+      ariaLabel: this.ariaLabel() || undefined,
+      ariaDescribedBy: this.ariaDescribedBy() || this.helperTextId(),
+      ariaInvalid: !this.validationState().valid,
+    };
+    return createAccessibilityAttributes(config);
   });
 
   // =============================================================================
@@ -343,7 +454,6 @@ export class InputComponent implements ControlValueAccessor, OnInit {
     const newValue = value || '';
     this.internalValue.set(newValue);
     this.value.set(newValue);
-    this.validateInput(newValue);
   }
 
   registerOnChange(fn: (value: string) => void): void {
@@ -355,139 +465,218 @@ export class InputComponent implements ControlValueAccessor, OnInit {
   }
 
   setDisabledState(isDisabled: boolean): void {
-    // Handled through input signal
+    this.componentState.update(state => ({ ...state, isDisabled }));
   }
 
   // =============================================================================
-  // LIFECYCLE
+  // LIFECYCLE HOOKS
   // =============================================================================
 
-  ngOnInit(): void {
-    // Initialize internal value from model
-    this.internalValue.set(this.value());
+  constructor() {
+    // Update component state when inputs change
+    effect(() => {
+      this.componentState.update(state => ({
+        ...state,
+        isDisabled: this.disabled(),
+        isReadonly: this.readonly(),
+        isRequired: this.required(),
+        isInvalid: !this.validationState().valid,
+        size: this.size(),
+      }));
+    });
 
-    // Watch for external value changes
-    // Note: In a real implementation, you might want to use effect() here
-    this.validateInput(this.value());
+    // Sync value changes
+    effect(() => {
+      const currentValue = this.value();
+      if (currentValue !== this.internalValue()) {
+        this.internalValue.set(currentValue);
+        this.validateInput(currentValue);
+      }
+    });
+  }
+
+  ngOnInit(): void {
+    // Initialize validation
+    this.validateInput(this.internalValue());
   }
 
   // =============================================================================
   // EVENT HANDLERS
   // =============================================================================
 
-  /** Handle input change */
+  /**
+   * Handle input value changes
+   */
   onInput(event: Event): void {
     const target = event.target as HTMLInputElement;
-    let newValue = target.value;
+    const value = target.value;
 
-    // Format value based on input type
-    newValue = formatInputValue(newValue, this.type());
+    this.internalValue.set(value);
+    this.value.set(value);
+    this.onChange(value);
+    this.validateInput(value);
 
-    // Update internal state
-    this.internalValue.set(newValue);
-    this.value.set(newValue);
-
-    // Validate input
-    this.validateInput(newValue);
-
-    // Emit events
-    this.onChange(newValue);
-    this.valueChange.emit({
-      value: newValue,
+    const changeEvent: InputChangeEvent = {
+      event,
       element: target,
-      originalEvent: event,
+      timestamp: Date.now(),
+      value,
+      previousValue: this.internalValue(),
       valid: this.validationState().valid,
-    });
+    };
+
+    this.valueChange.emit(changeEvent);
   }
 
-  /** Handle input focus */
+  /**
+   * Handle input focus
+   */
   onFocus(event: FocusEvent): void {
-    this.focused.set(true);
+    this.componentState.update(state => ({ ...state, isFocused: true }));
 
-    this.focus.emit({
-      element: event.target as HTMLInputElement,
-      direction: 'in',
-      originalEvent: event,
-    });
+    const target = event.target as HTMLInputElement;
+    const focusEvent: InputFocusEvent = {
+      event,
+      element: target,
+      timestamp: Date.now(),
+    };
+
+    this.focused.emit(focusEvent);
   }
 
-  /** Handle input blur */
+  /**
+   * Handle input blur
+   */
   onBlur(event: FocusEvent): void {
-    this.focused.set(false);
+    this.componentState.update(state => ({ ...state, isFocused: false }));
     this.onTouched();
 
-    this.focus.emit({
-      element: event.target as HTMLInputElement,
-      direction: 'out',
-      originalEvent: event,
-    });
+    const target = event.target as HTMLInputElement;
+    const blurEvent: InputFocusEvent = {
+      event,
+      element: target,
+      timestamp: Date.now(),
+    };
+
+    this.blurred.emit(blurEvent);
   }
 
-  /** Handle Enter key press */
+  /**
+   * Handle enter key press
+   */
   onEnterKey(event: Event): void {
     const keyboardEvent = event as KeyboardEvent;
-    this.enterKey.emit({
+    const target = event.target as HTMLInputElement;
+
+    const enterEvent: InputEnterEvent = {
       value: this.internalValue(),
-      element: event.target as HTMLInputElement,
+      element: target,
       originalEvent: keyboardEvent,
-    });
+      timestamp: Date.now(),
+    };
+
+    this.enterKey.emit(enterEvent);
   }
 
   // =============================================================================
   // PUBLIC METHODS
   // =============================================================================
 
-  /** Clear input value */
+  /**
+   * Clear input value
+   */
   clearInput(): void {
     const previousValue = this.internalValue();
-    const element = this.inputElement();
+    const target = this.inputElement().nativeElement;
+
+    if (!target) return;
 
     this.internalValue.set('');
     this.value.set('');
     this.onChange('');
     this.validateInput('');
 
-    // Focus input after clearing
-    element.focus();
-
-    this.clear.emit({
-      element,
+    const clearEvent: InputClearEvent = {
+      element: target,
       previousValue,
-    });
+      timestamp: Date.now(),
+    };
+
+    this.cleared.emit(clearEvent);
+    target.focus();
   }
 
-  /** Toggle password visibility */
+  /**
+   * Toggle password visibility
+   */
   togglePasswordVisibility(): void {
-    this.passwordVisible.set(!this.passwordVisible());
+    this.passwordVisible.update(visible => !visible);
   }
 
-  /** Focus the input */
+  /**
+   * Focus input programmatically
+   */
   focusInput(): void {
-    this.inputElement().focus();
+    try {
+      this.inputElement().nativeElement.focus();
+    } catch (error) {
+      console.warn('Failed to focus input:', error);
+    }
   }
 
-  /** Blur the input */
+  /**
+   * Blur input programmatically
+   */
   blurInput(): void {
-    this.inputElement().blur();
+    try {
+      this.inputElement().nativeElement.blur();
+    } catch (error) {
+      console.warn('Failed to blur input:', error);
+    }
   }
 
-  /** Select all text in input */
+  /**
+   * Select all text in input
+   */
   selectAll(): void {
-    this.inputElement().select();
+    try {
+      this.inputElement().nativeElement.select();
+    } catch (error) {
+      console.warn('Failed to select input text:', error);
+    }
   }
 
-  /** Get current validation state */
+  /**
+   * Get current validation state
+   */
   getValidationState(): InputValidation {
-    return this.validationState();
+    return { ...this.validationState() };
+  }
+
+  /**
+   * Get current component state
+   */
+  getState(): FormComponentState {
+    return { ...this.componentState() };
   }
 
   // =============================================================================
   // PRIVATE METHODS
   // =============================================================================
 
-  /** Validate input value */
+  /**
+   * Validate input value
+   */
   private validateInput(value: string): void {
-    const validation = validateInputValue(value, this.type());
-    this.validationState.set(validation);
+    try {
+      const validation = validateInputValue(value, this.type());
+      this.validationState.set(validation);
+    } catch (error) {
+      console.warn('Input validation failed:', error);
+      this.validationState.set({
+        valid: false,
+        errorMessage: 'Validation error occurred',
+      });
+    }
   }
 }

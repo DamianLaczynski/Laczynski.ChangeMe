@@ -17,6 +17,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { ComponentSize } from '../shared';
 import { LoadingIndicatorComponent } from '../../shared/components/loading-indicator/loading-indicator.component';
 
 import {
@@ -26,7 +27,6 @@ import {
   CardMedia,
   CardContent,
   CardVariant,
-  CardSize,
   CardElevation,
   CardBackground,
   CardClickEvent,
@@ -146,7 +146,7 @@ import { ButtonComponent } from '../button';
                     [variant]="action.variant || 'ghost'"
                     [size]="action.size || 'sm'"
                     [disabled]="action.disabled || disabled()"
-                    [iconStart]="action.icon"
+                    [iconStart]="action.icon || ''"
                     (clicked)="onActionClick(action, $event)"
                   >
                     {{ action.label }}
@@ -226,7 +226,7 @@ import { ButtonComponent } from '../button';
                     [variant]="action.variant || 'secondary'"
                     [size]="action.size || 'sm'"
                     [disabled]="action.disabled || disabled()"
-                    [iconStart]="action.icon"
+                    [iconStart]="action.icon || ''"
                     (clicked)="onActionClick(action, $event)"
                   >
                     {{ action.label }}
@@ -264,7 +264,7 @@ export class CardComponent {
 
   // Configuration
   variant = input<CardVariant>('default');
-  size = input<CardSize>('md');
+  size = input<ComponentSize>('md');
   elevation = input<CardElevation>('sm');
   background = input<CardBackground>('default');
 

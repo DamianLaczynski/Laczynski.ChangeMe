@@ -6,12 +6,54 @@
 
 import { TemplateRef, Signal } from '@angular/core';
 import { Observable } from 'rxjs';
-import { getNestedValue } from '../shared';
+import {
+  ComponentSize,
+  ComponentVariant,
+  ComponentState,
+  FormComponentState,
+  ComponentChangeEvent,
+  ComponentFocusEvent,
+  AccessibilityConfig,
+  ValidationResult,
+  ValidationRule,
+  generateComponentId,
+  mergeClasses,
+  createAccessibilityAttributes,
+  getSizeConfiguration,
+  isValidComponentSize,
+  isValidComponentVariant,
+  getNestedValue,
+} from '../shared';
 
 // Re-export compatibility types from existing system
 export type { PaginationParameters } from '../../shared/data/models/pagination-parameters.model';
 export type { PaginationResult } from '../../shared/data/models/pagination-result.model';
 export type { State } from '../../shared/state/models/state.model';
+
+// =============================================================================
+// LIST-SPECIFIC TYPES
+// =============================================================================
+
+/**
+ * List variants extending base component variants
+ */
+export type ListVariant =
+  | Extract<ComponentVariant, 'primary' | 'secondary' | 'success' | 'warning' | 'danger'>
+  | 'default'
+  | 'minimal'
+  | 'bordered'
+  | 'elevated'
+  | 'flush';
+
+/**
+ * List layout types
+ */
+export type ListLayout = 'vertical' | 'horizontal' | 'grid' | 'masonry';
+
+/**
+ * List selection modes
+ */
+export type ListSelectionMode = 'none' | 'single' | 'multiple';
 
 // =============================================================================
 // CORE LIST INTERFACES
@@ -25,7 +67,7 @@ export interface ListConfig<T = any> {
   variant: ListVariant;
 
   /** List size */
-  size: ListSize;
+  size: ComponentSize;
 
   /** List layout type */
   layout: ListLayout;
@@ -248,30 +290,6 @@ export interface ListInfiniteScroll {
 }
 
 // =============================================================================
-// LIST TYPES & VARIANTS
-// =============================================================================
-
-/**
- * List visual variants
- */
-export type ListVariant = 'default' | 'minimal' | 'bordered' | 'elevated' | 'flush';
-
-/**
- * List size variants
- */
-export type ListSize = 'sm' | 'md' | 'lg';
-
-/**
- * List layout types
- */
-export type ListLayout = 'vertical' | 'horizontal' | 'grid' | 'masonry';
-
-/**
- * List selection modes
- */
-export type ListSelectionMode = 'none' | 'single' | 'multiple';
-
-// =============================================================================
 // LIST EVENTS
 // =============================================================================
 
@@ -353,9 +371,9 @@ export const DEFAULT_LIST_CONFIG: ListConfig = {
   layout: 'vertical',
   striped: false,
   hoverable: true,
-  scrollable: true,
+  scrollable: false,
   showDividers: true,
-  showLoading: true,
+  showLoading: false,
   showEmptyState: true,
   emptyState: {
     title: 'No items found',
@@ -370,33 +388,82 @@ export const DEFAULT_LIST_CONFIG: ListConfig = {
   virtualScroll: {
     enabled: false,
     itemHeight: 48,
-    bufferSize: 10,
+    bufferSize: 5,
     containerHeight: '400px',
   },
   infiniteScroll: {
     enabled: false,
-    threshold: 200,
+    threshold: 100,
     showLoadingIndicator: true,
   },
 };
 
 /**
- * List size configurations
+ * List variant definitions
+ */
+export const LIST_VARIANTS: Record<ListVariant, { className: string; label: string }> = {
+  default: {
+    className: 'ds-list--default',
+    label: 'Default',
+  },
+  primary: {
+    className: 'ds-list--primary',
+    label: 'Primary',
+  },
+  secondary: {
+    className: 'ds-list--secondary',
+    label: 'Secondary',
+  },
+  success: {
+    className: 'ds-list--success',
+    label: 'Success',
+  },
+  warning: {
+    className: 'ds-list--warning',
+    label: 'Warning',
+  },
+  danger: {
+    className: 'ds-list--danger',
+    label: 'Danger',
+  },
+  minimal: {
+    className: 'ds-list--minimal',
+    label: 'Minimal',
+  },
+  bordered: {
+    className: 'ds-list--bordered',
+    label: 'Bordered',
+  },
+  elevated: {
+    className: 'ds-list--elevated',
+    label: 'Elevated',
+  },
+  flush: {
+    className: 'ds-list--flush',
+    label: 'Flush',
+  },
+};
+
+/**
+ * List size configurations extending base size config
  */
 export const LIST_SIZE_CONFIG = {
   sm: {
+    ...getSizeConfiguration('sm'),
     itemHeight: '32px',
     padding: '8px 12px',
     fontSize: '13px',
     lineHeight: '1.4',
   },
   md: {
+    ...getSizeConfiguration('md'),
     itemHeight: '48px',
     padding: '12px 16px',
     fontSize: '14px',
     lineHeight: '1.5',
   },
   lg: {
+    ...getSizeConfiguration('lg'),
     itemHeight: '64px',
     padding: '16px 20px',
     fontSize: '16px',
@@ -467,11 +534,12 @@ export function createListEmptyState(partial: Partial<ListEmptyState> = {}): Lis
  * Get list CSS classes
  */
 export function getListClasses(config: ListConfig): string[] {
-  const classes = ['ds-list'];
+  const sizeConfig = getSizeConfiguration(config.size);
+  const variantConfig = LIST_VARIANTS[config.variant];
 
-  // Variant classes
-  classes.push(`ds-list--${config.variant}`);
-  classes.push(`ds-list--${config.size}`);
+  const classes = ['ds-list', sizeConfig.className, variantConfig.className];
+
+  // Layout classes
   classes.push(`ds-list--${config.layout}`);
 
   // Feature classes
@@ -564,8 +632,8 @@ export function sortListData<T>(data: T[], sortField: string, sortDirection: 'as
 /**
  * Generate unique list ID
  */
-export function generateListId(prefix: string = 'list'): string {
-  return `${prefix}-${Math.random().toString(36).substr(2, 9)}`;
+export function generateListId(): string {
+  return generateComponentId('ds-list');
 }
 
 /**
@@ -580,7 +648,127 @@ export function calculateVisibleItems(
 ): { startIndex: number; endIndex: number; visibleItems: number } {
   const visibleItems = Math.ceil(containerHeight / itemHeight);
   const startIndex = Math.max(0, Math.floor(scrollTop / itemHeight) - bufferSize);
-  const endIndex = Math.min(totalItems, startIndex + visibleItems + bufferSize * 2);
+  const endIndex = Math.min(totalItems - 1, startIndex + visibleItems + bufferSize * 2);
 
-  return { startIndex, endIndex, visibleItems };
+  return {
+    startIndex,
+    endIndex,
+    visibleItems,
+  };
+}
+
+/**
+ * Check if a string is a valid list variant
+ */
+export function isValidListVariant(variant: string): variant is ListVariant {
+  return Object.keys(LIST_VARIANTS).includes(variant);
+}
+
+/**
+ * Get list variant label
+ */
+export function getListVariantLabel(variant: ListVariant): string {
+  return LIST_VARIANTS[variant].label;
+}
+
+/**
+ * Get list size label
+ */
+export function getListSizeLabel(size: ComponentSize): string {
+  const sizeLabels = {
+    sm: 'Small',
+    md: 'Medium',
+    lg: 'Large',
+  };
+  return sizeLabels[size];
+}
+
+/**
+ * Get list ARIA attributes
+ */
+export function getListAriaAttributes(
+  itemCount: number,
+  selectedCount: number = 0,
+  multiselectable: boolean = false,
+): Record<string, string> {
+  const attributes: Record<string, string> = {
+    role: 'list',
+    'aria-label': `List with ${itemCount} items`,
+  };
+
+  if (multiselectable) {
+    attributes['aria-multiselectable'] = 'true';
+  }
+
+  if (selectedCount > 0) {
+    attributes['aria-selected'] = selectedCount.toString();
+  }
+
+  return attributes;
+}
+
+/**
+ * Create list item select event
+ */
+export function createListItemSelectEvent<T>(
+  item: T,
+  selectedItems: T[],
+  originalEvent: Event,
+): ListItemSelectEvent<T> {
+  return {
+    item,
+    selectedItems,
+    originalEvent,
+  };
+}
+
+/**
+ * Create list item click event
+ */
+export function createListItemClickEvent<T>(
+  item: T,
+  index: number,
+  originalEvent: Event,
+): ListItemClickEvent<T> {
+  return {
+    item,
+    index,
+    originalEvent,
+  };
+}
+
+/**
+ * Create list scroll event
+ */
+export function createListScrollEvent(
+  scrollTop: number,
+  direction: 'up' | 'down',
+  atTop: boolean,
+  atBottom: boolean,
+  originalEvent: Event,
+): ListScrollEvent {
+  return {
+    scrollTop,
+    direction,
+    atTop,
+    atBottom,
+    originalEvent,
+  };
+}
+
+/**
+ * Create list load more event
+ */
+export function createListLoadMoreEvent(
+  currentPage: number,
+  nextPage: number,
+  totalPages: number,
+  originalEvent: Event,
+): ListLoadMoreEvent {
+  return {
+    currentPage,
+    nextPage,
+    totalPages,
+    originalEvent,
+  };
 }

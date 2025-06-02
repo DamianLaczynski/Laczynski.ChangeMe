@@ -4,6 +4,45 @@
 // Type definitions and interfaces for the Radio component
 // Supports radio button groups with single selection
 
+import {
+  ComponentSize,
+  ComponentVariant,
+  ComponentState,
+  FormComponentState,
+  ComponentChangeEvent,
+  ComponentFocusEvent,
+  AccessibilityConfig,
+  ValidationResult,
+  ValidationRule,
+  generateComponentId,
+  mergeClasses,
+  createAccessibilityAttributes,
+  getSizeConfiguration,
+  isValidComponentSize,
+  isValidComponentVariant,
+} from '../shared';
+
+// =============================================================================
+// RADIO-SPECIFIC TYPES
+// =============================================================================
+
+/**
+ * Radio variants extending base component variants
+ */
+export type RadioVariant =
+  | Extract<ComponentVariant, 'primary' | 'secondary' | 'success' | 'warning' | 'danger'>
+  | 'default';
+
+/**
+ * Radio states
+ */
+export type RadioState = 'default' | 'selected' | 'disabled' | 'error';
+
+/**
+ * Radio group layout
+ */
+export type RadioGroupLayout = 'vertical' | 'horizontal' | 'grid';
+
 // =============================================================================
 // CORE RADIO INTERFACES
 // =============================================================================
@@ -39,7 +78,7 @@ export interface RadioConfig {
   variant: RadioVariant;
 
   /** Radio size */
-  size: RadioSize;
+  size: ComponentSize;
 
   /** Layout for radio group */
   groupLayout: RadioGroupLayout;
@@ -49,18 +88,53 @@ export interface RadioConfig {
 
   /** Whether to show validation messages */
   showValidation: boolean;
+
+  /** Animation duration in milliseconds */
+  animationDuration: number;
 }
 
 /**
- * Radio validation state
+ * Radio state extending form component state
  */
-export interface RadioValidation {
-  /** Whether radio selection is valid */
-  valid: boolean;
+export interface RadioComponentState extends FormComponentState {
+  /** Currently selected value */
+  selectedValue: any;
 
-  /** Validation error message */
-  errorMessage?: string;
+  /** Current radio visual state */
+  radioState: RadioState;
+}
 
+// =============================================================================
+// EVENTS
+// =============================================================================
+
+/**
+ * Radio change event
+ */
+export interface RadioChangeEvent<T = any> extends ComponentChangeEvent<T, HTMLInputElement> {
+  /** Selected option */
+  option: RadioOption<T>;
+}
+
+/**
+ * Radio focus event
+ */
+export interface RadioFocusEvent extends ComponentFocusEvent<HTMLInputElement> {
+  /** Focus direction */
+  direction: 'in' | 'out';
+
+  /** Focused option value */
+  value?: any;
+}
+
+// =============================================================================
+// VALIDATION
+// =============================================================================
+
+/**
+ * Radio validation result
+ */
+export interface RadioValidation extends ValidationResult {
   /** Custom validation rules */
   customRules?: RadioValidationRule[];
 }
@@ -68,74 +142,9 @@ export interface RadioValidation {
 /**
  * Custom validation rule for radio
  */
-export interface RadioValidationRule {
-  /** Rule name */
-  name: string;
-
-  /** Validation function */
-  validator: (value: any) => boolean;
-
-  /** Error message if validation fails */
-  errorMessage: string;
-}
-
-// =============================================================================
-// RADIO TYPES & VARIANTS
-// =============================================================================
-
-/**
- * Radio variants
- */
-export type RadioVariant = 'default' | 'filled' | 'outlined';
-
-/**
- * Radio size variants
- */
-export type RadioSize = 'sm' | 'md' | 'lg';
-
-/**
- * Radio states
- */
-export type RadioState = 'default' | 'selected' | 'disabled' | 'error';
-
-/**
- * Radio group layout
- */
-export type RadioGroupLayout = 'vertical' | 'horizontal' | 'grid';
-
-// =============================================================================
-// RADIO EVENTS
-// =============================================================================
-
-/**
- * Radio change event
- */
-export interface RadioChangeEvent<T = any> {
-  /** New selected value */
-  value: T;
-
-  /** Selected option */
-  option: RadioOption<T>;
-
-  /** Previous value */
-  previousValue: T | null;
-
-  /** Original DOM event */
-  originalEvent: Event;
-}
-
-/**
- * Radio focus event
- */
-export interface RadioFocusEvent {
-  /** Focus direction */
-  direction: 'in' | 'out';
-
-  /** Original focus event */
-  originalEvent: FocusEvent;
-
-  /** Focused option value */
-  value?: any;
+export interface RadioValidationRule extends ValidationRule<any> {
+  /** Validation function specific to radio */
+  validator: (value: any) => boolean | Promise<boolean>;
 }
 
 // =============================================================================
@@ -151,28 +160,62 @@ export const DEFAULT_RADIO_CONFIG: RadioConfig = {
   groupLayout: 'vertical',
   labelClickable: true,
   showValidation: true,
+  animationDuration: 200,
 };
 
 /**
- * Radio size configurations
+ * Radio size configurations extending base size config
  */
 export const RADIO_SIZE_CONFIG = {
   sm: {
-    size: '16px',
+    ...getSizeConfiguration('sm'),
+    radioSize: '16px',
     fontSize: '14px',
     gap: '8px',
   },
   md: {
-    size: '20px',
+    ...getSizeConfiguration('md'),
+    radioSize: '20px',
     fontSize: '16px',
     gap: '12px',
   },
   lg: {
-    size: '24px',
+    ...getSizeConfiguration('lg'),
+    radioSize: '24px',
     fontSize: '18px',
     gap: '16px',
   },
 } as const;
+
+/**
+ * Radio variant definitions
+ */
+export const RADIO_VARIANTS: Record<RadioVariant, { className: string; label: string }> = {
+  default: {
+    className: 'ds-radio--default',
+    label: 'Default',
+  },
+  primary: {
+    className: 'ds-radio--primary',
+    label: 'Primary',
+  },
+  secondary: {
+    className: 'ds-radio--secondary',
+    label: 'Secondary',
+  },
+  success: {
+    className: 'ds-radio--success',
+    label: 'Success',
+  },
+  warning: {
+    className: 'ds-radio--warning',
+    label: 'Warning',
+  },
+  danger: {
+    className: 'ds-radio--danger',
+    label: 'Danger',
+  },
+};
 
 // =============================================================================
 // UTILITY FUNCTIONS
@@ -204,6 +247,27 @@ export function createRadioOption<T = any>(
 }
 
 /**
+ * Create radio component state
+ */
+export function createRadioState(partial: Partial<RadioComponentState> = {}): RadioComponentState {
+  return {
+    isFocused: false,
+    isHovered: false,
+    isActive: false,
+    isDisabled: false,
+    isLoading: false,
+    isInvalid: false,
+    isRequired: false,
+    isReadonly: false,
+    selectedValue: null,
+    variant: 'primary',
+    size: 'md',
+    radioState: 'default',
+    ...partial,
+  };
+}
+
+/**
  * Validate radio value
  */
 export function validateRadioValue<T = any>(
@@ -211,31 +275,35 @@ export function validateRadioValue<T = any>(
   required: boolean = false,
   customRules: RadioValidationRule[] = [],
 ): RadioValidation {
-  const validation: RadioValidation = {
-    valid: true,
-  };
+  let valid = true;
+  let errorMessage = '';
 
   // Required validation
   if (required && (value === null || value === undefined)) {
-    validation.valid = false;
-    validation.errorMessage = 'Please select an option';
-    return validation;
+    valid = false;
+    errorMessage = 'Please select an option';
   }
 
   // Custom validation rules
-  for (const rule of customRules) {
-    if (!rule.validator(value)) {
-      validation.valid = false;
-      validation.errorMessage = rule.errorMessage;
-      break;
+  if (valid && customRules.length > 0) {
+    for (const rule of customRules) {
+      if (!rule.validator(value)) {
+        valid = false;
+        errorMessage = rule.errorMessage;
+        break;
+      }
     }
   }
 
-  return validation;
+  return {
+    valid,
+    errorMessage,
+    customRules,
+  };
 }
 
 /**
- * Get radio state from value and validation
+ * Get radio state from validation and other props
  */
 export function getRadioState<T = any>(
   value: T | null,
@@ -250,14 +318,14 @@ export function getRadioState<T = any>(
 }
 
 /**
- * Check if option is selected
+ * Check if radio option is selected
  */
 export function isRadioOptionSelected<T = any>(option: RadioOption<T>, value: T | null): boolean {
-  return value === option.value;
+  return option.value === value;
 }
 
 /**
- * Get selected option from value
+ * Get selected radio option
  */
 export function getSelectedRadioOption<T = any>(
   options: RadioOption<T>[],
@@ -267,29 +335,29 @@ export function getSelectedRadioOption<T = any>(
 }
 
 /**
- * Get next selectable option (for keyboard navigation)
+ * Get next radio option for keyboard navigation
  */
 export function getNextRadioOption<T = any>(
   options: RadioOption<T>[],
   currentValue: T | null,
   direction: 'next' | 'previous',
 ): RadioOption<T> | null {
-  const enabledOptions = options.filter(opt => !opt.disabled);
-  if (enabledOptions.length === 0) return null;
+  const availableOptions = options.filter(option => !option.disabled);
+  if (availableOptions.length === 0) return null;
 
-  const currentIndex = enabledOptions.findIndex(opt => opt.value === currentValue);
+  const currentIndex = availableOptions.findIndex(option => option.value === currentValue);
 
   if (direction === 'next') {
-    const nextIndex = currentIndex < enabledOptions.length - 1 ? currentIndex + 1 : 0;
-    return enabledOptions[nextIndex];
+    const nextIndex = (currentIndex + 1) % availableOptions.length;
+    return availableOptions[nextIndex];
   } else {
-    const prevIndex = currentIndex > 0 ? currentIndex - 1 : enabledOptions.length - 1;
-    return enabledOptions[prevIndex];
+    const prevIndex = currentIndex <= 0 ? availableOptions.length - 1 : currentIndex - 1;
+    return availableOptions[prevIndex];
   }
 }
 
 /**
- * Get accessibility attributes for radio
+ * Get radio ARIA attributes
  */
 export function getRadioAriaAttributes<T = any>(
   option: RadioOption<T>,
@@ -298,47 +366,57 @@ export function getRadioAriaAttributes<T = any>(
   groupName: string,
   describedBy: string[] = [],
 ): Record<string, string> {
-  const attrs: Record<string, string> = {
-    role: 'radio',
-    'aria-checked': (value === option.value).toString(),
-    name: groupName,
+  const config: AccessibilityConfig = {
+    ariaInvalid: !validation.valid,
+    ariaDescribedBy: describedBy.length > 0 ? describedBy.join(' ') : undefined,
   };
 
-  if (!validation.valid) {
-    attrs['aria-invalid'] = 'true';
-  }
+  const rawAttributes = createAccessibilityAttributes(config);
 
-  if (option.disabled) {
-    attrs['aria-disabled'] = 'true';
-  }
+  // Filter out null values and ensure all values are strings
+  const attributes: Record<string, string> = {};
 
-  if (describedBy.length > 0) {
-    attrs['aria-describedby'] = describedBy.join(' ');
-  }
+  Object.entries(rawAttributes).forEach(([key, value]) => {
+    if (value !== null && value !== undefined) {
+      attributes[key] = value;
+    }
+  });
 
-  return attrs;
+  // Add radio-specific attributes
+  attributes['aria-checked'] = (option.value === value).toString();
+  attributes['name'] = groupName;
+  attributes['role'] = 'radio';
+
+  return attributes;
 }
 
 /**
- * Get radio group accessibility attributes
+ * Get radio group ARIA attributes
  */
 export function getRadioGroupAriaAttributes(
   validation: RadioValidation,
   describedBy: string[] = [],
 ): Record<string, string> {
-  const attrs: Record<string, string> = {
-    role: 'radiogroup',
+  const config: AccessibilityConfig = {
+    ariaInvalid: !validation.valid,
+    ariaDescribedBy: describedBy.length > 0 ? describedBy.join(' ') : undefined,
   };
 
-  if (!validation.valid) {
-    attrs['aria-invalid'] = 'true';
-  }
+  const rawAttributes = createAccessibilityAttributes(config);
 
-  if (describedBy.length > 0) {
-    attrs['aria-describedby'] = describedBy.join(' ');
-  }
+  // Filter out null values and ensure all values are strings
+  const attributes: Record<string, string> = {};
 
-  return attrs;
+  Object.entries(rawAttributes).forEach(([key, value]) => {
+    if (value !== null && value !== undefined) {
+      attributes[key] = value;
+    }
+  });
+
+  // Add group-specific attributes
+  attributes['role'] = 'radiogroup';
+
+  return attributes;
 }
 
 /**
@@ -354,7 +432,7 @@ export function formatRadioSelectionText<T = any>(
 }
 
 /**
- * Validate radio group completeness
+ * Validate radio group structure
  */
 export function validateRadioGroup<T = any>(
   options: RadioOption<T>[],
@@ -365,21 +443,22 @@ export function validateRadioGroup<T = any>(
   const errors: string[] = [];
 
   // Check for duplicate values
-  const values = options.map(opt => opt.value);
-  const duplicates = values.filter((value, index) => values.indexOf(value) !== index);
-  if (duplicates.length > 0) {
-    errors.push('Radio options must have unique values');
+  const values = options.map(option => option.value);
+  const uniqueValues = new Set(values);
+  if (values.length !== uniqueValues.size) {
+    errors.push('Duplicate values found in radio options');
   }
 
   // Check for empty labels
-  const emptyLabels = options.filter(opt => !opt.label || opt.label.trim() === '');
+  const emptyLabels = options.filter(option => !option.label?.trim());
   if (emptyLabels.length > 0) {
-    errors.push('All radio options must have labels');
+    errors.push('Empty labels found in radio options');
   }
 
-  // Check minimum options
-  if (options.length < 2) {
-    errors.push('Radio group must have at least 2 options');
+  // Check for at least one enabled option
+  const enabledOptions = options.filter(option => !option.disabled);
+  if (enabledOptions.length === 0) {
+    errors.push('At least one radio option must be enabled');
   }
 
   return {
@@ -397,13 +476,13 @@ export function filterRadioOptions<T = any>(
 ): RadioOption<T>[] {
   if (!query.trim()) return options;
 
-  const searchTerm = query.toLowerCase().trim();
+  const searchTerm = query.toLowerCase();
+  return options.filter(option => {
+    const label = option.label.toLowerCase();
+    const description = option.description?.toLowerCase() || '';
 
-  return options.filter(
-    option =>
-      option.label.toLowerCase().includes(searchTerm) ||
-      (option.description && option.description.toLowerCase().includes(searchTerm)),
-  );
+    return label.includes(searchTerm) || description.includes(searchTerm);
+  });
 }
 
 /**
@@ -420,7 +499,7 @@ export function sortRadioOptions<T = any>(
 }
 
 /**
- * Group radio options by custom grouping function
+ * Group radio options by custom function
  */
 export function groupRadioOptions<T = any>(
   options: RadioOption<T>[],
@@ -428,13 +507,45 @@ export function groupRadioOptions<T = any>(
 ): Record<string, RadioOption<T>[]> {
   return options.reduce(
     (groups, option) => {
-      const group = groupFn(option);
-      if (!groups[group]) {
-        groups[group] = [];
+      const groupKey = groupFn(option);
+      if (!groups[groupKey]) {
+        groups[groupKey] = [];
       }
-      groups[group].push(option);
+      groups[groupKey].push(option);
       return groups;
     },
     {} as Record<string, RadioOption<T>[]>,
   );
+}
+
+/**
+ * Get radio CSS classes
+ */
+export function getRadioClasses(config: RadioConfig, state: RadioComponentState): string[] {
+  const sizeConfig = getSizeConfiguration(config.size);
+  const variantConfig = RADIO_VARIANTS[config.variant];
+
+  const classes = ['ds-radio', sizeConfig.className, variantConfig.className];
+
+  if (state.isDisabled) classes.push('ds-radio--disabled');
+  if (state.selectedValue !== null) classes.push('ds-radio--selected');
+  if (state.isFocused) classes.push('ds-radio--focused');
+  if (state.isHovered) classes.push('ds-radio--hovered');
+  if (state.isInvalid) classes.push('ds-radio--invalid');
+
+  return classes;
+}
+
+/**
+ * Generate unique radio group name
+ */
+export function generateRadioGroupName(): string {
+  return generateComponentId('ds-radio-group');
+}
+
+/**
+ * Check if a string is a valid radio variant
+ */
+export function isValidRadioVariant(variant: string): variant is RadioVariant {
+  return Object.keys(RADIO_VARIANTS).includes(variant);
 }

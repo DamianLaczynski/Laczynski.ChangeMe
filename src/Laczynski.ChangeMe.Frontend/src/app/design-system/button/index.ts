@@ -9,8 +9,6 @@ export { ButtonShowcaseComponent } from './button-showcase.component';
 
 // Model exports
 export type {
-  ButtonSize,
-  ButtonVariant,
   ButtonType,
   ButtonClickEvent,
   ButtonFocusEvent,
@@ -27,9 +25,11 @@ export {
   BUTTON_VARIANTS,
   BUTTON_SIZES,
   DEFAULT_BUTTON_CONFIG,
-  DEFAULT_ACCESSIBILITY_CONFIG,
+  DEFAULT_BUTTON_A11Y_CONFIG,
   isValidButtonVariant,
   isValidButtonSize,
   getButtonVariantDefinition,
   getButtonSizeDefinition,
+  createButtonConfig,
+  createButtonState,
 } from './button.model';

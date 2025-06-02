@@ -1,8 +1,7 @@
 // =============================================================================
-// Switch Component Styles - Modern & Professional Design
+// Switch Component Styles - Clean & Professional Design
 // =============================================================================
-// Enhanced switch component with advanced styling, smooth transitions,
-// and excellent UX patterns matching the button and input component design
+// Modern switch component focused on usability, accessibility, and consistency
 
 @use "../../../styles/abstracts/variables";
 @use "../../../styles/abstracts/mixins";
@@ -11,515 +10,298 @@
 // SWITCH CONTAINER
 // =============================================================================
 
-.switch-container {
+.ds-switch-container {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xs);
-  width: fit-content;
+  width: 100%;
   font-family: var(--font-family-primary);
+  position: relative;
 }
 
 // =============================================================================
-// SWITCH WRAPPER - Enhanced Layout
+// SINGLE SWITCH - Clean Interactive Design
 // =============================================================================
 
-.switch-wrapper {
+.ds-switch {
   display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
+  align-items: flex-start;
+  gap: var(--spacing-md);
   cursor: pointer;
-  user-select: none;
-  transition: opacity var(--transition-fast);
+  transition: all var(--transition-fast);
+  position: relative;
+  padding: var(--spacing-xs);
+  border-radius: var(--border-radius-md);
   
-  &.disabled {
+  &:hover:not(.ds-switch--disabled) {
+    background: var(--color-surface-hover);
+    
+    .ds-switch__track {
+      border-color: var(--color-border-hover);
+    }
+  }
+  
+  &.ds-switch--disabled {
     cursor: not-allowed;
     opacity: 0.6;
-    pointer-events: none;
   }
 }
 
 // =============================================================================
-// SWITCH TRACK - Modern Glass Morphism Effect
+// SWITCH INPUT (HIDDEN)
 // =============================================================================
 
-.switch-track {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  background: linear-gradient(145deg, var(--color-gray-200), var(--color-gray-100));
-  border: 1.5px solid var(--color-border);
-  border-radius: var(--border-radius-full);
-  transition: all var(--transition-base) var(--ease-out-cubic);
-  overflow: hidden;
-  backdrop-filter: blur(8px);
-  box-shadow: 
-    inset 0 1px 2px rgba(0, 0, 0, 0.1),
-    0 1px 3px rgba(0, 0, 0, 0.1);
-  
-  // Subtle inner highlight for depth
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
-    opacity: 0.8;
-  }
-  
-  // Enhanced hover effects
-  &:hover:not(.switch-track--disabled) {
-    transform: translateY(-1px);
-    box-shadow: 
-      inset 0 1px 2px rgba(0, 0, 0, 0.1),
-      0 4px 12px rgba(0, 123, 255, 0.1);
-    border-color: var(--color-primary);
-  }
-}
-
-// =============================================================================
-// TRACK SIZE VARIANTS
-// =============================================================================
-
-.switch-track--sm {
-  width: 32px;
-  height: 18px;
-  
-  &:hover:not(.switch-track--disabled) {
-    box-shadow: 
-      inset 0 1px 2px rgba(0, 0, 0, 0.1),
-      0 2px 8px rgba(0, 123, 255, 0.15);
-  }
-}
-
-.switch-track--md {
-  width: 44px;
-  height: 24px;
-}
-
-.switch-track--lg {
-  width: 56px;
-  height: 32px;
-  
-  &:hover:not(.switch-track--disabled) {
-    box-shadow: 
-      inset 0 1px 2px rgba(0, 0, 0, 0.1),
-      0 6px 20px rgba(0, 123, 255, 0.15);
-  }
-}
-
-// =============================================================================
-// TRACK STATES - Enhanced Visual Feedback
-// =============================================================================
-
-.switch-track--checked {
-  background: linear-gradient(145deg, var(--color-primary), var(--color-primary-hover));
-  border-color: var(--color-primary);
-  box-shadow: 
-    inset 0 1px 2px rgba(0, 0, 0, 0.1),
-    0 4px 12px rgba(0, 123, 255, 0.3);
-  
-  &::before {
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  }
-  
-  &:hover:not(.switch-track--disabled) {
-    background: linear-gradient(145deg, var(--color-primary-hover), var(--color-primary-active));
-    box-shadow: 
-      inset 0 1px 2px rgba(0, 0, 0, 0.1),
-      0 8px 25px rgba(0, 123, 255, 0.4);
-    transform: translateY(-2px);
-  }
-}
-
-.switch-track--disabled {
-  background: linear-gradient(145deg, var(--color-surface-disabled), var(--color-gray-200)) !important;
-  border-color: var(--color-border) !important;
-  box-shadow: none !important;
-  transform: none !important;
-  cursor: not-allowed;
-  
-  &::before {
-    background: none;
-  }
-}
-
-.switch-track--focused {
-  @include mixins.focus-state {
-    box-shadow: 
-      inset 0 1px 2px rgba(0, 0, 0, 0.1),
-      0 0 0 3px rgba(0, 123, 255, 0.2),
-      0 4px 12px rgba(0, 123, 255, 0.15);
-    transform: translateY(-1px);
-  }
-}
-
-.switch-track--error {
-  border-color: var(--color-danger);
-  background: linear-gradient(145deg, rgba(220, 53, 69, 0.1), rgba(220, 53, 69, 0.05));
-  
-  &:hover:not(.switch-track--disabled) {
-    box-shadow: 
-      inset 0 1px 2px rgba(0, 0, 0, 0.1),
-      0 4px 12px rgba(220, 53, 69, 0.2);
-  }
-  
-  &:focus-within {
-    box-shadow: 
-      inset 0 1px 2px rgba(0, 0, 0, 0.1),
-      0 0 0 3px rgba(220, 53, 69, 0.2),
-      0 4px 12px rgba(220, 53, 69, 0.15);
-  }
-}
-
-// =============================================================================
-// TRACK VARIANTS - Semantic Colors
-// =============================================================================
-
-.switch-track--success.switch-track--checked {
-  background: linear-gradient(145deg, var(--color-success), var(--color-success-hover));
-  border-color: var(--color-success);
-  box-shadow: 
-    inset 0 1px 2px rgba(0, 0, 0, 0.1),
-    0 4px 12px rgba(40, 167, 69, 0.3);
-  
-  &:hover:not(.switch-track--disabled) {
-    background: linear-gradient(145deg, var(--color-success-hover), #1e7e34);
-    box-shadow: 
-      inset 0 1px 2px rgba(0, 0, 0, 0.1),
-      0 8px 25px rgba(40, 167, 69, 0.4);
-  }
-}
-
-.switch-track--warning.switch-track--checked {
-  background: linear-gradient(145deg, var(--color-warning), var(--color-warning-hover));
-  border-color: var(--color-warning);
-  box-shadow: 
-    inset 0 1px 2px rgba(0, 0, 0, 0.1),
-    0 4px 12px rgba(255, 193, 7, 0.3);
-  
-  &:hover:not(.switch-track--disabled) {
-    background: linear-gradient(145deg, var(--color-warning-hover), #d39e00);
-    box-shadow: 
-      inset 0 1px 2px rgba(0, 0, 0, 0.1),
-      0 8px 25px rgba(255, 193, 7, 0.4);
-  }
-}
-
-.switch-track--danger.switch-track--checked {
-  background: linear-gradient(145deg, var(--color-danger), var(--color-danger-hover));
-  border-color: var(--color-danger);
-  box-shadow: 
-    inset 0 1px 2px rgba(0, 0, 0, 0.1),
-    0 4px 12px rgba(220, 53, 69, 0.3);
-  
-  &:hover:not(.switch-track--disabled) {
-    background: linear-gradient(145deg, var(--color-danger-hover), #a71d2a);
-    box-shadow: 
-      inset 0 1px 2px rgba(0, 0, 0, 0.1),
-      0 8px 25px rgba(220, 53, 69, 0.4);
-  }
-}
-
-// =============================================================================
-// SWITCH INPUT - Hidden but Accessible
-// =============================================================================
-
-.switch-input {
+.ds-switch__input {
   position: absolute;
   opacity: 0;
   width: 0;
   height: 0;
   pointer-events: none;
   
-  // Ensure proper focus management
-  &:focus-visible + .switch-thumb {
-    box-shadow: 
-      0 2px 8px rgba(0, 0, 0, 0.15),
-      0 0 0 3px rgba(0, 123, 255, 0.2);
+  &:focus-visible + .ds-switch__track {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
   }
 }
 
 // =============================================================================
-// SWITCH THUMB - Enhanced Depth & Animation
+// SWITCH TRACK - Clean Design
 // =============================================================================
 
-.switch-thumb {
-  position: absolute;
-  background: linear-gradient(145deg, var(--color-white), var(--color-gray-50));
-  border-radius: 50%;
-  transition: all var(--transition-base) var(--ease-out-cubic);
-  box-shadow: 
-    0 2px 8px rgba(0, 0, 0, 0.15),
-    0 1px 4px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
-  z-index: 2;
+.ds-switch__track {
+  position: relative;
+  width: 48px;
+  height: 24px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
   
-  // Subtle inner highlight
-  &::before {
+  // Switch thumb (circle)
+  &::after {
     content: '';
     position: absolute;
-    top: 1px;
-    left: 1px;
-    right: 1px;
-    height: 30%;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.4), transparent);
+    top: 2px;
+    left: 2px;
+    width: 18px;
+    height: 18px;
+    background: var(--color-white);
     border-radius: 50%;
+    transition: all var(--transition-fast);
+    box-shadow: var(--shadow-sm);
+  }
+  
+  // Size variants
+  &--sm {
+    width: 32px;
+    height: 18px;
+    
+    &::after {
+      width: 14px;
+      height: 14px;
+    }
+  }
+  
+  &--lg {
+    width: 56px;
+    height: 28px;
+    border-radius: 14px;
+    
+    &::after {
+      width: 22px;
+      height: 22px;
+    }
+  }
+  
+  // Checked state
+  &--checked {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    
+    &::after {
+      left: 26px;
+    }
+    
+    &.ds-switch__track--sm::after {
+      left: 16px;
+    }
+    
+    &.ds-switch__track--lg::after {
+      left: 30px;
+    }
+  }
+  
+  // Disabled state
+  &--disabled {
+    background: var(--color-surface-disabled);
+    border-color: var(--color-border);
+    
+    &.ds-switch__track--checked {
+      background: var(--color-gray-400);
+      border-color: var(--color-gray-400);
+    }
+  }
+  
+  // Error state
+  &--error {
+    border-color: var(--color-border-error);
+    
+    &.ds-switch__track--checked {
+      background: var(--color-danger);
+      border-color: var(--color-danger);
+    }
   }
 }
 
 // =============================================================================
-// THUMB SIZE VARIANTS
+// SWITCH STATES - Clean Transitions
 // =============================================================================
 
-.switch-thumb--sm {
-  width: 14px;
-  height: 14px;
-  left: 2px;
-  top: 50%;
-  transform: translateY(-50%);
+// Checked state
+.ds-switch__input:checked + .ds-switch__track {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
   
-  &.switch-thumb--checked {
-    transform: translateY(-50%) translateX(14px);
-  }
-  
-  // Enhanced hover effects - preserve existing transforms
-  .switch-track:hover:not(.switch-track--disabled) & {
-    transform: translateY(-50%) scale(1.05);
-    box-shadow: 
-      0 4px 12px rgba(0, 0, 0, 0.2),
-      0 2px 8px rgba(0, 0, 0, 0.1),
-      inset 0 1px 0 rgba(255, 255, 255, 0.8);
-  }
-  
-  .switch-track:hover:not(.switch-track--disabled) &.switch-thumb--checked {
-    transform: translateY(-50%) translateX(14px) scale(1.05);
+  &::after {
+    left: 26px;
   }
 }
 
-.switch-thumb--md {
-  width: 20px;
-  height: 20px;
-  left: 2px;
-  top: 50%;
-  transform: translateY(-50%);
-  
-  &.switch-thumb--checked {
-    transform: translateY(-50%) translateX(20px);
+// Disabled state
+.ds-switch--disabled {
+  .ds-switch__track {
+    background: var(--color-surface-disabled);
+    border-color: var(--color-border);
   }
   
-  // Enhanced hover effects - preserve existing transforms
-  .switch-track:hover:not(.switch-track--disabled) & {
-    transform: translateY(-50%) scale(1.05);
-    box-shadow: 
-      0 4px 12px rgba(0, 0, 0, 0.2),
-      0 2px 8px rgba(0, 0, 0, 0.1),
-      inset 0 1px 0 rgba(255, 255, 255, 0.8);
-  }
-  
-  .switch-track:hover:not(.switch-track--disabled) &.switch-thumb--checked {
-    transform: translateY(-50%) translateX(20px) scale(1.05);
+  .ds-switch__input:checked + .ds-switch__track {
+    background: var(--color-gray-400);
+    border-color: var(--color-gray-400);
   }
 }
 
-.switch-thumb--lg {
-  width: 28px;
-  height: 28px;
-  left: 2px;
-  top: 50%;
-  transform: translateY(-50%);
-  
-  &.switch-thumb--checked {
-    transform: translateY(-50%) translateX(24px);
+// Error state
+.ds-switch--error {
+  .ds-switch__track {
+    border-color: var(--color-border-error);
   }
   
-  // Enhanced hover effects - preserve existing transforms
-  .switch-track:hover:not(.switch-track--disabled) & {
-    transform: translateY(-50%) scale(1.05);
-    box-shadow: 
-      0 4px 12px rgba(0, 0, 0, 0.2),
-      0 2px 8px rgba(0, 0, 0, 0.1),
-      inset 0 1px 0 rgba(255, 255, 255, 0.8);
-  }
-  
-  .switch-track:hover:not(.switch-track--disabled) &.switch-thumb--checked {
-    transform: translateY(-50%) translateX(24px) scale(1.05);
+  .ds-switch__input:checked + .ds-switch__track {
+    background: var(--color-danger);
+    border-color: var(--color-danger);
   }
 }
 
 // =============================================================================
-// THUMB STATES
+// SWITCH CONTENT - Clean Typography
 // =============================================================================
 
-.switch-thumb--disabled {
-  background: linear-gradient(145deg, var(--color-surface-disabled), var(--color-gray-300)) !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
-  transform: translateY(-50%) !important;
-  
-  &::before {
-    background: none;
-  }
-  
-  &.switch-thumb--checked {
-    transform: translateY(-50%) translateX(var(--checked-offset)) !important;
-  }
+.ds-switch__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  flex: 1;
+  min-width: 0;
+  transition: all var(--transition-fast);
 }
 
-// =============================================================================
-// SWITCH LABEL - Enhanced Typography
-// =============================================================================
-
-.switch-label {
+.ds-switch__label {
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-medium);
   color: var(--color-text);
   line-height: var(--line-height-normal);
-  cursor: pointer;
+  cursor: inherit;
   transition: color var(--transition-fast);
   
-  .switch-wrapper:hover:not(.disabled) & {
-    color: var(--color-primary);
+  .ds-switch--disabled & {
+    color: var(--color-text-disabled);
   }
 }
 
-.switch-required {
-  color: var(--color-danger);
-  margin-left: 2px;
-  font-weight: var(--font-weight-bold);
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
-}
-
-// =============================================================================
-// SWITCH HELPER TEXT
-// =============================================================================
-
-.switch-helper {
+.ds-switch__description {
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
   line-height: var(--line-height-normal);
+  transition: color var(--transition-fast);
+  
+  .ds-switch--disabled & {
+    color: var(--color-text-disabled);
+  }
+}
+
+.ds-switch__required {
+  color: var(--color-danger);
+  margin-left: 2px;
+  font-weight: var(--font-weight-bold);
+  font-size: 1em;
+}
+
+// =============================================================================
+// SIZE VARIANTS
+// =============================================================================
+
+.ds-switch--sm {
+  gap: var(--spacing-sm);
+  
+  .ds-switch__label {
+    font-size: var(--font-size-sm);
+  }
+}
+
+.ds-switch--lg {
+  gap: var(--spacing-lg);
+  
+  .ds-switch__label {
+    font-size: var(--font-size-lg);
+  }
+}
+
+// =============================================================================
+// HELPER TEXT & VALIDATION
+// =============================================================================
+
+.ds-switch-helper {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-normal);
   margin-top: var(--spacing-xs);
-  padding-left: var(--spacing-xs);
   transition: color var(--transition-fast);
   
   &.error {
     color: var(--color-danger);
-    font-weight: var(--font-weight-medium);
-    
-    &::before {
-      content: '⚠️ ';
-      margin-right: var(--spacing-xs);
-    }
   }
 }
 
 // =============================================================================
-// DARK THEME SUPPORT
-// =============================================================================
-
-[data-theme="dark"] {
-  .switch-track {
-    background: linear-gradient(145deg, var(--color-gray-700), var(--color-gray-600));
-    border-color: var(--color-gray-600);
-    
-    &::before {
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    }
-    
-    &:hover:not(.switch-track--disabled) {
-      background: linear-gradient(145deg, var(--color-gray-600), var(--color-gray-500));
-      box-shadow: 
-        inset 0 1px 2px rgba(0, 0, 0, 0.2),
-        0 4px 12px rgba(0, 123, 255, 0.2);
-    }
-  }
-  
-  .switch-track--checked {
-    background: linear-gradient(145deg, var(--color-primary), var(--color-primary-hover));
-    
-    &:hover:not(.switch-track--disabled) {
-      background: linear-gradient(145deg, var(--color-primary-hover), var(--color-primary-active));
-    }
-  }
-  
-  .switch-thumb {
-    background: linear-gradient(145deg, var(--color-gray-100), var(--color-white));
-  }
-}
-
-// =============================================================================
-// HIGH CONTRAST THEME
-// =============================================================================
-
-[data-theme="high-contrast"] {
-  .switch-track {
-    border-width: 2px;
-    background: var(--color-white) !important;
-    
-    &:focus-within {
-      outline: 3px solid var(--color-primary);
-      outline-offset: 2px;
-    }
-  }
-  
-  .switch-track--checked {
-    background: var(--color-primary) !important;
-    border-color: var(--color-text);
-  }
-  
-  .switch-thumb {
-    background: var(--color-white) !important;
-    border: 2px solid var(--color-text);
-  }
-}
-
-// =============================================================================
-// REDUCED MOTION SUPPORT
-// =============================================================================
-
-@media (prefers-reduced-motion: reduce) {
-  .switch-track,
-  .switch-thumb,
-  .switch-label,
-  .switch-required {
-    transition: none;
-    animation: none;
-    transform: none;
-  }
-  
-  .switch-track:hover,
-  .switch-thumb:hover {
-    transform: none;
-  }
-  
-  .switch-thumb--sm.switch-thumb--checked {
-    transform: translateY(-50%) translateX(14px);
-  }
-  
-  .switch-thumb--md.switch-thumb--checked {
-    transform: translateY(-50%) translateX(20px);
-  }
-  
-  .switch-thumb--lg.switch-thumb--checked {
-    transform: translateY(-50%) translateX(24px);
-  }
-}
-
-// =============================================================================
-// RESPONSIVE ADJUSTMENTS
+// RESPONSIVE DESIGN
 // =============================================================================
 
 @include mixins.respond-to("sm") {
-  .switch-container {
+  .ds-switch-container {
     gap: var(--spacing-sm);
   }
   
-  .switch-wrapper {
+  .ds-switch {
     gap: var(--spacing-md);
+  }
+}
+
+// =============================================================================
+// ACCESSIBILITY ENHANCEMENTS
+// =============================================================================
+
+.ds-switch__input:focus-visible + .ds-switch__track {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-switch__track,
+  .ds-switch__input,
+  .ds-switch__label,
+  .ds-switch__content {
+    transition: none;
   }
 } 

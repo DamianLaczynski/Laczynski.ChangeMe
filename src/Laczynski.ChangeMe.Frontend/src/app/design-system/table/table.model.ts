@@ -6,7 +6,24 @@
 
 import { TemplateRef, Signal } from '@angular/core';
 import { Observable } from 'rxjs';
-import { getNestedValue } from '../shared';
+import {
+  ComponentSize,
+  ComponentVariant,
+  ComponentState,
+  FormComponentState,
+  ComponentChangeEvent,
+  ComponentFocusEvent,
+  AccessibilityConfig,
+  ValidationResult,
+  ValidationRule,
+  generateComponentId,
+  mergeClasses,
+  createAccessibilityAttributes,
+  getSizeConfiguration,
+  isValidComponentSize,
+  isValidComponentVariant,
+  getNestedValue,
+} from '../shared';
 
 // Re-export compatibility types from existing system
 export type { DataGridColumn } from '../../shared/data/components/paginated-table/models/data-grid-column.model';
@@ -16,6 +33,49 @@ export type { PaginationParameters } from '../../shared/data/models/pagination-p
 export type { PaginationResult } from '../../shared/data/models/pagination-result.model';
 
 export type { State } from '../../shared/state/models/state.model';
+
+// =============================================================================
+// TABLE-SPECIFIC TYPES
+// =============================================================================
+
+/**
+ * Table variants extending base component variants
+ */
+export type TableVariant =
+  | Extract<ComponentVariant, 'primary' | 'secondary' | 'success' | 'warning' | 'danger'>
+  | 'default'
+  | 'bordered'
+  | 'borderless'
+  | 'compact'
+  | 'comfortable';
+
+/**
+ * Table border styles
+ */
+export type TableBorder = 'none' | 'horizontal' | 'vertical' | 'all' | 'outer';
+
+/**
+ * Table column alignment
+ */
+export type TableColumnAlign = 'left' | 'center' | 'right';
+
+/**
+ * Table column types
+ */
+export type TableColumnType =
+  | 'text'
+  | 'number'
+  | 'currency'
+  | 'date'
+  | 'boolean'
+  | 'image'
+  | 'badge'
+  | 'actions';
+
+/**
+ * Table selection modes
+ */
+export type TableSelectionMode = 'none' | 'single' | 'multiple';
 
 // =============================================================================
 // CORE TABLE INTERFACES
@@ -29,7 +89,7 @@ export interface TableConfig<T = any> {
   variant: TableVariant;
 
   /** Table size */
-  size: TableSize;
+  size: ComponentSize;
 
   /** Border style */
   border: TableBorder;
@@ -271,48 +331,6 @@ export interface TableSorting {
 }
 
 // =============================================================================
-// TABLE TYPES & VARIANTS
-// =============================================================================
-
-/**
- * Table visual variants
- */
-export type TableVariant = 'default' | 'bordered' | 'borderless' | 'compact' | 'comfortable';
-
-/**
- * Table size variants
- */
-export type TableSize = 'sm' | 'md' | 'lg';
-
-/**
- * Table border styles
- */
-export type TableBorder = 'none' | 'horizontal' | 'vertical' | 'all' | 'outer';
-
-/**
- * Table column alignment
- */
-export type TableColumnAlign = 'left' | 'center' | 'right';
-
-/**
- * Table column types
- */
-export type TableColumnType =
-  | 'text'
-  | 'number'
-  | 'currency'
-  | 'date'
-  | 'boolean'
-  | 'image'
-  | 'badge'
-  | 'actions';
-
-/**
- * Table selection modes
- */
-export type TableSelectionMode = 'none' | 'single' | 'multiple';
-
-// =============================================================================
 // TABLE EVENTS
 // =============================================================================
 
@@ -406,7 +424,7 @@ export const DEFAULT_TABLE_CONFIG: TableConfig = {
   striped: false,
   hoverable: true,
   responsive: true,
-  showLoading: true,
+  showLoading: false,
   showEmptyState: true,
   emptyState: {
     title: 'No data available',
@@ -420,26 +438,75 @@ export const DEFAULT_TABLE_CONFIG: TableConfig = {
   },
   sorting: {
     enabled: true,
-    serverSide: true,
+    serverSide: false,
     multiple: false,
   },
 };
 
 /**
- * Table size configurations
+ * Table variant definitions
+ */
+export const TABLE_VARIANTS: Record<TableVariant, { className: string; label: string }> = {
+  default: {
+    className: 'ds-table--default',
+    label: 'Default',
+  },
+  primary: {
+    className: 'ds-table--primary',
+    label: 'Primary',
+  },
+  secondary: {
+    className: 'ds-table--secondary',
+    label: 'Secondary',
+  },
+  success: {
+    className: 'ds-table--success',
+    label: 'Success',
+  },
+  warning: {
+    className: 'ds-table--warning',
+    label: 'Warning',
+  },
+  danger: {
+    className: 'ds-table--danger',
+    label: 'Danger',
+  },
+  bordered: {
+    className: 'ds-table--bordered',
+    label: 'Bordered',
+  },
+  borderless: {
+    className: 'ds-table--borderless',
+    label: 'Borderless',
+  },
+  compact: {
+    className: 'ds-table--compact',
+    label: 'Compact',
+  },
+  comfortable: {
+    className: 'ds-table--comfortable',
+    label: 'Comfortable',
+  },
+};
+
+/**
+ * Table size configurations extending base size config
  */
 export const TABLE_SIZE_CONFIG = {
   sm: {
+    ...getSizeConfiguration('sm'),
     padding: '8px 12px',
     fontSize: '13px',
     lineHeight: '1.4',
   },
   md: {
+    ...getSizeConfiguration('md'),
     padding: '12px 16px',
     fontSize: '14px',
     lineHeight: '1.5',
   },
   lg: {
+    ...getSizeConfiguration('lg'),
     padding: '16px 20px',
     fontSize: '16px',
     lineHeight: '1.6',
@@ -506,11 +573,12 @@ export function createTableEmptyState(partial: Partial<TableEmptyState> = {}): T
  * Get table CSS classes
  */
 export function getTableClasses(config: TableConfig): string[] {
-  const classes = ['ds-table'];
+  const sizeConfig = getSizeConfiguration(config.size);
+  const variantConfig = TABLE_VARIANTS[config.variant];
 
-  // Variant classes
-  classes.push(`ds-table--${config.variant}`);
-  classes.push(`ds-table--${config.size}`);
+  const classes = ['ds-table', sizeConfig.className, variantConfig.className];
+
+  // Border classes
   classes.push(`ds-table--border-${config.border}`);
 
   // Feature classes
@@ -651,24 +719,148 @@ export function filterTableData<T>(data: T[], searchTerm: string, columns: Table
 /**
  * Generate unique table ID
  */
-export function generateTableId(prefix: string = 'table'): string {
-  return `${prefix}-${Math.random().toString(36).substr(2, 9)}`;
+export function generateTableId(): string {
+  return generateComponentId('ds-table');
 }
 
 /**
- * Calculate visible page numbers
+ * Calculate visible pages for pagination
  */
 export function calculateVisiblePages(
   currentPage: number,
   totalPages: number,
   maxVisible: number = 5,
 ): number[] {
-  if (totalPages <= maxVisible) {
-    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  const half = Math.floor(maxVisible / 2);
+  let start = Math.max(1, currentPage - half);
+  let end = Math.min(totalPages, start + maxVisible - 1);
+
+  if (end - start + 1 < maxVisible) {
+    start = Math.max(1, end - maxVisible + 1);
   }
 
-  const start = Math.max(1, Math.min(currentPage - 2, totalPages - maxVisible + 1));
-  const end = Math.min(totalPages, start + maxVisible - 1);
+  const pages: number[] = [];
+  for (let i = start; i <= end; i++) {
+    pages.push(i);
+  }
 
-  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  return pages;
+}
+
+/**
+ * Check if a string is a valid table variant
+ */
+export function isValidTableVariant(variant: string): variant is TableVariant {
+  return Object.keys(TABLE_VARIANTS).includes(variant);
+}
+
+/**
+ * Get table variant label
+ */
+export function getTableVariantLabel(variant: TableVariant): string {
+  return TABLE_VARIANTS[variant].label;
+}
+
+/**
+ * Get table size label
+ */
+export function getTableSizeLabel(size: ComponentSize): string {
+  const sizeLabels = {
+    sm: 'Small',
+    md: 'Medium',
+    lg: 'Large',
+  };
+  return sizeLabels[size];
+}
+
+/**
+ * Get table ARIA attributes
+ */
+export function getTableAriaAttributes(
+  totalRows: number,
+  selectedRows: number = 0,
+  sortField?: string,
+  sortDirection?: 'asc' | 'desc',
+): Record<string, string> {
+  const attributes: Record<string, string> = {
+    role: 'table',
+    'aria-rowcount': totalRows.toString(),
+  };
+
+  if (selectedRows > 0) {
+    attributes['aria-multiselectable'] = 'true';
+    attributes['aria-selected'] = selectedRows.toString();
+  }
+
+  if (sortField && sortDirection) {
+    attributes['aria-sort'] = sortDirection === 'asc' ? 'ascending' : 'descending';
+  }
+
+  return attributes;
+}
+
+/**
+ * Create table row select event
+ */
+export function createTableRowSelectEvent<T>(
+  item: T,
+  selectedItems: T[],
+  originalEvent: Event,
+): TableRowSelectEvent<T> {
+  return {
+    item,
+    selectedItems,
+    originalEvent,
+  };
+}
+
+/**
+ * Create table sort event
+ */
+export function createTableSortEvent(
+  field: string,
+  direction: 'asc' | 'desc',
+  originalEvent: Event,
+  multisort?: TableSortField[],
+): TableSortEvent {
+  return {
+    field,
+    direction,
+    multisort,
+    originalEvent,
+  };
+}
+
+/**
+ * Create table page event
+ */
+export function createTablePageEvent(
+  page: number,
+  pageSize: number,
+  totalRecords: number,
+  originalEvent: Event,
+): TablePageEvent {
+  return {
+    page,
+    pageSize,
+    totalRecords,
+    originalEvent,
+  };
+}
+
+/**
+ * Create table filter event
+ */
+export function createTableFilterEvent(
+  field: string,
+  value: any,
+  filters: Record<string, any>,
+  originalEvent: Event,
+): TableFilterEvent {
+  return {
+    field,
+    value,
+    filters,
+    originalEvent,
+  };
 }

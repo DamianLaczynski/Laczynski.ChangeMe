@@ -5,6 +5,49 @@
 // Supporting multiple variants, media, actions, and interactive states
 
 import { TemplateRef, Signal } from '@angular/core';
+import {
+  ComponentSize,
+  ComponentVariant,
+  ComponentState,
+  FormComponentState,
+  ComponentChangeEvent,
+  ComponentFocusEvent,
+  AccessibilityConfig,
+  ValidationResult,
+  ValidationRule,
+  generateComponentId,
+  mergeClasses,
+  createAccessibilityAttributes,
+  getSizeConfiguration,
+  isValidComponentSize,
+  isValidComponentVariant,
+  getNestedValue,
+} from '../shared';
+
+// =============================================================================
+// CARD-SPECIFIC TYPES
+// =============================================================================
+
+/**
+ * Card variants extending base component variants
+ */
+export type CardVariant =
+  | Extract<ComponentVariant, 'primary' | 'secondary' | 'success' | 'warning' | 'danger'>
+  | 'default'
+  | 'outlined'
+  | 'filled'
+  | 'elevated'
+  | 'ghost';
+
+/**
+ * Card elevation levels
+ */
+export type CardElevation = 'none' | 'sm' | 'md' | 'lg' | 'xl';
+
+/**
+ * Card background styles
+ */
+export type CardBackground = 'default' | 'muted' | 'accent' | 'gradient' | 'transparent';
 
 // =============================================================================
 // CORE CARD INTERFACES
@@ -18,7 +61,7 @@ export interface CardConfig {
   variant: CardVariant;
 
   /** Card size */
-  size: CardSize;
+  size: ComponentSize;
 
   /** Card elevation level */
   elevation: CardElevation;
@@ -166,30 +209,6 @@ export interface CardContent {
 }
 
 // =============================================================================
-// CARD TYPES & VARIANTS
-// =============================================================================
-
-/**
- * Card visual variants
- */
-export type CardVariant = 'default' | 'outlined' | 'filled' | 'elevated' | 'ghost';
-
-/**
- * Card size variants
- */
-export type CardSize = 'sm' | 'md' | 'lg' | 'xl';
-
-/**
- * Card elevation levels
- */
-export type CardElevation = 'none' | 'sm' | 'md' | 'lg' | 'xl';
-
-/**
- * Card background styles
- */
-export type CardBackground = 'default' | 'muted' | 'accent' | 'gradient' | 'transparent';
-
-// =============================================================================
 // CARD EVENTS
 // =============================================================================
 
@@ -247,32 +266,75 @@ export const DEFAULT_CARD_CONFIG: CardConfig = {
 };
 
 /**
- * Card size configurations
+ * Card variant definitions
+ */
+export const CARD_VARIANTS: Record<CardVariant, { className: string; label: string }> = {
+  default: {
+    className: 'ds-card--default',
+    label: 'Default',
+  },
+  primary: {
+    className: 'ds-card--primary',
+    label: 'Primary',
+  },
+  secondary: {
+    className: 'ds-card--secondary',
+    label: 'Secondary',
+  },
+  success: {
+    className: 'ds-card--success',
+    label: 'Success',
+  },
+  warning: {
+    className: 'ds-card--warning',
+    label: 'Warning',
+  },
+  danger: {
+    className: 'ds-card--danger',
+    label: 'Danger',
+  },
+  outlined: {
+    className: 'ds-card--outlined',
+    label: 'Outlined',
+  },
+  filled: {
+    className: 'ds-card--filled',
+    label: 'Filled',
+  },
+  elevated: {
+    className: 'ds-card--elevated',
+    label: 'Elevated',
+  },
+  ghost: {
+    className: 'ds-card--ghost',
+    label: 'Ghost',
+  },
+};
+
+/**
+ * Card size configurations extending base size config
  */
 export const CARD_SIZE_CONFIG = {
   sm: {
+    ...getSizeConfiguration('sm'),
     padding: 'var(--spacing-sm)',
     fontSize: 'var(--font-size-sm)',
     headerHeight: '32px',
     borderRadius: 'var(--border-radius-sm)',
   },
   md: {
+    ...getSizeConfiguration('md'),
     padding: 'var(--spacing-md)',
     fontSize: 'var(--font-size-base)',
     headerHeight: '40px',
     borderRadius: 'var(--border-radius-md)',
   },
   lg: {
+    ...getSizeConfiguration('lg'),
     padding: 'var(--spacing-lg)',
     fontSize: 'var(--font-size-lg)',
     headerHeight: '48px',
     borderRadius: 'var(--border-radius-lg)',
-  },
-  xl: {
-    padding: 'var(--spacing-xl)',
-    fontSize: 'var(--font-size-xl)',
-    headerHeight: '56px',
-    borderRadius: 'var(--border-radius-xl)',
   },
 } as const;
 
@@ -342,12 +404,15 @@ export function createCardAction(
  * Get card CSS classes
  */
 export function getCardClasses(config: CardConfig): string[] {
-  const classes = ['ds-card'];
+  const sizeConfig = getSizeConfiguration(config.size);
+  const variantConfig = CARD_VARIANTS[config.variant];
 
-  // Variant classes
-  classes.push(`ds-card--${config.variant}`);
-  classes.push(`ds-card--${config.size}`);
+  const classes = ['ds-card', sizeConfig.className, variantConfig.className];
+
+  // Elevation classes
   classes.push(`ds-card--elevation-${config.elevation}`);
+
+  // Background classes
   classes.push(`ds-card--bg-${config.background}`);
 
   // State classes
@@ -377,8 +442,8 @@ export function getAvatarClasses(avatar: CardAvatar): string[] {
 /**
  * Generate unique card ID
  */
-export function generateCardId(prefix: string = 'card'): string {
-  return `${prefix}-${Math.random().toString(36).substr(2, 9)}`;
+export function generateCardId(): string {
+  return generateComponentId('ds-card');
 }
 
 /**
@@ -406,4 +471,92 @@ export function getActionClasses(action: CardAction): string[] {
   if (action.disabled) classes.push('ds-card__action--disabled');
 
   return classes;
+}
+
+/**
+ * Check if a string is a valid card variant
+ */
+export function isValidCardVariant(variant: string): variant is CardVariant {
+  return Object.keys(CARD_VARIANTS).includes(variant);
+}
+
+/**
+ * Get card variant label
+ */
+export function getCardVariantLabel(variant: CardVariant): string {
+  return CARD_VARIANTS[variant].label;
+}
+
+/**
+ * Get card size label
+ */
+export function getCardSizeLabel(size: ComponentSize): string {
+  const sizeLabels = {
+    sm: 'Small',
+    md: 'Medium',
+    lg: 'Large',
+  };
+  return sizeLabels[size];
+}
+
+/**
+ * Get card ARIA attributes
+ */
+export function getCardAriaAttributes(
+  config: CardConfig,
+  hasActions: boolean = false,
+): Record<string, string> {
+  const attributes: Record<string, string> = {};
+
+  if (config.interactive) {
+    attributes['role'] = 'button';
+    attributes['tabindex'] = config.disabled ? '-1' : '0';
+  }
+
+  if (config.selected) {
+    attributes['aria-selected'] = 'true';
+  }
+
+  if (config.disabled) {
+    attributes['aria-disabled'] = 'true';
+  }
+
+  if (hasActions) {
+    attributes['aria-label'] = 'Card with actions';
+  }
+
+  return attributes;
+}
+
+/**
+ * Create card click event
+ */
+export function createCardClickEvent(
+  originalEvent: Event,
+  cardElement: HTMLElement,
+): CardClickEvent {
+  return {
+    originalEvent,
+    cardElement,
+  };
+}
+
+/**
+ * Create card action event
+ */
+export function createCardActionEvent(action: CardAction, originalEvent: Event): CardActionEvent {
+  return {
+    action,
+    originalEvent,
+  };
+}
+
+/**
+ * Create card hover event
+ */
+export function createCardHoverEvent(hovered: boolean, originalEvent: Event): CardHoverEvent {
+  return {
+    hovered,
+    originalEvent,
+  };
 }

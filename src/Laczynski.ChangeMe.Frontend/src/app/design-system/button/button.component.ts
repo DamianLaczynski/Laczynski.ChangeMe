@@ -8,37 +8,57 @@ import {
   inject,
   ElementRef,
   viewChild,
+  effect,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 
-/**
- * Button size variants
- */
-export type ButtonSize = 'sm' | 'md' | 'lg';
+import {
+  ComponentSize,
+  ComponentVariant,
+  ComponentClickEvent,
+  ComponentFocusEvent,
+  AccessibilityConfig,
+  ComponentState,
+  generateComponentId,
+  mergeClasses,
+  createAccessibilityAttributes,
+  getSizeConfiguration,
+  isValidComponentSize,
+  isValidComponentVariant,
+} from '../shared';
 
 /**
- * Button style variants
+ * Button click event payload with additional button-specific data
  */
-export type ButtonVariant =
-  | 'primary'
-  | 'secondary'
-  | 'success'
-  | 'warning'
-  | 'danger'
-  | 'ghost'
-  | 'link';
+export interface ButtonClickEvent extends ComponentClickEvent<HTMLButtonElement> {
+  /** Button variant that was clicked */
+  variant: ComponentVariant;
+  /** Button size that was clicked */
+  size: ComponentSize;
+  /** Whether button was in loading state */
+  wasLoading: boolean;
+}
 
 /**
- * Button click event payload
+ * Button focus event payload
  */
-export interface ButtonClickEvent {
-  /** Original MouseEvent */
-  event: MouseEvent;
-  /** Button element reference */
-  buttonElement: HTMLButtonElement;
-  /** Timestamp of the click */
-  timestamp: number;
+export interface ButtonFocusEvent extends ComponentFocusEvent<HTMLButtonElement> {}
+
+/**
+ * Button configuration interface
+ */
+export interface ButtonConfig {
+  /** Default button variant */
+  defaultVariant: ComponentVariant;
+  /** Default button size */
+  defaultSize: ComponentSize;
+  /** Whether to show loading spinner by default */
+  defaultShowSpinner: boolean;
+  /** Default tab index */
+  defaultTabIndex: number;
+  /** Whether buttons are full width by default */
+  defaultFullWidth: boolean;
 }
 
 /**
@@ -68,36 +88,59 @@ export interface ButtonClickEvent {
   template: `
     <button
       #buttonRef
+      [id]="componentId()"
       [type]="type()"
       [class]="computedClasses()"
       [disabled]="computedDisabled()"
-      [attr.aria-label]="ariaLabel()"
-      [attr.aria-describedby]="ariaDescribedBy()"
-      [attr.aria-pressed]="pressed() ? 'true' : null"
-      [attr.aria-expanded]="expanded() ? 'true' : null"
-      [attr.aria-controls]="ariaControls()"
-      [attr.tabindex]="tabIndex()"
+      [style.cursor]="computedCursor()"
+      [attr.aria-label]="accessibilityAttributes()['aria-label']"
+      [attr.aria-describedby]="accessibilityAttributes()['aria-describedby']"
+      [attr.aria-pressed]="accessibilityAttributes()['aria-pressed']"
+      [attr.aria-expanded]="accessibilityAttributes()['aria-expanded']"
+      [attr.aria-controls]="accessibilityAttributes()['aria-controls']"
+      [attr.role]="accessibilityAttributes()['role']"
+      [attr.tabindex]="effectiveTabIndex()"
       (click)="handleClick($event)"
       (focus)="handleFocus($event)"
       (blur)="handleBlur($event)"
+      (mouseenter)="handleMouseEnter()"
+      (mouseleave)="handleMouseLeave()"
+      (mousedown)="handleMouseDown()"
+      (mouseup)="handleMouseUp()"
     >
       @if (loading() && showLoadingSpinner()) {
-        <span class="ds-button__spinner" aria-hidden="true" role="status"> </span>
-      }
-
-      @if (iconStart() && !loading()) {
-        <span class="ds-button__icon ds-button__icon--start" aria-hidden="true">
-          {{ iconStart() }}
+        <span
+          class="ds-button__spinner"
+          aria-hidden="true"
+          role="status"
+          [attr.aria-label]="loadingAriaLabel()"
+        >
+          <span class="ds-button__spinner-icon"></span>
         </span>
       }
 
-      <span class="ds-button__content">
+      @if (iconStart() && !loading()) {
+        <span
+          class="ds-button__icon ds-button__icon--start"
+          aria-hidden="true"
+          [innerHTML]="iconStart()"
+        >
+        </span>
+      }
+
+      <span
+        class="ds-button__content"
+        [class.visually-hidden]="loading() && hideContentOnLoading()"
+      >
         <ng-content></ng-content>
       </span>
 
       @if (iconEnd() && !loading()) {
-        <span class="ds-button__icon ds-button__icon--end" aria-hidden="true">
-          {{ iconEnd() }}
+        <span
+          class="ds-button__icon ds-button__icon--end"
+          aria-hidden="true"
+          [innerHTML]="iconEnd()"
+        >
         </span>
       }
     </button>
@@ -107,6 +150,8 @@ export interface ButtonClickEvent {
     '[class.ds-button-host]': 'true',
     '[class.ds-button-host--loading]': 'loading()',
     '[class.ds-button-host--disabled]': 'computedDisabled()',
+    '[class.ds-button-host--focused]': 'componentState().isFocused',
+    '[class.ds-button-host--hovered]': 'componentState().isHovered',
   },
 })
 export class ButtonComponent {
@@ -118,10 +163,10 @@ export class ButtonComponent {
   // =============================================================================
 
   /** Button variant style */
-  variant = input<ButtonVariant>('primary');
+  variant = input<ComponentVariant>('primary');
 
   /** Button size */
-  size = input<ButtonSize>('md');
+  size = input<ComponentSize>('md');
 
   /** Button type attribute */
   type = input<'button' | 'submit' | 'reset'>('button');
@@ -135,11 +180,14 @@ export class ButtonComponent {
   /** Whether to show loading spinner when loading */
   showLoadingSpinner = input<boolean>(true);
 
+  /** Whether to hide content when loading */
+  hideContentOnLoading = input<boolean>(false);
+
   /** Icon to display at start of button */
-  iconStart = input<string>();
+  iconStart = input<string>('');
 
   /** Icon to display at end of button */
-  iconEnd = input<string>();
+  iconEnd = input<string>('');
 
   /** Full width button */
   fullWidth = input<boolean>(false);
@@ -148,22 +196,25 @@ export class ButtonComponent {
   customClasses = input<string>('');
 
   /** ARIA label for accessibility */
-  ariaLabel = input<string>();
+  ariaLabel = input<string>('');
 
   /** ARIA described by for accessibility */
-  ariaDescribedBy = input<string>();
+  ariaDescribedBy = input<string>('');
 
   /** ARIA controls for accessibility */
-  ariaControls = input<string>();
+  ariaControls = input<string>('');
 
   /** ARIA pressed state for toggle buttons */
-  pressed = input<boolean>();
+  pressed = input<boolean | undefined>(undefined);
 
   /** ARIA expanded state for dropdown buttons */
-  expanded = input<boolean>();
+  expanded = input<boolean | undefined>(undefined);
 
   /** Tab index */
   tabIndex = input<number>(0);
+
+  /** Loading ARIA label */
+  loadingAriaLabel = input<string>('Loading...');
 
   // =============================================================================
   // OUTPUT SIGNALS
@@ -173,10 +224,10 @@ export class ButtonComponent {
   clicked = output<ButtonClickEvent>();
 
   /** Emitted when button receives focus */
-  focused = output<FocusEvent>();
+  focused = output<ButtonFocusEvent>();
 
   /** Emitted when button loses focus */
-  blurred = output<FocusEvent>();
+  blurred = output<ButtonFocusEvent>();
 
   // =============================================================================
   // VIEW CHILD SIGNALS
@@ -186,11 +237,54 @@ export class ButtonComponent {
   buttonRef = viewChild.required<ElementRef<HTMLButtonElement>>('buttonRef');
 
   // =============================================================================
+  // COMPONENT STATE
+  // =============================================================================
+
+  /** Unique component ID */
+  componentId = signal(generateComponentId('ds-button'));
+
+  /** Internal component state */
+  componentState = signal<ComponentState>({
+    isFocused: false,
+    isHovered: false,
+    isActive: false,
+    isDisabled: false,
+    isLoading: false,
+    variant: 'primary',
+    size: 'md',
+  });
+
+  // =============================================================================
   // COMPUTED SIGNALS
   // =============================================================================
 
   /** Computed disabled state considering loading */
   computedDisabled = computed(() => this.disabled() || this.loading());
+
+  /** Computed cursor style */
+  computedCursor = computed(() => {
+    if (this.computedDisabled()) return 'not-allowed';
+    if (this.loading()) return 'wait';
+    return 'pointer';
+  });
+
+  /** Effective tab index considering disabled state */
+  effectiveTabIndex = computed(() => {
+    if (this.computedDisabled()) return -1;
+    return this.tabIndex();
+  });
+
+  /** Computed accessibility attributes */
+  accessibilityAttributes = computed(() => {
+    const config: AccessibilityConfig = {
+      ariaLabel: this.ariaLabel() || undefined,
+      ariaDescribedBy: this.ariaDescribedBy() || undefined,
+      ariaControls: this.ariaControls() || undefined,
+      ariaPressed: this.pressed(),
+      ariaExpanded: this.expanded(),
+    };
+    return createAccessibilityAttributes(config);
+  });
 
   /** Computed CSS classes */
   computedClasses = computed(() => {
@@ -208,19 +302,37 @@ export class ButtonComponent {
       classes.push('ds-button--disabled');
     }
 
-    if (this.customClasses()) {
-      classes.push(this.customClasses());
+    if (this.componentState().isFocused) {
+      classes.push('ds-button--focused');
     }
 
-    return classes.join(' ');
+    if (this.componentState().isHovered) {
+      classes.push('ds-button--hovered');
+    }
+
+    if (this.componentState().isActive) {
+      classes.push('ds-button--active');
+    }
+
+    return mergeClasses(...classes, this.customClasses());
   });
 
   // =============================================================================
-  // COMPONENT STATE
+  // EFFECTS
   // =============================================================================
 
-  /** Internal focus state for debugging */
-  private readonly isFocused = signal(false);
+  constructor() {
+    // Update component state when inputs change
+    effect(() => {
+      this.componentState.update(state => ({
+        ...state,
+        isDisabled: this.computedDisabled(),
+        isLoading: this.loading(),
+        variant: this.variant(),
+        size: this.size(),
+      }));
+    });
+  }
 
   // =============================================================================
   // PUBLIC METHODS
@@ -230,14 +342,22 @@ export class ButtonComponent {
    * Programmatically focus the button
    */
   focus(): void {
-    this.buttonRef()?.nativeElement.focus();
+    try {
+      this.buttonRef()?.nativeElement.focus();
+    } catch (error) {
+      console.warn('Failed to focus button:', error);
+    }
   }
 
   /**
    * Programmatically blur the button
    */
   blur(): void {
-    this.buttonRef()?.nativeElement.blur();
+    try {
+      this.buttonRef()?.nativeElement.blur();
+    } catch (error) {
+      console.warn('Failed to blur button:', error);
+    }
   }
 
   /**
@@ -245,7 +365,11 @@ export class ButtonComponent {
    */
   click(): void {
     if (!this.computedDisabled()) {
-      this.buttonRef()?.nativeElement.click();
+      try {
+        this.buttonRef()?.nativeElement.click();
+      } catch (error) {
+        console.warn('Failed to click button:', error);
+      }
     }
   }
 
@@ -258,6 +382,13 @@ export class ButtonComponent {
       width: element?.offsetWidth || 0,
       height: element?.offsetHeight || 0,
     };
+  }
+
+  /**
+   * Get current component state
+   */
+  getState(): ComponentState {
+    return { ...this.componentState() };
   }
 
   // =============================================================================
@@ -279,8 +410,11 @@ export class ButtonComponent {
 
     const clickEvent: ButtonClickEvent = {
       event,
-      buttonElement,
+      element: buttonElement,
       timestamp: Date.now(),
+      variant: this.variant(),
+      size: this.size(),
+      wasLoading: this.loading(),
     };
 
     this.clicked.emit(clickEvent);
@@ -290,15 +424,65 @@ export class ButtonComponent {
    * Handle button focus events
    */
   protected handleFocus(event: FocusEvent): void {
-    this.isFocused.set(true);
-    this.focused.emit(event);
+    this.componentState.update(state => ({ ...state, isFocused: true }));
+
+    const buttonElement = this.buttonRef()?.nativeElement;
+    if (!buttonElement) return;
+
+    const focusEvent: ButtonFocusEvent = {
+      event,
+      element: buttonElement,
+      timestamp: Date.now(),
+    };
+
+    this.focused.emit(focusEvent);
   }
 
   /**
    * Handle button blur events
    */
   protected handleBlur(event: FocusEvent): void {
-    this.isFocused.set(false);
-    this.blurred.emit(event);
+    this.componentState.update(state => ({ ...state, isFocused: false }));
+
+    const buttonElement = this.buttonRef()?.nativeElement;
+    if (!buttonElement) return;
+
+    const blurEvent: ButtonFocusEvent = {
+      event,
+      element: buttonElement,
+      timestamp: Date.now(),
+    };
+
+    this.blurred.emit(blurEvent);
+  }
+
+  /**
+   * Handle mouse enter events
+   */
+  protected handleMouseEnter(): void {
+    this.componentState.update(state => ({ ...state, isHovered: true }));
+  }
+
+  /**
+   * Handle mouse leave events
+   */
+  protected handleMouseLeave(): void {
+    this.componentState.update(state => ({ ...state, isHovered: false, isActive: false }));
+  }
+
+  /**
+   * Handle mouse down events
+   */
+  protected handleMouseDown(): void {
+    if (!this.computedDisabled()) {
+      this.componentState.update(state => ({ ...state, isActive: true }));
+    }
+  }
+
+  /**
+   * Handle mouse up events
+   */
+  protected handleMouseUp(): void {
+    this.componentState.update(state => ({ ...state, isActive: false }));
   }
 }

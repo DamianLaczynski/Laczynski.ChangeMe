@@ -16,23 +16,36 @@ import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
+import { ComponentSize } from '../shared';
+
 import {
-  TextareaSize,
+  TextareaConfig,
   TextareaVariant,
   TextareaResize,
+  TextareaState,
   TextareaChangeEvent,
   TextareaFocusEvent,
   TextareaKeyboardEvent,
   TextareaResizeEvent,
+  TextareaValidation,
+  TextareaComponentState,
+  createTextareaConfig,
+  createTextareaState,
   createTextareaChangeEvent,
   createTextareaFocusEvent,
   createTextareaKeyboardEvent,
   createTextareaResizeEvent,
+  validateTextareaValue,
+  getTextareaState,
+  getTextareaAriaAttributes,
+  getTextareaClasses,
+  generateTextareaId,
   isValidTextareaSize,
   isValidTextareaVariant,
   countLines,
   countCharacters,
   isWithinMaxLength,
+  isNearMaxLength,
 } from './textarea.model';
 
 /**
@@ -148,7 +161,7 @@ export class TextareaComponent implements ControlValueAccessor, AfterViewInit {
   // =============================================================================
 
   /** Textarea size */
-  size = input<TextareaSize>('md');
+  size = input<ComponentSize>('md');
 
   /** Textarea variant */
   variant = input<TextareaVariant>('default');
@@ -417,7 +430,8 @@ export class TextareaComponent implements ControlValueAccessor, AfterViewInit {
   onTextareaFocus(event: FocusEvent): void {
     this.focusedSignal.set(true);
 
-    const focusEvent = createTextareaFocusEvent(this.currentValue(), 'focus', event);
+    const focusEvent = createTextareaFocusEvent('in', event, this.textareaElement.nativeElement);
+
     this.focusChange.emit(focusEvent);
   }
 
@@ -426,13 +440,19 @@ export class TextareaComponent implements ControlValueAccessor, AfterViewInit {
     this.focusedSignal.set(false);
     this.onTouched();
 
-    const focusEvent = createTextareaFocusEvent(this.currentValue(), 'blur', event);
+    const focusEvent = createTextareaFocusEvent('out', event, this.textareaElement.nativeElement);
+
     this.focusChange.emit(focusEvent);
   }
 
   /** Handle keyboard events */
   onTextareaKeydown(event: KeyboardEvent): void {
-    const keyboardEvent = createTextareaKeyboardEvent(this.currentValue(), event);
+    const keyboardEvent = createTextareaKeyboardEvent(
+      this.currentValue(),
+      event,
+      this.textareaElement.nativeElement,
+    );
+
     this.keyboardEvent.emit(keyboardEvent);
 
     // Handle special key combinations
@@ -452,7 +472,12 @@ export class TextareaComponent implements ControlValueAccessor, AfterViewInit {
     this.value.set(value);
     this.onChange(value);
 
-    const changeEvent = createTextareaChangeEvent(value, originalEvent);
+    const changeEvent = createTextareaChangeEvent(
+      value,
+      originalEvent,
+      this.textareaElement.nativeElement,
+    );
+
     this.valueChange.emit(changeEvent);
 
     if (this.autoResize()) {

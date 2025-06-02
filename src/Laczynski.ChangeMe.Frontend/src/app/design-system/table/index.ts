@@ -22,7 +22,6 @@ export type {
 
   // Type unions
   TableVariant,
-  TableSize,
   TableBorder,
   TableColumnAlign,
   TableColumnType,
@@ -56,4 +55,13 @@ export {
   calculateVisiblePages,
   DEFAULT_TABLE_CONFIG,
   TABLE_SIZE_CONFIG,
+  TABLE_VARIANTS,
+  isValidTableVariant,
+  getTableVariantLabel,
+  getTableSizeLabel,
+  getTableAriaAttributes,
+  createTableRowSelectEvent,
+  createTableSortEvent,
+  createTablePageEvent,
+  createTableFilterEvent,
 } from './table.model';

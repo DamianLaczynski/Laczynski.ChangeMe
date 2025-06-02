@@ -2,12 +2,12 @@ import { Component, signal, computed, OnInit, inject, TemplateRef, viewChild } f
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+import { ComponentSize } from '../shared';
 import { TableComponent } from './table.component';
 import {
   TableConfig,
   TableColumn,
   TableVariant,
-  TableSize,
   TableBorder,
   createTableConfig,
   createTableColumn,
@@ -60,7 +60,7 @@ interface UserSearchParameters extends PaginationParameters {
 
 interface TableInteractiveConfig {
   variant: TableVariant;
-  size: TableSize;
+  size: ComponentSize;
   border: TableBorder;
   showSearch: boolean;
   striped: boolean;
@@ -333,9 +333,9 @@ export class TableShowcaseComponent implements ShowcaseComponent, OnInit {
   ];
 
   readonly sizes = [
-    { value: 'sm' as TableSize, label: 'Small' },
-    { value: 'md' as TableSize, label: 'Medium' },
-    { value: 'lg' as TableSize, label: 'Large' },
+    { value: 'sm' as ComponentSize, label: 'Small' },
+    { value: 'md' as ComponentSize, label: 'Medium' },
+    { value: 'lg' as ComponentSize, label: 'Large' },
   ];
 
   // =============================================================================
@@ -582,7 +582,7 @@ export class TableShowcaseComponent implements ShowcaseComponent, OnInit {
         },
         {
           name: 'size',
-          type: 'TableSize',
+          type: 'ComponentSize',
           defaultValue: 'md',
           description: 'Size of the table elements',
           examples: ['sm', 'md', 'lg'],

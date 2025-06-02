@@ -10,21 +10,25 @@ import {
   ElementRef,
   OnInit,
   HostListener,
+  effect,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+
+import { ComponentSize } from '../shared';
 
 import {
   RadioOption,
   RadioConfig,
   RadioVariant,
-  RadioSize,
   RadioState,
   RadioGroupLayout,
   RadioChangeEvent,
   RadioFocusEvent,
   RadioValidation,
+  RadioComponentState,
   createRadioConfig,
+  createRadioState,
   validateRadioValue,
   getRadioState,
   isRadioOptionSelected,
@@ -32,6 +36,9 @@ import {
   getNextRadioOption,
   getRadioAriaAttributes,
   getRadioGroupAriaAttributes,
+  getRadioClasses,
+  generateRadioGroupName,
+  RADIO_SIZE_CONFIG,
 } from './radio.model';
 
 /**
@@ -130,7 +137,7 @@ export class RadioComponent<T = any> implements ControlValueAccessor, OnInit {
   variant = input<RadioVariant>('default');
 
   /** Radio size */
-  size = input<RadioSize>('md');
+  size = input<ComponentSize>('md');
 
   /** Radio group label */
   label = input<string>('');
@@ -287,25 +294,29 @@ export class RadioComponent<T = any> implements ControlValueAccessor, OnInit {
     this.updateValue(option.value, option, event, previousValue);
   }
 
-  /** Handle option focus */
+  /** Handle focus events */
   onFocus(option: RadioOption<T>, event: FocusEvent): void {
     const optionIndex = this.options().findIndex(opt => opt.value === option.value);
     this.focusedIndex.set(optionIndex);
 
     this.focus.emit({
+      event,
+      element: event.target as HTMLInputElement,
+      timestamp: Date.now(),
       direction: 'in',
-      originalEvent: event,
       value: option.value,
     });
   }
 
-  /** Handle option blur */
+  /** Handle blur events */
   onBlur(option: RadioOption<T>, event: FocusEvent): void {
     this.onTouched();
 
     this.focus.emit({
+      event,
+      element: event.target as HTMLInputElement,
+      timestamp: Date.now(),
       direction: 'out',
-      originalEvent: event,
       value: option.value,
     });
   }
@@ -350,7 +361,7 @@ export class RadioComponent<T = any> implements ControlValueAccessor, OnInit {
   // UTILITY METHODS
   // =============================================================================
 
-  /** Update internal value and emit events */
+  /** Update value and emit events */
   private updateValue(
     newValue: T,
     option: RadioOption<T>,
@@ -363,10 +374,12 @@ export class RadioComponent<T = any> implements ControlValueAccessor, OnInit {
     this.validateValue(newValue);
 
     this.selectionChange.emit({
+      event: originalEvent,
+      element: originalEvent.target as HTMLInputElement,
+      timestamp: Date.now(),
       value: newValue,
+      previousValue: previousValue || undefined,
       option,
-      previousValue,
-      originalEvent,
     });
   }
 

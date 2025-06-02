@@ -14,10 +14,12 @@ import {
   createSelectControl,
   createTextControl,
 } from '../showcases/interactive-example';
+import { ComponentSize } from '../shared';
 
 import {
-  SwitchSize,
+  SwitchConfig,
   SwitchVariant,
+  SwitchState,
   SwitchChangeEvent,
   SwitchFocusEvent,
   SwitchKeyboardEvent,
@@ -37,7 +39,7 @@ import {
 // =============================================================================
 
 interface SwitchInteractiveConfig {
-  size: SwitchSize;
+  size: ComponentSize;
   variant: SwitchVariant;
   label: string;
   helperText: string;
@@ -252,8 +254,15 @@ export class SwitchShowcaseComponent implements ShowcaseComponent {
   // COMPONENT DATA
   // =============================================================================
 
-  switchSizes: SwitchSize[] = ['sm', 'md', 'lg'];
-  switchVariants: SwitchVariant[] = ['default', 'success', 'warning', 'danger'];
+  switchSizes: ComponentSize[] = ['sm', 'md', 'lg'];
+  switchVariants: SwitchVariant[] = [
+    'default',
+    'primary',
+    'secondary',
+    'success',
+    'warning',
+    'danger',
+  ];
 
   // =============================================================================
   // INTERACTIVE CONFIGURATION
@@ -456,9 +465,8 @@ export class SwitchShowcaseComponent implements ShowcaseComponent {
 
   onFocusChange(event: SwitchFocusEvent): void {
     this.lastActionSignal.set(
-      `Switch ${event.type} at ${new Date(event.timestamp).toLocaleTimeString()}`,
+      `Switch ${event.direction} at ${new Date(event.timestamp).toLocaleTimeString()}`,
     );
-    console.log('Switch focus change:', event);
   }
 
   onKeyboardEvent(event: SwitchKeyboardEvent): void {

@@ -3,14 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { ButtonComponent } from './button.component';
+import { ComponentVariant, ComponentSize } from '../shared';
 
-import {
-  ButtonVariant,
-  ButtonSize,
-  ButtonClickEvent,
-  BUTTON_VARIANTS,
-  BUTTON_SIZES,
-} from './button.model';
+import { ButtonClickEvent, BUTTON_VARIANTS, BUTTON_SIZES } from './button.model';
 import {
   createCheckboxControl,
   createSizeControl,
@@ -33,8 +28,8 @@ import { ApiDocumentationComponent } from '../showcases/api-documentation';
 // =============================================================================
 
 interface ButtonInteractiveConfig {
-  variant: ButtonVariant;
-  size: ButtonSize;
+  variant: ComponentVariant;
+  size: ComponentSize;
   disabled: boolean;
   loading: boolean;
   fullWidth: boolean;
@@ -156,7 +151,7 @@ interface ButtonInteractiveConfig {
           [disabled]="interactiveButtonConfig().disabled"
           [loading]="interactiveButtonConfig().loading"
           [fullWidth]="interactiveButtonConfig().fullWidth"
-          [iconStart]="interactiveButtonConfig().icon || undefined"
+          [iconStart]="interactiveButtonConfig().icon || ''"
           (clicked)="handleInteractiveClick($event)"
         >
           {{ buttonText() }}
@@ -370,12 +365,14 @@ export class ButtonShowcaseComponent implements ShowcaseComponent {
   // EVENT HANDLERS
   // =============================================================================
 
-  handleVariantClick(variant: ButtonVariant): void {
+  handleVariantClick(variant: ComponentVariant): void {
     this.interactiveButtonConfigSignal.update(config => ({ ...config, variant }));
+    this.lastActionSignal.set(`Clicked ${variant} variant button`);
   }
 
-  handleSizeClick(size: ButtonSize): void {
+  handleSizeClick(size: ComponentSize): void {
     this.interactiveButtonConfigSignal.update(config => ({ ...config, size }));
+    this.lastActionSignal.set(`Clicked ${size} size button`);
   }
 
   handleInteractiveClick(event: ButtonClickEvent): void {

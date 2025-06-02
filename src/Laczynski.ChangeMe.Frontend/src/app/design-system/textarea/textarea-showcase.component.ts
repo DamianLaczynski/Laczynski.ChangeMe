@@ -15,11 +15,13 @@ import {
   createTextControl,
   createNumberControl,
 } from '../showcases/interactive-example';
+import { ComponentSize } from '../shared';
 
 import {
-  TextareaSize,
+  TextareaConfig,
   TextareaVariant,
   TextareaResize,
+  TextareaState,
   TextareaChangeEvent,
   TextareaFocusEvent,
   TextareaKeyboardEvent,
@@ -41,7 +43,7 @@ import {
 // =============================================================================
 
 interface TextareaInteractiveConfig {
-  size: TextareaSize;
+  size: ComponentSize;
   variant: TextareaVariant;
   label: string;
   placeholder: string;
@@ -355,8 +357,15 @@ export class TextareaShowcaseComponent implements ShowcaseComponent {
   // COMPONENT DATA
   // =============================================================================
 
-  textareaSizes: TextareaSize[] = ['sm', 'md', 'lg'];
-  textareaVariants: TextareaVariant[] = ['default', 'filled', 'outlined'];
+  textareaSizes: ComponentSize[] = ['sm', 'md', 'lg'];
+  textareaVariants: TextareaVariant[] = [
+    'default',
+    'primary',
+    'secondary',
+    'success',
+    'warning',
+    'danger',
+  ];
   textareaResizeOptions: TextareaResize[] = ['none', 'vertical', 'horizontal', 'both'];
 
   // =============================================================================
@@ -663,9 +672,8 @@ export class TextareaShowcaseComponent implements ShowcaseComponent {
 
   onFocusChange(event: TextareaFocusEvent): void {
     this.lastActionSignal.set(
-      `Textarea ${event.type} at ${new Date(event.timestamp).toLocaleTimeString()}`,
+      `Textarea ${event.direction} at ${new Date(event.timestamp).toLocaleTimeString()}`,
     );
-    console.log('Textarea focus change:', event);
   }
 
   onKeyboardEvent(event: TextareaKeyboardEvent): void {

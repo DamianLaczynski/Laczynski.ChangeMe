@@ -22,6 +22,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { Subject, fromEvent, debounceTime, takeUntil } from 'rxjs';
 
+import { ComponentSize } from '../shared';
 import { LoadingIndicatorComponent } from '../../shared/components/loading-indicator/loading-indicator.component';
 import { CheckboxComponent } from '../checkbox/checkbox.component';
 
@@ -31,7 +32,6 @@ import {
   ListData,
   ListState,
   ListVariant,
-  ListSize,
   ListLayout,
   ListSelectionMode,
   ListItemSelectEvent,
@@ -167,7 +167,7 @@ import { ButtonComponent } from '../button';
                 @if (emptyState().action) {
                   <ds-button
                     [variant]="emptyState().action!.variant || 'primary'"
-                    [iconStart]="emptyState().action!.icon"
+                    [iconStart]="emptyState().action!.icon || ''"
                     (clicked)="emptyState().action!.handler()"
                   >
                     {{ emptyState().action!.label }}
@@ -283,7 +283,7 @@ export class ListComponent<T = any> implements AfterViewInit, OnDestroy {
 
   // Configuration
   variant = input<ListVariant>('default');
-  size = input<ListSize>('md');
+  size = input<ComponentSize>('md');
   layout = input<ListLayout>('vertical');
   striped = input<boolean>(false);
   hoverable = input<boolean>(true);

@@ -25,7 +25,6 @@ export type {
 
   // Type variants
   ListVariant,
-  ListSize,
   ListLayout,
   ListSelectionMode,
 
@@ -46,6 +45,7 @@ export {
   // Configuration and utilities
   DEFAULT_LIST_CONFIG,
   LIST_SIZE_CONFIG,
+  LIST_VARIANTS,
   createListConfig,
   createListItem,
   createListEmptyState,
@@ -55,4 +55,12 @@ export {
   sortListData,
   generateListId,
   calculateVisibleItems,
+  isValidListVariant,
+  getListVariantLabel,
+  getListSizeLabel,
+  getListAriaAttributes,
+  createListItemSelectEvent,
+  createListItemClickEvent,
+  createListScrollEvent,
+  createListLoadMoreEvent,
 } from './list.model';

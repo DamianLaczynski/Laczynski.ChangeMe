@@ -15,6 +15,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { ComponentSize, getNestedValue } from '../shared';
 import { InputComponent } from '../input/input.component';
 import { CheckboxComponent } from '../checkbox/checkbox.component';
 
@@ -24,7 +25,6 @@ import {
   TableData,
   TableState,
   TableVariant,
-  TableSize,
   TableBorder,
   TableRowSelectEvent,
   TableSortEvent,
@@ -42,7 +42,6 @@ import {
   State,
 } from './table.model';
 import { ButtonComponent } from '../button';
-import { getNestedValue } from '../shared';
 
 /**
  * Table Component
@@ -204,7 +203,7 @@ import { getNestedValue } from '../shared';
                     @if (emptyState().action) {
                       <ds-button
                         [variant]="emptyState().action!.variant || 'primary'"
-                        [iconStart]="emptyState().action!.icon"
+                        [iconStart]="emptyState().action!.icon || ''"
                         (clicked)="emptyState().action!.handler()"
                       >
                         {{ emptyState().action!.label }}
@@ -364,7 +363,7 @@ export class TableComponent<T = any> implements OnInit, AfterContentInit {
   variant = input<TableVariant>('default');
 
   /** Table size */
-  size = input<TableSize>('md');
+  size = input<ComponentSize>('md');
 
   /** Table border style */
   border = input<TableBorder>('horizontal');

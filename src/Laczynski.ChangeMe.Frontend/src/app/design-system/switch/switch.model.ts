@@ -3,6 +3,40 @@
 // =============================================================================
 // TypeScript models and types for Switch component
 
+import {
+  ComponentSize,
+  ComponentVariant,
+  ComponentState,
+  FormComponentState,
+  ComponentChangeEvent,
+  ComponentFocusEvent,
+  AccessibilityConfig,
+  ValidationResult,
+  ValidationRule,
+  generateComponentId,
+  mergeClasses,
+  createAccessibilityAttributes,
+  getSizeConfiguration,
+  isValidComponentSize,
+  isValidComponentVariant,
+} from '../shared';
+
+// =============================================================================
+// SWITCH-SPECIFIC TYPES
+// =============================================================================
+
+/**
+ * Switch variants extending base component variants
+ */
+export type SwitchVariant =
+  | Extract<ComponentVariant, 'primary' | 'secondary' | 'success' | 'warning' | 'danger'>
+  | 'default';
+
+/**
+ * Switch states
+ */
+export type SwitchState = 'checked' | 'unchecked' | 'indeterminate';
+
 // =============================================================================
 // BASE INTERFACES
 // =============================================================================
@@ -12,7 +46,7 @@
  */
 export interface SwitchConfig {
   /** Switch size */
-  size: SwitchSize;
+  size: ComponentSize;
 
   /** Switch variant/style */
   variant: SwitchVariant;
@@ -35,22 +69,23 @@ export interface SwitchConfig {
   /** Aria label for accessibility */
   ariaLabel?: string;
 
+  /** Animation duration in milliseconds */
+  animationDuration: number;
+
   /** Custom CSS classes */
   className?: string;
 }
 
-// =============================================================================
-// COMPONENT TYPES
-// =============================================================================
+/**
+ * Switch state extending form component state
+ */
+export interface SwitchComponentState extends FormComponentState {
+  /** Whether switch is checked */
+  isChecked: boolean;
 
-/** Available switch sizes */
-export type SwitchSize = 'sm' | 'md' | 'lg';
-
-/** Available switch variants */
-export type SwitchVariant = 'default' | 'success' | 'warning' | 'danger';
-
-/** Switch states */
-export type SwitchState = 'checked' | 'unchecked' | 'indeterminate';
+  /** Current switch visual state */
+  switchState: SwitchState;
+}
 
 // =============================================================================
 // EVENT INTERFACES
@@ -59,35 +94,20 @@ export type SwitchState = 'checked' | 'unchecked' | 'indeterminate';
 /**
  * Switch change event
  */
-export interface SwitchChangeEvent {
+export interface SwitchChangeEvent extends ComponentChangeEvent<boolean, HTMLInputElement> {
   /** New checked state */
   checked: boolean;
-
-  /** Switch value */
-  value: boolean;
-
-  /** Original DOM event */
-  originalEvent: Event;
-
-  /** Event timestamp */
-  timestamp: number;
 }
 
 /**
  * Switch focus event
  */
-export interface SwitchFocusEvent {
+export interface SwitchFocusEvent extends ComponentFocusEvent<HTMLInputElement> {
+  /** Focus direction */
+  direction: 'in' | 'out';
+
   /** Current checked state */
   checked: boolean;
-
-  /** Focus type */
-  type: 'focus' | 'blur';
-
-  /** Original DOM event */
-  originalEvent: FocusEvent;
-
-  /** Event timestamp */
-  timestamp: number;
 }
 
 /**
@@ -101,111 +121,339 @@ export interface SwitchKeyboardEvent {
   key: string;
 
   /** Key code */
-  keyCode: number;
+  code: string;
 
-  /** Original DOM event */
+  /** Whether modifier keys were pressed */
+  ctrlKey: boolean;
+  shiftKey: boolean;
+  altKey: boolean;
+  metaKey: boolean;
+
+  /** Original keyboard event */
   originalEvent: KeyboardEvent;
 
   /** Event timestamp */
   timestamp: number;
+
+  /** Element that triggered the event */
+  element: HTMLInputElement;
 }
+
+// =============================================================================
+// VALIDATION
+// =============================================================================
+
+/**
+ * Switch validation result
+ */
+export interface SwitchValidation extends ValidationResult {
+  /** Custom validation rules */
+  customRules?: SwitchValidationRule[];
+}
+
+/**
+ * Custom validation rule for switch
+ */
+export interface SwitchValidationRule extends ValidationRule<boolean> {
+  /** Validation function specific to switch */
+  validator: (value: boolean) => boolean | Promise<boolean>;
+}
+
+// =============================================================================
+// CONFIGURATION CONSTANTS
+// =============================================================================
+
+/**
+ * Default switch configuration
+ */
+export const DEFAULT_SWITCH_CONFIG: SwitchConfig = {
+  size: 'md',
+  variant: 'default',
+  disabled: false,
+  readonly: false,
+  required: false,
+  animationDuration: 200,
+};
+
+/**
+ * Switch size configurations extending base size config
+ */
+export const SWITCH_SIZE_CONFIG = {
+  sm: {
+    ...getSizeConfiguration('sm'),
+    switchWidth: '32px',
+    switchHeight: '18px',
+    thumbSize: '14px',
+  },
+  md: {
+    ...getSizeConfiguration('md'),
+    switchWidth: '44px',
+    switchHeight: '24px',
+    thumbSize: '20px',
+  },
+  lg: {
+    ...getSizeConfiguration('lg'),
+    switchWidth: '56px',
+    switchHeight: '30px',
+    thumbSize: '26px',
+  },
+} as const;
+
+/**
+ * Switch variant definitions
+ */
+export const SWITCH_VARIANTS: Record<SwitchVariant, { className: string; label: string }> = {
+  default: {
+    className: 'ds-switch--default',
+    label: 'Default',
+  },
+  primary: {
+    className: 'ds-switch--primary',
+    label: 'Primary',
+  },
+  secondary: {
+    className: 'ds-switch--secondary',
+    label: 'Secondary',
+  },
+  success: {
+    className: 'ds-switch--success',
+    label: 'Success',
+  },
+  warning: {
+    className: 'ds-switch--warning',
+    label: 'Warning',
+  },
+  danger: {
+    className: 'ds-switch--danger',
+    label: 'Danger',
+  },
+};
 
 // =============================================================================
 // FACTORY FUNCTIONS
 // =============================================================================
 
 /**
- * Create default switch configuration
+ * Create switch configuration with defaults
  */
-export const createSwitchConfig = (overrides?: Partial<SwitchConfig>): SwitchConfig => ({
-  size: 'md',
-  variant: 'default',
-  disabled: false,
-  readonly: false,
-  required: false,
-  ...overrides,
-});
+export function createSwitchConfig(overrides?: Partial<SwitchConfig>): SwitchConfig {
+  return {
+    ...DEFAULT_SWITCH_CONFIG,
+    ...overrides,
+  };
+}
+
+/**
+ * Create switch component state
+ */
+export function createSwitchState(
+  partial: Partial<SwitchComponentState> = {},
+): SwitchComponentState {
+  return {
+    isFocused: false,
+    isHovered: false,
+    isActive: false,
+    isDisabled: false,
+    isLoading: false,
+    isInvalid: false,
+    isRequired: false,
+    isReadonly: false,
+    isChecked: false,
+    variant: 'primary',
+    size: 'md',
+    switchState: 'unchecked',
+    ...partial,
+  };
+}
 
 /**
  * Create switch change event
  */
-export const createSwitchChangeEvent = (
+export function createSwitchChangeEvent(
   checked: boolean,
   originalEvent: Event,
-): SwitchChangeEvent => ({
-  checked,
-  value: checked,
-  originalEvent,
-  timestamp: Date.now(),
-});
+  element: HTMLInputElement,
+): SwitchChangeEvent {
+  return {
+    event: originalEvent,
+    element,
+    timestamp: Date.now(),
+    value: checked,
+    previousValue: undefined, // Will be set by component
+    checked,
+  };
+}
 
 /**
  * Create switch focus event
  */
-export const createSwitchFocusEvent = (
+export function createSwitchFocusEvent(
+  direction: 'in' | 'out',
   checked: boolean,
-  type: 'focus' | 'blur',
   originalEvent: FocusEvent,
-): SwitchFocusEvent => ({
-  checked,
-  type,
-  originalEvent,
-  timestamp: Date.now(),
-});
+  element: HTMLInputElement,
+): SwitchFocusEvent {
+  return {
+    event: originalEvent,
+    element,
+    timestamp: Date.now(),
+    direction,
+    checked,
+  };
+}
 
 /**
  * Create switch keyboard event
  */
-export const createSwitchKeyboardEvent = (
+export function createSwitchKeyboardEvent(
   checked: boolean,
   originalEvent: KeyboardEvent,
-): SwitchKeyboardEvent => ({
-  checked,
-  key: originalEvent.key,
-  keyCode: originalEvent.keyCode,
-  originalEvent,
-  timestamp: Date.now(),
-});
+  element: HTMLInputElement,
+): SwitchKeyboardEvent {
+  return {
+    checked,
+    key: originalEvent.key,
+    code: originalEvent.code,
+    ctrlKey: originalEvent.ctrlKey,
+    shiftKey: originalEvent.shiftKey,
+    altKey: originalEvent.altKey,
+    metaKey: originalEvent.metaKey,
+    originalEvent,
+    timestamp: Date.now(),
+    element,
+  };
+}
 
 // =============================================================================
 // VALIDATION FUNCTIONS
 // =============================================================================
 
 /**
- * Check if switch size is valid
+ * Validate switch value
  */
-export const isValidSwitchSize = (size: string): size is SwitchSize => {
-  return ['sm', 'md', 'lg'].includes(size);
-};
+export function validateSwitchValue(
+  value: boolean,
+  required: boolean = false,
+  customRules: SwitchValidationRule[] = [],
+): SwitchValidation {
+  let valid = true;
+  let errorMessage = '';
+
+  // Required validation
+  if (required && !value) {
+    valid = false;
+    errorMessage = 'This switch must be enabled';
+  }
+
+  // Custom validation rules
+  if (valid && customRules.length > 0) {
+    for (const rule of customRules) {
+      if (!rule.validator(value)) {
+        valid = false;
+        errorMessage = rule.errorMessage;
+        break;
+      }
+    }
+  }
+
+  return {
+    valid,
+    errorMessage,
+    customRules,
+  };
+}
+
+// =============================================================================
+// UTILITY FUNCTIONS
+// =============================================================================
 
 /**
- * Check if switch variant is valid
+ * Check if size is valid
  */
-export const isValidSwitchVariant = (variant: string): variant is SwitchVariant => {
-  return ['default', 'success', 'warning', 'danger'].includes(variant);
-};
+export function isValidSwitchSize(size: string): size is ComponentSize {
+  return isValidComponentSize(size);
+}
 
 /**
- * Get switch size label for display
+ * Check if variant is valid
  */
-export const getSwitchSizeLabel = (size: SwitchSize): string => {
-  const labels: Record<SwitchSize, string> = {
+export function isValidSwitchVariant(variant: string): variant is SwitchVariant {
+  return Object.keys(SWITCH_VARIANTS).includes(variant);
+}
+
+/**
+ * Get switch size label
+ */
+export function getSwitchSizeLabel(size: ComponentSize): string {
+  const sizeLabels = {
     sm: 'Small',
     md: 'Medium',
     lg: 'Large',
   };
-  return labels[size];
-};
+  return sizeLabels[size];
+}
 
 /**
- * Get switch variant label for display
+ * Get switch variant label
  */
-export const getSwitchVariantLabel = (variant: SwitchVariant): string => {
-  const labels: Record<SwitchVariant, string> = {
-    default: 'Default',
-    success: 'Success',
-    warning: 'Warning',
-    danger: 'Danger',
+export function getSwitchVariantLabel(variant: SwitchVariant): string {
+  return SWITCH_VARIANTS[variant].label;
+}
+
+/**
+ * Get switch state from checked value
+ */
+export function getSwitchState(checked: boolean): SwitchState {
+  return checked ? 'checked' : 'unchecked';
+}
+
+/**
+ * Get switch ARIA attributes
+ */
+export function getSwitchAriaAttributes(
+  validation: SwitchValidation,
+  describedBy: string[] = [],
+): Record<string, string> {
+  const config: AccessibilityConfig = {
+    ariaInvalid: !validation.valid,
+    ariaDescribedBy: describedBy.length > 0 ? describedBy.join(' ') : undefined,
   };
-  return labels[variant];
-};
+
+  const rawAttributes = createAccessibilityAttributes(config);
+
+  // Filter out null values and ensure all values are strings
+  const attributes: Record<string, string> = {};
+
+  Object.entries(rawAttributes).forEach(([key, value]) => {
+    if (value !== null && value !== undefined) {
+      attributes[key] = value;
+    }
+  });
+
+  return attributes;
+}
+
+/**
+ * Get switch CSS classes
+ */
+export function getSwitchClasses(config: SwitchConfig, state: SwitchComponentState): string[] {
+  const sizeConfig = getSizeConfiguration(config.size);
+  const variantConfig = SWITCH_VARIANTS[config.variant];
+
+  const classes = ['ds-switch', sizeConfig.className, variantConfig.className];
+
+  if (state.isDisabled) classes.push('ds-switch--disabled');
+  if (state.isChecked) classes.push('ds-switch--checked');
+  if (state.isFocused) classes.push('ds-switch--focused');
+  if (state.isHovered) classes.push('ds-switch--hovered');
+  if (state.isInvalid) classes.push('ds-switch--invalid');
+
+  return classes;
+}
+
+/**
+ * Generate unique switch ID
+ */
+export function generateSwitchId(): string {
+  return generateComponentId('ds-switch');
+}

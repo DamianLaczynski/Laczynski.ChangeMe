@@ -7,6 +7,7 @@ import { Component, signal, computed, OnInit, inject, TemplateRef, viewChild } f
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+import { ComponentSize } from '../shared';
 import { ListComponent } from './list.component';
 import { ApiDocumentationComponent } from '../showcases/api-documentation';
 import {
@@ -19,7 +20,6 @@ import { createCheckboxControl, createSelectControl } from '../showcases/interac
 import {
   ListConfig,
   ListVariant,
-  ListSize,
   ListLayout,
   ListSelectionMode,
   ListItemClickEvent,
@@ -62,7 +62,7 @@ interface DemoTask {
 
 interface ListInteractiveConfig {
   variant: ListVariant;
-  size: ListSize;
+  size: ComponentSize;
   layout: ListLayout;
   selectionMode: ListSelectionMode;
   showSearch: boolean;
@@ -393,9 +393,9 @@ export class ListShowcaseComponent implements ShowcaseComponent, OnInit {
   ];
 
   readonly sizes = [
-    { value: 'sm' as ListSize, label: 'Small' },
-    { value: 'md' as ListSize, label: 'Medium' },
-    { value: 'lg' as ListSize, label: 'Large' },
+    { value: 'sm' as ComponentSize, label: 'Small' },
+    { value: 'md' as ComponentSize, label: 'Medium' },
+    { value: 'lg' as ComponentSize, label: 'Large' },
   ];
 
   readonly layouts = [
@@ -590,7 +590,7 @@ export class ListShowcaseComponent implements ShowcaseComponent, OnInit {
         },
         {
           name: 'size',
-          type: 'ListSize',
+          type: 'ComponentSize',
           defaultValue: 'md',
           description: 'Size of the list elements',
           examples: ['sm', 'md', 'lg'],

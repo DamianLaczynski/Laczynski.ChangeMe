@@ -7,6 +7,7 @@ import { Component, signal, computed, OnInit, inject, TemplateRef, viewChild } f
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+import { ComponentSize } from '../shared';
 import { CardComponent } from './card.component';
 import { ApiDocumentationComponent } from '../showcases/api-documentation';
 import {
@@ -20,7 +21,6 @@ import {
 import {
   CardConfig,
   CardVariant,
-  CardSize,
   CardElevation,
   CardBackground,
   CardHeader,
@@ -49,7 +49,7 @@ import {
 
 interface CardInteractiveConfig {
   variant: CardVariant;
-  size: CardSize;
+  size: ComponentSize;
   elevation: CardElevation;
   background: CardBackground;
   interactive: boolean;
@@ -323,9 +323,9 @@ export class CardShowcaseComponent implements ShowcaseComponent, OnInit {
   ];
 
   readonly sizes = [
-    { value: 'sm' as CardSize, label: 'Small' },
-    { value: 'md' as CardSize, label: 'Medium' },
-    { value: 'lg' as CardSize, label: 'Large' },
+    { value: 'sm' as ComponentSize, label: 'Small' },
+    { value: 'md' as ComponentSize, label: 'Medium' },
+    { value: 'lg' as ComponentSize, label: 'Large' },
   ];
 
   readonly elevations = [
@@ -590,7 +590,7 @@ export class CardShowcaseComponent implements ShowcaseComponent, OnInit {
         },
         {
           name: 'size',
-          type: 'CardSize',
+          type: 'ComponentSize',
           defaultValue: 'md',
           description: 'Size of the card',
           examples: ['sm', 'md', 'lg'],

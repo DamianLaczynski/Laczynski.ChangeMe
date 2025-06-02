@@ -5,24 +5,23 @@ import { FormsModule } from '@angular/forms';
 import { CheckboxComponent } from './checkbox.component';
 import { ApiDocumentationComponent } from '../showcases/api-documentation';
 import {
+  InteractiveConfigChangeEvent,
   InteractiveExampleComponent,
   InteractiveExampleConfig,
-} from '../showcases/interactive-example';
-import {
-  InteractiveConfigChangeEvent,
+  createCheckboxControl,
   createSelectControl,
   createTextControl,
-  createCheckboxControl,
 } from '../showcases/interactive-example';
 
+import { ComponentSize } from '../shared';
 import {
   CheckboxOption,
   CheckboxVariant,
-  CheckboxSize,
   CheckboxGroupLayout,
   CheckboxChangeEvent,
   CheckboxFocusEvent,
   createCheckboxOption,
+  CHECKBOX_VARIANTS,
 } from './checkbox.model';
 import {
   ShowcaseComponent,
@@ -37,7 +36,7 @@ import {
 
 interface CheckboxInteractiveConfig {
   variant: CheckboxVariant;
-  size: CheckboxSize;
+  size: ComponentSize;
   label: string;
   helperText: string;
   disabled: boolean;
@@ -324,8 +323,15 @@ export class CheckboxShowcaseComponent implements ShowcaseComponent {
   // DEMO CONFIGURATION
   // =============================================================================
 
-  checkboxVariants: CheckboxVariant[] = ['default', 'filled', 'outlined'];
-  checkboxSizes: CheckboxSize[] = ['sm', 'md', 'lg'];
+  checkboxVariants: CheckboxVariant[] = [
+    'default',
+    'primary',
+    'secondary',
+    'success',
+    'warning',
+    'danger',
+  ];
+  checkboxSizes: ComponentSize[] = ['sm', 'md', 'lg'];
   groupLayouts: CheckboxGroupLayout[] = ['vertical', 'horizontal', 'grid'];
 
   // =============================================================================
@@ -349,13 +355,16 @@ export class CheckboxShowcaseComponent implements ShowcaseComponent {
   readonly interactiveCheckboxConfig = computed(() => this.interactiveCheckboxConfigSignal());
 
   readonly interactiveConfig = computed<InteractiveExampleConfig>(() => ({
-    title: 'Interactive Checkbox Example',
+    title: 'Interactive Checkbox Configuration',
     description: 'Customize the checkbox properties using the controls below.',
     controls: [
       createSelectControl('variant', 'Variant', 'variant', [
         { value: 'default', label: 'Default' },
-        { value: 'filled', label: 'Filled' },
-        { value: 'outlined', label: 'Outlined' },
+        { value: 'primary', label: 'Primary' },
+        { value: 'secondary', label: 'Secondary' },
+        { value: 'success', label: 'Success' },
+        { value: 'warning', label: 'Warning' },
+        { value: 'danger', label: 'Danger' },
       ]),
       createSelectControl('size', 'Size', 'size', [
         { value: 'sm', label: 'Small' },
@@ -369,7 +378,7 @@ export class CheckboxShowcaseComponent implements ShowcaseComponent {
       createCheckboxControl('disabled', 'Disabled', 'disabled'),
       createCheckboxControl('required', 'Required', 'required'),
       createCheckboxControl('indeterminate', 'Indeterminate', 'indeterminate'),
-      createCheckboxControl('isGroup', 'Group Mode', 'isGroup'),
+      createCheckboxControl('isGroup', 'Is Group', 'isGroup'),
       createSelectControl('groupLayout', 'Group Layout', 'groupLayout', [
         { value: 'vertical', label: 'Vertical' },
         { value: 'horizontal', label: 'Horizontal' },
@@ -385,7 +394,7 @@ export class CheckboxShowcaseComponent implements ShowcaseComponent {
   // =============================================================================
 
   demoConfigVariant = signal<CheckboxVariant>('default');
-  demoConfigSize = signal<CheckboxSize>('md');
+  demoConfigSize = signal<ComponentSize>('md');
   demoConfigLabel = signal<string>('Demo Checkbox');
   demoConfigHelperText = signal<string>('');
   demoConfigDisabled = signal<boolean>(false);
@@ -405,10 +414,10 @@ export class CheckboxShowcaseComponent implements ShowcaseComponent {
     this.demoConfigVariant.set(value);
   }
 
-  get demoConfigSizeValue(): CheckboxSize {
+  get demoConfigSizeValue(): ComponentSize {
     return this.demoConfigSize();
   }
-  set demoConfigSizeValue(value: CheckboxSize) {
+  set demoConfigSizeValue(value: ComponentSize) {
     this.demoConfigSize.set(value);
   }
 
@@ -715,7 +724,7 @@ export class CheckboxShowcaseComponent implements ShowcaseComponent {
   // UTILITY METHODS
   // =============================================================================
 
-  getSizeLabel(size: CheckboxSize): string {
+  getSizeLabel(size: ComponentSize): string {
     return `${size.toUpperCase()} Size`;
   }
 }

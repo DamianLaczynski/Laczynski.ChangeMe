@@ -1,8 +1,7 @@
 // =============================================================================
-// Input Component Styles - Modern & Professional Design
+// Input Component Styles - Clean & Professional Design
 // =============================================================================
-// Enhanced input component with advanced styling, smooth transitions,
-// and excellent UX patterns for a professional application
+// Modern input component focused on usability, accessibility, and consistency
 
 @use "../../../styles/abstracts/variables";
 @use "../../../styles/abstracts/mixins";
@@ -14,10 +13,10 @@
 .ds-input {
   &-container {
     position: relative;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  font-family: var(--font-family-primary);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    font-family: var(--font-family-primary);
   }
 
   // Size variants for the entire component
@@ -32,6 +31,11 @@
     .ds-input-label {
       font-size: var(--font-size-xs);
     }
+    .ds-input-icon {
+      width: 18px;
+      height: 18px;
+      font-size: 14px;
+    }
   }
 
   &--md {
@@ -41,6 +45,11 @@
     .ds-input-field {
       font-size: var(--font-size-base);
       padding: var(--spacing-sm) var(--spacing-md);
+    }
+    .ds-input-icon {
+      width: 20px;
+      height: 20px;
+      font-size: 16px;
     }
   }
 
@@ -55,24 +64,33 @@
     .ds-input-label {
       font-size: var(--font-size-base);
     }
+    .ds-input-icon {
+      width: 24px;
+      height: 24px;
+      font-size: 18px;
+    }
   }
 
   // State variants
   &--focused {
     .ds-input-wrapper {
-      border-color: var(--color-primary);
-      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
-      transform: translateY(-1px);
+      border-color: var(--color-border-focus);
+      box-shadow: var(--focus-shadow);
+    }
+  }
+
+  &--has-value {
+    .ds-input-label {
+      color: var(--color-text);
     }
   }
 
   &--error {
     .ds-input-wrapper {
-      border-color: var(--color-danger);
-      background-color: rgba(220, 53, 69, 0.03);
+      border-color: var(--color-border-error);
       
       &:focus-within {
-        box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15);
+        box-shadow: var(--focus-shadow-error);
       }
     }
     
@@ -81,8 +99,36 @@
     }
   }
 
+  &--success {
+    .ds-input-wrapper {
+      border-color: var(--color-success);
+      
+      &:focus-within {
+        box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+      }
+    }
+    
+    .ds-input-label {
+      color: var(--color-success);
+    }
+  }
+
+  &--warning {
+    .ds-input-wrapper {
+      border-color: var(--color-warning);
+      
+      &:focus-within {
+        box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.1);
+      }
+    }
+    
+    .ds-input-label {
+      color: var(--color-warning);
+    }
+  }
+
   &--disabled {
-    opacity: 0.7;
+    opacity: 0.6;
     
     .ds-input-wrapper {
       background-color: var(--color-surface-disabled);
@@ -93,14 +139,14 @@
 
   &--readonly {
     .ds-input-wrapper {
-      background-color: var(--color-gray-50);
+      background-color: var(--color-surface-subtle);
       border-style: dashed;
     }
   }
 }
 
 // =============================================================================
-// INPUT LABEL - Enhanced Typography
+// INPUT LABEL - Clean Typography
 // =============================================================================
 
 .ds-input-label {
@@ -122,69 +168,56 @@
   margin-left: 2px;
   font-size: 1em;
   font-weight: var(--font-weight-bold);
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
 }
 
 // =============================================================================
-// INPUT WRAPPER - Modern Glass Morphism Effect
+// INPUT WRAPPER - Clean Modern Design
 // =============================================================================
 
 .ds-input-wrapper {
   position: relative;
   display: flex;
   align-items: center;
-  background: linear-gradient(145deg, var(--color-surface), var(--color-gray-50));
-  border: 1.5px solid var(--color-border);
-  border-radius: var(--border-radius-lg);
-  transition: all var(--transition-base) var(--ease-out-cubic);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  transition: all var(--transition-fast);
   overflow: hidden;
-  backdrop-filter: blur(8px);
-  
-  // Subtle inner shadow for depth
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
-    opacity: 0.8;
-  }
   
   &:hover:not(.ds-input--disabled .ds-input-wrapper) {
-    border-color: var(--color-primary);
-    background: linear-gradient(145deg, var(--color-surface), var(--color-white));
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.1);
+    border-color: var(--color-border-hover);
+    background: var(--color-surface-hover);
   }
   
   &:focus-within {
-    border-color: var(--color-primary);
-    background: var(--color-white);
-    box-shadow: 
-      0 0 0 3px rgba(0, 123, 255, 0.15),
-      0 8px 25px rgba(0, 123, 255, 0.1);
-    transform: translateY(-2px);
+    border-color: var(--color-border-focus);
+    background: var(--color-surface);
+    box-shadow: var(--focus-shadow);
   }
   
-  // Icon containers spacing
-  &.has-start-icon .ds-input-field {
-    padding-left: calc(var(--spacing-xl) + var(--spacing-sm));
+  // Wrapper modifiers for icons and buttons
+  &--has-start-icon {
+    .ds-input-field {
+      padding-left: calc(var(--spacing-md) + 28px + var(--spacing-xs));
+    }
   }
   
-  &.has-end-icon .ds-input-field {
-    padding-right: calc(var(--spacing-xl) + var(--spacing-sm));
+  &--has-end-icon {
+    .ds-input-field {
+      padding-right: calc(var(--spacing-md) + 28px + var(--spacing-xs));
+    }
   }
   
-  &.has-clear-button .ds-input-field,
-  &.has-password-toggle .ds-input-field {
-    padding-right: calc(var(--spacing-xl) + var(--spacing-md));
+  &--has-clear {
+    .ds-input-field {
+      padding-right: calc(var(--spacing-md) + 32px);
+    }
+  }
+  
+  &--has-password-toggle {
+    .ds-input-field {
+      padding-right: calc(var(--spacing-md) + 32px);
+    }
   }
 }
 
@@ -206,14 +239,6 @@
   
   &::placeholder {
     color: var(--color-text-muted);
-    opacity: 0.8;
-    font-style: normal;
-    transition: opacity var(--transition-fast);
-  }
-  
-  &:focus::placeholder {
-    opacity: 0.5;
-    transform: translateX(4px);
   }
   
   &:disabled {
@@ -222,14 +247,12 @@
     
     &::placeholder {
       color: var(--color-text-disabled);
-      opacity: 0.6;
     }
   }
   
   &:readonly {
     cursor: default;
     color: var(--color-text-secondary);
-    font-weight: var(--font-weight-medium);
   }
 
   // Auto-resize for number inputs
@@ -242,231 +265,143 @@
       margin: 0;
     }
   }
+  
+  // Hide native search clear button to avoid double X
+  &[type="search"] {
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
+    appearance: textfield;
+    
+    &::-webkit-search-cancel-button,
+    &::-webkit-search-decoration,
+    &::-webkit-search-results-button,
+    &::-webkit-search-results-decoration {
+      -webkit-appearance: none;
+      display: none;
+    }
+    
+    // Firefox search clear button
+    &::-moz-search-clear-button {
+      display: none;
+    }
+  }
 }
 
 // =============================================================================
-// ICONS - Enhanced Design with Animations
+// INPUT ICONS & BUTTONS - Clean Design
 // =============================================================================
 
 .ds-input-icon {
   position: absolute;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 20px;
+  height: 20px;
   color: var(--color-text-muted);
-  pointer-events: none;
-  width: 18px;
-  height: 18px;
   transition: all var(--transition-fast);
+  z-index: 1;
+  pointer-events: none;
+  font-size: 16px;
+  
+  // SVG icons should scale properly
+  svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+  }
   
   &--start {
     left: var(--spacing-md);
+    top: 50%;
+    transform: translateY(-50%);
   }
   
   &--end {
     right: var(--spacing-md);
+    top: 50%;
+    transform: translateY(-50%);
   }
-
-  // Icon animation on focus
+  
   .ds-input-wrapper:focus-within & {
     color: var(--color-primary);
-    transform: scale(1.1);
+  }
+  
+  .ds-input-wrapper:hover & {
+    color: var(--color-text);
   }
 }
 
-// =============================================================================
-// ACTION BUTTONS - Sleek and Interactive
-// =============================================================================
-
-.ds-input-clear,
-.ds-input-password-toggle {
+.ds-input-button {
   position: absolute;
-  right: var(--spacing-sm);
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   border: none;
-  background: rgba(108, 117, 125, 0.1);
+  background: transparent;
   color: var(--color-text-muted);
   cursor: pointer;
-  border-radius: var(--border-radius-md);
-  transition: all var(--transition-fast) var(--ease-out-cubic);
-  backdrop-filter: blur(4px);
+  transition: all var(--transition-fast);
+  border-radius: var(--border-radius-sm);
   z-index: 2;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
   
   &:hover {
-    background: var(--color-primary);
-    color: var(--color-white);
-    transform: scale(1.05);
-    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+    color: var(--color-text);
+    background: var(--color-surface-hover);
+    border: 1px solid var(--color-border);
   }
   
-  &:active {
-    transform: scale(0.95);
-  }
-  
-  @include mixins.focus-state {
+  &:focus {
     outline: 2px solid var(--color-primary);
     outline-offset: 2px;
   }
-}
-
-.ds-input-clear {
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-bold);
   
-  &::before {
-    content: '✕';
-    display: block;
-  }
-}
-
-.ds-input-password-toggle {
-  font-size: var(--font-size-base);
-  
-  &[aria-label*="Hide"]::before {
-    content: '🙈';
+  &:active {
+    background: var(--color-surface-active);
+    transform: translateY(-50%) scale(0.95);
   }
   
-  &[aria-label*="Show"]::before {
-    content: '👁️';
+  &--clear {
+    right: var(--spacing-md);
+    
+    &:hover {
+      color: var(--color-danger);
+      background: var(--color-danger-light);
+    }
+  }
+  
+  &--password-toggle {
+    right: var(--spacing-md);
+    
+    &:hover {
+      color: var(--color-primary);
+      background: var(--color-primary-light);
+    }
   }
 }
 
 // =============================================================================
-// HELPER TEXT & VALIDATION - Enhanced UX
+// INPUT FOOTER - Helper Text & Validation
 // =============================================================================
+
+.ds-input-footer {
+  margin-top: var(--spacing-xs);
+  transition: all var(--transition-fast);
+}
 
 .ds-input-helper {
   font-size: var(--font-size-xs);
   color: var(--color-text-secondary);
   line-height: var(--line-height-normal);
-  margin-top: var(--spacing-xs);
-  padding-left: var(--spacing-xs);
   transition: color var(--transition-fast);
   
   &.error {
     color: var(--color-danger);
-    font-weight: var(--font-weight-medium);
-    
-    &::before {
-      content: '⚠️ ';
-      margin-right: var(--spacing-xs);
-    }
-  }
-}
-
-.ds-input-counter {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-muted);
-  text-align: right;
-  margin-top: var(--spacing-xs);
-  font-family: var(--font-family-mono);
-  padding-right: var(--spacing-xs);
-  transition: color var(--transition-fast);
-  
-  &.limit-warning {
-    color: var(--color-warning);
-    font-weight: var(--font-weight-medium);
-  }
-  
-  &.limit-exceeded {
-    color: var(--color-danger);
-    font-weight: var(--font-weight-bold);
-    animation: shake 0.5s ease-in-out;
-  }
-}
-
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-2px); }
-  75% { transform: translateX(2px); }
-}
-
-// =============================================================================
-// LOADING STATE
-// =============================================================================
-
-.ds-input-wrapper {
-  &[data-loading="true"] {
-    &::after {
-      content: '';
-      position: absolute;
-      right: var(--spacing-md);
-      width: 16px;
-      height: 16px;
-      border: 2px solid var(--color-border);
-      border-top-color: var(--color-primary);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-
-.ds-input-field {
-      padding-right: calc(var(--spacing-xl) + var(--spacing-md));
-    }
-  }
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-// =============================================================================
-// THEME SUPPORT - Enhanced Dark Mode
-// =============================================================================
-
-[data-theme="dark"] {
-  .ds-input-wrapper {
-    background: linear-gradient(145deg, var(--color-gray-800), var(--color-gray-700));
-    border-color: var(--color-gray-600);
-    
-    &::before {
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    }
-    
-    &:hover:not(.ds-input--disabled .ds-input-wrapper) {
-      background: linear-gradient(145deg, var(--color-gray-700), var(--color-gray-600));
-      box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
-    }
-    
-    &:focus-within {
-      background: var(--color-gray-700);
-      box-shadow: 
-        0 0 0 3px rgba(0, 123, 255, 0.3),
-        0 8px 25px rgba(0, 123, 255, 0.15);
-    }
-  }
-  
-  .ds-input-clear,
-  .ds-input-password-toggle {
-    background: rgba(255, 255, 255, 0.1);
-    
-    &:hover {
-      background: var(--color-primary);
-    }
-  }
-}
-
-// =============================================================================
-// HIGH CONTRAST THEME - Accessibility First
-// =============================================================================
-
-[data-theme="high-contrast"] {
-  .ds-input-wrapper {
-    border-width: 2px;
-    background: var(--color-white);
-    
-    &:focus-within {
-      outline: 3px solid var(--color-primary);
-      outline-offset: 2px;
-    }
-  }
-  
-  .ds-input-clear,
-  .ds-input-password-toggle {
-    border: 2px solid currentColor;
   }
 }
 
@@ -491,23 +426,18 @@
 }
 
 // =============================================================================
-// REDUCED MOTION SUPPORT
+// ACCESSIBILITY ENHANCEMENTS
 // =============================================================================
+
+.ds-input-field:focus {
+  outline: none;
+}
 
 @media (prefers-reduced-motion: reduce) {
   .ds-input-wrapper,
   .ds-input-field,
-  .ds-input-clear,
-  .ds-input-password-toggle,
   .ds-input-icon,
-  .ds-input-required {
+  .ds-input-button {
     transition: none;
-    animation: none;
-    transform: none;
-  }
-  
-  .ds-input-wrapper:hover,
-  .ds-input-wrapper:focus-within {
-    transform: none;
   }
 } 

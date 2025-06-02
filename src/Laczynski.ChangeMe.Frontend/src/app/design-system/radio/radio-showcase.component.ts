@@ -12,15 +12,21 @@ import {
   createTextControl,
   createCheckboxControl,
 } from '../showcases/interactive-example';
+import { ComponentSize } from '../shared';
 
 import {
   RadioOption,
+  RadioConfig,
   RadioVariant,
-  RadioSize,
+  RadioState,
   RadioGroupLayout,
   RadioChangeEvent,
   RadioFocusEvent,
+  RadioValidation,
   createRadioOption,
+  createRadioConfig,
+  validateRadioValue,
+  formatRadioSelectionText,
 } from './radio.model';
 import {
   ShowcaseComponent,
@@ -35,13 +41,13 @@ import {
 
 interface RadioInteractiveConfig {
   variant: RadioVariant;
-  size: RadioSize;
+  size: ComponentSize;
   label: string;
-  helperText: string;
   disabled: boolean;
   required: boolean;
   groupLayout: RadioGroupLayout;
-  value: string | null;
+  helperText: string;
+  value: any;
 }
 
 /**
@@ -351,8 +357,15 @@ export class RadioShowcaseComponent implements ShowcaseComponent {
   // DEMO CONFIGURATION
   // =============================================================================
 
-  radioVariants: RadioVariant[] = ['default', 'filled', 'outlined'];
-  radioSizes: RadioSize[] = ['sm', 'md', 'lg'];
+  radioVariants: RadioVariant[] = [
+    'default',
+    'primary',
+    'secondary',
+    'success',
+    'warning',
+    'danger',
+  ];
+  radioSizes: ComponentSize[] = ['sm', 'md', 'lg'];
   groupLayouts: RadioGroupLayout[] = ['vertical', 'horizontal', 'grid'];
 
   // =============================================================================
@@ -406,7 +419,7 @@ export class RadioShowcaseComponent implements ShowcaseComponent {
   // =============================================================================
 
   demoConfigVariant = signal<RadioVariant>('default');
-  demoConfigSize = signal<RadioSize>('md');
+  demoConfigSize = signal<ComponentSize>('md');
   demoConfigLabel = signal<string>('Demo Radio Group');
   demoConfigHelperText = signal<string>('');
   demoConfigDisabled = signal<boolean>(false);
@@ -423,10 +436,10 @@ export class RadioShowcaseComponent implements ShowcaseComponent {
     this.demoConfigVariant.set(value);
   }
 
-  get demoConfigSizeValue(): RadioSize {
+  get demoConfigSizeValue(): ComponentSize {
     return this.demoConfigSize();
   }
-  set demoConfigSizeValue(value: RadioSize) {
+  set demoConfigSizeValue(value: ComponentSize) {
     this.demoConfigSize.set(value);
   }
 
@@ -710,7 +723,7 @@ export class RadioShowcaseComponent implements ShowcaseComponent {
   // UTILITY METHODS
   // =============================================================================
 
-  getSizeLabel(size: RadioSize): string {
+  getSizeLabel(size: ComponentSize): string {
     return `${size.toUpperCase()} Size`;
   }
 }

@@ -4,26 +4,17 @@
 // TypeScript interfaces and types for the Button component
 // Provides type safety and documentation for component usage
 
-// =============================================================================
-// CORE BUTTON TYPES
-// =============================================================================
+import {
+  ComponentSize,
+  ComponentVariant,
+  ComponentState,
+  ComponentClickEvent,
+  ComponentFocusEvent,
+} from '../shared';
 
-/**
- * Available button sizes
- */
-export type ButtonSize = 'sm' | 'md' | 'lg';
-
-/**
- * Available button style variants
- */
-export type ButtonVariant =
-  | 'primary'
-  | 'secondary'
-  | 'success'
-  | 'warning'
-  | 'danger'
-  | 'ghost'
-  | 'link';
+// =============================================================================
+// BUTTON-SPECIFIC TYPES
+// =============================================================================
 
 /**
  * Button HTML type attribute values
@@ -31,51 +22,30 @@ export type ButtonVariant =
 export type ButtonType = 'button' | 'submit' | 'reset';
 
 // =============================================================================
-// EVENT INTERFACES
+// BUTTON EVENT INTERFACES
 // =============================================================================
 
 /**
- * Button click event payload
- * Contains all relevant information about the button click
+ * Button click event payload with button-specific data
  */
-export interface ButtonClickEvent {
-  /** Original DOM MouseEvent */
-  event: MouseEvent;
-  /** Reference to the button HTML element */
-  buttonElement: HTMLButtonElement;
-  /** Timestamp when the click occurred */
-  timestamp: number;
+export interface ButtonClickEvent extends ComponentClickEvent<HTMLButtonElement> {
   /** Button variant that was clicked */
-  variant?: ButtonVariant;
+  variant: ComponentVariant;
   /** Button size that was clicked */
-  size?: ButtonSize;
+  size: ComponentSize;
   /** Whether button was in loading state */
-  wasLoading?: boolean;
+  wasLoading: boolean;
 }
 
 /**
  * Button focus event payload
  */
-export interface ButtonFocusEvent {
-  /** Original DOM FocusEvent */
-  event: FocusEvent;
-  /** Reference to the button HTML element */
-  buttonElement: HTMLButtonElement;
-  /** Timestamp when focus occurred */
-  timestamp: number;
-}
+export interface ButtonFocusEvent extends ComponentFocusEvent<HTMLButtonElement> {}
 
 /**
- * Button blur event payload
+ * Button blur event payload (same as focus)
  */
-export interface ButtonBlurEvent {
-  /** Original DOM FocusEvent */
-  event: FocusEvent;
-  /** Reference to the button HTML element */
-  buttonElement: HTMLButtonElement;
-  /** Timestamp when blur occurred */
-  timestamp: number;
-}
+export interface ButtonBlurEvent extends ComponentFocusEvent<HTMLButtonElement> {}
 
 // =============================================================================
 // COMPONENT CONFIGURATION
@@ -87,9 +57,9 @@ export interface ButtonBlurEvent {
  */
 export interface ButtonConfig {
   /** Default button variant */
-  defaultVariant: ButtonVariant;
+  defaultVariant: ComponentVariant;
   /** Default button size */
-  defaultSize: ButtonSize;
+  defaultSize: ComponentSize;
   /** Whether to show loading spinner by default */
   defaultShowSpinner: boolean;
   /** Default tab index */
@@ -121,7 +91,7 @@ export interface ButtonAccessibilityConfig {
  */
 export interface ButtonVariantDefinition {
   /** Variant name */
-  name: ButtonVariant;
+  name: ComponentVariant;
   /** CSS class name */
   className: string;
   /** Display label for the variant */
@@ -139,7 +109,7 @@ export interface ButtonVariantDefinition {
 /**
  * All available button variants with their definitions
  */
-export const BUTTON_VARIANTS: Record<ButtonVariant, ButtonVariantDefinition> = {
+export const BUTTON_VARIANTS: Record<ComponentVariant, ButtonVariantDefinition> = {
   primary: {
     name: 'primary',
     className: 'ds-button--primary',
@@ -185,6 +155,15 @@ export const BUTTON_VARIANTS: Record<ButtonVariant, ButtonVariantDefinition> = {
     defaultTextColor: '#ffffff',
     defaultBackgroundColor: 'var(--color-danger)',
   },
+  info: {
+    name: 'info',
+    className: 'ds-button--info',
+    label: 'Info',
+    description: 'Informational actions and neutral choices',
+    supportsIcons: true,
+    defaultTextColor: '#ffffff',
+    defaultBackgroundColor: 'var(--color-info)',
+  },
   ghost: {
     name: 'ghost',
     className: 'ds-button--ghost',
@@ -198,19 +177,23 @@ export const BUTTON_VARIANTS: Record<ButtonVariant, ButtonVariantDefinition> = {
     name: 'link',
     className: 'ds-button--link',
     label: 'Link',
-    description: 'Text-like buttons for navigation or subtle actions',
-    supportsIcons: false,
+    description: 'Text-like buttons for inline actions',
+    supportsIcons: true,
     defaultTextColor: 'var(--color-primary)',
     defaultBackgroundColor: 'transparent',
   },
 };
 
+// =============================================================================
+// SIZE DEFINITIONS
+// =============================================================================
+
 /**
- * Button size definition
+ * Button size definition with button-specific properties
  */
 export interface ButtonSizeDefinition {
   /** Size name */
-  name: ButtonSize;
+  name: ComponentSize;
   /** CSS class name */
   className: string;
   /** Display label */
@@ -223,20 +206,23 @@ export interface ButtonSizeDefinition {
   fontSize: string;
   /** Padding horizontal */
   paddingHorizontal: string;
+  /** Icon size */
+  iconSize: string;
 }
 
 /**
  * All available button sizes with their definitions
  */
-export const BUTTON_SIZES: Record<ButtonSize, ButtonSizeDefinition> = {
+export const BUTTON_SIZES: Record<ComponentSize, ButtonSizeDefinition> = {
   sm: {
     name: 'sm',
     className: 'ds-button--sm',
     label: 'Small',
     height: 32,
     minWidth: 64,
-    fontSize: 'var(--font-size-sm)',
-    paddingHorizontal: 'var(--spacing-md)',
+    fontSize: '14px',
+    paddingHorizontal: '12px',
+    iconSize: '16px',
   },
   md: {
     name: 'md',
@@ -244,8 +230,9 @@ export const BUTTON_SIZES: Record<ButtonSize, ButtonSizeDefinition> = {
     label: 'Medium',
     height: 40,
     minWidth: 80,
-    fontSize: 'var(--font-size-base)',
-    paddingHorizontal: 'var(--spacing-lg)',
+    fontSize: '16px',
+    paddingHorizontal: '16px',
+    iconSize: '18px',
   },
   lg: {
     name: 'lg',
@@ -253,37 +240,34 @@ export const BUTTON_SIZES: Record<ButtonSize, ButtonSizeDefinition> = {
     label: 'Large',
     height: 48,
     minWidth: 96,
-    fontSize: 'var(--font-size-lg)',
-    paddingHorizontal: 'var(--spacing-xl)',
+    fontSize: '18px',
+    paddingHorizontal: '20px',
+    iconSize: '20px',
   },
 };
 
 // =============================================================================
-// UTILITY TYPES
+// BUTTON STATE
 // =============================================================================
 
 /**
- * Button state for analytics and debugging
+ * Button-specific state extending base component state
  */
-export interface ButtonState {
-  /** Whether button is currently focused */
-  isFocused: boolean;
-  /** Whether button is currently hovered */
-  isHovered: boolean;
+export interface ButtonState extends ComponentState {
   /** Whether button is currently pressed */
   isPressed: boolean;
-  /** Whether button is disabled */
-  isDisabled: boolean;
-  /** Whether button is loading */
-  isLoading: boolean;
-  /** Current variant */
-  variant: ButtonVariant;
-  /** Current size */
-  size: ButtonSize;
+  /** Whether button shows loading spinner */
+  showsSpinner: boolean;
+  /** Whether button content is hidden during loading */
+  contentHidden: boolean;
 }
 
+// =============================================================================
+// BUTTON METRICS
+// =============================================================================
+
 /**
- * Button metrics for performance monitoring
+ * Button usage metrics for analytics
  */
 export interface ButtonMetrics {
   /** Number of times button was clicked */
@@ -296,6 +280,10 @@ export interface ButtonMetrics {
   totalLoadingTime: number;
   /** Button render timestamp */
   renderTime: number;
+  /** Most recent variant used */
+  mostRecentVariant: ComponentVariant;
+  /** Most recent size used */
+  mostRecentSize: ComponentSize;
 }
 
 // =============================================================================
@@ -314,42 +302,68 @@ export const DEFAULT_BUTTON_CONFIG: ButtonConfig = {
 };
 
 /**
- * Default accessibility configuration
+ * Default button accessibility configuration
  */
-export const DEFAULT_ACCESSIBILITY_CONFIG: ButtonAccessibilityConfig = {
+export const DEFAULT_BUTTON_A11Y_CONFIG: ButtonAccessibilityConfig = {
   autoAriaLabel: false,
   disabledTabIndex: -1,
   announceLoadingChanges: true,
 };
 
 // =============================================================================
-// VALIDATION HELPERS
+// UTILITY FUNCTIONS
 // =============================================================================
 
 /**
  * Check if a string is a valid button variant
  */
-export const isValidButtonVariant = (variant: string): variant is ButtonVariant => {
+export const isValidButtonVariant = (variant: string): variant is ComponentVariant => {
   return Object.keys(BUTTON_VARIANTS).includes(variant);
 };
 
 /**
  * Check if a string is a valid button size
  */
-export const isValidButtonSize = (size: string): size is ButtonSize => {
+export const isValidButtonSize = (size: string): size is ComponentSize => {
   return Object.keys(BUTTON_SIZES).includes(size);
 };
 
 /**
- * Get button variant definition by name
+ * Get button variant definition
  */
-export const getButtonVariantDefinition = (variant: ButtonVariant): ButtonVariantDefinition => {
+export const getButtonVariantDefinition = (variant: ComponentVariant): ButtonVariantDefinition => {
   return BUTTON_VARIANTS[variant];
 };
 
 /**
- * Get button size definition by name
+ * Get button size definition
  */
-export const getButtonSizeDefinition = (size: ButtonSize): ButtonSizeDefinition => {
+export const getButtonSizeDefinition = (size: ComponentSize): ButtonSizeDefinition => {
   return BUTTON_SIZES[size];
+};
+
+/**
+ * Create button configuration with defaults
+ */
+export const createButtonConfig = (partial: Partial<ButtonConfig> = {}): ButtonConfig => {
+  return { ...DEFAULT_BUTTON_CONFIG, ...partial };
+};
+
+/**
+ * Create button state with defaults
+ */
+export const createButtonState = (partial: Partial<ButtonState> = {}): ButtonState => {
+  return {
+    isFocused: false,
+    isHovered: false,
+    isActive: false,
+    isDisabled: false,
+    isLoading: false,
+    isPressed: false,
+    showsSpinner: true,
+    contentHidden: false,
+    variant: 'primary',
+    size: 'md',
+    ...partial,
+  };
 };

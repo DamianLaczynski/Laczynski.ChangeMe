@@ -9,21 +9,30 @@ import {
   forwardRef,
   ElementRef,
   OnInit,
+  effect,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 import {
+  ComponentSize,
+  ComponentFocusEvent,
+  generateComponentId,
+  mergeClasses,
+  getSizeConfiguration,
+} from '../shared';
+
+import {
   CheckboxOption,
   CheckboxConfig,
   CheckboxVariant,
-  CheckboxSize,
-  CheckboxState,
+  CheckboxComponentState,
   CheckboxGroupLayout,
   CheckboxChangeEvent,
   CheckboxFocusEvent,
   CheckboxValidation,
   createCheckboxConfig,
+  createCheckboxState,
   validateCheckboxValue,
   getCheckboxState,
   isCheckboxOptionSelected,
@@ -32,6 +41,9 @@ import {
   selectAllOptions,
   deselectAllOptions,
   getCheckboxAriaAttributes,
+  getCheckboxClasses,
+  generateCheckboxId,
+  CHECKBOX_SIZE_CONFIG,
 } from './checkbox.model';
 
 /**
@@ -39,7 +51,7 @@ import {
  *
  * Versatile checkbox component supporting single checkboxes, checkbox groups,
  * indeterminate states, and comprehensive accessibility features.
- * Built with Angular Signals API.
+ * Built with Angular Signals API and modern design system patterns.
  */
 @Component({
   selector: 'ds-checkbox',
@@ -166,7 +178,7 @@ export class CheckboxComponent<T = any> implements ControlValueAccessor, OnInit 
   variant = input<CheckboxVariant>('default');
 
   /** Checkbox size */
-  size = input<CheckboxSize>('md');
+  size = input<ComponentSize>('md');
 
   /** Checkbox label */
   label = input<string>('');
@@ -205,13 +217,13 @@ export class CheckboxComponent<T = any> implements ControlValueAccessor, OnInit 
   // MODEL & OUTPUTS
   // =============================================================================
 
-  /** Checked state (single) or selected values (group) - two-way binding */
+  /** Checkbox value - two-way binding */
   value = model<boolean | T[]>(false);
 
-  /** Change event */
+  /** Emitted when checkbox state changes */
   checkedChange = output<CheckboxChangeEvent<T>>();
 
-  /** Focus events */
+  /** Emitted when checkbox gains/loses focus */
   focus = output<CheckboxFocusEvent>();
 
   // =============================================================================
@@ -219,16 +231,19 @@ export class CheckboxComponent<T = any> implements ControlValueAccessor, OnInit 
   // =============================================================================
 
   /** Component ID for accessibility */
-  private componentId = signal<string>(`ds-checkbox-${Math.random().toString(36).substr(2, 9)}`);
+  private componentId = signal<string>(generateCheckboxId());
 
   /** Validation state */
   protected validationState = signal<CheckboxValidation>({ valid: true });
 
-  /** Internal checked state (for single checkbox) */
+  /** Internal checked state */
   protected internalChecked = signal<boolean>(false);
 
-  /** Internal selected values (for checkbox group) */
+  /** Internal selected values for group */
   protected internalSelectedValues = signal<T[]>([]);
+
+  /** Component state */
+  protected componentState = signal<CheckboxComponentState>(createCheckboxState());
 
   // =============================================================================
   // COMPUTED VALUES
@@ -237,70 +252,75 @@ export class CheckboxComponent<T = any> implements ControlValueAccessor, OnInit 
   /** Helper text ID for accessibility */
   helperTextId = computed(() => `${this.componentId()}-helper`);
 
-  /** Available (non-disabled) options */
+  /** Available options (non-disabled) */
   availableOptions = computed(() => {
     return this.options().filter(option => !option.disabled);
   });
 
-  /** Select all checkbox state */
+  /** Select all state */
   selectAllState = computed(() => {
-    if (!this.isGroup()) return { checked: false, indeterminate: false };
-    return getIndeterminateState(this.availableOptions(), this.internalSelectedValues());
+    return getIndeterminateState(this.options(), this.internalSelectedValues());
   });
 
-  /** Current checkbox state */
-  currentState = computed((): CheckboxState => {
-    const checked = this.isGroup()
-      ? this.internalSelectedValues().length > 0
-      : this.internalChecked();
-    return getCheckboxState(checked, this.indeterminate(), this.disabled(), this.validationState());
+  /** Current component state */
+  currentState = computed((): CheckboxComponentState => {
+    return {
+      ...this.componentState(),
+      isChecked: this.internalChecked(),
+      isIndeterminate: this.indeterminate(),
+      variant: this.variant() as any,
+      size: this.size(),
+      checkboxState: getCheckboxState(
+        this.internalChecked(),
+        this.indeterminate(),
+        this.disabled(),
+        this.validationState(),
+      ),
+    };
   });
+
+  /** Configuration */
+  config = computed(() =>
+    createCheckboxConfig({
+      variant: this.variant(),
+      size: this.size(),
+      isGroup: this.isGroup(),
+      groupLayout: this.groupLayout(),
+    }),
+  );
 
   /** Container CSS classes */
   containerClasses = computed(() => {
-    const classes = ['ds-checkbox-container'];
+    const sizeConfig = getSizeConfiguration(this.size());
 
-    classes.push(`ds-checkbox-container--${this.size()}`);
-    classes.push(`ds-checkbox-container--${this.variant()}`);
+    const classes = ['ds-checkbox-container', sizeConfig.className];
+
+    if (this.isGroup()) {
+      classes.push('ds-checkbox-container--group');
+      classes.push(`ds-checkbox-container--${this.groupLayout()}`);
+    }
 
     if (this.disabled()) classes.push('ds-checkbox-container--disabled');
-    if (!this.validationState().valid) classes.push('ds-checkbox-container--error');
-    if (this.isGroup()) classes.push('ds-checkbox-container--group');
-    if (this.customClasses()) classes.push(this.customClasses());
+    if (!this.validationState().valid) classes.push('ds-checkbox-container--invalid');
 
-    return classes.join(' ');
+    return mergeClasses(...classes, this.customClasses());
   });
 
   /** Checkbox CSS classes */
   checkboxClasses = computed(() => {
-    const classes = ['ds-checkbox'];
-
-    classes.push(`ds-checkbox--${this.size()}`);
-    classes.push(`ds-checkbox--${this.variant()}`);
-    classes.push(`ds-checkbox--${this.currentState()}`);
-
-    if (this.disabled()) classes.push('ds-checkbox--disabled');
-
-    return classes.join(' ');
+    return getCheckboxClasses(this.config(), this.currentState()).join(' ');
   });
 
   /** Group CSS classes */
   groupClasses = computed(() => {
     const classes = ['ds-checkbox-group'];
-
     classes.push(`ds-checkbox-group--${this.groupLayout()}`);
-
     return classes.join(' ');
   });
 
-  /** ARIA attributes for accessibility */
+  /** ARIA attributes */
   ariaAttributes = computed(() => {
-    const describedBy: string[] = [];
-
-    if (this.helperText() || this.validationState().errorMessage) {
-      describedBy.push(this.helperTextId());
-    }
-
+    const describedBy = this.helperText() ? [this.helperTextId()] : [];
     return getCheckboxAriaAttributes(
       this.internalChecked(),
       this.indeterminate(),
@@ -322,11 +342,10 @@ export class CheckboxComponent<T = any> implements ControlValueAccessor, OnInit 
       this.internalSelectedValues.set(arrayValue);
       this.value.set(arrayValue);
     } else {
-      const boolValue = Boolean(value);
-      this.internalChecked.set(boolValue);
-      this.value.set(boolValue);
+      const booleanValue = Boolean(value);
+      this.internalChecked.set(booleanValue);
+      this.value.set(booleanValue);
     }
-    this.validateValue(value);
   }
 
   registerOnChange(fn: (value: boolean | T[]) => void): void {
@@ -338,98 +357,133 @@ export class CheckboxComponent<T = any> implements ControlValueAccessor, OnInit 
   }
 
   setDisabledState(isDisabled: boolean): void {
-    // Handled through input signal
+    this.componentState.update(state => ({ ...state, isDisabled }));
   }
 
   // =============================================================================
   // LIFECYCLE
   // =============================================================================
 
+  constructor() {
+    // Update component state when inputs change
+    effect(() => {
+      this.componentState.update(state => ({
+        ...state,
+        isDisabled: this.disabled(),
+        isRequired: this.required(),
+        variant: this.variant() as any,
+        size: this.size(),
+      }));
+    });
+  }
+
   ngOnInit(): void {
-    // Initialize internal state from model
-    const initialValue = this.value();
-    this.writeValue(initialValue);
+    // Initialize validation
+    this.validateValue(this.value());
   }
 
   // =============================================================================
   // EVENT HANDLERS
   // =============================================================================
 
-  /** Handle single checkbox change */
+  /** Handle single checkbox changes */
   onSingleCheckboxChange(event: Event): void {
-    if (this.disabled()) return;
-
     const target = event.target as HTMLInputElement;
     const checked = target.checked;
 
     this.updateValue(checked, event);
   }
 
-  /** Handle checkbox group option change */
+  /** Handle option checkbox changes */
   onOptionChange(option: CheckboxOption<T>, event: Event): void {
-    if (this.disabled() || option.disabled) return;
-
     const newValues = toggleCheckboxOptionSelection(option, this.internalSelectedValues());
-
     this.updateValue(newValues, event, option);
   }
 
-  /** Handle select all change */
+  /** Handle select all changes */
   onSelectAllChange(event: Event): void {
-    if (this.disabled()) return;
-
     const target = event.target as HTMLInputElement;
     const checked = target.checked;
 
-    const newValues = checked ? selectAllOptions(this.availableOptions()) : deselectAllOptions();
+    const newValues = checked ? selectAllOptions(this.options()) : deselectAllOptions<T>();
 
-    this.updateValue(newValues, event);
+    this.updateValue(newValues, event, undefined, true);
   }
 
   /** Handle focus events */
   onFocus(event: FocusEvent): void {
-    this.focus.emit({
+    this.componentState.update(state => ({ ...state, isFocused: true }));
+
+    const focusEvent: CheckboxFocusEvent = {
+      event,
+      element: event.target as HTMLInputElement,
+      timestamp: Date.now(),
       direction: 'in',
-      originalEvent: event,
-    });
+    };
+
+    this.focus.emit(focusEvent);
   }
 
   /** Handle blur events */
   onBlur(event: FocusEvent): void {
+    this.componentState.update(state => ({ ...state, isFocused: false }));
     this.onTouched();
 
-    this.focus.emit({
+    const focusEvent: CheckboxFocusEvent = {
+      event,
+      element: event.target as HTMLInputElement,
+      timestamp: Date.now(),
       direction: 'out',
-      originalEvent: event,
-    });
+    };
+
+    this.focus.emit(focusEvent);
+  }
+
+  // =============================================================================
+  // PRIVATE METHODS
+  // =============================================================================
+
+  /** Update value and emit events */
+  private updateValue(
+    newValue: boolean | T[],
+    originalEvent: Event,
+    source?: CheckboxOption<T>,
+    isSelectAll?: boolean,
+  ): void {
+    const previousValue = this.value();
+
+    if (this.isGroup()) {
+      const arrayValue = Array.isArray(newValue) ? newValue : [];
+      this.internalSelectedValues.set(arrayValue);
+      this.value.set(arrayValue);
+      this.onChange(arrayValue);
+    } else {
+      const booleanValue = Boolean(newValue);
+      this.internalChecked.set(booleanValue);
+      this.value.set(booleanValue);
+      this.onChange(booleanValue);
+    }
+
+    this.validateValue(newValue);
+
+    // Emit change event
+    const changeEvent: CheckboxChangeEvent<T> = {
+      event: originalEvent,
+      element: originalEvent.target as HTMLInputElement,
+      timestamp: Date.now(),
+      value: newValue,
+      previousValue,
+      checked: newValue,
+      source,
+      isSelectAll,
+    };
+
+    this.checkedChange.emit(changeEvent);
   }
 
   // =============================================================================
   // UTILITY METHODS
   // =============================================================================
-
-  /** Update internal value and emit events */
-  private updateValue(
-    newValue: boolean | T[],
-    originalEvent: Event,
-    source?: CheckboxOption<T>,
-  ): void {
-    if (this.isGroup()) {
-      this.internalSelectedValues.set(newValue as T[]);
-    } else {
-      this.internalChecked.set(newValue as boolean);
-    }
-
-    this.value.set(newValue);
-    this.onChange(newValue);
-    this.validateValue(newValue);
-
-    this.checkedChange.emit({
-      checked: newValue,
-      originalEvent,
-      source,
-    });
-  }
 
   /** Check if option is selected */
   isSelected(option: CheckboxOption<T>): boolean {
@@ -438,12 +492,12 @@ export class CheckboxComponent<T = any> implements ControlValueAccessor, OnInit 
 
   /** Get option CSS classes */
   getOptionClasses(option: CheckboxOption<T>): string {
-    const classes = [this.checkboxClasses()];
+    const baseClasses = getCheckboxClasses(this.config(), this.currentState());
 
-    if (option.disabled) classes.push('ds-checkbox--disabled');
-    if (option.customClasses) classes.push(option.customClasses);
+    if (option.disabled) baseClasses.push('ds-checkbox--disabled');
+    if (option.customClasses) baseClasses.push(option.customClasses);
 
-    return classes.join(' ');
+    return baseClasses.join(' ');
   }
 
   /** Get option description ID */
@@ -463,33 +517,38 @@ export class CheckboxComponent<T = any> implements ControlValueAccessor, OnInit 
 
   /** Clear all selections */
   clear(): void {
-    const clearedValue = this.isGroup() ? [] : false;
-    this.updateValue(clearedValue, new Event('clear'));
+    if (this.isGroup()) {
+      this.updateValue([], new Event('clear'));
+    } else {
+      this.updateValue(false, new Event('clear'));
+    }
   }
 
   /** Select all options (group only) */
   selectAll(): void {
-    if (!this.isGroup()) return;
-
-    const allValues = selectAllOptions(this.availableOptions());
-    this.updateValue(allValues, new Event('selectAll'));
+    if (this.isGroup()) {
+      const allValues = selectAllOptions(this.options());
+      this.updateValue(allValues, new Event('selectAll'));
+    }
   }
 
-  /** Deselect all options (group only) */
+  /** Deselect all options */
   deselectAll(): void {
-    if (!this.isGroup()) return;
-
-    this.updateValue([], new Event('deselectAll'));
+    this.clear();
   }
 
-  /** Focus the checkbox */
+  /** Focus checkbox */
   focusCheckbox(): void {
-    const input = this.elementRef.nativeElement.querySelector('.ds-checkbox__input');
-    input?.focus();
+    try {
+      const input = this.elementRef.nativeElement.querySelector('input[type="checkbox"]');
+      input?.focus();
+    } catch (error) {
+      console.warn('Failed to focus checkbox:', error);
+    }
   }
 
-  /** Get current validation state */
+  /** Get validation state */
   getValidationState(): CheckboxValidation {
-    return this.validationState();
+    return { ...this.validationState() };
   }
 }

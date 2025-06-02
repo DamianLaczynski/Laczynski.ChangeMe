@@ -19,12 +19,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
+import { ComponentSize } from '../shared';
+
 import {
   SelectOption,
   SelectOptionGroup,
   SelectConfig,
   SelectVariant,
-  SelectSize,
   SelectState,
   SelectChangeEvent,
   SelectSearchEvent,
@@ -227,7 +228,7 @@ export class SelectComponent<T = any> implements ControlValueAccessor, OnInit {
   variant = input<SelectVariant>('default');
 
   /** Select size */
-  size = input<SelectSize>('md');
+  size = input<ComponentSize>('md');
 
   /** Select label */
   label = input<string>('');
@@ -394,6 +395,7 @@ export class SelectComponent<T = any> implements ControlValueAccessor, OnInit {
     classes.push(`ds-select--${this.variant()}`);
 
     if (this.disabled()) classes.push('ds-select--disabled');
+    if (this.loading()) classes.push('ds-select--loading');
     if (this.isOpen()) classes.push('ds-select--open');
     if (!this.validationState().valid) classes.push('ds-select--error');
     if (this.multiple()) classes.push('ds-select--multiple');
@@ -405,9 +407,6 @@ export class SelectComponent<T = any> implements ControlValueAccessor, OnInit {
   /** Wrapper CSS classes */
   wrapperClasses = computed(() => {
     const classes = ['ds-select-wrapper'];
-
-    if (this.loading()) classes.push('ds-select--loading');
-
     return classes.join(' ');
   });
 
@@ -594,10 +593,12 @@ export class SelectComponent<T = any> implements ControlValueAccessor, OnInit {
     this.validateSelection(newValue);
 
     this.selectionChange.emit({
+      event: originalEvent || new Event('change'),
+      element: this.selectTrigger().nativeElement,
+      timestamp: Date.now(),
       value: newValue!,
       option,
       previousValue: previousValue!,
-      originalEvent,
     });
   }
 
@@ -687,8 +688,10 @@ export class SelectComponent<T = any> implements ControlValueAccessor, OnInit {
   /** Handle focus events */
   onFocus(event: FocusEvent): void {
     this.focus.emit({
+      event,
+      element: event.target as HTMLSelectElement,
+      timestamp: Date.now(),
       direction: 'in',
-      originalEvent: event,
     });
   }
 
@@ -697,8 +700,10 @@ export class SelectComponent<T = any> implements ControlValueAccessor, OnInit {
     this.onTouched();
 
     this.focus.emit({
+      event,
+      element: event.target as HTMLSelectElement,
+      timestamp: Date.now(),
       direction: 'out',
-      originalEvent: event,
     });
   }
 
