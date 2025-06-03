@@ -538,19 +538,19 @@ export class SelectShowcaseComponent implements ShowcaseComponent {
   userOptions: SelectOption[] = [
     createSelectOption('user1', 'John Doe', {
       description: 'Software Engineer',
-      icon: '👨‍💻',
+      icon: '',
     }),
     createSelectOption('user2', 'Jane Smith', {
       description: 'Product Manager',
-      icon: '👩‍💼',
+      icon: '',
     }),
     createSelectOption('user3', 'Mike Johnson', {
       description: 'UX Designer',
-      icon: '🎨',
+      icon: '',
     }),
     createSelectOption('user4', 'Sarah Wilson', {
       description: 'Data Scientist',
-      icon: '📊',
+      icon: '',
     }),
   ];
 

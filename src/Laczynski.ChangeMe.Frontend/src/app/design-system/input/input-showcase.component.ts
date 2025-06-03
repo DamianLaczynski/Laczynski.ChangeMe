@@ -213,13 +213,7 @@ interface InputInteractiveConfig {
           <!-- With Icons -->
           <div class="showcase-item">
             <h3>With Icons</h3>
-            <ds-input
-              type="email"
-              label="Email with Icon"
-              placeholder="Enter email..."
-              startIcon="📧"
-              [value]="''"
-            />
+            <ds-input type="email" label="Email Input" placeholder="Enter email..." [value]="''" />
           </div>
 
           <!-- Clearable -->
@@ -265,7 +259,6 @@ interface InputInteractiveConfig {
               type="search"
               label="Search"
               placeholder="Search..."
-              startIcon="🔍"
               [clearable]="true"
               [value]="''"
             />

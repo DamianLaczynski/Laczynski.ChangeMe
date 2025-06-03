@@ -18,6 +18,7 @@ import { CommonModule } from '@angular/common';
 import { ComponentSize, getNestedValue } from '../shared';
 import { InputComponent } from '../input/input.component';
 import { CheckboxComponent } from '../checkbox/checkbox.component';
+import { IconComponent } from '../shared/icon/icon.component';
 
 import {
   TableConfig,
@@ -53,7 +54,7 @@ import { ButtonComponent } from '../button';
 @Component({
   selector: 'ds-table',
   standalone: true,
-  imports: [CommonModule, ButtonComponent, InputComponent, CheckboxComponent],
+  imports: [CommonModule, ButtonComponent, InputComponent, CheckboxComponent, IconComponent],
   template: `
     <div class="ds-table-container" [class]="containerClasses()">
       <!-- Search and Controls -->
@@ -67,7 +68,6 @@ import { ButtonComponent } from '../button';
                 [value]="searchTerm()"
                 [disabled]="disabled()"
                 (valueChange)="onSearchChange($event)"
-                iconStart="🔍"
               />
             </div>
           }
@@ -83,7 +83,6 @@ import { ButtonComponent } from '../button';
               <ds-button
                 variant="secondary"
                 size="sm"
-                iconStart="🔄"
                 [disabled]="disabled() || isLoading()"
                 (clicked)="onRefreshClick()"
               >
@@ -174,7 +173,12 @@ import { ButtonComponent } from '../button';
                   class="ds-table__cell ds-table__cell--error"
                 >
                   <div class="ds-table__error">
-                    <span class="ds-table__error-icon">⚠️</span>
+                    <app-icon
+                      name="exclamation-triangle"
+                      size="md"
+                      color="error"
+                      class="ds-table__error-icon"
+                    ></app-icon>
                     <span class="ds-table__error-message">{{ errorMessage() }}</span>
                     @if (showRetry()) {
                       <ds-button variant="secondary" size="sm" (clicked)="onRetryClick()">

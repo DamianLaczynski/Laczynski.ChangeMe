@@ -128,7 +128,7 @@ interface ButtonInteractiveConfig {
 
           <div class="showcase-item">
             <h3>With Icons</h3>
-            <ds-button variant="primary" iconStart="➕"> Add Item </ds-button>
+            <ds-button variant="primary"> Add Item </ds-button>
           </div>
 
           <div class="showcase-item">
@@ -211,8 +211,8 @@ export class ButtonShowcaseComponent implements ShowcaseComponent {
       createCheckboxControl('loading-control', 'Loading', 'loading'),
       createCheckboxControl('fullwidth-control', 'Full Width', 'fullWidth'),
       createTextControl('icon-control', 'Icon', 'icon', {
-        placeholder: '➕ 🔗 ⚙️',
-        helpText: 'Enter an emoji or icon character',
+        placeholder: 'plus, link, cog',
+        helpText: 'Enter an icon name or character',
       }),
     ],
   }));

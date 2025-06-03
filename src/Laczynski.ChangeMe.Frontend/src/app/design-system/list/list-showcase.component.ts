@@ -4,11 +4,12 @@
 // Comprehensive demonstration of the List component features
 
 import { Component, signal, computed, OnInit, inject, TemplateRef, viewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { ComponentSize } from '../shared';
 import { ListComponent } from './list.component';
+import { ListVariant, ListLayout, ListSelectionMode } from './list.model';
 import { ApiDocumentationComponent } from '../showcases/api-documentation';
 import {
   InteractiveConfigChangeEvent,
@@ -19,9 +20,6 @@ import { createCheckboxControl, createSelectControl } from '../showcases/interac
 
 import {
   ListConfig,
-  ListVariant,
-  ListLayout,
-  ListSelectionMode,
   ListItemClickEvent,
   ListItemSelectEvent,
   ListScrollEvent,
@@ -41,6 +39,7 @@ import {
 
 import { StateService } from '../../shared/state/services/state.service';
 import { ButtonComponent } from '../button';
+import { IconComponent } from '../shared/icon/icon.component';
 
 // Demo data interfaces
 interface DemoTask {
@@ -92,8 +91,10 @@ interface ListInteractiveConfig {
   standalone: true,
   imports: [
     CommonModule,
+    DatePipe,
     ListComponent,
     ButtonComponent,
+    IconComponent,
     FormsModule,
     ApiDocumentationComponent,
     InteractiveExampleComponent,
@@ -276,18 +277,24 @@ interface ListInteractiveConfig {
       <ng-template #taskTemplate let-item>
         <div class="task-item">
           <div class="task-header">
-            <span class="task-title">{{ item.title }}</span>
+            <h4 class="task-title">{{ item.title }}</h4>
             <span class="task-priority" [class]="'priority-' + item.priority">
               {{ item.priority | titlecase }}
             </span>
           </div>
           <div class="task-description">{{ item.description }}</div>
           <div class="task-meta">
-            <span class="task-assignee">👤 {{ item.assignee }}</span>
+            <span class="task-assignee">
+              <app-icon name="user" size="sm"></app-icon>
+              {{ item.assignee }}
+            </span>
             <span class="task-status" [class]="'status-' + item.status">
               {{ getStatusLabel(item.status) }}
             </span>
-            <span class="task-due">📅 {{ item.dueDate | date: 'shortDate' }}</span>
+            <span class="task-due">
+              <app-icon name="calendar" size="sm"></app-icon>
+              {{ item.dueDate | date: 'shortDate' }}
+            </span>
           </div>
           @if (item.tags.length > 0) {
             <div class="task-tags">
@@ -326,7 +333,9 @@ interface ListInteractiveConfig {
 
       <ng-template #customEmptyTemplate>
         <div class="custom-empty">
-          <div class="custom-empty-icon">🎯</div>
+          <div class="custom-empty-icon">
+            <app-icon name="star" size="xl" color="primary"></app-icon>
+          </div>
           <h3 class="custom-empty-title">Ready to Get Productive?</h3>
           <p class="custom-empty-message">
             Create your first task and start organizing your work efficiently.
@@ -795,9 +804,9 @@ export class ListShowcaseComponent implements ShowcaseComponent, OnInit {
 
   getStatusLabel(status: string): string {
     const labels: Record<string, string> = {
-      todo: '📋 To Do',
-      'in-progress': '⚡ In Progress',
-      done: '✅ Done',
+      todo: 'To Do',
+      'in-progress': 'In Progress',
+      done: 'Done',
     };
     return labels[status] || status;
   }

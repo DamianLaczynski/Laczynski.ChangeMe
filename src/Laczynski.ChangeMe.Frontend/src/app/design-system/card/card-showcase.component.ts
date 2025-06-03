@@ -449,11 +449,11 @@ export class CardShowcaseComponent implements ShowcaseComponent, OnInit {
       },
       actions: [
         createCardAction('Edit', () => this.onDemoAction('edit'), {
-          icon: '✏️',
+          icon: '',
           variant: 'ghost',
         }),
         createCardAction('Delete', () => this.onDemoAction('delete'), {
-          icon: '🗑️',
+          icon: '',
           variant: 'ghost',
         }),
       ],
@@ -466,7 +466,7 @@ export class CardShowcaseComponent implements ShowcaseComponent, OnInit {
       subtitle: 'Development phase',
       avatar: {
         type: 'icon',
-        icon: '📁',
+        icon: '',
         size: 'md',
         shape: 'rounded',
       },

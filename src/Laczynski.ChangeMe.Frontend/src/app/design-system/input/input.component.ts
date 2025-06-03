@@ -31,6 +31,8 @@ import {
   isValidComponentSize,
 } from '../shared';
 
+import { IconComponent } from '../shared/icon/icon.component';
+
 import {
   InputConfig,
   InputType,
@@ -93,7 +95,7 @@ export interface InputEnterEvent {
 @Component({
   selector: 'ds-input',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, IconComponent],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -160,7 +162,7 @@ export interface InputEnterEvent {
             [attr.aria-label]="'Clear ' + (label() || 'input')"
             tabindex="-1"
           >
-            <span aria-hidden="true">✕</span>
+            <app-icon name="x-mark" size="sm" [decorative]="true"></app-icon>
           </button>
         }
 
@@ -179,7 +181,11 @@ export interface InputEnterEvent {
             [attr.aria-label]="passwordVisible() ? 'Hide password' : 'Show password'"
             tabindex="-1"
           >
-            <span aria-hidden="true">{{ passwordVisible() ? '🙈' : '👁️' }}</span>
+            <app-icon
+              [name]="passwordVisible() ? 'eye-slash' : 'eye'"
+              size="sm"
+              [decorative]="true"
+            ></app-icon>
           </button>
         }
       </div>

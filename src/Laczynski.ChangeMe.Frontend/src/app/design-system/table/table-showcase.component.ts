@@ -266,17 +266,10 @@ interface TableInteractiveConfig {
 
       <ng-template #actionsTemplate let-row let-column="column">
         <div class="table-actions">
+          <ds-button variant="ghost" size="sm" (clicked)="editUser(row)" ariaLabel="Edit user" />
           <ds-button
             variant="ghost"
             size="sm"
-            iconStart="✏️"
-            (clicked)="editUser(row)"
-            ariaLabel="Edit user"
-          />
-          <ds-button
-            variant="ghost"
-            size="sm"
-            iconStart="🗑️"
             (clicked)="deleteUser(row)"
             ariaLabel="Delete user"
           />

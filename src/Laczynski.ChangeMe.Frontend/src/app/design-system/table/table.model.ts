@@ -429,7 +429,7 @@ export const DEFAULT_TABLE_CONFIG: TableConfig = {
   emptyState: {
     title: 'No data available',
     message: 'There are no records to display',
-    icon: '📋',
+    icon: '',
   },
   selection: {
     mode: 'none',
@@ -564,7 +564,7 @@ export function createTableEmptyState(partial: Partial<TableEmptyState> = {}): T
   return {
     title: 'No data available',
     message: 'There are no records to display',
-    icon: '📋',
+    icon: '',
     ...partial,
   };
 }

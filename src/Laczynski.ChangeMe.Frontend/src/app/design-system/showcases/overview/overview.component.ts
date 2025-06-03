@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterModule } from '@angular/router';
+import { IconComponent } from '../../shared/icon/icon.component';
 
 /**
  * Overview Component
@@ -15,16 +16,16 @@ import { RouterLink } from '@angular/router';
 @Component({
   selector: 'ds-overview',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterModule, IconComponent],
   template: `
     <div class="overview">
       <!-- Hero Section -->
       <section class="overview__hero">
         <div class="hero__content">
-          <h1 class="hero__title">Design System</h1>
+          <h1 class="hero__title">Laczynski Design System</h1>
           <p class="hero__subtitle">
-            A comprehensive collection of reusable components, guided by clear standards, that can
-            be assembled together to build any number of applications.
+            A comprehensive collection of reusable components, design tokens, and guidelines for
+            building consistent, accessible user interfaces.
           </p>
           <div class="hero__stats">
             <div class="stat">
@@ -55,16 +56,19 @@ import { RouterLink } from '@angular/router';
       <section class="overview__section">
         <h2 class="section__title">Quick Start</h2>
         <p class="section__description">
-          Get started with our design system components and build beautiful, accessible
-          applications.
+          Jump right in with these essential components and patterns to get started building your
+          interface.
         </p>
 
         <div class="quick-start__grid">
           <div class="quick-start__card">
-            <div class="card__icon">🎨</div>
-            <h3 class="card__title">Explore Components</h3>
+            <div class="card__icon">
+              <app-icon name="sparkles" size="lg" color="primary"></app-icon>
+            </div>
+            <h3 class="card__title">UI Components</h3>
             <p class="card__description">
-              Browse our collection of UI components with interactive examples and documentation.
+              Explore our collection of buttons, inputs, and interactive elements for building
+              interfaces.
             </p>
             <a routerLink="/design-system/ui/button" class="card__link">
               Start Exploring
@@ -73,7 +77,9 @@ import { RouterLink } from '@angular/router';
           </div>
 
           <div class="quick-start__card">
-            <div class="card__icon">🏗️</div>
+            <div class="card__icon">
+              <app-icon name="cog" size="lg" color="primary"></app-icon>
+            </div>
             <h3 class="card__title">Layout System</h3>
             <p class="card__description">
               Learn about our responsive grid system and layout components for building interfaces.
@@ -85,7 +91,9 @@ import { RouterLink } from '@angular/router';
           </div>
 
           <div class="quick-start__card">
-            <div class="card__icon">📋</div>
+            <div class="card__icon">
+              <app-icon name="clipboard" size="lg" color="primary"></app-icon>
+            </div>
             <h3 class="card__title">Form Components</h3>
             <p class="card__description">
               Build forms with our comprehensive collection of input and validation components.
@@ -108,7 +116,9 @@ import { RouterLink } from '@angular/router';
 
         <div class="principles__grid">
           <div class="principle">
-            <div class="principle__icon">♿</div>
+            <div class="principle__icon">
+              <app-icon name="shield" size="lg" color="success"></app-icon>
+            </div>
             <h3 class="principle__title">Accessibility First</h3>
             <p class="principle__description">
               Every component is designed with accessibility in mind, following WCAG guidelines and
@@ -117,7 +127,9 @@ import { RouterLink } from '@angular/router';
           </div>
 
           <div class="principle">
-            <div class="principle__icon">📱</div>
+            <div class="principle__icon">
+              <app-icon name="globe" size="lg" color="info"></app-icon>
+            </div>
             <h3 class="principle__title">Responsive Design</h3>
             <p class="principle__description">
               Components adapt seamlessly across all device sizes, from mobile phones to large
@@ -126,7 +138,9 @@ import { RouterLink } from '@angular/router';
           </div>
 
           <div class="principle">
-            <div class="principle__icon">🎯</div>
+            <div class="principle__icon">
+              <app-icon name="star" size="lg" color="warning"></app-icon>
+            </div>
             <h3 class="principle__title">Consistency</h3>
             <p class="principle__description">
               Standardized patterns, spacing, colors, and interactions create a cohesive experience
@@ -135,7 +149,9 @@ import { RouterLink } from '@angular/router';
           </div>
 
           <div class="principle">
-            <div class="principle__icon">⚡</div>
+            <div class="principle__icon">
+              <app-icon name="rocket" size="lg" color="accent"></app-icon>
+            </div>
             <h3 class="principle__title">Performance</h3>
             <p class="principle__description">
               Lightweight, optimized components that load fast and provide smooth interactions
@@ -144,7 +160,9 @@ import { RouterLink } from '@angular/router';
           </div>
 
           <div class="principle">
-            <div class="principle__icon">🔧</div>
+            <div class="principle__icon">
+              <app-icon name="cog" size="lg" color="secondary"></app-icon>
+            </div>
             <h3 class="principle__title">Modularity</h3>
             <p class="principle__description">
               Each component is self-contained and composable, allowing for flexible combinations
@@ -153,7 +171,9 @@ import { RouterLink } from '@angular/router';
           </div>
 
           <div class="principle">
-            <div class="principle__icon">🌈</div>
+            <div class="principle__icon">
+              <app-icon name="sparkles" size="lg" color="primary"></app-icon>
+            </div>
             <h3 class="principle__title">Theming</h3>
             <p class="principle__description">
               Built-in support for multiple themes including dark mode, high contrast, and custom
@@ -328,28 +348,40 @@ import { RouterLink } from '@angular/router';
 
         <div class="resources__grid">
           <div class="resource">
-            <h3 class="resource__title">📚 Documentation</h3>
+            <h3 class="resource__title">
+              <app-icon name="clipboard" size="sm" style="margin-right: 0.5rem;"></app-icon>
+              Documentation
+            </h3>
             <p class="resource__description">
               Comprehensive guides, API references, and examples for every component.
             </p>
           </div>
 
           <div class="resource">
-            <h3 class="resource__title">🎨 Design Files</h3>
+            <h3 class="resource__title">
+              <app-icon name="sparkles" size="sm" style="margin-right: 0.5rem;"></app-icon>
+              Design Files
+            </h3>
             <p class="resource__description">
               Figma libraries and design assets for designers and developers.
             </p>
           </div>
 
           <div class="resource">
-            <h3 class="resource__title">💬 Community</h3>
+            <h3 class="resource__title">
+              <app-icon name="chat" size="sm" style="margin-right: 0.5rem;"></app-icon>
+              Community
+            </h3>
             <p class="resource__description">
               Join our community for support, discussions, and feature requests.
             </p>
           </div>
 
           <div class="resource">
-            <h3 class="resource__title">🔧 Migration Guide</h3>
+            <h3 class="resource__title">
+              <app-icon name="cog" size="sm" style="margin-right: 0.5rem;"></app-icon>
+              Migration Guide
+            </h3>
             <p class="resource__description">
               Step-by-step guides for migrating from other design systems.
             </p>
