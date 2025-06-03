@@ -190,13 +190,17 @@ import {
                     >
                       <!-- Multi-select Checkbox -->
                       @if (multiple()) {
-                        <span
-                          class="ds-select-checkbox"
-                          [class.checked]="isSelected(option)"
-                          aria-hidden="true"
-                        >
-                          {{ isSelected(option) ? '☑' : '☐' }}
-                        </span>
+                        <label class="ds-select-option-checkbox" (click)="$event.stopPropagation()">
+                          <input
+                            type="checkbox"
+                            class="ds-checkbox__input"
+                            [checked]="isSelected(option)"
+                            [disabled]="disabled() || !!option.disabled"
+                            (change)="selectOption(option, $event)"
+                            aria-hidden="true"
+                          />
+                          <span class="ds-checkbox__checkmark"></span>
+                        </label>
                       }
 
                       <!-- Option Icon -->

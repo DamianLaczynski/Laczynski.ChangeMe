@@ -291,24 +291,29 @@ export class CheckboxComponent<T = any> implements ControlValueAccessor, OnInit 
 
   /** Container CSS classes */
   containerClasses = computed(() => {
-    const sizeConfig = getSizeConfiguration(this.size());
+    const classes = ['ds-checkbox-container'];
 
-    const classes = ['ds-checkbox-container', sizeConfig.className];
+    classes.push(`ds-checkbox--${this.size()}`);
+    classes.push(`ds-checkbox--${this.variant()}`);
 
-    if (this.isGroup()) {
-      classes.push('ds-checkbox-container--group');
-      classes.push(`ds-checkbox-container--${this.groupLayout()}`);
-    }
+    if (this.disabled()) classes.push('ds-checkbox--disabled');
+    if (!this.validationState().valid) classes.push('ds-checkbox--error');
+    if (this.isGroup()) classes.push('ds-checkbox-container--group');
+    if (this.customClasses()) classes.push(this.customClasses());
 
-    if (this.disabled()) classes.push('ds-checkbox-container--disabled');
-    if (!this.validationState().valid) classes.push('ds-checkbox-container--invalid');
-
-    return mergeClasses(...classes, this.customClasses());
+    return classes.join(' ');
   });
 
   /** Checkbox CSS classes */
   checkboxClasses = computed(() => {
-    return getCheckboxClasses(this.config(), this.currentState()).join(' ');
+    const classes = ['ds-checkbox'];
+
+    classes.push(`ds-checkbox--${this.size()}`);
+
+    if (this.disabled()) classes.push('ds-checkbox--disabled');
+    if (!this.validationState().valid) classes.push('ds-checkbox--error');
+
+    return classes.join(' ');
   });
 
   /** Group CSS classes */
@@ -492,12 +497,15 @@ export class CheckboxComponent<T = any> implements ControlValueAccessor, OnInit 
 
   /** Get option CSS classes */
   getOptionClasses(option: CheckboxOption<T>): string {
-    const baseClasses = getCheckboxClasses(this.config(), this.currentState());
+    const classes = ['ds-checkbox'];
 
-    if (option.disabled) baseClasses.push('ds-checkbox--disabled');
-    if (option.customClasses) baseClasses.push(option.customClasses);
+    classes.push(`ds-checkbox--${this.size()}`);
 
-    return baseClasses.join(' ');
+    if (this.disabled() || option.disabled) classes.push('ds-checkbox--disabled');
+    if (!this.validationState().valid) classes.push('ds-checkbox--error');
+    if (option.customClasses) classes.push(option.customClasses);
+
+    return classes.join(' ');
   }
 
   /** Get option description ID */
