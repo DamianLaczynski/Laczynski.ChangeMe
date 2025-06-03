@@ -183,6 +183,20 @@ export interface SelectFocusEvent extends ComponentFocusEvent<HTMLElement> {
   direction: 'in' | 'out';
 }
 
+/**
+ * Select clear event
+ */
+export interface SelectClearEvent<T = any> {
+  /** Select element reference */
+  element: HTMLElement;
+  /** Previous value before clear */
+  previousValue: T | T[] | null;
+  /** Previously selected options */
+  previousOptions: SelectOption<T>[];
+  /** Timestamp when clear occurred */
+  timestamp: number;
+}
+
 // =============================================================================
 // VALIDATION
 // =============================================================================

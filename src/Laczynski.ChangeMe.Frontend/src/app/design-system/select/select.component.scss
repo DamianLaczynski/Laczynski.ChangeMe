@@ -314,6 +314,61 @@
 }
 
 // =============================================================================
+// SELECT CLEAR BUTTON - Clean Interactive Design
+// =============================================================================
+
+.ds-select-button {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border-radius: var(--border-radius-sm);
+  z-index: 2;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  
+  &:hover {
+    color: var(--color-text);
+    background: var(--color-surface-hover);
+    border: 1px solid var(--color-border);
+  }
+  
+  &:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+  
+  &:active {
+    background: var(--color-surface-active);
+    transform: translateY(-50%) scale(0.95);
+  }
+  
+  &--clear {
+    right: calc(var(--spacing-md) + 28px); // Position before arrow
+    
+    &:hover {
+      color: var(--color-danger);
+      background: var(--color-danger-light);
+    }
+  }
+}
+
+// Adjust wrapper layout for clear button
+.ds-select-wrapper--has-clear {
+  .ds-select-value {
+    padding-right: calc(var(--spacing-md) + 60px); // Space for clear + arrow
+  }
+}
+
+// =============================================================================
 // DROPDOWN - Clean Modern Design with Enhanced Z-Index Management
 // =============================================================================
 

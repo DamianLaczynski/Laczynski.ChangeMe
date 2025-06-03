@@ -20,6 +20,7 @@ import { FormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { ComponentSize } from '../shared';
+import { IconComponent } from '../shared/icon/icon.component';
 
 import {
   SelectOption,
@@ -31,6 +32,7 @@ import {
   SelectSearchEvent,
   SelectToggleEvent,
   SelectFocusEvent,
+  SelectClearEvent,
   SelectValidation,
   createSelectConfig,
   groupOptions,
@@ -52,7 +54,7 @@ import {
 @Component({
   selector: 'ds-select',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, IconComponent],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -79,11 +81,14 @@ import {
           type="button"
           [id]="selectId()"
           class="ds-select-trigger"
+          role="combobox"
           [disabled]="disabled()"
           [attr.aria-haspopup]="ariaAttributes()['aria-haspopup']"
           [attr.aria-expanded]="ariaAttributes()['aria-expanded']"
           [attr.aria-invalid]="ariaAttributes()['aria-invalid'] || null"
           [attr.aria-describedby]="ariaAttributes()['aria-describedby'] || null"
+          [attr.aria-activedescendant]="activeDescendantId()"
+          [attr.aria-owns]="isOpen() ? optionsListId() : null"
           (click)="toggleDropdown()"
           (keydown)="onTriggerKeydown($event)"
           (focus)="onFocus($event)"
@@ -94,27 +99,44 @@ import {
             {{ displayText() }}
           </span>
 
+          <!-- Clear Button -->
+          @if (showClearButton()) {
+            <button
+              type="button"
+              class="ds-select-button ds-select-button--clear"
+              (click)="clearSelection($event)"
+              (keydown)="onClearButtonKeydown($event)"
+              [attr.aria-label]="'Clear ' + (label() || 'selection')"
+              tabindex="-1"
+            >
+              <app-icon name="x-mark" size="sm" [decorative]="true"></app-icon>
+            </button>
+          }
+
           <!-- Loading Indicator -->
           @if (loading()) {
             <span class="ds-select-loading" aria-label="Loading"> </span>
           } @else {
             <!-- Dropdown Arrow -->
-            <span class="ds-select-arrow" [class.open]="isOpen()">▼</span>
+            <span class="ds-select-arrow" [class.open]="isOpen()" aria-hidden="true">▼</span>
           }
         </button>
 
         <!-- Dropdown -->
         @if (isOpen()) {
-          <div class="ds-select-dropdown" [style.max-height]="maxHeight()">
+          <div class="ds-select-dropdown" [style.max-height]="maxHeight()" role="presentation">
             <!-- Search Input -->
             @if (searchable()) {
-              <div class="ds-select-search">
+              <div class="ds-select-search" role="presentation">
                 <input
                   #searchInput
                   type="text"
                   class="ds-select-search-input"
-                  placeholder="Search..."
+                  placeholder="Search options..."
                   [(ngModel)]="searchQuery"
+                  [attr.aria-label]="'Search ' + (label() || 'options')"
+                  [attr.aria-controls]="optionsListId()"
+                  [attr.aria-activedescendant]="activeDescendantId()"
                   (input)="onSearch($event)"
                   (keydown)="onSearchKeydown($event)"
                 />
@@ -122,10 +144,17 @@ import {
             }
 
             <!-- Options List -->
-            <div class="ds-select-options" #optionsList>
+            <div
+              class="ds-select-options"
+              #optionsList
+              [id]="optionsListId()"
+              role="listbox"
+              [attr.aria-label]="label() || 'Options'"
+              [attr.aria-multiselectable]="multiple()"
+            >
               @if (filteredGroups().length === 0) {
                 <!-- No Options Message -->
-                <div class="ds-select-no-options">
+                <div class="ds-select-no-options" role="option" aria-disabled="true">
                   {{ searchQuery() ? 'No options found' : 'No options available' }}
                 </div>
               } @else {
@@ -133,13 +162,21 @@ import {
                 @for (group of filteredGroups(); track group.id) {
                   @if (group.label) {
                     <!-- Group Header -->
-                    <div class="ds-select-group-header">{{ group.label }}</div>
+                    <div
+                      class="ds-select-group-header"
+                      role="group"
+                      [attr.aria-label]="group.label"
+                    >
+                      {{ group.label }}
+                    </div>
                   }
 
                   <!-- Group Options -->
                   @for (option of group.options; track option.value; let optionIndex = $index) {
                     <div
                       class="ds-select-option"
+                      [id]="getOptionId(group, optionIndex)"
+                      role="option"
                       [class.selected]="isSelected(option)"
                       [class.disabled]="option.disabled"
                       [class.highlighted]="
@@ -147,19 +184,28 @@ import {
                       "
                       [attr.aria-selected]="isSelected(option)"
                       [attr.aria-disabled]="option.disabled"
+                      [attr.aria-label]="getOptionAriaLabel(option)"
                       (click)="selectOption(option, $event)"
                       (mouseenter)="setHighlightedIndex(getOptionIndex(group, optionIndex))"
                     >
                       <!-- Multi-select Checkbox -->
                       @if (multiple()) {
-                        <span class="ds-select-checkbox" [class.checked]="isSelected(option)">
+                        <span
+                          class="ds-select-checkbox"
+                          [class.checked]="isSelected(option)"
+                          aria-hidden="true"
+                        >
                           {{ isSelected(option) ? '☑' : '☐' }}
                         </span>
                       }
 
                       <!-- Option Icon -->
                       @if (option.icon) {
-                        <span class="ds-select-option-icon" [innerHTML]="option.icon"></span>
+                        <span
+                          class="ds-select-option-icon"
+                          [innerHTML]="option.icon"
+                          aria-hidden="true"
+                        ></span>
                       }
 
                       <!-- Option Content -->
@@ -172,7 +218,7 @@ import {
 
                       <!-- Selection Indicator -->
                       @if (!multiple() && isSelected(option)) {
-                        <span class="ds-select-selected-indicator">✓</span>
+                        <span class="ds-select-selected-indicator" aria-hidden="true">✓</span>
                       }
                     </div>
                   }
@@ -189,6 +235,8 @@ import {
           class="ds-select-helper"
           [class.error]="!validationState().valid"
           [id]="helperTextId()"
+          role="status"
+          [attr.aria-live]="!validationState().valid ? 'polite' : null"
         >
           {{ validationState().errorMessage || helperText() }}
         </div>
@@ -196,15 +244,21 @@ import {
 
       <!-- Selected Items (for multiple selection) -->
       @if (multiple() && hasSelection() && showSelectedItems()) {
-        <div class="ds-select-selected-items">
+        <div
+          class="ds-select-selected-items"
+          role="list"
+          [attr.aria-label]="'Selected ' + (label() || 'items')"
+        >
           @for (option of selectedOptions(); track option.value) {
-            <span class="ds-select-selected-item">
-              {{ option.label }}
+            <span class="ds-select-selected-item" role="listitem">
+              <span>{{ option.label }}</span>
               <button
                 type="button"
                 class="ds-select-remove-item"
                 (click)="deselectOption(option)"
+                (keydown)="onRemoveItemKeydown($event, option)"
                 [attr.aria-label]="'Remove ' + option.label"
+                tabindex="-1"
               >
                 ✕
               </button>
@@ -254,6 +308,9 @@ export class SelectComponent<T = any> implements ControlValueAccessor, OnInit {
   /** Whether search is enabled */
   searchable = input<boolean>(false);
 
+  /** Whether select is clearable */
+  clearable = input<boolean>(false);
+
   /** Whether to show loading state */
   loading = input<boolean>(false);
 
@@ -287,6 +344,9 @@ export class SelectComponent<T = any> implements ControlValueAccessor, OnInit {
 
   /** Focus events */
   focus = output<SelectFocusEvent>();
+
+  /** Clear event */
+  cleared = output<SelectClearEvent<T>>();
 
   // =============================================================================
   // VIEW CHILDREN
@@ -335,6 +395,14 @@ export class SelectComponent<T = any> implements ControlValueAccessor, OnInit {
         this.validateSelection(externalValue);
       }
     });
+
+    // Cleanup typeahead timeout on destroy
+    this.destroyRef.onDestroy(() => {
+      if (this.typeAheadTimeout) {
+        clearTimeout(this.typeAheadTimeout);
+        this.typeAheadTimeout = null;
+      }
+    });
   }
 
   // =============================================================================
@@ -346,6 +414,21 @@ export class SelectComponent<T = any> implements ControlValueAccessor, OnInit {
 
   /** Helper text ID for accessibility */
   helperTextId = computed(() => `${this.componentId()}-helper`);
+
+  /** Options list ID for accessibility */
+  optionsListId = computed(() => `${this.componentId()}-listbox`);
+
+  /** Active descendant ID for accessibility */
+  activeDescendantId = computed(() => {
+    const index = this.highlightedIndex();
+    if (index === -1) return null;
+
+    const options = this.flatOptions();
+    if (index >= 0 && index < options.length) {
+      return `${this.componentId()}-option-${index}`;
+    }
+    return null;
+  });
 
   /** Grouped options */
   groupedOptions = computed(() => {
@@ -381,6 +464,11 @@ export class SelectComponent<T = any> implements ControlValueAccessor, OnInit {
     return value != null && (Array.isArray(value) ? value.length > 0 : true);
   });
 
+  /** Whether to show clear button */
+  showClearButton = computed(() => {
+    return this.clearable() && this.hasSelection() && !this.disabled() && !this.loading();
+  });
+
   /** Display text for selected values */
   displayText = computed(() => {
     const value = this.internalValue();
@@ -409,6 +497,9 @@ export class SelectComponent<T = any> implements ControlValueAccessor, OnInit {
   /** Wrapper CSS classes */
   wrapperClasses = computed(() => {
     const classes = ['ds-select-wrapper'];
+
+    if (this.showClearButton()) classes.push('ds-select-wrapper--has-clear');
+
     return classes.join(' ');
   });
 
@@ -507,13 +598,20 @@ export class SelectComponent<T = any> implements ControlValueAccessor, OnInit {
     if (this.disabled() || this.isOpen()) return;
 
     this.isOpen.set(true);
-    this.highlightedIndex.set(-1);
 
-    // Focus search input if searchable
+    // Set initial highlighted index
+    this.setInitialHighlightedIndex();
+
+    // Focus search input if searchable, otherwise ensure proper focus management
     if (this.searchable()) {
       setTimeout(() => {
         this.searchInput()?.nativeElement?.focus();
       });
+    } else {
+      // For keyboard navigation, highlight first option if none highlighted
+      if (reason === 'keyboard' && this.highlightedIndex() === -1) {
+        setTimeout(() => this.highlightFirstAvailableOption());
+      }
     }
 
     this.toggle.emit({
@@ -521,6 +619,37 @@ export class SelectComponent<T = any> implements ControlValueAccessor, OnInit {
       reason,
       originalEvent,
     });
+  }
+
+  /** Set initial highlighted index based on current selection */
+  private setInitialHighlightedIndex(): void {
+    const currentValue = this.internalValue();
+    const options = this.flatOptions();
+
+    if (currentValue != null) {
+      // For single select, highlight the selected option
+      if (!this.multiple()) {
+        const selectedIndex = options.findIndex(option => option.value === currentValue);
+        if (selectedIndex !== -1) {
+          this.highlightedIndex.set(selectedIndex);
+          setTimeout(() => this.scrollToHighlightedOption());
+          return;
+        }
+      } else {
+        // For multi-select, highlight the first selected option
+        const selectedValues = Array.isArray(currentValue) ? currentValue : [];
+        for (let i = 0; i < options.length; i++) {
+          if (selectedValues.includes(options[i].value)) {
+            this.highlightedIndex.set(i);
+            setTimeout(() => this.scrollToHighlightedOption());
+            return;
+          }
+        }
+      }
+    }
+
+    // If no selection or selection not found, highlight first available option
+    this.highlightedIndex.set(-1);
   }
 
   /** Close dropdown */
@@ -621,13 +750,110 @@ export class SelectComponent<T = any> implements ControlValueAccessor, OnInit {
     switch (event.key) {
       case 'Enter':
       case ' ':
+        event.preventDefault();
+        if (this.isOpen()) {
+          this.selectHighlightedOption();
+        } else {
+          this.openDropdown('keyboard', event);
+        }
+        break;
+
       case 'ArrowDown':
         event.preventDefault();
-        this.openDropdown('keyboard', event);
+        if (this.isOpen()) {
+          this.navigateOptions(1);
+        } else {
+          this.openDropdown('keyboard', event);
+          // Highlight first available option when opening
+          setTimeout(() => this.highlightFirstAvailableOption());
+        }
         break;
+
       case 'ArrowUp':
         event.preventDefault();
-        this.openDropdown('keyboard', event);
+        if (this.isOpen()) {
+          this.navigateOptions(-1);
+        } else {
+          this.openDropdown('keyboard', event);
+          // Highlight last available option when opening
+          setTimeout(() => this.highlightLastAvailableOption());
+        }
+        break;
+
+      case 'Escape':
+        if (this.isOpen()) {
+          event.preventDefault();
+          this.closeDropdown('escape', event);
+        }
+        break;
+
+      case 'Home':
+        if (this.isOpen()) {
+          event.preventDefault();
+          this.highlightFirstAvailableOption();
+        }
+        break;
+
+      case 'End':
+        if (this.isOpen()) {
+          event.preventDefault();
+          this.highlightLastAvailableOption();
+        }
+        break;
+
+      case 'PageDown':
+        if (this.isOpen()) {
+          event.preventDefault();
+          this.navigateOptionsBy(5); // Jump by 5 options
+        }
+        break;
+
+      case 'PageUp':
+        if (this.isOpen()) {
+          event.preventDefault();
+          this.navigateOptionsBy(-5); // Jump by 5 options
+        }
+        break;
+
+      case 'Tab':
+        if (this.isOpen()) {
+          this.closeDropdown('blur', event);
+        }
+        break;
+
+      case 'Delete':
+      case 'Backspace':
+        // Remove last selected item in multiple mode when dropdown is closed
+        if (!this.isOpen() && this.multiple() && this.hasSelection()) {
+          event.preventDefault();
+          const selectedOptions = this.selectedOptions();
+          if (selectedOptions.length > 0) {
+            const lastOption = selectedOptions[selectedOptions.length - 1];
+            this.deselectOption(lastOption);
+          }
+        }
+        // Clear all selections with Ctrl modifier
+        else if (event.ctrlKey && this.clearable() && this.hasSelection()) {
+          event.preventDefault();
+          this.clearSelection(event);
+        }
+        break;
+
+      case 'a':
+      case 'A':
+        // Ctrl+A to select all (multiple mode only)
+        if (event.ctrlKey && this.multiple()) {
+          event.preventDefault();
+          this.selectAllAvailableOptions();
+        }
+        break;
+
+      default:
+        // Handle alphanumeric keys for type-ahead search when dropdown is closed
+        if (!this.isOpen() && this.isAlphanumericKey(event.key)) {
+          event.preventDefault();
+          this.handleTypeAhead(event.key);
+        }
         break;
     }
   }
@@ -639,16 +865,53 @@ export class SelectComponent<T = any> implements ControlValueAccessor, OnInit {
         event.preventDefault();
         this.navigateOptions(1);
         break;
+
       case 'ArrowUp':
         event.preventDefault();
         this.navigateOptions(-1);
         break;
+
       case 'Enter':
         event.preventDefault();
         this.selectHighlightedOption();
         break;
+
       case 'Escape':
+        event.preventDefault();
         this.closeDropdown('escape', event);
+        break;
+
+      case 'Tab':
+        // Allow normal tab behavior
+        this.closeDropdown('blur', event);
+        break;
+
+      case 'Home':
+        // Only handle Home if input is empty or cursor is at start
+        const input = event.target as HTMLInputElement;
+        if (input.selectionStart === 0) {
+          event.preventDefault();
+          this.highlightFirstAvailableOption();
+        }
+        break;
+
+      case 'End':
+        // Only handle End if cursor is at end
+        const inputEnd = event.target as HTMLInputElement;
+        if (inputEnd.selectionStart === inputEnd.value.length) {
+          event.preventDefault();
+          this.highlightLastAvailableOption();
+        }
+        break;
+
+      case 'PageDown':
+        event.preventDefault();
+        this.navigateOptionsBy(5);
+        break;
+
+      case 'PageUp':
+        event.preventDefault();
+        this.navigateOptionsBy(-5);
         break;
     }
   }
@@ -668,13 +931,128 @@ export class SelectComponent<T = any> implements ControlValueAccessor, OnInit {
     }
 
     // Skip disabled options
-    while (options[newIndex]?.disabled && newIndex !== this.highlightedIndex()) {
+    let attempts = 0;
+    while (options[newIndex]?.disabled && attempts < options.length) {
       newIndex += direction;
       if (newIndex < 0) newIndex = options.length - 1;
       if (newIndex >= options.length) newIndex = 0;
+      attempts++;
     }
 
-    this.highlightedIndex.set(newIndex);
+    // If all options are disabled, don't change index
+    if (attempts < options.length) {
+      this.highlightedIndex.set(newIndex);
+      this.scrollToHighlightedOption();
+    }
+  }
+
+  /** Navigate by multiple steps */
+  private navigateOptionsBy(steps: number): void {
+    const options = this.flatOptions();
+    if (options.length === 0) return;
+
+    let newIndex = this.highlightedIndex() + steps;
+
+    // Clamp to bounds
+    if (newIndex < 0) {
+      newIndex = 0;
+    } else if (newIndex >= options.length) {
+      newIndex = options.length - 1;
+    }
+
+    // Find nearest non-disabled option
+    while (options[newIndex]?.disabled && newIndex >= 0 && newIndex < options.length) {
+      newIndex += steps > 0 ? -1 : 1;
+    }
+
+    if (newIndex >= 0 && newIndex < options.length && !options[newIndex]?.disabled) {
+      this.highlightedIndex.set(newIndex);
+      this.scrollToHighlightedOption();
+    }
+  }
+
+  /** Highlight first available option */
+  private highlightFirstAvailableOption(): void {
+    const options = this.flatOptions();
+    const firstAvailable = options.findIndex(option => !option.disabled);
+    if (firstAvailable !== -1) {
+      this.highlightedIndex.set(firstAvailable);
+      this.scrollToHighlightedOption();
+    }
+  }
+
+  /** Highlight last available option */
+  private highlightLastAvailableOption(): void {
+    const options = this.flatOptions();
+    for (let i = options.length - 1; i >= 0; i--) {
+      if (!options[i].disabled) {
+        this.highlightedIndex.set(i);
+        this.scrollToHighlightedOption();
+        break;
+      }
+    }
+  }
+
+  /** Scroll highlighted option into view */
+  private scrollToHighlightedOption(): void {
+    setTimeout(() => {
+      const optionsList = this.optionsList()?.nativeElement;
+      if (!optionsList) return;
+
+      const highlightedOption = optionsList.querySelector(
+        '.ds-select-option.highlighted',
+      ) as HTMLElement;
+      if (highlightedOption) {
+        highlightedOption.scrollIntoView({
+          block: 'nearest',
+          behavior: 'smooth',
+        });
+      }
+    });
+  }
+
+  /** Check if key is alphanumeric */
+  private isAlphanumericKey(key: string): boolean {
+    return key.length === 1 && /[a-zA-Z0-9]/.test(key);
+  }
+
+  /** Type ahead functionality */
+  private typeAheadTimeout: number | null = null;
+  private typeAheadString = '';
+
+  private handleTypeAhead(key: string): void {
+    // Clear previous timeout
+    if (this.typeAheadTimeout) {
+      clearTimeout(this.typeAheadTimeout);
+    }
+
+    // Add to search string
+    this.typeAheadString += key.toLowerCase();
+
+    // Find matching option
+    const options = this.flatOptions();
+    const matchingIndex = options.findIndex(
+      option => !option.disabled && option.label.toLowerCase().startsWith(this.typeAheadString),
+    );
+
+    if (matchingIndex !== -1) {
+      // If dropdown is closed, open it and highlight the match
+      if (!this.isOpen()) {
+        this.openDropdown('keyboard');
+        setTimeout(() => {
+          this.highlightedIndex.set(matchingIndex);
+          this.scrollToHighlightedOption();
+        });
+      } else {
+        this.highlightedIndex.set(matchingIndex);
+        this.scrollToHighlightedOption();
+      }
+    }
+
+    // Clear search string after timeout
+    this.typeAheadTimeout = window.setTimeout(() => {
+      this.typeAheadString = '';
+    }, 1000);
   }
 
   /** Select currently highlighted option */
@@ -683,7 +1061,10 @@ export class SelectComponent<T = any> implements ControlValueAccessor, OnInit {
     const options = this.flatOptions();
 
     if (index >= 0 && index < options.length) {
-      this.selectOption(options[index]);
+      const option = options[index];
+      if (!option.disabled) {
+        this.selectOption(option);
+      }
     }
   }
 
@@ -707,6 +1088,68 @@ export class SelectComponent<T = any> implements ControlValueAccessor, OnInit {
       timestamp: Date.now(),
       direction: 'out',
     });
+  }
+
+  /** Handle keyboard events for remove item buttons */
+  onRemoveItemKeydown(event: KeyboardEvent, option: SelectOption<T>): void {
+    switch (event.key) {
+      case 'Enter':
+      case ' ':
+        event.preventDefault();
+        this.deselectOption(option);
+        // Return focus to select trigger
+        this.focusSelect();
+        break;
+      case 'Escape':
+        event.preventDefault();
+        // Return focus to select trigger
+        this.focusSelect();
+        break;
+    }
+  }
+
+  /** Handle keyboard events for clear button */
+  onClearButtonKeydown(event: KeyboardEvent): void {
+    switch (event.key) {
+      case 'Enter':
+      case ' ':
+        event.preventDefault();
+        this.clearSelection(event);
+        break;
+      case 'Escape':
+        event.preventDefault();
+        // Return focus to select trigger
+        this.focusSelect();
+        break;
+    }
+  }
+
+  /** Clear all selections */
+  clearSelection(event?: Event): void {
+    const previousValue = this.internalValue();
+    const previousOptions = this.selectedOptions();
+    const newValue = this.multiple() ? [] : null;
+
+    this.internalValue.set(newValue);
+    this.value.set(newValue);
+    this.onChange(newValue);
+    this.validateSelection(newValue);
+
+    // Emit clear event
+    this.cleared.emit({
+      element: this.selectTrigger().nativeElement,
+      previousValue,
+      previousOptions,
+      timestamp: Date.now(),
+    });
+
+    // Return focus to trigger
+    this.focusSelect();
+
+    // Close dropdown if open
+    if (this.isOpen()) {
+      this.closeDropdown('click', event);
+    }
   }
 
   // =============================================================================
@@ -735,6 +1178,27 @@ export class SelectComponent<T = any> implements ControlValueAccessor, OnInit {
     return -1;
   }
 
+  /** Get option ID for accessibility */
+  getOptionId(group: SelectOptionGroup<T>, optionIndex: number): string {
+    const flatIndex = this.getOptionIndex(group, optionIndex);
+    return `${this.componentId()}-option-${flatIndex}`;
+  }
+
+  /** Get option ARIA label */
+  getOptionAriaLabel(option: SelectOption<T>): string {
+    let label = option.label;
+    if (option.description) {
+      label += `, ${option.description}`;
+    }
+    if (option.disabled) {
+      label += ', disabled';
+    }
+    if (this.multiple() && this.isSelected(option)) {
+      label += ', selected';
+    }
+    return label;
+  }
+
   /** Validate current selection */
   private validateSelection(value: T | T[] | null): void {
     const validation = validateSelectValue(value, this.required());
@@ -745,9 +1209,9 @@ export class SelectComponent<T = any> implements ControlValueAccessor, OnInit {
   // PUBLIC METHODS
   // =============================================================================
 
-  /** Clear all selections */
+  /** Clear all selections (alias for clearSelection) */
   clear(): void {
-    this.updateValue(this.multiple() ? [] : null, this.internalValue(), []);
+    this.clearSelection();
   }
 
   /** Open dropdown programmatically */
@@ -768,5 +1232,13 @@ export class SelectComponent<T = any> implements ControlValueAccessor, OnInit {
   /** Get current validation state */
   getValidationState(): SelectValidation {
     return this.validationState();
+  }
+
+  /** Select all available options in multiple mode */
+  private selectAllAvailableOptions(): void {
+    const options = this.flatOptions();
+    const availableOptions = options.filter(option => !option.disabled);
+    const selectedValues = availableOptions.map(option => option.value);
+    this.updateValue(selectedValues, this.internalValue(), availableOptions);
   }
 }
