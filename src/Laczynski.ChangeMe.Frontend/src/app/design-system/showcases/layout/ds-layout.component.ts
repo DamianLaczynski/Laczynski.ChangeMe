@@ -210,19 +210,19 @@ export class DesignSystemLayoutComponent {
         label: 'Modal',
         path: '/design-system/overlay/modal',
         category: 'overlay',
-        implemented: true,
+        implemented: false,
       },
       {
         label: 'Toast',
         path: '/design-system/overlay/toast',
         category: 'overlay',
-        implemented: true,
+        implemented: false,
       },
       {
         label: 'Alert',
         path: '/design-system/overlay/alert',
         category: 'overlay',
-        implemented: true,
+        implemented: false,
       },
     ],
     foundation: [
