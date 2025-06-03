@@ -10,12 +10,185 @@
 // RADIO CONTAINER
 // =============================================================================
 
-.ds-radio-container {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  font-family: var(--font-family-primary);
-  position: relative;
+.ds-radio {
+  &-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    font-family: var(--font-family-primary);
+    position: relative;
+  }
+
+  // Size variants for the entire component
+  &--sm {
+    .ds-radio__mark {
+      width: 16px;
+      height: 16px;
+      
+      &::after {
+        width: 6px;
+        height: 6px;
+      }
+    }
+    
+    .ds-radio__label {
+      font-size: var(--font-size-sm);
+    }
+
+    .ds-radio {
+      gap: var(--spacing-sm);
+    }
+
+    .ds-radio-group__legend {
+      font-size: var(--font-size-sm);
+    }
+  }
+
+  &--md {
+    .ds-radio__mark {
+      width: 20px;
+      height: 20px;
+      
+      &::after {
+        width: 8px;
+        height: 8px;
+      }
+    }
+    
+    .ds-radio__label {
+      font-size: var(--font-size-base);
+    }
+
+    .ds-radio {
+      gap: var(--spacing-md);
+    }
+
+    .ds-radio-group__legend {
+      font-size: var(--font-size-base);
+    }
+  }
+
+  &--lg {
+    .ds-radio__mark {
+      width: 24px;
+      height: 24px;
+      
+      &::after {
+        width: 10px;
+        height: 10px;
+      }
+    }
+    
+    .ds-radio__label {
+      font-size: var(--font-size-lg);
+    }
+
+    .ds-radio {
+      gap: var(--spacing-lg);
+    }
+
+    .ds-radio-group__legend {
+      font-size: var(--font-size-lg);
+    }
+  }
+
+  // State variants
+  &--focused {
+    .ds-radio__mark {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+  }
+
+  &--has-value {
+    // Specific styling when radio has selection
+    .ds-radio-group__legend {
+      color: var(--color-text);
+    }
+  }
+
+  &--error {
+    .ds-radio__mark {
+      border-color: var(--color-border-error);
+    }
+    
+    .ds-radio__input:checked + .ds-radio__mark {
+      background: var(--color-danger);
+      border-color: var(--color-danger);
+    }
+
+    .ds-radio-group__legend {
+      color: var(--color-danger);
+    }
+  }
+
+  &--success {
+    .ds-radio__mark {
+      border-color: var(--color-success);
+    }
+    
+    .ds-radio__input:checked + .ds-radio__mark {
+      background: var(--color-success);
+      border-color: var(--color-success);
+    }
+
+    .ds-radio-group__legend {
+      color: var(--color-success);
+    }
+  }
+
+  &--warning {
+    .ds-radio__mark {
+      border-color: var(--color-warning);
+    }
+    
+    .ds-radio__input:checked + .ds-radio__mark {
+      background: var(--color-warning);
+      border-color: var(--color-warning);
+    }
+
+    .ds-radio-group__legend {
+      color: var(--color-warning);
+    }
+  }
+
+  &--disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+
+    .ds-radio-group__legend {
+      color: var(--color-text-disabled);
+    }
+
+    .ds-radio__mark {
+      background: var(--color-surface-disabled);
+      border-color: var(--color-border);
+    }
+    
+    .ds-radio__input:checked + .ds-radio__mark {
+      background: var(--color-gray-400);
+      border-color: var(--color-gray-400);
+    }
+  }
+
+  // Variant classes (consistency with other components)
+  &--default {
+    // Default styles already applied in base
+  }
+
+  &--primary {
+    .ds-radio__input:checked + .ds-radio__mark {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+    }
+  }
+
+  &--secondary {
+    .ds-radio__input:checked + .ds-radio__mark {
+      background: var(--color-secondary);
+      border-color: var(--color-secondary);
+    }
+  }
 }
 
 // =============================================================================
@@ -245,46 +418,6 @@
   margin-left: 2px;
   font-weight: var(--font-weight-bold);
   font-size: 1em;
-}
-
-// =============================================================================
-// SIZE VARIANTS
-// =============================================================================
-
-.ds-radio--sm {
-  gap: var(--spacing-sm);
-  
-  .ds-radio__mark {
-    width: 16px;
-    height: 16px;
-    
-    &::after {
-      width: 6px;
-      height: 6px;
-    }
-  }
-  
-  .ds-radio__label {
-    font-size: var(--font-size-sm);
-  }
-}
-
-.ds-radio--lg {
-  gap: var(--spacing-lg);
-  
-  .ds-radio__mark {
-    width: 24px;
-    height: 24px;
-    
-    &::after {
-      width: 10px;
-      height: 10px;
-    }
-  }
-  
-  .ds-radio__label {
-    font-size: var(--font-size-lg);
-  }
 }
 
 // =============================================================================

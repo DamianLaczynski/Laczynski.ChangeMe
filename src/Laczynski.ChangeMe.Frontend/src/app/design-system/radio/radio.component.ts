@@ -163,6 +163,9 @@ export class RadioComponent<T = any> implements ControlValueAccessor, OnInit {
   /** Group name for radio inputs */
   name = input<string>('');
 
+  /** Validation state */
+  state = input<'default' | 'success' | 'warning' | 'error'>('default');
+
   // =============================================================================
   // MODEL & OUTPUTS
   // =============================================================================
@@ -217,11 +220,19 @@ export class RadioComponent<T = any> implements ControlValueAccessor, OnInit {
   containerClasses = computed(() => {
     const classes = ['ds-radio-container'];
 
-    classes.push(`ds-radio-container--${this.size()}`);
-    classes.push(`ds-radio-container--${this.variant()}`);
+    classes.push(`ds-radio--${this.size()}`);
+    classes.push(`ds-radio--${this.variant()}`);
 
-    if (this.disabled()) classes.push('ds-radio-container--disabled');
-    if (!this.validationState().valid) classes.push('ds-radio-container--error');
+    if (this.disabled()) classes.push('ds-radio--disabled');
+    if (!this.validationState().valid) classes.push('ds-radio--error');
+    if (this.internalValue() !== null) classes.push('ds-radio--has-value');
+
+    // State variants
+    const currentState = this.state();
+    if (currentState !== 'default') {
+      classes.push(`ds-radio--${currentState}`);
+    }
+
     if (this.customClasses()) classes.push(this.customClasses());
 
     return classes.join(' ');
@@ -411,9 +422,6 @@ export class RadioComponent<T = any> implements ControlValueAccessor, OnInit {
   getOptionClasses(option: RadioOption<T>): string {
     const classes = ['ds-radio'];
     const optionState = this.optionStates().find(state => state.option.value === option.value);
-
-    classes.push(`ds-radio--${this.size()}`);
-    classes.push(`ds-radio--${this.variant()}`);
 
     if (optionState) {
       classes.push(`ds-radio--${optionState.state}`);
