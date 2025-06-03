@@ -141,12 +141,12 @@ import { ButtonComponent } from '../button';
             <!-- Header Actions -->
             @if (header()!.actions && header()!.actions!.length > 0) {
               <div class="ds-card__header-actions">
-                @for (action of header()!.actions; track action.label) {
+                @for (action of headerActionIcons(); track action.label) {
                   <ds-button
                     [variant]="action.variant || 'ghost'"
                     [size]="action.size || 'sm'"
                     [disabled]="action.disabled || disabled()"
-                    [iconStart]="action.icon || ''"
+                    [iconStart]="action.iconValue"
                     (clicked)="onActionClick(action, $event)"
                   >
                     {{ action.label }}
@@ -221,12 +221,12 @@ import { ButtonComponent } from '../button';
 
             @if (footer()!.actions && footer()!.actions!.length > 0) {
               <div class="ds-card__footer-actions">
-                @for (action of footer()!.actions; track action.label) {
+                @for (action of footerActionIcons(); track action.label) {
                   <ds-button
                     [variant]="action.variant || 'secondary'"
                     [size]="action.size || 'sm'"
                     [disabled]="action.disabled || disabled()"
-                    [iconStart]="action.icon || ''"
+                    [iconStart]="action.iconValue"
                     (clicked)="onActionClick(action, $event)"
                   >
                     {{ action.label }}
@@ -325,6 +325,25 @@ export class CardComponent {
   );
 
   readonly containerClasses = computed(() => getCardClasses(this.config()).join(' '));
+
+  /** Icon values with proper typing */
+  headerActionIcons = computed(() => {
+    const header = this.header();
+    if (!header?.actions) return [];
+    return header.actions.map(action => ({
+      ...action,
+      iconValue: action.icon ? (action.icon as any) : null,
+    }));
+  });
+
+  footerActionIcons = computed(() => {
+    const footer = this.footer();
+    if (!footer?.actions) return [];
+    return footer.actions.map(action => ({
+      ...action,
+      iconValue: action.icon ? (action.icon as any) : null,
+    }));
+  });
 
   // =============================================================================
   // PUBLIC METHODS

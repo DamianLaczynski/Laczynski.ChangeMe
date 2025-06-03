@@ -207,7 +207,7 @@ import { ButtonComponent } from '../button';
                     @if (emptyState().action) {
                       <ds-button
                         [variant]="emptyState().action!.variant || 'primary'"
-                        [iconStart]="emptyState().action!.icon || ''"
+                        [iconStart]="emptyStateIconStart()"
                         (clicked)="emptyState().action!.handler()"
                       >
                         {{ emptyState().action!.label }}
@@ -306,7 +306,7 @@ import { ButtonComponent } from '../button';
               <ds-button
                 variant="ghost"
                 size="sm"
-                iconStart="⟪"
+                [iconStart]="firstPageIcon()"
                 [disabled]="disabled() || isLoading() || currentPage() <= 1"
                 (clicked)="goToPage(1)"
                 ariaLabel="Go to first page"
@@ -314,7 +314,7 @@ import { ButtonComponent } from '../button';
               <ds-button
                 variant="ghost"
                 size="sm"
-                iconStart="⟨"
+                [iconStart]="prevPageIcon()"
                 [disabled]="disabled() || isLoading() || currentPage() <= 1"
                 (clicked)="goToPage(currentPage() - 1)"
                 ariaLabel="Go to previous page"
@@ -335,7 +335,7 @@ import { ButtonComponent } from '../button';
               <ds-button
                 variant="ghost"
                 size="sm"
-                iconStart="⟩"
+                [iconStart]="nextPageIcon()"
                 [disabled]="disabled() || isLoading() || currentPage() >= totalPages()"
                 (clicked)="goToPage(currentPage() + 1)"
                 ariaLabel="Go to next page"
@@ -343,7 +343,7 @@ import { ButtonComponent } from '../button';
               <ds-button
                 variant="ghost"
                 size="sm"
-                iconStart="⟫"
+                [iconStart]="lastPageIcon()"
                 [disabled]="disabled() || isLoading() || currentPage() >= totalPages()"
                 (clicked)="goToPage(totalPages())"
                 ariaLabel="Go to last page"
@@ -600,6 +600,17 @@ export class TableComponent<T = any> implements OnInit, AfterContentInit {
 
   /** Table CSS classes */
   tableClasses = computed(() => getTableClasses(this.config()).join(' '));
+
+  /** Icon values with proper typing */
+  emptyStateIconStart = computed(() => {
+    const action = this.emptyState().action;
+    return action?.icon ? (action.icon as any) : null;
+  });
+
+  firstPageIcon = computed(() => '⟪' as any);
+  prevPageIcon = computed(() => '⟨' as any);
+  nextPageIcon = computed(() => '⟩' as any);
+  lastPageIcon = computed(() => '⟫' as any);
 
   // =============================================================================
   // LIFECYCLE
