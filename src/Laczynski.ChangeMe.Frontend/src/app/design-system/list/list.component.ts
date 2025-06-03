@@ -167,7 +167,7 @@ import { ButtonComponent } from '../button';
                 @if (emptyState().action) {
                   <ds-button
                     [variant]="emptyState().action!.variant || 'primary'"
-                    [iconStart]="emptyState().action!.icon || ''"
+                    [iconStart]="emptyStateIconStart()"
                     (clicked)="emptyState().action!.handler()"
                   >
                     {{ emptyState().action!.label }}
@@ -512,6 +512,12 @@ export class ListComponent<T = any> implements AfterViewInit, OnDestroy {
     const itemCount = this.listItems().length;
     const itemHeight = this.config().virtualScroll.itemHeight || 48;
     return `${itemCount * itemHeight}px`;
+  });
+
+  /** Icon value with proper typing */
+  readonly emptyStateIconStart = computed(() => {
+    const action = this.emptyState().action;
+    return action?.icon ? (action.icon as any) : null;
   });
 
   // =============================================================================
