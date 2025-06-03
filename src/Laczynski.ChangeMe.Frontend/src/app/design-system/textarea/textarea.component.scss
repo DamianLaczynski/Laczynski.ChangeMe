@@ -64,6 +64,13 @@
     }
   }
 
+  &--has-value {
+    // Specific styling when textarea has content
+    .ds-textarea-field {
+      color: var(--color-text);
+    }
+  }
+
   &--error {
     .ds-textarea-wrapper {
       border-color: var(--color-border-error);
@@ -78,6 +85,36 @@
     }
   }
 
+  &--success {
+    .ds-textarea-wrapper {
+      border-color: var(--color-success);
+      
+      &:focus-within {
+        border-color: var(--color-success);
+        box-shadow: var(--focus-shadow);
+      }
+    }
+    
+    .ds-textarea-label {
+      color: var(--color-success);
+    }
+  }
+
+  &--warning {
+    .ds-textarea-wrapper {
+      border-color: var(--color-warning);
+      
+      &:focus-within {
+        border-color: var(--color-warning);
+        box-shadow: var(--focus-shadow);
+      }
+    }
+    
+    .ds-textarea-label {
+      color: var(--color-warning);
+    }
+  }
+
   &--disabled {
     opacity: 0.6;
     
@@ -86,12 +123,37 @@
       border-color: var(--color-border);
       cursor: not-allowed;
     }
+
+    .ds-textarea-label {
+      color: var(--color-text-disabled);
+    }
   }
 
   &--readonly {
     .ds-textarea-wrapper {
       background-color: var(--color-surface-subtle);
       border-style: dashed;
+    }
+
+    .ds-textarea-label {
+      color: var(--color-text-secondary);
+    }
+  }
+
+  // Variant classes (consistency with other components)
+  &--default {
+    // Default styles already applied in base
+  }
+
+  &--primary {
+    &.ds-textarea--focused .ds-textarea-wrapper {
+      border-color: var(--color-primary);
+    }
+  }
+
+  &--secondary {
+    &.ds-textarea--focused .ds-textarea-wrapper {
+      border-color: var(--color-secondary);
     }
   }
 }

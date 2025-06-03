@@ -217,6 +217,9 @@ export class TextareaComponent implements ControlValueAccessor, AfterViewInit {
   /** Custom CSS classes */
   className = input<string>();
 
+  /** Validation state */
+  state = input<'default' | 'success' | 'warning' | 'error'>('default');
+
   // =============================================================================
   // COMPONENT OUTPUTS
   // =============================================================================
@@ -281,7 +284,7 @@ export class TextareaComponent implements ControlValueAccessor, AfterViewInit {
   focused = computed(() => this.focusedSignal());
 
   /** Whether textarea has error */
-  hasError = computed(() => this.errorSignal());
+  hasError = computed(() => this.errorSignal() || this.state() === 'error');
 
   /** Unique element ID */
   elementId = computed(() => this.elementIdSignal());
@@ -306,21 +309,23 @@ export class TextareaComponent implements ControlValueAccessor, AfterViewInit {
 
   /** Container CSS classes */
   containerClasses = computed(() => {
-    const classes: string[] = ['ds-textarea'];
+    const classes = ['ds-textarea-container'];
 
-    // Size classes
     classes.push(`ds-textarea--${this.size()}`);
-
-    // Variant classes
     classes.push(`ds-textarea--${this.variant()}`);
 
-    // State classes
-    if (this.focused()) classes.push('ds-textarea--focused');
-    if (this.hasError()) classes.push('ds-textarea--error');
     if (this.disabled()) classes.push('ds-textarea--disabled');
     if (this.readonly()) classes.push('ds-textarea--readonly');
+    if (this.focused()) classes.push('ds-textarea--focused');
+    if (this.hasError()) classes.push('ds-textarea--error');
+    if (this.currentValue().trim()) classes.push('ds-textarea--has-value');
 
-    // Custom classes
+    // State variants
+    const currentState = this.state();
+    if (currentState !== 'default') {
+      classes.push(`ds-textarea--${currentState}`);
+    }
+
     if (this.className()) classes.push(this.className()!);
 
     return classes.join(' ');
@@ -328,18 +333,15 @@ export class TextareaComponent implements ControlValueAccessor, AfterViewInit {
 
   /** Wrapper CSS classes */
   wrapperClasses = computed(() => {
-    const classes: string[] = [];
+    const classes = ['ds-textarea-wrapper'];
 
-    // State-specific wrapper classes
-    if (this.focused()) classes.push('ds-textarea-wrapper--focused');
-    if (this.hasError()) classes.push('ds-textarea-wrapper--error');
-
+    // State-specific wrapper classes can be added here if needed
     return classes.join(' ');
   });
 
   /** Field CSS classes */
   fieldClasses = computed(() => {
-    const classes: string[] = [];
+    const classes = ['ds-textarea-field'];
 
     // Auto-resize specific class
     if (this.autoResize()) classes.push('ds-textarea-field--auto-resize');
