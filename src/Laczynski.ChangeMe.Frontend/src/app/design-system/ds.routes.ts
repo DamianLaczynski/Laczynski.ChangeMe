@@ -10,8 +10,6 @@ import { CheckboxShowcaseComponent } from './checkbox/checkbox-showcase.componen
 import { RadioShowcaseComponent } from './radio/radio-showcase.component';
 import { SwitchShowcaseComponent } from './switch';
 import { TableShowcaseComponent } from './table';
-import { ListShowcaseComponent } from './list';
-import { CardShowcaseComponent } from './card';
 import { OverviewComponent } from './showcases/overview';
 import { ButtonShowcaseComponent } from './button';
 import { DesignSystemLayoutComponent } from './showcases/layout/ds-layout.component';
@@ -87,16 +85,6 @@ export const DS_ROUTES: Routes = [
       {
         path: 'data/table',
         component: TableShowcaseComponent,
-      },
-
-      {
-        path: 'data/list',
-        component: ListShowcaseComponent,
-      },
-
-      {
-        path: 'data/card',
-        component: CardShowcaseComponent,
       },
 
       // =============================================================================

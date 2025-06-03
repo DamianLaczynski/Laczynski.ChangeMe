@@ -164,13 +164,7 @@ export class DesignSystemLayoutComponent {
         label: 'List',
         path: '/design-system/data/list',
         category: 'data',
-        implemented: true,
-      },
-      {
-        label: 'Card',
-        path: '/design-system/data/card',
-        category: 'data',
-        implemented: true,
+        implemented: false,
       },
     ],
     layout: [
