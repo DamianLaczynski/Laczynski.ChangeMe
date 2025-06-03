@@ -225,7 +225,7 @@ export class InputComponent implements ControlValueAccessor, OnInit {
   type = input<InputType>('text');
 
   /** Input size */
-  size = input<ComponentSize>('md');
+  size = input<ComponentSize>('sm');
 
   /** Input label */
   label = input<string>('');

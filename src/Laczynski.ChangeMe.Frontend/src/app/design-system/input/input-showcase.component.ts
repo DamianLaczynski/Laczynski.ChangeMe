@@ -111,7 +111,6 @@ interface InputInteractiveConfig {
                 [label]="getTypeLabel(type)"
                 [placeholder]="getPlaceholderForType(type)"
                 [value]="''"
-                size="md"
               />
             </div>
           }
@@ -144,13 +143,7 @@ interface InputInteractiveConfig {
           <!-- Default -->
           <div class="showcase-item">
             <h3>Default</h3>
-            <ds-input
-              type="text"
-              label="Default Input"
-              placeholder="Enter text..."
-              [value]="''"
-              size="md"
-            />
+            <ds-input type="text" label="Default Input" placeholder="Enter text..." [value]="''" />
           </div>
 
           <!-- With Value -->
@@ -161,7 +154,6 @@ interface InputInteractiveConfig {
               label="Input with Value"
               placeholder="Enter text..."
               value="Sample text"
-              size="md"
             />
           </div>
 
@@ -173,7 +165,6 @@ interface InputInteractiveConfig {
               label="Disabled Input"
               placeholder="Cannot edit..."
               [value]="''"
-              size="md"
               [disabled]="true"
             />
           </div>
@@ -185,7 +176,6 @@ interface InputInteractiveConfig {
               type="text"
               label="Readonly Input"
               value="Read only value"
-              size="md"
               [readonly]="true"
             />
           </div>
@@ -198,7 +188,6 @@ interface InputInteractiveConfig {
               label="Required Input"
               placeholder="This field is required"
               [value]="''"
-              size="md"
               [required]="true"
             />
           </div>
@@ -212,7 +201,6 @@ interface InputInteractiveConfig {
               placeholder="Enter text..."
               helperText="This is helpful information about the input"
               [value]="''"
-              size="md"
             />
           </div>
         </div>
@@ -231,7 +219,6 @@ interface InputInteractiveConfig {
               placeholder="Enter email..."
               startIcon="📧"
               [value]="''"
-              size="md"
             />
           </div>
 
@@ -244,7 +231,6 @@ interface InputInteractiveConfig {
               placeholder="Type to see clear button..."
               value="Clear me!"
               [clearable]="true"
-              size="md"
             />
           </div>
 
@@ -256,7 +242,6 @@ interface InputInteractiveConfig {
               label="Password"
               placeholder="Enter password..."
               value="secretpassword"
-              size="md"
             />
           </div>
 
@@ -270,7 +255,6 @@ interface InputInteractiveConfig {
               value="Type here"
               [maxLength]="50"
               [showCounter]="true"
-              size="md"
             />
           </div>
 
@@ -284,7 +268,6 @@ interface InputInteractiveConfig {
               startIcon="🔍"
               [clearable]="true"
               [value]="''"
-              size="md"
             />
           </div>
 
@@ -299,7 +282,6 @@ interface InputInteractiveConfig {
               [max]="100"
               [step]="1"
               [value]="''"
-              size="md"
             />
           </div>
         </div>

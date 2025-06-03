@@ -327,7 +327,7 @@
 
 @include mixins.respond-to("sm") {
   .ds-button--sm {
-    @include mixins.button-size("md");
+    @include mixins.button-size("sm");
   }
 }
 
