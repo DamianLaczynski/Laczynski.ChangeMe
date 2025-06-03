@@ -69,7 +69,7 @@ import {
   ],
   template: `
     <div class="ds-switch-container" [class]="containerClasses()">
-      <label class="ds-switch" [class.ds-switch--disabled]="disabled()">
+      <label class="ds-switch" [class]="switchClasses()">
         <input
           #switchInput
           type="checkbox"
@@ -209,9 +209,21 @@ export class SwitchComponent implements ControlValueAccessor {
   containerClasses = computed(() => {
     const classes = ['ds-switch-container'];
 
-    if (this.className()) {
-      classes.push(this.className()!);
-    }
+    classes.push(`ds-switch--${this.size()}`);
+    classes.push(`ds-switch--${this.variant()}`);
+
+    if (this.disabled()) classes.push('ds-switch--disabled');
+    if (this.hasError()) classes.push('ds-switch--error');
+    if (this.className()) classes.push(this.className()!);
+
+    return classes.join(' ');
+  });
+
+  /** Switch CSS classes */
+  switchClasses = computed(() => {
+    const classes = ['ds-switch'];
+
+    if (this.disabled()) classes.push('ds-switch--disabled');
 
     return classes.join(' ');
   });
@@ -220,45 +232,10 @@ export class SwitchComponent implements ControlValueAccessor {
   trackClasses = computed(() => {
     const classes = ['ds-switch__track'];
 
-    classes.push(`ds-switch__track--${this.size()}`);
-    classes.push(`ds-switch__track--${this.variant()}`);
-
-    if (this.checked()) {
-      classes.push('ds-switch__track--checked');
-    }
-
-    if (this.disabled()) {
-      classes.push('ds-switch__track--disabled');
-    }
-
-    if (this.readonly()) {
-      classes.push('ds-switch__track--readonly');
-    }
-
-    if (this.focused()) {
-      classes.push('ds-switch__track--focused');
-    }
-
-    if (this.hasError()) {
-      classes.push('ds-switch__track--error');
-    }
-
-    return classes.join(' ');
-  });
-
-  /** Thumb CSS classes */
-  thumbClasses = computed(() => {
-    const classes = ['ds-switch-thumb'];
-
-    classes.push(`ds-switch-thumb--${this.size()}`);
-
-    if (this.checked()) {
-      classes.push('ds-switch-thumb--checked');
-    }
-
-    if (this.disabled()) {
-      classes.push('ds-switch-thumb--disabled');
-    }
+    if (this.checked()) classes.push('ds-switch__track--checked');
+    if (this.disabled()) classes.push('ds-switch__track--disabled');
+    if (this.readonly()) classes.push('ds-switch__track--readonly');
+    if (this.hasError()) classes.push('ds-switch__track--error');
 
     return classes.join(' ');
   });

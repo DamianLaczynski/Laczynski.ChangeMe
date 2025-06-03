@@ -178,7 +178,7 @@ export class CheckboxComponent<T = any> implements ControlValueAccessor, OnInit 
   variant = input<CheckboxVariant>('default');
 
   /** Checkbox size */
-  size = input<ComponentSize>('md');
+  size = input<ComponentSize>('sm');
 
   /** Checkbox label */
   label = input<string>('');
