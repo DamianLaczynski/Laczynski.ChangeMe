@@ -112,7 +112,6 @@ interface SelectInteractiveConfig {
                 placeholder="Choose..."
                 [options]="basicOptions"
                 [value]="null"
-                size="md"
               />
             </div>
           }
@@ -151,7 +150,6 @@ interface SelectInteractiveConfig {
               placeholder="Choose an option..."
               [options]="basicOptions"
               [value]="null"
-              size="md"
             />
           </div>
 
@@ -163,7 +161,6 @@ interface SelectInteractiveConfig {
               placeholder="Choose an option..."
               [options]="basicOptions"
               [value]="basicOptions[1].value"
-              size="md"
             />
           </div>
 
@@ -175,7 +172,6 @@ interface SelectInteractiveConfig {
               placeholder="Cannot select..."
               [options]="basicOptions"
               [value]="null"
-              size="md"
               [disabled]="true"
             />
           </div>
@@ -188,7 +184,6 @@ interface SelectInteractiveConfig {
               placeholder="This field is required"
               [options]="basicOptions"
               [value]="null"
-              size="md"
               [required]="true"
             />
           </div>
@@ -202,7 +197,6 @@ interface SelectInteractiveConfig {
               helperText="This is helpful information about the select"
               [options]="basicOptions"
               [value]="null"
-              size="md"
             />
           </div>
 
@@ -214,7 +208,6 @@ interface SelectInteractiveConfig {
               placeholder="Loading options..."
               [options]="[]"
               [value]="null"
-              size="md"
               [loading]="true"
             />
           </div>
@@ -233,7 +226,6 @@ interface SelectInteractiveConfig {
               placeholder="Search and select..."
               [options]="countryOptions"
               [value]="null"
-              size="md"
               [searchable]="true"
             />
           </div>
@@ -246,7 +238,6 @@ interface SelectInteractiveConfig {
               placeholder="Select technologies..."
               [options]="techOptions"
               [value]="[]"
-              size="md"
               [multiple]="true"
               [showSelectedItems]="true"
             />
@@ -260,7 +251,6 @@ interface SelectInteractiveConfig {
               placeholder="Select language..."
               [options]="groupedOptions"
               [value]="null"
-              size="md"
             />
           </div>
 
@@ -272,7 +262,6 @@ interface SelectInteractiveConfig {
               placeholder="Choose user..."
               [options]="userOptions"
               [value]="null"
-              size="md"
             />
           </div>
 
@@ -284,7 +273,6 @@ interface SelectInteractiveConfig {
               placeholder="Select up to 3 skills..."
               [options]="skillOptions"
               [value]="[]"
-              size="md"
               [multiple]="true"
               [maxSelections]="3"
               [showSelectedItems]="true"
@@ -299,7 +287,6 @@ interface SelectInteractiveConfig {
               placeholder="Search and select cities..."
               [options]="cityOptions"
               [value]="[]"
-              size="md"
               [multiple]="true"
               [searchable]="true"
               [showSelectedItems]="true"

@@ -96,7 +96,7 @@ import {
 
           <!-- Loading Indicator -->
           @if (loading()) {
-            <span class="ds-select-loading" aria-label="Loading">⟳</span>
+            <span class="ds-select-loading" aria-label="Loading"> </span>
           } @else {
             <!-- Dropdown Arrow -->
             <span class="ds-select-arrow" [class.open]="isOpen()">▼</span>
@@ -228,7 +228,7 @@ export class SelectComponent<T = any> implements ControlValueAccessor, OnInit {
   variant = input<SelectVariant>('default');
 
   /** Select size */
-  size = input<ComponentSize>('md');
+  size = input<ComponentSize>('sm');
 
   /** Select label */
   label = input<string>('');
@@ -397,6 +397,8 @@ export class SelectComponent<T = any> implements ControlValueAccessor, OnInit {
     if (this.disabled()) classes.push('ds-select--disabled');
     if (this.loading()) classes.push('ds-select--loading');
     if (this.isOpen()) classes.push('ds-select--open');
+    if (this.isOpen()) classes.push('ds-select--focused');
+    if (this.hasSelection()) classes.push('ds-select--has-value');
     if (!this.validationState().valid) classes.push('ds-select--error');
     if (this.multiple()) classes.push('ds-select--multiple');
     if (this.customClasses()) classes.push(this.customClasses());
