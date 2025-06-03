@@ -7,46 +7,304 @@
 @use "../../../styles/abstracts/mixins";
 
 // =============================================================================
+// BUTTON CONTAINER (for consistency)
+// =============================================================================
+
+.ds-button {
+  &-host {
+    display: inline-block;
+    
+    &--loading {
+      .ds-button {
+        pointer-events: none;
+      }
+    }
+    
+    &--disabled {
+      .ds-button {
+        pointer-events: none;
+      }
+    }
+  }
+
+  // Size variants
+  &--sm {
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-xs) var(--spacing-md);
+    min-height: var(--input-height-sm);
+    gap: var(--spacing-xs);
+    border-radius: var(--border-radius-md);
+    
+    .ds-button__spinner {
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  &--md {
+    font-size: var(--font-size-base);
+    padding: var(--spacing-sm) var(--spacing-lg);
+    min-height: var(--input-height-md);
+    gap: var(--spacing-sm);
+    border-radius: var(--border-radius-md);
+    
+    .ds-button__spinner {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &--lg {
+    font-size: var(--font-size-lg);
+    padding: var(--spacing-md) var(--spacing-xl);
+    min-height: var(--input-height-lg);
+    gap: var(--spacing-md);
+    border-radius: var(--border-radius-lg);
+    
+    .ds-button__spinner {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  // State variants
+  &--loading {
+    cursor: wait;
+    
+    .ds-button__content {
+      opacity: 0.7;
+    }
+    
+    .ds-button__spinner {
+      opacity: 1;
+    }
+  }
+
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    pointer-events: none;
+    background: var(--color-surface-disabled) !important;
+    color: var(--color-text-disabled) !important;
+    border-color: var(--color-border) !important;
+  }
+
+  &--full-width {
+    width: 100%;
+    justify-content: center;
+  }
+
+  &--focused {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  &--hovered {
+    // Enhanced hover state handled in variants
+  }
+
+  &--active {
+    transform: scale(0.98);
+  }
+
+  // Additional state styling (subtle)
+  &--state-success {
+    border-color: var(--color-success);
+  }
+
+  &--state-warning {
+    border-color: var(--color-warning);
+  }
+
+  &--state-error {
+    border-color: var(--color-danger);
+  }
+
+  // =============================================================================
+  // VARIANT STYLES
+  // =============================================================================
+
+  &--default {
+    background: var(--color-surface);
+    color: var(--color-text);
+    border-color: var(--color-border);
+    
+    &:hover:not(.ds-button--disabled) {
+      background: var(--color-surface-hover);
+      border-color: var(--color-border-hover);
+    }
+    
+    &:active:not(.ds-button--disabled) {
+      background: var(--color-surface-hover);
+    }
+  }
+
+  &--primary {
+    background: var(--color-primary);
+    color: var(--color-text-on-primary);
+    border-color: var(--color-primary);
+    
+    &:hover:not(.ds-button--disabled) {
+      background: var(--color-primary-hover);
+      border-color: var(--color-primary-hover);
+    }
+    
+    &:active:not(.ds-button--disabled) {
+      background: var(--color-primary-active);
+      border-color: var(--color-primary-active);
+    }
+  }
+
+  &--secondary {
+    background: transparent;
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+    
+    &:hover:not(.ds-button--disabled) {
+      background: var(--color-primary-light);
+      border-color: var(--color-primary);
+    }
+    
+    &:active:not(.ds-button--disabled) {
+      background: var(--color-primary-light);
+      border-color: var(--color-primary);
+    }
+  }
+
+  &--success {
+    background: var(--color-success);
+    color: var(--color-text-on-primary);
+    border-color: var(--color-success);
+    
+    &:hover:not(.ds-button--disabled) {
+      background: var(--color-success-hover);
+      border-color: var(--color-success-hover);
+    }
+    
+    &:active:not(.ds-button--disabled) {
+      background: var(--color-success-active);
+      border-color: var(--color-success-active);
+    }
+  }
+
+  &--warning {
+    background: var(--color-warning);
+    color: var(--color-gray-900);
+    border-color: var(--color-warning);
+    
+    &:hover:not(.ds-button--disabled) {
+      background: var(--color-warning-hover);
+      border-color: var(--color-warning-hover);
+    }
+    
+    &:active:not(.ds-button--disabled) {
+      background: var(--color-warning-active);
+      border-color: var(--color-warning-active);
+    }
+  }
+
+  &--danger {
+    background: var(--color-danger);
+    color: var(--color-text-on-primary);
+    border-color: var(--color-danger);
+    
+    &:hover:not(.ds-button--disabled) {
+      background: var(--color-danger-hover);
+      border-color: var(--color-danger-hover);
+    }
+    
+    &:active:not(.ds-button--disabled) {
+      background: var(--color-danger-active);
+      border-color: var(--color-danger-active);
+    }
+  }
+
+  &--info {
+    background: var(--color-info);
+    color: var(--color-text-on-primary);
+    border-color: var(--color-info);
+    
+    &:hover:not(.ds-button--disabled) {
+      background: var(--color-info-hover);
+      border-color: var(--color-info-hover);
+    }
+    
+    &:active:not(.ds-button--disabled) {
+      background: var(--color-info-active);
+      border-color: var(--color-info-active);
+    }
+  }
+
+  &--ghost {
+    background: transparent;
+    color: var(--color-text);
+    border-color: transparent;
+    
+    &:hover:not(.ds-button--disabled) {
+      background: var(--color-surface-hover);
+      border-color: var(--color-border);
+    }
+    
+    &:active:not(.ds-button--disabled) {
+      background: var(--color-surface-hover);
+      border-color: var(--color-border);
+    }
+  }
+
+  &--link {
+    background: transparent;
+    color: var(--color-primary);
+    border-color: transparent;
+    padding-left: var(--spacing-xs);
+    padding-right: var(--spacing-xs);
+    min-height: auto;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    transition: all var(--transition-fast);
+    
+    &:hover:not(.ds-button--disabled) {
+      color: var(--color-primary-hover);
+      text-decoration-color: currentColor;
+      border-color: transparent;
+    }
+    
+    &:active:not(.ds-button--disabled) {
+      color: var(--color-primary-active);
+      background: var(--color-primary-light);
+    }
+  }
+}
+
+// =============================================================================
 // BASE BUTTON STYLES
 // =============================================================================
 
 .ds-button {
-  @include mixins.button-base;
-  
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--spacing-xs);
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-normal);
   border: 1px solid var(--color-border);
-  border-radius: var(--border-radius-md);
-  background: var(--color-surface);
-  color: var(--color-text);
   text-decoration: none;
   cursor: pointer;
   transition: all var(--transition-fast);
   user-select: none;
-  
-  &:hover:not(:disabled) {
-    background: var(--color-surface-hover);
-    border-color: var(--color-border-hover);
-  }
   
   &:focus-visible {
     outline: 2px solid var(--color-primary);
     outline-offset: 2px;
   }
   
-  &:active:not(:disabled) {
-    background: var(--color-surface-hover);
-    transform: scale(0.98);
-  }
-  
   &__content {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: var(--spacing-xs);
+    gap: inherit;
   }
   
   &__icon {
@@ -67,287 +325,60 @@
   }
   
   &__spinner {
-    @include mixins.spinner(16px, 2px, currentColor);
+    display: inline-block;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
     margin-right: 0;
-  }
-}
 
-// =============================================================================
-// SIZE VARIANTS
-// =============================================================================
-
-.ds-button--sm {
-  @include mixins.button-size("sm");
-  border-radius: var(--border-radius-sm);
-  
-  .ds-button__spinner {
-    @include mixins.spinner(14px, 2px, currentColor);
-  }
-}
-
-.ds-button--md {
-  @include mixins.button-size("md");
-  border-radius: var(--border-radius-md);
-  
-  .ds-button__spinner {
-    @include mixins.spinner(16px, 2px, currentColor);
-  }
-}
-
-.ds-button--lg {
-  @include mixins.button-size("lg");
-  border-radius: var(--border-radius-lg);
-  
-  .ds-button__spinner {
-    @include mixins.spinner(18px, 2px, currentColor);
-  }
-}
-
-// =============================================================================
-// STYLE VARIANTS - Clean Design
-// =============================================================================
-
-// Primary Button
-.ds-button--primary {
-  background: var(--color-primary);
-  color: var(--color-text-on-primary);
-  border-color: var(--color-primary);
-  
-  &:hover:not(:disabled) {
-    background: var(--color-primary-hover);
-    border-color: var(--color-primary-hover);
-  }
-  
-  &:active:not(:disabled) {
-    background: var(--color-primary-active);
-    border-color: var(--color-primary-active);
-  }
-}
-
-// Secondary Button
-.ds-button--secondary {
-  background: transparent;
-  color: var(--color-primary);
-  border-color: var(--color-primary);
-  
-  &:hover:not(:disabled) {
-    background: var(--color-primary-light);
-    border-color: var(--color-primary);
-  }
-  
-  &:active:not(:disabled) {
-    background: var(--color-primary-light);
-    border-color: var(--color-primary);
-  }
-}
-
-// Success Button
-.ds-button--success {
-  background: var(--color-success);
-  color: var(--color-text-on-primary);
-  border-color: var(--color-success);
-  
-  &:hover:not(:disabled) {
-    background: var(--color-success-hover);
-    border-color: var(--color-success-hover);
-  }
-  
-  &:active:not(:disabled) {
-    background: var(--color-success-active);
-    border-color: var(--color-success-active);
-  }
-}
-
-// Warning Button
-.ds-button--warning {
-  background: var(--color-warning);
-  color: var(--color-gray-900);
-  border-color: var(--color-warning);
-  
-  &:hover:not(:disabled) {
-    background: var(--color-warning-hover);
-    border-color: var(--color-warning-hover);
-  }
-  
-  &:active:not(:disabled) {
-    background: var(--color-warning-active);
-    border-color: var(--color-warning-active);
-  }
-}
-
-// Danger Button
-.ds-button--danger {
-  background: var(--color-danger);
-  color: var(--color-text-on-primary);
-  border-color: var(--color-danger);
-  
-  &:hover:not(:disabled) {
-    background: var(--color-danger-hover);
-    border-color: var(--color-danger-hover);
-  }
-  
-  &:active:not(:disabled) {
-    background: var(--color-danger-active);
-    border-color: var(--color-danger-active);
-  }
-}
-
-// Info Button
-.ds-button--info {
-  background: var(--color-info);
-  color: var(--color-text-on-primary);
-  border-color: var(--color-info);
-  
-  &:hover:not(:disabled) {
-    background: var(--color-info-hover);
-    border-color: var(--color-info-hover);
-  }
-  
-  &:active:not(:disabled) {
-    background: var(--color-info-active);
-    border-color: var(--color-info-active);
-  }
-}
-
-// Ghost Button
-.ds-button--ghost {
-  background: transparent;
-  color: var(--color-text);
-  border-color: transparent;
-  
-  &:hover:not(:disabled) {
-    background: var(--color-surface-hover);
-    border-color: var(--color-border);
-  }
-  
-  &:active:not(:disabled) {
-    background: var(--color-surface-hover);
-    border-color: var(--color-border);
-  }
-}
-
-// Link Button
-.ds-button--link {
-  background: transparent;
-  color: var(--color-primary);
-  border-color: transparent;
-  padding-left: var(--spacing-xs);
-  padding-right: var(--spacing-xs);
-  min-height: auto;
-  text-decoration: underline;
-  text-decoration-color: transparent;
-  text-underline-offset: 3px;
-  text-decoration-thickness: 1px;
-  transition: all var(--transition-fast);
-  
-  &:hover:not(:disabled) {
-    color: var(--color-primary-hover);
-    text-decoration-color: currentColor;
-    background: var(--color-primary-light);
-    border-radius: var(--border-radius-sm);
-  }
-  
-  &:active:not(:disabled) {
-    color: var(--color-primary-active);
-    background: var(--color-primary-light);
-  }
-}
-
-// =============================================================================
-// STATE MODIFIERS
-// =============================================================================
-
-// Loading State
-.ds-button--loading {
-  cursor: wait;
-  
-  .ds-button__content {
-    opacity: 0.7;
-  }
-  
-  .ds-button__spinner {
-    opacity: 1;
-  }
-}
-
-// Disabled State
-.ds-button--disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-  pointer-events: none;
-  background: var(--color-surface-disabled) !important;
-  color: var(--color-text-disabled) !important;
-  border-color: var(--color-border) !important;
-}
-
-// Full Width
-.ds-button--full-width {
-  width: 100%;
-  justify-content: center;
-}
-
-// Interactive States
-.ds-button--focused {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-}
-
-.ds-button--hovered {
-  // Enhanced hover state
-  // Base hover styles are already in variants
-}
-
-.ds-button--active {
-  transform: scale(0.98);
-}
-
-// =============================================================================
-// HOST COMPONENT MODIFIERS
-// =============================================================================
-
-.ds-button-host {
-  display: inline-block;
-  
-  &--loading {
-    .ds-button {
-      pointer-events: none;
-    }
-  }
-  
-  &--disabled {
-    .ds-button {
-      pointer-events: none;
+    &-icon {
+      display: none;
     }
   }
 }
 
 // =============================================================================
-// RESPONSIVE ADJUSTMENTS
+// ANIMATIONS
 // =============================================================================
 
-@include mixins.respond-to("sm") {
-  .ds-button--sm {
-    @include mixins.button-size("sm");
-  }
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 // =============================================================================
 // ACCESSIBILITY ENHANCEMENTS
 // =============================================================================
 
-.ds-button {
-  &:focus-visible {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 2px;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .ds-button {
     transition: none;
     
-    &:active:not(:disabled) {
+    &--active {
       transform: none;
     }
+    
+    &__spinner {
+      animation: none;
+    }
+  }
+}
+
+// =============================================================================
+// RESPONSIVE DESIGN
+// =============================================================================
+
+@include mixins.respond-to("sm") {
+  .ds-button--sm {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+  
+  .ds-button--md {
+    padding: var(--spacing-md) var(--spacing-lg);
+  }
+  
+  .ds-button--lg {
+    padding: var(--spacing-lg) var(--spacing-xl);
   }
 } 

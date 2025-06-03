@@ -72,11 +72,7 @@ interface ButtonInteractiveConfig {
             <div class="showcase-item">
               <h3>{{ variant.label }}</h3>
               <p>{{ variant.description }}</p>
-              <ds-button
-                [variant]="variant.name"
-                [size]="'md'"
-                (clicked)="handleVariantClick(variant.name)"
-              >
+              <ds-button [variant]="variant.name" (clicked)="handleVariantClick(variant.name)">
                 {{ variant.label }} Button
               </ds-button>
             </div>
@@ -151,7 +147,7 @@ interface ButtonInteractiveConfig {
           [disabled]="interactiveButtonConfig().disabled"
           [loading]="interactiveButtonConfig().loading"
           [fullWidth]="interactiveButtonConfig().fullWidth"
-          [iconStart]="interactiveButtonConfig().icon || ''"
+          [iconStart]="iconStartValue()"
           (clicked)="handleInteractiveClick($event)"
         >
           {{ buttonText() }}
@@ -226,6 +222,11 @@ export class ButtonShowcaseComponent implements ShowcaseComponent {
     const variant = config.variant;
     const size = config.size;
     return `${variant.charAt(0).toUpperCase() + variant.slice(1)} ${size.toUpperCase()} Button`;
+  });
+
+  iconStartValue = computed(() => {
+    const icon = this.interactiveButtonConfig().icon;
+    return icon && icon.trim() ? (icon as any) : null;
   });
 
   // =============================================================================

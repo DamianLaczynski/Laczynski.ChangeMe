@@ -13,6 +13,8 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 
+import { IconComponent, IconName, IconSize } from '../shared/icon/icon.component';
+
 import {
   ComponentSize,
   ComponentVariant,
@@ -84,7 +86,7 @@ export interface ButtonConfig {
 @Component({
   selector: 'ds-button',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, IconComponent],
   template: `
     <button
       #buttonRef
@@ -120,12 +122,13 @@ export interface ButtonConfig {
       }
 
       @if (iconStart() && !loading()) {
-        <span
+        <app-icon
+          [name]="iconStart()!"
+          [size]="getIconSize()"
           class="ds-button__icon ds-button__icon--start"
-          aria-hidden="true"
-          [innerHTML]="iconStart()"
+          [decorative]="true"
         >
-        </span>
+        </app-icon>
       }
 
       <span
@@ -136,12 +139,13 @@ export interface ButtonConfig {
       </span>
 
       @if (iconEnd() && !loading()) {
-        <span
+        <app-icon
+          [name]="iconEnd()!"
+          [size]="getIconSize()"
           class="ds-button__icon ds-button__icon--end"
-          aria-hidden="true"
-          [innerHTML]="iconEnd()"
+          [decorative]="true"
         >
-        </span>
+        </app-icon>
       }
     </button>
   `,
@@ -166,7 +170,7 @@ export class ButtonComponent {
   variant = input<ComponentVariant>('primary');
 
   /** Button size */
-  size = input<ComponentSize>('md');
+  size = input<ComponentSize>('sm');
 
   /** Button type attribute */
   type = input<'button' | 'submit' | 'reset'>('button');
@@ -184,10 +188,10 @@ export class ButtonComponent {
   hideContentOnLoading = input<boolean>(false);
 
   /** Icon to display at start of button */
-  iconStart = input<string>('');
+  iconStart = input<IconName | null>(null);
 
   /** Icon to display at end of button */
-  iconEnd = input<string>('');
+  iconEnd = input<IconName | null>(null);
 
   /** Full width button */
   fullWidth = input<boolean>(false);
@@ -215,6 +219,9 @@ export class ButtonComponent {
 
   /** Loading ARIA label */
   loadingAriaLabel = input<string>('Loading...');
+
+  /** Visual state for additional styling */
+  state = input<'default' | 'success' | 'warning' | 'error'>('default');
 
   // =============================================================================
   // OUTPUT SIGNALS
@@ -288,33 +295,27 @@ export class ButtonComponent {
 
   /** Computed CSS classes */
   computedClasses = computed(() => {
-    const classes = ['ds-button', `ds-button--${this.variant()}`, `ds-button--${this.size()}`];
+    const classes = ['ds-button'];
 
-    if (this.fullWidth()) {
-      classes.push('ds-button--full-width');
+    classes.push(`ds-button--${this.size()}`);
+    classes.push(`ds-button--${this.variant()}`);
+
+    if (this.fullWidth()) classes.push('ds-button--full-width');
+    if (this.loading()) classes.push('ds-button--loading');
+    if (this.computedDisabled()) classes.push('ds-button--disabled');
+    if (this.componentState().isFocused) classes.push('ds-button--focused');
+    if (this.componentState().isHovered) classes.push('ds-button--hovered');
+    if (this.componentState().isActive) classes.push('ds-button--active');
+
+    // State for additional styling (subtle override)
+    const currentState = this.state();
+    if (currentState !== 'default') {
+      classes.push(`ds-button--state-${currentState}`);
     }
 
-    if (this.loading()) {
-      classes.push('ds-button--loading');
-    }
+    if (this.customClasses()) classes.push(this.customClasses());
 
-    if (this.computedDisabled()) {
-      classes.push('ds-button--disabled');
-    }
-
-    if (this.componentState().isFocused) {
-      classes.push('ds-button--focused');
-    }
-
-    if (this.componentState().isHovered) {
-      classes.push('ds-button--hovered');
-    }
-
-    if (this.componentState().isActive) {
-      classes.push('ds-button--active');
-    }
-
-    return mergeClasses(...classes, this.customClasses());
+    return classes.join(' ');
   });
 
   // =============================================================================
@@ -389,6 +390,23 @@ export class ButtonComponent {
    */
   getState(): ComponentState {
     return { ...this.componentState() };
+  }
+
+  /**
+   * Get icon size
+   */
+  getIconSize(): IconSize {
+    const size = this.size();
+    switch (size) {
+      case 'sm':
+        return 'sm';
+      case 'md':
+        return 'md';
+      case 'lg':
+        return 'lg';
+      default:
+        return 'md';
+    }
   }
 
   // =============================================================================
