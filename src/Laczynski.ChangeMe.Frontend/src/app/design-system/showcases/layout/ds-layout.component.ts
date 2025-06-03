@@ -152,7 +152,7 @@ export class DesignSystemLayoutComponent {
         label: 'Tree',
         path: '/design-system/data/tree',
         category: 'data',
-        implemented: false,
+        implemented: true,
       },
       {
         label: 'Table',

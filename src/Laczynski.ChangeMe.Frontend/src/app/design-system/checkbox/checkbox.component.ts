@@ -380,6 +380,18 @@ export class CheckboxComponent<T = any> implements ControlValueAccessor, OnInit 
         size: this.size(),
       }));
     });
+
+    // Synchronize internal state with model value
+    effect(() => {
+      const currentValue = this.value();
+      if (this.isGroup()) {
+        const arrayValue = Array.isArray(currentValue) ? currentValue : [];
+        this.internalSelectedValues.set(arrayValue);
+      } else {
+        const booleanValue = Boolean(currentValue);
+        this.internalChecked.set(booleanValue);
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -478,7 +490,7 @@ export class CheckboxComponent<T = any> implements ControlValueAccessor, OnInit 
       timestamp: Date.now(),
       value: newValue,
       previousValue,
-      checked: newValue,
+      checked: this.isGroup() ? Array.isArray(newValue) : Boolean(newValue),
       source,
       isSelectAll,
     };

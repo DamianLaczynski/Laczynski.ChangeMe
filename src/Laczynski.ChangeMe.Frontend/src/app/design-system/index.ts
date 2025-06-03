@@ -12,6 +12,7 @@ export * from './select';
 export * from './checkbox';
 export * from './radio';
 export * from './table';
+export * from './tree';
 
 // =============================================================================
 // MODELS & TYPES
