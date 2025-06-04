@@ -13,6 +13,7 @@ export * from './checkbox';
 export * from './radio';
 export * from './table';
 export * from './tree';
+export * from './splitter';
 
 // =============================================================================
 // MODELS & TYPES

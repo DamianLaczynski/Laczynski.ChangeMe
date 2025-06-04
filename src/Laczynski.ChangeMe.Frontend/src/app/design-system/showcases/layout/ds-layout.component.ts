@@ -190,7 +190,7 @@ export class DesignSystemLayoutComponent {
         label: 'Splitter',
         path: '/design-system/layout/splitter',
         category: 'layout',
-        implemented: false,
+        implemented: true,
       },
       {
         label: 'Tabs',
