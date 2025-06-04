@@ -182,9 +182,9 @@ export class DesignSystemLayoutComponent {
       },
       {
         label: 'ScrollPanel',
-        path: '/design-system/layout/scroll-panel',
+        path: '/design-system/layout/scrollpanel',
         category: 'layout',
-        implemented: false,
+        implemented: true,
       },
       {
         label: 'Splitter',

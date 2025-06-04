@@ -17,6 +17,7 @@ import { DesignSystemLayoutComponent } from './showcases/layout/ds-layout.compon
 import { TextareaShowcaseComponent } from './textarea/textarea-showcase.component';
 import { AccordionShowcaseComponent } from './accordion';
 import { SplitterShowcaseComponent } from './splitter/splitter-showcase.component';
+import { ScrollPanelShowcaseComponent } from './scrollpanel/scrollpanel-showcase.component';
 
 /**
  * Design System routes with layout wrapper
@@ -106,6 +107,11 @@ export const DS_ROUTES: Routes = [
       {
         path: 'layout/splitter',
         component: SplitterShowcaseComponent,
+      },
+
+      {
+        path: 'layout/scrollpanel',
+        component: ScrollPanelShowcaseComponent,
       },
 
       // =============================================================================
