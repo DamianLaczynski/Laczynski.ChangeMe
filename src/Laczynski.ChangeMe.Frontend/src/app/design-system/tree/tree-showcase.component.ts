@@ -15,7 +15,6 @@ import {
   TreeNodeSelectionEvent,
   TreeNodeToggleEvent,
   TreeDataSource,
-  TreeLoadChildrenEvent,
 } from './tree.model';
 
 import { ComponentSize, ComponentVariant } from '../shared';

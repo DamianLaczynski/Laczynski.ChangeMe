@@ -5,14 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { ComponentSize } from '../shared';
 import { TableComponent } from './table.component';
 import {
-  TableConfig,
   TableColumn,
   TableVariant,
   TableBorder,
-  createTableConfig,
   createTableColumn,
-  formatCellValue,
-  State,
   PaginationResult,
   PaginationParameters,
 } from './table.model';

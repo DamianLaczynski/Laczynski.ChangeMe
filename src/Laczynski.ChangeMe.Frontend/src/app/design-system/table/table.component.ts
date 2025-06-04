@@ -8,8 +8,6 @@ import {
   OnInit,
   ElementRef,
   TemplateRef,
-  ContentChildren,
-  QueryList,
   AfterContentInit,
   Signal,
 } from '@angular/core';
@@ -21,10 +19,7 @@ import { CheckboxComponent } from '../checkbox/checkbox.component';
 import { IconComponent } from '../shared/icon/icon.component';
 
 import {
-  TableConfig,
   TableColumn,
-  TableData,
-  TableState,
   TableVariant,
   TableBorder,
   TableRowSelectEvent,
@@ -35,8 +30,6 @@ import {
   getTableClasses,
   getTableColumnClasses,
   formatCellValue,
-  sortTableData,
-  filterTableData,
   generateTableId,
   calculateVisiblePages,
   PaginationResult,

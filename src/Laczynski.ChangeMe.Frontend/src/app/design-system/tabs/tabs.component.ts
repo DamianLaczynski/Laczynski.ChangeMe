@@ -12,14 +12,12 @@ import {
   OnInit,
   AfterViewInit,
   ElementRef,
-  QueryList,
   HostListener,
   effect,
   ChangeDetectionStrategy,
   ViewEncapsulation,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { ComponentSize } from '../shared';
 import { IconComponent } from '../shared/icon/icon.component';
@@ -45,7 +43,6 @@ import {
   getFirstEnabledTab,
   getLastEnabledTab,
   validateTabs,
-  getTabsAriaAttributes,
   getTabsClasses,
   generateTabsId,
   generateTabId,

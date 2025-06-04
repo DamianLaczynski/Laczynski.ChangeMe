@@ -17,13 +17,10 @@ import {
 import { ComponentSize } from '../shared';
 
 import {
-  SwitchConfig,
   SwitchVariant,
-  SwitchState,
   SwitchChangeEvent,
   SwitchFocusEvent,
   SwitchKeyboardEvent,
-  createSwitchConfig,
   getSwitchSizeLabel,
   getSwitchVariantLabel,
 } from './switch.model';

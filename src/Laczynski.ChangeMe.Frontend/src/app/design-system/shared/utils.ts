@@ -4,7 +4,7 @@
 // Common utility functions used across design system components
 // Provides reusable functionality for validation, formatting, and helpers
 
-import { ComponentSize, ComponentVariant } from './types';
+import { ComponentSize } from './types';
 
 // =============================================================================
 // VALIDATION UTILITIES

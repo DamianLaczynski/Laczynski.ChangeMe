@@ -13,21 +13,15 @@ import {
   AfterViewInit,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { fromEvent, merge, debounceTime, distinctUntilChanged } from 'rxjs';
 
 import {
-  ComponentSize,
   generateComponentId,
   mergeClasses,
-  createAccessibilityAttributes,
-  AccessibilityConfig,
 } from '../shared';
 
 import { IconComponent } from '../shared/icon/icon.component';
 
 import {
-  ScrollPanelConfig,
   ScrollPanelSize,
   ScrollPanelState,
   ScrollDirection,
@@ -45,7 +39,6 @@ import {
   scrollToPosition,
   scrollByOffset,
   getScrollPanelAriaAttributes,
-  DEFAULT_SCROLLPANEL_CONFIG,
   SCROLLPANEL_SIZE_CONFIG,
   SCROLL_DIRECTION_CONFIG,
 } from './scrollpanel.model';

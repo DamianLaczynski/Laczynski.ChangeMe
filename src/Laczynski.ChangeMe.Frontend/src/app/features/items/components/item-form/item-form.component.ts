@@ -122,7 +122,7 @@ export class ItemFormComponent implements OnInit {
     const request: CreateItemRequest = this.itemForm.value;
 
     this.itemsService.createItemWithState(this.submitState, request).subscribe({
-      next: itemId => {
+      next: () => {
         this.apiErrorService.showSuccessToast('Element został utworzony pomyślnie');
         this.router.navigate(['/items']);
       },
@@ -143,7 +143,7 @@ export class ItemFormComponent implements OnInit {
     };
 
     this.itemsService.updateItemWithState(this.submitState, request).subscribe({
-      next: item => {
+      next: () => {
         this.apiErrorService.showSuccessToast('Element został zaktualizowany pomyślnie');
         this.router.navigate(['/items']);
       },

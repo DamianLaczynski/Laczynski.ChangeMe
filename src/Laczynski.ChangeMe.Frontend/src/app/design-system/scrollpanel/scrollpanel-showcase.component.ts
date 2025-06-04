@@ -1,4 +1,4 @@
-import { Component, computed, signal, viewChild, ElementRef } from '@angular/core';
+import { Component, computed, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 

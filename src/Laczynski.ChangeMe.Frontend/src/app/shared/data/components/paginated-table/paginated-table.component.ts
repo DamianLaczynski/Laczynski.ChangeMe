@@ -71,7 +71,6 @@ export class PaginatedTableComponent<T, P extends PaginationParameters = Paginat
    * Handle sort changes (keeping for compatibility)
    */
   onSortChange(event: any): void {
-    debugger;
     if (!event.field) {
       return;
     }

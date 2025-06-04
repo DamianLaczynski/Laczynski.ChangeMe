@@ -10,14 +10,9 @@ import {
   ComponentState,
   ComponentChangeEvent,
   ComponentFocusEvent,
-  AccessibilityConfig,
   ValidationResult,
   generateComponentId,
-  mergeClasses,
   createAccessibilityAttributes,
-  getSizeConfiguration,
-  isValidComponentSize,
-  isValidComponentVariant,
 } from '../shared';
 import { TemplateRef } from '@angular/core';
 

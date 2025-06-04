@@ -14,38 +14,23 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { ComponentSize } from '../shared';
 
 import {
-  TextareaConfig,
   TextareaVariant,
   TextareaResize,
-  TextareaState,
   TextareaChangeEvent,
   TextareaFocusEvent,
   TextareaKeyboardEvent,
   TextareaResizeEvent,
-  TextareaValidation,
-  TextareaComponentState,
-  createTextareaConfig,
-  createTextareaState,
   createTextareaChangeEvent,
   createTextareaFocusEvent,
   createTextareaKeyboardEvent,
   createTextareaResizeEvent,
-  validateTextareaValue,
-  getTextareaState,
-  getTextareaAriaAttributes,
-  getTextareaClasses,
-  generateTextareaId,
-  isValidTextareaSize,
-  isValidTextareaVariant,
   countLines,
   countCharacters,
   isWithinMaxLength,
-  isNearMaxLength,
 } from './textarea.model';
 
 /**

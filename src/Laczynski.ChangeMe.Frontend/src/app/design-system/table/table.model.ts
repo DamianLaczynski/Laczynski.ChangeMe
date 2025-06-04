@@ -4,24 +4,13 @@
 // Type definitions and interfaces for the modern Table component
 // Compatible with existing paginated table system but with modern design
 
-import { TemplateRef, Signal } from '@angular/core';
+import { Signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   ComponentSize,
   ComponentVariant,
-  ComponentState,
-  FormComponentState,
-  ComponentChangeEvent,
-  ComponentFocusEvent,
-  AccessibilityConfig,
-  ValidationResult,
-  ValidationRule,
   generateComponentId,
-  mergeClasses,
-  createAccessibilityAttributes,
   getSizeConfiguration,
-  isValidComponentSize,
-  isValidComponentVariant,
   getNestedValue,
 } from '../shared';
 
@@ -733,7 +722,7 @@ export function calculateVisiblePages(
 ): number[] {
   const half = Math.floor(maxVisible / 2);
   let start = Math.max(1, currentPage - half);
-  let end = Math.min(totalPages, start + maxVisible - 1);
+  const end = Math.min(totalPages, start + maxVisible - 1);
 
   if (end - start + 1 < maxVisible) {
     start = Math.max(1, end - maxVisible + 1);

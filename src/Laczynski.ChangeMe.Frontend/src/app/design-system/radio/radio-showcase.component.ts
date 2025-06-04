@@ -16,17 +16,11 @@ import { ComponentSize } from '../shared';
 
 import {
   RadioOption,
-  RadioConfig,
   RadioVariant,
-  RadioState,
   RadioGroupLayout,
   RadioChangeEvent,
   RadioFocusEvent,
-  RadioValidation,
   createRadioOption,
-  createRadioConfig,
-  validateRadioValue,
-  formatRadioSelectionText,
 } from './radio.model';
 import {
   ShowcaseComponent,

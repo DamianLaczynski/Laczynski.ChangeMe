@@ -17,7 +17,6 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { ComponentSize } from '../shared';
 import { IconComponent } from '../shared/icon/icon.component';
@@ -25,21 +24,17 @@ import { IconComponent } from '../shared/icon/icon.component';
 import {
   SelectOption,
   SelectOptionGroup,
-  SelectConfig,
   SelectVariant,
-  SelectState,
   SelectChangeEvent,
   SelectSearchEvent,
   SelectToggleEvent,
   SelectFocusEvent,
   SelectClearEvent,
   SelectValidation,
-  createSelectConfig,
   groupOptions,
   filterOptions,
   getSelectedOptions,
   validateSelectValue,
-  getSelectStateFromValidation,
   isOptionSelected,
   getSelectionDisplayText,
   getSelectAriaAttributes,
@@ -680,7 +675,7 @@ export class SelectComponent<T = any> implements ControlValueAccessor, OnInit {
 
     const currentValue = this.internalValue();
     let newValue: T | T[] | null;
-    let previousValue = currentValue;
+    const previousValue = currentValue;
 
     if (this.multiple()) {
       const currentArray = Array.isArray(currentValue) ? currentValue : [];

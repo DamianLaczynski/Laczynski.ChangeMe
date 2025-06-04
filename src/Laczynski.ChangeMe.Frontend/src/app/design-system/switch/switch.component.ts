@@ -13,31 +13,17 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { ComponentSize } from '../shared';
 
 import {
-  SwitchConfig,
   SwitchVariant,
-  SwitchState,
   SwitchChangeEvent,
   SwitchFocusEvent,
   SwitchKeyboardEvent,
-  SwitchValidation,
-  SwitchComponentState,
-  createSwitchConfig,
-  createSwitchState,
   createSwitchChangeEvent,
   createSwitchFocusEvent,
   createSwitchKeyboardEvent,
-  validateSwitchValue,
-  getSwitchState,
-  getSwitchAriaAttributes,
-  getSwitchClasses,
-  generateSwitchId,
-  isValidSwitchSize,
-  isValidSwitchVariant,
 } from './switch.model';
 
 /**

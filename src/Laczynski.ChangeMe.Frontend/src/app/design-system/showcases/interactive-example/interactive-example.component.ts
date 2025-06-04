@@ -2,10 +2,7 @@ import {
   Component,
   input,
   output,
-  computed,
   signal,
-  TemplateRef,
-  contentChild,
   effect,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -18,10 +15,8 @@ import {
   InteractiveSelectControl,
   InteractiveTextControl,
   InteractiveNumberControl,
-  InteractiveCheckboxControl,
   InteractiveRadioControl,
   InteractiveTextareaControl,
-  InteractiveColorControl,
   InteractiveRangeControl,
 } from './interactive-example.model';
 import { SelectChangeEvent, SelectOption } from '../../select/select.model';

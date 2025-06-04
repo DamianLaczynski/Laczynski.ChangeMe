@@ -25,7 +25,6 @@ import {
 } from '../showcases/interactive-example';
 import {
   ShowcaseComponent,
-  ComponentApiDocumentation,
   ShowcaseConfig,
   createShowcaseConfig,
 } from '../showcases/showcase.model';

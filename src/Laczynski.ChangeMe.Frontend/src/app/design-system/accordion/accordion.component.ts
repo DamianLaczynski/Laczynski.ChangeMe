@@ -9,9 +9,7 @@ import {
   ElementRef,
   viewChildren,
   effect,
-  QueryList,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 
 import { IconComponent, IconName, IconSize } from '../shared/icon/icon.component';
@@ -19,14 +17,8 @@ import { IconComponent, IconName, IconSize } from '../shared/icon/icon.component
 import {
   ComponentSize,
   ComponentVariant,
-  ComponentState,
   generateComponentId,
   mergeClasses,
-  createAccessibilityAttributes,
-  AccessibilityConfig,
-  getSizeConfiguration,
-  isValidComponentSize,
-  isValidComponentVariant,
 } from '../shared';
 
 import {
@@ -35,16 +27,10 @@ import {
   AccordionItemExpandEvent,
   AccordionFocusEvent,
   AccordionState,
-  AccordionConfig,
-  AccordionAccessibilityConfig,
   createAccordionState,
-  createAccordionConfig,
-  generateAccordionItemId,
   validateAccordionItem,
   getAccordionSizeDefinition,
   getAccordionVariantDefinition,
-  isValidAccordionMode,
-  DEFAULT_ACCORDION_CONFIG,
 } from './accordion.model';
 
 /**

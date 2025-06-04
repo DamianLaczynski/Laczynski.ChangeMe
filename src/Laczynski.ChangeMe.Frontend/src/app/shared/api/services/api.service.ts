@@ -204,7 +204,7 @@ export class ApiService {
       return result.value;
     } else if (!result.isSuccess) {
       // Handle different error types based on status
-      let errorMessage = this.getErrorMessageFromResult(result);
+      const errorMessage = this.getErrorMessageFromResult(result);
 
       // Show success message if available (for operations that don't return data)
       if (

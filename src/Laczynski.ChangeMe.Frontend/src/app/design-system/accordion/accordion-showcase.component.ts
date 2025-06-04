@@ -15,7 +15,6 @@ import {
 import {
   createCheckboxControl,
   createSizeControl,
-  createTextControl,
   createVariantControl,
   createSelectControl,
   InteractiveConfigChangeEvent,

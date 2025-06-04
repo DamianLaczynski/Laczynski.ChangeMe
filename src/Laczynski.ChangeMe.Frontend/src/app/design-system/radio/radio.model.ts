@@ -7,7 +7,6 @@
 import {
   ComponentSize,
   ComponentVariant,
-  ComponentState,
   FormComponentState,
   ComponentChangeEvent,
   ComponentFocusEvent,
@@ -15,11 +14,8 @@ import {
   ValidationResult,
   ValidationRule,
   generateComponentId,
-  mergeClasses,
   createAccessibilityAttributes,
   getSizeConfiguration,
-  isValidComponentSize,
-  isValidComponentVariant,
 } from '../shared';
 
 // =============================================================================

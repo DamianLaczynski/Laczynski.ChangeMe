@@ -21,7 +21,6 @@ import {
   CheckboxChangeEvent,
   CheckboxFocusEvent,
   createCheckboxOption,
-  CHECKBOX_VARIANTS,
 } from './checkbox.model';
 import {
   ShowcaseComponent,

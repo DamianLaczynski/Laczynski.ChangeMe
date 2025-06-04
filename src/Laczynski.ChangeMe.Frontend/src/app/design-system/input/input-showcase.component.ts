@@ -19,10 +19,7 @@ import {
   InputType,
   InputSize,
   InputChangeEvent,
-  InputFocusEvent,
-  InputClearEvent,
   InputEnterEvent,
-  createInputConfig,
 } from './input.model';
 import {
   ShowcaseComponent,

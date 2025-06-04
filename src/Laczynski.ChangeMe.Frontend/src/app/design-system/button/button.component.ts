@@ -10,7 +10,6 @@ import {
   viewChild,
   effect,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 
 import { IconComponent, IconName, IconSize } from '../shared/icon/icon.component';
@@ -23,11 +22,7 @@ import {
   AccessibilityConfig,
   ComponentState,
   generateComponentId,
-  mergeClasses,
   createAccessibilityAttributes,
-  getSizeConfiguration,
-  isValidComponentSize,
-  isValidComponentVariant,
 } from '../shared';
 
 /**

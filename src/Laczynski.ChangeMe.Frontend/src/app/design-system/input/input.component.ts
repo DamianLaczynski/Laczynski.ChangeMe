@@ -15,7 +15,6 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import {
   ComponentSize,
@@ -23,28 +22,18 @@ import {
   ComponentFocusEvent,
   FormComponentState,
   AccessibilityConfig,
-  ValidationResult,
   generateComponentId,
   mergeClasses,
   createAccessibilityAttributes,
-  getSizeConfiguration,
-  isValidComponentSize,
 } from '../shared';
 
 import { IconComponent } from '../shared/icon/icon.component';
 
 import {
-  InputConfig,
   InputType,
-  InputState,
-  InputIconPosition,
   InputValidation,
-  createInputConfig,
   validateInputValue,
-  getInputStateFromValidation,
-  formatInputValue,
   isInputClearable,
-  getInputAriaAttributes,
 } from './input.model';
 
 /**

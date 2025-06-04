@@ -9,8 +9,6 @@ import {
   forwardRef,
   ElementRef,
   OnInit,
-  HostListener,
-  effect,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -19,16 +17,11 @@ import { ComponentSize } from '../shared';
 
 import {
   RadioOption,
-  RadioConfig,
   RadioVariant,
-  RadioState,
   RadioGroupLayout,
   RadioChangeEvent,
   RadioFocusEvent,
   RadioValidation,
-  RadioComponentState,
-  createRadioConfig,
-  createRadioState,
   validateRadioValue,
   getRadioState,
   isRadioOptionSelected,
@@ -36,9 +29,6 @@ import {
   getNextRadioOption,
   getRadioAriaAttributes,
   getRadioGroupAriaAttributes,
-  getRadioClasses,
-  generateRadioGroupName,
-  RADIO_SIZE_CONFIG,
 } from './radio.model';
 
 /**

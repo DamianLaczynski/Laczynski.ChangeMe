@@ -18,15 +18,12 @@ import {
 import { ComponentSize } from '../shared';
 
 import {
-  TextareaConfig,
   TextareaVariant,
   TextareaResize,
-  TextareaState,
   TextareaChangeEvent,
   TextareaFocusEvent,
   TextareaKeyboardEvent,
   TextareaResizeEvent,
-  createTextareaConfig,
   getTextareaSizeLabel,
   getTextareaVariantLabel,
   getTextareaResizeLabel,

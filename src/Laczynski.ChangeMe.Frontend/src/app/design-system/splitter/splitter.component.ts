@@ -13,7 +13,6 @@ import {
   effect,
   viewChild,
   ElementRef,
-  HostListener,
   OnDestroy,
   ChangeDetectionStrategy,
   ViewEncapsulation,
@@ -21,7 +20,6 @@ import {
 import { CommonModule } from '@angular/common';
 
 import {
-  SplitterConfig,
   SplitterPanel,
   SplitterOrientation,
   SplitterHandleVariant,
@@ -29,11 +27,7 @@ import {
   SplitterResizeEvent,
   SplitterResizeStartEvent,
   SplitterResizeEndEvent,
-  DEFAULT_SPLITTER_CONFIG,
   createSplitterConfig,
-  normalizePanelSizes,
-  calculatePanelConstraints,
-  positionToPanelSize,
   getSplitterOrientationStyles,
   createInitialPanels,
   getSplitterAriaAttributes,

@@ -16,15 +16,10 @@ import { CommonModule } from '@angular/common';
 
 import {
   ComponentSize,
-  ComponentFocusEvent,
-  generateComponentId,
-  mergeClasses,
-  getSizeConfiguration,
 } from '../shared';
 
 import {
   CheckboxOption,
-  CheckboxConfig,
   CheckboxVariant,
   CheckboxComponentState,
   CheckboxGroupLayout,
@@ -41,9 +36,7 @@ import {
   selectAllOptions,
   deselectAllOptions,
   getCheckboxAriaAttributes,
-  getCheckboxClasses,
   generateCheckboxId,
-  CHECKBOX_SIZE_CONFIG,
 } from './checkbox.model';
 
 /**
