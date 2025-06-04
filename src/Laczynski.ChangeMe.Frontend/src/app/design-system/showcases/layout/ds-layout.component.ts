@@ -172,7 +172,7 @@ export class DesignSystemLayoutComponent {
         label: 'Accordion',
         path: '/design-system/layout/accordion',
         category: 'layout',
-        implemented: false,
+        implemented: true,
       },
       {
         label: 'Card',

@@ -15,6 +15,7 @@ import { OverviewComponent } from './showcases/overview';
 import { ButtonShowcaseComponent } from './button';
 import { DesignSystemLayoutComponent } from './showcases/layout/ds-layout.component';
 import { TextareaShowcaseComponent } from './textarea/textarea-showcase.component';
+import { AccordionShowcaseComponent } from './accordion';
 
 /**
  * Design System routes with layout wrapper
@@ -96,6 +97,10 @@ export const DS_ROUTES: Routes = [
       // =============================================================================
       // LAYOUT COMPONENTS
       // =============================================================================
+      {
+        path: 'layout/accordion',
+        component: AccordionShowcaseComponent,
+      },
 
       // =============================================================================
       // OVERLAY COMPONENTS
