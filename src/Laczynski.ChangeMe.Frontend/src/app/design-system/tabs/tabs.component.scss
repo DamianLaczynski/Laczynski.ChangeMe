@@ -1,0 +1,714 @@
+// =============================================================================
+// Tabs Component Styles - Clean & Professional Design
+// =============================================================================
+// Modern tabs component focused on usability, accessibility, and consistency
+
+@use "../../../styles/abstracts/variables";
+@use "../../../styles/abstracts/mixins";
+
+// =============================================================================
+// TABS CONTAINER
+// =============================================================================
+
+.ds-tabs {
+  &-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    font-family: var(--font-family-primary);
+    background: var(--color-surface);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+  }
+
+  // Orientation variants
+  &--horizontal {
+    .ds-tabs-list {
+      flex-direction: row;
+      border-bottom: 1px solid var(--color-border-subtle);
+    }
+    
+    .ds-tabs-panels {
+      padding-top: var(--spacing-lg);
+    }
+  }
+
+  &--vertical {
+    flex-direction: row;
+    
+    .ds-tabs-list {
+      flex-direction: column;
+      border-right: 1px solid var(--color-border-subtle);
+      width: 240px;
+      min-width: 240px;
+    }
+    
+    .ds-tabs-panels {
+      flex: 1;
+      padding-left: var(--spacing-lg);
+    }
+  }
+
+  // Size variants - consistent with input/select components
+  &--sm {
+    .ds-tabs-tab {
+      font-size: var(--font-size-sm);
+      padding: var(--spacing-xs) var(--spacing-md);
+      min-height: var(--input-height-sm);
+    }
+
+    .ds-tabs-panels {
+      padding: var(--spacing-md);
+    }
+    
+    .ds-tabs-tab-icon,
+    .ds-tabs-tab-loading {
+      width: 14px;
+      height: 14px;
+    }
+    
+    .ds-tabs-tab-close {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  &--md {
+    .ds-tabs-tab {
+      font-size: var(--font-size-base);
+      padding: var(--spacing-sm) var(--spacing-md);
+      min-height: var(--input-height-md);
+    }
+
+    .ds-tabs-panels {
+      padding: var(--spacing-lg);
+    }
+    
+    .ds-tabs-tab-icon,
+    .ds-tabs-tab-loading {
+      width: 18px;
+      height: 18px;
+    }
+    
+    .ds-tabs-tab-close {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  &--lg {
+    .ds-tabs-tab {
+      font-size: var(--font-size-lg);
+      padding: var(--spacing-md) var(--spacing-lg);
+      min-height: var(--input-height-lg);
+    }
+
+    .ds-tabs-panels {
+      padding: var(--spacing-xl);
+    }
+    
+    .ds-tabs-tab-icon,
+    .ds-tabs-tab-loading {
+      width: 20px;
+      height: 20px;
+    }
+    
+    .ds-tabs-tab-close {
+      width: 28px;
+      height: 28px;
+    }
+  }
+
+  // Alignment variants
+  &--start {
+    .ds-tabs-list {
+      justify-content: flex-start;
+    }
+  }
+
+  &--center {
+    .ds-tabs-list {
+      justify-content: center;
+    }
+  }
+
+  &--end {
+    .ds-tabs-list {
+      justify-content: flex-end;
+    }
+  }
+
+  &--justified {
+    .ds-tabs-tab {
+      flex: 1;
+    }
+  }
+
+  // Variant styles - consistent with other components
+  &--default {
+    .ds-tabs-tab--active {
+      color: var(--color-primary);
+      background: var(--color-primary-light);
+      border-color: var(--color-primary);
+    }
+  }
+
+  &--primary {
+    .ds-tabs-tab--active {
+      color: var(--color-primary);
+      background: var(--color-primary-light);
+      border-color: var(--color-primary);
+    }
+  }
+
+  &--secondary {
+    .ds-tabs-tab--active {
+      color: var(--color-secondary);
+      background: var(--color-secondary-light);
+      border-color: var(--color-secondary);
+    }
+  }
+
+  &--success {
+    .ds-tabs-tab--active {
+      color: var(--color-success);
+      background: var(--color-success-light);
+      border-color: var(--color-success);
+    }
+  }
+
+  &--warning {
+    .ds-tabs-tab--active {
+      color: var(--color-warning);
+      background: var(--color-warning-light);
+      border-color: var(--color-warning);
+    }
+  }
+
+  &--danger {
+    .ds-tabs-tab--active {
+      color: var(--color-danger);
+      background: var(--color-danger-light);
+      border-color: var(--color-danger);
+    }
+  }
+
+  // State variants - consistent with input/select
+  &--disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  &--scrollable {
+    .ds-tabs-list {
+      overflow: hidden;
+    }
+  }
+}
+
+// =============================================================================
+// TABS LIST - Clean Navigation
+// =============================================================================
+
+.ds-tabs-list {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--color-surface);
+  transition: all var(--transition-base);
+  border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+  padding: var(--spacing-xs);
+  
+  &--scrollable {
+    .ds-tabs-container-scroll {
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-behavior: smooth;
+      
+      @include mixins.custom-scrollbar(4px, var(--color-gray-200), var(--color-gray-400));
+    }
+  }
+}
+
+// =============================================================================
+// TABS CONTAINER SCROLL - Smooth Scrolling
+// =============================================================================
+
+.ds-tabs-container-scroll {
+  position: relative;
+  display: flex;
+  flex: 1;
+  gap: var(--spacing-xs);
+  
+  &--scrollable {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+}
+
+// =============================================================================
+// SCROLL BUTTONS - Consistent with form buttons
+// =============================================================================
+
+.ds-tabs-scroll-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  z-index: 2;
+  flex-shrink: 0;
+  
+  @include mixins.hover-effect {
+    background: var(--color-surface-hover);
+    color: var(--color-text);
+    border-color: var(--color-border-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+  }
+  
+  @include mixins.focus-state {
+    border-color: var(--color-border-focus);
+    box-shadow: var(--focus-shadow);
+  }
+  
+  &:active:not(:disabled) {
+    background: var(--color-surface-active);
+    transform: translateY(0);
+    box-shadow: none;
+  }
+  
+  &--left {
+    margin-right: var(--spacing-sm);
+  }
+  
+  &--right {
+    margin-left: var(--spacing-sm);
+  }
+}
+
+// =============================================================================
+// TAB ITEMS - Consistent with input/select interactive elements
+// =============================================================================
+
+.ds-tabs-tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+  padding: var(--spacing-sm) var(--spacing-md);
+  min-height: var(--input-height-md);
+  border-radius: var(--border-radius-md);
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  
+  @include mixins.hover-effect {
+    color: var(--color-text);
+    background: var(--color-surface-hover);
+    border-color: var(--color-border-subtle);
+    transform: translateY(-1px);
+  }
+  
+  @include mixins.focus-state {
+    color: var(--color-text);
+    background: var(--color-surface-hover);
+    border-color: var(--color-border-focus);
+    box-shadow: var(--focus-shadow);
+  }
+  
+  &--active {
+    color: var(--color-primary);
+    background: var(--color-primary-light);
+    border-color: var(--color-primary);
+    font-weight: var(--font-weight-semibold);
+    
+    &:hover {
+      color: var(--color-primary);
+      background: var(--color-primary-light);
+      transform: none;
+    }
+  }
+  
+  @include mixins.disabled-state {
+    cursor: not-allowed;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  
+  &--loading {
+    cursor: wait;
+    
+    .ds-tabs-tab-loading {
+      animation: spin 1s linear infinite;
+    }
+  }
+  
+  &--focused {
+    color: var(--color-text);
+    background: var(--color-surface-hover);
+  }
+  
+  // Tab with close button - consistent with select clearable pattern
+  &--closable {
+    padding-right: calc(var(--spacing-md) + 32px); // Space for close button like select
+  }
+}
+
+// Close button - styled like select clear button
+.ds-tabs-tab-close {
+  position: absolute;
+  right: var(--spacing-sm);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--border-radius-sm);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  z-index: 2;
+  font-size: 14px;
+  
+  @include mixins.hover-effect {
+    background: var(--color-danger-light);
+    color: var(--color-danger);
+    border-color: var(--color-danger);
+    transform: translateY(-50%) scale(1.05);
+  }
+  
+  @include mixins.focus-state {
+    border-color: var(--color-danger);
+    box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.2);
+  }
+  
+  &:active:not(:disabled) {
+    background: var(--color-danger);
+    color: var(--color-text-on-primary);
+    transform: translateY(-50%) scale(0.95);
+  }
+}
+
+// =============================================================================
+// TAB PANELS - Clean Content Area
+// =============================================================================
+
+.ds-tabs-panels {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background: var(--color-surface);
+  border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
+  padding: var(--spacing-lg);
+}
+
+.ds-tabs-panel {
+  display: none;
+  animation: fadeIn var(--transition-base) ease-out;
+  
+  &--active {
+    display: block;
+  }
+  
+  @include mixins.focus-state {
+    outline-color: var(--color-primary);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// =============================================================================
+// PANEL CONTENT TYPES
+// =============================================================================
+
+.ds-tabs-panel-content {
+  color: var(--color-text);
+  line-height: var(--line-height-normal);
+  font-size: var(--font-size-base);
+}
+
+.ds-tabs-panel-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+  color: var(--color-text-muted);
+  font-style: italic;
+  text-align: center;
+  background: var(--color-surface-subtle);
+  border: 2px dashed var(--color-border);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-lg);
+}
+
+// =============================================================================
+// TAB CONTENT ELEMENTS - Consistent sizing
+// =============================================================================
+
+.ds-tabs-tab-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: currentColor;
+  
+  svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+  }
+}
+
+.ds-tabs-tab-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: var(--color-primary);
+}
+
+.ds-tabs-tab-label {
+  flex: 1;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  
+  // Add margin when close button is present like input with clear button
+  &--has-close {
+    margin-right: var(--spacing-sm);
+  }
+}
+
+.ds-tabs-tab-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 var(--spacing-xs);
+  background: var(--color-primary);
+  color: var(--color-text-on-primary);
+  border-radius: var(--border-radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1;
+  box-shadow: var(--shadow-xs);
+}
+
+// =============================================================================
+// RESPONSIVE DESIGN - Consistent with input/select
+// =============================================================================
+
+@include mixins.respond-to("lg") {
+  .ds-tabs {
+    &--sm .ds-tabs-tab {
+      padding: var(--spacing-sm) var(--spacing-md);
+      min-height: var(--input-height-sm);
+    }
+    
+    &--md .ds-tabs-tab {
+      padding: var(--spacing-md) var(--spacing-lg);
+      min-height: var(--input-height-md);
+    }
+    
+    &--lg .ds-tabs-tab {
+      padding: var(--spacing-lg) var(--spacing-xl);
+      min-height: var(--input-height-lg);
+    }
+  }
+}
+
+@include mixins.respond-to("md") {
+  .ds-tabs-panel {
+    padding: var(--spacing-lg);
+  }
+  
+  .ds-tabs-scroll-button {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@include mixins.respond-to("sm") {
+  .ds-tabs {
+    &--horizontal {
+      .ds-tabs-list {
+        overflow-x: auto;
+        padding: var(--spacing-xs);
+      }
+      
+      .ds-tabs-tab {
+        flex-shrink: 0;
+        min-width: 80px;
+        padding: var(--spacing-sm) var(--spacing-md);
+      }
+    }
+    
+    &--vertical {
+      flex-direction: column;
+      
+      .ds-tabs-list {
+        width: 100%;
+        min-width: unset;
+        border-right: none;
+        border-bottom: 1px solid var(--color-border-subtle);
+        overflow-x: auto;
+        border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+        
+        .ds-tabs-tab {
+          flex-shrink: 0;
+          min-width: 100px;
+        }
+      }
+      
+      .ds-tabs-panels {
+        padding-left: 0;
+        padding-top: var(--spacing-lg);
+      }
+    }
+  }
+
+  .ds-tabs-container-scroll {
+    gap: var(--spacing-xs);
+  }
+
+  .ds-tabs-scroll-button {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .ds-tabs-tab {
+    &--closable {
+      padding-right: calc(var(--spacing-sm) + 28px); // Smaller on mobile
+    }
+  }
+  
+  .ds-tabs-tab-close {
+    width: 20px;
+    height: 20px;
+    right: var(--spacing-xs);
+  }
+}
+
+// =============================================================================
+// ACCESSIBILITY ENHANCEMENTS - Consistent with other components
+// =============================================================================
+
+.ds-tabs-tab:focus {
+  outline: none;
+}
+
+// High contrast support - consistent with input/select
+@media (prefers-contrast: high) {
+  .ds-tabs-tab {
+    border: 1px solid var(--color-border);
+    
+    &--active {
+      border-color: currentColor;
+      background: var(--color-surface);
+      border-width: 2px;
+    }
+    
+    &:focus {
+      border-color: currentColor;
+      border-width: 2px;
+    }
+  }
+  
+  .ds-tabs-scroll-button,
+  .ds-tabs-tab-close {
+    border: 1px solid var(--color-border);
+  }
+}
+
+// Reduced motion support - consistent with input/select
+@media (prefers-reduced-motion: reduce) {
+  .ds-tabs-tab,
+  .ds-tabs-panel,
+  .ds-tabs-tab-loading,
+  .ds-tabs-scroll-button,
+  .ds-tabs-tab-close {
+    transition: none;
+    animation: none;
+  }
+
+  @keyframes fadeIn {
+    from, to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  
+  @keyframes spin {
+    from, to { 
+      transform: none; 
+    }
+  }
+}
+
+// =============================================================================
+// PRINT STYLES - Consistent with form components
+// =============================================================================
+
+@media print {
+  .ds-tabs-scroll-button,
+  .ds-tabs-tab-close {
+    display: none;
+  }
+  
+  .ds-tabs-panel {
+    display: block !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    padding: var(--spacing-md);
+    border: 1px solid var(--color-border);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .ds-tabs-container {
+    box-shadow: none;
+    border: 1px solid var(--color-border);
+  }
+}
+
+// Loading animation
+@keyframes spin {
+  to { 
+    transform: rotate(360deg); 
+  }
+} 

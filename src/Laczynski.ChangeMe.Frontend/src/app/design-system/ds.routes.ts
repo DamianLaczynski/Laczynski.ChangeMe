@@ -10,6 +10,7 @@ import { CheckboxShowcaseComponent } from './checkbox/checkbox-showcase.componen
 import { RadioShowcaseComponent } from './radio/radio-showcase.component';
 import { SwitchShowcaseComponent } from './switch';
 import { TableShowcaseComponent } from './table';
+import { TabsShowcaseComponent } from './tabs/tabs-showcase.component';
 import { TreeShowcaseComponent } from './tree/tree-showcase.component';
 import { OverviewComponent } from './showcases/overview';
 import { ButtonShowcaseComponent } from './button';
@@ -112,6 +113,10 @@ export const DS_ROUTES: Routes = [
       {
         path: 'layout/scrollpanel',
         component: ScrollPanelShowcaseComponent,
+      },
+      {
+        path: 'layout/tabs',
+        component: TabsShowcaseComponent,
       },
 
       // =============================================================================

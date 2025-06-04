@@ -196,7 +196,7 @@ export class DesignSystemLayoutComponent {
         label: 'Tabs',
         path: '/design-system/layout/tabs',
         category: 'layout',
-        implemented: false,
+        implemented: true,
       },
     ],
     overlay: [
