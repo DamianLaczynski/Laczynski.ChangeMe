@@ -82,68 +82,7 @@ export interface ButtonConfig {
   selector: 'ds-button',
   standalone: true,
   imports: [CommonModule, IconComponent],
-  template: `
-    <button
-      #buttonRef
-      [id]="componentId()"
-      [type]="type()"
-      [class]="computedClasses()"
-      [disabled]="computedDisabled()"
-      [style.cursor]="computedCursor()"
-      [attr.aria-label]="accessibilityAttributes()['aria-label']"
-      [attr.aria-describedby]="accessibilityAttributes()['aria-describedby']"
-      [attr.aria-pressed]="accessibilityAttributes()['aria-pressed']"
-      [attr.aria-expanded]="accessibilityAttributes()['aria-expanded']"
-      [attr.aria-controls]="accessibilityAttributes()['aria-controls']"
-      [attr.role]="accessibilityAttributes()['role']"
-      [attr.tabindex]="effectiveTabIndex()"
-      (click)="handleClick($event)"
-      (focus)="handleFocus($event)"
-      (blur)="handleBlur($event)"
-      (mouseenter)="handleMouseEnter()"
-      (mouseleave)="handleMouseLeave()"
-      (mousedown)="handleMouseDown()"
-      (mouseup)="handleMouseUp()"
-    >
-      @if (loading() && showLoadingSpinner()) {
-        <span
-          class="ds-button__spinner"
-          aria-hidden="true"
-          role="status"
-          [attr.aria-label]="loadingAriaLabel()"
-        >
-          <span class="ds-button__spinner-icon"></span>
-        </span>
-      }
-
-      @if (iconStart() && !loading()) {
-        <app-icon
-          [name]="iconStart()!"
-          [size]="getIconSize()"
-          class="ds-button__icon ds-button__icon--start"
-          [decorative]="true"
-        >
-        </app-icon>
-      }
-
-      <span
-        class="ds-button__content"
-        [class.visually-hidden]="loading() && hideContentOnLoading()"
-      >
-        <ng-content></ng-content>
-      </span>
-
-      @if (iconEnd() && !loading()) {
-        <app-icon
-          [name]="iconEnd()!"
-          [size]="getIconSize()"
-          class="ds-button__icon ds-button__icon--end"
-          [decorative]="true"
-        >
-        </app-icon>
-      }
-    </button>
-  `,
+  templateUrl: './button.component.html',
   styleUrl: './button.component.scss',
   host: {
     '[class.ds-button-host]': 'true',
