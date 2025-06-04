@@ -3,8 +3,8 @@
 // =============================================================================
 // Modern checkbox component focused on usability, accessibility, and consistency
 
-@use "../../../styles/abstracts/variables";
-@use "../../../styles/abstracts/mixins";
+@use '../../../styles/abstracts/variables';
+@use '../../../styles/abstracts/mixins';
 
 // =============================================================================
 // CHECKBOX CONTAINER
@@ -24,19 +24,19 @@
     .ds-checkbox__checkmark {
       width: 16px;
       height: 16px;
-      
+
       &::after {
         width: 4px;
         height: 7px;
         border-width: 0 1.5px 1.5px 0;
       }
     }
-    
+
     .ds-checkbox__input:indeterminate + .ds-checkbox__checkmark::after {
       width: 8px;
       height: 1.5px;
     }
-    
+
     .ds-checkbox__label {
       font-size: var(--font-size-sm);
     }
@@ -50,19 +50,19 @@
     .ds-checkbox__checkmark {
       width: 20px;
       height: 20px;
-      
+
       &::after {
         width: 5px;
         height: 9px;
         border-width: 0 2px 2px 0;
       }
     }
-    
+
     .ds-checkbox__input:indeterminate + .ds-checkbox__checkmark::after {
       width: 10px;
       height: 2px;
     }
-    
+
     .ds-checkbox__label {
       font-size: var(--font-size-base);
     }
@@ -76,19 +76,19 @@
     .ds-checkbox__checkmark {
       width: 24px;
       height: 24px;
-      
+
       &::after {
         width: 6px;
         height: 11px;
         border-width: 0 2.5px 2.5px 0;
       }
     }
-    
+
     .ds-checkbox__input:indeterminate + .ds-checkbox__checkmark::after {
       width: 12px;
       height: 3px;
     }
-    
+
     .ds-checkbox__label {
       font-size: var(--font-size-lg);
     }
@@ -103,7 +103,7 @@
     .ds-checkbox__checkmark {
       border-color: var(--color-border-error);
     }
-    
+
     .ds-checkbox__input:checked + .ds-checkbox__checkmark,
     .ds-checkbox__input:indeterminate + .ds-checkbox__checkmark {
       background: var(--color-danger);
@@ -119,7 +119,7 @@
     .ds-checkbox__checkmark {
       border-color: var(--color-success);
     }
-    
+
     .ds-checkbox__input:checked + .ds-checkbox__checkmark,
     .ds-checkbox__input:indeterminate + .ds-checkbox__checkmark {
       background: var(--color-success);
@@ -131,7 +131,7 @@
     .ds-checkbox__checkmark {
       border-color: var(--color-warning);
     }
-    
+
     .ds-checkbox__input:checked + .ds-checkbox__checkmark,
     .ds-checkbox__input:indeterminate + .ds-checkbox__checkmark {
       background: var(--color-warning);
@@ -142,12 +142,12 @@
   &--disabled {
     cursor: not-allowed;
     opacity: 0.6;
-    
+
     .ds-checkbox__checkmark {
       background: var(--color-surface-disabled);
       border-color: var(--color-border);
     }
-    
+
     .ds-checkbox__input:checked + .ds-checkbox__checkmark,
     .ds-checkbox__input:indeterminate + .ds-checkbox__checkmark {
       background: var(--color-gray-400);
@@ -189,10 +189,10 @@
   position: relative;
   padding: var(--spacing-xs);
   border-radius: var(--border-radius-md);
-  
+
   &:hover:not(.ds-checkbox--disabled) {
     background: var(--color-surface-hover);
-    
+
     .ds-checkbox__checkmark {
       border-color: var(--color-border-hover);
     }
@@ -209,7 +209,7 @@
   width: 0;
   height: 0;
   pointer-events: none;
-  
+
   &:focus-visible + .ds-checkbox__checkmark {
     border-color: var(--color-border-focus);
     box-shadow: var(--focus-shadow);
@@ -232,7 +232,7 @@
   transition: all var(--transition-fast);
   flex-shrink: 0;
   position: relative;
-  
+
   // Checkmark icon
   &::after {
     content: '';
@@ -254,7 +254,7 @@
 .ds-checkbox__input:checked + .ds-checkbox__checkmark {
   background: var(--color-primary);
   border-color: var(--color-primary);
-  
+
   &::after {
     transform: rotate(45deg) scale(1);
     opacity: 1;
@@ -265,7 +265,7 @@
 .ds-checkbox__input:indeterminate + .ds-checkbox__checkmark {
   background: var(--color-primary);
   border-color: var(--color-primary);
-  
+
   &::after {
     content: '';
     width: 10px;
@@ -334,7 +334,7 @@
     padding: 0;
     margin: 0 0 var(--spacing-xs) 0;
     transition: color var(--transition-fast);
-    
+
     &.required {
       position: relative;
     }
@@ -371,11 +371,11 @@
 
   &--compact {
     gap: var(--spacing-xs);
-    
+
     .ds-checkbox-group__options {
       gap: var(--spacing-xs);
     }
-    
+
     .ds-checkbox {
       padding: var(--spacing-xs) 0;
     }
@@ -392,7 +392,7 @@
   line-height: var(--line-height-normal);
   margin-top: var(--spacing-xs);
   transition: color var(--transition-fast);
-  
+
   &.error {
     color: var(--color-danger);
   }
@@ -402,16 +402,16 @@
 // RESPONSIVE DESIGN
 // =============================================================================
 
-@include mixins.respond-to("sm") {
+@include mixins.respond-to('sm') {
   .ds-checkbox-container {
     &--sm .ds-checkbox {
       padding: var(--spacing-sm) var(--spacing-md);
     }
-    
+
     &--md .ds-checkbox {
       padding: var(--spacing-md) var(--spacing-lg);
     }
-    
+
     &--lg .ds-checkbox {
       padding: var(--spacing-lg) var(--spacing-xl);
     }
@@ -452,13 +452,13 @@
     -webkit-print-color-adjust: exact;
     color-adjust: exact;
   }
-  
+
   .ds-checkbox__input:checked + .ds-checkbox__checkmark {
     background-color: #000 !important;
     border-color: #000 !important;
-    
+
     &::after {
       border-color: #fff !important;
     }
   }
-} 
+}

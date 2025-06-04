@@ -14,7 +14,7 @@
   display: block;
   font-family: var(--font-family-base);
   color: var(--color-text-primary);
-  
+
   &.ds-tree-host {
     position: relative;
     width: 100%;
@@ -36,7 +36,7 @@
   &.ds-tree-host--lines {
     .ds-tree__node {
       position: relative;
-      
+
       &::before {
         content: '';
         position: absolute;
@@ -62,7 +62,7 @@
       }
     }
 
-    .ds-tree__node[aria-level="1"] {
+    .ds-tree__node[aria-level='1'] {
       &::before,
       &::after {
         display: none;
@@ -186,7 +186,7 @@
 .ds-tree__content {
   max-height: 400px;
   overflow-y: auto;
-  
+
   @include custom-scrollbar();
 }
 
@@ -252,7 +252,7 @@
 
 .ds-tree__toggle {
   @include button-base();
-  
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -281,7 +281,7 @@
 
   &--spacer {
     cursor: default;
-    
+
     &:hover {
       background-color: transparent;
     }
@@ -309,17 +309,17 @@
 
 .ds-tree__checkbox {
   flex-shrink: 0;
-  
+
   // Disable focus and keyboard interaction on checkbox inside tree
-  input[type="checkbox"] {
+  input[type='checkbox'] {
     pointer-events: none;
-    
+
     &:focus {
       outline: none;
       box-shadow: none;
     }
   }
-  
+
   // Re-enable clicking on the checkbox label/container
   label {
     pointer-events: all;
@@ -491,7 +491,7 @@
 
   .ds-tree__node {
     background-color: transparent !important;
-    
+
     &--selected {
       font-weight: bold;
     }
@@ -501,4 +501,4 @@
   .ds-tree__node-actions {
     display: none;
   }
-} 
+}

@@ -14,10 +14,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import {
-  generateComponentId,
-  mergeClasses,
-} from '../shared';
+import { generateComponentId, mergeClasses } from '../shared';
 
 import { IconComponent } from '../shared/icon/icon.component';
 

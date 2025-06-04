@@ -3,8 +3,8 @@
 // =============================================================================
 // Modern textarea component focused on usability, accessibility, and consistency
 
-@use "../../../styles/abstracts/variables";
-@use "../../../styles/abstracts/mixins";
+@use '../../../styles/abstracts/variables';
+@use '../../../styles/abstracts/mixins';
 
 // =============================================================================
 // TEXTAREA CONTAINER
@@ -74,12 +74,12 @@
   &--error {
     .ds-textarea-wrapper {
       border-color: var(--color-border-error);
-      
+
       &:focus-within {
         box-shadow: var(--focus-shadow-error);
       }
     }
-    
+
     .ds-textarea-label {
       color: var(--color-danger);
     }
@@ -88,13 +88,13 @@
   &--success {
     .ds-textarea-wrapper {
       border-color: var(--color-success);
-      
+
       &:focus-within {
         border-color: var(--color-success);
         box-shadow: var(--focus-shadow);
       }
     }
-    
+
     .ds-textarea-label {
       color: var(--color-success);
     }
@@ -103,13 +103,13 @@
   &--warning {
     .ds-textarea-wrapper {
       border-color: var(--color-warning);
-      
+
       &:focus-within {
         border-color: var(--color-warning);
         box-shadow: var(--focus-shadow);
       }
     }
-    
+
     .ds-textarea-label {
       color: var(--color-warning);
     }
@@ -117,7 +117,7 @@
 
   &--disabled {
     opacity: 0.6;
-    
+
     .ds-textarea-wrapper {
       background-color: var(--color-surface-disabled);
       border-color: var(--color-border);
@@ -170,7 +170,7 @@
   line-height: var(--line-height-tight);
   margin-bottom: var(--spacing-xs);
   transition: color var(--transition-fast);
-  
+
   &.required {
     position: relative;
   }
@@ -196,12 +196,12 @@
   border-radius: var(--border-radius-md);
   transition: all var(--transition-fast);
   overflow: hidden;
-  
+
   &:hover:not(.ds-textarea--disabled .ds-textarea-wrapper) {
     border-color: var(--color-border-hover);
     background: var(--color-surface-hover);
   }
-  
+
   &:focus-within {
     border-color: var(--color-border-focus);
     background: var(--color-surface);
@@ -226,20 +226,20 @@
   transition: all var(--transition-fast);
   resize: vertical;
   min-height: 80px;
-  
+
   &::placeholder {
     color: var(--color-text-muted);
   }
-  
+
   &:disabled {
     cursor: not-allowed;
     color: var(--color-text-disabled);
-    
+
     &::placeholder {
       color: var(--color-text-disabled);
     }
   }
-  
+
   &:readonly {
     cursor: default;
     color: var(--color-text-secondary);
@@ -247,19 +247,19 @@
   }
 
   // Resize variants
-  &[style*="resize: none"] {
+  &[style*='resize: none'] {
     resize: none !important;
   }
 
-  &[style*="resize: horizontal"] {
+  &[style*='resize: horizontal'] {
     resize: horizontal !important;
   }
 
-  &[style*="resize: vertical"] {
+  &[style*='resize: vertical'] {
     resize: vertical !important;
   }
 
-  &[style*="resize: both"] {
+  &[style*='resize: both'] {
     resize: both !important;
   }
 }
@@ -285,7 +285,7 @@
   color: var(--color-text-secondary);
   line-height: var(--line-height-normal);
   transition: color var(--transition-fast);
-  
+
   &.error {
     color: var(--color-danger);
   }
@@ -298,11 +298,11 @@
   font-family: var(--font-family-mono);
   transition: color var(--transition-fast);
   white-space: nowrap;
-  
+
   &--warning {
     color: var(--color-warning);
   }
-  
+
   &--exceeded {
     color: var(--color-danger);
     font-weight: var(--font-weight-bold);
@@ -322,16 +322,16 @@
 // RESPONSIVE DESIGN
 // =============================================================================
 
-@include mixins.respond-to("sm") {
+@include mixins.respond-to('sm') {
   .ds-textarea {
     &--sm .ds-textarea-field {
       padding: var(--spacing-sm) var(--spacing-md);
     }
-    
+
     &--md .ds-textarea-field {
       padding: var(--spacing-md) var(--spacing-lg);
     }
-    
+
     &--lg .ds-textarea-field {
       padding: var(--spacing-lg) var(--spacing-xl);
     }
@@ -353,4 +353,4 @@
   .ds-textarea-counter {
     transition: none;
   }
-} 
+}

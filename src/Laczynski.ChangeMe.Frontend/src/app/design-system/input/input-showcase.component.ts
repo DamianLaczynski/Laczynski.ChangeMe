@@ -15,12 +15,7 @@ import {
   createTextControl,
 } from '../showcases/interactive-example';
 
-import {
-  InputType,
-  InputSize,
-  InputChangeEvent,
-  InputEnterEvent,
-} from './input.model';
+import { InputType, InputSize, InputChangeEvent, InputEnterEvent } from './input.model';
 import {
   ShowcaseComponent,
   createShowcaseConfig,

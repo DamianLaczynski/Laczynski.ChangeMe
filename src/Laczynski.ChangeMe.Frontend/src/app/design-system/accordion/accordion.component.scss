@@ -3,8 +3,8 @@
 // =============================================================================
 // Modern accordion component focused on usability, accessibility, and consistency
 
-@use "../../../styles/abstracts/variables";
-@use "../../../styles/abstracts/mixins";
+@use '../../../styles/abstracts/variables';
+@use '../../../styles/abstracts/mixins';
 
 // =============================================================================
 // ACCORDION CONTAINER
@@ -79,7 +79,7 @@
   &--error {
     .ds-accordion__item {
       border-color: var(--color-border-error);
-      
+
       &.ds-accordion__item--expanded {
         box-shadow: var(--focus-shadow-error);
       }
@@ -89,7 +89,7 @@
   &--success {
     .ds-accordion__item {
       border-color: var(--color-success);
-      
+
       &.ds-accordion__item--expanded {
         box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
       }
@@ -99,7 +99,7 @@
   &--warning {
     .ds-accordion__item {
       border-color: var(--color-warning);
-      
+
       &.ds-accordion__item--expanded {
         box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.1);
       }
@@ -108,13 +108,13 @@
 
   &--disabled {
     opacity: 0.6;
-    
+
     .ds-accordion__item {
       background-color: var(--color-surface-disabled);
       border-color: var(--color-border);
       pointer-events: none;
     }
-    
+
     .ds-accordion__header {
       cursor: not-allowed;
       color: var(--color-text-disabled);
@@ -123,14 +123,15 @@
 
   &--animated {
     .ds-accordion__content {
-      transition: max-height var(--transition-normal),
-                  opacity var(--transition-normal);
+      transition:
+        max-height var(--transition-normal),
+        opacity var(--transition-normal);
     }
-    
+
     .ds-accordion__icon {
       transition: transform var(--transition-fast);
     }
-    
+
     .ds-accordion__header {
       transition: all var(--transition-fast);
     }
@@ -148,11 +149,11 @@
   overflow: hidden;
   background: var(--color-surface);
   transition: all var(--transition-fast);
-  
+
   &:not(:last-child) {
     margin-bottom: var(--spacing-xs);
   }
-  
+
   &:hover:not(.ds-accordion--disabled .ds-accordion__item) {
     border-color: var(--color-border-hover);
     background: var(--color-surface-hover);
@@ -209,7 +210,7 @@
     background: var(--color-surface-hover);
     border-color: var(--color-border-focus);
     box-shadow: var(--focus-shadow);
-    
+
     // Extra visible focus indicator
     &::before {
       content: '';
@@ -231,7 +232,7 @@
     cursor: not-allowed;
     opacity: 0.6;
     color: var(--color-text-disabled);
-    
+
     &:hover {
       background: transparent;
     }
@@ -245,13 +246,14 @@
 .ds-accordion__content {
   background: var(--color-background);
   overflow: hidden;
-  transition: max-height var(--transition-normal),
-              opacity var(--transition-fast);
+  transition:
+    max-height var(--transition-normal),
+    opacity var(--transition-fast);
 
   &--collapsed {
     max-height: 0;
     opacity: 0;
-    
+
     // Ensure collapsed content is not focusable
     * {
       visibility: hidden;
@@ -261,7 +263,7 @@
   &--expanded {
     max-height: 1000px; // Large enough to accommodate most content
     opacity: 1;
-    
+
     // Ensure expanded content is focusable
     * {
       visibility: visible;
@@ -274,37 +276,39 @@
   font-size: var(--font-size-sm);
   line-height: var(--line-height-relaxed);
   color: var(--color-text);
-  
+
   // Handle various content types
   > *:first-child {
     margin-top: 0;
   }
-  
+
   > *:last-child {
     margin-bottom: 0;
   }
-  
+
   // Code blocks
-  pre, code {
+  pre,
+  code {
     font-family: var(--font-family-mono);
     background: var(--color-surface);
     border-radius: var(--border-radius-sm);
   }
-  
+
   pre {
     padding: var(--spacing-md);
     overflow-x: auto;
   }
-  
+
   code:not(pre code) {
     padding: var(--spacing-xs) var(--spacing-sm);
   }
-  
+
   // Lists
-  ul, ol {
+  ul,
+  ol {
     padding-left: var(--spacing-xl);
   }
-  
+
   li {
     margin-bottom: var(--spacing-xs);
   }
@@ -324,7 +328,7 @@
   transition: all var(--transition-fast);
   flex-shrink: 0;
   margin-right: var(--spacing-md);
-  
+
   // SVG icons should scale properly
   svg {
     width: 100%;
@@ -336,13 +340,13 @@
     transform: rotate(90deg);
     color: var(--color-primary);
   }
-  
+
   .ds-accordion__header:hover &,
   .ds-accordion__header:focus &,
   .ds-accordion__header:focus-visible & {
     color: var(--color-primary);
   }
-  
+
   .ds-accordion__header:disabled & {
     color: var(--color-text-disabled);
   }
@@ -355,7 +359,7 @@
   font-size: inherit;
   color: inherit;
   line-height: inherit;
-  
+
   @include mixins.text-truncate;
 }
 
@@ -376,7 +380,9 @@
 }
 
 @keyframes accordion-spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 // =============================================================================
@@ -392,7 +398,7 @@
     border-color: var(--color-primary);
     box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.1);
   }
-  
+
   .ds-accordion__header--expanded {
     color: var(--color-primary);
     border-bottom-color: var(--color-primary-100);
@@ -404,7 +410,7 @@
     border-color: var(--color-secondary);
     box-shadow: 0 0 0 3px rgba(100, 116, 139, 0.1);
   }
-  
+
   .ds-accordion__header--expanded {
     color: var(--color-secondary);
     border-bottom-color: var(--color-secondary-100);
@@ -416,7 +422,7 @@
     border-color: var(--color-success);
     box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
   }
-  
+
   .ds-accordion__header--expanded {
     color: var(--color-success);
     border-bottom-color: var(--color-success-100);
@@ -428,7 +434,7 @@
     border-color: var(--color-warning);
     box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.1);
   }
-  
+
   .ds-accordion__header--expanded {
     color: var(--color-warning);
     border-bottom-color: var(--color-warning-100);
@@ -440,7 +446,7 @@
     border-color: var(--color-danger);
     box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
   }
-  
+
   .ds-accordion__header--expanded {
     color: var(--color-danger);
     border-bottom-color: var(--color-danger-100);
@@ -452,7 +458,7 @@
     border-color: var(--color-info);
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
   }
-  
+
   .ds-accordion__header--expanded {
     color: var(--color-info);
     border-bottom-color: var(--color-info-100);
@@ -491,7 +497,7 @@
       text-decoration: underline;
       background: transparent;
     }
-    
+
     &:focus {
       background: transparent;
       text-decoration: underline;
@@ -503,28 +509,28 @@
 // RESPONSIVE DESIGN - Using Design System Mixins
 // =============================================================================
 
-@include mixins.respond-to("sm") {
+@include mixins.respond-to('sm') {
   .ds-accordion {
     &--sm .ds-accordion__header {
       padding: var(--spacing-sm) var(--spacing-md);
     }
-    
+
     &--md .ds-accordion__header {
       padding: var(--spacing-md) var(--spacing-lg);
     }
-    
+
     &--lg .ds-accordion__header {
       padding: var(--spacing-lg) var(--spacing-xl);
     }
   }
 }
 
-@include mixins.respond-to("xs") {
+@include mixins.respond-to('xs') {
   .ds-accordion__header {
     padding: var(--spacing-sm) var(--spacing-md);
     font-size: var(--font-size-sm);
   }
-  
+
   .ds-accordion__content-inner {
     padding: var(--spacing-md);
   }
@@ -542,7 +548,7 @@
   .ds-accordion__item {
     border-color: var(--color-text);
   }
-  
+
   .ds-accordion__header {
     border: 1px solid var(--color-text);
   }
@@ -556,11 +562,11 @@
     transition: none;
     animation: none;
   }
-  
+
   .ds-accordion__content--collapsed {
     display: none;
   }
-  
+
   .ds-accordion__content--expanded {
     display: block;
     max-height: none;
@@ -578,15 +584,15 @@
     opacity: 1 !important;
     display: block !important;
   }
-  
+
   .ds-accordion__header {
     background: transparent !important;
   }
-  
+
   // Show all content when printing
   .ds-accordion__content--collapsed {
     display: block !important;
     max-height: none !important;
     opacity: 1 !important;
   }
-} 
+}

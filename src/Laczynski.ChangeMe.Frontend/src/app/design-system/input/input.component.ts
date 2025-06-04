@@ -29,12 +29,7 @@ import {
 
 import { IconComponent } from '../shared/icon/icon.component';
 
-import {
-  InputType,
-  InputValidation,
-  validateInputValue,
-  isInputClearable,
-} from './input.model';
+import { InputType, InputValidation, validateInputValue, isInputClearable } from './input.model';
 
 /**
  * Input change event payload

@@ -7,13 +7,13 @@
 // =============================================================================
 // 1. ABSTRACTS - Variables, mixins, functions
 // =============================================================================
-@use "abstracts/variables";
-@use "abstracts/mixins";
+@use 'abstracts/variables';
+@use 'abstracts/mixins';
 
 // =============================================================================
 // 2. BASE - Reset, typography, base elements
 // =============================================================================
-@use "base/reset";
+@use 'base/reset';
 
 // =============================================================================
 // 3. SHOWCASE SYSTEM STYLES
@@ -70,7 +70,7 @@
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: var(--spacing-md);
   margin-bottom: var(--spacing-md);
-  
+
   @media (max-width: 640px) {
     grid-template-columns: 1fr;
   }
@@ -94,9 +94,9 @@
   font-family: var(--font-family-mono);
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
-  
+
   &:empty::before {
-    content: "No output yet...";
+    content: 'No output yet...';
     color: var(--color-text-muted);
     font-style: italic;
   }
@@ -127,7 +127,7 @@
 .showcase-api li {
   padding: var(--spacing-md) var(--spacing-lg);
   border-bottom: 1px solid var(--color-border);
-  
+
   &:last-child {
     border-bottom: none;
   }
@@ -158,9 +158,9 @@
   background-color: var(--color-surface);
   border-right: 1px solid var(--color-border);
   overflow-y: auto;
-  
+
   @include mixins.custom-scrollbar();
-  
+
   @media (max-width: 768px) {
     position: fixed;
     top: 0;
@@ -168,7 +168,7 @@
     height: 100vh;
     z-index: var(--z-index-modal);
     transition: left var(--transition-base);
-    
+
     &.open {
       left: 0;
     }
@@ -218,18 +218,18 @@
   border-radius: var(--border-radius-md);
   font-size: var(--font-size-sm);
   transition: all var(--transition-fast);
-  
+
   &:hover {
     background-color: var(--color-surface-hover);
     color: var(--color-text);
     text-decoration: none;
   }
-  
+
   &.active {
     background-color: var(--color-primary);
     color: var(--color-white);
   }
-  
+
   @include mixins.focus-state;
 }
 
@@ -237,7 +237,7 @@
   flex: 1;
   overflow-y: auto;
   background-color: var(--color-background);
-  
+
   @include mixins.custom-scrollbar();
 }
 
@@ -253,7 +253,7 @@
   opacity: 0;
   visibility: hidden;
   transition: all var(--transition-base);
-  
+
   &.open {
     opacity: 1;
     visibility: visible;
@@ -264,22 +264,22 @@
 // 5. RESPONSIVE BEHAVIOR
 // =============================================================================
 
-@include mixins.respond-to("md") {
+@include mixins.respond-to('md') {
   .showcase-grid {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   }
-  
+
   .showcase-interactive {
     flex-direction: row;
     align-items: flex-start;
   }
 }
 
-@include mixins.respond-to("lg") {
+@include mixins.respond-to('lg') {
   .showcase-container {
     padding: var(--spacing-xxl);
   }
-  
+
   .showcase-grid {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   }
@@ -289,20 +289,20 @@
 // 6. DARK THEME SUPPORT
 // =============================================================================
 
-[data-theme="dark"] {
+[data-theme='dark'] {
   .showcase-output {
     background-color: var(--color-gray-800);
     color: var(--color-gray-300);
   }
-  
+
   .showcase-api {
     background-color: var(--color-gray-800);
   }
-  
+
   .showcase-api h3 {
     background-color: var(--color-gray-700);
   }
-  
+
   .showcase-api code {
     background-color: var(--color-gray-700);
     color: var(--color-primary);
@@ -313,13 +313,13 @@
 // 7. HIGH CONTRAST THEME SUPPORT
 // =============================================================================
 
-[data-theme="high-contrast"] {
+[data-theme='high-contrast'] {
   .ds-nav-item.active {
     background-color: var(--color-primary);
     color: var(--color-white);
     border: 2px solid var(--color-text);
   }
-  
+
   .showcase-interactive {
     border: 2px solid var(--color-border);
   }

@@ -8,42 +8,42 @@
   // =============================================================================
   // COLORS - Main Color Palette (Updated for better consistency)
   // =============================================================================
-  
+
   // Primary Colors - Modern blue palette
   --color-primary: #0066cc;
   --color-primary-hover: #0052a3;
   --color-primary-active: #003d7a;
   --color-primary-disabled: #cce6ff;
   --color-primary-light: #e6f3ff;
-  
-  // Secondary Colors  
+
+  // Secondary Colors
   --color-secondary: #64748b;
   --color-secondary-hover: #475569;
   --color-secondary-active: #334155;
   --color-secondary-disabled: #e2e8f0;
   --color-secondary-light: #f1f5f9;
-  
+
   // Semantic Colors - Refined palette
   --color-success: #059669;
   --color-success-hover: #047857;
   --color-success-active: #065f46;
   --color-success-light: #dcfdf7;
-  
+
   --color-warning: #d97706;
   --color-warning-hover: #b45309;
   --color-warning-active: #92400e;
   --color-warning-light: #fef3c7;
-  
+
   --color-danger: #dc2626;
   --color-danger-hover: #b91c1c;
   --color-danger-active: #991b1b;
   --color-danger-light: #fee2e2;
-  
+
   --color-info: #0891b2;
   --color-info-hover: #0e7490;
   --color-info-active: #155e75;
   --color-info-light: #cffafe;
-  
+
   // Neutral Colors - Better contrast and accessibility
   --color-white: #ffffff;
   --color-gray-25: #fcfcfd;
@@ -58,90 +58,91 @@
   --color-gray-800: #1e293b;
   --color-gray-900: #0f172a;
   --color-black: #000000;
-  
+
   // =============================================================================
   // SURFACE COLORS - Simplified for better consistency
   // =============================================================================
-  
+
   --color-surface: var(--color-white);
   --color-surface-hover: var(--color-gray-50);
   --color-surface-active: var(--color-gray-100);
   --color-surface-disabled: var(--color-gray-100);
   --color-surface-subtle: var(--color-gray-25);
-  
+
   --color-background: var(--color-gray-50);
   --color-background-alt: var(--color-white);
-  
+
   // =============================================================================
   // TEXT COLORS - Improved accessibility
   // =============================================================================
-  
+
   --color-text: var(--color-gray-900);
   --color-text-secondary: var(--color-gray-700);
   --color-text-muted: var(--color-gray-500);
   --color-text-disabled: var(--color-gray-400);
   --color-text-inverse: var(--color-white);
   --color-text-on-primary: var(--color-white);
-  
+
   // =============================================================================
   // BORDER COLORS - Refined for subtlety
   // =============================================================================
-  
+
   --color-border: var(--color-gray-200);
   --color-border-hover: var(--color-gray-300);
   --color-border-focus: var(--color-primary);
   --color-border-error: var(--color-danger);
   --color-border-subtle: var(--color-gray-100);
-  
+
   // =============================================================================
   // SPACING SYSTEM - 8px base unit
   // =============================================================================
-  
-  --spacing-base: 0.5rem;        // 8px
-  --spacing-xs: 0.25rem;         // 4px
-  --spacing-sm: 0.5rem;          // 8px
-  --spacing-md: 1rem;            // 16px
-  --spacing-lg: 1.5rem;          // 24px
-  --spacing-xl: 2rem;            // 32px
-  --spacing-xxl: 3rem;           // 48px
-  --spacing-xxxl: 4rem;          // 64px
-  
+
+  --spacing-base: 0.5rem; // 8px
+  --spacing-xs: 0.25rem; // 4px
+  --spacing-sm: 0.5rem; // 8px
+  --spacing-md: 1rem; // 16px
+  --spacing-lg: 1.5rem; // 24px
+  --spacing-xl: 2rem; // 32px
+  --spacing-xxl: 3rem; // 48px
+  --spacing-xxxl: 4rem; // 64px
+
   // =============================================================================
   // TYPOGRAPHY SYSTEM - Enhanced readability
   // =============================================================================
-  
+
   // Font Families
-  --font-family-primary: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", 
-                         Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-family-mono: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", 
-                      Consolas, "Courier New", monospace;
-  
+  --font-family-primary:
+    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  --font-family-mono:
+    'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+
   // Font Sizes - Better scale and hierarchy
-  --font-size-xs: 0.75rem;       // 12px
-  --font-size-sm: 0.875rem;      // 14px
-  --font-size-base: 1rem;        // 16px
-  --font-size-lg: 1.125rem;      // 18px
-  --font-size-xl: 1.25rem;       // 20px
-  --font-size-xxl: 1.5rem;       // 24px
-  --font-size-xxxl: 2rem;        // 32px
-  --font-size-display: 3rem;     // 48px
-  
+  --font-size-xs: 0.75rem; // 12px
+  --font-size-sm: 0.875rem; // 14px
+  --font-size-base: 1rem; // 16px
+  --font-size-lg: 1.125rem; // 18px
+  --font-size-xl: 1.25rem; // 20px
+  --font-size-xxl: 1.5rem; // 24px
+  --font-size-xxxl: 2rem; // 32px
+  --font-size-display: 3rem; // 48px
+
   // Font Weights
   --font-weight-light: 300;
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
-  
+
   // Line Heights
   --line-height-tight: 1.25;
   --line-height-normal: 1.5;
   --line-height-relaxed: 1.75;
-  
+
   // =============================================================================
   // SHADOWS & ELEVATION - More subtle and refined
   // =============================================================================
-  
+
   --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.03);
@@ -149,28 +150,28 @@
   --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.08), 0 10px 10px rgba(0, 0, 0, 0.04);
   --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.15);
   --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.04);
-  
+
   // Focus shadows
   --focus-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.1);
   --focus-shadow-error: 0 0 0 3px rgba(var(--color-danger-rgb), 0.1);
-  
+
   // =============================================================================
   // BORDER RADIUS - Consistent and modern
   // =============================================================================
-  
+
   --border-radius-none: 0;
-  --border-radius-xs: 0.125rem;   // 2px
-  --border-radius-sm: 0.25rem;    // 4px
-  --border-radius-md: 0.5rem;     // 8px
-  --border-radius-lg: 0.75rem;    // 12px
-  --border-radius-xl: 1rem;       // 16px
-  --border-radius-2xl: 1.5rem;    // 24px
+  --border-radius-xs: 0.125rem; // 2px
+  --border-radius-sm: 0.25rem; // 4px
+  --border-radius-md: 0.5rem; // 8px
+  --border-radius-lg: 0.75rem; // 12px
+  --border-radius-xl: 1rem; // 16px
+  --border-radius-2xl: 1.5rem; // 24px
   --border-radius-full: 9999px;
-  
+
   // =============================================================================
   // Z-INDEX LAYERS
   // =============================================================================
-  
+
   --z-index-base: 0;
   --z-index-dropdown: 1000;
   --z-index-sticky: 1020;
@@ -181,40 +182,40 @@
   --z-index-tooltip: 1070;
   --z-index-toast: 1080;
   --z-index-overlay: 1090;
-  
+
   // =============================================================================
   // TRANSITIONS & ANIMATIONS - Smoother and more refined
   // =============================================================================
-  
+
   --transition-fast: 0.15s ease-out;
   --transition-base: 0.2s ease-out;
   --transition-slow: 0.3s ease-out;
-  
+
   --ease-in-out-cubic: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-out-cubic: cubic-bezier(0, 0, 0.2, 1);
   --ease-in-cubic: cubic-bezier(0.4, 0, 1, 1);
   --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  
+
   // =============================================================================
   // COMPONENT SPECIFIC TOKENS
   // =============================================================================
-  
+
   // Button Sizes
-  --button-height-sm: 2rem;       // 32px
-  --button-height-md: 2.5rem;     // 40px  
-  --button-height-lg: 3rem;       // 48px
-  
+  --button-height-sm: 2rem; // 32px
+  --button-height-md: 2.5rem; // 40px
+  --button-height-lg: 3rem; // 48px
+
   // Form Elements
-  --input-height-sm: 2rem;        // 32px
-  --input-height-md: 2.5rem;      // 40px
-  --input-height-lg: 3rem;        // 48px
-  
+  --input-height-sm: 2rem; // 32px
+  --input-height-md: 2.5rem; // 40px
+  --input-height-lg: 3rem; // 48px
+
   // Focus Ring - More accessible
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;
   --focus-ring-color: var(--color-primary);
   --focus-ring-opacity: 0.5;
-  
+
   // Color RGB values for rgba usage
   --color-primary-rgb: 0, 102, 204;
   --color-danger-rgb: 220, 38, 38;
@@ -227,19 +228,19 @@
 // =============================================================================
 // Used when we implement theme switcher
 
-[data-theme="dark"] {
+[data-theme='dark'] {
   --color-surface: var(--color-gray-800);
   --color-surface-hover: var(--color-gray-700);
   --color-surface-active: var(--color-gray-600);
-  
+
   --color-background: var(--color-gray-900);
   --color-background-alt: var(--color-gray-800);
-  
+
   --color-text: var(--color-gray-100);
   --color-text-secondary: var(--color-gray-300);
   --color-text-muted: var(--color-gray-400);
   --color-text-on-primary: var(--color-white);
-  
+
   --color-border: var(--color-gray-600);
   --color-border-hover: var(--color-gray-500);
 }
@@ -249,7 +250,7 @@
 // =============================================================================
 // Accessibility theme for users requiring high contrast
 
-[data-theme="high-contrast"] {
+[data-theme='high-contrast'] {
   --color-primary: #0000ff;
   --color-text: #000000;
   --color-background: #ffffff;
@@ -257,4 +258,4 @@
   --shadow-sm: none;
   --shadow-md: none;
   --shadow-lg: none;
-} 
+}

@@ -3,8 +3,8 @@
 // =============================================================================
 // Modern radio component focused on usability, accessibility, and consistency
 
-@use "../../../styles/abstracts/variables";
-@use "../../../styles/abstracts/mixins";
+@use '../../../styles/abstracts/variables';
+@use '../../../styles/abstracts/mixins';
 
 // =============================================================================
 // RADIO CONTAINER
@@ -24,13 +24,13 @@
     .ds-radio__mark {
       width: 16px;
       height: 16px;
-      
+
       &::after {
         width: 6px;
         height: 6px;
       }
     }
-    
+
     .ds-radio__label {
       font-size: var(--font-size-sm);
     }
@@ -48,13 +48,13 @@
     .ds-radio__mark {
       width: 20px;
       height: 20px;
-      
+
       &::after {
         width: 8px;
         height: 8px;
       }
     }
-    
+
     .ds-radio__label {
       font-size: var(--font-size-base);
     }
@@ -72,13 +72,13 @@
     .ds-radio__mark {
       width: 24px;
       height: 24px;
-      
+
       &::after {
         width: 10px;
         height: 10px;
       }
     }
-    
+
     .ds-radio__label {
       font-size: var(--font-size-lg);
     }
@@ -111,7 +111,7 @@
     .ds-radio__mark {
       border-color: var(--color-border-error);
     }
-    
+
     .ds-radio__input:checked + .ds-radio__mark {
       background: var(--color-danger);
       border-color: var(--color-danger);
@@ -126,7 +126,7 @@
     .ds-radio__mark {
       border-color: var(--color-success);
     }
-    
+
     .ds-radio__input:checked + .ds-radio__mark {
       background: var(--color-success);
       border-color: var(--color-success);
@@ -141,7 +141,7 @@
     .ds-radio__mark {
       border-color: var(--color-warning);
     }
-    
+
     .ds-radio__input:checked + .ds-radio__mark {
       background: var(--color-warning);
       border-color: var(--color-warning);
@@ -164,7 +164,7 @@
       background: var(--color-surface-disabled);
       border-color: var(--color-border);
     }
-    
+
     .ds-radio__input:checked + .ds-radio__mark {
       background: var(--color-gray-400);
       border-color: var(--color-gray-400);
@@ -212,7 +212,7 @@
   padding: 0;
   margin: 0 0 var(--spacing-sm) 0;
   transition: color var(--transition-fast);
-  
+
   &.required {
     position: relative;
   }
@@ -251,11 +251,11 @@
 // Compact layout
 .ds-radio-group--compact {
   gap: var(--spacing-sm);
-  
+
   .ds-radio-group__options {
     gap: var(--spacing-xs);
   }
-  
+
   .ds-radio {
     padding: var(--spacing-xs) 0;
   }
@@ -274,15 +274,15 @@
   position: relative;
   padding: var(--spacing-xs);
   border-radius: var(--border-radius-md);
-  
+
   &:hover:not(.ds-radio--disabled) {
     background: var(--color-surface-hover);
-    
+
     .ds-radio__mark {
       border-color: var(--color-border-hover);
     }
   }
-  
+
   &.ds-radio--disabled {
     cursor: not-allowed;
     opacity: 0.6;
@@ -299,7 +299,7 @@
   width: 0;
   height: 0;
   pointer-events: none;
-  
+
   &:focus-visible + .ds-radio__mark {
     outline: 2px solid var(--color-primary);
     outline-offset: 2px;
@@ -322,7 +322,7 @@
   transition: all var(--transition-fast);
   flex-shrink: 0;
   position: relative;
-  
+
   // Radio dot
   &::after {
     content: '';
@@ -344,7 +344,7 @@
 .ds-radio__input:checked + .ds-radio__mark {
   background: var(--color-primary);
   border-color: var(--color-primary);
-  
+
   &::after {
     transform: scale(1);
     opacity: 1;
@@ -357,7 +357,7 @@
     background: var(--color-surface-disabled);
     border-color: var(--color-border);
   }
-  
+
   .ds-radio__input:checked + .ds-radio__mark {
     background: var(--color-gray-400);
     border-color: var(--color-gray-400);
@@ -369,7 +369,7 @@
   .ds-radio__mark {
     border-color: var(--color-border-error);
   }
-  
+
   .ds-radio__input:checked + .ds-radio__mark {
     background: var(--color-danger);
     border-color: var(--color-danger);
@@ -396,7 +396,7 @@
   line-height: var(--line-height-normal);
   cursor: inherit;
   transition: color var(--transition-fast);
-  
+
   .ds-radio--disabled & {
     color: var(--color-text-disabled);
   }
@@ -407,7 +407,7 @@
   color: var(--color-text-secondary);
   line-height: var(--line-height-normal);
   transition: color var(--transition-fast);
-  
+
   .ds-radio--disabled & {
     color: var(--color-text-disabled);
   }
@@ -430,7 +430,7 @@
   line-height: var(--line-height-normal);
   margin-top: var(--spacing-xs);
   transition: color var(--transition-fast);
-  
+
   &.error {
     color: var(--color-danger);
   }
@@ -440,7 +440,7 @@
 // RESPONSIVE DESIGN
 // =============================================================================
 
-@include mixins.respond-to("sm") {
+@include mixins.respond-to('sm') {
   .ds-radio-group--inline {
     .ds-radio-group__options {
       flex-direction: column;
@@ -476,13 +476,13 @@
     -webkit-print-color-adjust: exact;
     color-adjust: exact;
   }
-  
+
   .ds-radio__input:checked + .ds-radio__mark {
     background-color: #000 !important;
     border-color: #000 !important;
-    
+
     &::after {
       background-color: #fff !important;
     }
   }
-} 
+}

@@ -3,8 +3,8 @@
 // =============================================================================
 // Modern button component focused on usability, accessibility, and consistency
 
-@use "../../../styles/abstracts/variables";
-@use "../../../styles/abstracts/mixins";
+@use '../../../styles/abstracts/variables';
+@use '../../../styles/abstracts/mixins';
 
 // =============================================================================
 // BUTTON CONTAINER (for consistency)
@@ -13,13 +13,13 @@
 .ds-button {
   &-host {
     display: inline-block;
-    
+
     &--loading {
       .ds-button {
         pointer-events: none;
       }
     }
-    
+
     &--disabled {
       .ds-button {
         pointer-events: none;
@@ -34,7 +34,7 @@
     min-height: var(--input-height-sm);
     gap: var(--spacing-xs);
     border-radius: var(--border-radius-md);
-    
+
     .ds-button__spinner {
       width: 14px;
       height: 14px;
@@ -47,7 +47,7 @@
     min-height: var(--input-height-md);
     gap: var(--spacing-sm);
     border-radius: var(--border-radius-md);
-    
+
     .ds-button__spinner {
       width: 16px;
       height: 16px;
@@ -60,7 +60,7 @@
     min-height: var(--input-height-lg);
     gap: var(--spacing-md);
     border-radius: var(--border-radius-lg);
-    
+
     .ds-button__spinner {
       width: 18px;
       height: 18px;
@@ -70,11 +70,11 @@
   // State variants
   &--loading {
     cursor: wait;
-    
+
     .ds-button__content {
       opacity: 0.7;
     }
-    
+
     .ds-button__spinner {
       opacity: 1;
     }
@@ -128,12 +128,12 @@
     background: var(--color-surface);
     color: var(--color-text);
     border-color: var(--color-border);
-    
+
     &:hover:not(.ds-button--disabled) {
       background: var(--color-surface-hover);
       border-color: var(--color-border-hover);
     }
-    
+
     &:active:not(.ds-button--disabled) {
       background: var(--color-surface-hover);
     }
@@ -143,12 +143,12 @@
     background: var(--color-primary);
     color: var(--color-text-on-primary);
     border-color: var(--color-primary);
-    
+
     &:hover:not(.ds-button--disabled) {
       background: var(--color-primary-hover);
       border-color: var(--color-primary-hover);
     }
-    
+
     &:active:not(.ds-button--disabled) {
       background: var(--color-primary-active);
       border-color: var(--color-primary-active);
@@ -159,12 +159,12 @@
     background: transparent;
     color: var(--color-primary);
     border-color: var(--color-primary);
-    
+
     &:hover:not(.ds-button--disabled) {
       background: var(--color-primary-light);
       border-color: var(--color-primary);
     }
-    
+
     &:active:not(.ds-button--disabled) {
       background: var(--color-primary-light);
       border-color: var(--color-primary);
@@ -175,12 +175,12 @@
     background: var(--color-success);
     color: var(--color-text-on-primary);
     border-color: var(--color-success);
-    
+
     &:hover:not(.ds-button--disabled) {
       background: var(--color-success-hover);
       border-color: var(--color-success-hover);
     }
-    
+
     &:active:not(.ds-button--disabled) {
       background: var(--color-success-active);
       border-color: var(--color-success-active);
@@ -191,12 +191,12 @@
     background: var(--color-warning);
     color: var(--color-gray-900);
     border-color: var(--color-warning);
-    
+
     &:hover:not(.ds-button--disabled) {
       background: var(--color-warning-hover);
       border-color: var(--color-warning-hover);
     }
-    
+
     &:active:not(.ds-button--disabled) {
       background: var(--color-warning-active);
       border-color: var(--color-warning-active);
@@ -207,12 +207,12 @@
     background: var(--color-danger);
     color: var(--color-text-on-primary);
     border-color: var(--color-danger);
-    
+
     &:hover:not(.ds-button--disabled) {
       background: var(--color-danger-hover);
       border-color: var(--color-danger-hover);
     }
-    
+
     &:active:not(.ds-button--disabled) {
       background: var(--color-danger-active);
       border-color: var(--color-danger-active);
@@ -223,12 +223,12 @@
     background: var(--color-info);
     color: var(--color-text-on-primary);
     border-color: var(--color-info);
-    
+
     &:hover:not(.ds-button--disabled) {
       background: var(--color-info-hover);
       border-color: var(--color-info-hover);
     }
-    
+
     &:active:not(.ds-button--disabled) {
       background: var(--color-info-active);
       border-color: var(--color-info-active);
@@ -239,12 +239,12 @@
     background: transparent;
     color: var(--color-text);
     border-color: transparent;
-    
+
     &:hover:not(.ds-button--disabled) {
       background: var(--color-surface-hover);
       border-color: var(--color-border);
     }
-    
+
     &:active:not(.ds-button--disabled) {
       background: var(--color-surface-hover);
       border-color: var(--color-border);
@@ -263,13 +263,13 @@
     text-underline-offset: 3px;
     text-decoration-thickness: 1px;
     transition: all var(--transition-fast);
-    
+
     &:hover:not(.ds-button--disabled) {
       color: var(--color-primary-hover);
       text-decoration-color: currentColor;
       border-color: transparent;
     }
-    
+
     &:active:not(.ds-button--disabled) {
       color: var(--color-primary-active);
       background: var(--color-primary-light);
@@ -294,19 +294,19 @@
   cursor: pointer;
   transition: all var(--transition-fast);
   user-select: none;
-  
+
   &:focus-visible {
     outline: 2px solid var(--color-primary);
     outline-offset: 2px;
   }
-  
+
   &__content {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: inherit;
   }
-  
+
   &__icon {
     display: inline-flex;
     align-items: center;
@@ -314,16 +314,16 @@
     flex-shrink: 0;
     font-size: 0.875em;
     transition: transform var(--transition-fast);
-    
+
     &--start {
       margin-right: 0;
     }
-    
+
     &--end {
       margin-left: 0;
     }
   }
-  
+
   &__spinner {
     display: inline-block;
     border: 2px solid transparent;
@@ -343,8 +343,12 @@
 // =============================================================================
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 // =============================================================================
@@ -354,11 +358,11 @@
 @media (prefers-reduced-motion: reduce) {
   .ds-button {
     transition: none;
-    
+
     &--active {
       transform: none;
     }
-    
+
     &__spinner {
       animation: none;
     }
@@ -369,16 +373,16 @@
 // RESPONSIVE DESIGN
 // =============================================================================
 
-@include mixins.respond-to("sm") {
+@include mixins.respond-to('sm') {
   .ds-button--sm {
     padding: var(--spacing-sm) var(--spacing-md);
   }
-  
+
   .ds-button--md {
     padding: var(--spacing-md) var(--spacing-lg);
   }
-  
+
   .ds-button--lg {
     padding: var(--spacing-lg) var(--spacing-xl);
   }
-} 
+}

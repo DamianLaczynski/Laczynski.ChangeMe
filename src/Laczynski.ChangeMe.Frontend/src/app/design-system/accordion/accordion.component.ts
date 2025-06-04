@@ -14,12 +14,7 @@ import { CommonModule } from '@angular/common';
 
 import { IconComponent, IconName, IconSize } from '../shared/icon/icon.component';
 
-import {
-  ComponentSize,
-  ComponentVariant,
-  generateComponentId,
-  mergeClasses,
-} from '../shared';
+import { ComponentSize, ComponentVariant, generateComponentId, mergeClasses } from '../shared';
 
 import {
   AccordionItem,

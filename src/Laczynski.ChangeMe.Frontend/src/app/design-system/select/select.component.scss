@@ -3,8 +3,8 @@
 // =============================================================================
 // Modern select component focused on usability, accessibility, and consistency
 
-@use "../../../styles/abstracts/variables";
-@use "../../../styles/abstracts/mixins";
+@use '../../../styles/abstracts/variables';
+@use '../../../styles/abstracts/mixins';
 
 // =============================================================================
 // SELECT CONTAINER
@@ -91,13 +91,13 @@
     .ds-select-wrapper {
       .ds-select-trigger {
         border-color: var(--color-border-error);
-        
+
         &:focus {
           box-shadow: var(--focus-shadow-error);
         }
       }
     }
-    
+
     .ds-select-label {
       color: var(--color-danger);
     }
@@ -107,13 +107,13 @@
     .ds-select-wrapper {
       .ds-select-trigger {
         border-color: var(--color-success);
-        
+
         &:focus {
           box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
         }
       }
     }
-    
+
     .ds-select-label {
       color: var(--color-success);
     }
@@ -123,13 +123,13 @@
     .ds-select-wrapper {
       .ds-select-trigger {
         border-color: var(--color-warning);
-        
+
         &:focus {
           box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.1);
         }
       }
     }
-    
+
     .ds-select-label {
       color: var(--color-warning);
     }
@@ -137,7 +137,7 @@
 
   &--disabled {
     opacity: 0.6;
-    
+
     .ds-select-wrapper {
       .ds-select-trigger {
         background-color: var(--color-surface-disabled);
@@ -157,11 +157,11 @@
 
   &--open {
     z-index: var(--z-index-dropdown);
-    
+
     .ds-select-wrapper {
       z-index: var(--z-index-dropdown);
       isolation: isolate;
-      
+
       .ds-select-trigger {
         border-color: var(--color-border-focus);
         box-shadow: var(--focus-shadow);
@@ -169,7 +169,7 @@
         z-index: 2;
       }
     }
-    
+
     .ds-select-arrow {
       transform: rotate(180deg);
       color: var(--color-primary);
@@ -181,7 +181,7 @@
       min-height: auto;
       padding: var(--spacing-xs) var(--spacing-md);
     }
-    
+
     .ds-select-value {
       display: flex;
       flex-wrap: wrap;
@@ -203,7 +203,7 @@
   line-height: var(--line-height-tight);
   margin-bottom: var(--spacing-xs);
   transition: color var(--transition-fast);
-  
+
   &.required {
     position: relative;
   }
@@ -245,19 +245,19 @@
   line-height: var(--line-height-normal);
   padding: var(--spacing-sm) var(--spacing-md);
   min-height: var(--input-height-md);
-  
+
   &:hover:not(:disabled) {
     border-color: var(--color-border-hover);
     background: var(--color-surface-hover);
   }
-  
+
   &:focus {
     outline: none;
     border-color: var(--color-border-focus);
     background: var(--color-surface);
     box-shadow: var(--focus-shadow);
   }
-  
+
   &:disabled {
     cursor: not-allowed;
     background: var(--color-surface-disabled);
@@ -277,7 +277,7 @@
   overflow: hidden;
   white-space: nowrap;
   transition: color var(--transition-fast);
-  
+
   &.placeholder {
     color: var(--color-text-muted);
   }
@@ -296,7 +296,7 @@
   color: var(--color-text-muted);
   transition: all var(--transition-fast);
   font-size: var(--font-size-sm);
-  
+
   &.open {
     transform: rotate(180deg);
     color: var(--color-primary);
@@ -310,7 +310,9 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 // =============================================================================
@@ -334,26 +336,26 @@
   top: 50%;
   transform: translateY(-50%);
   font-size: 14px;
-  
+
   &:hover {
     color: var(--color-text);
     background: var(--color-surface-hover);
     border: 1px solid var(--color-border);
   }
-  
+
   &:focus {
     outline: 2px solid var(--color-primary);
     outline-offset: 2px;
   }
-  
+
   &:active {
     background: var(--color-surface-active);
     transform: translateY(-50%) scale(0.95);
   }
-  
+
   &--clear {
     right: calc(var(--spacing-md) + 28px); // Position before arrow
-    
+
     &:hover {
       color: var(--color-danger);
       background: var(--color-danger-light);
@@ -388,7 +390,7 @@
   animation: slideInUp 0.2s ease-out;
   transform: translateZ(0);
   isolation: isolate;
-  
+
   &.ds-select-dropdown--up {
     top: auto;
     bottom: 100%;
@@ -396,7 +398,7 @@
     margin-bottom: 4px;
     animation: slideInDown 0.2s ease-out;
   }
-  
+
   @media screen {
     z-index: 9999 !important;
   }
@@ -442,11 +444,11 @@
   font-size: var(--font-size-sm);
   color: var(--color-text);
   transition: all var(--transition-fast);
-  
+
   &:focus {
     outline: none;
   }
-  
+
   &::placeholder {
     color: var(--color-text-muted);
   }
@@ -460,7 +462,7 @@
   max-height: inherit;
   overflow-y: auto;
   padding: var(--spacing-xs) 0;
-  
+
   @include mixins.custom-scrollbar(6px, var(--color-gray-200), var(--color-gray-400));
 }
 
@@ -484,20 +486,20 @@
   cursor: pointer;
   transition: all var(--transition-fast);
   position: relative;
-  
+
   &:hover {
     background: var(--color-surface-hover);
   }
-  
+
   &.selected {
     background: var(--color-primary-light);
     color: var(--color-primary);
   }
-  
+
   &.highlighted {
     background: var(--color-surface-hover);
   }
-  
+
   &.disabled {
     cursor: not-allowed;
     opacity: 0.5;
@@ -514,7 +516,7 @@
   font-size: var(--font-size-base);
   line-height: var(--line-height-normal);
   font-weight: var(--font-weight-medium);
-  
+
   @include mixins.text-truncate;
 }
 
@@ -523,9 +525,9 @@
   color: var(--color-text-muted);
   line-height: var(--line-height-normal);
   margin-top: 2px;
-  
+
   @include mixins.text-truncate;
-  
+
   .ds-select-option.selected & {
     color: var(--color-primary);
   }
@@ -537,12 +539,12 @@
   color: var(--color-text-secondary);
   flex-shrink: 0;
   transition: all var(--transition-fast);
-  
+
   .ds-select-option:hover &,
   .ds-select-option.highlighted & {
     color: var(--color-primary);
   }
-  
+
   .ds-select-option.selected & {
     color: var(--color-primary);
   }
@@ -561,7 +563,7 @@
     width: 0;
     height: 0;
     pointer-events: none;
-    
+
     &:focus-visible + .ds-checkbox__checkmark {
       border-color: var(--color-border-focus);
       box-shadow: var(--focus-shadow);
@@ -570,7 +572,7 @@
     &:checked + .ds-checkbox__checkmark {
       background: var(--color-primary);
       border-color: var(--color-primary);
-      
+
       &::after {
         transform: rotate(45deg) scale(1);
         opacity: 1;
@@ -590,7 +592,7 @@
     transition: all var(--transition-fast);
     flex-shrink: 0;
     position: relative;
-    
+
     // Checkmark icon
     &::after {
       content: '';
@@ -635,7 +637,7 @@
   line-height: var(--line-height-normal);
   margin-top: var(--spacing-xs);
   transition: color var(--transition-fast);
-  
+
   &.error {
     color: var(--color-danger);
   }
@@ -673,7 +675,7 @@
   padding: 0;
   margin-left: var(--spacing-xs);
   transition: color var(--transition-fast);
-  
+
   &:hover {
     color: var(--color-danger);
   }
@@ -683,21 +685,21 @@
 // RESPONSIVE DESIGN
 // =============================================================================
 
-@include mixins.respond-to("sm") {
+@include mixins.respond-to('sm') {
   .ds-select {
     &--sm .ds-select-trigger {
       padding: var(--spacing-sm) var(--spacing-md);
     }
-    
+
     &--md .ds-select-trigger {
       padding: var(--spacing-md) var(--spacing-lg);
     }
-    
+
     &--lg .ds-select-trigger {
       padding: var(--spacing-lg) var(--spacing-xl);
     }
   }
-  
+
   .ds-select-dropdown {
     border-radius: var(--border-radius-sm);
   }
@@ -736,7 +738,7 @@
       box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.1);
     }
   }
-  
+
   .ds-select-arrow.open {
     color: var(--color-primary);
   }
@@ -749,7 +751,7 @@
       box-shadow: 0 0 0 3px rgba(100, 116, 139, 0.1);
     }
   }
-  
+
   .ds-select-arrow.open {
     color: var(--color-secondary);
   }
@@ -758,14 +760,14 @@
 .ds-select--danger {
   .ds-select-trigger {
     border-color: var(--color-danger);
-    
+
     &:focus {
       border-color: var(--color-danger);
       box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
     }
   }
-  
+
   .ds-select-arrow.open {
     color: var(--color-danger);
   }
-} 
+}

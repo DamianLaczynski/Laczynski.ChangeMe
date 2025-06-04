@@ -3,8 +3,8 @@
 // =============================================================================
 // Custom scrollbars, smooth scrolling, and accessibility features
 
-@use "../../../styles/abstracts/variables";
-@use "../../../styles/abstracts/mixins";
+@use '../../../styles/abstracts/variables';
+@use '../../../styles/abstracts/mixins';
 
 // =============================================================================
 // SCROLLPANEL CONTAINER
@@ -85,7 +85,7 @@
   // State variants
   &--loading {
     pointer-events: none;
-    
+
     .ds-scrollpanel-content {
       opacity: 0.6;
     }
@@ -137,7 +137,7 @@
 
   &--dragging {
     user-select: none;
-    
+
     .ds-scrollpanel-content {
       pointer-events: none;
     }
@@ -148,7 +148,7 @@
     .ds-scrollpanel-content {
       scrollbar-width: none; /* Firefox */
       -ms-overflow-style: none; /* IE and Edge */
-      
+
       &::-webkit-scrollbar {
         display: none; /* Chrome, Safari and Opera */
       }
@@ -385,7 +385,7 @@
 // FOCUS MANAGEMENT
 // =============================================================================
 
-.ds-scrollpanel[data-component="ds-scrollpanel"] {
+.ds-scrollpanel[data-component='ds-scrollpanel'] {
   &:focus-within {
     .ds-scrollpanel-container {
       box-shadow: var(--focus-shadow);
@@ -497,4 +497,4 @@
   .ds-scrollpanel-content {
     border-radius: var(--border-radius-lg);
   }
-} 
+}

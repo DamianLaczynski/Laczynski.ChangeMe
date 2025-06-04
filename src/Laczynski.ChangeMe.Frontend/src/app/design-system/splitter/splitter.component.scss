@@ -4,8 +4,8 @@
 // Resizable panel splitter with proper accessibility and visual feedback
 // Supports horizontal and vertical orientations
 
-@use "../../../styles/abstracts/variables";
-@use "../../../styles/abstracts/mixins";
+@use '../../../styles/abstracts/variables';
+@use '../../../styles/abstracts/mixins';
 
 // =============================================================================
 // SPLITTER VARIABLES
@@ -41,52 +41,52 @@
   min-height: 200px;
   background-color: var(--color-background);
   font-family: var(--font-family-primary);
-  
+
   // Prevent text selection during resize
   &--resizing {
     user-select: none;
-    
+
     * {
       pointer-events: none;
     }
-    
+
     .ds-splitter-handle {
       pointer-events: auto;
     }
   }
-  
+
   // Orientation variants
   &--horizontal {
     flex-direction: row;
-    
+
     .ds-splitter-container {
       flex-direction: row;
     }
   }
-  
+
   &--vertical {
     flex-direction: column;
-    
+
     .ds-splitter-container {
       flex-direction: column;
     }
   }
-  
+
   // Resizable state
   &--resizable {
     .ds-splitter-handle {
       cursor: col-resize;
-      
+
       &:hover {
         background-color: var(--color-primary-light);
       }
-      
+
       &:focus {
         @include mixins.focus-ring();
       }
     }
   }
-  
+
   &--static {
     .ds-splitter-handle {
       cursor: default;
@@ -94,27 +94,27 @@
       opacity: 0.5;
     }
   }
-  
+
   // Handle variants
   &--handle-default {
     .ds-splitter-handle {
       background-color: var(--splitter-handle-color);
     }
   }
-  
+
   &--handle-ghost {
     .ds-splitter-handle {
       background-color: transparent;
       border: 1px dashed var(--splitter-handle-color);
     }
   }
-  
+
   &--handle-accent {
     .ds-splitter-handle {
       background-color: var(--color-primary);
     }
   }
-  
+
   // Vertical orientation cursor
   &--vertical {
     .ds-splitter-handle {
@@ -162,13 +162,13 @@
   padding: var(--spacing-lg);
   text-align: center;
   color: var(--splitter-panel-placeholder-color);
-  
+
   .ds-splitter-panel-label {
     font-size: var(--font-size-lg);
     font-weight: var(--font-weight-medium);
     margin-bottom: var(--spacing-xs);
   }
-  
+
   .ds-splitter-panel-size {
     font-size: var(--font-size-sm);
     opacity: 0.7;
@@ -187,50 +187,50 @@
   transition: all var(--transition-fast);
   position: relative;
   flex-shrink: 0;
-  
+
   @include mixins.focus-state {
     background-color: var(--splitter-handle-color-hover);
     box-shadow: var(--focus-shadow);
   }
-  
+
   &:hover:not(&--disabled) {
     background-color: var(--splitter-handle-color-hover);
-    
+
     .ds-splitter-handle-indicator {
       opacity: 1;
     }
   }
-  
+
   &:active:not(&--disabled) {
     background-color: var(--splitter-handle-color-active);
   }
-  
+
   &--resizing {
     background-color: var(--splitter-handle-color-active);
-    
+
     .ds-splitter-handle-indicator {
       opacity: 1;
     }
   }
-  
+
   &--disabled {
     background-color: var(--splitter-handle-color-disabled);
     cursor: not-allowed;
     opacity: 0.5;
-    
+
     .ds-splitter-handle-indicator {
       opacity: 0.3;
     }
   }
-  
+
   &--blocked {
     background-color: var(--color-warning);
     cursor: not-allowed;
-    
+
     .ds-splitter-handle-indicator {
       opacity: 1;
     }
-    
+
     .ds-splitter-handle-dot {
       background-color: var(--color-warning);
     }
@@ -249,11 +249,11 @@
 .ds-splitter-handle-dots {
   display: flex;
   gap: 2px;
-  
+
   &--vertical {
     flex-direction: column;
   }
-  
+
   &--horizontal {
     flex-direction: row;
   }
@@ -289,7 +289,8 @@
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.8;
     transform: translate(-50%, -50%) scale(1);
   }
@@ -335,11 +336,11 @@
   .ds-splitter-handle {
     border: 2px solid currentColor;
   }
-  
+
   .ds-splitter-panel {
     border-width: 2px;
   }
-  
+
   .ds-splitter-handle-dot {
     background-color: currentColor;
     opacity: 1;
@@ -366,7 +367,7 @@
   .ds-splitter {
     display: block;
     height: auto;
-    
+
     .ds-splitter-panel {
       display: block;
       width: 100% !important;
@@ -374,9 +375,9 @@
       flex: none !important;
       page-break-inside: avoid;
     }
-    
+
     .ds-splitter-handle {
       display: none;
     }
   }
-} 
+}

@@ -14,9 +14,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-import {
-  ComponentSize,
-} from '../shared';
+import { ComponentSize } from '../shared';
 
 import {
   CheckboxOption,

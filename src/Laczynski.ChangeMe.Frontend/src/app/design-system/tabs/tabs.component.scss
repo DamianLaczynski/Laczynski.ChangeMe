@@ -3,8 +3,8 @@
 // =============================================================================
 // Modern tabs component focused on usability, accessibility, and consistency
 
-@use "../../../styles/abstracts/variables";
-@use "../../../styles/abstracts/mixins";
+@use '../../../styles/abstracts/variables';
+@use '../../../styles/abstracts/mixins';
 
 // =============================================================================
 // TABS CONTAINER
@@ -28,7 +28,7 @@
       flex-direction: row;
       border-bottom: 1px solid var(--color-border-subtle);
     }
-    
+
     .ds-tabs-panels {
       padding-top: var(--spacing-lg);
     }
@@ -36,14 +36,14 @@
 
   &--vertical {
     flex-direction: row;
-    
+
     .ds-tabs-list {
       flex-direction: column;
       border-right: 1px solid var(--color-border-subtle);
       width: 240px;
       min-width: 240px;
     }
-    
+
     .ds-tabs-panels {
       flex: 1;
       padding-left: var(--spacing-lg);
@@ -61,13 +61,13 @@
     .ds-tabs-panels {
       padding: var(--spacing-md);
     }
-    
+
     .ds-tabs-tab-icon,
     .ds-tabs-tab-loading {
       width: 14px;
       height: 14px;
     }
-    
+
     .ds-tabs-tab-close {
       width: 20px;
       height: 20px;
@@ -84,13 +84,13 @@
     .ds-tabs-panels {
       padding: var(--spacing-lg);
     }
-    
+
     .ds-tabs-tab-icon,
     .ds-tabs-tab-loading {
       width: 18px;
       height: 18px;
     }
-    
+
     .ds-tabs-tab-close {
       width: 24px;
       height: 24px;
@@ -107,13 +107,13 @@
     .ds-tabs-panels {
       padding: var(--spacing-xl);
     }
-    
+
     .ds-tabs-tab-icon,
     .ds-tabs-tab-loading {
       width: 20px;
       height: 20px;
     }
-    
+
     .ds-tabs-tab-close {
       width: 28px;
       height: 28px;
@@ -219,13 +219,13 @@
   transition: all var(--transition-base);
   border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
   padding: var(--spacing-xs);
-  
+
   &--scrollable {
     .ds-tabs-container-scroll {
       overflow-x: auto;
       overflow-y: hidden;
       scroll-behavior: smooth;
-      
+
       @include mixins.custom-scrollbar(4px, var(--color-gray-200), var(--color-gray-400));
     }
   }
@@ -240,7 +240,7 @@
   display: flex;
   flex: 1;
   gap: var(--spacing-xs);
-  
+
   &--scrollable {
     overflow-x: auto;
     overflow-y: hidden;
@@ -265,7 +265,7 @@
   transition: all var(--transition-fast);
   z-index: 2;
   flex-shrink: 0;
-  
+
   @include mixins.hover-effect {
     background: var(--color-surface-hover);
     color: var(--color-text);
@@ -273,22 +273,22 @@
     transform: translateY(-1px);
     box-shadow: var(--shadow-sm);
   }
-  
+
   @include mixins.focus-state {
     border-color: var(--color-border-focus);
     box-shadow: var(--focus-shadow);
   }
-  
+
   &:active:not(:disabled) {
     background: var(--color-surface-active);
     transform: translateY(0);
     box-shadow: none;
   }
-  
+
   &--left {
     margin-right: var(--spacing-sm);
   }
-  
+
   &--right {
     margin-left: var(--spacing-sm);
   }
@@ -317,53 +317,53 @@
   font-family: var(--font-family-primary);
   font-size: var(--font-size-base);
   line-height: var(--line-height-normal);
-  
+
   @include mixins.hover-effect {
     color: var(--color-text);
     background: var(--color-surface-hover);
     border-color: var(--color-border-subtle);
     transform: translateY(-1px);
   }
-  
+
   @include mixins.focus-state {
     color: var(--color-text);
     background: var(--color-surface-hover);
     border-color: var(--color-border-focus);
     box-shadow: var(--focus-shadow);
   }
-  
+
   &--active {
     color: var(--color-primary);
     background: var(--color-primary-light);
     border-color: var(--color-primary);
     font-weight: var(--font-weight-semibold);
-    
+
     &:hover {
       color: var(--color-primary);
       background: var(--color-primary-light);
       transform: none;
     }
   }
-  
+
   @include mixins.disabled-state {
     cursor: not-allowed;
     opacity: 0.5;
     pointer-events: none;
   }
-  
+
   &--loading {
     cursor: wait;
-    
+
     .ds-tabs-tab-loading {
       animation: spin 1s linear infinite;
     }
   }
-  
+
   &--focused {
     color: var(--color-text);
     background: var(--color-surface-hover);
   }
-  
+
   // Tab with close button - consistent with select clearable pattern
   &--closable {
     padding-right: calc(var(--spacing-md) + 32px); // Space for close button like select
@@ -389,19 +389,19 @@
   transition: all var(--transition-fast);
   z-index: 2;
   font-size: 14px;
-  
+
   @include mixins.hover-effect {
     background: var(--color-danger-light);
     color: var(--color-danger);
     border-color: var(--color-danger);
     transform: translateY(-50%) scale(1.05);
   }
-  
+
   @include mixins.focus-state {
     border-color: var(--color-danger);
     box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.2);
   }
-  
+
   &:active:not(:disabled) {
     background: var(--color-danger);
     color: var(--color-text-on-primary);
@@ -426,11 +426,11 @@
 .ds-tabs-panel {
   display: none;
   animation: fadeIn var(--transition-base) ease-out;
-  
+
   &--active {
     display: block;
   }
-  
+
   @include mixins.focus-state {
     outline-color: var(--color-primary);
   }
@@ -483,7 +483,7 @@
   height: 18px;
   flex-shrink: 0;
   color: currentColor;
-  
+
   svg {
     width: 100%;
     height: 100%;
@@ -507,7 +507,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  
+
   // Add margin when close button is present like input with clear button
   &--has-close {
     margin-right: var(--spacing-sm);
@@ -534,18 +534,18 @@
 // RESPONSIVE DESIGN - Consistent with input/select
 // =============================================================================
 
-@include mixins.respond-to("lg") {
+@include mixins.respond-to('lg') {
   .ds-tabs {
     &--sm .ds-tabs-tab {
       padding: var(--spacing-sm) var(--spacing-md);
       min-height: var(--input-height-sm);
     }
-    
+
     &--md .ds-tabs-tab {
       padding: var(--spacing-md) var(--spacing-lg);
       min-height: var(--input-height-md);
     }
-    
+
     &--lg .ds-tabs-tab {
       padding: var(--spacing-lg) var(--spacing-xl);
       min-height: var(--input-height-lg);
@@ -553,35 +553,35 @@
   }
 }
 
-@include mixins.respond-to("md") {
+@include mixins.respond-to('md') {
   .ds-tabs-panel {
     padding: var(--spacing-lg);
   }
-  
+
   .ds-tabs-scroll-button {
     width: 40px;
     height: 40px;
   }
 }
 
-@include mixins.respond-to("sm") {
+@include mixins.respond-to('sm') {
   .ds-tabs {
     &--horizontal {
       .ds-tabs-list {
         overflow-x: auto;
         padding: var(--spacing-xs);
       }
-      
+
       .ds-tabs-tab {
         flex-shrink: 0;
         min-width: 80px;
         padding: var(--spacing-sm) var(--spacing-md);
       }
     }
-    
+
     &--vertical {
       flex-direction: column;
-      
+
       .ds-tabs-list {
         width: 100%;
         min-width: unset;
@@ -589,13 +589,13 @@
         border-bottom: 1px solid var(--color-border-subtle);
         overflow-x: auto;
         border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
-        
+
         .ds-tabs-tab {
           flex-shrink: 0;
           min-width: 100px;
         }
       }
-      
+
       .ds-tabs-panels {
         padding-left: 0;
         padding-top: var(--spacing-lg);
@@ -611,13 +611,13 @@
     width: 32px;
     height: 32px;
   }
-  
+
   .ds-tabs-tab {
     &--closable {
       padding-right: calc(var(--spacing-sm) + 28px); // Smaller on mobile
     }
   }
-  
+
   .ds-tabs-tab-close {
     width: 20px;
     height: 20px;
@@ -637,19 +637,19 @@
 @media (prefers-contrast: high) {
   .ds-tabs-tab {
     border: 1px solid var(--color-border);
-    
+
     &--active {
       border-color: currentColor;
       background: var(--color-surface);
       border-width: 2px;
     }
-    
+
     &:focus {
       border-color: currentColor;
       border-width: 2px;
     }
   }
-  
+
   .ds-tabs-scroll-button,
   .ds-tabs-tab-close {
     border: 1px solid var(--color-border);
@@ -668,15 +668,17 @@
   }
 
   @keyframes fadeIn {
-    from, to {
+    from,
+    to {
       opacity: 1;
       transform: none;
     }
   }
-  
+
   @keyframes spin {
-    from, to { 
-      transform: none; 
+    from,
+    to {
+      transform: none;
     }
   }
 }
@@ -690,7 +692,7 @@
   .ds-tabs-tab-close {
     display: none;
   }
-  
+
   .ds-tabs-panel {
     display: block !important;
     break-inside: avoid;
@@ -708,7 +710,7 @@
 
 // Loading animation
 @keyframes spin {
-  to { 
-    transform: rotate(360deg); 
+  to {
+    transform: rotate(360deg);
   }
-} 
+}

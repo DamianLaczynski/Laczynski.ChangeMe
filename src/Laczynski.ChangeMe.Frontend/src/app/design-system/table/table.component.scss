@@ -3,8 +3,8 @@
 // =============================================================================
 // Modern table component focused on readability, accessibility, and performance
 
-@use "../../../styles/abstracts/variables";
-@use "../../../styles/abstracts/mixins";
+@use '../../../styles/abstracts/variables';
+@use '../../../styles/abstracts/mixins';
 
 // =============================================================================
 // TABLE CONTAINER - Clean Modern Design
@@ -21,7 +21,7 @@
   overflow: hidden;
   box-shadow: var(--shadow-sm);
   position: relative;
-  
+
   // Hover effect for interactive tables
   &:hover {
     box-shadow: var(--shadow-md);
@@ -42,7 +42,7 @@
   border-bottom: 1px solid var(--color-border);
   gap: var(--spacing-md);
 
-  @include mixins.respond-to("sm") {
+  @include mixins.respond-to('sm') {
     flex-direction: column;
     align-items: stretch;
     gap: var(--spacing-sm);
@@ -55,7 +55,7 @@
   min-width: 200px;
   max-width: 400px;
 
-  @include mixins.respond-to("sm") {
+  @include mixins.respond-to('sm') {
     min-width: auto;
     max-width: none;
   }
@@ -86,7 +86,7 @@
 
   &--responsive {
     overflow-x: auto;
-    
+
     @include mixins.custom-scrollbar(8px, var(--color-gray-200), var(--color-gray-400));
   }
 }
@@ -102,7 +102,7 @@
   align-items: center;
   justify-content: center;
   z-index: var(--z-index-overlay);
-  
+
   .loading-spinner {
     color: var(--color-primary);
     font-size: var(--font-size-lg);
@@ -111,8 +111,12 @@
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 // =============================================================================
@@ -223,7 +227,7 @@
     border-bottom: none;
     border-left: 1px solid var(--color-border);
     border-right: none;
-    
+
     &:last-child {
       border-right: 1px solid var(--color-border);
     }
@@ -239,13 +243,13 @@
 
 .ds-table--border-outer {
   border: 1px solid var(--color-border);
-  
+
   .ds-table__header,
   .ds-table__cell {
     border: none;
     border-bottom: 1px solid var(--color-border);
   }
-  
+
   .ds-table__row:last-child {
     .ds-table__cell {
       border-bottom: none;
@@ -291,38 +295,38 @@
   background: var(--color-surface-subtle);
   border-bottom: 1px solid var(--color-border);
   position: relative;
-  
+
   &--sortable {
     cursor: pointer;
     user-select: none;
     transition: all var(--transition-fast);
-    
+
     &:hover {
       background: var(--color-surface-hover);
       color: var(--color-text);
     }
-    
+
     &:active {
       background: var(--color-surface-active);
     }
   }
-  
+
   &--sorted-asc,
   &--sorted-desc {
     background: var(--color-primary-light);
     color: var(--color-primary);
   }
-  
+
   &--select {
     width: 48px;
     padding: var(--spacing-sm);
     text-align: center;
   }
-  
+
   &--center {
     text-align: center;
   }
-  
+
   &--right {
     text-align: right;
   }
@@ -342,17 +346,17 @@
   font-size: var(--font-size-xs);
   opacity: 0.6;
   transition: all var(--transition-fast);
-  
+
   .ds-table__header--sortable:hover & {
     opacity: 1;
   }
-  
+
   &--asc,
   &--desc {
     opacity: 1;
     color: var(--color-primary);
   }
-  
+
   &--neutral {
     opacity: 0.4;
   }
@@ -371,32 +375,32 @@
   border-bottom: 1px solid var(--color-border);
   color: var(--color-text);
   vertical-align: middle;
-  
+
   &--select {
     width: 48px;
     padding: var(--spacing-sm);
     text-align: center;
   }
-  
+
   &--center {
     text-align: center;
   }
-  
+
   &--right {
     text-align: right;
   }
-  
+
   &--loading {
     text-align: center;
     padding: var(--spacing-xl);
     color: var(--color-text-muted);
   }
-  
+
   &--error {
     text-align: center;
     padding: var(--spacing-xl);
   }
-  
+
   &--empty {
     text-align: center;
     padding: var(--spacing-xl);
@@ -414,40 +418,40 @@
 
 .ds-table__row {
   transition: all var(--transition-fast);
-  
+
   &--header {
     background: var(--color-surface-subtle);
   }
-  
+
   &--data {
     background: var(--color-surface);
-    
+
     &:hover {
       background: var(--color-surface-hover);
     }
-    
+
     &--selected {
       background: var(--color-primary-light);
-      
+
       &:hover {
         background: var(--color-primary-light);
       }
     }
-    
+
     &--disabled {
       opacity: 0.6;
       cursor: not-allowed;
-      
+
       &:hover {
         background: var(--color-surface);
       }
     }
-    
+
     &--striped {
       background: var(--color-surface-subtle);
     }
   }
-  
+
   &--loading,
   &--error,
   &--empty {
@@ -491,7 +495,7 @@
 
 .ds-table__error {
   color: var(--color-danger);
-  
+
   .ds-table__error-icon {
     color: var(--color-danger);
   }
@@ -509,8 +513,8 @@
   background: var(--color-surface-subtle);
   border-top: 1px solid var(--color-border);
   gap: var(--spacing-md);
-  
-  @include mixins.respond-to("sm") {
+
+  @include mixins.respond-to('sm') {
     flex-direction: column;
     align-items: stretch;
     gap: var(--spacing-sm);
@@ -526,8 +530,8 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
-  
-  @include mixins.respond-to("sm") {
+
+  @include mixins.respond-to('sm') {
     flex-direction: column;
     align-items: stretch;
   }
@@ -552,7 +556,7 @@
   background: var(--color-surface);
   color: var(--color-text);
   font-size: var(--font-size-sm);
-  
+
   &:focus {
     outline: none;
     border-color: var(--color-primary);
@@ -570,23 +574,23 @@
 // RESPONSIVE DESIGN
 // =============================================================================
 
-@include mixins.respond-to("md") {
+@include mixins.respond-to('md') {
   .ds-table__cell--hide-tablet,
   .ds-table__header--hide-tablet {
     display: none;
   }
 }
 
-@include mixins.respond-to("sm") {
+@include mixins.respond-to('sm') {
   .ds-table__cell--hide-mobile,
   .ds-table__header--hide-mobile {
     display: none;
   }
-  
+
   .ds-table-container {
     border-radius: var(--border-radius-md);
   }
-  
+
   .ds-table__controls,
   .ds-table__pagination {
     padding: var(--spacing-sm);
@@ -611,4 +615,4 @@
   .ds-table__sort-icon {
     transition: none;
   }
-} 
+}
