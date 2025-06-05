@@ -231,18 +231,7 @@ const SIZE_MAP: Record<IconSize, string> = {
       heroRocketLaunch,
     }),
   ],
-  template: `
-    <ng-icon
-      [name]="iconName()"
-      [size]="iconSize()"
-      [style.color]="iconColor()"
-      [class]="customClasses()"
-      [attr.aria-label]="ariaLabel() || null"
-      [attr.aria-hidden]="ariaHidden()"
-      [attr.role]="role()"
-    >
-    </ng-icon>
-  `,
+  templateUrl: './icon.component.html',
   host: {
     '[class.ds-icon]': 'true',
     '[class]': 'hostClasses()',

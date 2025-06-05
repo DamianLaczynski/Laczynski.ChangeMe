@@ -1,0 +1,248 @@
+<div class="showcase-container">
+  <!-- Header -->
+  <div class="showcase-header">
+    <h1>{{ showcaseConfig().component.componentName }}</h1>
+    <p class="showcase-description">{{ showcaseConfig().component.description }}</p>
+  </div>
+
+  <!-- Interactive Example -->
+  <ds-interactive-example
+    [config]="interactiveConfig()"
+    [currentConfig]="interactiveTextareaConfig()"
+    [lastAction]="lastAction"
+    (configChange)="onInteractiveConfigChange($event)"
+  >
+    <ds-textarea
+      [size]="interactiveTextareaConfig().size"
+      [variant]="interactiveTextareaConfig().variant"
+      [label]="interactiveTextareaConfig().label"
+      [placeholder]="interactiveTextareaConfig().placeholder"
+      [helperText]="interactiveTextareaConfig().helperText"
+      [disabled]="interactiveTextareaConfig().disabled"
+      [readonly]="interactiveTextareaConfig().readonly"
+      [required]="interactiveTextareaConfig().required"
+      [rows]="interactiveTextareaConfig().rows"
+      [maxLength]="interactiveTextareaConfig().maxLength || undefined"
+      [showCounter]="interactiveTextareaConfig().showCounter"
+      [resizable]="interactiveTextareaConfig().resizable"
+      [resize]="interactiveTextareaConfig().resize"
+      [autoResize]="interactiveTextareaConfig().autoResize"
+      [value]="interactiveTextareaConfig().value"
+      (valueChange)="onValueChange($event)"
+      (focusChange)="onFocusChange($event)"
+      (keyboardEvent)="onKeyboardEvent($event)"
+      (resizeEvent)="onResizeEvent($event)"
+    />
+  </ds-interactive-example>
+
+  <!-- Variants Section -->
+  <section class="showcase-section">
+    <h2>Variants</h2>
+    <div class="showcase-grid">
+      @for (variant of textareaVariants; track variant) {
+        <div class="showcase-item">
+          <h3>{{ getTextareaVariantLabel(variant) }}</h3>
+          <ds-textarea
+            [variant]="variant"
+            [label]="getTextareaVariantLabel(variant) + ' Textarea'"
+            [placeholder]="'Enter ' + getTextareaVariantLabel(variant).toLowerCase() + ' text...'"
+            size="md"
+            [rows]="3"
+          />
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Sizes Section -->
+  <section class="showcase-section">
+    <h2>Sizes</h2>
+    <div class="showcase-grid">
+      @for (size of textareaSizes; track size) {
+        <div class="showcase-item">
+          <h3>{{ getTextareaSizeLabel(size) }}</h3>
+          <ds-textarea
+            [size]="size"
+            [label]="getTextareaSizeLabel(size) + ' Textarea'"
+            [placeholder]="'Enter text...'"
+            variant="default"
+            [rows]="3"
+          />
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="showcase-section">
+    <h2>Features</h2>
+    <div class="showcase-grid">
+      <!-- Character Counter -->
+      <div class="showcase-item">
+        <h3>Character Counter</h3>
+        <ds-textarea
+          label="Description with Counter"
+          placeholder="Type to see character count..."
+          [maxLength]="100"
+          [showCounter]="true"
+          [rows]="3"
+          size="md"
+          variant="default"
+        />
+      </div>
+
+      <!-- Auto Resize -->
+      <div class="showcase-item">
+        <h3>Auto Resize</h3>
+        <ds-textarea
+          label="Auto-resizing Textarea"
+          placeholder="Type multiple lines to see auto-resize..."
+          [autoResize]="true"
+          [minRows]="2"
+          [maxRows]="6"
+          size="md"
+          variant="default"
+        />
+      </div>
+
+      <!-- Resize Controls -->
+      <div class="showcase-item">
+        <h3>Manual Resize</h3>
+        <ds-textarea
+          label="Resizable Textarea"
+          placeholder="Drag corner to resize..."
+          [resizable]="true"
+          [resize]="'both'"
+          [rows]="4"
+          size="md"
+          variant="default"
+        />
+      </div>
+
+      <!-- No Resize -->
+      <div class="showcase-item">
+        <h3>No Resize</h3>
+        <ds-textarea
+          label="Fixed Size Textarea"
+          placeholder="Cannot be resized..."
+          [resizable]="false"
+          [rows]="3"
+          size="md"
+          variant="default"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- States Section -->
+  <section class="showcase-section">
+    <h2>States</h2>
+    <div class="showcase-grid">
+      <!-- Default -->
+      <div class="showcase-item">
+        <h3>Default</h3>
+        <ds-textarea
+          label="Default Textarea"
+          placeholder="Enter text..."
+          [rows]="3"
+          size="md"
+          variant="default"
+        />
+      </div>
+
+      <!-- With Value -->
+      <div class="showcase-item">
+        <h3>With Value</h3>
+        <ds-textarea
+          label="Textarea with Content"
+          value="This textarea has some initial content that demonstrates how text appears in the component."
+          [rows]="3"
+          size="md"
+          variant="default"
+        />
+      </div>
+
+      <!-- Disabled -->
+      <div class="showcase-item">
+        <h3>Disabled</h3>
+        <ds-textarea
+          label="Disabled Textarea"
+          value="This textarea is disabled"
+          [disabled]="true"
+          [rows]="3"
+          size="md"
+          variant="default"
+        />
+      </div>
+
+      <!-- Readonly -->
+      <div class="showcase-item">
+        <h3>Readonly</h3>
+        <ds-textarea
+          label="Readonly Textarea"
+          value="This textarea is readonly and cannot be edited"
+          [readonly]="true"
+          [rows]="3"
+          size="md"
+          variant="default"
+        />
+      </div>
+
+      <!-- Required -->
+      <div class="showcase-item">
+        <h3>Required</h3>
+        <ds-textarea
+          label="Required Textarea"
+          placeholder="This field is required..."
+          [required]="true"
+          [rows]="3"
+          size="md"
+          variant="default"
+        />
+      </div>
+
+      <!-- With Helper Text -->
+      <div class="showcase-item">
+        <h3>With Helper Text</h3>
+        <ds-textarea
+          label="Textarea with Help"
+          placeholder="Enter description..."
+          helperText="Please provide a detailed description"
+          [rows]="3"
+          size="md"
+          variant="default"
+        />
+      </div>
+
+      <!-- Error State -->
+      <div class="showcase-item">
+        <h3>Error State</h3>
+        <ds-textarea
+          label="Textarea with Error"
+          placeholder="Enter text..."
+          helperText="This field contains an error"
+          [rows]="3"
+          size="md"
+          variant="default"
+        />
+      </div>
+
+      <!-- Large Content -->
+      <div class="showcase-item">
+        <h3>Large Content</h3>
+        <ds-textarea
+          label="Large Textarea"
+          value="This is a larger textarea with more rows to demonstrate how the component handles longer content. It can accommodate multiple paragraphs and longer text inputs."
+          [rows]="6"
+          [maxLength]="500"
+          [showCounter]="true"
+          size="md"
+          variant="default"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- API Documentation -->
+  <ds-api-documentation [api]="showcaseConfig().api" />
+</div>

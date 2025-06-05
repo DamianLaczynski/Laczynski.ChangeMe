@@ -1,0 +1,95 @@
+<div
+  class="ds-scrollpanel-container"
+  [class]="containerClasses()"
+  [attr.data-size]="size()"
+  [attr.data-state]="state()"
+>
+  <!-- Scroll Indicators -->
+  @if (showScrollIndicators()) {
+    <div class="ds-scrollpanel-indicators" [attr.inert]="state() === 'disabled'">
+      @if (scrollPosition().scrollPercentageY > 0 && scrollDirection() !== 'horizontal') {
+        <div
+          class="ds-scrollpanel-indicator ds-scrollpanel-indicator--vertical"
+          [style.height.%]="scrollPosition().scrollPercentageY"
+        ></div>
+      }
+      @if (scrollPosition().scrollPercentageX > 0 && scrollDirection() !== 'vertical') {
+        <div
+          class="ds-scrollpanel-indicator ds-scrollpanel-indicator--horizontal"
+          [style.width.%]="scrollPosition().scrollPercentageX"
+        ></div>
+      }
+    </div>
+  }
+
+  <!-- Loading Overlay -->
+  @if (state() === 'loading') {
+    <div class="ds-scrollpanel-loading" [attr.inert]="true">
+      <app-icon name="cog" size="md" class="ds-scrollpanel-loading-icon"></app-icon>
+      <span class="ds-scrollpanel-loading-text">{{ loadingText() }}</span>
+    </div>
+  }
+
+  <!-- Error Overlay -->
+  @if (state() === 'error') {
+    <div class="ds-scrollpanel-error" [attr.inert]="true">
+      <app-icon name="exclamation-triangle" size="md" class="ds-scrollpanel-error-icon"></app-icon>
+      <span class="ds-scrollpanel-error-text">{{ errorText() }}</span>
+    </div>
+  }
+
+  <!-- Main Scrollable Area -->
+  <div
+    #scrollableElement
+    class="ds-scrollpanel-content"
+    [class]="contentClasses()"
+    [style]="contentStyles()"
+    [attr.tabindex]="computedTabIndex()"
+    [attr.role]="accessibilityAttributes()['role']"
+    [attr.aria-label]="accessibilityAttributes()['aria-label']"
+    [attr.aria-describedby]="accessibilityAttributes()['aria-describedby']"
+    [attr.aria-disabled]="accessibilityAttributes()['aria-disabled']"
+    [attr.aria-valuetext]="accessibilityAttributes()['aria-valuetext']"
+    (scroll)="onScroll($event)"
+    (keydown)="onKeyDown($event)"
+    (focus)="onFocus($event)"
+    (blur)="onBlur($event)"
+  >
+    <ng-content></ng-content>
+  </div>
+
+  <!-- Custom Scrollbars -->
+  @if (customScrollbar() && showScrollbars()) {
+    <!-- Vertical Scrollbar -->
+    @if (scrollDimensions().overflowY && scrollDirection() !== 'horizontal') {
+      <div
+        class="ds-scrollpanel-scrollbar ds-scrollpanel-scrollbar--vertical"
+        [class.auto-hide]="autoHideScrollbars()"
+        [attr.inert]="state() === 'disabled'"
+      >
+        <div
+          class="ds-scrollpanel-scrollbar-thumb"
+          [style.height.%]="verticalThumbHeight()"
+          [style.top.%]="verticalThumbPosition()"
+          (mousedown)="startVerticalDrag($event)"
+        ></div>
+      </div>
+    }
+
+    <!-- Horizontal Scrollbar -->
+    @if (scrollDimensions().overflowX && scrollDirection() !== 'vertical') {
+      <div
+        class="ds-scrollpanel-scrollbar ds-scrollpanel-scrollbar--horizontal"
+        [class.auto-hide]="autoHideScrollbars()"
+        [attr.inert]="state() === 'disabled'"
+      >
+        <div
+          class="ds-scrollpanel-scrollbar-thumb"
+          [style.width.%]="horizontalThumbWidth()"
+          [style.left.%]="horizontalThumbPosition()"
+          (mousedown)="startHorizontalDrag($event)"
+        ></div>
+      </div>
+    }
+  }
+</div>

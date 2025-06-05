@@ -1,0 +1,57 @@
+<div class="ds-textarea-container" [class]="containerClasses()">
+  @if (label()) {
+    <label class="ds-textarea-label" [for]="elementId()" [class.required]="required()">
+      {{ label() }}
+      @if (required()) {
+        <span class="ds-textarea-required" aria-label="Required">*</span>
+      }
+    </label>
+  }
+
+  <div class="ds-textarea-wrapper" [class]="wrapperClasses()">
+    <textarea
+      #textareaElement
+      [id]="elementId()"
+      class="ds-textarea-field"
+      [class]="fieldClasses()"
+      [value]="currentValue()"
+      [placeholder]="placeholder() || ''"
+      [disabled]="disabled()"
+      [readonly]="readonly()"
+      [required]="required()"
+      [rows]="effectiveRows()"
+      [cols]="cols()"
+      [maxLength]="maxLength() || undefined"
+      [style.resize]="resizeStyle()"
+      [attr.aria-label]="ariaLabel() || label()"
+      [attr.aria-describedby]="getAriaDescribedby()"
+      [attr.aria-invalid]="hasError()"
+      (input)="onTextareaInput($event)"
+      (change)="onTextareaChange($event)"
+      (focus)="onTextareaFocus($event)"
+      (blur)="onTextareaBlur($event)"
+      (keydown)="onTextareaKeydown($event)"
+    ></textarea>
+  </div>
+
+  <div class="ds-textarea-footer" [class.visible]="showFooter()">
+    @if (helperText() && !showCounter()) {
+      <div class="ds-textarea-helper" [id]="elementId() + '-helper'" [class.error]="hasError()">
+        {{ helperText() }}
+      </div>
+    }
+
+    @if (showCounter()) {
+      <div class="ds-textarea-info">
+        @if (helperText()) {
+          <div class="ds-textarea-helper" [id]="elementId() + '-helper'" [class.error]="hasError()">
+            {{ helperText() }}
+          </div>
+        }
+        <div class="ds-textarea-counter" [id]="elementId() + '-counter'" [class]="counterClasses()">
+          {{ characterCount() }}{{ maxLength() ? '/' + maxLength() : '' }}
+        </div>
+      </div>
+    }
+  </div>
+</div>
