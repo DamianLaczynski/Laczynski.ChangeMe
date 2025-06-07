@@ -1,0 +1,51 @@
+@if (shouldShowModal()) {
+  <div
+    #backdrop
+    [class]="backdropClasses()"
+    [ngStyle]="modalStyles()"
+    (click)="handleBackdropClick($event)"
+    role="presentation"
+  >
+    <div
+      #modalDialog
+      [id]="componentId()"
+      [class]="computedClasses()"
+      [attr.aria-label]="accessibilityAttributes()['aria-label']"
+      [attr.aria-labelledby]="accessibilityAttributes()['aria-labelledby']"
+      [attr.aria-describedby]="accessibilityAttributes()['aria-describedby']"
+      [attr.aria-modal]="accessibilityAttributes()['aria-modal']"
+      [attr.role]="accessibilityAttributes()['role']"
+      [attr.tabindex]="-1"
+      (click)="$event.stopPropagation()"
+    >
+      <!-- Modal Header -->
+      <div class="ds-modal__header" [class.ds-modal__header--with-close]="showCloseButton()">
+        <ng-content select="[slot=header]"></ng-content>
+
+        @if (showCloseButton()) {
+          <ds-button
+            variant="ghost"
+            size="sm"
+            class="ds-modal__close-button"
+            [ariaLabel]="'Close modal'"
+            (clicked)="handleCloseButtonClick()"
+          >
+            <app-icon name="x-mark" size="sm" [decorative]="true"></app-icon>
+          </ds-button>
+        }
+      </div>
+
+      <!-- Modal Body -->
+      <div class="ds-modal__body">
+        <ng-content select="[slot=body]"></ng-content>
+        <ng-content></ng-content>
+        <!-- Default content -->
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="ds-modal__footer">
+        <ng-content select="[slot=footer]"></ng-content>
+      </div>
+    </div>
+  </div>
+}

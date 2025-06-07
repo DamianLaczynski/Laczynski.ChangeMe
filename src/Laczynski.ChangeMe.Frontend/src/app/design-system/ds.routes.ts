@@ -19,6 +19,7 @@ import { TextareaShowcaseComponent } from './textarea/textarea-showcase.componen
 import { AccordionShowcaseComponent } from './accordion';
 import { SplitterShowcaseComponent } from './splitter/splitter-showcase.component';
 import { ScrollPanelShowcaseComponent } from './scrollpanel/scrollpanel-showcase.component';
+import { ModalShowcaseComponent } from './modal';
 
 /**
  * Design System routes with layout wrapper
@@ -122,6 +123,10 @@ export const DS_ROUTES: Routes = [
       // =============================================================================
       // OVERLAY COMPONENTS
       // =============================================================================
+      {
+        path: 'overlay/modal',
+        component: ModalShowcaseComponent,
+      },
 
       // =============================================================================
       // FEEDBACK COMPONENTS
