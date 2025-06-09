@@ -140,12 +140,6 @@ export class DesignSystemLayoutComponent {
         category: 'forms',
         implemented: true,
       },
-      {
-        label: 'Autocomplete',
-        path: '/design-system/forms/autocomplete',
-        category: 'forms',
-        implemented: false,
-      },
     ],
     data: [
       {
@@ -160,12 +154,6 @@ export class DesignSystemLayoutComponent {
         category: 'data',
         implemented: true,
       },
-      {
-        label: 'List',
-        path: '/design-system/data/list',
-        category: 'data',
-        implemented: false,
-      },
     ],
     layout: [
       {
@@ -173,12 +161,6 @@ export class DesignSystemLayoutComponent {
         path: '/design-system/layout/accordion',
         category: 'layout',
         implemented: true,
-      },
-      {
-        label: 'Card',
-        path: '/design-system/layout/card',
-        category: 'layout',
-        implemented: false,
       },
       {
         label: 'ScrollPanel',
@@ -197,26 +179,6 @@ export class DesignSystemLayoutComponent {
         path: '/design-system/layout/tabs',
         category: 'layout',
         implemented: true,
-      },
-    ],
-    overlay: [
-      {
-        label: 'Modal',
-        path: '/design-system/overlay/modal',
-        category: 'overlay',
-        implemented: true,
-      },
-      {
-        label: 'Toast',
-        path: '/design-system/overlay/toast',
-        category: 'overlay',
-        implemented: false,
-      },
-      {
-        label: 'Alert',
-        path: '/design-system/overlay/alert',
-        category: 'overlay',
-        implemented: false,
       },
     ],
     foundation: [
@@ -266,10 +228,6 @@ export class DesignSystemLayoutComponent {
     {
       title: 'Layout Components',
       items: this.navigation['layout'],
-    },
-    {
-      title: 'Overlay Components',
-      items: this.navigation['overlay'],
     },
     {
       title: 'Foundation Components',

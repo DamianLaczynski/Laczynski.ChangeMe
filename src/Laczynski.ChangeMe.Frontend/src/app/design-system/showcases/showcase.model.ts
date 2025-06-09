@@ -264,9 +264,7 @@ export type DesignSystemCategory =
   | 'navigation' // Navigation components
   | 'data' // Data components
   | 'layout' // Layout components
-  | 'overlay' // Overlay components
   | 'foundation' // Foundation elements (colors, typography, etc.)
-  | 'feedback' // Feedback components
   | 'actions' // Action components
   | 'overview'; // Overview page
 
