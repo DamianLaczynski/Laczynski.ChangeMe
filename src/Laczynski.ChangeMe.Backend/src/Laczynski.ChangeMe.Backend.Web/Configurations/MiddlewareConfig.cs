@@ -44,14 +44,8 @@ public static class MiddlewareConfig
     {
       var context = services.GetRequiredService<ApplicationDbContext>();
 
-      // Check if we're using a relational database before calling Migrate
-      if (context.Database.IsRelational())
-      {
-        context.Database.Migrate();
-      }
+      await context.Database.MigrateAsync();
 
-      // EnsureCreated works for both relational and InMemory
-      context.Database.EnsureCreated();
       await SeedData.InitializeAsync(context);
     }
     catch (Exception ex)
