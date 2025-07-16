@@ -35,24 +35,35 @@ public abstract class BaseEndpoint<TRequest, TResponse> : Endpoint<TRequest, Res
   /// </summary>
   public override async Task HandleAsync(TRequest req, CancellationToken ct)
   {
-    // Check if there are validation failures from FastEndpoints
-    if (ValidationFailed)
+    Result<TResponse> response = ValidationFailed switch
     {
-      var validationErrors = ValidationFailures.Select(f => new ValidationError
+      true => Result<TResponse>.Invalid(ValidationFailures.Select(f => new ValidationError
       {
         Identifier = f.PropertyName,
         ErrorMessage = f.ErrorMessage,
         Severity = ValidationSeverity.Error
-      }).ToArray();
+      }).ToArray()),
+      false => await HandleEndpointAsync(req, ct)
+    };
 
-      var result = Result<TResponse>.Invalid(validationErrors);
+    var statusCode = response.Status switch
+    {
+      ResultStatus.Ok => StatusCodes.Status200OK,
+      ResultStatus.Created => StatusCodes.Status201Created,
+      ResultStatus.Error => StatusCodes.Status500InternalServerError,
+      ResultStatus.Forbidden => StatusCodes.Status403Forbidden,
+      ResultStatus.Unauthorized => StatusCodes.Status401Unauthorized,
+      ResultStatus.Invalid => StatusCodes.Status400BadRequest,
+      ResultStatus.NotFound => StatusCodes.Status404NotFound,
+      ResultStatus.NoContent => StatusCodes.Status204NoContent,
+      ResultStatus.Conflict => StatusCodes.Status409Conflict,
+      ResultStatus.CriticalError => StatusCodes.Status500InternalServerError,
+      ResultStatus.Unavailable => StatusCodes.Status503ServiceUnavailable,
+      _ => StatusCodes.Status500InternalServerError
+    };
 
-      await SendAsync(result, StatusCodes.Status400BadRequest, ct);
-
-    }
-
-    // If validation passed, proceed with the endpoint logic
-    Response = await HandleEndpointAsync(req, ct);
+    await SendAsync(response, statusCode, ct);
+    return;
   }
 
   /// <summary>
