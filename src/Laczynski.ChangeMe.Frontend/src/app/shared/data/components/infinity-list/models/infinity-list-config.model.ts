@@ -32,6 +32,16 @@ export interface InfinityListConfig<T, P extends PaginationParameters = Paginati
    * Whether to show loading indicator
    */
   showLoadingIndicator?: boolean;
+
+  /**
+   * Scroll threshold in pixels from bottom to trigger loading more
+   */
+  scrollThreshold: number;
+
+  /**
+   * Height of the list (in pixels)
+   */
+  height: string;
 }
 
 export function createInfinityListConfig<T, P extends PaginationParameters = PaginationParameters>(
@@ -47,6 +57,8 @@ export function createInfinityListConfig<T, P extends PaginationParameters = Pag
     serverSideSorting: config?.serverSideSorting ?? true,
     emptyMessage: config?.emptyMessage ?? 'No items available',
     showLoadingIndicator: config?.showLoadingIndicator ?? true,
+    scrollThreshold: config?.scrollThreshold ?? 200,
+    height: config?.height ?? '100%',
     dataSource:
       config?.dataSource ??
       (() =>

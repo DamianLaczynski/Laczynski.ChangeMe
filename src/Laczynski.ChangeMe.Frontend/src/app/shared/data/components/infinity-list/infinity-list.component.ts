@@ -3,11 +3,10 @@ import {
   ElementRef,
   OnInit,
   TemplateRef,
-  ViewChild,
-  afterNextRender,
   input,
   model,
   output,
+  viewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PaginationParameters } from '../../models/pagination-parameters.model';
@@ -18,50 +17,40 @@ import { InfinityListConfig } from './models/infinity-list-config.model';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './infinity-list.component.html',
+  styles: [
+    `
+      .infinity-scroll-container {
+        height: 100%;
+        overflow-y: auto;
+      }
+    `,
+  ],
 })
 export class InfinityListComponent<T, P extends PaginationParameters = PaginationParameters>
   implements OnInit
 {
-  @ViewChild('scrollContainer') scrollContainer!: ElementRef<HTMLDivElement>;
+  scrollContainer = viewChild<ElementRef<HTMLDivElement>>('scrollContainer');
 
   config = model.required<InfinityListConfig<T, P>>();
   columnTemplates = input<{ [key: string]: TemplateRef<any> }>({});
   itemSelect = output<T>();
 
-  // Scroll handling
-  private scrollThreshold = 200; // pixels from bottom to trigger loading more
-
-  constructor() {
-    afterNextRender(() => {
-      this.setupScrollListener();
-    });
-  }
-
   ngOnInit(): void {
-    if (!this.config().emptyMessage) {
-      this.config().emptyMessage = 'No items available';
-    }
-    if (this.config().showLoadingIndicator === undefined) {
-      this.config().showLoadingIndicator = true;
-    }
+    this.config.update(config => ({
+      ...config,
+      emptyMessage: config.emptyMessage || 'No items available',
+      showLoadingIndicator: config.showLoadingIndicator ?? true,
+    }));
   }
 
   /**
    * Handle scroll events
    */
-  onScroll(event: Event): void {
+  onScroll(event: any): void {
     const target = event.target as HTMLElement;
     if (this.shouldLoadMore(target)) {
       this.loadMoreItems();
     }
-  }
-
-  /**
-   * Set up scroll event listener (keeping for compatibility)
-   */
-  private setupScrollListener(): void {
-    // This method is kept for any additional setup if needed
-    // The scroll event is now handled directly in the template
   }
 
   /**
@@ -74,7 +63,7 @@ export class InfinityListComponent<T, P extends PaginationParameters = Paginatio
 
     const { scrollTop, scrollHeight, clientHeight } = scrollElement;
     const scrollPosition = scrollTop + clientHeight;
-    const scrollThresholdPosition = scrollHeight - this.scrollThreshold;
+    const scrollThresholdPosition = scrollHeight - this.config().scrollThreshold;
 
     return scrollPosition >= scrollThresholdPosition;
   }
@@ -87,11 +76,18 @@ export class InfinityListComponent<T, P extends PaginationParameters = Paginatio
       return;
     }
 
-    // Increment page for next batch
-    this.config().params.pageNumber = (this.config().params.pageNumber || 1) + 1;
+    // Create new params object instead of mutating existing one
+    const newParams = {
+      ...this.config().params,
+      pageNumber: (this.config().params.pageNumber || 1) + 1,
+    } as P;
 
-    // Get more data from the data source
-    this.config().dataSource(this.config().params).subscribe();
+    this.config.update(config => ({
+      ...config,
+      params: newParams,
+    }));
+
+    this.config().dataSource(newParams).subscribe();
   }
 
   /**
@@ -105,14 +101,28 @@ export class InfinityListComponent<T, P extends PaginationParameters = Paginatio
    * Force reload data
    */
   refresh(): void {
-    this.config().params.pageNumber = 1;
-    this.config().dataSource(this.config().params).subscribe();
+    const resetParams = { ...this.config().params, pageNumber: 1 } as P;
+    this.config.update(config => ({
+      ...config,
+      params: resetParams,
+    }));
+
+    this.config()
+      .dataSource(resetParams)
+      .subscribe({
+        next: result => {
+          console.log('Successfully refreshed data:', result);
+        },
+        error: error => {
+          console.error('Error refreshing data:', error);
+        },
+      });
   }
 
   /**
    * Track items by identifier function for ngFor optimization
    */
   trackByFn(index: number, item: any): any {
-    return item.id || index;
+    return item?.id || item?.identifier || index;
   }
 }

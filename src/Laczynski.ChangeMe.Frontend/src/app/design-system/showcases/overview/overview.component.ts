@@ -399,9 +399,9 @@ export class OverviewComponent {
 
   /** Component statistics */
   componentStats = {
-    total: 25,
-    implemented: 10,
-    categories: 6,
+    total: 17,
+    implemented: 14,
+    categories: 4,
   };
 
   /** Component categories with their items */
@@ -412,25 +412,29 @@ export class OverviewComponent {
       { name: 'Select', path: '/design-system/ui/select', implemented: true },
       { name: 'Checkbox', path: '/design-system/ui/checkbox', implemented: true },
       { name: 'Radio', path: '/design-system/ui/radio', implemented: true },
-      { name: 'Switch', path: '/design-system/ui/switch', implemented: false },
-      { name: 'Slider', path: '/design-system/ui/slider', implemented: false },
+      { name: 'Switch', path: '/design-system/ui/switch', implemented: true },
+      { name: 'Textarea', path: '/design-system/ui/textarea', implemented: true },
+      { name: 'Alert', path: '/design-system/ui/alert', implemented: false },
+      { name: 'Toast', path: '/design-system/ui/toast', implemented: false },
+      { name: 'Modal', path: '/design-system/ui/modal', implemented: true },
     ],
     data: [
       { name: 'Table', path: '/design-system/data/table', implemented: true },
-      { name: 'List', path: '/design-system/data/list', implemented: true },
-      { name: 'Card', path: '/design-system/data/card', implemented: true },
-      { name: 'Tree', path: '/design-system/data/tree', implemented: false },
-      { name: 'Timeline', path: '/design-system/data/timeline', implemented: false },
+      { name: 'Tree', path: '/design-system/data/tree', implemented: true },
+      { name: 'Accordion', path: '/design-system/data/accordion', implemented: true },
+      { name: 'Tabs', path: '/design-system/data/tabs', implemented: true },
+      { name: 'List', path: '/design-system/data/list', implemented: false },
+      { name: 'Card', path: '/design-system/data/card', implemented: false },
     ],
     layout: [
-      { name: 'Grid', path: '/design-system/layout/grid', implemented: true },
+      { name: 'Splitter', path: '/design-system/layout/splitter', implemented: true },
+      { name: 'Scrollpanel', path: '/design-system/layout/scrollpanel', implemented: true },
+      { name: 'Grid', path: '/design-system/layout/grid', implemented: false },
       { name: 'Container', path: '/design-system/layout/container', implemented: false },
-      { name: 'Stack', path: '/design-system/layout/stack', implemented: false },
-      { name: 'Divider', path: '/design-system/layout/divider', implemented: false },
     ],
     forms: [
-      { name: 'Form Field', path: '/design-system/forms/form-field', implemented: true },
-      { name: 'Form Group', path: '/design-system/forms/form-group', implemented: true },
+      { name: 'Form Field', path: '/design-system/forms/form-field', implemented: false },
+      { name: 'Form Group', path: '/design-system/forms/form-group', implemented: false },
       { name: 'Validation', path: '/design-system/forms/validation', implemented: false },
       { name: 'File Upload', path: '/design-system/forms/file-upload', implemented: false },
     ],
