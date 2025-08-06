@@ -4,7 +4,6 @@ WORKDIR /src
 
 # Copy csproj files
 COPY ["src/Laczynski.ChangeMe.Backend/Laczynski.ChangeMe.Backend.sln", "./"]
-COPY ["src/Laczynski.ChangeMe.Backend/src/Laczynski.ChangeMe.Backend.API/Laczynski.ChangeMe.Backend.API.csproj", "src/Laczynski.ChangeMe.Backend.API/"]
 COPY ["src/Laczynski.ChangeMe.Backend/src/Laczynski.ChangeMe.Backend.Shared/Laczynski.ChangeMe.Backend.Shared.csproj", "src/Laczynski.ChangeMe.Backend.Shared/"]
 COPY ["src/Laczynski.ChangeMe.Backend/src/Laczynski.ChangeMe.Backend.Core/Laczynski.ChangeMe.Backend.Core.csproj", "src/Laczynski.ChangeMe.Backend.Core/"]
 COPY ["src/Laczynski.ChangeMe.Backend/src/Laczynski.ChangeMe.Backend.Infrastructure/Laczynski.ChangeMe.Backend.Infrastructure.csproj", "src/Laczynski.ChangeMe.Backend.Infrastructure/"]

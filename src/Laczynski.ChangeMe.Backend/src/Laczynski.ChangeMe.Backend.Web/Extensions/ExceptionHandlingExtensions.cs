@@ -27,17 +27,17 @@ public static class ExceptionHandlingExtensions
               var logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
               logger.LogError(exception, "Unhandled exception: {Message}", exception.Message);
 
-              var statusCode = exception switch
+              var (statusCode, message) = exception switch
               {
-                ArgumentException => StatusCodes.Status400BadRequest,
-                KeyNotFoundException => StatusCodes.Status404NotFound,
-                UnauthorizedAccessException => StatusCodes.Status401Unauthorized,
-                _ => StatusCodes.Status500InternalServerError
+                ArgumentException => (StatusCodes.Status400BadRequest, "Bad Request"),
+                KeyNotFoundException => (StatusCodes.Status404NotFound, "Not Found"),
+                UnauthorizedAccessException => (StatusCodes.Status401Unauthorized, "Unauthorized"),
+                _ => (StatusCodes.Status500InternalServerError, "Internal Server Error")
               };
 
               context.Response.StatusCode = statusCode;
 
-              var response = Result<object>.Error(exception.Message);
+              var response = Result<object>.Error(message);
 
               await context.Response.WriteAsync(JsonSerializer.Serialize(response));
             }
