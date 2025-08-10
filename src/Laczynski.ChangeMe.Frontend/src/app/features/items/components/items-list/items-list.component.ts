@@ -1,12 +1,4 @@
-import {
-  Component,
-  OnInit,
-  WritableSignal,
-  inject,
-  signal,
-  TemplateRef,
-  viewChild,
-} from '@angular/core';
+import { Component, WritableSignal, inject, signal, TemplateRef, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -27,7 +19,7 @@ import { Item, ItemSearchParameters } from '../../models/item.model';
   imports: [CommonModule, FormsModule, RouterModule, PaginatedTableComponent],
   templateUrl: './items-list.component.html',
 })
-export class ItemsListComponent implements OnInit {
+export class ItemsListComponent {
   private readonly itemsService = inject(ItemsService);
   private readonly stateService = inject(StateService);
   private readonly router = inject(Router);
@@ -45,10 +37,6 @@ export class ItemsListComponent implements OnInit {
   actionsTemplate = viewChild<TemplateRef<any>>('actionsTemplate');
   priceTemplate = viewChild<TemplateRef<any>>('priceTemplate');
   imageTemplate = viewChild<TemplateRef<any>>('imageTemplate');
-
-  ngOnInit(): void {
-    // Table will handle initial loading through its dataSource
-  }
 
   /**
    * Load items with current search parameters

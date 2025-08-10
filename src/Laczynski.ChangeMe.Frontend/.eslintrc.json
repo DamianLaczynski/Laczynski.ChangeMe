@@ -14,6 +14,7 @@
         "plugin:@angular-eslint/recommended",
         "plugin:@angular-eslint/template/process-inline-templates"
       ],
+      "plugins": ["unused-imports"],
       "rules": {
         "@angular-eslint/directive-selector": [
           "error",
@@ -33,7 +34,18 @@
         ],
         "@typescript-eslint/no-explicit-any": "warn",
         "@angular-eslint/template/click-events-have-key-events": "off",
-        "@angular-eslint/template/interactive-supports-focus": "off"
+        "@angular-eslint/template/interactive-supports-focus": "off",
+        "@typescript-eslint/no-unused-vars": "off",
+        "unused-imports/no-unused-imports": "error",
+        "unused-imports/no-unused-vars": [
+          "warn",
+          {
+            "vars": "all",
+            "varsIgnorePattern": "^_",
+            "args": "after-used",
+            "argsIgnorePattern": "^_"
+          }
+        ]
       }
     },
     {
@@ -46,11 +58,15 @@
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended"
       ],
+      "plugins": ["unused-imports"],
       "rules": {
         "@angular-eslint/directive-selector": "off",
         "@angular-eslint/component-selector": "off",
         "@typescript-eslint/no-explicit-any": "off",
-        "@typescript-eslint/no-non-null-assertion": "off"
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/no-unused-vars": "off",
+        "unused-imports/no-unused-imports": "error",
+        "unused-imports/no-unused-vars": "off"
       }
     },
     {
