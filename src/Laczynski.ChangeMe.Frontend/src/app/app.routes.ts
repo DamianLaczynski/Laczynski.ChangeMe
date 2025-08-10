@@ -6,12 +6,8 @@ import { ItemFormComponent } from '@features/items/components/item-form/item-for
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: '/design-system',
+    redirectTo: '/items',
     pathMatch: 'full',
-  },
-  {
-    path: 'design-system',
-    loadChildren: () => import('./design-system').then(m => m.DS_ROUTES),
   },
   {
     path: 'items',
