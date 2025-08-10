@@ -110,9 +110,7 @@ export class InfinityListComponent<T, P extends PaginationParameters = Paginatio
     this.config()
       .dataSource(resetParams)
       .subscribe({
-        next: result => {
-          console.log('Successfully refreshed data:', result);
-        },
+        next: () => {},
         error: error => {
           console.error('Error refreshing data:', error);
         },

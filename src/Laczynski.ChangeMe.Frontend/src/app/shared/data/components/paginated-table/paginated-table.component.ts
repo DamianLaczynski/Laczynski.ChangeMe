@@ -94,7 +94,6 @@ export class PaginatedTableComponent<T, P extends PaginationParameters = Paginat
    * Handle page changes (keeping for compatibility)
    */
   onPageChange(event: any): void {
-    console.log(event);
     this.config().params.pageSize = event.rows ?? 10;
     this.config().params.pageNumber = (event.first ?? 0) / (event.rows ?? 10) + 1;
 
