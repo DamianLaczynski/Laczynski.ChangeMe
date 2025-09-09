@@ -1,0 +1,528 @@
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use '../utils/functions' as *;
+@use '../utils/utilities' as *;
+
+@include block('toast') {
+  //position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-sm;
+  padding: $spacing-md;
+  margin-bottom: $spacing-sm;
+  border-radius: $border-radius-md;
+  box-shadow: $shadow-lg;
+  background-color: $color-white;
+  border: 1px solid $color-gray-200;
+  color: $color-gray-900;
+  font-family: $font-family-primary;
+  line-height: $line-height-normal;
+  transition: all $transition-normal;
+  transform: translateX(0);
+  opacity: 1;
+  max-width: 400px;
+  min-width: 300px;
+  z-index: $z-index-tooltip;
+
+  // Elements
+  @include element('icon') {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: 0.125rem;
+  }
+
+  @include element('icon-svg') {
+    width: 100%;
+    height: 100%;
+  }
+
+  @include element('content') {
+    flex: 1;
+    min-width: 0;
+  }
+
+  @include element('title') {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    margin-bottom: $spacing-xs;
+    color: inherit;
+  }
+
+  @include element('message') {
+    font-size: $font-size-sm;
+    color: $color-gray-700;
+    line-height: $line-height-normal;
+  }
+
+  @include element('actions') {
+    display: flex;
+    align-items: flex-start;
+    gap: $spacing-xs;
+    flex-shrink: 0;
+  }
+
+  @include element('dismiss') {
+    @include button-reset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: $border-radius-sm;
+    color: $color-gray-500;
+    transition: all $transition-fast;
+    @include focus-ring;
+
+    &:hover {
+      color: $color-gray-700;
+      background-color: $color-gray-100;
+    }
+
+    &:focus-visible {
+      color: $color-gray-700;
+      background-color: $color-gray-100;
+    }
+  }
+
+  @include element('dismiss-icon') {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+
+  @include element('progress') {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 100%;
+    background-color: currentColor;
+    border-radius: 0 0 $border-radius-md $border-radius-md;
+    animation: toast-progress-single linear;
+    transform-origin: center;
+  }
+
+  // Size modifiers
+  @include modifier('sm') {
+    padding: $spacing-sm $spacing-md;
+    min-width: 250px;
+    max-width: 350px;
+
+    .toast__icon {
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .toast__title {
+      font-size: $font-size-xs;
+    }
+
+    .toast__message {
+      font-size: $font-size-xs;
+    }
+  }
+
+  @include modifier('md') {
+    padding: $spacing-md;
+    min-width: 300px;
+    max-width: 400px;
+  }
+
+  @include modifier('lg') {
+    padding: $spacing-lg;
+    min-width: 350px;
+    max-width: 450px;
+
+    .toast__icon {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
+    .toast__title {
+      font-size: $font-size-md;
+    }
+
+    .toast__message {
+      font-size: $font-size-md;
+    }
+  }
+
+  @include modifier('xl') {
+    padding: $spacing-xl;
+    min-width: 400px;
+    max-width: 500px;
+
+    .toast__icon {
+      width: 1.75rem;
+      height: 1.75rem;
+    }
+
+    .toast__title {
+      font-size: $font-size-lg;
+    }
+
+    .toast__message {
+      font-size: $font-size-lg;
+    }
+  }
+
+  @include modifier('primary') {
+    border-left: 4px solid $color-primary;
+    background-color: rgba($color-primary, 0.05);
+
+    .toast__icon {
+      color: $color-primary;
+    }
+
+    .toast__progress {
+      background-color: $color-primary;
+    }
+  }
+
+  @include modifier('secondary') {
+    border-left: 4px solid $color-gray-700;
+    background-color: rgba($color-gray-700, 0.05);
+
+    .toast__icon {
+      color: $color-gray-700;
+    }
+
+    .toast__progress {
+      background-color: $color-gray-700;
+    }
+  }
+
+  // Type modifiers
+  @include modifier('info') {
+    border-left: 4px solid $color-info;
+    background-color: rgba($color-info, 0.05);
+
+    .toast__icon {
+      color: $color-info;
+    }
+
+    .toast__progress {
+      background-color: $color-info;
+    }
+  }
+
+  @include modifier('success') {
+    border-left: 4px solid $color-success;
+    background-color: rgba($color-success, 0.05);
+
+    .toast__icon {
+      color: $color-success;
+    }
+
+    .toast__progress {
+      background-color: $color-success;
+    }
+  }
+
+  @include modifier('warning') {
+    border-left: 4px solid $color-warning;
+    background-color: rgba($color-warning, 0.05);
+
+    .toast__icon {
+      color: $color-warning;
+    }
+
+    .toast__progress {
+      background-color: $color-warning;
+    }
+  }
+
+  @include modifier('danger') {
+    border-left: 4px solid $color-danger;
+    background-color: rgba($color-danger, 0.05);
+
+    .toast__icon {
+      color: $color-danger;
+    }
+
+    .toast__progress {
+      background-color: $color-danger;
+    }
+  }
+
+  // Variant modifiers
+  @include modifier('solid') {
+    // Default solid appearance
+  }
+
+  @include modifier('outline') {
+    background-color: transparent;
+    border-width: 2px;
+    border-style: solid;
+
+    &.toast--primary {
+      border-color: $color-primary;
+      color: $color-primary;
+    }
+
+    &.toast--secondary {
+      border-color: $color-gray-700;
+      color: $color-gray-700;
+    }
+
+    &.toast--info {
+      border-color: $color-info;
+      color: $color-info;
+    }
+
+    &.toast--success {
+      border-color: $color-success;
+      color: $color-success;
+    }
+
+    &.toast--warning {
+      border-color: $color-warning;
+      color: $color-warning;
+    }
+
+    &.toast--danger {
+      border-color: $color-danger;
+      color: $color-danger;
+    }
+  }
+
+  @include modifier('ghost') {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+
+    &.toast--primary {
+      color: $color-primary;
+    }
+
+    &.toast--secondary {
+      color: $color-gray-700;
+    }
+
+    &.toast--info {
+      color: $color-info;
+    }
+
+    &.toast--success {
+      color: $color-success;
+    }
+
+    &.toast--warning {
+      color: $color-warning;
+    }
+
+    &.toast--danger {
+      color: $color-danger;
+    }
+  }
+
+  // Position modifiers
+  @include modifier('top-left') {
+    //position: fixed;
+    top: $spacing-lg;
+    left: $spacing-lg;
+    transform: translateX(-100%);
+    animation: toast-slide-in-left $transition-normal ease-out;
+
+    &.toast--hidden {
+      transform: translateX(-100%);
+    }
+  }
+
+  @include modifier('top-center') {
+    //position: fixed;
+    top: $spacing-lg;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100%);
+    animation: toast-slide-in-top $transition-normal ease-out;
+
+    &.toast--hidden {
+      transform: translateX(-50%) translateY(-100%);
+    }
+  }
+
+  @include modifier('top-right') {
+    //position: fixed;
+    top: $spacing-lg;
+    right: $spacing-lg;
+    transform: translateX(100%);
+    animation: toast-slide-in-right $transition-normal ease-out;
+
+    &.toast--hidden {
+      transform: translateX(100%);
+    }
+  }
+
+  @include modifier('bottom-left') {
+    //position: fixed;
+    bottom: $spacing-lg;
+    left: $spacing-lg;
+    transform: translateX(-100%);
+    animation: toast-slide-in-left $transition-normal ease-out;
+
+    &.toast--hidden {
+      transform: translateX(-100%);
+    }
+  }
+
+  @include modifier('bottom-center') {
+    //position: fixed;
+    bottom: $spacing-lg;
+    left: 50%;
+    transform: translateX(-50%) translateY(100%);
+    animation: toast-slide-in-bottom $transition-normal ease-out;
+
+    &.toast--hidden {
+      transform: translateX(-50%) translateY(100%);
+    }
+  }
+
+  @include modifier('bottom-right') {
+    //position: fixed;
+    bottom: $spacing-lg;
+    right: $spacing-lg;
+    transform: translateX(100%);
+    animation: toast-slide-in-right $transition-normal ease-out;
+
+    &.toast--hidden {
+      transform: translateX(100%);
+    }
+  }
+
+  // Hidden state
+  @include modifier('hidden') {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  // Theme-aware
+  &.theme-aware {
+    background-color: var(--theme-bg-primary);
+    color: var(--theme-text-primary);
+    border-color: var(--theme-border-primary);
+
+    .toast__message {
+      color: var(--theme-text-secondary);
+    }
+
+    .toast__dismiss {
+      color: var(--theme-text-tertiary);
+
+      &:hover {
+        color: var(--theme-text-primary);
+        background-color: var(--theme-bg-secondary);
+      }
+    }
+  }
+
+  // Responsive adjustments
+  @include respond-to(sm) {
+    min-width: 320px;
+    max-width: 420px;
+  }
+
+  @include respond-to(md) {
+    min-width: 350px;
+    max-width: 450px;
+  }
+}
+
+// Animations
+@keyframes toast-slide-in-left {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes toast-slide-in-right {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes toast-slide-in-top {
+  from {
+    transform: translateX(-50%) translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes toast-slide-in-bottom {
+  from {
+    transform: translateX(-50%) translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes toast-progress-single {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+// Toast container for multiple toasts
+.toast-container {
+  position: fixed;
+  z-index: $z-index-tooltip;
+  pointer-events: none;
+
+  .toast {
+    pointer-events: auto;
+  }
+
+  &.toast-container--top-left {
+    top: $spacing-lg;
+    left: $spacing-lg;
+  }
+
+  &.toast-container--top-center {
+    top: $spacing-lg;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  &.toast-container--top-right {
+    top: $spacing-lg;
+    right: $spacing-lg;
+  }
+
+  &.toast-container--bottom-left {
+    bottom: $spacing-lg;
+    left: $spacing-lg;
+  }
+
+  &.toast-container--bottom-center {
+    bottom: $spacing-lg;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  &.toast-container--bottom-right {
+    bottom: $spacing-lg;
+    right: $spacing-lg;
+  }
+}
