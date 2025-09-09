@@ -1,0 +1,61 @@
+<app-field
+  [fieldType]="'select'"
+  [label]="label()"
+  [placeholder]="placeholder()"
+  [helpText]="helpText()"
+  [errorText]="errorText()"
+  [warningText]="warningText()"
+  [successText]="successText()"
+  [required]="required()"
+  [disabled]="disabled()"
+  [readonly]="readonly()"
+  [autocomplete]="autocomplete()"
+  [id]="id()"
+  [name]="name()"
+  [state]="state()"
+  [size]="size()"
+>
+  <div class="field__select-wrapper">
+    <select
+      [id]="id()"
+      [name]="name()"
+      [class]="inputClasses()"
+      [required]="required()"
+      [disabled]="disabled()"
+      [value]="value"
+      (change)="onInputChange($event)"
+      (focus)="onFocus($event)"
+      (blur)="onBlur($event)"
+    >
+      <option value="">{{ placeholder() || "Select an option" }}</option>
+      @for(option of options(); track option.value) {
+      <option [value]="option.value" [disabled]="option.disabled">
+        {{ option.label }}
+      </option>
+      }
+    </select>
+
+    <!-- Custom chevron icon -->
+    <div class="field__action field__select-chevron">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <polyline points="6,9 12,15 18,9"></polyline>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Clear button -->
+  @if (!disabled() && !readonly()) {
+  <div class="field__actions">
+    <app-clear-button
+      [value]="value"
+      [showClearButton]="true"
+      (clear)="clear()"
+    ></app-clear-button>
+  </div>
+  }
+</app-field>

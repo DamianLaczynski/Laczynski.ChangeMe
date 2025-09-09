@@ -1,0 +1,47 @@
+<app-field
+  [fieldType]="'search'"
+  [label]="label()"
+  [placeholder]="placeholder()"
+  [helpText]="helpText()"
+  [errorText]="errorText()"
+  [warningText]="warningText()"
+  [successText]="successText()"
+  [required]="required()"
+  [disabled]="disabled()"
+  [readonly]="readonly()"
+  [autocomplete]="autocomplete()"
+  [id]="id()"
+  [name]="name()"
+  [state]="state()"
+  [layout]="layout()"
+  [size]="size()"
+>
+  <input
+    [id]="id()"
+    [name]="name()"
+    type="search"
+    class="field__search-input"
+    [class]="inputClasses()"
+    [placeholder]="getPlaceholder()"
+    [required]="required()"
+    [disabled]="disabled()"
+    [readonly]="readonly()"
+    [autocomplete]="autocomplete()"
+    [value]="currentValue"
+    (input)="onInputChange($event)"
+    (focus)="onFocus($event)"
+    (blur)="onBlur($event)"
+    (keyup)="onKeyUp($event)"
+    (keydown)="onKeyDown($event)"
+    #searchInput
+  />
+
+  <!-- Search actions -->
+  <div class="field__actions" *ngIf="!disabled() && !readonly()">
+    <app-clear-button
+      [value]="currentValue"
+      [showClearButton]="showClearButton()"
+      (clear)="clearSearch()"
+    ></app-clear-button>
+  </div>
+</app-field>

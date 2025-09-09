@@ -1,0 +1,318 @@
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use '../utils/functions' as *;
+@use '../utils/utilities' as *;
+
+// ==========================================================================
+// Footer Layout (BEM Block)
+// ==========================================================================
+
+@include block('footer') {
+  background-color: $color-gray-900;
+  color: $color-gray-300;
+  padding: $spacing-2xl 0 $spacing-xl;
+  margin-top: auto;
+  
+  // Footer elements
+  @include element('container') {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 $spacing-lg;
+  }
+  
+  @include element('content') {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $spacing-xl;
+    margin-bottom: $spacing-xl;
+    
+    @include respond-to(md) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    @include respond-to(lg) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  @include element('section') {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  @include element('title') {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $color-white;
+    margin-bottom: $spacing-md;
+  }
+  
+  @include element('text') {
+    font-size: $font-size-sm;
+    line-height: $line-height-relaxed;
+    margin-bottom: $spacing-md;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  @include element('list') {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  @include element('item') {
+    margin-bottom: $spacing-sm;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  @include element('link') {
+    color: $color-gray-300;
+    text-decoration: none;
+    font-size: $font-size-sm;
+    transition: color $transition-fast;
+    
+    &:hover {
+      color: $color-white;
+    }
+    
+    &:focus {
+      @include focus-ring;
+    }
+  }
+  
+  @include element('social') {
+    display: flex;
+    gap: $spacing-sm;
+    margin-top: $spacing-md;
+  }
+  
+  @include element('social-link') {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    background-color: $color-gray-800;
+    color: $color-gray-300;
+    border-radius: $border-radius;
+    text-decoration: none;
+    transition: all $transition-fast;
+    
+    &:hover {
+      background-color: $color-primary;
+      color: $color-white;
+      transform: translateY(-2px);
+    }
+    
+    &:focus {
+      @include focus-ring;
+    }
+  }
+  
+  @include element('bottom') {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: $spacing-xl;
+    border-top: 1px solid $color-gray-700;
+    gap: $spacing-md;
+    
+    @include respond-to(md) {
+      flex-direction: row;
+      gap: 0;
+    }
+  }
+  
+  @include element('copyright') {
+    font-size: $font-size-sm;
+    color: $color-gray-500;
+    text-align: center;
+    
+    @include respond-to(md) {
+      text-align: left;
+    }
+  }
+  
+  @include element('legal') {
+    display: flex;
+    gap: $spacing-lg;
+    font-size: $font-size-sm;
+  }
+  
+  @include element('legal-link') {
+    color: $color-gray-500;
+    text-decoration: none;
+    transition: color $transition-fast;
+    
+    &:hover {
+      color: $color-white;
+    }
+    
+    &:focus {
+      @include focus-ring;
+    }
+  }
+  
+  // Footer modifiers - variants
+  @include modifier('light') {
+    background-color: $color-gray-100;
+    color: $color-gray-700;
+    border-top: 1px solid $color-gray-300;
+    
+    .footer__title {
+      color: $color-gray-900;
+    }
+    
+    .footer__link {
+      color: $color-gray-600;
+      
+      &:hover {
+        color: $color-gray-900;
+      }
+    }
+    
+    .footer__social-link {
+      background-color: $color-white;
+      color: $color-gray-600;
+      border: 1px solid $color-gray-300;
+      
+      &:hover {
+        background-color: $color-primary;
+        color: $color-white;
+        border-color: $color-primary;
+      }
+    }
+    
+    .footer__bottom {
+      border-top-color: $color-gray-300;
+    }
+    
+    .footer__copyright,
+    .footer__legal-link {
+      color: $color-gray-600;
+    }
+    
+    .footer__legal-link:hover {
+      color: $color-gray-900;
+    }
+  }
+  
+  @include modifier('minimal') {
+    padding: $spacing-lg 0;
+    
+    .footer__content {
+      margin-bottom: $spacing-lg;
+    }
+    
+    .footer__bottom {
+      padding-top: $spacing-lg;
+    }
+  }
+  
+  @include modifier('centered') {
+    text-align: center;
+    
+    .footer__content {
+      grid-template-columns: 1fr;
+      max-width: 600px;
+      margin: 0 auto $spacing-xl;
+    }
+    
+    .footer__social {
+      justify-content: center;
+    }
+  }
+  
+  @include modifier('sticky') {
+    position: sticky;
+    bottom: 0;
+    z-index: $z-index-sticky;
+  }
+}
+
+// Newsletter signup
+@include block('newsletter') {
+  background-color: $color-primary;
+  padding: $spacing-xl 0;
+  margin: $spacing-xl 0;
+  border-radius: $border-radius;
+  
+  @include element('container') {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 $spacing-lg;
+    text-align: center;
+  }
+  
+  @include element('title') {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $color-white;
+    margin-bottom: $spacing-sm;
+  }
+  
+  @include element('text') {
+    font-size: $font-size-md;
+    color: rgba($color-white, 0.9);
+    margin-bottom: $spacing-lg;
+  }
+  
+  @include element('form') {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+    max-width: 400px;
+    margin: 0 auto;
+    
+    @include respond-to(sm) {
+      flex-direction: row;
+    }
+  }
+  
+  @include element('input') {
+    flex: 1;
+    padding: $spacing-sm $spacing-md;
+    border: 1px solid rgba($color-white, 0.3);
+    border-radius: $border-radius;
+    background-color: rgba($color-white, 0.1);
+    color: $color-white;
+    font-size: $font-size-md;
+    
+    &::placeholder {
+      color: rgba($color-white, 0.7);
+    }
+    
+    &:focus {
+      outline: none;
+      border-color: $color-white;
+      background-color: rgba($color-white, 0.2);
+    }
+  }
+  
+  @include element('button') {
+    padding: $spacing-sm $spacing-lg;
+    background-color: $color-white;
+    color: $color-primary;
+    border: none;
+    border-radius: $border-radius;
+    font-weight: $font-weight-medium;
+    cursor: pointer;
+    transition: all $transition-fast;
+    
+    &:hover {
+      background-color: $color-gray-100;
+      transform: translateY(-1px);
+    }
+    
+    &:focus {
+      @include focus-ring;
+    }
+  }
+}

@@ -1,0 +1,62 @@
+<app-field
+  [fieldType]="'color'"
+  [label]="label()"
+  [placeholder]="placeholder()"
+  [helpText]="helpText()"
+  [errorText]="errorText()"
+  [warningText]="warningText()"
+  [successText]="successText()"
+  [required]="required()"
+  [disabled]="disabled()"
+  [readonly]="readonly()"
+  [autocomplete]="autocomplete()"
+  [id]="id()"
+  [name]="name()"
+  [state]="state()"
+  [layout]="layout()"
+  [size]="size()"
+>
+  <div class="field__color-container">
+    <input
+      [id]="id() + '-picker'"
+      [name]="name() + '-picker'"
+      type="color"
+      class="field__color-picker"
+      [value]="value"
+      [required]="required()"
+      [disabled]="disabled()"
+      [readonly]="readonly()"
+      (input)="onInputChange($event)"
+      (focus)="onFocus($event)"
+      (blur)="onBlur($event)"
+    />
+
+    <input
+      [id]="id()"
+      [name]="name()"
+      type="text"
+      [class]="inputClasses()"
+      [placeholder]="placeholder() || '#000000'"
+      [value]="value"
+      [required]="required()"
+      [disabled]="disabled()"
+      [readonly]="readonly()"
+      [autocomplete]="autocomplete()"
+      (input)="onInputChange($event)"
+      (focus)="onFocus($event)"
+      (blur)="onBlur($event)"
+      (keyup)="onKeyUp($event)"
+      (keydown)="onKeyDown($event)"
+    />
+
+    @if (!disabled() && !readonly()) {
+    <div class="field__actions">
+      <app-clear-button
+        [value]="value"
+        [showClearButton]="true"
+        (clear)="clear()"
+      ></app-clear-button>
+    </div>
+    }
+  </div>
+</app-field>

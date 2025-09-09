@@ -1,0 +1,150 @@
+<app-field
+  [fieldType]="type()"
+  [label]="label()"
+  [placeholder]="placeholder()"
+  [helpText]="helpText()"
+  [errorText]="errorText()"
+  [warningText]="warningText()"
+  [successText]="successText()"
+  [required]="required()"
+  [disabled]="disabled()"
+  [readonly]="readonly()"
+  [autocomplete]="autocomplete()"
+  [id]="id()"
+  [name]="name()"
+  [state]="state()"
+  [layout]="layout()"
+  [size]="size()"
+>
+  <div class="field__datetime-container">
+    <!-- Main input -->
+    <input
+      [id]="id()"
+      [name]="name()"
+      [type]="getInputType()"
+      [class]="inputClasses()"
+      [placeholder]="getPlaceholder()"
+      [value]="formattedValue"
+      [required]="required()"
+      [disabled]="disabled()"
+      [readonly]="readonly()"
+      [autocomplete]="autocomplete()"
+      [min]="getMinValue()"
+      [max]="getMaxValue()"
+      [step]="getStepValue()"
+      (input)="onInputChange($event)"
+      (focus)="onFocus($event)"
+      (blur)="onBlur($event)"
+      (keyup)="onKeyUp($event)"
+      (keydown)="onKeyDown($event)"
+    />
+
+    <!-- Additional info display -->
+    <div class="field__datetime-info" *ngIf="value && formatDisplay()">
+      <!-- Formatted display value -->
+      <div class="field__datetime-formatted" *ngIf="getFormattedDisplayValue()">
+        <svg
+          class="field__datetime-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        <span>{{ getFormattedDisplayValue() }}</span>
+      </div>
+
+      <!-- Relative date -->
+      <div class="field__datetime-relative" *ngIf="getRelativeDate()">
+        <svg
+          class="field__datetime-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12,6 12,12 16,14"></polyline>
+        </svg>
+        <span>{{ getRelativeDate() }}</span>
+      </div>
+
+      <!-- Timezone info -->
+      <div class="field__datetime-timezone" *ngIf="getTimezoneInfo()">
+        <svg
+          class="field__datetime-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="2" y1="12" x2="22" y2="12"></line>
+          <path
+            d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+          ></path>
+        </svg>
+        <span>{{ getTimezoneInfo() }}</span>
+      </div>
+    </div>
+
+    <!-- Validation message -->
+    <div class="field__datetime-validation" *ngIf="getValidationMessage()">
+      <svg
+        class="field__datetime-icon field__datetime-icon--error"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="15" y1="9" x2="9" y2="15"></line>
+        <line x1="9" y1="9" x2="15" y2="15"></line>
+      </svg>
+      <span>{{ getValidationMessage() }}</span>
+    </div>
+
+    <!-- Type-specific info -->
+    <div class="field__datetime-type-info" *ngIf="value">
+      <div class="field__datetime-type-item" *ngIf="type() === 'week'">
+        <svg
+          class="field__datetime-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        <span
+          >Week {{ getWeekNumber(value) }} of {{ value.getFullYear() }}</span
+        >
+      </div>
+
+      <div class="field__datetime-type-item" *ngIf="type() === 'month'">
+        <svg
+          class="field__datetime-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        <span>{{
+          value.toLocaleDateString(locale(), { month: "long", year: "numeric" })
+        }}</span>
+      </div>
+    </div>
+  </div>
+</app-field>

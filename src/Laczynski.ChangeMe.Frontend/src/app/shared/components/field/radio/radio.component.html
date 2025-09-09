@@ -1,0 +1,34 @@
+<app-field
+  [fieldType]="'radio'"
+  [label]="label()"
+  [placeholder]="placeholder()"
+  [helpText]="helpText()"
+  [errorText]="errorText()"
+  [warningText]="warningText()"
+  [successText]="successText()"
+  [required]="required()"
+  [disabled]="disabled()"
+  [readonly]="readonly()"
+  [autocomplete]="autocomplete()"
+  [id]="id()"
+  [name]="name()"
+  [state]="state()"
+  [size]="size()"
+>
+  <div class="field__radio">
+    <input
+      [id]="id()"
+      [name]="name()"
+      type="radio"
+      [value]="value"
+      [checked]="value"
+      [disabled]="disabled()"
+      (change)="onInputChange($event)"
+      (focus)="onFocus($event)"
+      (blur)="onBlur($event)"
+    />
+    <label [for]="id()" class="field__label" [class.required]="required()">
+      {{ label() }}
+    </label>
+  </div>
+</app-field>

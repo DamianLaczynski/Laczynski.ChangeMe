@@ -1,0 +1,393 @@
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use '../utils/functions' as *;
+@use '../utils/utilities' as *;
+@use 'sass:math';
+
+// ==========================================================================
+// Grid Layout (BEM Block)
+// ==========================================================================
+
+@include block('container') {
+  width: 100%;
+  padding-right: $spacing-md;
+  padding-left: $spacing-md;
+  margin-right: auto;
+  margin-left: auto;
+  
+  @include respond-to(sm) {
+    max-width: 540px;
+  }
+  
+  @include respond-to(md) {
+    max-width: 720px;
+  }
+  
+  @include respond-to(lg) {
+    max-width: 960px;
+  }
+  
+  @include respond-to(xl) {
+    max-width: 1140px;
+  }
+  
+  @include respond-to(2xl) {
+    max-width: 1320px;
+  }
+  
+  // Container modifiers
+  @include modifier('fluid') {
+    max-width: none;
+  }
+  
+  @include modifier('sm') {
+    @include respond-to(sm) {
+      max-width: 540px;
+    }
+  }
+  
+  @include modifier('md') {
+    @include respond-to(md) {
+      max-width: 720px;
+    }
+  }
+  
+  @include modifier('lg') {
+    @include respond-to(lg) {
+      max-width: 960px;
+    }
+  }
+  
+  @include modifier('xl') {
+    @include respond-to(xl) {
+      max-width: 1140px;
+    }
+  }
+}
+
+@include block('row') {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -$spacing-sm;
+  margin-left: -$spacing-sm;
+  
+  // Row modifiers
+  @include modifier('no-gutters') {
+    margin-right: 0;
+    margin-left: 0;
+    
+    > .col,
+    > [class*="col-"] {
+      padding-right: 0;
+      padding-left: 0;
+    }
+  }
+  
+  @include modifier('gutters-sm') {
+    margin-right: -$spacing-xs;
+    margin-left: -$spacing-xs;
+    
+    > .col,
+    > [class*="col-"] {
+      padding-right: $spacing-xs;
+      padding-left: $spacing-xs;
+    }
+  }
+  
+  @include modifier('gutters-lg') {
+    margin-right: -$spacing-md;
+    margin-left: -$spacing-md;
+    
+    > .col,
+    > [class*="col-"] {
+      padding-right: $spacing-md;
+      padding-left: $spacing-md;
+    }
+  }
+  
+  @include modifier('gutters-xl') {
+    margin-right: -$spacing-lg;
+    margin-left: -$spacing-lg;
+    
+    > .col,
+    > [class*="col-"] {
+      padding-right: $spacing-lg;
+      padding-left: $spacing-lg;
+    }
+  }
+  
+  @include modifier('align-items-start') {
+    align-items: flex-start;
+  }
+  
+  @include modifier('align-items-center') {
+    align-items: center;
+  }
+  
+  @include modifier('align-items-end') {
+    align-items: flex-end;
+  }
+  
+  @include modifier('justify-content-start') {
+    justify-content: flex-start;
+  }
+  
+  @include modifier('justify-content-center') {
+    justify-content: center;
+  }
+  
+  @include modifier('justify-content-end') {
+    justify-content: flex-end;
+  }
+  
+  @include modifier('justify-content-between') {
+    justify-content: space-between;
+  }
+  
+  @include modifier('justify-content-around') {
+    justify-content: space-around;
+  }
+}
+
+// Column classes
+@include block('col') {
+  flex-basis: 0;
+  flex-grow: 1;
+  max-width: 100%;
+  padding-right: $spacing-sm;
+  padding-left: $spacing-sm;
+}
+
+// Generate column classes for all breakpoints
+@for $i from 1 through 12 {
+  .col-#{$i} {
+    flex: 0 0 math.percentage(calc($i / 12));
+    max-width: math.percentage(calc($i / 12));
+    padding-right: $spacing-sm;
+    padding-left: $spacing-sm;
+  }
+  
+  .col-sm-#{$i} {
+    @include respond-to(sm) {
+      flex: 0 0 math.percentage(calc($i / 12));
+      max-width: math.percentage(calc($i / 12));
+    }
+  }
+  
+  .col-md-#{$i} {
+    @include respond-to(md) {
+      flex: 0 0 math.percentage(calc($i / 12));
+      max-width: math.percentage(calc($i / 12));
+    }
+  }
+  
+  .col-lg-#{$i} {
+    @include respond-to(lg) {
+      flex: 0 0 math.percentage(calc($i / 12));
+      max-width: math.percentage(calc($i / 12));
+    }
+  }
+  
+  .col-xl-#{$i} {
+    @include respond-to(xl) {
+      flex: 0 0 math.percentage(calc($i / 12));
+      max-width: math.percentage(calc($i / 12));
+    }
+  }
+  
+  .col-2xl-#{$i} {
+    @include respond-to(2xl) {
+      flex: 0 0 math.percentage(calc($i / 12));
+      max-width: math.percentage(calc($i / 12));
+    }
+  }
+}
+
+// Offset classes
+@for $i from 1 through 11 {
+  .offset-#{$i} {
+    margin-left: math.percentage(calc($i / 12));
+  }
+  
+  .offset-sm-#{$i} {
+    @include respond-to(sm) {
+      margin-left: math.percentage(calc($i / 12));
+    }
+  }
+  
+  .offset-md-#{$i} {
+    @include respond-to(md) {
+      margin-left: math.percentage(calc($i / 12));
+    }
+  }
+  
+  .offset-lg-#{$i} {
+    @include respond-to(lg) {
+      margin-left: math.percentage(calc($i / 12));
+    }
+  }
+  
+  .offset-xl-#{$i} {
+    @include respond-to(xl) {
+      margin-left: math.percentage(calc($i / 12));
+    }
+  }
+  
+  .offset-2xl-#{$i} {
+    @include respond-to(2xl) {
+      margin-left: math.percentage(calc($i / 12));
+    }
+  }
+}
+
+// Auto columns
+.col-auto {
+  flex: 0 0 auto;
+  width: auto;
+  max-width: none;
+  padding-right: $spacing-sm;
+  padding-left: $spacing-sm;
+}
+
+.col-sm-auto {
+  @include respond-to(sm) {
+    flex: 0 0 auto;
+    width: auto;
+    max-width: none;
+  }
+}
+
+.col-md-auto {
+  @include respond-to(md) {
+    flex: 0 0 auto;
+    width: auto;
+    max-width: none;
+  }
+}
+
+.col-lg-auto {
+  @include respond-to(lg) {
+    flex: 0 0 auto;
+    width: auto;
+    max-width: none;
+  }
+}
+
+.col-xl-auto {
+  @include respond-to(xl) {
+    flex: 0 0 auto;
+    width: auto;
+    max-width: none;
+  }
+}
+
+.col-2xl-auto {
+  @include respond-to(2xl) {
+    flex: 0 0 auto;
+    width: auto;
+    max-width: none;
+  }
+}
+
+// Utility classes
+.d-none {
+  display: none !important;
+}
+
+.d-sm-none {
+  @include respond-to(sm) {
+    display: none !important;
+  }
+}
+
+.d-md-none {
+  @include respond-to(md) {
+    display: none !important;
+  }
+}
+
+.d-lg-none {
+  @include respond-to(lg) {
+    display: none !important;
+  }
+}
+
+.d-xl-none {
+  @include respond-to(xl) {
+    display: none !important;
+  }
+}
+
+.d-2xl-none {
+  @include respond-to(2xl) {
+    display: none !important;
+  }
+}
+
+.d-block {
+  display: block !important;
+}
+
+.d-sm-block {
+  @include respond-to(sm) {
+    display: block !important;
+  }
+}
+
+.d-md-block {
+  @include respond-to(md) {
+    display: block !important;
+  }
+}
+
+.d-lg-block {
+  @include respond-to(lg) {
+    display: block !important;
+  }
+}
+
+.d-xl-block {
+  @include respond-to(xl) {
+    display: block !important;
+  }
+}
+
+.d-2xl-block {
+  @include respond-to(2xl) {
+    display: block !important;
+  }
+}
+
+.d-flex {
+  display: flex !important;
+}
+
+.d-sm-flex {
+  @include respond-to(sm) {
+    display: flex !important;
+  }
+}
+
+.d-md-flex {
+  @include respond-to(md) {
+    display: flex !important;
+  }
+}
+
+.d-lg-flex {
+  @include respond-to(lg) {
+    display: flex !important;
+  }
+}
+
+.d-xl-flex {
+  @include respond-to(xl) {
+    display: flex !important;
+  }
+}
+
+.d-2xl-flex {
+  @include respond-to(2xl) {
+    display: flex !important;
+  }
+}

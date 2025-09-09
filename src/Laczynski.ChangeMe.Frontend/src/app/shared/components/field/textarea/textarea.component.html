@@ -1,0 +1,36 @@
+<app-field
+  [fieldType]="'textarea'"
+  [label]="label()"
+  [placeholder]="placeholder()"
+  [helpText]="helpText()"
+  [errorText]="errorText()"
+  [warningText]="warningText()"
+  [successText]="successText()"
+  [required]="required()"
+  [disabled]="disabled()"
+  [readonly]="readonly()"
+  [autocomplete]="autocomplete()"
+  [id]="id()"
+  [name]="name()"
+  [state]="state()"
+  [size]="size()"
+>
+  <textarea
+    [id]="id()"
+    [name]="name()"
+    [class]="inputClasses()"
+    [placeholder]="placeholder()"
+    [required]="required()"
+    [disabled]="disabled()"
+    [readonly]="readonly()"
+    [rows]="rows()"
+    [cols]="cols()"
+    [value]="value"
+    (input)="onInputChange($event)"
+    (focus)="onFocus($event)"
+    (blur)="onBlur($event)"
+    (keyup)="onKeyUp($event)"
+    (keydown)="onKeyDown($event)"
+    >{{ value }}</textarea
+  >
+</app-field>

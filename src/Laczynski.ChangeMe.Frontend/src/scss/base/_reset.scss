@@ -1,0 +1,398 @@
+// ==========================================================================
+// Reset - Additional resets beyond normalize
+// ==========================================================================
+
+@use '../utils/variables' as *;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: $font-family-primary;
+  font-size: $font-size-md;
+  line-height: $line-height-normal;
+  color: $color-gray-900;
+  background-color: $color-white;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Remove default margins
+h1, h2, h3, h4, h5, h6,
+p, blockquote, pre,
+dl, dd, ol, ul, figure,
+hr, fieldset, legend {
+  margin: 0;
+}
+
+// Remove default padding
+ol, ul {
+  padding: 0;
+}
+
+// Remove list styles
+ol, ul {
+  list-style: none;
+}
+
+// Remove default table styles
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+// Remove default button styles
+button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  text-decoration: none;
+}
+
+// Remove default link styles
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+// Remove default form styles
+input, textarea, select {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+// Remove default image styles
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+// Remove default fieldset styles
+fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+// Remove default legend styles
+legend {
+  padding: 0;
+}
+
+// Remove default details styles
+details {
+  display: block;
+}
+
+summary {
+  display: list-item;
+  cursor: pointer;
+}
+
+// Remove default mark styles
+mark {
+  background: none;
+  color: inherit;
+}
+
+// Remove default small styles
+small {
+  font-size: inherit;
+}
+
+// Remove default sub and sup styles
+sub, sup {
+  font-size: inherit;
+  line-height: inherit;
+  position: static;
+  vertical-align: baseline;
+}
+
+// Remove default code styles
+code, kbd, samp {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+// Remove default pre styles
+pre {
+  font-family: inherit;
+  font-size: inherit;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+// Remove default blockquote styles
+blockquote {
+  quotes: none;
+}
+
+blockquote::before,
+blockquote::after {
+  content: '';
+  content: none;
+}
+
+// Remove default q styles
+q {
+  quotes: none;
+}
+
+q::before,
+q::after {
+  content: '';
+  content: none;
+}
+
+// Remove default address styles
+address {
+  font-style: normal;
+}
+
+// Remove default cite styles
+cite {
+  font-style: normal;
+}
+
+// Remove default dfn styles
+dfn {
+  font-style: normal;
+}
+
+// Remove default em styles
+em {
+  font-style: normal;
+}
+
+// Remove default i styles
+i {
+  font-style: normal;
+}
+
+// Remove default strong styles
+strong {
+  font-weight: normal;
+}
+
+// Remove default b styles
+b {
+  font-weight: normal;
+}
+
+// Remove default u styles
+u {
+  text-decoration: none;
+}
+
+// Remove default s styles
+s {
+  text-decoration: none;
+}
+
+// Remove default del styles
+del {
+  text-decoration: none;
+}
+
+// Remove default ins styles
+ins {
+  text-decoration: none;
+}
+
+// Remove default abbr styles
+abbr {
+  text-decoration: none;
+}
+
+// Remove default acronym styles
+acronym {
+  text-decoration: none;
+}
+
+// Remove default a styles
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+// Remove default button styles
+button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  text-decoration: none;
+}
+
+// Remove default input styles
+input, textarea, select {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+// Remove default fieldset styles
+fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+// Remove default legend styles
+legend {
+  padding: 0;
+}
+
+// Remove default details styles
+details {
+  display: block;
+}
+
+summary {
+  display: list-item;
+  cursor: pointer;
+}
+
+// Remove default mark styles
+mark {
+  background: none;
+  color: inherit;
+}
+
+// Remove default small styles
+small {
+  font-size: inherit;
+}
+
+// Remove default sub and sup styles
+sub, sup {
+  font-size: inherit;
+  line-height: inherit;
+  position: static;
+  vertical-align: baseline;
+}
+
+// Remove default code styles
+code, kbd, samp {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+// Remove default pre styles
+pre {
+  font-family: inherit;
+  font-size: inherit;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+// Remove default blockquote styles
+blockquote {
+  quotes: none;
+}
+
+blockquote::before,
+blockquote::after {
+  content: '';
+  content: none;
+}
+
+// Remove default q styles
+q {
+  quotes: none;
+}
+
+q::before,
+q::after {
+  content: '';
+  content: none;
+}
+
+// Remove default address styles
+address {
+  font-style: normal;
+}
+
+// Remove default cite styles
+cite {
+  font-style: normal;
+}
+
+// Remove default dfn styles
+dfn {
+  font-style: normal;
+}
+
+// Remove default em styles
+em {
+  font-style: normal;
+}
+
+// Remove default i styles
+i {
+  font-style: normal;
+}
+
+// Remove default strong styles
+strong {
+  font-weight: normal;
+}
+
+// Remove default b styles
+b {
+  font-weight: normal;
+}
+
+// Remove default u styles
+u {
+  text-decoration: none;
+}
+
+// Remove default s styles
+s {
+  text-decoration: none;
+}
+
+// Remove default del styles
+del {
+  text-decoration: none;
+}
+
+// Remove default ins styles
+ins {
+  text-decoration: none;
+}
+
+// Remove default abbr styles
+abbr {
+  text-decoration: none;
+}
+
+// Remove default acronym styles
+acronym {
+  text-decoration: none;
+}
