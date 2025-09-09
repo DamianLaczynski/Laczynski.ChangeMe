@@ -32,7 +32,7 @@ export class ToastContainerComponent {
 
   toasts = this.toastService.toasts;
   // Inputs
-  position = input<ToastPosition>('top-left');
+  position = input<ToastPosition>('top-right');
 
   containerClasses(): string {
     return `toast-container toast-container--${this.position()}`;
