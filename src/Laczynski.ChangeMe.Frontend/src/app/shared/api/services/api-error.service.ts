@@ -1,12 +1,12 @@
 import { inject, Injectable } from '@angular/core';
-import { MessageService } from '@shared/message';
+import { ToastService } from '@shared/components/toast/services/toast.service';
 import { Observable, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiErrorService {
-  private readonly messageService = inject(MessageService);
+  private readonly toastService = inject(ToastService);
 
   /**
    * Display error message and return Observable with error
@@ -29,13 +29,8 @@ export class ApiErrorService {
    * @param message Error message
    * @param summary Toast header
    */
-  public showErrorToast(message: string, summary: string = 'Błąd'): void {
-    this.messageService.add({
-      severity: 'error',
-      summary,
-      detail: message,
-      life: 5000,
-    });
+  public showErrorToast(message: string, title: string = 'Error'): void {
+    this.toastService.error(title, message);
   }
 
   /**
@@ -43,13 +38,8 @@ export class ApiErrorService {
    * @param message Success message
    * @param summary Toast header
    */
-  public showSuccessToast(message: string, summary: string = 'Sukces'): void {
-    this.messageService.add({
-      severity: 'success',
-      summary,
-      detail: message,
-      life: 3000,
-    });
+  public showSuccessToast(message: string, title: string = 'Success'): void {
+    this.toastService.success(title, message);
   }
 
   /**
@@ -57,13 +47,8 @@ export class ApiErrorService {
    * @param message Warning message
    * @param summary Toast header
    */
-  public showWarningToast(message: string, summary: string = 'Uwaga'): void {
-    this.messageService.add({
-      severity: 'warn',
-      summary,
-      detail: message,
-      life: 4000,
-    });
+  public showWarningToast(message: string, title: string = 'Warning'): void {
+    this.toastService.warn(title, message);
   }
 
   /**
@@ -71,13 +56,8 @@ export class ApiErrorService {
    * @param message Info message
    * @param summary Toast header
    */
-  public showInfoToast(message: string, summary: string = 'Informacja'): void {
-    this.messageService.add({
-      severity: 'info',
-      summary,
-      detail: message,
-      life: 3000,
-    });
+  public showInfoToast(message: string, title: string = 'Info'): void {
+    this.toastService.info(title, message);
   }
 
   /**

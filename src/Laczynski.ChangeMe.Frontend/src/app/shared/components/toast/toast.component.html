@@ -1,7 +1,7 @@
 <div
   [class]="toastClasses()"
   role="alert"
-  [attr.aria-live]="type() === 'danger' ? 'assertive' : 'polite'"
+  [attr.aria-live]="intent() === 'danger' ? 'assertive' : 'polite'"
 >
   <!-- Icon -->
   @if (showIcon()) {
@@ -12,7 +12,7 @@
         viewBox="0 0 20 20"
         xmlns="http://www.w3.org/2000/svg"
       >
-        @switch (type()) {
+        @switch (intent()) {
           @case ('success') {
             <path
               fill-rule="evenodd"

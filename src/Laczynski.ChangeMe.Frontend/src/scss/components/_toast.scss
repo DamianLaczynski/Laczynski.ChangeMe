@@ -2,6 +2,7 @@
 @use '../utils/mixins' as *;
 @use '../utils/functions' as *;
 @use '../utils/utilities' as *;
+@use 'sass:color';
 
 @include block('toast') {
   //position: relative;
@@ -171,7 +172,7 @@
 
   @include modifier('primary') {
     border-left: 4px solid $color-primary;
-    background-color: rgba($color-primary, 0.05);
+    background-color: color.adjust($color-primary, $lightness: 55%);
 
     .toast__icon {
       color: $color-primary;
@@ -184,7 +185,7 @@
 
   @include modifier('secondary') {
     border-left: 4px solid $color-gray-700;
-    background-color: rgba($color-gray-700, 0.05);
+    background-color: color.adjust($color-gray-700, $lightness: 55%);
 
     .toast__icon {
       color: $color-gray-700;
@@ -198,7 +199,7 @@
   // Type modifiers
   @include modifier('info') {
     border-left: 4px solid $color-info;
-    background-color: rgba($color-info, 0.05);
+    background-color: color.adjust($color-info, $lightness: 55%);
 
     .toast__icon {
       color: $color-info;
@@ -211,7 +212,7 @@
 
   @include modifier('success') {
     border-left: 4px solid $color-success;
-    background-color: rgba($color-success, 0.05);
+    background-color: color.adjust($color-success, $lightness: 55%);
 
     .toast__icon {
       color: $color-success;
@@ -224,7 +225,7 @@
 
   @include modifier('warning') {
     border-left: 4px solid $color-warning;
-    background-color: rgba($color-warning, 0.05);
+    background-color: color.adjust($color-warning, $lightness: 55%);
 
     .toast__icon {
       color: $color-warning;
@@ -237,7 +238,7 @@
 
   @include modifier('danger') {
     border-left: 4px solid $color-danger;
-    background-color: rgba($color-danger, 0.05);
+    background-color: color.adjust($color-danger, $lightness: 55%);
 
     .toast__icon {
       color: $color-danger;
@@ -254,7 +255,7 @@
   }
 
   @include modifier('outline') {
-    background-color: transparent;
+    background-color: $color-white;
     border-width: 2px;
     border-style: solid;
 
@@ -290,9 +291,8 @@
   }
 
   @include modifier('ghost') {
-    background-color: transparent;
+    background-color: $color-white;
     border: none;
-    box-shadow: none;
 
     &.toast--primary {
       color: $color-primary;
@@ -348,7 +348,6 @@
     //position: fixed;
     top: $spacing-lg;
     right: $spacing-lg;
-    transform: translateX(100%);
     animation: toast-slide-in-right $transition-normal ease-out;
 
     &.toast--hidden {

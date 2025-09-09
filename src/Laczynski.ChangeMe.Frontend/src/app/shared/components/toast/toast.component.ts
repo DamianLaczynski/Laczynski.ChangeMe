@@ -1,13 +1,6 @@
 import { Component, input, output, model } from '@angular/core';
 import { Intent, Size, Variant } from '../utils';
-
-export type ToastPosition =
-  | 'top-left'
-  | 'top-center'
-  | 'top-right'
-  | 'bottom-left'
-  | 'bottom-center'
-  | 'bottom-right';
+import { ToastPosition } from './models/toast.model';
 
 @Component({
   selector: 'app-toast',
@@ -15,36 +8,24 @@ export type ToastPosition =
   standalone: true,
 })
 export class ToastComponent {
-  // Content inputs
   title = input<string>('');
   message = input<string>('');
-  type = input<Intent>('info');
-
-  // Styling inputs
-  intent = input<Intent>('primary');
+  intent = input<Intent>('info');
   size = input<Size>('md');
   variant = input<Variant>('solid');
-
-  // Behavior inputs
-  duration = input<number>(5000); // Auto-dismiss duration in ms
+  duration = input<number>(5000);
   dismissible = input<boolean>(true);
   showIcon = input<boolean>(true);
   showProgress = input<boolean>(true);
-
-  // Position
   position = input<ToastPosition>('top-right');
-
-  // State
   visible = model<boolean>(true);
 
-  // Outputs
   dismiss = output<void>();
   actionClick = output<void>();
 
   toastClasses(): string {
     const classes = ['toast'];
 
-    classes.push(`toast--${this.type()}`);
     classes.push(`toast--${this.intent()}`);
     classes.push(`toast--${this.size()}`);
     classes.push(`toast--${this.variant()}`);
@@ -60,7 +41,7 @@ export class ToastComponent {
   iconClasses(): string {
     const classes = ['toast__icon'];
 
-    classes.push(`toast__icon--${this.type()}`);
+    classes.push(`toast__icon--${this.intent()}`);
 
     return classes.join(' ');
   }
@@ -74,7 +55,7 @@ export class ToastComponent {
   }
 
   getIconName(): string {
-    switch (this.type()) {
+    switch (this.intent()) {
       case 'success':
         return 'check-circle';
       case 'warning':
