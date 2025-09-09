@@ -1,16 +1,35 @@
 import { Component, input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Intent, Size, Variant } from '../utils';
 
 @Component({
   selector: 'app-loading-indicator',
-  standalone: true,
-  imports: [CommonModule],
   templateUrl: './loading-indicator.component.html',
-  styleUrls: ['./loading-indicator.component.scss'],
 })
 export class LoadingIndicatorComponent {
-  size = input<'small' | 'medium' | 'large'>('medium');
-  color = input<string>('#007bff');
-  message = input<string>();
-  showMessage = input<boolean>(true);
+  intent = input<Intent>('primary');
+  size = input<Size>('md');
+  text = input<string>('Loading...');
+  showText = input<boolean>(true);
+  overlay = input<boolean>(false);
+
+  loadingClasses(): string {
+    const classes = ['loading-indicator'];
+
+    classes.push(`loading-indicator--${this.intent()}`);
+    classes.push(`loading-indicator--${this.size()}`);
+
+    if (this.overlay()) {
+      classes.push('loading-indicator--overlay');
+    }
+
+    return classes.join(' ');
+  }
+
+  spinnerClasses(): string {
+    const classes = ['loading-indicator__spinner'];
+
+    classes.push(`loading-indicator__spinner--${this.intent()}`);
+
+    return classes.join(' ');
+  }
 }
