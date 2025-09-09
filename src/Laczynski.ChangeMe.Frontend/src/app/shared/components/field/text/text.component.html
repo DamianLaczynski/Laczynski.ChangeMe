@@ -34,10 +34,12 @@
     (keydown)="onKeyDown($event)"
   />
   @if (!disabled() && !readonly()) {
-  <app-clear-button
-    [value]="value"
-    [showClearButton]="true"
-    (clear)="clear()"
-  ></app-clear-button>
+    <div class="field__actions">
+      <app-clear-button
+        [value]="value"
+        [showClearButton]="true"
+        (clear)="clear()"
+      ></app-clear-button>
+    </div>
   }
 </app-field>
