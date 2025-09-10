@@ -22,12 +22,12 @@
     type="search"
     class="field__search-input"
     [class]="inputClasses()"
-    [placeholder]="getPlaceholder()"
+    [placeholder]="placeholder()"
     [required]="required()"
     [disabled]="disabled()"
     [readonly]="readonly()"
     [autocomplete]="autocomplete()"
-    [value]="currentValue"
+    [value]="value"
     (input)="onInputChange($event)"
     (focus)="onFocus($event)"
     (blur)="onBlur($event)"
@@ -39,9 +39,9 @@
   <!-- Search actions -->
   <div class="field__actions" *ngIf="!disabled() && !readonly()">
     <app-clear-button
-      [value]="currentValue"
+      [value]="value"
       [showClearButton]="showClearButton()"
-      (clear)="clearSearch()"
+      (clear)="clear()"
     ></app-clear-button>
   </div>
 </app-field>

@@ -24,7 +24,9 @@
   }
 
   @include element('error') {
-    @include flex-center;
+    @include flex-column;
+    align-items: center;
+    gap: $spacing-sm;
     padding: $spacing-4xl;
     color: $color-danger;
     font-size: $font-size-md;

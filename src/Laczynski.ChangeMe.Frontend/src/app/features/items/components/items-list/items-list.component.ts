@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import {
   PaginatedTableComponent,
   PaginatedTableConfig,
@@ -20,10 +20,10 @@ import {
 import { State, StateService } from '@shared/state';
 import { ItemsService } from '../../services/items.service';
 import { Item, ItemSearchParameters } from '../../models/item.model';
-import { TextComponent } from '@shared/components/field/text/text.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { ItemFormComponent } from '../item-form/item-form.component';
+import { SearchComponent } from '@shared/components/field/search/search.component';
 
 @Component({
   selector: 'app-items-list',
@@ -33,17 +33,16 @@ import { ItemFormComponent } from '../item-form/item-form.component';
     FormsModule,
     RouterModule,
     PaginatedTableComponent,
-    TextComponent,
     ButtonComponent,
     ModalComponent,
     ItemFormComponent,
+    SearchComponent,
   ],
   templateUrl: './items-list.component.html',
 })
 export class ItemsListComponent {
   private readonly itemsService = inject(ItemsService);
   private readonly stateService = inject(StateService);
-  private readonly router = inject(Router);
 
   // State management
   itemsState: WritableSignal<State<PaginationResult<Item>>> = this.stateService.createState();

@@ -1,11 +1,14 @@
 <div [class]="componentClasses()">
   <!-- Loading state -->
   @if (state().isLoading) {
-    <div class="paginated-table__loading">Ładowanie danych...</div>
+    <app-loading-indicator intent="primary" size="md"></app-loading-indicator>
   } @else if (state().isError) {
     <!-- Error state -->
     <div class="paginated-table__error">
-      {{ state().error || 'Wystąpił błąd podczas ładowania danych' }}
+      <p>{{ state().error || 'Wystąpił błąd podczas ładowania danych' }}</p>
+      <app-button intent="danger" variant="outline" size="sm" (click)="onRetry()">
+        Try again
+      </app-button>
     </div>
   } @else {
     <!-- Table content -->

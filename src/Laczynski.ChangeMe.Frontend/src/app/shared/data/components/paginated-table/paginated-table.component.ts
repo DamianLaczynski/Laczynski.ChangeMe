@@ -17,11 +17,12 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ButtonComponent } from '../../../components/button/button.component';
 import { Option, SelectComponent } from '@shared/components/field/select/select.component';
 import { FormsModule } from '@angular/forms';
+import { LoadingIndicatorComponent } from '@shared/components/loading-indicator/loading-indicator.component';
 
 @Component({
   selector: 'app-paginated-table',
   standalone: true,
-  imports: [CommonModule, ButtonComponent, SelectComponent, FormsModule],
+  imports: [CommonModule, ButtonComponent, SelectComponent, FormsModule, LoadingIndicatorComponent],
   templateUrl: './paginated-table.component.html',
 })
 export class PaginatedTableComponent<T, P extends PaginationParameters = PaginationParameters>
@@ -231,5 +232,12 @@ export class PaginatedTableComponent<T, P extends PaginationParameters = Paginat
         label: size.toString(),
       })) || []
     );
+  }
+
+  onRetry(): void {
+    this.config()
+      .dataSource(this.config().params)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe();
   }
 }

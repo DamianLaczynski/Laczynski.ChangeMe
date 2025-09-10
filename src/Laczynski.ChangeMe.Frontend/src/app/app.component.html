@@ -10,7 +10,9 @@
     <app-items-list></app-items-list>
   </app-tab-panel>
   <app-tab-panel tabId="tab2" [activeTabId]="activeTabId()">
-    <app-items-infinite-list></app-items-infinite-list>
+    @if (activeTabId() === 'tab2') {
+      <app-items-infinite-list></app-items-infinite-list>
+    }
   </app-tab-panel>
 </app-tabs>
 <router-outlet></router-outlet>
