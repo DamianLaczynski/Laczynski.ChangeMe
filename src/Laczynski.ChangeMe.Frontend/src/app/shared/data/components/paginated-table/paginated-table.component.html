@@ -28,20 +28,48 @@
                     <span class="paginated-table__sort-indicator">
                       @if (config().params.sortField === column.field.toString()) {
                         @if (config().params.ascending) {
-                          <span class="paginated-table__sort-arrow paginated-table__sort-arrow--asc"
-                            >↑</span
+                          <svg
+                            class="paginated-table__sort-arrow paginated-table__sort-arrow--asc"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true"
                           >
+                            <path
+                              fill-rule="evenodd"
+                              d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"
+                              clip-rule="evenodd"
+                            ></path>
+                          </svg>
                         } @else {
-                          <span
+                          <svg
                             class="paginated-table__sort-arrow paginated-table__sort-arrow--desc"
-                            >↓</span
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true"
                           >
+                            <path
+                              fill-rule="evenodd"
+                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                              clip-rule="evenodd"
+                            ></path>
+                          </svg>
                         }
                       } @else {
-                        <span
+                        <svg
                           class="paginated-table__sort-arrow paginated-table__sort-arrow--neutral"
-                          >↕</span
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                          xmlns="http://www.w3.org/2000/svg"
+                          aria-hidden="true"
                         >
+                          <path
+                            fill-rule="evenodd"
+                            d="M10 3a1 1 0 01.832.445l3 4.5a1 1 0 01-1.664 1.11L10 6.236 7.832 8.055a1 1 0 01-1.664-1.11l3-4.5A1 1 0 0110 3zM10 17a1 1 0 01-.832-.445l-3-4.5a1 1 0 011.664-1.11L10 13.764l2.168-1.819a1 1 0 011.664 1.11l-3 4.5A1 1 0 0110 17z"
+                            clip-rule="evenodd"
+                          ></path>
+                        </svg>
                       }
                     </span>
                   }
