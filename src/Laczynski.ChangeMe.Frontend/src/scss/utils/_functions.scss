@@ -1,3 +1,4 @@
+@use 'sass:map';
 // ==========================================================================
 // Functions
 // ==========================================================================
@@ -24,7 +25,7 @@
 
 // Get z-index value
 @function z($layer) {
-  @return map-get($z-indexes, $layer);
+  @return map.get($z-indexes, $layer);
 }
 
 // Z-index map

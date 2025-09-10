@@ -1,0 +1,184 @@
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use '../utils/functions' as *;
+@use '../utils/utilities' as *;
+
+@include block('modal') {
+  @include modifier('fullscreen') {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .modal__content {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  // Backdrop
+  @include element('backdrop') {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba($color-gray-100, 0.5);
+    z-index: z('modal-backdrop');
+    opacity: 1;
+    transition: opacity $transition-normal;
+    padding: $spacing-lg;
+
+    @include modifier('hidden') {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+
+  // Modal container
+  @include element('content') {
+    position: relative;
+    background-color: $color-white;
+    border-radius: $border-radius-md;
+    border: none;
+    box-shadow: $shadow-lg;
+    width: 100%;
+    max-height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transform: scale(1);
+    transition: transform $transition-normal;
+  }
+
+  // Close button
+  @include element('close') {
+    @include button-reset;
+    position: absolute;
+    top: $spacing-md;
+    right: $spacing-md;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: $border-radius-sm;
+    color: $color-gray-500;
+    background-color: transparent;
+    transition: all $transition-fast;
+    @include focus-ring;
+
+    &:hover {
+      color: $color-gray-700;
+      background-color: $color-gray-100;
+    }
+
+    &:focus-visible {
+      color: $color-gray-700;
+      background-color: $color-gray-100;
+    }
+  }
+
+  @include element('close-icon') {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  // Modal body
+  @include element('body') {
+    flex: 1;
+    padding: $spacing-xl;
+    overflow-y: auto;
+    min-height: 0;
+  }
+
+  @include modifier('hidden') {
+    .modal__backdrop {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .modal__content {
+      transform: scale(0.95);
+    }
+  }
+
+  // Theme-aware
+  &.theme-aware {
+    .modal__content {
+      background-color: var(--theme-bg-primary);
+      color: var(--theme-text-primary);
+      border: 1px solid var(--theme-border-primary);
+    }
+
+    .modal__close {
+      color: var(--theme-text-tertiary);
+
+      &:hover {
+        color: var(--theme-text-primary);
+        background-color: var(--theme-bg-secondary);
+      }
+    }
+  }
+
+  // Responsive adjustments
+  @include respond-to(sm) {
+    .modal__backdrop {
+      padding: $spacing-md;
+    }
+
+    .modal__body {
+      padding: $spacing-lg;
+    }
+  }
+
+  @include respond-to(md) {
+    .modal__backdrop {
+      padding: $spacing-lg;
+    }
+
+    .modal__body {
+      padding: $spacing-xl;
+    }
+  }
+
+  // Animation for modal appearance
+  .modal__backdrop:not(.modal__backdrop--hidden) {
+    animation: modal-fade-in $transition-normal ease-out;
+  }
+
+  .modal__content:not(.modal__content--fullscreen) {
+    animation: modal-scale-in $transition-normal ease-out;
+  }
+}
+
+// Animations
+@keyframes modal-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// Body scroll lock when modal is open
+.modal-open {
+  overflow: hidden;
+}
