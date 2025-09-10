@@ -10,6 +10,8 @@
 
 @include block('button') {
   // Base button styles
+  min-width: 32px;
+  min-height: 32px;
   display: inline-flex;
   align-items: center;
   justify-content: center;

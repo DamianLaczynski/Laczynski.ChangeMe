@@ -1,12 +1,4 @@
-import {
-  Component,
-  forwardRef,
-  OnInit,
-  OnDestroy,
-  input,
-  output,
-  model,
-} from '@angular/core';
+import { Component, forwardRef, OnInit, OnDestroy, input, output, model } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Size } from '../../utils';
@@ -130,10 +122,7 @@ export class FieldComponent implements ControlValueAccessor, OnInit, OnDestroy {
   }
 
   onInputChange(event: Event): void {
-    const target = event.target as
-      | HTMLInputElement
-      | HTMLTextAreaElement
-      | HTMLSelectElement;
+    const target = event.target as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
     this.value = target.value;
     this.onChange(this.value);
     this.change.emit(this.value);

@@ -9,7 +9,6 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  margin-bottom: $spacing-md;
   
   // Field elements
   @include element('label') {

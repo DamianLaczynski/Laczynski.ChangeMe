@@ -14,11 +14,14 @@ import { PaginatedTableConfig } from './models/paginated-table-config.model';
 import { PaginationParameters } from '../../models/pagination-parameters.model';
 import { DataGridColumn } from './models/data-grid-column.model';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ButtonComponent } from '../../../components/button/button.component';
+import { Option, SelectComponent } from '@shared/components/field/select/select.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-paginated-table',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ButtonComponent, SelectComponent, FormsModule],
   templateUrl: './paginated-table.component.html',
 })
 export class PaginatedTableComponent<T, P extends PaginationParameters = PaginationParameters>
@@ -107,8 +110,7 @@ export class PaginatedTableComponent<T, P extends PaginationParameters = Paginat
    * Handle page size changes
    */
   onPageSizeChange(event: Event): void {
-    const target = event.target as HTMLSelectElement;
-    const newPageSize = parseInt(target.value, 10);
+    const newPageSize = parseInt((event.target as HTMLSelectElement).value, 10);
 
     this.config().params.pageSize = newPageSize;
     this.config().params.pageNumber = 1; // Reset to first page
@@ -208,5 +210,26 @@ export class PaginatedTableComponent<T, P extends PaginationParameters = Paginat
     }
 
     return value !== undefined && value !== null ? value.toString() : '';
+  }
+
+  /**
+   * Generate CSS classes for the component
+   */
+  componentClasses(): string {
+    const classes = ['paginated-table'];
+
+    // Add theme-aware class if needed
+    // classes.push('theme-aware');
+
+    return classes.join(' ');
+  }
+
+  getPageSizeOptions(): Option[] {
+    return (
+      this.config().pageSizeOptions?.map(size => ({
+        value: size,
+        label: size.toString(),
+      })) || []
+    );
   }
 }

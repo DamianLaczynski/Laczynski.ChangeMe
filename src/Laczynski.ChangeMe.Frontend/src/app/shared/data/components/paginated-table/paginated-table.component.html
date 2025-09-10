@@ -1,43 +1,47 @@
-<div class="data-grid-container">
+<div [class]="componentClasses()">
   <!-- Loading state -->
   @if (state().isLoading) {
-    <div class="loading-container">
-      <div class="loading-spinner"></div>
-      <p>Ładowanie danych...</p>
-    </div>
+    <div class="paginated-table__loading">Ładowanie danych...</div>
   } @else if (state().isError) {
     <!-- Error state -->
-    <div class="error-container">
-      <div class="error-icon">⚠️</div>
-      <p class="error-message">{{ state().error || 'Wystąpił błąd podczas ładowania danych' }}</p>
+    <div class="paginated-table__error">
+      {{ state().error || 'Wystąpił błąd podczas ładowania danych' }}
     </div>
   } @else {
     <!-- Table content -->
-    <!-- Table -->
-    <div class="table-wrapper">
-      <table class="data-table">
+    <div class="paginated-table__container">
+      <table class="paginated-table__table">
         <!-- Header -->
-        <thead>
-          <tr>
+        <thead class="paginated-table__header">
+          <tr class="paginated-table__header-row">
             @for (column of config().columns; track column.field) {
               <th
-                [class.sortable]="column.sortable"
-                [class.hide-mobile]="column.hideOnMobile"
+                class="paginated-table__header-cell"
+                [class.paginated-table__header-cell--sortable]="column.sortable"
+                [class.paginated-table__header-cell--hide-mobile]="column.hideOnMobile"
                 [style.width]="column.width"
                 (click)="column.sortable ? onSort(column.field.toString()) : null"
               >
-                <div class="header-content">
-                  <span>{{ column.header }}</span>
+                <div class="paginated-table__header-content">
+                  <span class="paginated-table__header-text">{{ column.header }}</span>
                   @if (column.sortable) {
-                    <span class="sort-icon">
+                    <span class="paginated-table__sort-indicator">
                       @if (config().params.sortField === column.field.toString()) {
                         @if (config().params.ascending) {
-                          <span class="sort-asc">↑</span>
+                          <span class="paginated-table__sort-arrow paginated-table__sort-arrow--asc"
+                            >↑</span
+                          >
                         } @else {
-                          <span class="sort-desc">↓</span>
+                          <span
+                            class="paginated-table__sort-arrow paginated-table__sort-arrow--desc"
+                            >↓</span
+                          >
                         }
                       } @else {
-                        <span class="sort-neutral">↕</span>
+                        <span
+                          class="paginated-table__sort-arrow paginated-table__sort-arrow--neutral"
+                          >↕</span
+                        >
                       }
                     </span>
                   }
@@ -48,12 +52,15 @@
         </thead>
 
         <!-- Body -->
-        <tbody>
+        <tbody class="paginated-table__body">
           @if (state().data?.items && state().data!.items.length > 0) {
             @for (row of state().data!.items; track row) {
-              <tr (click)="handleRowSelect(row)" class="data-row">
+              <tr class="paginated-table__row" (click)="handleRowSelect(row)">
                 @for (column of config().columns; track column.field) {
-                  <td [class.hide-mobile]="column.hideOnMobile">
+                  <td
+                    class="paginated-table__cell"
+                    [class.paginated-table__cell--hide-mobile]="column.hideOnMobile"
+                  >
                     @if (column.templateRef && columnTemplates()[column.templateRef]) {
                       <ng-container
                         *ngTemplateOutlet="
@@ -62,15 +69,20 @@
                         "
                       ></ng-container>
                     } @else {
-                      {{ getCellValue(row, column) }}
+                      <span class="paginated-table__cell-content">{{
+                        getCellValue(row, column)
+                      }}</span>
                     }
                   </td>
                 }
               </tr>
             }
           } @else {
-            <tr class="empty-row">
-              <td [attr.colspan]="config().columns.length" class="empty-message">
+            <tr class="paginated-table__row paginated-table__row--empty">
+              <td
+                class="paginated-table__cell paginated-table__cell--empty"
+                [attr.colspan]="config().columns.length"
+              >
                 {{ config().emptyStateMessage || 'No data found' }}
               </td>
             </tr>
@@ -80,77 +92,129 @@
     </div>
 
     <!-- Pagination -->
-    <div class="pagination-container">
-      <div class="pagination-info">
+    <div class="paginated-table__pagination">
+      <div class="paginated-table__pagination-info">
         @if (state().data?.totalCount && state().data!.totalCount > 0) {
-          <span>
+          <span class="paginated-table__pagination-text">
             Wyświetlono {{ getFirstRecord() }} do {{ getLastRecord() }} z
             {{ state().data!.totalCount }} wpisów
           </span>
         }
       </div>
 
-      <div class="pagination-controls">
+      <div class="paginated-table__pagination-controls">
         <!-- Page size selector -->
-        <div class="page-size-selector">
-          <label for="pageSize">Wierszy na stronie:</label>
-          <select
-            id="pageSize"
-            [value]="state().data?.pageSize ?? 10"
-            (change)="onPageSizeChange($event)"
-          >
-            @for (size of config().pageSizeOptions || [5, 10, 25, 50]; track size) {
-              <option [value]="size">{{ size }}</option>
-            }
-          </select>
-        </div>
+        <app-select
+          id="pageSize"
+          size="sm"
+          [options]="getPageSizeOptions()"
+          (change)="onPageSizeChange($event)"
+        >
+        </app-select>
 
         <!-- Page navigation -->
-        <div class="page-navigation">
-          <button
-            type="button"
-            class="page-button"
+        <div class="paginated-table__page-nav">
+          <app-button
+            intent="secondary"
+            variant="outline"
+            size="sm"
             [disabled]="getCurrentPage() <= 1"
             (click)="goToPage(1)"
+            ariaLabel="Pierwsza strona"
           >
-            ««
-          </button>
-          <button
-            type="button"
-            class="page-button"
+            <svg
+              class="paginated-table__nav-icon"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M15.707 15.707a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 010 1.414zm-6 0a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L5.414 10l4.293 4.293a1 1 0 010 1.414z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+          </app-button>
+          <app-button
+            intent="secondary"
+            variant="outline"
+            size="sm"
             [disabled]="getCurrentPage() <= 1"
             (click)="goToPage(getCurrentPage() - 1)"
+            ariaLabel="Poprzednia strona"
           >
-            ‹
-          </button>
+            <svg
+              class="paginated-table__nav-icon"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+          </app-button>
 
           @for (page of getVisiblePages(); track page) {
-            <button
-              type="button"
-              class="page-button"
-              [class.active]="page === getCurrentPage()"
+            <app-button
+              intent="primary"
+              variant="solid"
+              size="sm"
               (click)="goToPage(page)"
+              [attr.aria-label]="'Strona ' + page"
             >
               {{ page }}
-            </button>
+            </app-button>
           }
 
-          <button
-            type="button"
-            class="page-button"
+          <app-button
+            intent="secondary"
+            variant="outline"
+            size="sm"
             [disabled]="getCurrentPage() >= getTotalPages()"
             (click)="goToPage(getCurrentPage() + 1)"
+            ariaLabel="Następna strona"
           >
-            ›
-          </button>
-          <button
-            type="button"
-            class="page-button"
+            <svg
+              class="paginated-table__nav-icon"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+          </app-button>
+          <app-button
+            intent="secondary"
+            variant="outline"
+            size="sm"
             [disabled]="getCurrentPage() >= getTotalPages()"
             (click)="goToPage(getTotalPages())"
+            ariaLabel="Ostatnia strona"
           >
-            »»
-          </button>
+            <svg
+              class="paginated-table__nav-icon"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414zm6 0a1 1 0 011.414 0l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414-1.414L14.586 10 10.293 5.707a1 1 0 010-1.414z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+          </app-button>
         </div>
       </div>
     </div>

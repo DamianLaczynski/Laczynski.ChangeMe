@@ -1,0 +1,302 @@
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use '../utils/functions' as *;
+@use '../utils/utilities' as *;
+@use 'sass:color';
+
+@include block('paginated-table') {
+  // Base styles - minimalist and clean like toast ghost variant
+  display: flex;
+  flex-direction: column;
+  border-radius: $border-radius-sm;
+  background-color: $color-white;
+  box-shadow: $shadow-lg;
+  font-family: $font-family-primary;
+  overflow: hidden;
+
+  // Elements
+  @include element('loading') {
+    @include flex-center;
+    padding: $spacing-4xl;
+    color: $color-gray-600;
+    font-size: $font-size-md;
+    font-weight: $font-weight-medium;
+  }
+
+  @include element('error') {
+    @include flex-center;
+    padding: $spacing-4xl;
+    color: $color-danger;
+    font-size: $font-size-md;
+    font-weight: $font-weight-medium;
+  }
+
+  @include element('container') {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  @include element('table') {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    table-layout: auto;
+  }
+
+  // Header styles
+  @include element('header') {
+    background-color: $color-gray-50;
+    box-shadow: $shadow-md;
+  }
+
+  @include element('header-row') {
+    // No additional styles needed
+  }
+
+  @include element('header-cell') {
+    border-right: 1px solid $color-gray-200;
+    padding: $spacing-md $spacing-lg;
+    text-align: left;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    color: $color-gray-700;
+    white-space: nowrap;
+    vertical-align: middle;
+    position: relative;
+    transition: background-color $transition-fast;
+
+    // Sortable modifier
+    @include modifier('sortable') {
+      cursor: pointer;
+      user-select: none;
+
+      &:hover {
+        background-color: rgba($color-gray-200, 0.5);
+      }
+
+      &:active {
+        background-color: $color-gray-200;
+      }
+    }
+
+    // Hide on mobile modifier
+    @include modifier('hide-mobile') {
+      @include respond-to(sm) {
+        display: none;
+      }
+    }
+  }
+
+  @include element('header-content') {
+    @include flex-between;
+    align-items: center;
+    gap: $spacing-sm;
+  }
+
+  @include element('header-text') {
+    flex: 1;
+    @include text-truncate;
+  }
+
+  @include element('sort-indicator') {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  @include element('sort-arrow') {
+    font-size: $font-size-sm;
+    color: $color-gray-400;
+    transition: color $transition-fast;
+
+    @include modifier('asc') {
+      color: $color-primary;
+    }
+
+    @include modifier('desc') {
+      color: $color-primary;
+    }
+
+    @include modifier('neutral') {
+      color: $color-gray-400;
+    }
+  }
+
+  // Body styles
+  @include element('body') {
+    // No additional styles needed
+  }
+
+  @include element('row') {
+    border-bottom: 1px solid $color-gray-100;
+    transition: background-color $transition-fast;
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba($color-gray-100, 0.5);
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    // Empty state modifier
+    @include modifier('empty') {
+      cursor: default;
+
+      &:hover {
+        background-color: transparent;
+      }
+    }
+  }
+
+  @include element('cell') {
+    padding: $spacing-md $spacing-lg;
+    font-size: $font-size-sm;
+    color: $color-gray-900;
+    vertical-align: middle;
+    border-right: 1px solid $color-gray-100;
+
+    &:last-child {
+      border-right: none;
+    }
+
+    // Hide on mobile modifier
+    @include modifier('hide-mobile') {
+      @include respond-to(sm) {
+        display: none;
+      }
+    }
+
+    // Empty state modifier
+    @include modifier('empty') {
+      text-align: center;
+      color: $color-gray-500;
+      font-style: italic;
+      padding: $spacing-4xl;
+    }
+  }
+
+  @include element('cell-content') {
+    @include text-truncate;
+    display: block;
+  }
+
+  // Pagination styles
+  @include element('pagination') {
+    @include flex-between;
+    align-items: center;
+    padding: $spacing-lg;
+    background-color: $color-gray-50;
+    border-top: 1px solid $color-gray-200;
+    gap: $spacing-lg;
+
+    @include respond-to(sm) {
+      flex-direction: column;
+      align-items: stretch;
+      gap: $spacing-md;
+    }
+  }
+
+  @include element('pagination-info') {
+    flex-shrink: 0;
+
+    @include respond-to(sm) {
+      text-align: center;
+    }
+  }
+
+  @include element('pagination-text') {
+    font-size: $font-size-sm;
+    color: $color-gray-600;
+  }
+
+  @include element('pagination-controls') {
+    @include flex-between;
+    align-items: center;
+    gap: $spacing-lg;
+
+    @include respond-to(sm) {
+      flex-direction: column;
+      gap: $spacing-md;
+    }
+  }
+
+  @include element('page-size') {
+    @include flex-center;
+    gap: $spacing-sm;
+  }
+
+  @include element('page-size-label') {
+    font-size: $font-size-sm;
+    color: $color-gray-600;
+    white-space: nowrap;
+  }
+
+
+
+  @include element('page-nav') {
+    @include flex-center;
+    gap: $spacing-xs;
+  }
+
+  @include element('nav-icon') {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+  }
+
+  // Responsive adjustments
+  @include respond-to(sm) {
+    .paginated-table__header-cell,
+    .paginated-table__cell {
+      padding: $spacing-sm $spacing-md;
+    }
+
+    .paginated-table__pagination {
+      padding: $spacing-md;
+    }
+  }
+
+  // Focus states for accessibility
+  .paginated-table__row:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: -2px;
+  }
+
+  // Theme-aware support
+  &.theme-aware {
+    background-color: var(--theme-bg-primary);
+    color: var(--theme-text-primary);
+    border-color: var(--theme-border-primary);
+
+    .paginated-table__header {
+      background-color: var(--theme-bg-secondary);
+      border-color: var(--theme-border-primary);
+    }
+
+    .paginated-table__header-cell {
+      color: var(--theme-text-secondary);
+    }
+
+    .paginated-table__cell {
+      color: var(--theme-text-primary);
+      border-color: var(--theme-border-secondary);
+    }
+
+    .paginated-table__pagination {
+      background-color: var(--theme-bg-secondary);
+      border-color: var(--theme-border-primary);
+    }
+
+    .paginated-table__pagination-text {
+      color: var(--theme-text-secondary);
+    }
+
+    .paginated-table__page-size-label {
+      color: var(--theme-text-secondary);
+    }
+
+  }
+}

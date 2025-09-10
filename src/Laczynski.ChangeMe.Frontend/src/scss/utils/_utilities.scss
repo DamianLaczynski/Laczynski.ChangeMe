@@ -31,6 +31,8 @@
   .pl-#{$size} { padding-left: $value !important; }
   .px-#{$size} { padding-left: $value !important; padding-right: $value !important; }
   .py-#{$size} { padding-top: $value !important; padding-bottom: $value !important; }
+
+  .gap-#{$size} { gap: $value !important; }
 }
 
 // Text utilities

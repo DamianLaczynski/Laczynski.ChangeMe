@@ -12,11 +12,20 @@ import {
 import { State, StateService } from '@shared/state';
 import { ItemsService } from '../../services/items.service';
 import { Item, ItemSearchParameters } from '../../models/item.model';
+import { TextComponent } from '@shared/components/field/text/text.component';
+import { ButtonComponent } from '@shared/components/button/button.component';
 
 @Component({
   selector: 'app-items-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, PaginatedTableComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    PaginatedTableComponent,
+    TextComponent,
+    ButtonComponent,
+  ],
   templateUrl: './items-list.component.html',
 })
 export class ItemsListComponent {
@@ -129,17 +138,15 @@ export class ItemsListComponent {
   private createTableConfig(): PaginatedTableConfig<Item, ItemSearchParameters> {
     const columns: DataGridColumn<Item>[] = [
       {
-        field: 'image',
-        header: 'Obraz',
-        width: '80px',
-        templateRef: 'imageTemplate',
-        sortable: false,
+        field: 'id',
+        header: 'ID',
+        sortable: true,
+        hideOnMobile: true,
       },
       {
         field: 'name',
         header: 'Nazwa',
         sortable: true,
-        width: '200px',
       },
       {
         field: 'description',
@@ -151,13 +158,11 @@ export class ItemsListComponent {
         field: 'price',
         header: 'Cena',
         sortable: true,
-        width: '120px',
         templateRef: 'priceTemplate',
       },
       {
         field: '',
         header: 'Akcje',
-        width: '120px',
         templateRef: 'actionsTemplate',
         sortable: false,
       },

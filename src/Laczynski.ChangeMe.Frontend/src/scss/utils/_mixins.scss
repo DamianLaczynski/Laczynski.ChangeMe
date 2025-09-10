@@ -6,22 +6,22 @@
 // Media queries
 @mixin respond-to($breakpoint) {
   @if $breakpoint == xs {
-    @media (min-width: $breakpoint-xs) { @content; }
+    @media (max-width: $breakpoint-xs) { @content; }
   }
   @if $breakpoint == sm {
-    @media (min-width: $breakpoint-sm) { @content; }
+    @media (max-width: $breakpoint-sm) { @content; }
   }
   @if $breakpoint == md {
-    @media (min-width: $breakpoint-md) { @content; }
+    @media (max-width: $breakpoint-md) { @content; }
   }
   @if $breakpoint == lg {
-    @media (min-width: $breakpoint-lg) { @content; }
+    @media (max-width: $breakpoint-lg) { @content; }
   }
   @if $breakpoint == xl {
-    @media (min-width: $breakpoint-xl) { @content; }
+    @media (max-width: $breakpoint-xl) { @content; }
   }
   @if $breakpoint == 2xl {
-    @media (min-width: $breakpoint-2xl) { @content; }
+    @media (max-width: $breakpoint-2xl) { @content; }
   }
 }
 
