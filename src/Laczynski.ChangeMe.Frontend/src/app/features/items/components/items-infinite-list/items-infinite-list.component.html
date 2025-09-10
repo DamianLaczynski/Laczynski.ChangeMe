@@ -1,32 +1,4 @@
 <div class="items-infinite-list-container">
-  <!-- Header with search -->
-  <div class="items-header">
-    <div class="header-title">
-      <h2>Lista elementów (nieskończony scroll)</h2>
-      <div class="view-switcher">
-        <a routerLink="/items" class="view-link">📋 Tabela</a>
-        <a routerLink="/items/infinite" class="view-link active">📱 Lista</a>
-      </div>
-    </div>
-
-    <div class="header-actions">
-      <div class="search-container">
-        <input
-          type="text"
-          class="search-input"
-          placeholder="Szukaj elementów..."
-          [(ngModel)]="searchTerm"
-          (input)="onSearchChange()"
-        />
-      </div>
-
-      <button type="button" class="btn-primary" (click)="onAddNewItem()">
-        <span class="btn-icon">+</span>
-        Dodaj element
-      </button>
-    </div>
-  </div>
-
   <!-- State container with infinite list -->
   <app-state-container
     [$state]="itemsState()"

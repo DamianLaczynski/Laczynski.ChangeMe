@@ -1,4 +1,14 @@
-import { Component, OnInit, inject, input, signal, computed, WritableSignal } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  inject,
+  input,
+  signal,
+  computed,
+  WritableSignal,
+  OnChanges,
+  output,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -6,22 +16,37 @@ import { StateContainerComponent, State, StateService } from '@shared/state';
 import { ItemsService } from '../../services/items.service';
 import { Item, CreateItemRequest, UpdateItemRequest } from '../../models/item.model';
 import { ApiErrorService } from '@shared/api';
+import { NumberComponent } from '@shared/components/field/number/number.component';
+import { TextareaComponent } from '@shared/components/field/textarea/textarea.component';
+import { TextComponent } from '@shared/components/field/text/text.component';
+import { UrlComponent } from '@shared/components/field/url/url.component';
+import { ButtonComponent } from '@shared/components/button/button.component';
 
 @Component({
   selector: 'app-item-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, StateContainerComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    StateContainerComponent,
+    NumberComponent,
+    TextareaComponent,
+    TextComponent,
+    UrlComponent,
+    ButtonComponent,
+  ],
   templateUrl: './item-form.component.html',
 })
-export class ItemFormComponent implements OnInit {
+export class ItemFormComponent implements OnInit, OnChanges {
   private readonly fb = inject(FormBuilder);
-  private readonly router = inject(Router);
   private readonly itemsService = inject(ItemsService);
   private readonly stateService = inject(StateService);
   private readonly apiErrorService = inject(ApiErrorService);
 
   // Input properties
   itemId = input<string>();
+  updated = output();
+  closed = output();
 
   // Form and state
   itemForm!: FormGroup;
@@ -37,6 +62,12 @@ export class ItemFormComponent implements OnInit {
   ngOnInit(): void {
     this.initializeForm();
 
+    if (this.isEditMode()) {
+      this.loadItem();
+    }
+  }
+
+  ngOnChanges(): void {
     if (this.isEditMode()) {
       this.loadItem();
     }
@@ -124,7 +155,8 @@ export class ItemFormComponent implements OnInit {
     this.itemsService.createItemWithState(this.submitState, request).subscribe({
       next: () => {
         this.apiErrorService.showSuccessToast('Element został utworzony pomyślnie');
-        this.router.navigate(['/items']);
+        this.updated.emit();
+        this.isSubmitting.set(false);
       },
       error: error => {
         console.error('Error creating item:', error);
@@ -145,7 +177,8 @@ export class ItemFormComponent implements OnInit {
     this.itemsService.updateItemWithState(this.submitState, request).subscribe({
       next: () => {
         this.apiErrorService.showSuccessToast('Element został zaktualizowany pomyślnie');
-        this.router.navigate(['/items']);
+        this.updated.emit();
+        this.isSubmitting.set(false);
       },
       error: error => {
         console.error('Error updating item:', error);
@@ -158,7 +191,7 @@ export class ItemFormComponent implements OnInit {
    * Handle form cancellation
    */
   onCancel(): void {
-    this.router.navigate(['/items']);
+    this.closed.emit();
   }
 
   /**

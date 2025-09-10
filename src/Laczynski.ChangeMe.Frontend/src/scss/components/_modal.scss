@@ -95,6 +95,8 @@
     padding: $spacing-xl;
     overflow-y: auto;
     min-height: 0;
+    max-height: calc(100vh - $spacing-xl * 2);
+    max-width: calc(100vw - $spacing-xl * 2);
   }
 
   @include modifier('hidden') {

@@ -1,0 +1,30 @@
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use '../utils/functions' as *;
+@use '../utils/utilities' as *;
+
+@include block('tab-panel') {
+  padding: $spacing-lg;
+  background-color: $color-white;
+  border: 1px solid $color-gray-200;
+  border-top: none;
+  border-radius: 0 0 $border-radius-md $border-radius-md;
+  box-shadow: $shadow-lg;
+  min-height: 200px;
+
+  // Size modifiers
+  @include modifier('sm') {
+    padding: $spacing-md;
+    min-height: 150px;
+  }
+
+  @include modifier('md') {
+    padding: $spacing-lg;
+    min-height: 200px;
+  }
+
+  @include modifier('lg') {
+    padding: $spacing-xl;
+    min-height: 250px;
+  }
+}

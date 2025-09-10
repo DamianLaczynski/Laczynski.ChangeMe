@@ -1,4 +1,12 @@
-import { Component, WritableSignal, inject, signal, TemplateRef, viewChild } from '@angular/core';
+import {
+  Component,
+  WritableSignal,
+  inject,
+  signal,
+  TemplateRef,
+  viewChild,
+  model,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -14,6 +22,8 @@ import { ItemsService } from '../../services/items.service';
 import { Item, ItemSearchParameters } from '../../models/item.model';
 import { TextComponent } from '@shared/components/field/text/text.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
+import { ModalComponent } from '@shared/components/modal/modal.component';
+import { ItemFormComponent } from '../item-form/item-form.component';
 
 @Component({
   selector: 'app-items-list',
@@ -25,6 +35,8 @@ import { ButtonComponent } from '@shared/components/button/button.component';
     PaginatedTableComponent,
     TextComponent,
     ButtonComponent,
+    ModalComponent,
+    ItemFormComponent,
   ],
   templateUrl: './items-list.component.html',
 })
@@ -37,8 +49,10 @@ export class ItemsListComponent {
   itemsState: WritableSignal<State<PaginationResult<Item>>> = this.stateService.createState();
 
   // Search parameters
-  searchTerm = signal('');
-
+  searchTerm = model('');
+  modalVisible = model<boolean>(false);
+  selectedItemId = model<string>('');
+  addNewItemModalVisible = model<boolean>(false);
   // Table configuration
   tableConfig = signal<PaginatedTableConfig<Item, ItemSearchParameters>>(this.createTableConfig());
 
@@ -50,7 +64,14 @@ export class ItemsListComponent {
   /**
    * Load items with current search parameters
    */
-  private loadItems(): void {
+  private loadItems(reset: boolean = false): void {
+    if (reset) {
+      this.tableConfig.update(config => ({
+        ...config,
+        params: { ...config.params, pageNumber: 1 },
+      }));
+    }
+
     const params = this.itemsService.createSearchParameters({
       searchTerm: this.searchTerm(),
       ...this.tableConfig().params,
@@ -94,14 +115,20 @@ export class ItemsListComponent {
    * Handle add new item action
    */
   onAddNewItem(): void {
-    this.router.navigate(['/items/add']);
+    this.addNewItemModalVisible.set(true);
   }
 
   /**
    * Handle item edit action
    */
   onEditItem(item: Item): void {
-    this.router.navigate(['/items/edit', item.id]);
+    console.log('onEditItem', item);
+    console.log('modalVisible', this.modalVisible());
+    console.log('selectedItemId', this.selectedItemId());
+    if (!this.modalVisible()) {
+      this.modalVisible.set(true);
+      this.selectedItemId.set(item.id);
+    }
   }
 
   /**
@@ -145,24 +172,24 @@ export class ItemsListComponent {
       },
       {
         field: 'name',
-        header: 'Nazwa',
+        header: 'Name',
         sortable: true,
       },
       {
         field: 'description',
-        header: 'Opis',
+        header: 'Description',
         sortable: false,
         hideOnMobile: true,
       },
       {
         field: 'price',
-        header: 'Cena',
+        header: 'Price',
         sortable: true,
         templateRef: 'priceTemplate',
       },
       {
         field: '',
-        header: 'Akcje',
+        header: 'Actions',
         templateRef: 'actionsTemplate',
         sortable: false,
       },
@@ -191,5 +218,11 @@ export class ItemsListComponent {
       priceTemplate: this.priceTemplate()!,
       imageTemplate: this.imageTemplate()!,
     };
+  }
+
+  onUpdated(): void {
+    this.modalVisible.set(false);
+    this.addNewItemModalVisible.set(false);
+    this.loadItems(true);
   }
 }
