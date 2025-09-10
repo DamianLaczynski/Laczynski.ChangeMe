@@ -6,10 +6,12 @@ import {
   OnDestroy,
   ViewChild,
   ElementRef,
+  forwardRef,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FieldComponent } from '../field/field.component';
 import { ClearButtonComponent } from '../clear-button.component';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export interface SearchSuggestion {
   title: string;
@@ -39,11 +41,15 @@ export interface SearchResults {
   selector: 'app-search',
   imports: [FieldComponent, CommonModule, ClearButtonComponent],
   templateUrl: './search.component.html',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => SearchComponent),
+      multi: true,
+    },
+  ],
 })
-export class SearchComponent
-  extends FieldComponent
-  implements OnInit, OnDestroy
-{
+export class SearchComponent extends FieldComponent implements OnInit, OnDestroy {
   @ViewChild('searchInput') searchInput!: ElementRef<HTMLInputElement>;
 
   // Search input properties
@@ -134,10 +140,7 @@ export class SearchComponent
   }
 
   performSearch(): void {
-    if (
-      !this.currentValue.trim() ||
-      this.currentValue.length < this.minSearchLength()
-    ) {
+    if (!this.currentValue.trim() || this.currentValue.length < this.minSearchLength()) {
       this.isSearching = false;
       return;
     }
@@ -169,8 +172,8 @@ export class SearchComponent
 
   toggleFilter(filter: SearchFilter): void {
     const currentFilters = this.filters();
-    const updatedFilters = currentFilters.map((f) =>
-      f.id === filter.id ? { ...f, active: !f.active } : f
+    const updatedFilters = currentFilters.map(f =>
+      f.id === filter.id ? { ...f, active: !f.active } : f,
     );
 
     this.filterChange.emit(updatedFilters);
@@ -236,17 +239,14 @@ export class SearchComponent
     if (!query.trim()) return;
 
     // Remove if already exists
-    this.recentSearches = this.recentSearches.filter((item) => item !== query);
+    this.recentSearches = this.recentSearches.filter(item => item !== query);
 
     // Add to beginning
     this.recentSearches.unshift(query);
 
     // Limit to max recent searches
     if (this.recentSearches.length > this.maxRecentSearches()) {
-      this.recentSearches = this.recentSearches.slice(
-        0,
-        this.maxRecentSearches()
-      );
+      this.recentSearches = this.recentSearches.slice(0, this.maxRecentSearches());
     }
 
     this.saveRecentSearches();
@@ -266,10 +266,7 @@ export class SearchComponent
 
   private saveRecentSearches(): void {
     try {
-      localStorage.setItem(
-        'search-recent-searches',
-        JSON.stringify(this.recentSearches)
-      );
+      localStorage.setItem('search-recent-searches', JSON.stringify(this.recentSearches));
     } catch (error) {
       console.warn('Failed to save recent searches:', error);
     }
@@ -287,22 +284,17 @@ export class SearchComponent
         event.preventDefault();
         this.selectedSuggestionIndex = Math.min(
           this.selectedSuggestionIndex + 1,
-          this.suggestions().length - 1
+          this.suggestions().length - 1,
         );
         break;
       case 'ArrowUp':
         event.preventDefault();
-        this.selectedSuggestionIndex = Math.max(
-          this.selectedSuggestionIndex - 1,
-          -1
-        );
+        this.selectedSuggestionIndex = Math.max(this.selectedSuggestionIndex - 1, -1);
         break;
       case 'Enter':
         if (this.selectedSuggestionIndex >= 0) {
           event.preventDefault();
-          this.selectSuggestion(
-            this.suggestions()[this.selectedSuggestionIndex]
-          );
+          this.selectSuggestion(this.suggestions()[this.selectedSuggestionIndex]);
         } else {
           this.performSearch();
         }

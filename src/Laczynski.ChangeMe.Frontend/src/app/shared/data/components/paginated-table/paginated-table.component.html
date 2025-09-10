@@ -107,6 +107,8 @@
         <app-select
           id="pageSize"
           size="sm"
+          placeholder="All"
+          [(ngModel)]="config().params.pageSize"
           [options]="getPageSizeOptions()"
           (change)="onPageSizeChange($event)"
         >

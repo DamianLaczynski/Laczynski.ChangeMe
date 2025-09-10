@@ -5,12 +5,14 @@ import {
   OnDestroy,
   ViewChild,
   ElementRef,
+  forwardRef,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FieldComponent, FieldState } from '../field/field.component';
 import { ButtonComponent } from '../../button/button.component';
 import { Intent } from '../../utils';
 import { ClearButtonComponent } from '../clear-button.component';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export interface FileValidation {
   maxSize?: number; // in bytes
@@ -20,13 +22,15 @@ export interface FileValidation {
 
 @Component({
   selector: 'app-file',
-  imports: [
-    FieldComponent,
-    CommonModule,
-    ButtonComponent,
-    ClearButtonComponent,
-  ],
+  imports: [FieldComponent, CommonModule, ButtonComponent, ClearButtonComponent],
   templateUrl: './file.component.html',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => FileComponent),
+      multi: true,
+    },
+  ],
 })
 export class FileComponent extends FieldComponent implements OnInit, OnDestroy {
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
@@ -152,9 +156,7 @@ export class FileComponent extends FieldComponent implements OnInit, OnDestroy {
     this.updateFileInput();
 
     // Emit change event
-    this.value = this.multiple()
-      ? this.selectedFiles
-      : this.selectedFiles[0] || null;
+    this.value = this.multiple() ? this.selectedFiles : this.selectedFiles[0] || null;
     this.onChange(this.value);
     this.change.emit(this.value);
   }
@@ -167,7 +169,7 @@ export class FileComponent extends FieldComponent implements OnInit, OnDestroy {
 
     // Check file type
     if (this.allowedTypes().length > 0) {
-      const isValidType = this.allowedTypes().some((type) => {
+      const isValidType = this.allowedTypes().some(type => {
         if (type.startsWith('.')) {
           // Extension check
           return file.name.toLowerCase().endsWith(type.toLowerCase());
@@ -178,9 +180,7 @@ export class FileComponent extends FieldComponent implements OnInit, OnDestroy {
       });
 
       if (!isValidType) {
-        return `File type not allowed. Allowed types: ${this.allowedTypes().join(
-          ', '
-        )}`;
+        return `File type not allowed. Allowed types: ${this.allowedTypes().join(', ')}`;
       }
     }
 
@@ -190,7 +190,7 @@ export class FileComponent extends FieldComponent implements OnInit, OnDestroy {
   private updateFileInput(): void {
     // Create a new FileList-like object
     const dt = new DataTransfer();
-    this.selectedFiles.forEach((file) => dt.items.add(file));
+    this.selectedFiles.forEach(file => dt.items.add(file));
     this.fileInput.nativeElement.files = dt.files;
   }
 
@@ -202,9 +202,7 @@ export class FileComponent extends FieldComponent implements OnInit, OnDestroy {
       this.updateFileInput();
 
       // Emit change event
-      this.value = this.multiple()
-        ? this.selectedFiles
-        : this.selectedFiles[0] || null;
+      this.value = this.multiple() ? this.selectedFiles : this.selectedFiles[0] || null;
       this.onChange(this.value);
       this.change.emit(this.value);
     }
@@ -230,9 +228,9 @@ export class FileComponent extends FieldComponent implements OnInit, OnDestroy {
     return state === 'error'
       ? 'danger'
       : state === 'warning'
-      ? 'warning'
-      : state === 'success'
-      ? 'success'
-      : 'primary';
+        ? 'warning'
+        : state === 'success'
+          ? 'success'
+          : 'primary';
   }
 }

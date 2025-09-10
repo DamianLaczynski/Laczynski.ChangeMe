@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { TelComponent, Country } from './tel.component';
+import { TelComponent } from './tel.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 

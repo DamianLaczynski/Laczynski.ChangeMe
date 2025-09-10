@@ -5,19 +5,25 @@ import {
   OnDestroy,
   ViewChild,
   ElementRef,
+  forwardRef,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FieldComponent } from '../field/field.component';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-range',
   imports: [FieldComponent, CommonModule],
   templateUrl: './range.component.html',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => RangeComponent),
+      multi: true,
+    },
+  ],
 })
-export class RangeComponent
-  extends FieldComponent
-  implements OnInit, OnDestroy
-{
+export class RangeComponent extends FieldComponent implements OnInit, OnDestroy {
   @ViewChild('rangeInput') rangeInput!: ElementRef<HTMLInputElement>;
 
   // Range input properties
@@ -30,7 +36,7 @@ export class RangeComponent
   showSteps = input<boolean>(false);
   minLabel = input<string>('');
   maxLabel = input<string>('');
-  formatValue = input<(value: number) => string>((value) => value.toString());
+  formatValue = input<(value: number) => string>(value => value.toString());
 
   getDisplayValue(): string {
     return this.formatValue()(this.value);

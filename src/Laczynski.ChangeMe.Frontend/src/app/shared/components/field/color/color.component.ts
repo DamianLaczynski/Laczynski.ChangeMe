@@ -1,16 +1,21 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, forwardRef } from '@angular/core';
 import { FieldComponent } from '../field/field.component';
 import { ClearButtonComponent } from '../clear-button.component';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-color',
   imports: [FieldComponent, ClearButtonComponent],
   templateUrl: './color.component.html',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => ColorComponent),
+      multi: true,
+    },
+  ],
 })
-export class ColorComponent
-  extends FieldComponent
-  implements OnInit, OnDestroy
-{
+export class ColorComponent extends FieldComponent implements OnInit, OnDestroy {
   override onInputChange(event: Event): void {
     const target = event.target as HTMLInputElement;
     let hexValue = target.value.trim();

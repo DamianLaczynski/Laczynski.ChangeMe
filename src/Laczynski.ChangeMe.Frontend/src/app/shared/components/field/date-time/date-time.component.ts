@@ -1,24 +1,23 @@
-import { Component, input, OnInit, OnDestroy } from '@angular/core';
+import { Component, input, OnInit, OnDestroy, forwardRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FieldComponent } from '../field/field.component';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
-export type DateTimeType =
-  | 'datetime'
-  | 'datetime-local'
-  | 'date'
-  | 'time'
-  | 'week'
-  | 'month';
+export type DateTimeType = 'datetime' | 'datetime-local' | 'date' | 'time' | 'week' | 'month';
 
 @Component({
   selector: 'app-date-time',
   imports: [FieldComponent, CommonModule],
   templateUrl: './date-time.component.html',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => DateTimeComponent),
+      multi: true,
+    },
+  ],
 })
-export class DateTimeComponent
-  extends FieldComponent
-  implements OnInit, OnDestroy
-{
+export class DateTimeComponent extends FieldComponent implements OnInit, OnDestroy {
   type = input<DateTimeType>('datetime');
   min = input<string>('');
   max = input<string>('');
@@ -202,13 +201,7 @@ export class DateTimeComponent
         // Input format: HH:MM
         const today = new Date();
         const [hours, minutes] = value.split(':').map(Number);
-        date = new Date(
-          today.getFullYear(),
-          today.getMonth(),
-          today.getDate(),
-          hours,
-          minutes
-        );
+        date = new Date(today.getFullYear(), today.getMonth(), today.getDate(), hours, minutes);
         break;
       case 'datetime':
         // Input format: YYYY-MM-DDTHH:MM
@@ -385,8 +378,7 @@ export class DateTimeComponent
 
   getWeekNumber(date: Date): number {
     const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
-    const pastDaysOfYear =
-      (date.getTime() - firstDayOfYear.getTime()) / 86400000;
+    const pastDaysOfYear = (date.getTime() - firstDayOfYear.getTime()) / 86400000;
     return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
   }
 }
