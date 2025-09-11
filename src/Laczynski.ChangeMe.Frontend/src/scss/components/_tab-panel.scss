@@ -11,6 +11,7 @@
   border-radius: 0 0 $border-radius-md $border-radius-md;
   box-shadow: $shadow-lg;
   min-height: 200px;
+  height: 100%;
 
   // Size modifiers
   @include modifier('sm') {

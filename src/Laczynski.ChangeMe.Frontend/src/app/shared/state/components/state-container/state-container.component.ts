@@ -10,9 +10,9 @@ import { State } from '../../models/state.model';
 })
 export class StateContainerComponent<T> {
   $state = input.required<State<T>>();
-  $loadingMessage = input('Ładowanie danych...');
+  $loadingMessage = input('Loading data...');
   $errorMessage = input<string>();
-  $emptyMessage = input('Brak danych do wyświetlenia');
+  $emptyMessage = input('No data available');
   $showEmptyState = input(true);
   $minHeight = input('300px');
 
@@ -40,7 +40,7 @@ export class StateContainerComponent<T> {
   });
 
   $actualErrorMessage = computed(() => {
-    return this.$errorMessage() || this.$state().error || 'Wystąpił nieznany błąd';
+    return this.$errorMessage() || this.$state().error || 'Unknown error occurred';
   });
 
   $effectiveEmptyTemplate = computed(() => {

@@ -1,5 +1,4 @@
 <app-toast-container></app-toast-container>
-
 <app-tabs
   [tabs]="tabs()"
   [activeTabId]="activeTabId()"
@@ -7,7 +6,9 @@
   (tabChange)="activeTabId.set($event)"
 >
   <app-tab-panel tabId="tab1" [activeTabId]="activeTabId()">
-    <app-items-list></app-items-list>
+    @if (activeTabId() === 'tab1') {
+      <app-items-list></app-items-list>
+    }
   </app-tab-panel>
   <app-tab-panel tabId="tab2" [activeTabId]="activeTabId()">
     @if (activeTabId() === 'tab2') {

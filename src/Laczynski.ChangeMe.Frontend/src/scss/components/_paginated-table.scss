@@ -34,6 +34,7 @@
   }
 
   @include element('container') {
+    position: relative;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
@@ -145,6 +146,16 @@
       border-bottom: none;
     }
 
+
+    // Error state modifier
+    @include modifier('error') {
+      cursor: default;
+
+      &:hover {
+        background-color: transparent;
+      }
+    }
+
     // Empty state modifier
     @include modifier('empty') {
       cursor: default;
@@ -173,6 +184,14 @@
       }
     }
 
+
+    // Error state modifier
+    @include modifier('error') {
+      text-align: center;
+      padding: $spacing-4xl;
+      border-right: none;
+    }
+
     // Empty state modifier
     @include modifier('empty') {
       text-align: center;
@@ -185,6 +204,64 @@
   @include element('cell-content') {
     @include text-truncate;
     display: block;
+  }
+
+  // Loading overlay styles
+  @include element('loading-overlay') {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba($color-white, 0.9);
+    backdrop-filter: blur(2px);
+    @include flex-center;
+    z-index: 10;
+    border-radius: $border-radius-sm;
+  }
+
+  // Loading content styles
+  @include element('loading-content') {
+    @include flex-center;
+    flex-direction: column;
+    gap: $spacing-lg;
+    color: $color-gray-600;
+    text-align: center;
+  }
+
+  @include element('loading-text') {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-medium;
+    color: $color-gray-600;
+  }
+
+  // Error content styles
+  @include element('error-content') {
+    @include flex-center;
+    flex-direction: column;
+    gap: $spacing-lg;
+    color: $color-danger;
+  }
+
+  @include element('error-message') {
+    @include flex-center;
+    flex-direction: column;
+    gap: $spacing-sm;
+  }
+
+  @include element('error-icon') {
+    width: 2rem;
+    height: 2rem;
+    color: $color-danger;
+    flex-shrink: 0;
+  }
+
+  @include element('error-text') {
+    font-size: $font-size-md;
+    font-weight: $font-weight-medium;
+    color: $color-danger;
+    text-align: center;
+    margin: 0;
   }
 
   // Pagination styles
@@ -300,6 +377,30 @@
 
     .paginated-table__page-size-label {
       color: var(--theme-text-secondary);
+    }
+
+    .paginated-table__loading-overlay {
+      background-color: rgba(var(--theme-bg-primary-rgb), 0.9);
+    }
+
+    .paginated-table__loading-content {
+      color: var(--theme-text-secondary);
+    }
+
+    .paginated-table__loading-text {
+      color: var(--theme-text-secondary);
+    }
+
+    .paginated-table__error-content {
+      color: var(--theme-danger);
+    }
+
+    .paginated-table__error-icon {
+      color: var(--theme-danger);
+    }
+
+    .paginated-table__error-text {
+      color: var(--theme-danger);
     }
 
   }

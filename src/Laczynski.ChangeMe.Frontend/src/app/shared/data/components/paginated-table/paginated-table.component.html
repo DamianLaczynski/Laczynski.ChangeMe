@@ -1,67 +1,26 @@
 <div [class]="componentClasses()">
-  <!-- Loading state -->
-  @if (state().isLoading) {
-    <app-loading-indicator intent="primary" size="md"></app-loading-indicator>
-  } @else if (state().isError) {
-    <!-- Error state -->
-    <div class="paginated-table__error">
-      <p>{{ state().error || 'Wystąpił błąd podczas ładowania danych' }}</p>
-      <app-button intent="danger" variant="outline" size="sm" (click)="onRetry()">
-        Try again
-      </app-button>
-    </div>
-  } @else {
-    <!-- Table content -->
-    <div class="paginated-table__container">
-      <table class="paginated-table__table">
-        <!-- Header -->
-        <thead class="paginated-table__header">
-          <tr class="paginated-table__header-row">
-            @for (column of config().columns; track column.field) {
-              <th
-                class="paginated-table__header-cell"
-                [class.paginated-table__header-cell--sortable]="column.sortable"
-                [class.paginated-table__header-cell--hide-mobile]="column.hideOnMobile"
-                [style.width]="column.width"
-                (click)="column.sortable ? onSort(column.field.toString()) : null"
-              >
-                <div class="paginated-table__header-content">
-                  <span class="paginated-table__header-text">{{ column.header }}</span>
-                  @if (column.sortable) {
-                    <span class="paginated-table__sort-indicator">
-                      @if (config().params.sortField === column.field.toString()) {
-                        @if (config().params.ascending) {
-                          <svg
-                            class="paginated-table__sort-arrow paginated-table__sort-arrow--asc"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg"
-                            aria-hidden="true"
-                          >
-                            <path
-                              fill-rule="evenodd"
-                              d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"
-                              clip-rule="evenodd"
-                            ></path>
-                          </svg>
-                        } @else {
-                          <svg
-                            class="paginated-table__sort-arrow paginated-table__sort-arrow--desc"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg"
-                            aria-hidden="true"
-                          >
-                            <path
-                              fill-rule="evenodd"
-                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                              clip-rule="evenodd"
-                            ></path>
-                          </svg>
-                        }
-                      } @else {
+  <!-- Table content -->
+  <div class="paginated-table__container">
+    <table class="paginated-table__table">
+      <!-- Header -->
+      <thead class="paginated-table__header">
+        <tr class="paginated-table__header-row">
+          @for (column of config().columns; track column.field) {
+            <th
+              class="paginated-table__header-cell"
+              [class.paginated-table__header-cell--sortable]="column.sortable"
+              [class.paginated-table__header-cell--hide-mobile]="column.hideOnMobile"
+              [style.width]="column.width"
+              (click)="column.sortable ? onSort(column.field.toString()) : null"
+            >
+              <div class="paginated-table__header-content">
+                <span class="paginated-table__header-text">{{ column.header }}</span>
+                @if (column.sortable) {
+                  <span class="paginated-table__sort-indicator">
+                    @if (config().params.sortField === column.field.toString()) {
+                      @if (config().params.ascending) {
                         <svg
-                          class="paginated-table__sort-arrow paginated-table__sort-arrow--neutral"
+                          class="paginated-table__sort-arrow paginated-table__sort-arrow--asc"
                           fill="currentColor"
                           viewBox="0 0 20 20"
                           xmlns="http://www.w3.org/2000/svg"
@@ -69,66 +28,139 @@
                         >
                           <path
                             fill-rule="evenodd"
-                            d="M10 3a1 1 0 01.832.445l3 4.5a1 1 0 01-1.664 1.11L10 6.236 7.832 8.055a1 1 0 01-1.664-1.11l3-4.5A1 1 0 0110 3zM10 17a1 1 0 01-.832-.445l-3-4.5a1 1 0 011.664-1.11L10 13.764l2.168-1.819a1 1 0 011.664 1.11l-3 4.5A1 1 0 0110 17z"
+                            d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"
+                            clip-rule="evenodd"
+                          ></path>
+                        </svg>
+                      } @else {
+                        <svg
+                          class="paginated-table__sort-arrow paginated-table__sort-arrow--desc"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                          xmlns="http://www.w3.org/2000/svg"
+                          aria-hidden="true"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
                             clip-rule="evenodd"
                           ></path>
                         </svg>
                       }
-                    </span>
-                  }
-                </div>
-              </th>
-            }
-          </tr>
-        </thead>
-
-        <!-- Body -->
-        <tbody class="paginated-table__body">
-          @if (state().data?.items && state().data!.items.length > 0) {
-            @for (row of state().data!.items; track row) {
-              <tr class="paginated-table__row" (click)="handleRowSelect(row)">
-                @for (column of config().columns; track column.field) {
-                  <td
-                    class="paginated-table__cell"
-                    [class.paginated-table__cell--hide-mobile]="column.hideOnMobile"
-                  >
-                    @if (column.templateRef && columnTemplates()[column.templateRef]) {
-                      <ng-container
-                        *ngTemplateOutlet="
-                          columnTemplates()[column.templateRef];
-                          context: { $implicit: row, column: column }
-                        "
-                      ></ng-container>
                     } @else {
-                      <span class="paginated-table__cell-content">{{
-                        getCellValue(row, column)
-                      }}</span>
+                      <svg
+                        class="paginated-table__sort-arrow paginated-table__sort-arrow--neutral"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M10 3a1 1 0 01.832.445l3 4.5a1 1 0 01-1.664 1.11L10 6.236 7.832 8.055a1 1 0 01-1.664-1.11l3-4.5A1 1 0 0110 3zM10 17a1 1 0 01-.832-.445l-3-4.5a1 1 0 011.664-1.11L10 13.764l2.168-1.819a1 1 0 011.664 1.11l-3 4.5A1 1 0 0110 17z"
+                          clip-rule="evenodd"
+                        ></path>
+                      </svg>
                     }
-                  </td>
+                  </span>
                 }
-              </tr>
-            }
-          } @else {
-            <tr class="paginated-table__row paginated-table__row--empty">
-              <td
-                class="paginated-table__cell paginated-table__cell--empty"
-                [attr.colspan]="config().columns.length"
-              >
-                {{ config().emptyStateMessage || 'No data found' }}
-              </td>
+              </div>
+            </th>
+          }
+        </tr>
+      </thead>
+
+      <!-- Body -->
+      <tbody class="paginated-table__body">
+        @if (state().isError) {
+          <!-- Error state -->
+          <tr class="paginated-table__row paginated-table__row--error">
+            <td
+              class="paginated-table__cell paginated-table__cell--error"
+              [attr.colspan]="config().columns.length"
+            >
+              <div class="paginated-table__error-content">
+                <div class="paginated-table__error-message">
+                  <svg
+                    class="paginated-table__error-icon"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                  <p class="paginated-table__error-text">
+                    {{ state().error || 'Wystąpił błąd podczas ładowania danych' }}
+                  </p>
+                </div>
+                <app-button intent="danger" variant="outline" size="sm" (click)="onRetry()">
+                  Try again
+                </app-button>
+              </div>
+            </td>
+          </tr>
+        } @else if (state().data?.items && state().data!.items.length > 0) {
+          <!-- Data rows -->
+          @for (row of state().data!.items; track row) {
+            <tr class="paginated-table__row" (click)="handleRowSelect(row)">
+              @for (column of config().columns; track column.field) {
+                <td
+                  class="paginated-table__cell"
+                  [class.paginated-table__cell--hide-mobile]="column.hideOnMobile"
+                >
+                  @if (column.templateRef && columnTemplates()[column.templateRef]) {
+                    <ng-container
+                      *ngTemplateOutlet="
+                        columnTemplates()[column.templateRef];
+                        context: { $implicit: row, column: column }
+                      "
+                    ></ng-container>
+                  } @else {
+                    <span class="paginated-table__cell-content">{{
+                      getCellValue(row, column)
+                    }}</span>
+                  }
+                </td>
+              }
             </tr>
           }
-        </tbody>
-      </table>
-    </div>
+        } @else {
+          <!-- Empty state -->
+          <tr class="paginated-table__row paginated-table__row--empty">
+            <td
+              class="paginated-table__cell paginated-table__cell--empty"
+              [attr.colspan]="config().columns.length"
+            >
+              {{ config().emptyStateMessage || 'No data available' }}
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
 
-    <!-- Pagination -->
+    <!-- Loading overlay -->
+    @if (state().isLoading) {
+      <div class="paginated-table__loading-overlay">
+        <div class="paginated-table__loading-content">
+          <app-loading-indicator intent="primary" size="lg"></app-loading-indicator>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Pagination - only show when not loading or error -->
+  @if (!state().isLoading && !state().isError) {
     <div class="paginated-table__pagination">
       <div class="paginated-table__pagination-info">
         @if (state().data?.totalCount && state().data!.totalCount > 0) {
           <span class="paginated-table__pagination-text">
-            Wyświetlono {{ getFirstRecord() }} do {{ getLastRecord() }} z
-            {{ state().data!.totalCount }} wpisów
+            Displaying {{ getFirstRecord() }} to {{ getLastRecord() }} of
+            {{ state().data!.totalCount }} items
           </span>
         }
       </div>
