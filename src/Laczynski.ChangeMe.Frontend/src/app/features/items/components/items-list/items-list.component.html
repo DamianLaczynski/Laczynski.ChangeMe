@@ -7,7 +7,7 @@
       (ngModelChange)="onSearchChange()"
     />
 
-    <app-button size="sm" (click)="onAddNewItem()"> Add item </app-button>
+    <app-button size="small" (click)="onAddNewItem()"> Add item </app-button>
   </div>
 
   <!-- Direct table without state container wrapper -->
@@ -41,7 +41,7 @@
   <!-- Actions template -->
   <ng-template #actionsTemplate let-item>
     <div class="item-actions">
-      <app-button variant="ghost" size="sm" (click)="onEditItem(item)">
+      <app-button variant="outline" size="small" (click)="onEditItem(item)">
         <svg
           class="action-icon"
           fill="currentColor"
@@ -57,7 +57,7 @@
         </svg>
       </app-button>
 
-      <app-button variant="ghost" size="sm" (click)="onDeleteItem(item)">
+      <app-button size="small" (click)="onDeleteItem(item)">
         <svg
           class="action-icon"
           fill="currentColor"

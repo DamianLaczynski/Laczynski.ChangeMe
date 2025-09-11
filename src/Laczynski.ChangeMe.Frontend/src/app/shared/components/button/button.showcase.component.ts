@@ -6,171 +6,246 @@ import { CommonModule } from '@angular/common';
   selector: 'app-button-showcase',
   imports: [ButtonComponent, CommonModule],
   template: `
-    <div style="display: flex; flex-direction: row; gap: 10px; margin: 12px">
-      <app-button size="sm" (click)="onButtonClick($event)"
-        >Click me</app-button
-      >
-      <app-button size="md" (click)="onButtonClick($event)"
-        >Click me</app-button
-      >
-      <app-button size="lg" (click)="onButtonClick($event)"
-        >Click me</app-button
-      >
-      <app-button size="xl" (click)="onButtonClick($event)"
-        >Click me</app-button
-      >
-    </div>
+    <div class="showcase">
+      <h2>Fluent 2 Button Component Showcase</h2>
 
-    <div style="display: flex; flex-direction: row; gap: 10px; margin: 12px">
-      <app-button variant="solid" (click)="onButtonClick($event)"
-        >Click me</app-button
-      >
-      <app-button variant="outline" (click)="onButtonClick($event)"
-        >Click me</app-button
-      >
-      <app-button variant="ghost" (click)="onButtonClick($event)"
-        >Click me</app-button
-      >
-    </div>
+      <!-- Primary Style Variants -->
+      <section class="showcase__section">
+        <h3>Primary Style</h3>
+        <div class="showcase__row">
+          <app-button variant="primary" size="large" (click)="onButtonClick($event)">
+            <svg slot="icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" fill="none" />
+            </svg>
+            Button
+          </app-button>
+          <app-button variant="primary" size="medium" (click)="onButtonClick($event)">
+            <svg slot="icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+              <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1" fill="none" />
+            </svg>
+            Button
+          </app-button>
+          <app-button variant="primary" size="small" (click)="onButtonClick($event)">
+            <svg slot="icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+              <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1" fill="none" />
+            </svg>
+            Button
+          </app-button>
+          <app-button variant="primary" size="small" (click)="onButtonClick($event)">
+            Button
+          </app-button>
+        </div>
 
-    <div style="display: flex; flex-direction: row; gap: 10px; margin: 12px">
-      <app-button intent="primary" (click)="onButtonClick($event)"
-        >Click me</app-button
-      >
-      <app-button intent="secondary" (click)="onButtonClick($event)"
-        >Click me</app-button
-      >
-      <app-button intent="success" (click)="onButtonClick($event)"
-        >Click me</app-button
-      >
-      <app-button intent="danger" (click)="onButtonClick($event)"
-        >Click me</app-button
-      >
-      <app-button intent="warning" (click)="onButtonClick($event)"
-        >Click me</app-button
-      >
-      <app-button intent="info" (click)="onButtonClick($event)"
-        >Click me</app-button
-      >
-    </div>
-    <div style="display: flex; flex-direction: row; gap: 10px; margin: 12px">
-      <app-button intent="primary" (click)="onButtonClick($event)"
-        >Click me</app-button
-      >
-      <app-button intent="secondary" (click)="onButtonClick($event)"
-        >Click me</app-button
-      >
-      <app-button intent="success" (click)="onButtonClick($event)"
-        >Click me</app-button
-      >
-      <app-button intent="danger" (click)="onButtonClick($event)"
-        >Click me</app-button
-      >
-      <app-button intent="warning" (click)="onButtonClick($event)"
-        >Click me</app-button
-      >
-      <app-button intent="info" (click)="onButtonClick($event)"
-        >Click me</app-button
-      >
-    </div>
-    <div style="display: flex; flex-direction: row; gap: 10px; margin: 12px">
-      <app-button
-        intent="primary"
-        variant="outline"
-        size="sm"
-        (click)="onButtonClick($event)"
-        >Click me</app-button
-      >
-      <app-button
-        intent="secondary"
-        variant="outline"
-        size="md"
-        (click)="onButtonClick($event)"
-        >Click me</app-button
-      >
-      <app-button
-        intent="success"
-        variant="outline"
-        size="lg"
-        (click)="onButtonClick($event)"
-        >Click me</app-button
-      >
-      <app-button
-        intent="danger"
-        variant="outline"
-        size="xl"
-        (click)="onButtonClick($event)"
-        >Click me</app-button
-      >
-      <app-button
-        intent="warning"
-        variant="outline"
-        size="xl"
-        (click)="onButtonClick($event)"
-        >Click me</app-button
-      >
-      <app-button
-        intent="info"
-        variant="outline"
-        size="xl"
-        (click)="onButtonClick($event)"
-        >Click me</app-button
-      >
-    </div>
-    <div style="display: flex; flex-direction: row; gap: 10px; margin: 12px">
-      <app-button
-        variant="ghost"
-        intent="primary"
-        size="sm"
-        (click)="onButtonClick($event)"
-        >Click me</app-button
-      >
-      <app-button
-        variant="ghost"
-        intent="secondary"
-        size="md"
-        (click)="onButtonClick($event)"
-        >Click me</app-button
-      >
-      <app-button
-        variant="ghost"
-        intent="success"
-        size="lg"
-        (click)="onButtonClick($event)"
-        >Click me</app-button
-      >
-      <app-button
-        variant="ghost"
-        intent="danger"
-        size="xl"
-        (click)="onButtonClick($event)"
-        >Click me</app-button
-      >
-      <app-button
-        variant="ghost"
-        intent="warning"
-        size="xl"
-        (click)="onButtonClick($event)"
-        >Click me</app-button
-      >
-      <app-button
-        variant="ghost"
-        intent="info"
-        size="xl"
-        (click)="onButtonClick($event)"
-        >Click me</app-button
-      >
-    </div>
+        <div class="showcase__row">
+          <app-button
+            variant="primary"
+            size="large"
+            layout="icon-only"
+            (click)="onButtonClick($event)"
+          >
+            <svg slot="icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" fill="none" />
+            </svg>
+          </app-button>
+          <app-button
+            variant="primary"
+            size="medium"
+            layout="icon-only"
+            (click)="onButtonClick($event)"
+          >
+            <svg slot="icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+              <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1" fill="none" />
+            </svg>
+          </app-button>
+          <app-button
+            variant="primary"
+            size="small"
+            layout="icon-only"
+            (click)="onButtonClick($event)"
+          >
+            <svg slot="icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+              <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1" fill="none" />
+            </svg>
+          </app-button>
+        </div>
+      </section>
 
-    <div style="display: flex; flex-direction: row; gap: 10px; margin: 12px">
-      <app-button [disabled]="true" (click)="onButtonClick($event)"
-        >Click me</app-button
-      >
+      <!-- Secondary Style Variants -->
+      <section class="showcase__section">
+        <h3>Secondary Style (Default)</h3>
+        <div class="showcase__row">
+          <app-button variant="secondary" size="large" (click)="onButtonClick($event)">
+            <svg slot="icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" fill="none" />
+            </svg>
+            Button
+          </app-button>
+          <app-button variant="secondary" size="medium" (click)="onButtonClick($event)">
+            <svg slot="icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+              <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1" fill="none" />
+            </svg>
+            Button
+          </app-button>
+          <app-button variant="secondary" size="small" (click)="onButtonClick($event)">
+            <svg slot="icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+              <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1" fill="none" />
+            </svg>
+            Button
+          </app-button>
+        </div>
+      </section>
+
+      <!-- Outline Style Variants -->
+      <section class="showcase__section">
+        <h3>Outline Style</h3>
+        <div class="showcase__row">
+          <app-button variant="outline" size="large" (click)="onButtonClick($event)">
+            <svg slot="icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" fill="none" />
+            </svg>
+            Button
+          </app-button>
+          <app-button variant="outline" size="medium" (click)="onButtonClick($event)">
+            <svg slot="icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+              <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1" fill="none" />
+            </svg>
+            Button
+          </app-button>
+          <app-button variant="outline" size="small" (click)="onButtonClick($event)">
+            <svg slot="icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+              <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1" fill="none" />
+            </svg>
+            Button
+          </app-button>
+        </div>
+      </section>
+
+      <!-- Subtle Style Variants -->
+      <section class="showcase__section">
+        <h3>Subtle Style</h3>
+        <div class="showcase__row">
+          <app-button variant="subtle" size="large" (click)="onButtonClick($event)">
+            <svg slot="icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" fill="none" />
+            </svg>
+            Button
+          </app-button>
+          <app-button variant="subtle" size="medium" (click)="onButtonClick($event)">
+            <svg slot="icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+              <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1" fill="none" />
+            </svg>
+            Button
+          </app-button>
+          <app-button variant="subtle" size="small" (click)="onButtonClick($event)">
+            <svg slot="icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+              <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1" fill="none" />
+            </svg>
+            Button
+          </app-button>
+        </div>
+      </section>
+
+      <!-- Transparent Style Variants -->
+      <section class="showcase__section">
+        <h3>Transparent Style</h3>
+        <div class="showcase__row">
+          <app-button variant="transparent" size="large" (click)="onButtonClick($event)">
+            <svg slot="icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" fill="none" />
+            </svg>
+            Button
+          </app-button>
+          <app-button variant="transparent" size="medium" (click)="onButtonClick($event)">
+            <svg slot="icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+              <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1" fill="none" />
+            </svg>
+            Button
+          </app-button>
+          <app-button variant="transparent" size="small" (click)="onButtonClick($event)">
+            <svg slot="icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+              <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1" fill="none" />
+            </svg>
+            Button
+          </app-button>
+        </div>
+      </section>
+
+      <!-- State Variants -->
+      <section class="showcase__section">
+        <h3>Button States</h3>
+        <div class="showcase__row">
+          <app-button variant="primary" (click)="onButtonClick($event)">Normal</app-button>
+          <app-button variant="primary" [selected]="true" (click)="onButtonClick($event)"
+            >Selected</app-button
+          >
+          <app-button variant="primary" [disabled]="true" (click)="onButtonClick($event)"
+            >Disabled</app-button
+          >
+        </div>
+        <div class="showcase__row">
+          <app-button variant="secondary" (click)="onButtonClick($event)">Normal</app-button>
+          <app-button variant="secondary" [selected]="true" (click)="onButtonClick($event)"
+            >Selected</app-button
+          >
+          <app-button variant="secondary" [disabled]="true" (click)="onButtonClick($event)"
+            >Disabled</app-button
+          >
+        </div>
+      </section>
+
+      <!-- Full Width -->
+      <section class="showcase__section">
+        <h3>Full Width</h3>
+        <app-button variant="primary" [fullWidth]="true" (click)="onButtonClick($event)">
+          <svg slot="icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+            <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1" fill="none" />
+          </svg>
+          Full Width Button
+        </app-button>
+      </section>
     </div>
-    <app-button [fullWidth]="true" (click)="onButtonClick($event)"
-      >Click me</app-button
-    >
   `,
+  styles: [
+    `
+      .showcase {
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .showcase__section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+      }
+
+      .showcase__section h3 {
+        margin: 0 0 1rem 0;
+        color: #333;
+        font-size: 1.2rem;
+        font-weight: 600;
+      }
+
+      .showcase__row {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .showcase__row:last-child {
+        margin-bottom: 0;
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 2rem;
+        color: #333;
+      }
+    `,
+  ],
 })
 export class ButtonShowcaseComponent {
   onButtonClick(event: MouseEvent): void {

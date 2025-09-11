@@ -51,16 +51,9 @@
 
       <!-- Form actions -->
       <div class="row row--justify-content-end gap-sm">
-        <app-button variant="ghost" size="sm" (click)="onCancel()" [disabled]="isSubmitting()">
-          Anuluj
-        </app-button>
+        <app-button (click)="onCancel()" [disabled]="isSubmitting()"> Anuluj </app-button>
 
-        <app-button
-          variant="solid"
-          size="sm"
-          [disabled]="itemForm.invalid || isSubmitting()"
-          (click)="onSubmit()"
-        >
+        <app-button [disabled]="itemForm.invalid || isSubmitting()" (click)="onSubmit()">
           {{ isEditMode() ? 'Zaktualizuj' : 'Dodaj' }} element
         </app-button>
       </div>

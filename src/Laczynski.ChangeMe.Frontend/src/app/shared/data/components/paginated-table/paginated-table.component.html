@@ -98,9 +98,7 @@
                     {{ state().error || 'Wystąpił błąd podczas ładowania danych' }}
                   </p>
                 </div>
-                <app-button intent="danger" variant="outline" size="sm" (click)="onRetry()">
-                  Try again
-                </app-button>
+                <app-button (click)="onRetry()"> Try again </app-button>
               </div>
             </td>
           </tr>
@@ -180,9 +178,7 @@
         <!-- Page navigation -->
         <div class="paginated-table__page-nav">
           <app-button
-            intent="secondary"
-            variant="outline"
-            size="sm"
+            [iconOnly]="true"
             [disabled]="getCurrentPage() <= 1"
             (click)="goToPage(1)"
             ariaLabel="Pierwsza strona"
@@ -202,9 +198,7 @@
             </svg>
           </app-button>
           <app-button
-            intent="secondary"
-            variant="outline"
-            size="sm"
+            [iconOnly]="true"
             [disabled]="getCurrentPage() <= 1"
             (click)="goToPage(getCurrentPage() - 1)"
             ariaLabel="Poprzednia strona"
@@ -225,21 +219,13 @@
           </app-button>
 
           @for (page of getVisiblePages(); track page) {
-            <app-button
-              intent="primary"
-              variant="solid"
-              size="sm"
-              (click)="goToPage(page)"
-              [attr.aria-label]="'Strona ' + page"
-            >
+            <app-button (click)="goToPage(page)" [attr.aria-label]="'Strona ' + page">
               {{ page }}
             </app-button>
           }
 
           <app-button
-            intent="secondary"
-            variant="outline"
-            size="sm"
+            [iconOnly]="true"
             [disabled]="getCurrentPage() >= getTotalPages()"
             (click)="goToPage(getCurrentPage() + 1)"
             ariaLabel="Następna strona"
@@ -259,9 +245,7 @@
             </svg>
           </app-button>
           <app-button
-            intent="secondary"
-            variant="outline"
-            size="sm"
+            [iconOnly]="true"
             [disabled]="getCurrentPage() >= getTotalPages()"
             (click)="goToPage(getTotalPages())"
             ariaLabel="Ostatnia strona"
