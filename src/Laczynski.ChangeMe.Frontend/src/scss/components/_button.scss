@@ -47,7 +47,7 @@
     padding: $button-padding-small;
     font-size: $font-size-200;
     line-height: $line-height-200;
-    border-radius: $border-radius-small;
+    border-radius: $border-radius-200;
     min-height: 24px;
     
     @include element('icon') {
@@ -67,7 +67,7 @@
     padding: $button-padding-medium;
     font-size: $font-size-300;
     line-height: $line-height-300;
-    border-radius: $border-radius-medium;
+    border-radius: $border-radius-400;
     min-height: 32px;
     
     @include element('icon') {
@@ -87,7 +87,7 @@
     padding: $button-padding-large;
     font-size: $font-size-400;
     line-height: $line-height-400;
-    border-radius: $border-radius-large;
+    border-radius: $border-radius-600;
     min-height: 40px;
     
     @include element('icon') {
