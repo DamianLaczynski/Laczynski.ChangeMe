@@ -35,10 +35,10 @@
     font-weight: $font-weight-normal;
     line-height: $line-height-normal;
     color: $color-gray-900;
-    background-color: $color-white;
+    background-color: $color-neutral-background-rest;
     background-clip: padding-box;
-    border: 1px solid $color-gray-300;
-    border-radius: $border-radius;
+    border: 1px solid $color-neutral-foreground-rest;
+    border-radius: $border-radius-400;
     transition: border-color $transition-fast, box-shadow $transition-fast;
     
     &::placeholder {

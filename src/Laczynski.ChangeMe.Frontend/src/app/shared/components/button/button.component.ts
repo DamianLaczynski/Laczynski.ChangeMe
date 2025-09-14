@@ -1,5 +1,5 @@
 import { Component, input, output, model } from '@angular/core';
-import { ButtonStyle, ButtonSize } from '../utils';
+import { ButtonStyle, FluentSize } from '../utils';
 
 export type ButtonType = 'button' | 'submit' | 'reset';
 
@@ -9,14 +9,11 @@ export type ButtonType = 'button' | 'submit' | 'reset';
   standalone: true,
 })
 export class ButtonComponent {
-  // Fluent 2 Design System Properties
   variant = input<ButtonStyle>('secondary');
-  size = input<ButtonSize>('medium');
+  size = input<FluentSize>('medium');
   iconOnly = input<boolean>(false);
   selected = input<boolean>(false);
-  icon = input<boolean>(true);
 
-  // Common Properties
   type = input<ButtonType>('button');
   disabled = model<boolean>(false);
   fullWidth = input<boolean>(false);
@@ -27,7 +24,6 @@ export class ButtonComponent {
   buttonClasses(): string {
     const classes = ['button'];
 
-    // Primary classes based on Fluent 2 design system
     classes.push(`button--${this.variant()}`);
     classes.push(`button--${this.size()}`);
 
@@ -35,7 +31,6 @@ export class ButtonComponent {
       classes.push('button--icon-only');
     }
 
-    // State classes
     if (this.disabled()) {
       classes.push('button--disabled');
     }

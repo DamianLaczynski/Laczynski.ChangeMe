@@ -149,7 +149,7 @@
   // Style Modifiers - Secondary (Default)
   @include modifier('secondary') {
     color: $color-neutral-foreground-rest;
-    background-color: $color-neutral-background-primary;
+    background-color: $color-neutral-background-rest;
     border-color: $color-neutral-foreground-rest;
 
     &:hover:not(.button--disabled) {
@@ -173,7 +173,7 @@
 
     &.button--disabled {
       color: $color-neutral-foreground-disabled;
-      background-color: $color-neutral-background-primary;
+      background-color: $color-neutral-background-rest;
       border-color: $color-neutral-foreground-disabled;
       cursor: not-allowed;
       
@@ -186,7 +186,7 @@
   // Style Modifiers - Outline
   @include modifier('outline') {
     color: $color-neutral-foreground-rest;
-    background-color: $color-neutral-background-primary;
+    background-color: $color-neutral-background-rest;
     border-color: $color-neutral-foreground-rest;
 
     &:hover:not(.button--disabled) {
@@ -210,7 +210,7 @@
 
     &.button--disabled {
       color: $color-neutral-foreground-disabled;
-      background-color: $color-neutral-background-primary;
+      background-color: $color-neutral-background-rest;
       border-color: $color-neutral-foreground-disabled;
       cursor: not-allowed;
       
