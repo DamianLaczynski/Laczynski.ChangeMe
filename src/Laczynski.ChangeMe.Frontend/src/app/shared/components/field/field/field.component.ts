@@ -54,7 +54,7 @@ export class FieldComponent implements ControlValueAccessor, OnInit, OnDestroy {
   required = input<boolean>(false);
   disabled = model<boolean>(false);
   readonly = input<boolean>(false);
-  size = input<Size>('md');
+  size = input<Size>('medium');
   state = input<FieldState>('initial');
   layout = input<FieldLayout>('vertical');
   name = input<string>('');

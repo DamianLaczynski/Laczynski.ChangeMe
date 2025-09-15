@@ -13,7 +13,7 @@ import { RadioComponent } from './radio.component';
         warningText="This is a warning text"
         successText="This is a success text"
         state="initial"
-        size="sm"
+        size="small"
       ></app-radio>
       <app-radio
         label="Radio Medium"
@@ -22,7 +22,7 @@ import { RadioComponent } from './radio.component';
         warningText="This is a warning text"
         successText="This is a success text"
         state="error"
-        size="md"
+        size="medium"
       ></app-radio>
       <app-radio
         label="Radio Large"
@@ -31,7 +31,7 @@ import { RadioComponent } from './radio.component';
         warningText="This is a warning text"
         successText="This is a success text"
         state="warning"
-        size="lg"
+        size="large"
       ></app-radio>
       <app-radio
         label="Radio Extra Large"
@@ -40,7 +40,6 @@ import { RadioComponent } from './radio.component';
         warningText="This is a warning text"
         successText="This is a success text"
         state="success"
-        size="xl"
       ></app-radio>
       <app-radio
         label="Radio Extra Large"
@@ -49,7 +48,6 @@ import { RadioComponent } from './radio.component';
         warningText="This is a warning text"
         successText="This is a success text"
         [disabled]="true"
-        size="xl"
       ></app-radio>
     </form>
   `,

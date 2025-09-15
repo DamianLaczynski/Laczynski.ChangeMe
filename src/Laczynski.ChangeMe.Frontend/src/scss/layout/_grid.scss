@@ -10,20 +10,20 @@
 
 @include block('container') {
   width: 100%;
-  padding-right: $spacing-md;
-  padding-left: $spacing-md;
+  padding-right: $spacing-medium;
+  padding-left: $spacing-medium;
   margin-right: auto;
   margin-left: auto;
   
-  @include respond-to(sm) {
+  @include respond-to(small) {
     max-width: 540px;
   }
   
-  @include respond-to(md) {
+  @include respond-to(medium) {
     max-width: 720px;
   }
   
-  @include respond-to(lg) {
+  @include respond-to(large) {
     max-width: 960px;
   }
   
@@ -40,20 +40,20 @@
     max-width: none;
   }
   
-  @include modifier('sm') {
-    @include respond-to(sm) {
+  @include modifier('small') {
+    @include respond-to(small) {
       max-width: 540px;
     }
   }
   
-  @include modifier('md') {
-    @include respond-to(md) {
+  @include modifier('medium') {
+    @include respond-to(medium) {
       max-width: 720px;
     }
   }
   
-  @include modifier('lg') {
-    @include respond-to(lg) {
+  @include modifier('large') {
+    @include respond-to(large) {
       max-width: 960px;
     }
   }
@@ -68,8 +68,8 @@
 @include block('row') {
   display: flex;
   flex-wrap: wrap;
-  margin-right: -$spacing-sm;
-  margin-left: -$spacing-sm;
+  margin-right: -$spacing-small;
+  margin-left: -$spacing-small;
   
   // Row modifiers
   @include modifier('no-gutters') {
@@ -83,7 +83,7 @@
     }
   }
   
-  @include modifier('gutters-sm') {
+  @include modifier('gutters-small') {
     margin-right: -$spacing-xs;
     margin-left: -$spacing-xs;
     
@@ -94,25 +94,25 @@
     }
   }
   
-  @include modifier('gutters-lg') {
-    margin-right: -$spacing-md;
-    margin-left: -$spacing-md;
+  @include modifier('gutters-large') {
+    margin-right: -$spacing-medium;
+    margin-left: -$spacing-medium;
     
     > .col,
     > [class*="col-"] {
-      padding-right: $spacing-md;
-      padding-left: $spacing-md;
+      padding-right: $spacing-medium;
+      padding-left: $spacing-medium;
     }
   }
   
   @include modifier('gutters-xl') {
-    margin-right: -$spacing-lg;
-    margin-left: -$spacing-lg;
+    margin-right: -$spacing-large;
+    margin-left: -$spacing-large;
     
     > .col,
     > [class*="col-"] {
-      padding-right: $spacing-lg;
-      padding-left: $spacing-lg;
+      padding-right: $spacing-large;
+      padding-left: $spacing-large;
     }
   }
   
@@ -154,8 +154,8 @@
   flex-basis: 0;
   flex-grow: 1;
   max-width: 100%;
-  padding-right: $spacing-sm;
-  padding-left: $spacing-sm;
+  padding-right: $spacing-small;
+  padding-left: $spacing-small;
 }
 
 // Generate column classes for all breakpoints
@@ -163,26 +163,26 @@
   .col-#{$i} {
     flex: 0 0 math.percentage(calc($i / 12));
     max-width: math.percentage(calc($i / 12));
-    padding-right: $spacing-sm;
-    padding-left: $spacing-sm;
+    padding-right: $spacing-small;
+    padding-left: $spacing-small;
   }
   
-  .col-sm-#{$i} {
-    @include respond-to(sm) {
+  .col-small-#{$i} {
+    @include respond-to(small) {
       flex: 0 0 math.percentage(calc($i / 12));
       max-width: math.percentage(calc($i / 12));
     }
   }
   
-  .col-md-#{$i} {
-    @include respond-to(md) {
+  .col-medium-#{$i} {
+    @include respond-to(medium) {
       flex: 0 0 math.percentage(calc($i / 12));
       max-width: math.percentage(calc($i / 12));
     }
   }
   
-  .col-lg-#{$i} {
-    @include respond-to(lg) {
+  .col-large-#{$i} {
+    @include respond-to(large) {
       flex: 0 0 math.percentage(calc($i / 12));
       max-width: math.percentage(calc($i / 12));
     }
@@ -209,20 +209,20 @@
     margin-left: math.percentage(calc($i / 12));
   }
   
-  .offset-sm-#{$i} {
-    @include respond-to(sm) {
+  .offset-small-#{$i} {
+    @include respond-to(small) {
       margin-left: math.percentage(calc($i / 12));
     }
   }
   
-  .offset-md-#{$i} {
-    @include respond-to(md) {
+  .offset-medium-#{$i} {
+    @include respond-to(medium) {
       margin-left: math.percentage(calc($i / 12));
     }
   }
   
-  .offset-lg-#{$i} {
-    @include respond-to(lg) {
+  .offset-large-#{$i} {
+    @include respond-to(large) {
       margin-left: math.percentage(calc($i / 12));
     }
   }
@@ -245,28 +245,28 @@
   flex: 0 0 auto;
   width: auto;
   max-width: none;
-  padding-right: $spacing-sm;
-  padding-left: $spacing-sm;
+  padding-right: $spacing-small;
+  padding-left: $spacing-small;
 }
 
-.col-sm-auto {
-  @include respond-to(sm) {
+.col-small-auto {
+  @include respond-to(small) {
     flex: 0 0 auto;
     width: auto;
     max-width: none;
   }
 }
 
-.col-md-auto {
-  @include respond-to(md) {
+.col-medium-auto {
+  @include respond-to(medium) {
     flex: 0 0 auto;
     width: auto;
     max-width: none;
   }
 }
 
-.col-lg-auto {
-  @include respond-to(lg) {
+.col-large-auto {
+  @include respond-to(large) {
     flex: 0 0 auto;
     width: auto;
     max-width: none;
@@ -294,20 +294,20 @@
   display: none !important;
 }
 
-.d-sm-none {
-  @include respond-to(sm) {
+.d-small-none {
+  @include respond-to(small) {
     display: none !important;
   }
 }
 
-.d-md-none {
-  @include respond-to(md) {
+.d-medium-none {
+  @include respond-to(medium) {
     display: none !important;
   }
 }
 
-.d-lg-none {
-  @include respond-to(lg) {
+.d-large-none {
+  @include respond-to(large) {
     display: none !important;
   }
 }
@@ -328,20 +328,20 @@
   display: block !important;
 }
 
-.d-sm-block {
-  @include respond-to(sm) {
+.d-small-block {
+  @include respond-to(small) {
     display: block !important;
   }
 }
 
-.d-md-block {
-  @include respond-to(md) {
+.d-medium-block {
+  @include respond-to(medium) {
     display: block !important;
   }
 }
 
-.d-lg-block {
-  @include respond-to(lg) {
+.d-large-block {
+  @include respond-to(large) {
     display: block !important;
   }
 }
@@ -362,20 +362,20 @@
   display: flex !important;
 }
 
-.d-sm-flex {
-  @include respond-to(sm) {
+.d-small-flex {
+  @include respond-to(small) {
     display: flex !important;
   }
 }
 
-.d-md-flex {
-  @include respond-to(md) {
+.d-medium-flex {
+  @include respond-to(medium) {
     display: flex !important;
   }
 }
 
-.d-lg-flex {
-  @include respond-to(lg) {
+.d-large-flex {
+  @include respond-to(large) {
     display: flex !important;
   }
 }

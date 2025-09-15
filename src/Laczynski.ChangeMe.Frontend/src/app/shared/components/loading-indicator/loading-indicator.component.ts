@@ -7,7 +7,7 @@ import { Intent, Size, Variant } from '../utils';
 })
 export class LoadingIndicatorComponent {
   intent = input<Intent>('primary');
-  size = input<Size>('md');
+  size = input<Size>('medium');
   text = input<string>('');
   showText = input<boolean>(true);
   overlay = input<boolean>(false);

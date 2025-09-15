@@ -8,11 +8,11 @@
   //position: relative;
   display: flex;
   align-items: flex-start;
-  gap: $spacing-sm;
-  padding: $spacing-md;
-  margin-bottom: $spacing-sm;
-  border-radius: $border-radius-md;
-  box-shadow: $shadow-lg;
+  gap: $spacing-small;
+  padding: $spacing-medium;
+  margin-bottom: $spacing-small;
+  border-radius: $border-radius-medium;
+  box-shadow: $shadow-large;
   background-color: $color-white;
   border: 1px solid $color-gray-200;
   color: $color-gray-900;
@@ -47,14 +47,14 @@
   }
 
   @include element('title') {
-    font-size: $font-size-sm;
+    font-size: $font-size-small;
     font-weight: $font-weight-semibold;
     margin-bottom: $spacing-xs;
     color: inherit;
   }
 
   @include element('message') {
-    font-size: $font-size-sm;
+    font-size: $font-size-small;
     color: $color-gray-700;
     line-height: $line-height-normal;
   }
@@ -73,7 +73,7 @@
     justify-content: center;
     width: 1.5rem;
     height: 1.5rem;
-    border-radius: $border-radius-sm;
+    border-radius: $border-radius-small;
     color: $color-gray-500;
     transition: all $transition-fast;
     @include focus-ring;
@@ -101,14 +101,14 @@
     height: 3px;
     width: 100%;
     background-color: currentColor;
-    border-radius: 0 0 $border-radius-md $border-radius-md;
+    border-radius: 0 0 $border-radius-medium $border-radius-medium;
     animation: toast-progress-single linear;
     transform-origin: center;
   }
 
   // Size modifiers
-  @include modifier('sm') {
-    padding: $spacing-sm $spacing-md;
+  @include modifier('small') {
+    padding: $spacing-small $spacing-medium;
     min-width: 250px;
     max-width: 350px;
 
@@ -126,14 +126,14 @@
     }
   }
 
-  @include modifier('md') {
-    padding: $spacing-md;
+  @include modifier('medium') {
+    padding: $spacing-medium;
     min-width: 300px;
     max-width: 400px;
   }
 
-  @include modifier('lg') {
-    padding: $spacing-lg;
+  @include modifier('large') {
+    padding: $spacing-large;
     min-width: 350px;
     max-width: 450px;
 
@@ -143,11 +143,11 @@
     }
 
     .toast__title {
-      font-size: $font-size-md;
+      font-size: $font-size-medium;
     }
 
     .toast__message {
-      font-size: $font-size-md;
+      font-size: $font-size-medium;
     }
   }
 
@@ -162,11 +162,11 @@
     }
 
     .toast__title {
-      font-size: $font-size-lg;
+      font-size: $font-size-large;
     }
 
     .toast__message {
-      font-size: $font-size-lg;
+      font-size: $font-size-large;
     }
   }
 
@@ -322,8 +322,8 @@
   // Position modifiers
   @include modifier('top-left') {
     //position: fixed;
-    top: $spacing-lg;
-    left: $spacing-lg;
+    top: $spacing-large;
+    left: $spacing-large;
     transform: translateX(-100%);
     animation: toast-slide-in-left $transition-normal ease-out;
 
@@ -334,7 +334,7 @@
 
   @include modifier('top-center') {
     //position: fixed;
-    top: $spacing-lg;
+    top: $spacing-large;
     left: 50%;
     transform: translateX(-50%) translateY(-100%);
     animation: toast-slide-in-top $transition-normal ease-out;
@@ -346,8 +346,8 @@
 
   @include modifier('top-right') {
     //position: fixed;
-    top: $spacing-lg;
-    right: $spacing-lg;
+    top: $spacing-large;
+    right: $spacing-large;
     animation: toast-slide-in-right $transition-normal ease-out;
 
     &.toast--hidden {
@@ -357,8 +357,8 @@
 
   @include modifier('bottom-left') {
     //position: fixed;
-    bottom: $spacing-lg;
-    left: $spacing-lg;
+    bottom: $spacing-large;
+    left: $spacing-large;
     transform: translateX(-100%);
     animation: toast-slide-in-left $transition-normal ease-out;
 
@@ -369,7 +369,7 @@
 
   @include modifier('bottom-center') {
     //position: fixed;
-    bottom: $spacing-lg;
+    bottom: $spacing-large;
     left: 50%;
     transform: translateX(-50%) translateY(100%);
     animation: toast-slide-in-bottom $transition-normal ease-out;
@@ -381,8 +381,8 @@
 
   @include modifier('bottom-right') {
     //position: fixed;
-    bottom: $spacing-lg;
-    right: $spacing-lg;
+    bottom: $spacing-large;
+    right: $spacing-large;
     transform: translateX(100%);
     animation: toast-slide-in-right $transition-normal ease-out;
 
@@ -418,12 +418,12 @@
   }
 
   // Responsive adjustments
-  @include respond-to(sm) {
+  @include respond-to(small) {
     min-width: 320px;
     max-width: 420px;
   }
 
-  @include respond-to(md) {
+  @include respond-to(medium) {
     min-width: 350px;
     max-width: 450px;
   }
@@ -494,34 +494,34 @@
   }
 
   &.toast-container--top-left {
-    top: $spacing-lg;
-    left: $spacing-lg;
+    top: $spacing-large;
+    left: $spacing-large;
   }
 
   &.toast-container--top-center {
-    top: $spacing-lg;
+    top: $spacing-large;
     left: 50%;
     transform: translateX(-50%);
   }
 
   &.toast-container--top-right {
-    top: $spacing-lg;
-    right: $spacing-lg;
+    top: $spacing-large;
+    right: $spacing-large;
   }
 
   &.toast-container--bottom-left {
-    bottom: $spacing-lg;
-    left: $spacing-lg;
+    bottom: $spacing-large;
+    left: $spacing-large;
   }
 
   &.toast-container--bottom-center {
-    bottom: $spacing-lg;
+    bottom: $spacing-large;
     left: 50%;
     transform: translateX(-50%);
   }
 
   &.toast-container--bottom-right {
-    bottom: $spacing-lg;
-    right: $spacing-lg;
+    bottom: $spacing-large;
+    right: $spacing-large;
   }
 }

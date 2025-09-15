@@ -16,7 +16,7 @@
   height: 100vh;
   background-color: $color-white;
   border-right: 1px solid $color-gray-300;
-  box-shadow: $shadow-lg;
+  box-shadow: $shadow-large;
   transform: translateX(-100%);
   transition: transform $transition-normal;
   overflow-y: auto;
@@ -26,13 +26,13 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: $spacing-lg;
+    padding: $spacing-large;
     border-bottom: 1px solid $color-gray-300;
     background-color: $color-gray-50;
   }
   
   @include element('title') {
-    font-size: $font-size-lg;
+    font-size: $font-size-large;
     font-weight: $font-weight-semibold;
     color: $color-gray-900;
     margin: 0;
@@ -63,7 +63,7 @@
   }
   
   @include element('content') {
-    padding: $spacing-lg;
+    padding: $spacing-large;
   }
   
   @include element('nav') {
@@ -75,7 +75,7 @@
   }
   
   @include element('section') {
-    margin-bottom: $spacing-lg;
+    margin-bottom: $spacing-large;
     
     &:last-child {
       margin-bottom: 0;
@@ -83,13 +83,13 @@
   }
   
   @include element('section-title') {
-    font-size: $font-size-sm;
+    font-size: $font-size-small;
     font-weight: $font-weight-semibold;
     color: $color-gray-600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    margin-bottom: $spacing-sm;
-    padding: 0 $spacing-sm;
+    margin-bottom: $spacing-small;
+    padding: 0 $spacing-small;
   }
   
   @include element('item') {
@@ -103,7 +103,7 @@
   @include element('link') {
     display: flex;
     align-items: center;
-    padding: $spacing-sm $spacing-md;
+    padding: $spacing-small $spacing-medium;
     color: $color-gray-700;
     text-decoration: none;
     border-radius: $border-radius;
@@ -128,13 +128,13 @@
   @include element('icon') {
     width: 1.25rem;
     height: 1.25rem;
-    margin-right: $spacing-sm;
+    margin-right: $spacing-small;
     flex-shrink: 0;
   }
   
   @include element('text') {
     flex: 1;
-    font-size: $font-size-sm;
+    font-size: $font-size-small;
   }
   
   @include element('badge') {
@@ -150,11 +150,11 @@
     color: $color-white;
     background-color: $color-primary;
     border-radius: $border-radius-full;
-    margin-left: $spacing-sm;
+    margin-left: $spacing-small;
   }
   
   @include element('footer') {
-    padding: $spacing-lg;
+    padding: $spacing-large;
     border-top: 1px solid $color-gray-300;
     margin-top: auto;
   }
@@ -221,7 +221,7 @@
     width: 4rem;
     
     .sidebar__header {
-      padding: $spacing-md;
+      padding: $spacing-medium;
     }
     
     .sidebar__title {
@@ -229,12 +229,12 @@
     }
     
     .sidebar__content {
-      padding: $spacing-md;
+      padding: $spacing-medium;
     }
     
     .sidebar__link {
       justify-content: center;
-      padding: $spacing-sm;
+      padding: $spacing-small;
     }
     
     .sidebar__text,
@@ -293,7 +293,7 @@ body.sidebar-open {
 body.sidebar-left {
   margin-left: 16rem;
   
-  @include respond-to(lg) {
+  @include respond-to(large) {
     margin-left: 0;
   }
 }
@@ -301,7 +301,7 @@ body.sidebar-left {
 body.sidebar-right {
   margin-right: 16rem;
   
-  @include respond-to(lg) {
+  @include respond-to(large) {
     margin-right: 0;
   }
 }

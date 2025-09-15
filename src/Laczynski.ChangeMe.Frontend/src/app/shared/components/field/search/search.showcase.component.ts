@@ -14,7 +14,7 @@ import { FormsModule } from '@angular/forms';
       warningText="This is a warning text"
       successText="This is a success text"
       state="initial"
-      size="sm"
+      size="small"
     ></app-search>
     <app-search
       label="Search Medium"
@@ -23,7 +23,7 @@ import { FormsModule } from '@angular/forms';
       warningText="This is a warning text"
       successText="This is a success text"
       state="error"
-      size="md"
+      size="medium"
     ></app-search>
     <app-search
       label="Search Large"
@@ -32,7 +32,7 @@ import { FormsModule } from '@angular/forms';
       warningText="This is a warning text"
       successText="This is a success text"
       state="warning"
-      size="lg"
+      size="large"
     ></app-search>
     <app-search
       label="Search Extra Large"
@@ -41,7 +41,6 @@ import { FormsModule } from '@angular/forms';
       warningText="This is a warning text"
       successText="This is a success text"
       state="success"
-      size="xl"
     ></app-search>
     <app-search
       label="Search Extra Large"
@@ -50,7 +49,6 @@ import { FormsModule } from '@angular/forms';
       warningText="This is a warning text"
       successText="This is a success text"
       [disabled]="true"
-      size="xl"
     ></app-search>
   </form>`,
 })

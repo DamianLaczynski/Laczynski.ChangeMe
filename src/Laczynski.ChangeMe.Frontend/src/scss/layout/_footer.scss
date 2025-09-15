@@ -17,7 +17,7 @@
   @include element('container') {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 $spacing-lg;
+    padding: 0 $spacing-large;
   }
   
   @include element('content') {
@@ -26,11 +26,11 @@
     gap: $spacing-xl;
     margin-bottom: $spacing-xl;
     
-    @include respond-to(md) {
+    @include respond-to(medium) {
       grid-template-columns: repeat(2, 1fr);
     }
     
-    @include respond-to(lg) {
+    @include respond-to(large) {
       grid-template-columns: repeat(4, 1fr);
     }
   }
@@ -41,16 +41,16 @@
   }
   
   @include element('title') {
-    font-size: $font-size-lg;
+    font-size: $font-size-large;
     font-weight: $font-weight-semibold;
     color: $color-white;
-    margin-bottom: $spacing-md;
+    margin-bottom: $spacing-medium;
   }
   
   @include element('text') {
-    font-size: $font-size-sm;
+    font-size: $font-size-small;
     line-height: $line-height-relaxed;
-    margin-bottom: $spacing-md;
+    margin-bottom: $spacing-medium;
     
     &:last-child {
       margin-bottom: 0;
@@ -64,7 +64,7 @@
   }
   
   @include element('item') {
-    margin-bottom: $spacing-sm;
+    margin-bottom: $spacing-small;
     
     &:last-child {
       margin-bottom: 0;
@@ -74,7 +74,7 @@
   @include element('link') {
     color: $color-gray-300;
     text-decoration: none;
-    font-size: $font-size-sm;
+    font-size: $font-size-small;
     transition: color $transition-fast;
     
     &:hover {
@@ -88,8 +88,8 @@
   
   @include element('social') {
     display: flex;
-    gap: $spacing-sm;
-    margin-top: $spacing-md;
+    gap: $spacing-small;
+    margin-top: $spacing-medium;
   }
   
   @include element('social-link') {
@@ -122,28 +122,28 @@
     justify-content: space-between;
     padding-top: $spacing-xl;
     border-top: 1px solid $color-gray-700;
-    gap: $spacing-md;
+    gap: $spacing-medium;
     
-    @include respond-to(md) {
+    @include respond-to(medium) {
       flex-direction: row;
       gap: 0;
     }
   }
   
   @include element('copyright') {
-    font-size: $font-size-sm;
+    font-size: $font-size-small;
     color: $color-gray-500;
     text-align: center;
     
-    @include respond-to(md) {
+    @include respond-to(medium) {
       text-align: left;
     }
   }
   
   @include element('legal') {
     display: flex;
-    gap: $spacing-lg;
-    font-size: $font-size-sm;
+    gap: $spacing-large;
+    font-size: $font-size-small;
   }
   
   @include element('legal-link') {
@@ -205,14 +205,14 @@
   }
   
   @include modifier('minimal') {
-    padding: $spacing-lg 0;
+    padding: $spacing-large 0;
     
     .footer__content {
-      margin-bottom: $spacing-lg;
+      margin-bottom: $spacing-large;
     }
     
     .footer__bottom {
-      padding-top: $spacing-lg;
+      padding-top: $spacing-large;
     }
   }
   
@@ -247,7 +247,7 @@
   @include element('container') {
     max-width: 600px;
     margin: 0 auto;
-    padding: 0 $spacing-lg;
+    padding: 0 $spacing-large;
     text-align: center;
   }
   
@@ -255,35 +255,35 @@
     font-size: $font-size-xl;
     font-weight: $font-weight-bold;
     color: $color-white;
-    margin-bottom: $spacing-sm;
+    margin-bottom: $spacing-small;
   }
   
   @include element('text') {
-    font-size: $font-size-md;
+    font-size: $font-size-medium;
     color: rgba($color-white, 0.9);
-    margin-bottom: $spacing-lg;
+    margin-bottom: $spacing-large;
   }
   
   @include element('form') {
     display: flex;
     flex-direction: column;
-    gap: $spacing-sm;
+    gap: $spacing-small;
     max-width: 400px;
     margin: 0 auto;
     
-    @include respond-to(sm) {
+    @include respond-to(small) {
       flex-direction: row;
     }
   }
   
   @include element('input') {
     flex: 1;
-    padding: $spacing-sm $spacing-md;
+    padding: $spacing-small $spacing-medium;
     border: 1px solid rgba($color-white, 0.3);
     border-radius: $border-radius;
     background-color: rgba($color-white, 0.1);
     color: $color-white;
-    font-size: $font-size-md;
+    font-size: $font-size-medium;
     
     &::placeholder {
       color: rgba($color-white, 0.7);
@@ -297,7 +297,7 @@
   }
   
   @include element('button') {
-    padding: $spacing-sm $spacing-lg;
+    padding: $spacing-small $spacing-large;
     background-color: $color-white;
     color: $color-primary;
     border: none;

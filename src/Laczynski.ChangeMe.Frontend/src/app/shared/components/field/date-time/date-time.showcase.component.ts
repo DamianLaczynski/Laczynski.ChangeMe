@@ -15,7 +15,7 @@ import { FormsModule } from '@angular/forms';
         errorText="This is an error text"
         warningText="This is a warning text"
         successText="This is a success text"
-        size="sm"
+        size="small"
       ></app-date-time>
       <app-date-time
         type="datetime-local"
@@ -25,7 +25,7 @@ import { FormsModule } from '@angular/forms';
         errorText="This is an error text"
         warningText="This is a warning text"
         successText="This is a success text"
-        size="sm"
+        size="small"
       ></app-date-time>
       <app-date-time
         type="date"
@@ -35,7 +35,7 @@ import { FormsModule } from '@angular/forms';
         errorText="This is an error text"
         warningText="This is a warning text"
         successText="This is a success text"
-        size="sm"
+        size="small"
       ></app-date-time>
       <app-date-time
         type="month"
@@ -45,7 +45,7 @@ import { FormsModule } from '@angular/forms';
         errorText="This is an error text"
         warningText="This is a warning text"
         successText="This is a success text"
-        size="sm"
+        size="small"
       ></app-date-time>
       <app-date-time
         type="week"
@@ -55,7 +55,7 @@ import { FormsModule } from '@angular/forms';
         errorText="This is an error text"
         warningText="This is a warning text"
         successText="This is a success text"
-        size="sm"
+        size="small"
       ></app-date-time>
       <app-date-time
         type="time"
@@ -65,7 +65,7 @@ import { FormsModule } from '@angular/forms';
         errorText="This is an error text"
         warningText="This is a warning text"
         successText="This is a success text"
-        size="sm"
+        size="small"
       ></app-date-time>
     </form>
   `,

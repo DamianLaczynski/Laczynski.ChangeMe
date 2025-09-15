@@ -17,17 +17,17 @@
 @include block('tabs') {
   display: flex;
   background-color: $color-white;
-  box-shadow: $shadow-lg;
-  border-radius: $border-radius-md $border-radius-md 0 0;
+  box-shadow: $shadow-large;
+  border-radius: $border-radius-medium $border-radius-medium 0 0;
   border: 1px solid $color-gray-200;
   border-bottom: none;
-  padding: $spacing-sm;
+  padding: $spacing-small;
   gap: $spacing-xs;
 
   // Elements
   @include element('tab') {
     // Override button styles for tab-specific behavior
-    border-radius: $border-radius-sm !important;
+    border-radius: $border-radius-small !important;
     font-weight: $font-weight-medium !important;
     
     &[aria-selected="true"] {
@@ -36,37 +36,37 @@
   }
 
   // Size modifiers
-  @include modifier('sm') {
+  @include modifier('small') {
     padding: $spacing-xs;
     gap: $spacing-xs;
   }
 
-  @include modifier('md') {
-    padding: $spacing-sm;
+  @include modifier('medium') {
+    padding: $spacing-small;
     gap: $spacing-xs;
   }
 
-  @include modifier('lg') {
-    padding: $spacing-md;
-    gap: $spacing-sm;
+  @include modifier('large') {
+    padding: $spacing-medium;
+    gap: $spacing-small;
   }
 
   // Variant modifiers - minimal overrides since button handles most styling
   @include modifier('ghost') {
     background-color: $color-white;
     border: none;
-    box-shadow: $shadow-lg;
+    box-shadow: $shadow-large;
   }
 
   @include modifier('outline') {
     background-color: $color-white;
     border: 2px solid $color-gray-300;
-    box-shadow: $shadow-md;
+    box-shadow: $shadow-medium;
   }
 
   @include modifier('solid') {
     background-color: $color-white;
     border: 1px solid $color-gray-200;
-    box-shadow: $shadow-lg;
+    box-shadow: $shadow-large;
   }
 }

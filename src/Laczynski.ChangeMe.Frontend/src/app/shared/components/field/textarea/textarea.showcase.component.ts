@@ -14,7 +14,7 @@ import { TextareaComponent } from './textarea.component';
         successText="This is a success text"
         placeholder="This is a placeholder text"
         state="initial"
-        size="sm"
+        size="small"
       ></app-textarea>
       <app-textarea
         label="Textarea Medium"
@@ -24,7 +24,7 @@ import { TextareaComponent } from './textarea.component';
         successText="This is a success text"
         placeholder="This is a placeholder text"
         state="error"
-        size="md"
+        size="medium"
       ></app-textarea>
       <app-textarea
         label="Textarea Large"
@@ -34,7 +34,7 @@ import { TextareaComponent } from './textarea.component';
         successText="This is a success text"
         placeholder="This is a placeholder text"
         state="warning"
-        size="lg"
+        size="large"
       ></app-textarea>
       <app-textarea
         label="Textarea Extra Large"
@@ -44,7 +44,6 @@ import { TextareaComponent } from './textarea.component';
         successText="This is a success text"
         placeholder="This is a placeholder text"
         state="success"
-        size="xl"
       ></app-textarea>
       <app-textarea
         label="Textarea Extra Large"
@@ -54,7 +53,6 @@ import { TextareaComponent } from './textarea.component';
         successText="This is a success text"
         placeholder="This is a placeholder text"
         [disabled]="true"
-        size="xl"
       ></app-textarea>
     </form>
   `,

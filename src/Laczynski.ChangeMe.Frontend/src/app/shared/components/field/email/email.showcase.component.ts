@@ -16,7 +16,7 @@ import { EmailComponent } from './email.component';
         warningText="This is a warning text"
         successText="This is a success text"
         state="initial"
-        size="sm"
+        size="small"
       ></app-email>
       <app-email
         placeholder="Enter email"
@@ -26,7 +26,7 @@ import { EmailComponent } from './email.component';
         warningText="This is a warning text"
         successText="This is a success text"
         state="error"
-        size="md"
+        size="medium"
       ></app-email>
       <app-email
         placeholder="Enter email"
@@ -36,7 +36,7 @@ import { EmailComponent } from './email.component';
         warningText="This is a warning text"
         successText="This is a success text"
         state="warning"
-        size="lg"
+        size="large"
       ></app-email>
       <app-email
         placeholder="Enter email"
@@ -46,7 +46,6 @@ import { EmailComponent } from './email.component';
         warningText="This is a warning text"
         successText="This is a success text"
         state="success"
-        size="xl"
       ></app-email>
       <app-email
         placeholder="Enter email"
@@ -56,7 +55,6 @@ import { EmailComponent } from './email.component';
         warningText="This is a warning text"
         successText="This is a success text"
         [disabled]="true"
-        size="xl"
       ></app-email>
     </form>
   `,

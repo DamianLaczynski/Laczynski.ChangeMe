@@ -9,7 +9,7 @@
   pointer-events: none;
   display: flex;
   flex-direction: column;
-  gap: $spacing-sm;
+  gap: $spacing-small;
 
   .toast {
     pointer-events: auto;
@@ -17,34 +17,34 @@
 
   // Position modifiers
   @include modifier('top-left') {
-    top: $spacing-lg;
-    left: $spacing-lg;
+    top: $spacing-large;
+    left: $spacing-large;
   }
 
   @include modifier('top-center') {
-    top: $spacing-lg;
+    top: $spacing-large;
     left: 50%;
     transform: translateX(-50%);
   }
 
   @include modifier('top-right') {
-    top: $spacing-lg;
-    right: $spacing-lg;
+    top: $spacing-large;
+    right: $spacing-large;
   }
 
   @include modifier('bottom-left') {
-    bottom: $spacing-lg;
-    left: $spacing-lg;
+    bottom: $spacing-large;
+    left: $spacing-large;
   }
 
   @include modifier('bottom-center') {
-    bottom: $spacing-lg;
+    bottom: $spacing-large;
     left: 50%;
     transform: translateX(-50%);
   }
 
   @include modifier('bottom-right') {
-    bottom: $spacing-lg;
-    right: $spacing-lg;
+    bottom: $spacing-large;
+    right: $spacing-large;
   }
 }

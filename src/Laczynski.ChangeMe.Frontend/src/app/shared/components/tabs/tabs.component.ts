@@ -30,7 +30,7 @@ export class TabsComponent implements OnInit {
   tabs = input<TabItem[]>([]);
   activeTabId = model<string>('');
   intent = input<Intent>('primary');
-  size = input<Size>('md');
+  size = input<Size>('medium');
   variant = input<Variant>('ghost');
 
   tabChange = output<string>();

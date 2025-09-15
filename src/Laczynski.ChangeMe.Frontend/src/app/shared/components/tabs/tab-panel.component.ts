@@ -21,7 +21,7 @@ import { CommonModule } from '@angular/common';
 export class TabPanelComponent {
   tabId = input.required<string>();
   activeTabId = input.required<string>();
-  size = input<'sm' | 'md' | 'lg'>('md');
+  size = input<'small' | 'medium' | 'large'>('medium');
 
   panelClasses(): string {
     const classes = ['tab-panel'];

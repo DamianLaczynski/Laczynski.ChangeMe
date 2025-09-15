@@ -8,9 +8,9 @@
   // Base styles - minimalist and clean like toast ghost variant
   display: flex;
   flex-direction: column;
-  border-radius: $border-radius-sm;
+  border-radius: $border-radius-small;
   background-color: $color-white;
-  box-shadow: $shadow-lg;
+  box-shadow: $shadow-large;
   font-family: $font-family-base;
   overflow: hidden;
 
@@ -19,17 +19,17 @@
     @include flex-center;
     padding: $spacing-4xl;
     color: $color-gray-600;
-    font-size: $font-size-md;
+    font-size: $font-size-medium;
     font-weight: $font-weight-medium;
   }
 
   @include element('error') {
     @include flex-column;
     align-items: center;
-    gap: $spacing-sm;
+    gap: $spacing-small;
     padding: $spacing-4xl;
     color: $color-danger;
-    font-size: $font-size-md;
+    font-size: $font-size-medium;
     font-weight: $font-weight-medium;
   }
 
@@ -49,7 +49,7 @@
   // Header styles
   @include element('header') {
     background-color: $color-gray-50;
-    box-shadow: $shadow-md;
+    box-shadow: $shadow-medium;
   }
 
   @include element('header-row') {
@@ -58,9 +58,9 @@
 
   @include element('header-cell') {
     border-right: 1px solid $color-gray-200;
-    padding: $spacing-md $spacing-lg;
+    padding: $spacing-medium $spacing-large;
     text-align: left;
-    font-size: $font-size-sm;
+    font-size: $font-size-small;
     font-weight: $font-weight-semibold;
     color: $color-gray-700;
     white-space: nowrap;
@@ -84,7 +84,7 @@
 
     // Hide on mobile modifier
     @include modifier('hide-mobile') {
-      @include respond-to(sm) {
+      @include respond-to(small) {
         display: none;
       }
     }
@@ -93,7 +93,7 @@
   @include element('header-content') {
     @include flex-between;
     align-items: center;
-    gap: $spacing-sm;
+    gap: $spacing-small;
   }
 
   @include element('header-text') {
@@ -167,8 +167,8 @@
   }
 
   @include element('cell') {
-    padding: $spacing-md $spacing-lg;
-    font-size: $font-size-sm;
+    padding: $spacing-medium $spacing-large;
+    font-size: $font-size-small;
     color: $color-gray-900;
     vertical-align: middle;
     border-right: 1px solid $color-gray-100;
@@ -179,7 +179,7 @@
 
     // Hide on mobile modifier
     @include modifier('hide-mobile') {
-      @include respond-to(sm) {
+      @include respond-to(small) {
         display: none;
       }
     }
@@ -217,20 +217,20 @@
     backdrop-filter: blur(2px);
     @include flex-center;
     z-index: 10;
-    border-radius: $border-radius-sm;
+    border-radius: $border-radius-small;
   }
 
   // Loading content styles
   @include element('loading-content') {
     @include flex-center;
     flex-direction: column;
-    gap: $spacing-lg;
+    gap: $spacing-large;
     color: $color-gray-600;
     text-align: center;
   }
 
   @include element('loading-text') {
-    font-size: $font-size-lg;
+    font-size: $font-size-large;
     font-weight: $font-weight-medium;
     color: $color-gray-600;
   }
@@ -239,14 +239,14 @@
   @include element('error-content') {
     @include flex-center;
     flex-direction: column;
-    gap: $spacing-lg;
+    gap: $spacing-large;
     color: $color-danger;
   }
 
   @include element('error-message') {
     @include flex-center;
     flex-direction: column;
-    gap: $spacing-sm;
+    gap: $spacing-small;
   }
 
   @include element('error-icon') {
@@ -257,7 +257,7 @@
   }
 
   @include element('error-text') {
-    font-size: $font-size-md;
+    font-size: $font-size-medium;
     font-weight: $font-weight-medium;
     color: $color-danger;
     text-align: center;
@@ -268,49 +268,49 @@
   @include element('pagination') {
     @include flex-between;
     align-items: center;
-    padding: $spacing-lg;
+    padding: $spacing-large;
     background-color: $color-gray-50;
     border-top: 1px solid $color-gray-200;
-    gap: $spacing-lg;
+    gap: $spacing-large;
 
-    @include respond-to(sm) {
+    @include respond-to(small) {
       flex-direction: column;
       align-items: stretch;
-      gap: $spacing-md;
+      gap: $spacing-medium;
     }
   }
 
   @include element('pagination-info') {
     flex-shrink: 0;
 
-    @include respond-to(sm) {
+    @include respond-to(small) {
       text-align: center;
     }
   }
 
   @include element('pagination-text') {
-    font-size: $font-size-sm;
+    font-size: $font-size-small;
     color: $color-gray-600;
   }
 
   @include element('pagination-controls') {
     @include flex-between;
     align-items: center;
-    gap: $spacing-lg;
+    gap: $spacing-large;
 
-    @include respond-to(sm) {
+    @include respond-to(small) {
       flex-direction: column;
-      gap: $spacing-md;
+      gap: $spacing-medium;
     }
   }
 
   @include element('page-size') {
     @include flex-center;
-    gap: $spacing-sm;
+    gap: $spacing-small;
   }
 
   @include element('page-size-label') {
-    font-size: $font-size-sm;
+    font-size: $font-size-small;
     color: $color-gray-600;
     white-space: nowrap;
   }
@@ -329,14 +329,14 @@
   }
 
   // Responsive adjustments
-  @include respond-to(sm) {
+  @include respond-to(small) {
     .paginated-table__header-cell,
     .paginated-table__cell {
-      padding: $spacing-sm $spacing-md;
+      padding: $spacing-small $spacing-medium;
     }
 
     .paginated-table__pagination {
-      padding: $spacing-md;
+      padding: $spacing-medium;
     }
   }
 

@@ -1,5 +1,5 @@
 import { Component, input, output, model } from '@angular/core';
-import { ButtonStyle, FluentSize } from '../utils';
+import { ButtonStyle, Size } from '../utils';
 
 export type ButtonType = 'button' | 'submit' | 'reset';
 
@@ -10,7 +10,7 @@ export type ButtonType = 'button' | 'submit' | 'reset';
 })
 export class ButtonComponent {
   variant = input<ButtonStyle>('secondary');
-  size = input<FluentSize>('medium');
+  size = input<Size>('medium');
   iconOnly = input<boolean>(false);
   selected = input<boolean>(false);
 

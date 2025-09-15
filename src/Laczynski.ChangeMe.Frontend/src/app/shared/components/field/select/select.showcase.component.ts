@@ -14,7 +14,7 @@ import { SelectComponent } from './select.component';
         successText="This is a success text"
         state="initial"
         [options]="options"
-        size="sm"
+        size="small"
       ></app-select>
       <app-select
         label="Select Medium"
@@ -24,7 +24,7 @@ import { SelectComponent } from './select.component';
         successText="This is a success text"
         state="error"
         [options]="options"
-        size="md"
+        size="medium"
       ></app-select>
       <app-select
         label="Select Large"
@@ -34,7 +34,7 @@ import { SelectComponent } from './select.component';
         successText="This is a success text"
         state="warning"
         [options]="options"
-        size="lg"
+        size="large"
       ></app-select>
       <app-select
         label="Select Extra Large"
@@ -44,7 +44,6 @@ import { SelectComponent } from './select.component';
         successText="This is a success text"
         state="success"
         [options]="options"
-        size="xl"
       ></app-select>
       <app-select
         label="Select Extra Large"
@@ -54,7 +53,6 @@ import { SelectComponent } from './select.component';
         successText="This is a success text"
         [disabled]="true"
         [options]="options"
-        size="xl"
       ></app-select>
     </form>
   `,

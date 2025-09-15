@@ -145,7 +145,7 @@
     @if (state().isLoading) {
       <div class="paginated-table__loading-overlay">
         <div class="paginated-table__loading-content">
-          <app-loading-indicator intent="primary" size="lg"></app-loading-indicator>
+          <app-loading-indicator intent="primary" size="large"></app-loading-indicator>
         </div>
       </div>
     }
@@ -167,7 +167,7 @@
         <!-- Page size selector -->
         <app-select
           id="pageSize"
-          size="sm"
+          size="small"
           placeholder="All"
           [(ngModel)]="config().params.pageSize"
           [options]="getPageSizeOptions()"

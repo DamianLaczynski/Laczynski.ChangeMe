@@ -5,6 +5,10 @@ import { ToastContainerComponent } from '@shared/components/toast/toast-containe
 import { TabPanelComponent } from '@shared/components/tabs/tab-panel.component';
 import { TabItem, TabsComponent } from '@shared/components/tabs/tabs.component';
 import { ItemsListComponent, ItemsInfiniteListComponent } from '@features/items';
+import { TextShowcaseComponent } from '@shared/components/field/text/text.showcase.component';
+import { TelShowcaseComponent } from '@shared/components/field/tel/tel.showcase.component';
+import { NumberShowcaseComponent } from '@shared/components/field/number/number.showcase.component';
+import { ButtonShowcaseComponent } from '@shared/components/button/button.showcase.component';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +21,10 @@ import { ItemsListComponent, ItemsInfiniteListComponent } from '@features/items'
     TabsComponent,
     ItemsListComponent,
     ItemsInfiniteListComponent,
+    TextShowcaseComponent,
+    TelShowcaseComponent,
+    NumberShowcaseComponent,
+    ButtonShowcaseComponent,
   ],
   templateUrl: './app.component.html',
 })

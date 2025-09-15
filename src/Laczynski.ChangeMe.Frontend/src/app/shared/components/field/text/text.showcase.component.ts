@@ -14,7 +14,7 @@ import { TextComponent } from './text.component';
         successText="This is a success text"
         placeholder="This is a placeholder text"
         state="initial"
-        size="sm"
+        size="small"
       ></app-text>
       <app-text
         label="Text Medium"
@@ -24,7 +24,7 @@ import { TextComponent } from './text.component';
         successText="This is a success text"
         placeholder="This is a placeholder text"
         state="error"
-        size="md"
+        size="medium"
       ></app-text>
       <app-text
         label="Text Large"
@@ -34,7 +34,7 @@ import { TextComponent } from './text.component';
         successText="This is a success text"
         placeholder="This is a placeholder text"
         state="warning"
-        size="lg"
+        size="large"
       ></app-text>
       <app-text
         label="Text Extra Large"
@@ -44,7 +44,6 @@ import { TextComponent } from './text.component';
         successText="This is a success text"
         placeholder="This is a placeholder text"
         state="success"
-        size="xl"
       ></app-text>
       <app-text
         label="Text Extra Large"
@@ -54,7 +53,6 @@ import { TextComponent } from './text.component';
         successText="This is a success text"
         placeholder="This is a placeholder text"
         [disabled]="true"
-        size="xl"
       ></app-text>
     </form>
   `,

@@ -8,14 +8,14 @@
   @if $breakpoint == xs {
     @media (max-width: $breakpoint-xs) { @content; }
   }
-  @if $breakpoint == sm {
-    @media (max-width: $breakpoint-sm) { @content; }
+  @if $breakpoint == small {
+    @media (max-width: $breakpoint-small) { @content; }
   }
-  @if $breakpoint == md {
-    @media (max-width: $breakpoint-md) { @content; }
+  @if $breakpoint == medium {
+    @media (max-width: $breakpoint-medium) { @content; }
   }
-  @if $breakpoint == lg {
-    @media (max-width: $breakpoint-lg) { @content; }
+  @if $breakpoint == large {
+    @media (max-width: $breakpoint-large) { @content; }
   }
   @if $breakpoint == xl {
     @media (max-width: $breakpoint-xl) { @content; }

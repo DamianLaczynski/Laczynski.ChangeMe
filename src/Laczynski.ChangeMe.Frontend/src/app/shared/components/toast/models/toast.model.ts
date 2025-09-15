@@ -1,4 +1,4 @@
-import { Intent } from '../../utils';
+import { Size, Intent } from '../../utils';
 
 export type ToastPosition =
   | 'top-left'
@@ -15,7 +15,7 @@ export interface ToastMessage {
   sticky?: boolean;
   id?: string;
   intent?: Intent;
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  size?: Size;
   variant?: 'solid' | 'outline' | 'ghost';
   showIcon?: boolean;
   dismissible?: boolean;

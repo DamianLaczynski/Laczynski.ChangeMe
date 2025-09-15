@@ -13,7 +13,7 @@
             label="Nazwa"
             formControlName="name"
             placeholder="Nazwa..."
-            size="sm"
+            size="small"
           />
         </div>
         <div class="col-6">
@@ -23,7 +23,7 @@
             formControlName="price"
             placeholder="Cena..."
             step="0.01"
-            size="sm"
+            size="small"
           />
         </div>
       </div>
@@ -34,7 +34,7 @@
             label="Opis"
             formControlName="description"
             placeholder="Opis..."
-            size="sm"
+            size="small"
           />
         </div>
         <div class="col-12">
@@ -44,13 +44,13 @@
             formControlName="image"
             placeholder="Adres URL obrazu..."
             (input)="onImageUrlChange()"
-            size="sm"
+            size="small"
           />
         </div>
       </div>
 
       <!-- Form actions -->
-      <div class="row row--justify-content-end gap-sm">
+      <div class="row row--justify-content-end gap-small">
         <app-button (click)="onCancel()" [disabled]="isSubmitting()"> Anuluj </app-button>
 
         <app-button [disabled]="itemForm.invalid || isSubmitting()" (click)="onSubmit()">

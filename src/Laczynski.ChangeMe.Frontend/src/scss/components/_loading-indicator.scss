@@ -8,7 +8,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: $spacing-sm;
+  gap: $spacing-small;
 
   // Elements
   @include element('spinner') {
@@ -32,7 +32,7 @@
   }
 
   @include element('text') {
-    font-size: $font-size-sm;
+    font-size: $font-size-small;
     font-weight: $font-weight-medium;
     text-align: center;
     color: currentColor;
@@ -40,7 +40,7 @@
   }
 
   // Size modifiers
-  @include modifier('sm') {
+  @include modifier('small') {
     gap: $spacing-xs;
 
     .loading-indicator__spinner {
@@ -53,8 +53,8 @@
     }
   }
 
-  @include modifier('md') {
-    gap: $spacing-sm;
+  @include modifier('medium') {
+    gap: $spacing-small;
 
     .loading-indicator__spinner {
       width: 1.5rem;
@@ -62,12 +62,12 @@
     }
 
     .loading-indicator__text {
-      font-size: $font-size-sm;
+      font-size: $font-size-small;
     }
   }
 
-  @include modifier('lg') {
-    gap: $spacing-md;
+  @include modifier('large') {
+    gap: $spacing-medium;
 
     .loading-indicator__spinner {
       width: 2rem;
@@ -75,12 +75,12 @@
     }
 
     .loading-indicator__text {
-      font-size: $font-size-md;
+      font-size: $font-size-medium;
     }
   }
 
   @include modifier('xl') {
-    gap: $spacing-lg;
+    gap: $spacing-large;
 
     .loading-indicator__spinner {
       width: 2.5rem;
@@ -88,7 +88,7 @@
     }
 
     .loading-indicator__text {
-      font-size: $font-size-lg;
+      font-size: $font-size-large;
     }
   }
 
@@ -163,10 +163,10 @@
     background-color: rgba($color-white, 0.8);
     backdrop-filter: blur(2px);
     flex-direction: column;
-    gap: $spacing-lg;
+    gap: $spacing-large;
 
     .loading-indicator__text {
-      font-size: $font-size-lg;
+      font-size: $font-size-large;
       font-weight: $font-weight-semibold;
     }
   }

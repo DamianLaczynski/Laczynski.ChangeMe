@@ -18,7 +18,7 @@ import { FormsModule } from '@angular/forms';
         state="initial"
         [multiple]="true"
         [maxFiles]="10"
-        size="sm"
+        size="small"
       ></app-file>
       <app-file
         label="File Medium"
@@ -28,7 +28,7 @@ import { FormsModule } from '@angular/forms';
         successText="This is a success text"
         placeholder="This is a placeholder text"
         state="error"
-        size="md"
+        size="medium"
       ></app-file>
       <app-file
         label="File Large"
@@ -38,7 +38,7 @@ import { FormsModule } from '@angular/forms';
         successText="This is a success text"
         placeholder="This is a placeholder text"
         state="warning"
-        size="lg"
+        size="large"
       ></app-file>
       <app-file
         label="File Extra Large"
@@ -48,7 +48,6 @@ import { FormsModule } from '@angular/forms';
         successText="This is a success text"
         placeholder="This is a placeholder text"
         state="success"
-        size="xl"
       ></app-file>
       <app-file
         label="File Extra Large"
@@ -58,7 +57,6 @@ import { FormsModule } from '@angular/forms';
         successText="This is a success text"
         placeholder="This is a placeholder text"
         [disabled]="true"
-        size="xl"
       ></app-file>
     </form>
   `,

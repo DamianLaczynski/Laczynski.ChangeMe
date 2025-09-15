@@ -16,7 +16,7 @@ import { FormsModule } from '@angular/forms';
         successText="This is a success text"
         placeholder="This is a placeholder text"
         state="initial"
-        size="sm"
+        size="small"
       ></app-url>
       <app-url
         label="Url Medium"
@@ -26,7 +26,7 @@ import { FormsModule } from '@angular/forms';
         successText="This is a success text"
         placeholder="This is a placeholder text"
         state="error"
-        size="md"
+        size="medium"
       ></app-url>
       <app-url
         label="Url Large"
@@ -36,7 +36,7 @@ import { FormsModule } from '@angular/forms';
         successText="This is a success text"
         placeholder="This is a placeholder text"
         state="warning"
-        size="lg"
+        size="large"
       ></app-url>
       <app-url
         label="Url Extra Large"
@@ -46,7 +46,6 @@ import { FormsModule } from '@angular/forms';
         successText="This is a success text"
         placeholder="This is a placeholder text"
         state="success"
-        size="xl"
       ></app-url>
       <app-url
         label="Url Extra Large"
@@ -56,7 +55,6 @@ import { FormsModule } from '@angular/forms';
         successText="This is a success text"
         placeholder="This is a placeholder text"
         [disabled]="true"
-        size="xl"
       ></app-url>
     </form>
   `,

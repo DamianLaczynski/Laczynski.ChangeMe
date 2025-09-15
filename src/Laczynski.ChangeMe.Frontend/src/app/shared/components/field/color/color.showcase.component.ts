@@ -15,7 +15,7 @@ import { FormsModule } from '@angular/forms';
         warningText="This is a warning text"
         successText="This is a success text"
         state="initial"
-        size="sm"
+        size="small"
       ></app-color>
       <app-color
         label="Color Medium"
@@ -24,7 +24,7 @@ import { FormsModule } from '@angular/forms';
         warningText="This is a warning text"
         successText="This is a success text"
         state="error"
-        size="md"
+        size="medium"
       ></app-color>
       <app-color
         label="Color Large"
@@ -33,7 +33,7 @@ import { FormsModule } from '@angular/forms';
         warningText="This is a warning text"
         successText="This is a success text"
         state="warning"
-        size="lg"
+        size="large"
       ></app-color>
       <app-color
         label="Color Extra Large"
@@ -42,7 +42,6 @@ import { FormsModule } from '@angular/forms';
         warningText="This is a warning text"
         successText="This is a success text"
         state="success"
-        size="xl"
       ></app-color>
       <app-color
         label="Color Extra Large"
@@ -51,7 +50,6 @@ import { FormsModule } from '@angular/forms';
         warningText="This is a warning text"
         successText="This is a success text"
         [disabled]="true"
-        size="xl"
       ></app-color>
     </form>
   `,

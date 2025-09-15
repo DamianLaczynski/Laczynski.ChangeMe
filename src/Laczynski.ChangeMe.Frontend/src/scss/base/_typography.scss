@@ -10,15 +10,15 @@ h1, h2, h3, h4, h5, h6 {
   font-family: $font-family-base;
   font-weight: $font-weight-bold;
   line-height: $line-height-tight;
-  margin-bottom: $spacing-md;
+  margin-bottom: $spacing-medium;
   color: $color-gray-900;
 }
 
 h1 {
   font-size: $font-size-4xl;
-  margin-bottom: $spacing-lg;
+  margin-bottom: $spacing-large;
   
-  @include respond-to(md) {
+  @include respond-to(medium) {
     font-size: $font-size-5xl;
   }
 }
@@ -26,7 +26,7 @@ h1 {
 h2 {
   font-size: $font-size-3xl;
   
-  @include respond-to(md) {
+  @include respond-to(medium) {
     font-size: $font-size-4xl;
   }
 }
@@ -34,7 +34,7 @@ h2 {
 h3 {
   font-size: $font-size-2xl;
   
-  @include respond-to(md) {
+  @include respond-to(medium) {
     font-size: $font-size-3xl;
   }
 }
@@ -42,30 +42,30 @@ h3 {
 h4 {
   font-size: $font-size-xl;
   
-  @include respond-to(md) {
+  @include respond-to(medium) {
     font-size: $font-size-2xl;
   }
 }
 
 h5 {
-  font-size: $font-size-lg;
+  font-size: $font-size-large;
   
-  @include respond-to(md) {
+  @include respond-to(medium) {
     font-size: $font-size-xl;
   }
 }
 
 h6 {
-  font-size: $font-size-md;
+  font-size: $font-size-medium;
   
-  @include respond-to(md) {
-    font-size: $font-size-lg;
+  @include respond-to(medium) {
+    font-size: $font-size-large;
   }
 }
 
 // Paragraphs
 p {
-  margin-bottom: $spacing-md;
+  margin-bottom: $spacing-medium;
   line-height: $line-height-normal;
   
   &:last-child {
@@ -91,8 +91,8 @@ a {
 
 // Lists
 ul, ol {
-  margin-bottom: $spacing-md;
-  padding-left: $spacing-lg;
+  margin-bottom: $spacing-medium;
+  padding-left: $spacing-large;
   
   &:last-child {
     margin-bottom: 0;
@@ -117,7 +117,7 @@ li {
 
 // Definition lists
 dl {
-  margin-bottom: $spacing-md;
+  margin-bottom: $spacing-medium;
   
   &:last-child {
     margin-bottom: 0;
@@ -130,8 +130,8 @@ dt {
 }
 
 dd {
-  margin-bottom: $spacing-sm;
-  margin-left: $spacing-md;
+  margin-bottom: $spacing-small;
+  margin-left: $spacing-medium;
   
   &:last-child {
     margin-bottom: 0;
@@ -140,14 +140,14 @@ dd {
 
 // Blockquotes
 blockquote {
-  margin: $spacing-lg 0;
-  padding: $spacing-md $spacing-lg;
+  margin: $spacing-large 0;
+  padding: $spacing-medium $spacing-large;
   border-left: 4px solid $color-primary;
   background-color: $color-gray-100;
   font-style: italic;
   
   p {
-    margin-bottom: $spacing-sm;
+    margin-bottom: $spacing-small;
     
     &:last-child {
       margin-bottom: 0;
@@ -156,8 +156,8 @@ blockquote {
   
   cite {
     display: block;
-    margin-top: $spacing-sm;
-    font-size: $font-size-sm;
+    margin-top: $spacing-small;
+    font-size: $font-size-small;
     color: $color-gray-600;
     font-style: normal;
     
@@ -173,19 +173,19 @@ code {
   font-size: 0.875em;
   background-color: $color-gray-100;
   padding: 0.125em 0.25em;
-  border-radius: $border-radius-sm;
+  border-radius: $border-radius-small;
   color: $color-danger;
 }
 
 pre {
   font-family: $font-family-mono;
-  font-size: $font-size-sm;
+  font-size: $font-size-small;
   line-height: $line-height-normal;
   background-color: $color-gray-100;
-  padding: $spacing-md;
+  padding: $spacing-medium;
   border-radius: $border-radius;
   overflow-x: auto;
-  margin-bottom: $spacing-md;
+  margin-bottom: $spacing-medium;
   
   &:last-child {
     margin-bottom: 0;
@@ -200,7 +200,7 @@ pre {
 
 // Small text
 small {
-  font-size: $font-size-sm;
+  font-size: $font-size-small;
   color: $color-gray-600;
 }
 
@@ -209,7 +209,7 @@ mark {
   background-color: $color-warning;
   color: $color-gray-900;
   padding: 0.125em 0.25em;
-  border-radius: $border-radius-sm;
+  border-radius: $border-radius-small;
 }
 
 // Abbreviations
@@ -222,7 +222,7 @@ abbr[title] {
 address {
   font-style: normal;
   line-height: $line-height-normal;
-  margin-bottom: $spacing-md;
+  margin-bottom: $spacing-medium;
   
   &:last-child {
     margin-bottom: 0;

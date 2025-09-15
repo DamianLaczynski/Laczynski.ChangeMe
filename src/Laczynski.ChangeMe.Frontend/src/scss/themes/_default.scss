@@ -19,7 +19,7 @@
   --theme-border-primary: #{$color-gray-300};
   --theme-border-secondary: #{$color-gray-200};
   --theme-shadow: #{$shadow};
-  --theme-shadow-lg: #{$shadow-lg};
+  --theme-shadow-large: #{$shadow-large};
 }
 
 // Dark theme
@@ -33,7 +33,7 @@
   --theme-border-primary: #{$color-gray-700};
   --theme-border-secondary: #{$color-gray-600};
   --theme-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
-  --theme-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  --theme-shadow-large: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
 }
 
 // Apply theme variables
@@ -148,7 +148,7 @@ body {
 .modal__content.theme-aware {
   background-color: var(--theme-bg-primary);
   border-color: var(--theme-border-primary);
-  box-shadow: var(--theme-shadow-lg);
+  box-shadow: var(--theme-shadow-large);
   
   .modal__title {
     color: var(--theme-text-primary);
@@ -244,7 +244,7 @@ body {
   --theme-border-primary: #{$color-gray-300};
   --theme-border-secondary: #{$color-gray-200};
   --theme-shadow: #{$shadow};
-  --theme-shadow-lg: #{$shadow-lg};
+  --theme-shadow-large: #{$shadow-large};
 }
 
 .theme-dark {
@@ -257,5 +257,5 @@ body {
   --theme-border-primary: #{$color-gray-700};
   --theme-border-secondary: #{$color-gray-600};
   --theme-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
-  --theme-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  --theme-shadow-large: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
 }

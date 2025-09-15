@@ -9,13 +9,13 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  margin-bottom: $spacing-md;
+  margin-bottom: $spacing-medium;
   
   // Field elements
   @include element('label') {
     display: block;
     margin-bottom: $spacing-xs;
-    font-size: $font-size-sm;
+    font-size: $font-size-small;
     font-weight: $font-weight-medium;
     color: $color-gray-700;
     line-height: $line-height-tight;
@@ -30,8 +30,8 @@
     position: relative;
     display: block;
     width: 100%;
-    padding: $spacing-sm $spacing-md;
-    font-size: $font-size-md;
+    padding: $spacing-small $spacing-medium;
+    font-size: $font-size-medium;
     font-weight: $font-weight-normal;
     line-height: $line-height-normal;
     color: $color-gray-900;
@@ -93,7 +93,7 @@
   @include element('checkbox') {
     display: flex;
     align-items: center;
-    gap: $spacing-sm;
+    gap: $spacing-small;
     cursor: pointer;
     
     input[type="checkbox"] {
@@ -112,7 +112,7 @@
   @include element('radio') {
     display: flex;
     align-items: center;
-    gap: $spacing-sm;
+    gap: $spacing-small;
     cursor: pointer;
     
     input[type="radio"] {
@@ -131,7 +131,7 @@
   @include element('toggle') {
     display: flex;
     align-items: center;
-    gap: $spacing-sm;
+    gap: $spacing-small;
     cursor: pointer;
     
     .field__toggle-input {
@@ -185,7 +185,7 @@
     }
     
     // Size variations
-    .field--sm & {
+    .field--small & {
       .field__toggle-input {
         width: 2rem;
         height: 1rem;
@@ -201,7 +201,7 @@
       }
     }
     
-    .field--lg & {
+    .field--large & {
       .field__toggle-input {
         width: 3rem;
         height: 1.5rem;
@@ -268,38 +268,38 @@
   @include element('help') {
     display: block;
     margin-top: $spacing-xs;
-    font-size: $font-size-sm;
+    font-size: $font-size-small;
     color: $color-gray-600;
   }
   
   @include element('error') {
     display: block;
     margin-top: $spacing-xs;
-    font-size: $font-size-sm;
+    font-size: $font-size-small;
     color: $color-danger;
   }
 
   @include element('warning') {
     display: block;
     margin-top: $spacing-xs;
-    font-size: $font-size-sm;
+    font-size: $font-size-small;
     color: $color-warning;
   }
   
   @include element('success') {
     display: block;
     margin-top: $spacing-xs;
-    font-size: $font-size-sm;
+    font-size: $font-size-small;
     color: $color-success;
   }
   
   // Field modifiers - sizes
-  @include modifier('sm') {
+  @include modifier('small') {
     .field__input,
     .field__textarea,
     .field__select {
-      padding: $spacing-xs $spacing-sm;
-      font-size: $font-size-sm;
+      padding: $spacing-xs $spacing-small;
+      font-size: $font-size-small;
     }
     
     .field__label,
@@ -316,12 +316,12 @@
     }
 
     .field__file-display {
-      padding: $spacing-sm;
+      padding: $spacing-small;
       min-height: 2.5rem;
     }
 
     .field__range-value {
-      font-size: $font-size-md;
+      font-size: $font-size-medium;
     }
     
     .field__range-input-wrapper {
@@ -338,13 +338,13 @@
     }
   }
 
-  @include modifier('md') {
+  @include modifier('medium') {
 
     .field__input,
     .field__textarea,
     .field__select {
-      padding: $spacing-sm $spacing-md;
-      font-size: $font-size-md;
+      padding: $spacing-small $spacing-medium;
+      font-size: $font-size-medium;
     }
 
     .field__label,
@@ -352,7 +352,7 @@
     .field__error,
     .field__warning,
     .field__success {
-      font-size: $font-size-sm;
+      font-size: $font-size-small;
     }
     
 
@@ -362,12 +362,12 @@
     }
 
     .field__file-display {
-      padding: $spacing-md;
+      padding: $spacing-medium;
       min-height: 3rem;
     }
 
     .field__range-value {
-      font-size: $font-size-lg;
+      font-size: $font-size-large;
     }
     
     .field__range-input-wrapper {
@@ -384,12 +384,12 @@
     }
   }
   
-  @include modifier('lg') {
+  @include modifier('large') {
     .field__input,
     .field__textarea,
     .field__select {
-      padding: $spacing-md $spacing-lg;
-      font-size: $font-size-lg;
+      padding: $spacing-medium $spacing-large;
+      font-size: $font-size-large;
     }
     
     .field__label,
@@ -397,7 +397,7 @@
     .field__error,
     .field__warning,
     .field__success {
-      font-size: $font-size-md;
+      font-size: $font-size-medium;
     }
 
     .field__color-picker {
@@ -406,7 +406,7 @@
     }
 
     .field__file-display {
-      padding: $spacing-lg;
+      padding: $spacing-large;
       min-height: 3.5rem;
     }
 
@@ -432,7 +432,7 @@
     .field__input,
     .field__textarea,
     .field__select {
-      padding: $spacing-lg $spacing-xl;
+      padding: $spacing-large $spacing-xl;
       font-size: $font-size-xl;
     }
     
@@ -441,7 +441,7 @@
     .field__error,
     .field__warning,
     .field__success {
-      font-size: $font-size-lg;
+      font-size: $font-size-large;
     }
 
     .field__color-picker {
@@ -541,7 +541,7 @@
   @include modifier('inline') {
     flex-direction: row;
     align-items: center;
-    gap: $spacing-sm;
+    gap: $spacing-small;
     
     .field__label {
       margin-bottom: 0;
@@ -558,13 +558,13 @@
   @include modifier('horizontal') {
     flex-direction: row;
     align-items: flex-start;
-    gap: $spacing-md;
+    gap: $spacing-medium;
     
     .field__label {
       margin-bottom: 0;
       flex: 0 0 25%;
       text-align: right;
-      padding-top: $spacing-sm;
+      padding-top: $spacing-small;
     }
     
     .field__input,
@@ -573,7 +573,7 @@
       flex: 1;
     }
     
-    @include respond-to(sm) {
+    @include respond-to(small) {
       flex-direction: column;
       align-items: stretch;
       
@@ -589,12 +589,12 @@
   @include element('group') {
     display: flex;
     flex-direction: column;
-    gap: $spacing-sm;
+    gap: $spacing-small;
     
     &.inline {
       flex-direction: row;
       flex-wrap: wrap;
-      gap: $spacing-md;
+      gap: $spacing-medium;
     }
   }
 
@@ -682,7 +682,7 @@
   @include element('color-container') {
     display: flex;
     align-items: center;
-    gap: $spacing-sm;
+    gap: $spacing-small;
   }
 
   @include element('color-picker') {
@@ -877,7 +877,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: $spacing-md;
+    padding: $spacing-medium;
     min-height: 3rem;
     cursor: pointer;
     
@@ -886,7 +886,7 @@
   @include element('file-content') {
     display: flex;
     align-items: center;
-    gap: $spacing-sm;
+    gap: $spacing-small;
     flex: 1;
     min-width: 0;
   }
@@ -899,12 +899,12 @@
 
   @include element('file-label') {
     color: $color-gray-600;
-    font-size: $font-size-sm;
+    font-size: $font-size-small;
   }
 
   @include element('file-selected') {
     color: $color-gray-900;
-    font-size: $font-size-sm;
+    font-size: $font-size-small;
     font-weight: $font-weight-medium;
     white-space: nowrap;
     overflow: hidden;
@@ -913,7 +913,7 @@
 
 
   @include element('file-list') {
-    margin-top: $spacing-sm;
+    margin-top: $spacing-small;
   }
 
   @include element('file-info') {
@@ -924,7 +924,7 @@
   }
 
   @include element('file-name') {
-    font-size: $font-size-sm;
+    font-size: $font-size-small;
     font-weight: $font-weight-medium;
     color: $color-gray-900;
     white-space: nowrap;
@@ -956,7 +956,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: $spacing-sm;
+    gap: $spacing-small;
     color: $color-primary;
     font-weight: $font-weight-medium;
   }
@@ -984,7 +984,7 @@
   @include element('range-container') {
     display: flex;
     flex-direction: column;
-    gap: $spacing-sm;
+    gap: $spacing-small;
   }
 
   @include element('range-value-display') {
@@ -992,21 +992,21 @@
     align-items: center;
     justify-content: center;
     gap: $spacing-xs;
-    padding: $spacing-xs $spacing-sm;
+    padding: $spacing-xs $spacing-small;
     background-color: $color-gray-50;
     border-radius: $border-radius;
     border: 1px solid $color-gray-200;
   }
 
   @include element('range-value') {
-    font-size: $font-size-lg;
+    font-size: $font-size-large;
     font-weight: $font-weight-semibold;
     color: $color-primary;
     font-variant-numeric: tabular-nums;
   }
 
   @include element('range-unit') {
-    font-size: $font-size-sm;
+    font-size: $font-size-small;
     color: $color-gray-600;
     font-weight: $font-weight-medium;
   }
@@ -1217,7 +1217,7 @@
   @include element('email-container') {
     display: flex;
     flex-direction: column;
-    gap: $spacing-sm;
+    gap: $spacing-small;
   }
 
   @include element('email-input-wrapper') {
@@ -1230,7 +1230,7 @@
   @include element('datetime-container') {
     display: flex;
     flex-direction: column;
-    gap: $spacing-sm;
+    gap: $spacing-small;
   }
 
   @include element('datetime-info') {
@@ -1244,7 +1244,7 @@
     display: flex;
     align-items: center;
     gap: $spacing-xs;
-    font-size: $font-size-sm;
+    font-size: $font-size-small;
     font-weight: $font-weight-medium;
     color: $color-gray-700;
     padding: $spacing-xs;
@@ -1256,7 +1256,7 @@
     display: flex;
     align-items: center;
     gap: $spacing-xs;
-    font-size: $font-size-sm;
+    font-size: $font-size-small;
     font-weight: $font-weight-medium;
     color: $color-primary;
     padding: $spacing-xs;
@@ -1268,7 +1268,7 @@
     display: flex;
     align-items: center;
     gap: $spacing-xs;
-    font-size: $font-size-sm;
+    font-size: $font-size-small;
     font-weight: $font-weight-medium;
     color: $color-gray-600;
     padding: $spacing-xs;
@@ -1280,7 +1280,7 @@
     display: flex;
     align-items: center;
     gap: $spacing-xs;
-    font-size: $font-size-sm;
+    font-size: $font-size-small;
     font-weight: $font-weight-medium;
     color: $color-danger;
     padding: $spacing-xs;
@@ -1297,7 +1297,7 @@
     display: flex;
     align-items: center;
     gap: $spacing-xs;
-    font-size: $font-size-sm;
+    font-size: $font-size-small;
     font-weight: $font-weight-medium;
     color: $color-gray-600;
     padding: $spacing-xs;
@@ -1322,7 +1322,7 @@
   }
 
   // Date-time input size modifiers
-  @include modifier('sm') {
+  @include modifier('small') {
     .field__datetime-icon {
       width: 0.875rem;
       height: 0.875rem;
@@ -1338,7 +1338,7 @@
     }
   }
 
-  @include modifier('lg') {
+  @include modifier('large') {
     .field__datetime-icon {
       width: 1.125rem;
       height: 1.125rem;
@@ -1349,8 +1349,8 @@
     .field__datetime-timezone,
     .field__datetime-validation,
     .field__datetime-type-item {
-      font-size: $font-size-md;
-      padding: $spacing-sm;
+      font-size: $font-size-medium;
+      padding: $spacing-small;
     }
   }
 
@@ -1365,8 +1365,8 @@
     .field__datetime-timezone,
     .field__datetime-validation,
     .field__datetime-type-item {
-      font-size: $font-size-lg;
-      padding: $spacing-md;
+      font-size: $font-size-large;
+      padding: $spacing-medium;
     }
   }
 

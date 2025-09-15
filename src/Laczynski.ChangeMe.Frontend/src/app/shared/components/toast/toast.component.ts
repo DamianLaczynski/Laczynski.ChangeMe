@@ -11,7 +11,7 @@ export class ToastComponent {
   title = input<string>('');
   message = input<string>('');
   intent = input<Intent>('info');
-  size = input<Size>('md');
+  size = input<Size>('medium');
   variant = input<Variant>('solid');
   duration = input<number>(5000);
   dismissible = input<boolean>(true);

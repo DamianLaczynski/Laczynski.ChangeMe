@@ -15,7 +15,7 @@ import { ToastService } from './services/toast.service';
           [title]="toast.title"
           [message]="toast.message"
           [intent]="toast.intent || 'info'"
-          [size]="toast.size || 'md'"
+          [size]="toast.size || 'medium'"
           [variant]="toast.variant || 'ghost'"
           [showIcon]="toast.showIcon !== false"
           [dismissible]="toast.dismissible !== false"

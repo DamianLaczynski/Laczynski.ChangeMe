@@ -180,7 +180,7 @@ scss/
 
   // Elements
   @include element("title") {
-    font-size: $font-size-lg;
+    font-size: $font-size-large;
     font-weight: $font-weight-semibold;
   }
 
@@ -190,7 +190,7 @@ scss/
 
   // Modifiers
   @include modifier("large") {
-    padding: $spacing-lg;
+    padding: $spacing-large;
   }
 
   @include modifier("dark") {
@@ -219,7 +219,7 @@ Every component SCSS file must include:
 import { Component, input, output, model } from "@angular/core";
 
 export type ComponentVariant = "primary" | "secondary";
-export type ComponentSize = "sm" | "md" | "lg";
+export type ComponentSize = "small" | "medium" | "large";
 
 @Component({
   selector: "app-component",
@@ -229,7 +229,7 @@ export type ComponentSize = "sm" | "md" | "lg";
 export class ComponentComponent {
   // Inputs for styling variants
   variant = input<ComponentVariant>("primary");
-  size = input<ComponentSize>("md");
+  size = input<ComponentSize>("medium");
   disabled = model<boolean>(false);
 
   // Outputs for events
@@ -302,8 +302,8 @@ The project uses CSS custom properties for theming:
 
 ```scss
 .button {
-  padding: $spacing-sm $spacing-md;
-  font-size: $font-size-md;
+  padding: $spacing-small $spacing-medium;
+  font-size: $font-size-medium;
   color: $color-white;
   background-color: $color-primary;
   border-radius: $border-radius;
@@ -328,10 +328,10 @@ The project uses CSS custom properties for theming:
 
 ```scss
 .button {
-  padding: $spacing-sm $spacing-md;
+  padding: $spacing-small $spacing-medium;
 
-  @include respond-to(md) {
-    padding: $spacing-md $spacing-lg;
+  @include respond-to(medium) {
+    padding: $spacing-medium $spacing-large;
   }
 }
 ```
@@ -511,7 +511,7 @@ export type ButtonType = "button" | "submit" | "reset";
 export class ButtonComponent {
   intent = input<Intent>("primary");
   variant = input<Variant>("solid");
-  size = input<Size>("md");
+  size = input<Size>("medium");
   type = input<ButtonType>("button");
   disabled = model<boolean>(false);
   fullWidth = input<boolean>(false);
@@ -572,7 +572,7 @@ export class ButtonComponent {
   align-items: center;
   justify-content: center;
   font-family: $font-family-primary;
-  font-size: $font-size-md;
+  font-size: $font-size-medium;
   font-weight: $font-weight-medium;
   line-height: $line-height-normal;
   text-align: center;
@@ -591,22 +591,22 @@ export class ButtonComponent {
   }
 
   // Size modifiers
-  @include modifier("sm") {
-    padding: $spacing-xs $spacing-sm;
-    font-size: $font-size-sm;
-    border-radius: $border-radius-sm;
+  @include modifier("small") {
+    padding: $spacing-xs $spacing-small;
+    font-size: $font-size-small;
+    border-radius: $border-radius-small;
   }
 
-  @include modifier("md") {
-    padding: $spacing-sm $spacing-md;
-    font-size: $font-size-md;
-    border-radius: $border-radius-md;
+  @include modifier("medium") {
+    padding: $spacing-small $spacing-medium;
+    font-size: $font-size-medium;
+    border-radius: $border-radius-medium;
   }
 
-  @include modifier("lg") {
-    padding: $spacing-md $spacing-lg;
-    font-size: $font-size-lg;
-    border-radius: $border-radius-md;
+  @include modifier("large") {
+    padding: $spacing-medium $spacing-large;
+    font-size: $font-size-large;
+    border-radius: $border-radius-medium;
   }
 
   // Intent modifiers
@@ -662,10 +662,12 @@ export class ButtonComponent {
 <app-button>Click me</app-button>
 
 <!-- Primary large button -->
-<app-button intent="primary" size="lg">Submit</app-button>
+<app-button intent="primary" size="large">Submit</app-button>
 
 <!-- Outline secondary button -->
-<app-button intent="secondary" variant="outline" size="sm">Cancel</app-button>
+<app-button intent="secondary" variant="outline" size="small"
+  >Cancel</app-button
+>
 
 <!-- Full width disabled button -->
 <app-button intent="primary" [fullWidth]="true" [disabled]="true">

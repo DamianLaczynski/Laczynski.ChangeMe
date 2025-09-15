@@ -8,9 +8,9 @@
 // Spacing utilities
 @each $size, $value in (
   'xs': $spacing-xs,
-  'sm': $spacing-sm,
-  'md': $spacing-md,
-  'lg': $spacing-lg,
+  'small': $spacing-small,
+  'medium': $spacing-medium,
+  'large': $spacing-large,
   'xl': $spacing-xl,
   '2xl': $spacing-2xl,
   '3xl': $spacing-3xl,
@@ -103,16 +103,16 @@
 
 // Border radius utilities
 .rounded { border-radius: $border-radius !important; }
-.rounded-sm { border-radius: $border-radius-sm !important; }
-.rounded-lg { border-radius: $border-radius-lg !important; }
+.rounded-small { border-radius: $border-radius-small !important; }
+.rounded-large { border-radius: $border-radius-large !important; }
 .rounded-xl { border-radius: $border-radius-xl !important; }
 .rounded-full { border-radius: $border-radius-full !important; }
 .rounded-0 { border-radius: 0 !important; }
 
 // Shadow utilities
-.shadow-sm { box-shadow: $shadow-sm !important; }
+.shadow-small { box-shadow: $shadow-small !important; }
 .shadow { box-shadow: $shadow !important; }
-.shadow-md { box-shadow: $shadow-md !important; }
-.shadow-lg { box-shadow: $shadow-lg !important; }
+.shadow-medium { box-shadow: $shadow-medium !important; }
+.shadow-large { box-shadow: $shadow-large !important; }
 .shadow-xl { box-shadow: $shadow-xl !important; }
 .shadow-none { box-shadow: none !important; }

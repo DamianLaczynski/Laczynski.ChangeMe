@@ -14,7 +14,7 @@ import { NumberComponent } from './number.component';
         successText="This is a success text"
         placeholder="Enter a number"
         state="initial"
-        size="sm"
+        size="small"
       ></app-number>
       <app-number
         label="Number Medium"
@@ -24,7 +24,7 @@ import { NumberComponent } from './number.component';
         successText="This is a success text"
         placeholder="Enter a number"
         state="error"
-        size="md"
+        size="medium"
       ></app-number>
       <app-number
         label="Number Large"
@@ -34,7 +34,7 @@ import { NumberComponent } from './number.component';
         successText="This is a success text"
         placeholder="Enter a number"
         state="warning"
-        size="lg"
+        size="large"
       ></app-number>
       <app-number
         label="Number Extra Large"
@@ -44,7 +44,6 @@ import { NumberComponent } from './number.component';
         successText="This is a success text"
         placeholder="Enter a number"
         state="success"
-        size="xl"
       ></app-number>
       <app-number
         label="Number Extra Large"
@@ -54,7 +53,6 @@ import { NumberComponent } from './number.component';
         successText="This is a success text"
         placeholder="Enter a number"
         [disabled]="true"
-        size="xl"
       ></app-number>
     </form>
   `,

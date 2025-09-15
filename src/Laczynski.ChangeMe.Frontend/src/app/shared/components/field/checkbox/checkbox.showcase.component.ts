@@ -13,7 +13,7 @@ import { CheckboxComponent } from './checkbox.component';
         warningText="This is a warning text"
         successText="This is a success text"
         state="initial"
-        size="sm"
+        size="small"
       ></app-checkbox>
       <app-checkbox
         label="Checkbox Medium"
@@ -22,7 +22,7 @@ import { CheckboxComponent } from './checkbox.component';
         warningText="This is a warning text"
         successText="This is a success text"
         state="error"
-        size="md"
+        size="medium"
       ></app-checkbox>
       <app-checkbox
         label="Checkbox Large"
@@ -31,7 +31,7 @@ import { CheckboxComponent } from './checkbox.component';
         warningText="This is a warning text"
         successText="This is a success text"
         state="warning"
-        size="lg"
+        size="large"
       ></app-checkbox>
       <app-checkbox
         label="Checkbox Extra Large"
@@ -40,7 +40,6 @@ import { CheckboxComponent } from './checkbox.component';
         warningText="This is a warning text"
         successText="This is a success text"
         state="success"
-        size="xl"
       ></app-checkbox>
       <app-checkbox
         label="Checkbox Extra Large"
@@ -49,7 +48,6 @@ import { CheckboxComponent } from './checkbox.component';
         warningText="This is a warning text"
         successText="This is a success text"
         [disabled]="true"
-        size="xl"
       ></app-checkbox>
     </form>
   `,

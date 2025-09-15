@@ -17,7 +17,7 @@ import { FormsModule } from '@angular/forms';
         state="initial"
         [showValue]="true"
         unit="%"
-        size="sm"
+        size="small"
       ></app-range>
       <app-range
         label="Range Medium"
@@ -29,7 +29,7 @@ import { FormsModule } from '@angular/forms';
         [showLabels]="true"
         minLabel="Min"
         maxLabel="Max"
-        size="md"
+        size="medium"
       ></app-range>
       <app-range
         label="Range Large"
@@ -40,7 +40,7 @@ import { FormsModule } from '@angular/forms';
         state="warning"
         [step]="10"
         [showSteps]="true"
-        size="lg"
+        size="large"
       ></app-range>
       <app-range
         label="Range Extra Large"
@@ -49,7 +49,6 @@ import { FormsModule } from '@angular/forms';
         warningText="This is a warning text"
         successText="This is a success text"
         state="success"
-        size="xl"
       ></app-range>
       <app-range
         label="Range Extra Large"
@@ -58,7 +57,6 @@ import { FormsModule } from '@angular/forms';
         warningText="This is a warning text"
         successText="This is a success text"
         [disabled]="true"
-        size="xl"
       ></app-range>
     </form>
   `,

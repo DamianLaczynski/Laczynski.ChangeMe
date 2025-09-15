@@ -34,9 +34,9 @@
   --font-family-mono: #{$font-family-mono};
   
   --font-size-xs: #{$font-size-xs};
-  --font-size-sm: #{$font-size-sm};
-  --font-size-md: #{$font-size-md};
-  --font-size-lg: #{$font-size-lg};
+  --font-size-small: #{$font-size-small};
+  --font-size-medium: #{$font-size-medium};
+  --font-size-large: #{$font-size-large};
   --font-size-xl: #{$font-size-xl};
   --font-size-2xl: #{$font-size-2xl};
   --font-size-3xl: #{$font-size-3xl};
@@ -44,25 +44,25 @@
   --font-size-5xl: #{$font-size-5xl};
   
   --spacing-xs: #{$spacing-xs};
-  --spacing-sm: #{$spacing-sm};
-  --spacing-md: #{$spacing-md};
-  --spacing-lg: #{$spacing-lg};
+  --spacing-small: #{$spacing-small};
+  --spacing-medium: #{$spacing-medium};
+  --spacing-large: #{$spacing-large};
   --spacing-xl: #{$spacing-xl};
   --spacing-2xl: #{$spacing-2xl};
   --spacing-3xl: #{$spacing-3xl};
   --spacing-4xl: #{$spacing-4xl};
   
-  --border-radius-sm: #{$border-radius-sm};
+  --border-radius-small: #{$border-radius-small};
   --border-radius: #{$border-radius};
-  --border-radius-md: #{$border-radius-md};
-  --border-radius-lg: #{$border-radius-lg};
+  --border-radius-medium: #{$border-radius-medium};
+  --border-radius-large: #{$border-radius-large};
   --border-radius-xl: #{$border-radius-xl};
   --border-radius-full: #{$border-radius-full};
   
-  --shadow-sm: #{$shadow-sm};
+  --shadow-small: #{$shadow-small};
   --shadow: #{$shadow};
-  --shadow-md: #{$shadow-md};
-  --shadow-lg: #{$shadow-lg};
+  --shadow-medium: #{$shadow-medium};
+  --shadow-large: #{$shadow-large};
   --shadow-xl: #{$shadow-xl};
   
   --transition-fast: #{$transition-fast};
@@ -73,7 +73,7 @@
 // Body
 body {
   font-family: var(--font-family-primary);
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-medium);
   line-height: $line-height-normal;
   color: var(--color-gray-900);
   background-color: var(--color-white);
