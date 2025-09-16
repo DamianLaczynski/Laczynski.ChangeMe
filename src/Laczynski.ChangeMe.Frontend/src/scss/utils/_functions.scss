@@ -1,4 +1,6 @@
 @use 'sass:map';
+@use 'variables' as *;
+
 // ==========================================================================
 // Functions
 // ==========================================================================
@@ -28,13 +30,13 @@
   @return map.get($z-indexes, $layer);
 }
 
-// Z-index map
+// Z-index map - Fluent 2 Design System
 $z-indexes: (
-  'dropdown': 1000,
-  'sticky': 1020,
-  'fixed': 1030,
-  'modal-backdrop': 1040,
-  'modal': 1050,
-  'popover': 1060,
-  'tooltip': 1070
+  'dropdown': $z-index-dropdown,
+  'sticky': $z-index-sticky,
+  'fixed': $z-index-fixed,
+  'modal-backdrop': $z-index-modal-backdrop,
+  'modal': $z-index-modal,
+  'popover': $z-index-popover,
+  'tooltip': $z-index-tooltip
 );

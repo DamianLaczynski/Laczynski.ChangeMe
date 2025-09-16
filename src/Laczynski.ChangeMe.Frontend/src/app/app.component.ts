@@ -9,6 +9,11 @@ import { TextShowcaseComponent } from '@shared/components/field/text/text.showca
 import { TelShowcaseComponent } from '@shared/components/field/tel/tel.showcase.component';
 import { NumberShowcaseComponent } from '@shared/components/field/number/number.showcase.component';
 import { ButtonShowcaseComponent } from '@shared/components/button/button.showcase.component';
+import { InputShowcaseComponent } from '@shared/components/input/input.showcase.component';
+import { UrlShowcaseComponent } from '@shared/components/field/url/url.showcase.component';
+import { SelectShowcaseComponent } from '@shared/components/field/select/select.showcase.component';
+import { PasswordShowcaseComponent } from '@shared/components/field/password/password.showcase.component';
+import { SearchShowcaseComponent } from '@shared/components/field/search/search.showcase.component';
 
 @Component({
   selector: 'app-root',
@@ -25,6 +30,11 @@ import { ButtonShowcaseComponent } from '@shared/components/button/button.showca
     TelShowcaseComponent,
     NumberShowcaseComponent,
     ButtonShowcaseComponent,
+    InputShowcaseComponent,
+    UrlShowcaseComponent,
+    SelectShowcaseComponent,
+    PasswordShowcaseComponent,
+    SearchShowcaseComponent,
   ],
   templateUrl: './app.component.html',
 })

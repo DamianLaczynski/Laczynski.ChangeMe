@@ -1,0 +1,337 @@
+// ==========================================================================
+// Input Component - Fluent 2 Design System
+// ==========================================================================
+
+@use '../utils/variables' as *;
+
+// Label styles
+.input-label {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: $spacing-1;
+  font-family: $font-family-base;
+  color: $color-neutral-foreground-rest;
+  word-wrap: break-word;
+  margin-bottom: $spacing-1;
+
+  // Size variants
+  &--small {
+    font-size: $font-size-200;
+    line-height: $line-height-200;    
+    font-weight: $font-weight-regular;
+  }
+
+  &--small-bold {
+    font-size: $font-size-200; 
+    line-height: $line-height-200; 
+    font-weight: $font-weight-semibold; 
+  }
+
+  &--medium {
+    font-size: $font-size-300;  
+    line-height: $line-height-300; 
+    font-weight: $font-weight-regular; 
+  }
+
+  &--medium-bold {
+    font-size: $font-size-300; 
+    line-height: $line-height-300; 
+    font-weight: $font-weight-semibold; 
+  }
+
+  &--large {
+    font-size: $font-size-400; 
+    line-height: $line-height-400; 
+    font-weight: $font-weight-semibold; 
+  }
+
+  // Disabled state
+  &--disabled {
+    color: $color-neutral-foreground-disabled; 
+  }
+
+  // Required indicator
+  &--required::after {
+    content: ' *';
+    color: $color-shared-red-foreground;
+  }
+
+  // Help state
+  &--help {
+    color: $color-neutral-foreground2-rest;
+  }
+
+  // Error state
+  &--error {
+    color: $color-shared-red-foreground;
+  }
+  
+  // Warning state
+  &--warning {
+    color: $color-shared-yellow-foreground;
+  }
+  
+  // Success state
+  &--success {
+    color: $color-shared-green-foreground;
+  }
+}
+
+// Input container
+.input-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+// Input wrapper for different variants
+.input-wrapper {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  position: relative;
+  box-sizing: border-box;
+  vertical-align: middle;
+  border-radius: $border-radius-400;
+  transition: all $duration-ultra-fast $easing-ease-in-out;
+  gap: $spacing-05;
+
+   // Filled variant (default)
+   &--filled {
+    background-color: $color-neutral-background-rest;
+    border: 1px solid $color-neutral-stroke-rest;
+    border-bottom-color: $color-neutral-foreground-rest;
+    
+    &:hover {
+      border-color: $color-neutral-stroke-hover;
+      border-bottom-color: $color-neutral-foreground-rest;
+    }
+    
+    &:focus-within {
+      border-color: $color-neutral-stroke-pressed;
+    }
+  }
+
+  // Filled with gray background
+  &--filled-gray {
+    background-color: $color-neutral-background-hover;
+    border: 1px solid transparent;
+    
+    &:hover {
+      background-color: $color-neutral-background-hover;
+    }
+  }
+
+  // Underlined variant
+  &--underlined {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid $color-neutral-foreground-rest;
+    border-radius: 0;
+    
+    &:hover {
+      border-bottom-color: $color-neutral-foreground-rest;
+    }
+  
+  }
+
+  // Error state
+  &--error {
+    border-color: $color-shared-red-foreground !important;
+    border: 1px solid $color-shared-red-foreground !important;
+    
+    &.input-wrapper--underlined {
+      border-bottom-color: $color-shared-red-foreground !important;
+    }
+  }
+
+  // Warning state
+  &--warning {
+    border-color: $color-shared-yellow-foreground !important;
+    border: 1px solid $color-shared-yellow-foreground !important;
+    
+    &.input-wrapper--underlined {
+      border-bottom-color: $color-shared-yellow-foreground !important;
+    }
+  }
+
+  // Success state
+  &--success {
+    border-color: $color-shared-green-foreground !important;
+    border: 1px solid $color-shared-green-foreground !important;
+    
+    &.input-wrapper--underlined {
+      border-bottom-color: $color-shared-green-foreground !important;
+    }
+  }
+
+  // Disabled state
+  &--disabled {
+    background-color: transparent;
+    border-color: $color-neutral-stroke-disabled;
+    cursor: not-allowed;
+    
+    .input {
+      color: $color-neutral-foreground-disabled;
+      cursor: not-allowed;
+    }
+
+    &:hover {
+      border-color: $color-neutral-stroke-disabled;
+    }
+  }
+
+  &--read-only {
+    background-color: transparent;
+    border-color: $color-neutral-stroke-disabled;
+
+    &:hover {
+      border-color: $color-neutral-stroke-disabled;
+    }
+  }
+}
+
+// Input element
+.input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: $color-neutral-foreground-rest;
+  font-family: $font-family-base;
+  font-weight: $font-weight-regular;
+  letter-spacing: $letter-spacing-normal;
+  transition: all $duration-ultra-fast $easing-ease-in-out;
+
+  // Placeholder styles
+  &::placeholder {
+    color: $color-neutral-foreground2-rest;
+    opacity: 1;
+  }
+
+  // Focus styles
+  &:focus {
+    color: $color-neutral-foreground-rest;
+  }
+
+  // Disabled styles
+  &:disabled {
+    color: $color-neutral-foreground-disabled;
+    border-color: $color-neutral-stroke-disabled;
+    cursor: not-allowed;
+  }
+
+  // Read only styles
+  &:read-only {
+    border-color: $color-neutral-stroke-disabled;
+    cursor: not-allowed;
+  }
+
+  // Error state
+  .input-wrapper--error & {
+    color: $color-neutral-foreground-rest;
+  }
+
+  // Warning state
+  .input-wrapper--warning & {
+    color: $color-neutral-foreground-rest;
+  }
+
+  // Success state
+  .input-wrapper--success & {
+    color: $color-neutral-foreground-rest;
+  }
+}
+
+// Size variants
+.input-wrapper {
+  // Small size
+  &--small {
+    min-height: $spacing-6; 
+    
+    .input {
+      font-size: $font-size-200; 
+      line-height: $line-height-200; 
+      padding: 0 $spacing-2; 
+    }
+
+    &::after {
+      height: $spacing-1; 
+    }
+  }
+
+  // Medium size (default)
+  &--medium {
+    min-height: $spacing-8; 
+    
+    .input {
+      font-size: $font-size-300; 
+      line-height: $line-height-300; 
+      padding: 0 $spacing-3; 
+    }
+
+    &::after {
+      height: $spacing-1; 
+    }
+  }
+
+  // Large size
+  &--large {
+    min-height: $spacing-10; 
+    
+    .input {
+      font-size: $font-size-400; 
+      line-height: $line-height-400; 
+      padding: 0 $spacing-4; 
+    }
+
+    &::after {
+      height: $spacing-1; 
+    }
+  }
+}
+
+// Focus indicator - bottom border for all variants
+.input-wrapper {
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: -1px;
+    right: -1px;
+    background-color: $color-brand-primary; 
+    transform: scaleX(0);
+    transition: transform $duration-ultra-fast $easing-ease-in-out;
+    border-bottom-left-radius: $border-radius-400;
+    border-bottom-right-radius: $border-radius-400;
+    border-bottom: 2px solid $color-brand-primary;
+    clip-path: inset(calc(100% - 2px) 0px 0px);
+  }
+
+  &:focus-within::after {
+    transform: scaleX(1);
+  }
+
+  // Error state
+  &--error::after {
+    background-color: $color-shared-red-foreground;
+    border-bottom-color: $color-shared-red-foreground;
+  }
+
+  &--warning::after {
+    background-color: $color-shared-yellow-foreground;
+    border-bottom-color: $color-shared-yellow-foreground;
+  }
+
+  &--success::after {
+    background-color: $color-shared-green-foreground;
+    border-bottom-color: $color-shared-green-foreground;
+  }
+}
+
+// Specific focus styles for underlined variant
+.input-wrapper--underlined {
+  &::after {
+    border-radius: $border-radius-200;
+  }
+}

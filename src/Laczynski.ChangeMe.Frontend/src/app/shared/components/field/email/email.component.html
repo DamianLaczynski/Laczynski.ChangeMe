@@ -13,14 +13,12 @@
   [id]="id()"
   [name]="name()"
   [state]="state()"
-  [layout]="layout()"
   [size]="size()"
 >
   <input
     [id]="id()"
     [name]="name()"
     type="email"
-    [class]="inputClasses()"
     [placeholder]="placeholder()"
     [required]="required()"
     [disabled]="disabled()"
@@ -36,12 +34,12 @@
   />
 
   @if (!disabled() && !readonly()) {
-  <div class="field__actions">
-    <app-clear-button
-      [value]="value"
-      [showClearButton]="true"
-      (clear)="clear()"
-    ></app-clear-button>
-  </div>
+    <div class="field__actions">
+      <app-clear-button
+        [value]="value"
+        [showClearButton]="true"
+        (clear)="clear()"
+      ></app-clear-button>
+    </div>
   }
 </app-field>

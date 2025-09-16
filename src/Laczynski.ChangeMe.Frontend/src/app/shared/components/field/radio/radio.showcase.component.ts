@@ -12,7 +12,6 @@ import { RadioComponent } from './radio.component';
         errorText="This is an error text"
         warningText="This is a warning text"
         successText="This is a success text"
-        state="initial"
         size="small"
       ></app-radio>
       <app-radio

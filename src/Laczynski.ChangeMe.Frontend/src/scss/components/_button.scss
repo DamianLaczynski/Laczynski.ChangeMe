@@ -5,7 +5,6 @@
 @use '../utils/variables' as *;
 @use '../utils/mixins' as *;
 @use '../utils/functions' as *;
-@use '../utils/utilities' as *;
 
 @include block('button') {
   // Base button styles
@@ -13,9 +12,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: $spacing-horizontal-xs;
+  gap: $spacing-1;
   font-family: $font-family-base;
-  font-weight: $font-weight-normal;
+  font-weight: $font-weight-regular;
   text-align: center;
   text-decoration: none;
   white-space: nowrap;
@@ -23,7 +22,7 @@
   cursor: pointer;
   user-select: none;
   border: 1px solid transparent;
-  transition: all $transition-fast;
+  transition: all $duration-fast $easing-ease-in-out;
   box-sizing: border-box;
   
   @include focus-ring($color-brand-primary);

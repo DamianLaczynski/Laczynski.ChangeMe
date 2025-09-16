@@ -1,0 +1,115 @@
+// ==========================================================================
+// Showcase Page Styles - BEM Block
+// ==========================================================================
+
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use '../utils/functions' as *;
+
+@include block('showcase') {
+  // Base showcase container
+  padding: $spacing-8;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: $font-family-base;
+
+  // Elements
+  @include element('title') {
+    font-size: $font-size-800;
+    font-weight: $font-weight-bold;
+    color: $color-neutral-foreground-rest;
+    margin-bottom: $spacing-4;
+  }
+
+  @include element('description') {
+    font-size: $font-size-400;
+    color: $color-neutral-foreground2-rest;
+    margin-bottom: $spacing-12;
+    line-height: $line-height-400;
+  }
+
+  @include element('section') {
+    margin-bottom: $spacing-16;
+
+    // Section title
+    @include element('title') {
+      font-size: $font-size-600;
+      font-weight: $font-weight-semibold;
+      color: $color-neutral-foreground-rest;
+      margin-bottom: $spacing-6;
+      border-bottom: 2px solid $color-neutral-stroke-rest;
+      padding-bottom: $spacing-2;
+    }
+  }
+
+  @include element('grid') {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: $spacing-8;
+
+    // Large grid variant
+    @include modifier('large') {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+  }
+
+  @include element('item') {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-2;
+
+    // Item label
+    label {
+      font-weight: $font-weight-medium;
+      color: $color-neutral-foreground2-rest;
+      font-size: $font-size-300;
+      margin-bottom: $spacing-1;
+    }
+  }
+
+  @include element('form') {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-4;
+  }
+
+  // Responsive modifiers
+  @include modifier('responsive') {
+    // Large breakpoint
+    @include respond-to(large) {
+      padding: $spacing-6;
+
+      .showcase__grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: $spacing-6;
+      }
+    }
+
+    // Medium breakpoint
+    @include respond-to(medium) {
+      padding: $spacing-4;
+
+      .showcase__grid {
+        grid-template-columns: 1fr;
+        gap: $spacing-4;
+      }
+
+      .showcase__grid--large {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    // Small breakpoint
+    @include respond-to(small) {
+      padding: $spacing-3;
+
+      .showcase__title {
+        font-size: $font-size-700;
+      }
+
+      .showcase__section-title {
+        font-size: $font-size-500;
+      }
+    }
+  }
+}

@@ -1,38 +1,37 @@
-<div [class]="fieldClasses()">
-  <!-- Label -->
-  @if (label() && fieldType() !== 'checkbox' && fieldType() !== 'radio') {
-    <label [for]="id()" class="field__label" [class.required]="required()">
+<div class="input-container">
+  @if (label()) {
+    <label [for]="id()" class="input-label" [ngClass]="labelClasses">
       {{ label() }}
     </label>
   }
-  <div class="field__wrapper">
+  <div class="input-wrapper" [ngClass]="wrapperClasses">
     <ng-content></ng-content>
   </div>
 
   <!-- Help Text -->
   @if (helpText() && state() !== 'error' && state() !== 'success' && state() !== 'warning') {
-    <span class="field__help">
+    <span class="input-label input-label--help" [ngClass]="labelClasses">
       {{ helpText() }}
     </span>
   }
 
   <!-- Error Text -->
   @if (errorText() && state() === 'error') {
-    <span class="field__error">
+    <span class="input-label input-label--error" [ngClass]="labelClasses">
       {{ errorText() }}
     </span>
   }
 
   <!-- Warning Text -->
   @if (warningText() && state() === 'warning') {
-    <span class="field__warning">
+    <span class="input-label input-label--warning" [ngClass]="labelClasses">
       {{ warningText() }}
     </span>
   }
 
   <!-- Success Text -->
   @if (successText() && state() === 'success') {
-    <span class="field__success">
+    <span class="input-label input-label--success" [ngClass]="labelClasses">
       {{ successText() }}
     </span>
   }

@@ -2,17 +2,7 @@
 export type ButtonStyle = 'primary' | 'secondary' | 'outline' | 'subtle' | 'transparent';
 export type ButtonState = 'rest' | 'hover' | 'pressed' | 'selected' | 'disabled';
 export type Size = 'small' | 'medium' | 'large';
-
-export type FieldStyle = 'filled darker' | 'filled lighter' | 'outline' | 'underline';
-export type FieldState =
-  | 'rest'
-  | 'hover'
-  | 'pressed'
-  | 'focus'
-  | 'error'
-  | 'warning'
-  | 'disabled'
-  | 'readonly';
+export type StateType = 'info' | 'error' | 'warning' | 'success';
 
 // Legacy support - keeping for backward compatibility
 export type Intent = 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info';

@@ -15,7 +15,6 @@ import { EmailComponent } from './email.component';
         errorText="This is an error text"
         warningText="This is a warning text"
         successText="This is a success text"
-        state="initial"
         size="small"
       ></app-email>
       <app-email

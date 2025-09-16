@@ -8,7 +8,8 @@ import {
   forwardRef,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FieldComponent, FieldState } from '../field/field.component';
+import { FieldComponent } from '../field/field.component';
+import { StateType } from '../../utils';
 import { ButtonComponent } from '../../button/button.component';
 import { Intent } from '../../utils';
 import { ClearButtonComponent } from '../clear-button.component';
@@ -224,7 +225,7 @@ export class FileComponent extends FieldComponent implements OnInit, OnDestroy {
     this.value = value;
   }
 
-  stateMap(state: FieldState): Intent {
+  stateMap(state: StateType): Intent {
     return state === 'error'
       ? 'danger'
       : state === 'warning'

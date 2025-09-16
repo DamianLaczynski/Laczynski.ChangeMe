@@ -13,18 +13,17 @@
   [id]="id()"
   [name]="name()"
   [state]="state()"
-  [layout]="layout()"
   [size]="size()"
 >
   <div class="field__range-container">
     <!-- Value display -->
     @if (showValue()) {
-    <div class="field__range-value-display">
-      <span class="field__range-value">{{ getDisplayValue() }}</span>
-      @if (unit()) {
-      <span class="field__range-unit">{{ unit() }}</span>
-      }
-    </div>
+      <div class="field__range-value-display">
+        <span class="field__range-value">{{ getDisplayValue() }}</span>
+        @if (unit()) {
+          <span class="field__range-unit">{{ unit() }}</span>
+        }
+      </div>
     }
 
     <!-- Range input -->
@@ -34,7 +33,6 @@
         [name]="name()"
         type="range"
         class="field__range-input"
-        [class]="inputClasses()"
         [min]="min()"
         [max]="max()"
         [step]="step()"
@@ -53,27 +51,21 @@
 
       <!-- Custom track styling -->
       <div class="field__range-track">
-        <div
-          class="field__range-fill"
-          [style.width.%]="getFillPercentage()"
-        ></div>
-        <div
-          class="field__range-thumb"
-          [style.left.%]="getThumbPosition()"
-        ></div>
+        <div class="field__range-fill" [style.width.%]="getFillPercentage()"></div>
+        <div class="field__range-thumb" [style.left.%]="getThumbPosition()"></div>
       </div>
     </div>
 
     <!-- Min/Max labels -->
     @if (showLabels()) {
-    <div class="field__range-labels">
-      <span class="field__range-label field__range-label--min">
-        {{ getMinLabel() }}
-      </span>
-      <span class="field__range-label field__range-label--max">
-        {{ getMaxLabel() }}
-      </span>
-    </div>
+      <div class="field__range-labels">
+        <span class="field__range-label field__range-label--min">
+          {{ getMinLabel() }}
+        </span>
+        <span class="field__range-label field__range-label--max">
+          {{ getMaxLabel() }}
+        </span>
+      </div>
     }
   </div>
 </app-field>

@@ -13,35 +13,35 @@
   [id]="id()"
   [name]="name()"
   [state]="state()"
-  [layout]="layout()"
   [size]="size()"
 >
   <input
+    class="input"
+    type="tel"
     [id]="id()"
     [name]="name()"
-    type="tel"
-    class="field__tel-input"
-    [class]="inputClasses()"
     [placeholder]="placeholder()"
     [required]="required()"
     [disabled]="disabled()"
     [readonly]="readonly()"
     [autocomplete]="autocomplete()"
     [value]="value"
+    [attr.aria-label]="ariaLabel() || label()"
+    [attr.aria-describedby]="ariaDescribedBy()"
+    [attr.aria-invalid]="state() === 'error'"
     (input)="onInputChange($event)"
-    (focus)="onFocus($event)"
     (blur)="onBlur($event)"
+    (focus)="onFocus($event)"
     (keyup)="onKeyUp($event)"
     (keydown)="onKeyDown($event)"
-    #telInput
   />
   @if (!disabled() && !readonly()) {
-  <div class="field__actions">
-    <app-clear-button
-      [value]="value"
-      [showClearButton]="showClearButton()"
-      (clear)="clear()"
-    ></app-clear-button>
-  </div>
+    <div class="field__actions">
+      <app-clear-button
+        [value]="value"
+        [showClearButton]="showClearButton()"
+        (clear)="clear()"
+      ></app-clear-button>
+    </div>
   }
 </app-field>

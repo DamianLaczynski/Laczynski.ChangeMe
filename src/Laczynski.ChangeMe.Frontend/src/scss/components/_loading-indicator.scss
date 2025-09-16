@@ -1,222 +1,222 @@
-@use '../utils/variables' as *;
-@use '../utils/mixins' as *;
-@use '../utils/functions' as *;
-@use '../utils/utilities' as *;
+// @use '../utils/variables' as *;
+// @use '../utils/mixins' as *;
+// @use '../utils/functions' as *;
+// @use '../utils/utilities' as *;
 
-@include block('loading-indicator') {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: $spacing-small;
+// @include block('loading-indicator') {
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: center;
+//   gap: $spacing-small;
 
-  // Elements
-  @include element('spinner') {
-    position: relative;
-    display: inline-block;
-    border-radius: 50%;
-    animation: loading-spin 1s linear infinite;
-  }
+//   // Elements
+//   @include element('spinner') {
+//     position: relative;
+//     display: inline-block;
+//     border-radius: 50%;
+//     animation: loading-spin 1s linear infinite;
+//   }
 
-  // Spinner ring element
-  @include element('spinner-ring') {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    border: 2px solid transparent;
-    border-top-color: currentColor;
-    animation: loading-spin 6s linear infinite;
-  }
+//   // Spinner ring element
+//   @include element('spinner-ring') {
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     width: 100%;
+//     height: 100%;
+//     border-radius: 50%;
+//     border: 2px solid transparent;
+//     border-top-color: currentColor;
+//     animation: loading-spin 6s linear infinite;
+//   }
 
-  @include element('text') {
-    font-size: $font-size-small;
-    font-weight: $font-weight-medium;
-    text-align: center;
-    color: currentColor;
-    user-select: none;
-  }
+//   @include element('text') {
+//     font-size: $font-size-small;
+//     font-weight: $font-weight-medium;
+//     text-align: center;
+//     color: currentColor;
+//     user-select: none;
+//   }
 
-  // Size modifiers
-  @include modifier('small') {
-    gap: $spacing-xs;
+//   // Size modifiers
+//   @include modifier('small') {
+//     gap: $spacing-xs;
 
-    .loading-indicator__spinner {
-      width: 1rem;
-      height: 1rem;
-    }
+//     .loading-indicator__spinner {
+//       width: 1rem;
+//       height: 1rem;
+//     }
 
-    .loading-indicator__text {
-      font-size: $font-size-xs;
-    }
-  }
+//     .loading-indicator__text {
+//       font-size: $font-size-xs;
+//     }
+//   }
 
-  @include modifier('medium') {
-    gap: $spacing-small;
+//   @include modifier('medium') {
+//     gap: $spacing-small;
 
-    .loading-indicator__spinner {
-      width: 1.5rem;
-      height: 1.5rem;
-    }
+//     .loading-indicator__spinner {
+//       width: 1.5rem;
+//       height: 1.5rem;
+//     }
 
-    .loading-indicator__text {
-      font-size: $font-size-small;
-    }
-  }
+//     .loading-indicator__text {
+//       font-size: $font-size-small;
+//     }
+//   }
 
-  @include modifier('large') {
-    gap: $spacing-medium;
+//   @include modifier('large') {
+//     gap: $spacing-medium;
 
-    .loading-indicator__spinner {
-      width: 2rem;
-      height: 2rem;
-    }
+//     .loading-indicator__spinner {
+//       width: 2rem;
+//       height: 2rem;
+//     }
 
-    .loading-indicator__text {
-      font-size: $font-size-medium;
-    }
-  }
+//     .loading-indicator__text {
+//       font-size: $font-size-medium;
+//     }
+//   }
 
-  @include modifier('xl') {
-    gap: $spacing-large;
+//   @include modifier('xl') {
+//     gap: $spacing-large;
 
-    .loading-indicator__spinner {
-      width: 2.5rem;
-      height: 2.5rem;
-    }
+//     .loading-indicator__spinner {
+//       width: 2.5rem;
+//       height: 2.5rem;
+//     }
 
-    .loading-indicator__text {
-      font-size: $font-size-large;
-    }
-  }
+//     .loading-indicator__text {
+//       font-size: $font-size-large;
+//     }
+//   }
 
-  // Intent modifiers
-  @include modifier('primary') {
-    color: $color-primary;
+//   // Intent modifiers
+//   @include modifier('primary') {
+//     color: $color-primary;
 
-    .loading-indicator__spinner {
-      background-color: rgba($color-primary, 0.1);
-    }
+//     .loading-indicator__spinner {
+//       background-color: rgba($color-primary, 0.1);
+//     }
 
-  }
+//   }
 
-  @include modifier('secondary') {
-    color: $color-gray-700;
+//   @include modifier('secondary') {
+//     color: $color-gray-700;
 
-    .loading-indicator__spinner {
-      background-color: rgba($color-gray-700, 0.1);
-    }
-
-
-  }
-
-  @include modifier('success') {
-    color: $color-success;
-
-    .loading-indicator__spinner {
-      background-color: rgba($color-success, 0.1);
-    }
+//     .loading-indicator__spinner {
+//       background-color: rgba($color-gray-700, 0.1);
+//     }
 
 
-  }
+//   }
 
-  @include modifier('danger') {
-    color: $color-danger;
+//   @include modifier('success') {
+//     color: $color-shared-green-foreground;
 
-    .loading-indicator__spinner {
-      background-color: rgba($color-danger, 0.1);
-    }
-
-
-  }
-
-  @include modifier('warning') {
-    color: $color-warning;
-
-    .loading-indicator__spinner {
-      background-color: rgba($color-warning, 0.1);
-    }
+//     .loading-indicator__spinner {
+//       background-color: rgba($color-shared-green-foreground, 0.1);
+//     }
 
 
-  }
+//   }
 
-  @include modifier('info') {
-    color: $color-info;
+//   @include modifier('danger') {
+//     color: $color-shared-red-foreground;
 
-    .loading-indicator__spinner {
-      background-color: rgba($color-info, 0.1);
-    }
+//     .loading-indicator__spinner {
+//       background-color: rgba($color-shared-red-foreground, 0.1);
+//     }
 
 
-  }
+//   }
 
-  // Overlay modifier
-  @include modifier('overlay') {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: $z-index-modal;
-    background-color: rgba($color-white, 0.8);
-    backdrop-filter: blur(2px);
-    flex-direction: column;
-    gap: $spacing-large;
+//   @include modifier('warning') {
+//     color: $color-shared-orange-foreground;
 
-    .loading-indicator__text {
-      font-size: $font-size-large;
-      font-weight: $font-weight-semibold;
-    }
-  }
+//     .loading-indicator__spinner {
+//       background-color: rgba($color-shared-orange-foreground, 0.1);
+//     }
 
-  // Theme-aware overlay
-  &.theme-aware {
-    &.loading-indicator--overlay {
-      background-color: rgba(var(--theme-bg-primary), 0.8);
-    }
 
-    .loading-indicator__text {
-      color: var(--theme-text-primary);
-    }
-  }
-}
+//   }
 
-// Animations
-@keyframes loading-spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
+//   @include modifier('info') {
+//     color: $color-info;
 
-// Pulse animation for solid variant
-@keyframes loading-pulse {
-  0%, 100% {
-    opacity: 0.1;
-  }
-  50% {
-    opacity: 0.3;
-  }
-}
+//     .loading-indicator__spinner {
+//       background-color: rgba($color-info, 0.1);
+//     }
 
-.loading-indicator--solid .loading-indicator__spinner {
-  animation: loading-pulse 1.5s ease-in-out infinite;
-}
 
-// Bounce animation for ghost variant
-@keyframes loading-bounce {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-}
+//   }
 
-.loading-indicator--ghost .loading-indicator__spinner {
-  animation: loading-bounce 1s ease-in-out infinite;
-}
+//   // Overlay modifier
+//   @include modifier('overlay') {
+//     position: fixed;
+//     top: 0;
+//     left: 0;
+//     right: 0;
+//     bottom: 0;
+//     z-index: $z-index-modal;
+//     background-color: rgba($color-white, 0.8);
+//     backdrop-filter: blur(2px);
+//     flex-direction: column;
+//     gap: $spacing-large;
+
+//     .loading-indicator__text {
+//       font-size: $font-size-large;
+//       font-weight: $font-weight-semibold;
+//     }
+//   }
+
+//   // Theme-aware overlay
+//   &.theme-aware {
+//     &.loading-indicator--overlay {
+//       background-color: rgba(var(--theme-bg-primary), 0.8);
+//     }
+
+//     .loading-indicator__text {
+//       color: var(--theme-text-primary);
+//     }
+//   }
+// }
+
+// // Animations
+// @keyframes loading-spin {
+//   0% {
+//     transform: rotate(0deg);
+//   }
+//   100% {
+//     transform: rotate(360deg);
+//   }
+// }
+
+// // Pulse animation for solid variant
+// @keyframes loading-pulse {
+//   0%, 100% {
+//     opacity: 0.1;
+//   }
+//   50% {
+//     opacity: 0.3;
+//   }
+// }
+
+// .loading-indicator--solid .loading-indicator__spinner {
+//   animation: loading-pulse 1.5s ease-in-out infinite;
+// }
+
+// // Bounce animation for ghost variant
+// @keyframes loading-bounce {
+//   0%, 100% {
+//     transform: scale(1);
+//   }
+//   50% {
+//     transform: scale(1.1);
+//   }
+// }
+
+// .loading-indicator--ghost .loading-indicator__spinner {
+//   animation: loading-bounce 1s ease-in-out infinite;
+// }

@@ -31,10 +31,6 @@ export class SearchComponent extends FieldComponent implements OnInit, OnDestroy
 
   private debounceTimer: any;
 
-  override ngOnInit(): void {
-    super.ngOnInit();
-  }
-
   override ngOnDestroy(): void {
     super.ngOnDestroy();
     if (this.debounceTimer) {

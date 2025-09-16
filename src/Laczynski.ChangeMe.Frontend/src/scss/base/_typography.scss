@@ -3,70 +3,55 @@
 // ==========================================================================
 
 @use '../utils/variables' as *;
-@use '../utils/mixins' as *;
 
 // Headings
 h1, h2, h3, h4, h5, h6 {
   font-family: $font-family-base;
   font-weight: $font-weight-bold;
-  line-height: $line-height-tight;
-  margin-bottom: $spacing-medium;
-  color: $color-gray-900;
+  line-height: $line-height-300;
+  margin-bottom: $spacing-3;
+  color: $color-neutral-foreground-rest;
 }
 
 h1 {
-  font-size: $font-size-4xl;
-  margin-bottom: $spacing-large;
+  font-size: $font-size-800;
+  margin-bottom: $spacing-4;
   
-  @include respond-to(medium) {
-    font-size: $font-size-5xl;
-  }
+
 }
 
 h2 {
-  font-size: $font-size-3xl;
+  font-size: $font-size-700;
   
-  @include respond-to(medium) {
-    font-size: $font-size-4xl;
-  }
+
 }
 
 h3 {
-  font-size: $font-size-2xl;
-  
-  @include respond-to(medium) {
-    font-size: $font-size-3xl;
-  }
+  font-size: $font-size-600;
+
 }
 
 h4 {
-  font-size: $font-size-xl;
+  font-size: $font-size-500;
   
-  @include respond-to(medium) {
-    font-size: $font-size-2xl;
-  }
+
 }
 
 h5 {
-  font-size: $font-size-large;
+  font-size: $font-size-400;
   
-  @include respond-to(medium) {
-    font-size: $font-size-xl;
-  }
+
 }
 
 h6 {
-  font-size: $font-size-medium;
-  
-  @include respond-to(medium) {
-    font-size: $font-size-large;
-  }
+  font-size: $font-size-300;
+
 }
 
 // Paragraphs
 p {
-  margin-bottom: $spacing-medium;
-  line-height: $line-height-normal;
+  margin-bottom: $spacing-3;
+  line-height: $line-height-400;
   
   &:last-child {
     margin-bottom: 0;
@@ -75,24 +60,22 @@ p {
 
 // Links
 a {
-  color: $color-primary;
+  color: $color-brand-primary;
   text-decoration: none;
-  transition: color $transition-fast;
+  transition: color $duration-fast $easing-ease-in-out;
   
   &:hover {
-    color: $color-primary-dark;
+    color: $color-brand-primary-hover;
     text-decoration: underline;
   }
   
-  &:focus {
-    @include focus-ring;
-  }
+
 }
 
 // Lists
 ul, ol {
-  margin-bottom: $spacing-medium;
-  padding-left: $spacing-large;
+  margin-bottom: $spacing-3;
+  padding-left: $spacing-4;
   
   &:last-child {
     margin-bottom: 0;
@@ -108,7 +91,7 @@ ol {
 }
 
 li {
-  margin-bottom: $spacing-xs;
+  margin-bottom: $spacing-1;
   
   &:last-child {
     margin-bottom: 0;
@@ -117,7 +100,7 @@ li {
 
 // Definition lists
 dl {
-  margin-bottom: $spacing-medium;
+  margin-bottom: $spacing-3;
   
   &:last-child {
     margin-bottom: 0;
@@ -126,12 +109,12 @@ dl {
 
 dt {
   font-weight: $font-weight-semibold;
-  margin-bottom: $spacing-xs;
+  margin-bottom: $spacing-1;
 }
 
 dd {
-  margin-bottom: $spacing-small;
-  margin-left: $spacing-medium;
+  margin-bottom: $spacing-2;
+  margin-left: $spacing-3;
   
   &:last-child {
     margin-bottom: 0;
@@ -140,14 +123,14 @@ dd {
 
 // Blockquotes
 blockquote {
-  margin: $spacing-large 0;
-  padding: $spacing-medium $spacing-large;
-  border-left: 4px solid $color-primary;
-  background-color: $color-gray-100;
+  margin: $spacing-4 0;
+  padding: $spacing-3 $spacing-4;
+  border-left: 4px solid $color-brand-primary;
+  background-color: $color-neutral-background-selected;
   font-style: italic;
   
   p {
-    margin-bottom: $spacing-small;
+    margin-bottom: $spacing-2;
     
     &:last-child {
       margin-bottom: 0;
@@ -156,9 +139,9 @@ blockquote {
   
   cite {
     display: block;
-    margin-top: $spacing-small;
-    font-size: $font-size-small;
-    color: $color-gray-600;
+    margin-top: $spacing-2;
+    font-size: $font-size-200;
+    color: $color-neutral-foreground2-rest;
     font-style: normal;
     
     &::before {
@@ -171,21 +154,21 @@ blockquote {
 code {
   font-family: $font-family-mono;
   font-size: 0.875em;
-  background-color: $color-gray-100;
+  background-color: $color-neutral-background-selected;
   padding: 0.125em 0.25em;
-  border-radius: $border-radius-small;
-  color: $color-danger;
+  border-radius: $border-radius-200;
+  color: $color-shared-red-foreground;
 }
 
 pre {
   font-family: $font-family-mono;
-  font-size: $font-size-small;
-  line-height: $line-height-normal;
-  background-color: $color-gray-100;
-  padding: $spacing-medium;
-  border-radius: $border-radius;
+  font-size: $font-size-200;
+  line-height: $line-height-400;
+  background-color: $color-neutral-background-selected;
+  padding: $spacing-3;
+  border-radius: $border-radius-400;
   overflow-x: auto;
-  margin-bottom: $spacing-medium;
+  margin-bottom: $spacing-3;
   
   &:last-child {
     margin-bottom: 0;
@@ -200,29 +183,29 @@ pre {
 
 // Small text
 small {
-  font-size: $font-size-small;
-  color: $color-gray-600;
+  font-size: $font-size-200;
+  color: $color-neutral-foreground2-rest;
 }
 
 // Mark/highlight
 mark {
-  background-color: $color-warning;
-  color: $color-gray-900;
+  background-color: $color-shared-yellow-background;
+  color: $color-neutral-foreground-rest;
   padding: 0.125em 0.25em;
-  border-radius: $border-radius-small;
+  border-radius: $border-radius-200;
 }
 
 // Abbreviations
 abbr[title] {
-  border-bottom: 1px dotted $color-gray-400;
+  border-bottom: 1px dotted $color-neutral-stroke-rest;
   cursor: help;
 }
 
 // Address
 address {
   font-style: normal;
-  line-height: $line-height-normal;
-  margin-bottom: $spacing-medium;
+  line-height: $line-height-400;
+  margin-bottom: $spacing-3;
   
   &:last-child {
     margin-bottom: 0;
@@ -233,17 +216,17 @@ address {
 hr {
   border: none;
   height: 1px;
-  background-color: $color-gray-300;
-  margin: $spacing-xl 0;
+  background-color: $color-neutral-stroke-rest;
+  margin: $spacing-4 0;
 }
 
 // Selection
 ::selection {
-  background-color: $color-primary;
-  color: $color-white;
+  background-color: $color-brand-primary;
+  color: $color-neutral-foreground-on-brand;
 }
 
 ::-moz-selection {
-  background-color: $color-primary;
-  color: $color-white;
+  background-color: $color-brand-primary;
+  color: $color-neutral-foreground-on-brand;
 }

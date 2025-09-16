@@ -14,7 +14,6 @@ import { FormsModule } from '@angular/forms';
         errorText="This is an error text"
         warningText="This is a warning text"
         successText="This is a success text"
-        state="initial"
         size="small"
       ></app-color>
       <app-color

@@ -13,7 +13,6 @@ import { TextareaComponent } from './textarea.component';
         warningText="This is a warning text"
         successText="This is a success text"
         placeholder="This is a placeholder text"
-        state="initial"
         size="small"
       ></app-textarea>
       <app-textarea

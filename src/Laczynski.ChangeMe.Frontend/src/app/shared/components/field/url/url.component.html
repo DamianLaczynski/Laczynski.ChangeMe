@@ -13,34 +13,35 @@
   [id]="id()"
   [name]="name()"
   [state]="state()"
-  [layout]="layout()"
   [size]="size()"
 >
   <input
+    class="input"
+    type="url"
     [id]="id()"
     [name]="name()"
-    type="url"
-    [class]="inputClasses()"
     [placeholder]="placeholder()"
     [required]="required()"
     [disabled]="disabled()"
     [readonly]="readonly()"
     [autocomplete]="autocomplete()"
     [value]="value"
+    [attr.aria-label]="ariaLabel() || label()"
+    [attr.aria-describedby]="ariaDescribedBy()"
+    [attr.aria-invalid]="state() === 'error'"
     (input)="onInputChange($event)"
-    (focus)="onFocus($event)"
     (blur)="onBlur($event)"
+    (focus)="onFocus($event)"
     (keyup)="onKeyUp($event)"
     (keydown)="onKeyDown($event)"
-    #urlInput
   />
   @if (!disabled() && !readonly()) {
-  <div class="field__actions">
-    <app-clear-button
-      [value]="value"
-      [showClearButton]="true"
-      (clear)="clear()"
-    ></app-clear-button>
-  </div>
+    <div class="field__actions">
+      <app-clear-button
+        [value]="value"
+        [showClearButton]="true"
+        (clear)="clear()"
+      ></app-clear-button>
+    </div>
   }
 </app-field>

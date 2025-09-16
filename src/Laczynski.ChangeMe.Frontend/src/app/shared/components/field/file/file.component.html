@@ -13,7 +13,6 @@
   [id]="id()"
   [name]="name()"
   [state]="state()"
-  [layout]="layout()"
   [size]="size()"
 >
   <div
@@ -42,22 +41,19 @@
     />
 
     <!-- Custom file input display -->
-    <div
-      class="field__file-display"
-      [class]="inputClasses()"
-      (click)="triggerFileInput()"
-    >
+    <div class="field__file-display" (click)="triggerFileInput()">
       <!-- File icon and text -->
       <div class="field__file-content">
         <div class="field__file-text">
           @if (!selectedFiles.length) {
-          <span class="field__file-label">
-            {{ placeholder() }}
-          </span>
-          } @if (selectedFiles.length) {
-          <span class="field__file-selected">
-            {{ getSelectedFilesText() }}
-          </span>
+            <span class="field__file-label">
+              {{ placeholder() }}
+            </span>
+          }
+          @if (selectedFiles.length) {
+            <span class="field__file-selected">
+              {{ getSelectedFilesText() }}
+            </span>
           }
         </div>
       </div>
@@ -77,45 +73,45 @@
 
     <!-- File list -->
     @if (selectedFiles.length) {
-    <div class="field__file-list">
-      @for (file of selectedFiles; track file; let i = $index) {
-      <div class="field__input" [class.field__file-item--error]="fileErrors[i]">
-        <div class="field__file-info">
-          <span class="field__file-name">{{ file.name }}</span>
-          <span class="field__file-size">{{ formatFileSize(file.size) }}</span>
-        </div>
-        @if (!disabled()) {
-        <div class="field__actions">
-          <app-clear-button
-            [value]="file"
-            [showClearButton]="true"
-            (clear)="removeFile(i)"
-          ></app-clear-button>
-        </div>
+      <div class="field__file-list">
+        @for (file of selectedFiles; track file; let i = $index) {
+          <div class="field__input" [class.field__file-item--error]="fileErrors[i]">
+            <div class="field__file-info">
+              <span class="field__file-name">{{ file.name }}</span>
+              <span class="field__file-size">{{ formatFileSize(file.size) }}</span>
+            </div>
+            @if (!disabled()) {
+              <div class="field__actions">
+                <app-clear-button
+                  [value]="file"
+                  [showClearButton]="true"
+                  (clear)="removeFile(i)"
+                ></app-clear-button>
+              </div>
+            }
+          </div>
         }
       </div>
-      }
-    </div>
     }
 
     <!-- Drag and drop overlay -->
     @if (isDragOver) {
-    <div class="field__file-drag-overlay">
-      <div class="field__file-drag-content">
-        <svg
-          class="field__file-drag-icon"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-          <polyline points="7,10 12,15 17,10"></polyline>
-          <line x1="12" y1="15" x2="12" y2="3"></line>
-        </svg>
-        <span>Drop files here</span>
+      <div class="field__file-drag-overlay">
+        <div class="field__file-drag-content">
+          <svg
+            class="field__file-drag-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7,10 12,15 17,10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span>Drop files here</span>
+        </div>
       </div>
-    </div>
     }
   </div>
 </app-field>

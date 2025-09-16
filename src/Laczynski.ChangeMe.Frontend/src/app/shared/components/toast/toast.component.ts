@@ -29,7 +29,6 @@ export class ToastComponent {
     classes.push(`toast--${this.intent()}`);
     classes.push(`toast--${this.size()}`);
     classes.push(`toast--${this.variant()}`);
-    classes.push(`toast--${this.position()}`);
 
     if (!this.visible()) {
       classes.push('toast--hidden');

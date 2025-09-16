@@ -552,7 +552,7 @@ export class ButtonComponent {
   [type]="type()"
   [class]="buttonClasses()"
   [disabled]="disabled()"
-  [attr.aria-label]="ariaLabel()"
+  [attr.aria-label]="ariaLabel() || label()"
   (click)="onClick($event)"
 >
   <ng-content></ng-content>
