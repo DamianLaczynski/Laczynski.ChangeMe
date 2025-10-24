@@ -1,0 +1,36 @@
+<div [class]="splitterClasses()" role="group" [attr.aria-label]="ariaLabel()">
+  @for (panel of panels(); track panel.id; let i = $index) {
+    <!-- Panel -->
+    <div
+      #panel
+      [class]="panelClasses(i)"
+      [style]="getPanelStyle(i)"
+      [attr.data-panel-id]="panel.id"
+      [attr.data-panel-index]="i"
+    >
+      @if (getPanelTemplate(panel.id); as template) {
+        <ng-container *ngTemplateOutlet="template"></ng-container>
+      }
+    </div>
+
+    <!-- Gutter (resize handle) - not after the last panel -->
+    @if (i < panels().length - 1) {
+      <div
+        [class]="gutterClasses(i)"
+        [style]="getGutterStyle()"
+        [attr.role]="canResize(i) ? 'separator' : null"
+        [attr.aria-label]="getGutterAriaLabel(i)"
+        [attr.aria-orientation]="orientation()"
+        [attr.aria-valuenow]="panelSizes()[i]"
+        [attr.aria-valuemin]="panels()[i].minSize || 0"
+        [attr.aria-valuemax]="panels()[i].maxSize || 100"
+        [attr.tabindex]="getGutterTabIndex(i)"
+        [attr.data-gutter-index]="i"
+        (mousedown)="onGutterMouseDown($event, i)"
+        (keydown)="onGutterKeyDown($event, i)"
+      >
+        <div class="splitter__gutter-handle"></div>
+      </div>
+    }
+  }
+</div>
