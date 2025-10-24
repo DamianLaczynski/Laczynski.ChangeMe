@@ -1,0 +1,16 @@
+<div [class]="treeClasses()" role="tree" [attr.aria-label]="'Tree view'">
+  @for (node of nodes(); track node.id) {
+    <app-tree-item
+      [node]="node"
+      [size]="size()"
+      [showIcon]="showIcon()"
+      [showQuickActions]="showQuickActions()"
+      [quickActionsTemplate]="quickActionsTemplate() || null"
+      [focusedNodeId]="focusedNodeId()"
+      (nodeClick)="onNodeClick($event)"
+      (nodeToggle)="onNodeToggle($event)"
+      (nodeSelect)="onNodeSelect($event)"
+      (keyNavigation)="onKeyNavigation($event)"
+    />
+  }
+</div>
