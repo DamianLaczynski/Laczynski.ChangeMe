@@ -1,0 +1,87 @@
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use '../utils/functions' as *;
+
+$skeleton-background: #E6E6E6;
+$skeleton-shimmer-color: #FAFAFA;
+
+.skeleton {
+  position: relative;
+  background: $skeleton-background;
+  overflow: hidden;
+  
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  
+  user-select: none;
+}
+
+.skeleton__shimmer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 300%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.skeleton__shimmer-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    white 34%,
+    white 50%,
+    white 65%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  mix-blend-mode: normal;
+  opacity: 0.5;
+}
+
+.skeleton__shimmer-color {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: $skeleton-shimmer-color;
+}
+
+.skeleton--animated {
+  .skeleton__shimmer {
+    animation: skeleton-shimmer 2s ease-in-out infinite;
+  }
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(33.333%);
+  }
+}
+
+.skeleton--rectangle {
+}
+
+.skeleton--circle {
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton--animated {
+    .skeleton__shimmer {
+      animation: none;
+    }
+  }
+}
+

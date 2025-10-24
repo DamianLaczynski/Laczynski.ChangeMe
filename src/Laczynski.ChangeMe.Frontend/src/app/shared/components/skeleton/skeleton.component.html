@@ -1,0 +1,15 @@
+<div 
+  [ngClass]="skeletonClasses()" 
+  [ngStyle]="skeletonStyles()"
+  [attr.aria-busy]="true"
+  [attr.aria-label]="'Loading content'"
+  role="status"
+>
+@if (animated()) {
+  <div class="skeleton__shimmer">
+    <div class="skeleton__shimmer-mask"></div>
+    <div class="skeleton__shimmer-color"></div>
+  </div>
+}
+</div>
+
