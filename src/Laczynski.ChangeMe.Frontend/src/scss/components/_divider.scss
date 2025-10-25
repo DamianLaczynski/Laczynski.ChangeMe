@@ -1,0 +1,138 @@
+// ==========================================================================
+// Divider Component - Fluent 2 Design System (BEM Block)
+// ==========================================================================
+
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use '../utils/functions' as *;
+
+@include block('divider') {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+
+  @include element('line') {
+    background-color: $color-neutral-stroke-disabled;
+    
+    @include modifier('full') {
+      flex: 1 1 0;
+    }
+    
+    @include modifier('start') {
+      flex: 1 1 0;
+    }
+    
+    @include modifier('end') {
+      flex: 1 1 0;
+    }
+  }
+
+  @include element('content') {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-1; // 6px equivalent but using system variable
+    flex-shrink: 0;
+  }
+
+  @include element('text') {
+    color: $color-neutral-foreground2-rest;
+    font-size: $font-size-200; // 12px
+    font-family: $font-family-base;
+    font-weight: $font-weight-regular;
+    line-height: $line-height-200; // 16px
+    word-wrap: break-word;
+  }
+
+  // Orientation Modifiers
+  @include modifier('horizontal') {
+    align-self: stretch;
+    width: 100%;
+    flex-direction: row;
+
+    .divider__line {
+      height: 1px;
+      
+      &.divider__line--full {
+        width: 100%;
+      }
+    }
+
+    .divider__content {
+      height: 20px;
+      padding-left: $spacing-3;
+      padding-right: $spacing-3;
+    }
+
+    &.divider--start {
+      .divider__line--start {
+        flex: 0 0 8px;
+        width: 8px;
+      }
+    }
+
+    &.divider--end {
+      .divider__line--end {
+        flex: 0 0 8px;
+        width: 8px;
+      }
+    }
+  }
+
+  @include modifier('vertical') {
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+
+    .divider__line {
+      width: 1px;
+      
+      &.divider__line--full {
+        height: 100%;
+      }
+    }
+
+    .divider__content {
+      padding-top: $spacing-3;
+      padding-bottom: $spacing-3;
+    }
+
+    &.divider--start {
+      .divider__line--start {
+        flex: 0 0 8px;
+        height: 8px;
+      }
+      
+      .divider__line--end {
+        flex: 1 1 0;
+        height: auto;
+      }
+    }
+
+    &.divider--center {
+      .divider__line--start {
+        flex: 1 1 0;
+        height: auto;
+      }
+      
+      .divider__line--end {
+        flex: 1 1 0;
+        height: auto;
+      }
+    }
+
+    &.divider--end {
+      .divider__line--start {
+        flex: 1 1 0;
+        height: auto;
+      }
+      
+      .divider__line--end {
+        flex: 0 0 8px;
+        height: 8px;
+      }
+    }
+  }
+}
+

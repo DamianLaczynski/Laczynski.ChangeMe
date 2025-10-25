@@ -1,0 +1,18 @@
+<div
+  [class]="dividerClasses"
+  role="separator"
+  [attr.aria-label]="ariaLabelText"
+  [attr.aria-orientation]="orientation()"
+>
+  @if (hasText()) {
+    <div class="divider__line divider__line--start"></div>
+
+    <div class="divider__content">
+      <span class="divider__text">{{ text() }}</span>
+    </div>
+
+    <div class="divider__line divider__line--end"></div>
+  } @else {
+    <div class="divider__line divider__line--full"></div>
+  }
+</div>
