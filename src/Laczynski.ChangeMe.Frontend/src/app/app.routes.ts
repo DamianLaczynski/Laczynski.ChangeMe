@@ -1,6 +1,16 @@
 import { Routes } from '@angular/router';
-import { ItemsListComponent } from '@features/items/components/items-list/items-list.component';
-import { ItemsInfiniteListComponent } from '@features/items/components/items-infinite-list/items-infinite-list.component';
-import { ItemFormComponent } from '@features/items/components/item-form/item-form.component';
+import { DsComponent } from '@shared/ds/ds.component';
+import { dsRoutes } from '@shared/ds/ds.routes';
 
-export const routes: Routes = [];
+export const routes: Routes = [
+  {
+    path: '',
+    redirectTo: 'ds',
+    pathMatch: 'full',
+  },
+  {
+    path: 'ds',
+    component: DsComponent,
+    children: dsRoutes,
+  },
+];
