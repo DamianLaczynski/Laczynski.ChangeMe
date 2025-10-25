@@ -1,0 +1,221 @@
+// ==========================================================================
+// Dialog Component - Fluent 2 Design System (BEM Block)
+// ==========================================================================
+
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use '../utils/functions' as *;
+
+@include block('dialog') {
+  @include element('backdrop') {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: $z-index-modal-backdrop;
+    opacity: 1;
+    transition: opacity $duration-normal $easing-ease-in-out;
+    padding: $spacing-6;
+    overflow-y: auto;
+
+    @include modifier('hidden') {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    @include respond-to(small) {
+      padding: $spacing-4;
+    }
+
+    @include modifier('fullscreen') {
+      padding: 0;
+    }
+  }
+
+  @include element('content') {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: $color-neutral-background-rest;
+    box-shadow: $elevation-16;
+    border-radius: $border-radius-800;
+    overflow: hidden;
+    transform: scale(1);
+    transition: transform $duration-normal $easing-ease-in-out;
+    width: 100%;
+    max-height: calc(100vh - #{$spacing-12});
+
+    @include modifier('fullscreen') {
+      width: 100vw;
+      height: 100vh;
+      max-height: 100vh;
+      border-radius: 0;
+      box-shadow: none;
+    }
+  }
+
+  @include element('header') {
+    display: inline-flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: $spacing-2;
+    padding: $spacing-6;
+    padding-bottom: 0;
+  }
+
+  @include element('title') {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: $color-neutral-foreground-rest;
+    font-size: $font-size-500;
+    font-family: $font-family-base;
+    font-weight: $font-weight-semibold;
+    line-height: $line-height-500;
+    word-wrap: break-word;
+    margin: 0;
+  }
+
+  @include element('close-container') {
+    width: 28px;
+    height: 28px;
+    padding-left: $spacing-1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  @include element('close-button') {
+    padding: $spacing-1 + $spacing-05;
+    min-width: unset !important;
+    width: auto !important;
+    height: auto !important;
+  }
+
+  @include element('close-icon') {
+    width: 20px;
+    height: 20px;
+    fill: $color-neutral-foreground2-rest;
+  }
+
+  @include element('body') {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: $spacing-2;
+    padding: $spacing-6;
+    padding-top: $spacing-2;
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+  }
+
+  @include element('text') {
+    align-self: stretch;
+    color: $color-neutral-foreground-rest;
+    font-size: $font-size-300;
+    font-family: $font-family-base;
+    font-weight: $font-weight-regular;
+    line-height: $line-height-300;
+    word-wrap: break-word;
+    margin: 0;
+  }
+
+  @include element('footer') {
+    align-self: stretch;
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: $spacing-6;
+    padding-top: $spacing-1;
+    gap: $spacing-2;
+
+  }
+
+  @include element('footer-left') {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: $spacing-2;
+
+  }
+
+  @include element('footer-right') {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: $spacing-2;
+
+  }
+
+  // Make buttons full width on small screens
+  @media (max-width: 479px) {
+    .dialog__footer-left,
+    .dialog__footer-right {
+      app-button {
+        width: 100%;
+
+        button {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+    }
+  }
+
+  // Hidden state
+  @include modifier('hidden') {
+    .dialog__content {
+      transform: scale(0.95);
+    }
+  }
+
+  // Animations
+  .dialog__backdrop:not(.dialog__backdrop--hidden) {
+    animation: dialog-fade-in $duration-normal $easing-ease-in-out;
+  }
+
+  .dialog__content {
+    animation: dialog-scale-in $duration-normal $easing-ease-in-out;
+
+    &.dialog__content--fullscreen {
+      animation: dialog-fade-in $duration-fast $easing-ease-in-out;
+    }
+  }
+}
+
+// Keyframe animations
+@keyframes dialog-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes dialog-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// Body scroll lock when dialog is open
+body:has(.dialog__backdrop:not(.dialog__backdrop--hidden)) {
+  overflow: hidden;
+}
+

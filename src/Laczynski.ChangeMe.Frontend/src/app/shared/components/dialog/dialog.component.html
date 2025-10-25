@@ -1,0 +1,97 @@
+@if (visible()) {
+  <div
+    [class]="backdropClasses()"
+    (click)="onBackdropClick($event)"
+    role="dialog"
+    [attr.aria-modal]="true"
+    [attr.aria-hidden]="!visible()"
+    [attr.aria-labelledby]="title() ? 'dialog-title' : null"
+  >
+    <div [class]="dialogClasses()" role="document">
+      <div [class]="contentClasses()" [ngStyle]="contentStyles()">
+        <!-- Header -->
+        <div [class]="headerClasses()">
+          <h2 id="dialog-title" class="dialog__title">
+            {{ title() }}
+          </h2>
+
+          @if (closable()) {
+            <div class="dialog__close-container">
+              <app-button
+                variant="subtle"
+                [iconOnly]="true"
+                [ariaLabel]="'Close dialog'"
+                (click)="onCloseClick()"
+                class="dialog__close-button"
+              >
+                <svg
+                  class="dialog__close-icon"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M4.08859 4.21569L4.14645 4.14645C4.32001 3.97288 4.58944 3.9536 4.78431 4.08859L4.85355 4.14645L10 9.293L15.1464 4.14645C15.32 3.97288 15.5894 3.9536 15.7843 4.08859L15.8536 4.14645C16.0271 4.32001 16.0464 4.58944 15.9114 4.78431L15.8536 4.85355L10.707 10L15.8536 15.1464C16.0271 15.32 16.0464 15.5894 15.9114 15.7843L15.8536 15.8536C15.68 16.0271 15.4106 16.0464 15.2157 15.9114L15.1464 15.8536L10 10.707L4.85355 15.8536C4.67999 16.0271 4.41056 16.0464 4.21569 15.9114L4.14645 15.8536C3.97288 15.68 3.9536 15.4106 4.08859 15.2157L4.14645 15.1464L9.293 10L4.14645 4.85355C3.97288 4.67999 3.9536 4.41056 4.08859 4.21569L4.14645 4.14645L4.08859 4.21569Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </app-button>
+            </div>
+          }
+        </div>
+
+        <!-- Body -->
+        <div [class]="bodyClasses()">
+          @if (bodyText()) {
+            <p class="dialog__text">{{ bodyText() }}</p>
+          }
+
+          <ng-content></ng-content>
+        </div>
+
+        <!-- Footer -->
+        @if (hasActions()) {
+          <div [class]="footerClasses()">
+            <div class="dialog__footer-left">
+              @for (action of additionalActions(); track action.label) {
+                <app-button
+                  [variant]="action.variant"
+                  [disabled]="action.disabled ?? false"
+                  (click)="handleAdditionalAction(action)"
+                >
+                  {{ action.label }}
+                </app-button>
+              }
+            </div>
+
+            <div class="dialog__footer-right">
+              @if (primaryAction()) {
+                <app-button
+                  [variant]="primaryAction()!.variant"
+                  [size]="primaryAction()!.size"
+                  [disabled]="primaryAction()!.disabled ?? false"
+                  (click)="handlePrimaryAction()"
+                >
+                  {{ primaryAction()!.label }}
+                </app-button>
+              }
+
+              @if (secondaryAction()) {
+                <app-button
+                  [variant]="secondaryAction()!.variant"
+                  [size]="secondaryAction()!.size"
+                  [disabled]="secondaryAction()!.disabled ?? false"
+                  (click)="handleSecondaryAction()"
+                >
+                  {{ secondaryAction()!.label }}
+                </app-button>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+}
