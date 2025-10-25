@@ -1,0 +1,133 @@
+// ==========================================================================
+// Progress Bar Component - Fluent 2 Design System (BEM Block)
+// ==========================================================================
+
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use '../utils/functions' as *;
+
+@include block('progress-bar') {
+  position: relative;
+  width: 100%;
+  background: $color-neutral-stroke-rest;
+  border-radius: $border-radius-circular;
+  overflow: hidden;
+  outline: 1px solid transparent;
+  outline-offset: -1px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  @include element('track') {
+    height: 100%;
+    background: $color-brand-primary;
+    border-radius: $border-radius-circular;
+    transition: width $duration-normal $easing-ease-in-out;
+    position: relative;
+  }
+
+  @include element('gradient-mask') {
+    @include absolute-cover;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0) 0%,
+      white 54%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    mix-blend-mode: screen;
+    pointer-events: none;
+  }
+
+  @include modifier('medium') {
+    height: 2px;
+  }
+
+  @include modifier('large') {
+    height: 4px;
+  }
+
+  @include modifier('determinate') {
+    .progress-bar__track {
+      min-width: 0;
+    }
+  }
+
+  @include modifier('indeterminate') {
+    .progress-bar__track {
+      width: 33.33% !important;
+      position: absolute;
+      left: 0;
+      top: 0;
+      animation: progress-bar-indeterminate 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+  }
+
+  @include modifier('default') {
+    .progress-bar__track {
+      background: $color-brand-primary;
+    }
+  }
+
+  @include modifier('success') {
+    .progress-bar__track {
+      background: $color-shared-green-foreground;
+    }
+  }
+
+  @include modifier('error') {
+    .progress-bar__track {
+      background: $color-shared-red-foreground;
+    }
+  }
+
+  @include modifier('warning') {
+    .progress-bar__track {
+      background: $color-shared-orange-foreground;
+    }
+  }
+
+  &.progress-bar--determinate.progress-bar--success .progress-bar__track[style*="100%"] {
+    background: $color-shared-green-foreground;
+  }
+
+  &.progress-bar--determinate.progress-bar--error .progress-bar__track[style*="100%"] {
+    background: $color-shared-red-foreground;
+  }
+
+  &.progress-bar--determinate.progress-bar--warning .progress-bar__track[style*="100%"] {
+    background: $color-shared-orange-foreground;
+  }
+}
+
+@keyframes progress-bar-indeterminate {
+  0% {
+    left: -33.33%;
+    opacity: 0;
+  }
+  
+  10% {
+    left: -33.33%;
+    opacity: 1;
+  }
+  
+  90% {
+    left: 100%;
+    opacity: 1;
+  }
+  
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes progress-bar-indeterminate-smooth {
+  0% {
+    transform: translateX(-100%);
+  }
+  
+  100% {
+    transform: translateX(400%);
+  }
+}
+

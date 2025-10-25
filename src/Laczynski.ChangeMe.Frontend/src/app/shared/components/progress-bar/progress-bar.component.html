@@ -1,0 +1,16 @@
+<div
+  [class]="progressBarClasses()"
+  role="progressbar"
+  [attr.aria-label]="ariaLabel()"
+  [attr.aria-valuenow]="ariaValueNow()"
+  [attr.aria-valuemin]="ariaValueMin()"
+  [attr.aria-valuemax]="ariaValueMax()"
+  [attr.aria-valuetext]="ariaValueText()"
+>
+  <div [class]="trackClasses()" [ngStyle]="trackStyle()">
+    @if (type() === 'indeterminate') {
+      <div class="progress-bar__gradient-mask"></div>
+    }
+  </div>
+</div>
+
