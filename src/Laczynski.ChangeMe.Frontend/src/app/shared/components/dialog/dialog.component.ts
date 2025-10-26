@@ -1,18 +1,9 @@
 import { Component, input, output, model, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ButtonStyle, Size } from '../utils';
+import { QuickAction } from '../utils';
 import { ButtonComponent } from '../button/button.component';
 
 export type DialogBackdrop = 'static' | 'dynamic';
-
-export interface DialogAction {
-  label: string;
-  variant?: ButtonStyle;
-  icon?: string;
-  size?: Size;
-  disabled?: boolean;
-  action: () => void;
-}
 
 @Component({
   selector: 'app-dialog',
@@ -30,9 +21,9 @@ export class DialogComponent {
   height = input<string>('');
   visible = model<boolean>(false);
 
-  primaryAction = input<DialogAction | null>(null);
-  secondaryAction = input<DialogAction | null>(null);
-  additionalActions = input<DialogAction[]>([]);
+  primaryAction = input<QuickAction | null>(null);
+  secondaryAction = input<QuickAction | null>(null);
+  additionalActions = input<QuickAction[]>([]);
 
   close = output<void>();
   backdropClick = output<void>();
@@ -139,7 +130,7 @@ export class DialogComponent {
     }
   }
 
-  handleAdditionalAction(action: DialogAction): void {
+  handleAdditionalAction(action: QuickAction): void {
     if (!action.disabled) {
       action.action();
     }
