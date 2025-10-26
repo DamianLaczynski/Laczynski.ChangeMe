@@ -1,0 +1,360 @@
+// ==========================================================================
+// Tag Component - Fluent 2 Design System
+// ==========================================================================
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  border-radius: 4px;
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
+  font-weight: 400;
+  word-wrap: break-word;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease-in-out;
+  box-sizing: border-box;
+
+  // Focus state
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--Brand-Background-1-Rest, #0F6CBD);
+    outline-offset: 2px;
+  }
+
+  // Content wrapper
+  &__content {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100%;
+    max-height: 32px;
+  }
+
+  // Text container
+  &__text-slot {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 2px;
+  }
+
+  // Primary text
+  &__primary {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  // Secondary text (2-line layout)
+  &__secondary {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  // Dismiss button
+  &__dismiss {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: opacity 0.2s ease-in-out;
+    border-radius: 2px;
+
+    &:hover {
+      opacity: 0.8;
+    }
+
+    &:active {
+      opacity: 1;
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--Brand-Background-1-Rest, #0F6CBD);
+      outline-offset: 2px;
+    }
+  }
+
+  &__dismiss-icon {
+    display: block;
+  }
+
+  // ========================================================================
+  // SIZE VARIANTS
+  // ========================================================================
+
+  // Extra Small (20px)
+  &--extra-small {
+    height: 20px;
+    max-height: 20px;
+
+    .tag__content {
+      padding-left: 6px;
+      padding-right: 6px;
+      gap: 2px;
+    }
+
+    .tag__text-slot {
+      padding-bottom: 2px;
+      padding-left: 2px;
+      padding-right: 2px;
+    }
+
+    .tag__primary {
+      font-size: 12px;
+      line-height: 16px;
+    }
+  }
+
+  // Small (24px)
+  &--small {
+    height: 24px;
+    max-height: 24px;
+
+    .tag__content {
+      padding-left: 6px;
+      padding-right: 6px;
+      gap: 2px;
+    }
+
+    .tag__text-slot {
+      padding-bottom: 2px;
+      padding-left: 2px;
+      padding-right: 2px;
+    }
+
+    .tag__primary {
+      font-size: 12px;
+      line-height: 16px;
+    }
+  }
+
+  // Medium (32px) - Default
+  &--medium {
+    height: 32px;
+    max-height: 32px;
+
+    .tag__content {
+      padding-left: 8px;
+      padding-right: 8px;
+      gap: 4px;
+    }
+
+    .tag__text-slot {
+      padding-bottom: 2px;
+      padding-left: 2px;
+      padding-right: 2px;
+    }
+
+    .tag__primary {
+      font-size: 14px;
+      line-height: 20px;
+    }
+  }
+
+  // ========================================================================
+  // STYLE VARIANTS - FILLED (Default)
+  // ========================================================================
+
+  &--filled {
+    background: var(--Neutral-Background-3-Rest, #F5F5F5);
+    outline: 1px var(--Neutral-Stroke-Transparent-Rest, rgba(255, 255, 255, 0)) solid;
+    outline-offset: -1px;
+
+    .tag__primary {
+      color: var(--Neutral-Foreground-2-Rest, #424242);
+    }
+
+    .tag__dismiss-icon path {
+      fill: var(--Neutral-Foreground-2-Rest, #424242);
+    }
+
+    // Hover state
+    &:hover:not(.tag--disabled):not(.tag--selected) {
+      .tag__dismiss-icon path {
+        fill: var(--Neutral-Foreground-2-Brand-Hover, #0F6CBD);
+      }
+    }
+
+    // Pressed state
+    &:active:not(.tag--disabled):not(.tag--selected) {
+      .tag__dismiss-icon path {
+        fill: var(--Neutral-Foreground-2-Brand-Pressed, #115EA3);
+      }
+    }
+
+    // Selected state
+    &.tag--selected {
+      background: var(--Brand-Background-1-Rest, #0F6CBD);
+
+      .tag__primary {
+        color: var(--Neutral-Foreground-On-Brand-Rest, white);
+      }
+
+      .tag__dismiss-icon path {
+        fill: var(--Neutral-Foreground-On-Brand-Rest, white);
+      }
+    }
+
+    // Disabled state
+    &.tag--disabled {
+      background: var(--Neutral-Background-Disabled-Rest, #F0F0F0);
+      cursor: not-allowed;
+
+      .tag__primary {
+        color: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+      }
+
+      .tag__dismiss-icon path {
+        fill: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+      }
+    }
+  }
+
+  // ========================================================================
+  // STYLE VARIANTS - BRAND
+  // ========================================================================
+
+  &--brand {
+    background: var(--Brand-Background-2-Rest, #EBF3FC);
+    outline: 1px var(--Neutral-Stroke-Transparent-Rest, rgba(255, 255, 255, 0)) solid;
+    outline-offset: -1px;
+
+    .tag__primary {
+      color: var(--Brand-Foreground-2-Rest, #115EA3);
+    }
+
+    .tag__dismiss-icon path {
+      fill: var(--Brand-Foreground-2-Rest, #115EA3);
+    }
+
+    // Hover state
+    &:hover:not(.tag--disabled):not(.tag--selected) {
+      .tag__dismiss-icon path {
+        fill: var(--Brand-Foreground-2-Hover, #0F548C);
+      }
+    }
+
+    // Pressed state
+    &:active:not(.tag--disabled):not(.tag--selected) {
+      .tag__dismiss-icon path {
+        fill: var(--Brand-Foreground-2-Pressed, #0A2E4A);
+      }
+    }
+
+    // Selected state
+    &.tag--selected {
+      background: var(--Brand-Background-1-Rest, #0F6CBD);
+
+      .tag__primary {
+        color: var(--Neutral-Foreground-On-Brand-Rest, white);
+      }
+
+      .tag__dismiss-icon path {
+        fill: var(--Neutral-Foreground-On-Brand-Rest, white);
+      }
+    }
+
+    // Disabled state
+    &.tag--disabled {
+      background: var(--Neutral-Background-Disabled-Rest, #F0F0F0);
+      cursor: not-allowed;
+
+      .tag__primary{
+        color: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+      }
+
+      .tag__dismiss-icon path {
+        fill: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+      }
+    }
+  }
+
+  // ========================================================================
+  // STYLE VARIANTS - OUTLINE
+  // ========================================================================
+
+  &--outline {
+    background: transparent;
+    border-radius: 4px;
+    outline: 1px var(--Neutral-Stroke-1-Rest, #D1D1D1) solid;
+    outline-offset: -1px;
+
+    .tag__primary {
+      color: var(--Neutral-Foreground-2-Rest, #424242);
+    }
+
+    .tag__dismiss-icon path {
+      fill: var(--Neutral-Foreground-2-Rest, #424242);
+    }
+
+    // Hover state
+    &:hover:not(.tag--disabled):not(.tag--selected) {
+      .tag__dismiss-icon path {
+        fill: var(--Neutral-Foreground-2-Brand-Hover, #0F6CBD);
+      }
+    }
+
+    // Pressed state
+    &:active:not(.tag--disabled):not(.tag--selected) {
+      .tag__dismiss-icon path {
+        fill: var(--Neutral-Foreground-2-Brand-Pressed, #115EA3);
+      }
+    }
+
+    // Selected state
+    &.tag--selected {
+      background: var(--Brand-Background-1-Rest, #0F6CBD);
+      outline: 1px var(--Neutral-Stroke-Transparent-Rest, rgba(255, 255, 255, 0)) solid;
+
+      .tag__primary {
+        color: var(--Neutral-Foreground-On-Brand-Rest, white);
+      }
+
+      .tag__dismiss-icon path {
+        fill: var(--Neutral-Foreground-On-Brand-Rest, white);
+      }
+    }
+
+    // Disabled state
+    &.tag--disabled {
+      outline: 1px var(--Neutral-Stroke-Disabled-Rest, #E0E0E0) solid;
+      cursor: not-allowed;
+
+      .tag__primary {
+        color: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+      }
+
+      .tag__dismiss-icon path {
+        fill: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+      }
+    }
+  }
+
+  // ========================================================================
+  // STATE MODIFIERS
+  // ========================================================================
+
+  &--disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+
+    &:focus-visible {
+      outline: none;
+    }
+  }
+}
+
