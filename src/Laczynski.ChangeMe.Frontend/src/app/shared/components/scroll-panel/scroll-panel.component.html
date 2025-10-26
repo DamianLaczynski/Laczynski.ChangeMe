@@ -1,0 +1,12 @@
+<div [class]="scrollPanelClasses" role="region" [attr.aria-label]="ariaLabelText">
+  <div
+    #scrollContainer
+    class="scroll-panel__content"
+    [ngStyle]="scrollPanelStyles"
+    (scroll)="onScroll($event)"
+  >
+    <div class="scroll-panel__inner">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>

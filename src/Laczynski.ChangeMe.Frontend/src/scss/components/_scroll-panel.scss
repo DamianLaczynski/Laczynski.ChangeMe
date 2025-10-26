@@ -1,0 +1,181 @@
+// ==========================================================================
+// ScrollPanel Component - Fluent 2 Design System (BEM Block)
+// ==========================================================================
+
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use '../utils/functions' as *;
+
+@include block('scroll-panel') {
+  // Base scroll panel styles
+  position: relative;
+  display: flex;
+  width: 100%;
+  border-radius: $border-radius-400;
+  background: var(--Neutral-Background-1-Rest, white);
+  overflow: hidden;
+  box-sizing: border-box;
+  
+  @include focus-ring($color-brand-primary);
+
+  // ========================================================================
+  // Elements
+  // ========================================================================
+  
+  @include element('content') {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow: auto;
+    scrollbar-gutter: stable;
+    scroll-behavior: smooth;
+    box-sizing: border-box;
+    
+    // Custom scrollbar styling - Fluent 2 Design
+    &::-webkit-scrollbar {
+      width: 12px;
+      height: 12px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: var(--Neutral-Stroke-1-Rest, #D1D1D1);
+      border-radius: 6px;
+      border: 3px solid transparent;
+      background-clip: content-box;
+      transition: background $duration-faster $easing-ease-in-out;
+      
+      &:hover {
+        background: var(--Neutral-Stroke-1-Hover, #C7C7C7);
+        background-clip: content-box;
+      }
+      
+      &:active {
+        background: var(--Neutral-Stroke-1-Pressed, #B3B3B3);
+        background-clip: content-box;
+      }
+    }
+    
+    &::-webkit-scrollbar-corner {
+      background: transparent;
+    }
+    
+    // Firefox scrollbar styling
+    scrollbar-width: thin;
+    scrollbar-color: var(--Neutral-Stroke-1-Rest, #D1D1D1) transparent;
+  }
+  
+  @include element('inner') {
+    width: 100%;
+    min-height: min-content;
+    box-sizing: border-box;
+  }
+
+  // ========================================================================
+  // Orientation Modifiers
+  // ========================================================================
+  
+  @include modifier('vertical') {
+    .scroll-panel__content {
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+  }
+  
+  @include modifier('horizontal') {
+    .scroll-panel__content {
+      overflow-x: auto;
+      overflow-y: hidden;
+      flex-direction: row;
+    }
+    
+    .scroll-panel__inner {
+      display: inline-flex;
+      width: auto;
+      min-width: min-content;
+    }
+  }
+  
+  @include modifier('both') {
+    .scroll-panel__content {
+      overflow: auto;
+    }
+    
+    .scroll-panel__inner {
+      min-width: min-content;
+    }
+  }
+
+  // ========================================================================
+  // Scrollbar Behavior Modifiers
+  // ========================================================================
+  
+  @include modifier('auto') {
+    // Default behavior - scrollbar shows when hovering
+    .scroll-panel__content {
+      &::-webkit-scrollbar-thumb {
+        background: transparent;
+        
+        &:hover {
+          background: var(--Neutral-Stroke-1-Hover, #C7C7C7);
+          background-clip: content-box;
+        }
+      }
+      
+      &:hover::-webkit-scrollbar-thumb {
+        background: var(--Neutral-Stroke-1-Rest, #D1D1D1);
+        background-clip: content-box;
+      }
+      
+      // Firefox
+      scrollbar-color: transparent transparent;
+      
+      &:hover {
+        scrollbar-color: var(--Neutral-Stroke-1-Rest, #D1D1D1) transparent;
+      }
+    }
+  }
+  
+  @include modifier('always') {
+    .scroll-panel__content {
+      &::-webkit-scrollbar-thumb {
+        background: var(--Neutral-Stroke-1-Rest, #D1D1D1);
+        background-clip: content-box;
+      }
+      
+      // Firefox
+      scrollbar-color: var(--Neutral-Stroke-1-Rest, #D1D1D1) transparent;
+    }
+  }
+  
+  @include modifier('never') {
+    .scroll-panel__content {
+      &::-webkit-scrollbar {
+        display: none;
+      }
+      
+      // Firefox
+      scrollbar-width: none;
+      
+      // IE and Edge
+      -ms-overflow-style: none;
+    }
+  }
+
+  // ========================================================================
+  // State Classes
+  // ========================================================================
+  
+  @include element-modifier('content', 'has-vertical-scroll') {
+    // Additional styles when vertical scrolling is active
+  }
+  
+  @include element-modifier('content', 'has-horizontal-scroll') {
+    // Additional styles when horizontal scrolling is active
+  }
+}
+
