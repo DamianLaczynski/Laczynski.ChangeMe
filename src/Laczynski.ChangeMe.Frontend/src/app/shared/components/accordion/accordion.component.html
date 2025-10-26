@@ -1,0 +1,109 @@
+<div class="accordion" [class]="accordionClasses()">
+  <!-- Accordion Header -->
+  <button
+    class="accordion__header"
+    type="button"
+    [attr.aria-expanded]="expanded()"
+    [attr.aria-disabled]="disabled()"
+    [disabled]="disabled()"
+    (click)="onToggle()"
+    (keydown)="onKeyDown($event)"
+  >
+    <!-- Content Section -->
+    <div class="accordion__content">
+      <!-- Left Section (for chevron-before) -->
+      @if (chevronPosition() === 'before') {
+        <div class="accordion__left">
+          <!-- Chevron -->
+          <span class="accordion__chevron">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M15.8527 7.64582C16.0484 7.84073 16.0489 8.15731 15.854 8.35292L10.389 13.8374C10.1741 14.0531 9.82477 14.0531 9.60982 13.8374L4.14484 8.35292C3.94993 8.15731 3.95049 7.84073 4.1461 7.64582C4.34171 7.4509 4.65829 7.45147 4.85321 7.64708L9.99942 12.8117L15.1456 7.64708C15.3406 7.45147 15.6571 7.4509 15.8527 7.64582Z"
+                fill="currentColor"
+              />
+            </svg>
+          </span>
+
+          <!-- Optional Icon -->
+          @if (showIcon()) {
+            <span class="accordion__icon">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M10 18C14.4183 18 18 14.4183 18 10C18 5.58172 14.4183 2 10 2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18ZM10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10C17 13.866 13.866 17 10 17Z"
+                  fill="currentColor"
+                />
+              </svg>
+            </span>
+          }
+        </div>
+      }
+
+      @if (chevronPosition() === 'after' && showIcon()) {
+        <!-- Optional Icon (for chevron-after) -->
+        <span class="accordion__icon">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M10 18C14.4183 18 18 14.4183 18 10C18 5.58172 14.4183 2 10 2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18ZM10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10C17 13.866 13.866 17 10 17Z"
+              fill="currentColor"
+            />
+          </svg>
+        </span>
+      }
+
+      <!-- Text -->
+      <span class="accordion__text">
+        {{ title() }}
+      </span>
+    </div>
+
+    <!-- Right Section (for chevron-after) -->
+    @if (chevronPosition() === 'after') {
+      <div class="accordion__right">
+        <!-- Chevron -->
+        <span class="accordion__chevron">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M15.8527 7.64582C16.0484 7.84073 16.0489 8.15731 15.854 8.35292L10.389 13.8374C10.1741 14.0531 9.82477 14.0531 9.60982 13.8374L4.14484 8.35292C3.94993 8.15731 3.95049 7.84073 4.1461 7.64582C4.34171 7.4509 4.65829 7.45147 4.85321 7.64708L9.99942 12.8117L15.1456 7.64708C15.3406 7.45147 15.6571 7.4509 15.8527 7.64582Z"
+              fill="currentColor"
+            />
+          </svg>
+        </span>
+      </div>
+    }
+  </button>
+
+  <!-- Accordion Panel -->
+  <div class="accordion__panel">
+    <div class="accordion__panel-content">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,308 @@
+// ==========================================================================
+// Accordion Component - Fluent 2 Design System (BEM Block)
+// ==========================================================================
+
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use '../utils/functions' as *;
+
+@include block('accordion') {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  border-radius: $border-radius-400;
+  box-sizing: border-box;
+
+  // Header element (clickable trigger)
+  @include element('header') {
+    @include button-reset;
+    align-self: stretch;
+    display: inline-flex;
+    align-items: center;
+    padding-left: $spacing-3;
+    padding-right: $spacing-3;
+    border-radius: $border-radius-400;
+    cursor: pointer;
+    transition: background-color $duration-faster $easing-ease-in-out;
+    box-sizing: border-box;
+
+    &:hover {
+      background-color: $color-subtle-background-hover;
+    }
+
+    &:active {
+      background-color: $color-subtle-background-pressed;
+    }
+
+    @include focus-ring($color-brand-primary);
+  }
+
+  // Content wrapper inside header
+  @include element('content') {
+    display: inline-flex;
+    align-items: center;
+    flex: 1;
+    gap: $spacing-2;
+  }
+
+  // Left section (icon + chevron before text)
+  @include element('left') {
+    display: flex;
+    align-items: flex-start;
+    gap: $spacing-2;
+  }
+
+  // Chevron icon
+  @include element('chevron') {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    transition: transform $duration-fast $easing-ease-in-out;
+
+    svg {
+      width: 20px;
+      height: 20px;
+      fill: $color-neutral-foreground-rest;
+    }
+  }
+
+  // Icon/placeholder
+  @include element('icon') {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+
+    svg {
+      width: 20px;
+      height: 20px;
+      fill: $color-neutral-foreground-rest;
+    }
+  }
+
+  // Text content
+  @include element('text') {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    padding-bottom: $spacing-05;
+    color: $color-neutral-foreground-rest;
+    font-family: $font-family-base;
+    font-weight: $font-weight-regular;
+    word-wrap: break-word;
+  }
+
+  // Right section (chevron after text)
+  @include element('right') {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  // Expandable panel
+  @include element('panel') {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 0 $spacing-3 $spacing-3;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height $duration-normal $easing-decelerate-mid,
+                opacity $duration-fast $easing-ease-in-out,
+                padding $duration-normal $easing-decelerate-mid;
+  }
+
+  // Panel content wrapper
+  @include element('panel-content') {
+    align-self: stretch;
+    width: 100%;
+  }
+
+  // ==========================================================================
+  // Size Modifiers
+  // ==========================================================================
+
+  @include modifier('small') {
+    .accordion__header {
+      height: $spacing-8; // 32px
+    }
+
+    .accordion__text {
+      font-size: $font-size-200; // 12px
+      line-height: $line-height-200; // 16px
+    }
+
+    .accordion__chevron,
+    .accordion__icon {
+      width: 16px;
+      height: 16px;
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+
+  @include modifier('medium') {
+    .accordion__header {
+      height: $spacing-11; // 44px
+    }
+
+    .accordion__text {
+      font-size: $font-size-300; // 14px
+      line-height: $line-height-300; // 20px
+    }
+
+    .accordion__chevron,
+    .accordion__icon {
+      width: 20px;
+      height: 20px;
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
+  @include modifier('large') {
+    .accordion__header {
+      height: $spacing-13; // 52px
+    }
+
+    .accordion__text {
+      font-size: $font-size-400; // 16px
+      line-height: $line-height-400; // 22px
+    }
+
+    .accordion__chevron,
+    .accordion__icon {
+      width: 24px;
+      height: 24px;
+
+      svg {
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+
+  // ==========================================================================
+  // Chevron Position Modifiers
+  // ==========================================================================
+
+  @include modifier('chevron-before') {
+    .accordion__content {
+      justify-content: flex-start;
+    }
+
+    .accordion__header {
+      justify-content: space-between;
+    }
+  }
+
+  @include modifier('chevron-after') {
+    .accordion__content {
+      justify-content: flex-start;
+    }
+
+    .accordion__header {
+      justify-content: flex-start;
+      gap: $spacing-2;
+    }
+
+    .accordion__right {
+      margin-left: auto;
+    }
+  }
+
+  // ==========================================================================
+  // Expanded State Modifier
+  // ==========================================================================
+
+  @include modifier('expanded') {
+    .accordion__panel {
+      max-height: 1000px; // Large enough for most content
+      opacity: 1;
+      padding-top: 0;
+      padding-bottom: $spacing-3;
+    }
+
+    // Chevron rotation when expanded
+    &.accordion--chevron-before {
+      .accordion__chevron {
+        transform: rotate(0deg); // Down arrow
+      }
+    }
+
+    &.accordion--chevron-after {
+      .accordion__chevron {
+        transform: rotate(180deg); // Up arrow (rotated down arrow)
+      }
+    }
+  }
+
+  // ==========================================================================
+  // Collapsed State (default)
+  // ==========================================================================
+
+  &:not(.accordion--expanded) {
+    .accordion__panel {
+      max-height: 0;
+      opacity: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    // Chevron rotation when collapsed
+    &.accordion--chevron-before {
+      .accordion__chevron {
+        transform: rotate(-90deg); // Right arrow
+      }
+    }
+
+    &.accordion--chevron-after {
+      .accordion__chevron {
+        transform: rotate(0deg); // Down arrow
+      }
+    }
+  }
+
+  // ==========================================================================
+  // Disabled State Modifier
+  // ==========================================================================
+
+  @include modifier('disabled') {
+    .accordion__header {
+      cursor: not-allowed;
+      pointer-events: none;
+
+      &:hover {
+        background-color: transparent;
+      }
+    }
+
+    .accordion__text {
+      color: $color-neutral-foreground-disabled;
+    }
+
+    .accordion__chevron,
+    .accordion__icon {
+      svg {
+        fill: $color-neutral-foreground-disabled;
+      }
+    }
+  }
+}
+
