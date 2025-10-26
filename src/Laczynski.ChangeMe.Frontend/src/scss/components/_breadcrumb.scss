@@ -1,0 +1,246 @@
+// ==========================================================================
+// Breadcrumb Component - Fluent 2 Design System (BEM Block)
+// ==========================================================================
+
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use '../utils/functions' as *;
+
+@include block('breadcrumb') {
+  // Base breadcrumb container
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  // Ordered list
+  @include element('list') {
+    display: inline-flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  // Individual breadcrumb item (li)
+  @include element('item') {
+    display: inline-flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  // Breadcrumb button
+  @include element('button') {
+    @include button-reset;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: $spacing-1;
+    padding: $spacing-2;
+    background: transparent;
+    border-radius: $border-radius-400;
+    transition: background-color $duration-faster $easing-ease-in-out;
+    font-family: $font-family-base;
+    position: relative;
+
+    &:hover:not(.breadcrumb__button--disabled):not(.breadcrumb__button--current) {
+      background-color: $color-subtle-background-hover;
+
+      .breadcrumb__icon svg {
+        fill: $color-neutral-foreground2-brand-hover;
+      }
+    }
+
+    &:active:not(.breadcrumb__button--disabled):not(.breadcrumb__button--current) {
+      background-color: $color-subtle-background-pressed;
+
+      .breadcrumb__icon svg {
+        fill: #115EA3;
+      }
+
+      .breadcrumb__text {
+        color: $color-neutral-foreground-pressed;
+      }
+    }
+
+    @include focus-ring($color-brand-primary);
+  }
+
+  // Icon wrapper
+  @include element('icon') {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-shrink: 0;
+
+    svg {
+      width: 20px;
+      height: 20px;
+      fill: $color-neutral-foreground2-rest;
+      transition: fill $duration-faster $easing-ease-in-out;
+    }
+
+    .breadcrumb__button--current & {
+      svg {
+        fill: $color-neutral-foreground2-rest;
+      }
+    }
+
+    .breadcrumb__button--disabled & {
+      svg {
+        fill: $color-neutral-foreground-disabled;
+      }
+    }
+  }
+
+  // Text wrapper with offset
+  @include element('text-wrapper') {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 24px;
+    gap: $spacing-1; // 4px
+  }
+
+  // Text content
+  @include element('text') {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-bottom: $spacing-05;
+    color: $color-neutral-foreground2-rest;
+    font-size: $font-size-400;
+    font-weight: $font-weight-regular;
+    line-height: $line-height-400;
+    word-wrap: break-word;
+    transition: color $duration-faster $easing-ease-in-out,
+                font-weight $duration-faster $easing-ease-in-out;
+
+    .breadcrumb__button--current & {
+      font-weight: $font-weight-semibold;
+    }
+
+    .breadcrumb__button--disabled & {
+      color: $color-neutral-foreground-disabled;
+    }
+  }
+
+  // Divider (chevron separator)
+  @include element('divider') {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-shrink: 0;
+
+    svg {
+      width: 20px;
+      height: 20px;
+      fill: $color-neutral-foreground2-rest;
+      position: relative;
+    }
+  }
+
+  // ==========================================================================
+  // Size Modifiers
+  // ==========================================================================
+
+  @include modifier('small') {
+    .breadcrumb__button {
+      padding: $spacing-1 $spacing-2;
+      gap: $spacing-1;
+    }
+
+    .breadcrumb__icon svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .breadcrumb__text-wrapper {
+      height: 16px;
+    }
+
+    .breadcrumb__text {
+      font-size: $font-size-200;
+      line-height: $line-height-200;
+    }
+
+    .breadcrumb__divider svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  @include modifier('medium') {
+    .breadcrumb__button {
+      padding: $spacing-2;
+      gap: $spacing-1;
+    }
+
+    .breadcrumb__icon svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .breadcrumb__text-wrapper {
+      height: 20px;
+    }
+
+    .breadcrumb__text {
+      font-size: $font-size-300;
+      line-height: $line-height-300;
+    }
+
+    .breadcrumb__divider svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  @include modifier('large') {
+    .breadcrumb__button {
+      padding: $spacing-2;
+      gap: $spacing-1;
+    }
+
+    // When icon is present, adjust left padding
+    .breadcrumb__button:has(.breadcrumb__icon) {
+      padding-left: $spacing-1;
+      padding-right: $spacing-2;
+    }
+
+    .breadcrumb__icon svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .breadcrumb__text-wrapper {
+      height: 24px;
+    }
+
+    .breadcrumb__text {
+      font-size: $font-size-400;
+      line-height: $line-height-400;
+    }
+
+    .breadcrumb__divider svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  // ==========================================================================
+  // Button State Modifiers
+  // ==========================================================================
+
+  @include element-modifier('button', 'current') {
+    cursor: default;
+    pointer-events: none;
+  }
+
+  @include element-modifier('button', 'disabled') {
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
