@@ -9,8 +9,12 @@ export type ButtonType = 'button' | 'submit' | 'reset';
   standalone: true,
 })
 export class ButtonComponent {
-  variant = input<ButtonStyle>('secondary');
-  size = input<Size>('medium');
+  variant = input<ButtonStyle, ButtonStyle | undefined>('secondary', {
+    transform: (value: ButtonStyle | undefined) => value ?? 'secondary',
+  });
+  size = input<Size, Size | undefined>('medium', {
+    transform: (value: Size | undefined) => value ?? 'medium',
+  });
   iconOnly = input<boolean>(false);
   selected = input<boolean>(false);
 

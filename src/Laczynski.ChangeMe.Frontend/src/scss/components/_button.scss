@@ -22,7 +22,6 @@
   cursor: pointer;
   user-select: none;
   border: 1px solid transparent;
-  transition: all $duration-fast $easing-ease-in-out;
   box-sizing: border-box;
   
   @include focus-ring($color-brand-primary);
