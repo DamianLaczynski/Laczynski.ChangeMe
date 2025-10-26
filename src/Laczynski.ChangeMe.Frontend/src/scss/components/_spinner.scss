@@ -1,0 +1,277 @@
+// ==========================================================================
+// Spinner Component - Fluent 2 Design System
+// ==========================================================================
+
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+
+.spinner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  position: relative;
+
+  // ========================================================================
+  // ELEMENTS
+  // ========================================================================
+
+  &__svg-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  &__svg {
+    display: block;
+    animation: spinner-rotate 1.4s linear infinite;
+  }
+
+  &__circle-bg {
+    fill: var(--Brand-Stroke-2-Contrast-Rest, #B4D6FA);
+  }
+
+  &__circle-arc {
+    fill: var(--Brand-Stroke-1-Rest, #0F6CBD);
+    transform-origin: center;
+  }
+
+  &__label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    word-wrap: break-word;
+    font-family: $font-family-base;
+    color: $color-neutral-foreground-rest;
+    
+    &--small {
+      font-size: $font-size-300;
+      font-weight: $font-weight-regular;
+      line-height: $line-height-300;
+    }
+
+    &--medium {
+      font-size: $font-size-400;
+      font-weight: $font-weight-semibold;
+      line-height: $line-height-400;
+    }
+
+    &--large {
+      font-size: $font-size-500;
+      font-weight: $font-weight-semibold;
+      line-height: $line-height-500;
+    }
+  }
+
+  // ========================================================================
+  // SIZE VARIANTS
+  // ========================================================================
+
+  // Extra Tiny (16px)
+  &--extra-tiny {
+    .spinner__svg-wrapper {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  // Tiny (20px)
+  &--tiny {
+    .spinner__svg-wrapper {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  // Extra Small (24px)
+  &--extra-small {
+    .spinner__svg-wrapper {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  // Small (28px)
+  &--small {
+    .spinner__svg-wrapper {
+      width: 28px;
+      height: 28px;
+    }
+  }
+
+  // Medium (32px) - Default
+  &--medium {
+    .spinner__svg-wrapper {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  // Large (36px)
+  &--large {
+    .spinner__svg-wrapper {
+      width: 36px;
+      height: 36px;
+    }
+  }
+
+  // Extra Large (40px)
+  &--extra-large {
+    .spinner__svg-wrapper {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  // Huge (44px)
+  &--huge {
+    .spinner__svg-wrapper {
+      width: 44px;
+      height: 44px;
+    }
+  }
+
+  // ========================================================================
+  // STATE VARIANTS (COLORS)
+  // ========================================================================
+
+  // Default - Brand blue colors
+  &--default {
+    .spinner__circle-bg {
+      fill: $color-shared-blue-background; // #F0F8FF -> #B4D6FA (lighter)
+      fill: #B4D6FA;
+    }
+
+    .spinner__circle-arc {
+      fill: $color-brand-primary; // #0078D4 -> #0F6CBD
+      fill: #0F6CBD;
+    }
+
+    .spinner__label {
+      color: $color-neutral-foreground-rest;
+    }
+  }
+
+  // Info - Cyan/Blue colors
+  &--info {
+    .spinner__circle-bg {
+      fill: $color-shared-cyan-background;
+      fill: rgba(3, 131, 135, 0.2);
+    }
+
+    .spinner__circle-arc {
+      fill: $color-shared-cyan-foreground;
+    }
+
+    .spinner__label {
+      color: $color-neutral-foreground-rest;
+    }
+  }
+
+  // Success - Green colors
+  &--success {
+    .spinner__circle-bg {
+      fill: $color-shared-green-background;
+      fill: rgba(16, 124, 16, 0.2);
+    }
+
+    .spinner__circle-arc {
+      fill: $color-shared-green-foreground;
+    }
+
+    .spinner__label {
+      color: $color-neutral-foreground-rest;
+    }
+  }
+
+  // Warning - Yellow/Orange colors
+  &--warning {
+    .spinner__circle-bg {
+      fill: $color-shared-yellow-background;
+      fill: rgba(255, 140, 0, 0.2);
+    }
+
+    .spinner__circle-arc {
+      fill: $color-shared-yellow-foreground;
+    }
+
+    .spinner__label {
+      color: $color-neutral-foreground-rest;
+    }
+  }
+
+  // Error - Red colors
+  &--error {
+    .spinner__circle-bg {
+      fill: $color-shared-red-background;
+      fill: rgba(209, 52, 56, 0.2);
+    }
+
+    .spinner__circle-arc {
+      fill: $color-shared-red-foreground;
+    }
+
+    .spinner__label {
+      color: $color-neutral-foreground-rest;
+    }
+  }
+
+  // Inverted - White colors (for dark backgrounds)
+  &--inverted {
+    .spinner__circle-bg {
+      fill: rgba(255, 255, 255, 0.2);
+    }
+
+    .spinner__circle-arc {
+      fill: #FFFFFF;
+    }
+
+    .spinner__label {
+      color: #FFFFFF;
+    }
+  }
+
+  // ========================================================================
+  // LABEL POSITION VARIANTS
+  // ========================================================================
+
+  // Label after (default horizontal layout)
+  &--label-after {
+    flex-direction: row;
+    gap: $spacing-2;
+  }
+
+  // Label before
+  &--label-before {
+    flex-direction: row-reverse;
+    gap: $spacing-2;
+  }
+
+  // Label above
+  &--label-above {
+    flex-direction: column-reverse;
+    gap: $spacing-2;
+  }
+
+  // Label below
+  &--label-below {
+    flex-direction: column;
+    gap: $spacing-2;
+  }
+}
+
+// ========================================================================
+// ANIMATIONS
+// ========================================================================
+
+@keyframes spinner-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
