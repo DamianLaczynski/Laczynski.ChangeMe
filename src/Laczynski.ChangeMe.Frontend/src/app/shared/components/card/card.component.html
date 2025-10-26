@@ -1,0 +1,131 @@
+<div
+  [class]="cardClasses()"
+  [attr.role]="clickable() ? 'button' : null"
+  [attr.tabindex]="clickable() && !disabled() ? 0 : null"
+  [attr.aria-disabled]="disabled() ? 'true' : null"
+  (click)="onCardClick($event)"
+>
+  <!-- Header Container -->
+  @if (showHeader() && !customHeader()) {
+    <div class="card__header-container">
+      <div class="card__header">
+        <!-- Header Icon -->
+        @if (headerIcon()) {
+          <div class="card__header-icon">
+            <ng-container *ngTemplateOutlet="headerIcon()!"></ng-container>
+          </div>
+        }
+
+        <!-- Text Container -->
+        <div class="card__text-container">
+          @if (title()) {
+            <div class="card__title">{{ title() }}</div>
+          }
+          @if (subtitle()) {
+            <div class="card__subtitle">{{ subtitle() }}</div>
+          }
+        </div>
+
+        <!-- Quick Action -->
+        @if (showQuickAction() && quickActions()) {
+          <button
+            class="card__quick-action"
+            [disabled]="disabled()"
+            (click)="onQuickActionClick($event)"
+            type="button"
+            aria-label="Quick action"
+          >
+            <ng-container *ngTemplateOutlet="quickActions()!"></ng-container>
+          </button>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- Custom Header -->
+  @if (customHeader()) {
+    <div class="card__header-container card__header-container--custom">
+      <ng-container *ngTemplateOutlet="customHeader()!"></ng-container>
+    </div>
+  }
+
+  <!-- Body Container -->
+  @if (!customBody()) {
+    <div class="card__body-container">
+      <div class="card__body">
+        @if (bodyText()) {
+          <div class="card__body-text">{{ bodyText() }}</div>
+        } @else {
+          <ng-content></ng-content>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- Custom Body -->
+  @if (customBody()) {
+    <div class="card__body-container card__body-container--custom">
+      <ng-container *ngTemplateOutlet="customBody()!"></ng-container>
+    </div>
+  }
+
+  <!-- Footer Container -->
+  @if (showFooter() && !customFooter() && (primaryAction() || secondaryAction())) {
+    <div class="card__footer-container">
+      <div class="card__footer">
+        @if (primaryAction()) {
+          <app-button
+            [variant]="primaryAction()!.variant || 'primary'"
+            [disabled]="primaryAction()!.disabled || disabled()"
+            [size]="primaryAction()!.size || 'medium'"
+            (click)="onPrimaryAction()"
+          >
+            @if (primaryAction()!.icon) {
+              <svg slot="icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  fill="none"
+                />
+              </svg>
+            }
+            {{ primaryAction()!.label }}
+          </app-button>
+        }
+
+        @if (secondaryAction()) {
+          <app-button
+            [variant]="secondaryAction()!.variant || 'secondary'"
+            [disabled]="secondaryAction()!.disabled || disabled()"
+            [size]="secondaryAction()!.size || 'medium'"
+            (click)="onSecondaryAction()"
+          >
+            @if (secondaryAction()!.icon) {
+              <svg slot="icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  fill="none"
+                />
+              </svg>
+            }
+            {{ secondaryAction()!.label }}
+          </app-button>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- Custom Footer -->
+  @if (customFooter()) {
+    <div class="card__footer-container card__footer-container--custom">
+      <ng-container *ngTemplateOutlet="customFooter()!"></ng-container>
+    </div>
+  }
+</div>

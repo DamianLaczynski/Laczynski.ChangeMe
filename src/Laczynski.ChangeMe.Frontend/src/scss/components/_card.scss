@@ -1,0 +1,335 @@
+// ==========================================================================
+// Card Component - Fluent 2 Design System (BEM Block)
+// ==========================================================================
+
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use '../utils/functions' as *;
+
+@include block('card') {
+  // Base card styles
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--Neutral-Background-1-Rest, white);
+  border-radius: $border-radius-400;
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  outline: 1px solid transparent;
+  outline-offset: -1px;
+  box-sizing: border-box;
+  
+  // Card Elements (BEM Elements)
+  // ========================================================================
+  // Header Elements
+  // ========================================================================
+  @include element('header-container') {
+    align-self: stretch;
+    padding: $spacing-3;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: $spacing-2;
+    
+    @include modifier('custom') {
+      padding: $spacing-3;
+    }
+  }
+  
+  @include element('header') {
+    align-self: stretch;
+    display: inline-flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: $spacing-3;
+  }
+  
+  @include element('header-icon') {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    
+    svg {
+      width: 32px;
+      height: 32px;
+      
+      path {
+        fill: var(--Neutral-Foreground-1-Rest, #242424);
+      }
+    }
+  }
+  
+  @include element('text-container') {
+    flex: 1 1 0;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  
+  @include element('title') {
+    align-self: stretch;
+    color: var(--Neutral-Foreground-1-Rest, #242424);
+    font-size: $font-size-300;
+    font-family: $font-family-base;
+    font-weight: $font-weight-semibold;
+    line-height: $line-height-300;
+    word-wrap: break-word;
+  }
+  
+  @include element('subtitle') {
+    align-self: stretch;
+    color: var(--Neutral-Foreground-3-Rest, #616161);
+    font-size: $font-size-200;
+    font-family: $font-family-base;
+    font-weight: $font-weight-regular;
+    line-height: $line-height-200;
+    word-wrap: break-word;
+  }
+  
+  @include element('quick-action') {
+    padding: 6px;
+    background: var(--Neutral-Background-Transparent-Rest, rgba(255, 255, 255, 0));
+    border: none;
+    border-radius: $border-radius-400;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    
+    &:hover:not(:disabled) {
+      background: var(--Neutral-Background-1-Hover, #F5F5F5);
+    }
+    
+    &:active:not(:disabled) {
+      background: var(--Neutral-Background-1-Pressed, #E0E0E0);
+    }
+    
+    &:disabled {
+      background: var(--Neutral-Background-Inverted-Disabled-Rest, rgba(255, 255, 255, 0.10));
+      cursor: not-allowed;
+      
+      svg path {
+        fill: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+      }
+    }
+    
+    svg {
+      width: 20px;
+      height: 20px;
+      
+      path {
+        fill: var(--Neutral-Foreground-2-Rest, #424242);
+      }
+    }
+  }
+  
+  // ========================================================================
+  // Body Elements
+  // ========================================================================
+  @include element('body-container') {
+    align-self: stretch;
+    padding-bottom: $spacing-3;
+    padding-left: $spacing-3;
+    padding-right: $spacing-3;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    
+    @include modifier('custom') {
+      padding: $spacing-3;
+    }
+  }
+  
+  @include element('body') {
+    align-self: stretch;
+    display: inline-flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: $spacing-3;
+  }
+  
+  @include element('body-text') {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: var(--Neutral-Foreground-2-Rest, #424242);
+    font-size: $font-size-200;
+    font-family: $font-family-base;
+    font-weight: $font-weight-regular;
+    line-height: $line-height-200;
+    word-wrap: break-word;
+  }
+  
+  // ========================================================================
+  // Footer Elements
+  // ========================================================================
+  @include element('footer-container') {
+    align-self: stretch;
+    padding-bottom: $spacing-3;
+    padding-left: $spacing-3;
+    padding-right: $spacing-3;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    
+    @include modifier('custom') {
+      padding: $spacing-3;
+    }
+  }
+  
+  @include element('footer') {
+    align-self: stretch;
+    display: inline-flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: $spacing-3;
+  }
+  
+  // ========================================================================
+  // Style Modifiers - Filled (Default)
+  // ========================================================================
+  @include modifier('filled') {
+    background: var(--Neutral-Background-1-Rest, white);
+    outline-color: var(--Neutral-Stroke-Transparent-Interactive-Rest, rgba(255, 255, 255, 0));
+    
+    &:hover:not(.card--disabled):not(.card--selected) {
+      background: var(--Neutral-Background-1-Hover, #F5F5F5);
+    }
+    
+    &:active:not(.card--disabled):not(.card--selected),
+    &.card--pressed:not(.card--disabled):not(.card--selected) {
+      background: var(--Neutral-Background-1-Pressed, #E0E0E0);
+    }
+  }
+  
+  // ========================================================================
+  // Style Modifiers - Outline
+  // ========================================================================
+  @include modifier('outline') {
+    background: var(--Neutral-Background-1-Rest, white);
+    outline-color: var(--Neutral-Stroke-1-Rest, #D1D1D1);
+    
+    &:hover:not(.card--disabled):not(.card--selected) {
+      background: var(--Neutral-Background-1-Hover, #F5F5F5);
+      outline-color: var(--Neutral-Stroke-1-Hover, #C7C7C7);
+    }
+    
+    &:active:not(.card--disabled):not(.card--selected),
+    &.card--pressed:not(.card--disabled):not(.card--selected) {
+      background: var(--Neutral-Background-1-Pressed, #E0E0E0);
+      outline-color: var(--Neutral-Stroke-1-Pressed, #B3B3B3);
+    }
+  }
+  
+  // ========================================================================
+  // Style Modifiers - Subtle
+  // ========================================================================
+  @include modifier('subtle') {
+    background: transparent;
+    box-shadow: none;
+    outline-color: transparent;
+    
+    &:hover:not(.card--disabled):not(.card--selected) {
+      background: var(--Neutral-Background-1-Hover, #F5F5F5);
+    }
+    
+    &:active:not(.card--disabled):not(.card--selected),
+    &.card--pressed:not(.card--disabled):not(.card--selected) {
+      background: var(--Neutral-Background-1-Pressed, #E0E0E0);
+    }
+  }
+  
+  // ========================================================================
+  // State Modifiers
+  // ========================================================================
+  @include modifier('selected') {
+    background: var(--Neutral-Background-1-Selected, #EBEBEB);
+    outline-color: var(--Neutral-Stroke-1-Selected, #BDBDBD);
+    
+    &:hover {
+      background: var(--Neutral-Background-1-Hover, #F5F5F5);
+    }
+  }
+  
+  @include modifier('disabled') {
+    background: var(--Neutral-Background-Disabled-Rest, #F0F0F0);
+    outline-color: var(--Neutral-Stroke-Transparent-Disabled-Rest, rgba(255, 255, 255, 0));
+    cursor: not-allowed;
+    pointer-events: none;
+    
+    .card__title {
+      color: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+    }
+    
+    .card__subtitle {
+      color: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+    }
+    
+    .card__body-text {
+      color: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+    }
+    
+    .card__header-icon svg path {
+      fill: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+      opacity: 0.8;
+    }
+    
+    .card__quick-action {
+      background: var(--Neutral-Background-Inverted-Disabled-Rest, rgba(255, 255, 255, 0.10));
+      cursor: not-allowed;
+      
+      svg path {
+        fill: var(--Neutral-Foreground-2-Rest, #424242);
+      }
+    }
+  }
+  
+  @include modifier('clickable') {
+    cursor: pointer;
+    
+    @include focus-ring($color-brand-primary);
+    
+    &:not(.card--disabled) {
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.14), 0px 0px 2px rgba(0, 0, 0, 0.12);
+      }
+      
+      &:active {
+        transform: translateY(0);
+        box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.12);
+      }
+    }
+  }
+  
+  // ========================================================================
+  // Orientation Modifiers
+  // ========================================================================
+  @include modifier('horizontal') {
+    flex-direction: row;
+    
+    .card__header-container,
+    .card__body-container,
+    .card__footer-container {
+      flex: 1;
+    }
+    
+    .card__header-container {
+      border-right: 1px solid var(--Neutral-Stroke-2-Rest, #E0E0E0);
+    }
+  }
+  
+  @include modifier('vertical') {
+    flex-direction: column;
+  }
+}
+
