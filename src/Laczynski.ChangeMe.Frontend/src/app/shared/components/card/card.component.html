@@ -28,15 +28,7 @@
 
         <!-- Quick Action -->
         @if (showQuickAction() && quickActions()) {
-          <button
-            class="card__quick-action"
-            [disabled]="disabled()"
-            (click)="onQuickActionClick($event)"
-            type="button"
-            aria-label="Quick action"
-          >
-            <ng-container *ngTemplateOutlet="quickActions()!"></ng-container>
-          </button>
+          <ng-container *ngTemplateOutlet="quickActions()!"></ng-container>
         }
       </div>
     </div>
@@ -78,7 +70,7 @@
             [variant]="primaryAction()!.variant || 'primary'"
             [disabled]="primaryAction()!.disabled || disabled()"
             [size]="primaryAction()!.size || 'medium'"
-            (click)="onPrimaryAction()"
+            (click)="onPrimaryAction($event)"
           >
             @if (primaryAction()!.icon) {
               <svg slot="icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
@@ -101,7 +93,7 @@
             [variant]="secondaryAction()!.variant || 'secondary'"
             [disabled]="secondaryAction()!.disabled || disabled()"
             [size]="secondaryAction()!.size || 'medium'"
-            (click)="onSecondaryAction()"
+            (click)="onSecondaryAction($event)"
           >
             @if (secondaryAction()!.icon) {
               <svg slot="icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
