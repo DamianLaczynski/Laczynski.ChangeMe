@@ -21,16 +21,30 @@
 
 
 // 5. Components - Reusable UI components (BEM blocks)
+@use 'components/accordion';
+@use 'components/badge';
+@use 'components/breadcrumb';
 @use 'components/button';
+@use 'components/card';
+@use 'components/checkbox';
+@use 'components/dialog';
+@use 'components/divider';
+@use 'components/dropdown';
 @use 'components/input';
-@use 'components/field';
-@use 'components/loading-indicator';
-@use 'components/modal';
+@use 'components/number';
 @use 'components/paginated-table';
-@use 'components/tabs';
-@use 'components/tab-panel';
+@use 'components/progress-bar';
+@use 'components/radio';
+@use 'components/scroll-panel';
+@use 'components/skeleton';
+@use 'components/slider';
+@use 'components/spinner';
+@use 'components/splitter';
+@use 'components/switch';
+@use 'components/tag';
 @use 'components/toast';
 @use 'components/toast-container';
+@use 'components/tree';
 
 // 6. Pages - Page-specific styles
 @use 'pages/showcase';
