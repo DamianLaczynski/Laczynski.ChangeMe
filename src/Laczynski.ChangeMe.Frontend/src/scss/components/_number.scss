@@ -1,0 +1,154 @@
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use '../utils/functions' as *;
+
+// =============================================================================
+// Number Input with Stepper Buttons
+// =============================================================================
+
+// Container for input + stepper
+.number-input-container {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+}
+
+// Number input field (adjust padding to make room for stepper)
+.number-input {
+  flex: 1;
+  padding-right: 32px !important; // 28px stepper width + 4px gap
+  
+  // Remove native number input spinners
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  -moz-appearance: textfield;
+}
+
+// =============================================================================
+// Stepper Container
+// =============================================================================
+
+.number-stepper-container {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 28px; // Increased from 24px for better clickability
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
+}
+
+// =============================================================================
+// Individual Stepper Button
+// =============================================================================
+
+.number-stepper {
+  flex: 1 1 0; // Equal height distribution
+  width: 100%;
+  min-height: 12px; // Ensure minimum clickable area
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  overflow: visible;
+  transition: background-color $duration-fast $easing-ease-in-out,
+              color $duration-fast $easing-ease-in-out;
+
+  // Icon color - rest state
+  svg {
+    display: block;
+    flex-shrink: 0;
+    color: #616161; // $color-neutral-foreground-3-rest equivalent
+    transition: color $duration-fast $easing-ease-in-out;
+  }
+
+  // Hover state
+  &:hover:not(:disabled) {
+    background: #F5F5F5; // Neutral-Background-1-Hover
+
+    svg {
+      color: #424242; // $color-neutral-foreground-3-hover equivalent
+    }
+  }
+
+  // Pressed state
+  &:active:not(:disabled) {
+    background: #E0E0E0; // Neutral-Background-1-Pressed
+
+    svg {
+      color: #424242; // $color-neutral-foreground-3-hover equivalent
+    }
+  }
+
+  // Disabled state
+  &:disabled {
+    cursor: not-allowed;
+
+    svg {
+      color: $color-neutral-foreground-disabled; // #BDBDBD
+    }
+  }
+
+  // Focus state
+  &:focus {
+    outline: none;
+  }
+}
+
+// =============================================================================
+// Stepper Variants
+// =============================================================================
+
+// Increase stepper (top button)
+.number-stepper--increase {
+  border-top-right-radius: $border-radius-400;
+}
+
+// Decrease stepper (bottom button)
+.number-stepper--decrease {
+  border-bottom-right-radius: $border-radius-400;
+}
+
+// Darker style (for filled variant)
+.number-stepper--darker {
+  &:hover:not(:disabled) {
+    background: #EBEBEB; // $color-neutral-background-3-hover equivalent
+
+    svg {
+      color: #424242; // $color-neutral-foreground-3-hover equivalent
+    }
+  }
+
+  &:active:not(:disabled) {
+    background: #D6D6D6; // $color-neutral-background-3-pressed equivalent
+
+    svg {
+      color: #424242; // $color-neutral-foreground-3-hover equivalent
+    }
+  }
+}
+
+// =============================================================================
+// Size Variants
+// =============================================================================
+
+// Small size
+.number-stepper--small {
+  min-height: 10px; // Smaller minimum height for small variant
+  
+  svg {
+    width: 12px;
+    height: 10px;
+  }
+}
+

@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { NumberComponent } from './number.component';
 import { FormsModule } from '@angular/forms';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-number-showcase',
-  imports: [NumberComponent, FormsModule],
+  standalone: true,
+  imports: [NumberComponent, FormsModule, JsonPipe],
   template: `
     <div class="showcase showcase--responsive">
       <h1 class="showcase__title">Number Component Showcase</h1>
@@ -115,6 +117,130 @@ import { FormsModule } from '@angular/forms';
         </div>
       </div>
 
+      <!-- Stepper Variants -->
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Stepper Variants (Filled Lighter)</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <app-number
+              label="Quantity (Step: 1)"
+              placeholder="0"
+              variant="filled-lighter"
+              [(ngModel)]="quantity"
+              [ngModelOptions]="{ standalone: true }"
+              [step]="1"
+              [min]="0"
+              [max]="100"
+              helpText="Min: 0, Max: 100, Step: 1"
+            ></app-number>
+          </div>
+          <div class="showcase__item">
+            <app-number
+              label="Price (Step: 0.01)"
+              placeholder="0.00"
+              variant="filled-lighter"
+              [(ngModel)]="price"
+              [ngModelOptions]="{ standalone: true }"
+              [step]="0.01"
+              [min]="0"
+              helpText="Min: 0, Step: 0.01"
+            ></app-number>
+          </div>
+          <div class="showcase__item">
+            <app-number
+              label="Temperature (Step: 5)"
+              placeholder="0"
+              variant="filled-lighter"
+              [(ngModel)]="temperature"
+              [ngModelOptions]="{ standalone: true }"
+              [step]="5"
+              [min]="-50"
+              [max]="50"
+              helpText="Min: -50, Max: 50, Step: 5"
+            ></app-number>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stepper Variants - Filled -->
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Stepper Variants (Filled)</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <app-number
+              label="Quantity (Step: 1)"
+              placeholder="0"
+              variant="filled"
+              [(ngModel)]="quantityFilled"
+              [ngModelOptions]="{ standalone: true }"
+              [step]="1"
+              [min]="0"
+              [max]="100"
+              helpText="Min: 0, Max: 100, Step: 1"
+            ></app-number>
+          </div>
+          <div class="showcase__item">
+            <app-number
+              label="Price (Step: 0.01)"
+              placeholder="0.00"
+              variant="filled"
+              [(ngModel)]="priceFilled"
+              [ngModelOptions]="{ standalone: true }"
+              [step]="0.01"
+              [min]="0"
+              helpText="Min: 0, Step: 0.01"
+            ></app-number>
+          </div>
+          <div class="showcase__item">
+            <app-number
+              label="Temperature (Step: 5)"
+              placeholder="0"
+              variant="filled"
+              [(ngModel)]="temperatureFilled"
+              [ngModelOptions]="{ standalone: true }"
+              [step]="5"
+              [min]="-50"
+              [max]="50"
+              helpText="Min: -50, Max: 50, Step: 5"
+            ></app-number>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stepper Variants - Underlined -->
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Stepper Variants (Underlined)</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <app-number
+              label="Quantity (Step: 1)"
+              placeholder="0"
+              variant="underlined"
+              [(ngModel)]="quantityUnderline"
+              [ngModelOptions]="{ standalone: true }"
+              [step]="1"
+              [min]="0"
+              [max]="100"
+              helpText="Min: 0, Max: 100, Step: 1"
+            ></app-number>
+          </div>
+          <div class="showcase__item">
+            <app-number
+              label="Small Size (Step: 1)"
+              placeholder="0"
+              variant="underlined"
+              size="small"
+              [(ngModel)]="quantitySmall"
+              [ngModelOptions]="{ standalone: true }"
+              [step]="1"
+              [min]="0"
+              [max]="50"
+              helpText="Small size with stepper"
+            ></app-number>
+          </div>
+        </div>
+      </div>
+
       <!-- Form Example -->
       <div class="showcase__section">
         <h2 class="showcase__section__title">Form Example</h2>
@@ -127,13 +253,17 @@ import { FormsModule } from '@angular/forms';
                 [(ngModel)]="formData.age"
                 [ngModelOptions]="{ standalone: true }"
                 [required]="true"
-                helpText="Enter your age in years"
+                [step]="1"
+                [min]="0"
+                [max]="150"
+                helpText="Enter your age in years (0-150)"
               ></app-number>
               <app-number
                 label="Phone Number"
                 placeholder="Enter phone number"
                 [(ngModel)]="formData.phone"
                 [ngModelOptions]="{ standalone: true }"
+                [step]="1"
                 helpText="Enter your phone number"
               ></app-number>
               <app-number
@@ -141,15 +271,24 @@ import { FormsModule } from '@angular/forms';
                 placeholder="Enter salary"
                 [(ngModel)]="formData.salary"
                 [ngModelOptions]="{ standalone: true }"
-                helpText="Enter your annual salary"
+                [step]="1000"
+                [min]="0"
+                helpText="Enter your annual salary (step: 1000)"
               ></app-number>
               <app-number
                 label="Experience Years"
                 placeholder="Years of experience"
                 [(ngModel)]="formData.experience"
                 [ngModelOptions]="{ standalone: true }"
-                helpText="Years of work experience"
+                [step]="1"
+                [min]="0"
+                [max]="50"
+                helpText="Years of work experience (0-50)"
               ></app-number>
+              <div class="showcase__form-output">
+                <strong>Form Values:</strong>
+                <pre>{{ formData | json }}</pre>
+              </div>
             </form>
           </div>
         </div>
@@ -222,6 +361,20 @@ import { FormsModule } from '@angular/forms';
 })
 export class NumberShowcaseComponent {
   value = 42;
+
+  // Stepper examples - Outline
+  quantity = 10;
+  price = 19.99;
+  temperature = 0;
+
+  // Stepper examples - Filled
+  quantityFilled = 10;
+  priceFilled = 19.99;
+  temperatureFilled = 0;
+
+  // Stepper examples - Underline
+  quantityUnderline = 10;
+  quantitySmall = 5;
 
   formData = {
     age: null as number | null,
