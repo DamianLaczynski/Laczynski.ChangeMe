@@ -14,34 +14,37 @@
   [name]="name()"
   [state]="state()"
   [size]="size()"
+  [variant]="variant()"
 >
-  <input
-    class="input"
-    type="text"
-    [id]="id()"
-    [name]="name()"
-    [placeholder]="placeholder()"
-    [required]="required()"
-    [disabled]="disabled()"
-    [readonly]="readonly()"
-    [autocomplete]="autocomplete()"
-    [value]="value"
-    [attr.aria-label]="ariaLabel() || label()"
-    [attr.aria-describedby]="ariaDescribedBy()"
-    [attr.aria-invalid]="state() === 'error'"
-    (input)="onInputChange($event)"
-    (blur)="onBlur($event)"
-    (focus)="onFocus($event)"
-    (keyup)="onKeyUp($event)"
-    (keydown)="onKeyDown($event)"
-  />
-  @if (!disabled() && !readonly()) {
-    <div class="field__actions">
-      <app-clear-button
-        [value]="value"
-        [showClearButton]="true"
-        (clear)="clear()"
-      ></app-clear-button>
-    </div>
-  }
+  <div class="input-wrapper" [class]="wrapperClasses">
+    <input
+      class="input"
+      type="text"
+      [id]="id()"
+      [name]="name()"
+      [placeholder]="placeholder()"
+      [required]="required()"
+      [disabled]="disabled()"
+      [readonly]="readonly()"
+      [autocomplete]="autocomplete()"
+      [value]="value"
+      [attr.aria-label]="ariaLabel() || label()"
+      [attr.aria-describedby]="ariaDescribedBy()"
+      [attr.aria-invalid]="state() === 'error'"
+      (input)="onInputChange($event)"
+      (blur)="onBlur($event)"
+      (focus)="onFocus($event)"
+      (keyup)="onKeyUp($event)"
+      (keydown)="onKeyDown($event)"
+    />
+    @if (!disabled() && !readonly()) {
+      <div class="field__actions">
+        <app-clear-button
+          [value]="value"
+          [showClearButton]="true"
+          (clear)="clear()"
+        ></app-clear-button>
+      </div>
+    }
+  </div>
 </app-field>

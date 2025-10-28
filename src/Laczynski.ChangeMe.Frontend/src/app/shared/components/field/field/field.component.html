@@ -4,9 +4,7 @@
       {{ label() }}
     </label>
   }
-  <div class="input-wrapper" [ngClass]="wrapperClasses">
-    <ng-content></ng-content>
-  </div>
+  <ng-content></ng-content>
 
   <!-- Help Text -->
   @if (helpText() && state() !== 'error' && state() !== 'success' && state() !== 'warning') {

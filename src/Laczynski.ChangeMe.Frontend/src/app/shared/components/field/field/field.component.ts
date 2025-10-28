@@ -1,5 +1,5 @@
-import { Component, forwardRef, OnInit, OnDestroy, input, output, model } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, OnInit, OnDestroy, input, output, model } from '@angular/core';
+import { ControlValueAccessor } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Size, StateType } from '../../utils';
 import { InputVariant } from '@shared/components/input/input.component';
@@ -12,6 +12,7 @@ export type FieldType =
   | 'url'
   | 'search'
   | 'toggle'
+  | 'switch'
   | 'date'
   | 'time'
   | 'datetime'
@@ -22,24 +23,19 @@ export type FieldType =
   | 'file'
   | 'color'
   | 'range'
+  | 'slider'
   | 'number'
   | 'textarea'
   | 'select'
   | 'checkbox'
-  | 'radio';
+  | 'radio'
+  | 'radio-group';
 
 @Component({
   selector: 'app-field',
   templateUrl: './field.component.html',
   standalone: true,
   imports: [CommonModule],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => FieldComponent),
-      multi: true,
-    },
-  ],
 })
 export class FieldComponent implements ControlValueAccessor, OnInit, OnDestroy {
   fieldType = input<FieldType>('text');
@@ -56,7 +52,7 @@ export class FieldComponent implements ControlValueAccessor, OnInit, OnDestroy {
   size = input<Size>('medium');
   state = input<StateType>('info');
   name = input<string>('');
-  id = model<string>('');
+  id = model<string | number>('');
   autocomplete = input<string | null>(null);
   showClearButton = input<boolean>(true);
   ariaLabel = input<string>('');

@@ -14,5 +14,12 @@ import { ClearButtonComponent } from '../clear-button.component';
       multi: true,
     },
   ],
+  styles: [
+    `
+      :host {
+        width: 100%;
+      }
+    `,
+  ],
 })
 export class TextComponent extends FieldComponent {}

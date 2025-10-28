@@ -224,7 +224,7 @@
   // Read only styles
   &:read-only {
     border-color: $color-neutral-stroke-disabled;
-    cursor: not-allowed;
+    cursor: default;
   }
 
   // Error state

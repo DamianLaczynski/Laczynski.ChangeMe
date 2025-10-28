@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { TextComponent } from './text.component';
 import { FormsModule } from '@angular/forms';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-text-showcase',
-  imports: [TextComponent, FormsModule],
+  standalone: true,
+  imports: [TextComponent, FormsModule, JsonPipe],
   template: `
     <div class="showcase showcase--responsive">
       <h1 class="showcase__title">Text Component Showcase</h1>
@@ -12,6 +14,29 @@ import { FormsModule } from '@angular/forms';
         Comprehensive showcase of the Text component built with Fluent 2 Design System. All variants
         are responsive and accessible.
       </p>
+
+      <!-- Basic Examples -->
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Basic Examples</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <app-text
+              label="Standard Text Field"
+              placeholder="Enter text"
+              helpText="This is a standard text field"
+            ></app-text>
+          </div>
+          <div class="showcase__item">
+            <app-text
+              label="With Default Value"
+              placeholder="Enter text"
+              [(ngModel)]="defaultValue"
+              [ngModelOptions]="{ standalone: true }"
+              helpText="Text field with default value"
+            ></app-text>
+          </div>
+        </div>
+      </div>
 
       <!-- Size Variants -->
       <div class="showcase__section">
@@ -23,6 +48,7 @@ import { FormsModule } from '@angular/forms';
               placeholder="Small text input"
               size="small"
               helpText="This is a small text field"
+              variant="underlined"
             ></app-text>
           </div>
           <div class="showcase__item">
@@ -31,6 +57,7 @@ import { FormsModule } from '@angular/forms';
               placeholder="Medium text input"
               size="medium"
               helpText="This is a medium text field"
+              variant="filled-gray"
             ></app-text>
           </div>
           <div class="showcase__item">
@@ -39,6 +66,7 @@ import { FormsModule } from '@angular/forms';
               placeholder="Large text input"
               size="large"
               helpText="This is a large text field"
+              variant="filled-lighter"
             ></app-text>
           </div>
         </div>
@@ -152,6 +180,10 @@ import { FormsModule } from '@angular/forms';
                 [ngModelOptions]="{ standalone: true }"
                 helpText="Optional comments"
               ></app-text>
+              <div class="showcase__form-output">
+                <strong>Form Values:</strong>
+                <pre>{{ formData | json }}</pre>
+              </div>
             </form>
           </div>
         </div>
@@ -224,6 +256,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class TextShowcaseComponent {
   value = 'This is a read-only value';
+  defaultValue = 'Default value';
 
   formData = {
     firstName: '',
