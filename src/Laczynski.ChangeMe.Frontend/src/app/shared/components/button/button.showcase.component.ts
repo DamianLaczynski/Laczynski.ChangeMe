@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-button-showcase',
+  standalone: true,
   imports: [ButtonComponent, CommonModule],
   template: `
     <div class="showcase showcase--responsive">
@@ -12,6 +13,33 @@ import { CommonModule } from '@angular/common';
         Comprehensive showcase of the Button component built with Fluent 2 Design System. All
         variants are responsive and accessible.
       </p>
+
+      <!-- Basic Examples -->
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Basic Examples</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <app-button variant="primary" (click)="onButtonClick($event)">
+              Primary Button
+            </app-button>
+          </div>
+          <div class="showcase__item">
+            <app-button variant="secondary" (click)="onButtonClick($event)">
+              Secondary Button
+            </app-button>
+          </div>
+          <div class="showcase__item">
+            <app-button variant="outline" (click)="onButtonClick($event)">
+              Outline Button
+            </app-button>
+          </div>
+          <div class="showcase__item">
+            <app-button variant="subtle" (click)="onButtonClick($event)">
+              Subtle Button
+            </app-button>
+          </div>
+        </div>
+      </div>
 
       <!-- Primary Style Variants -->
       <div class="showcase__section">
@@ -176,7 +204,7 @@ import { CommonModule } from '@angular/common';
 
       <!-- State Variants -->
       <div class="showcase__section">
-        <h2 class="showcase__section__title">Button States</h2>
+        <h2 class="showcase__section__title">Interactive States</h2>
         <div class="showcase__grid">
           <app-button variant="primary" (click)="onButtonClick($event)">Normal</app-button>
           <app-button variant="primary" [selected]="true" (click)="onButtonClick($event)"
@@ -197,15 +225,51 @@ import { CommonModule } from '@angular/common';
         </div>
       </div>
 
+      <!-- All Variants Combined -->
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">All Variants Combined</h2>
+        <div class="showcase__grid showcase__grid--large">
+          <div class="showcase__item">
+            <app-button variant="primary" size="small" (click)="onButtonClick($event)">
+              Small Primary
+            </app-button>
+          </div>
+          <div class="showcase__item">
+            <app-button
+              variant="secondary"
+              size="medium"
+              [disabled]="true"
+              (click)="onButtonClick($event)"
+            >
+              Medium Disabled
+            </app-button>
+          </div>
+          <div class="showcase__item">
+            <app-button variant="outline" size="large" (click)="onButtonClick($event)">
+              Large Outline
+            </app-button>
+          </div>
+          <div class="showcase__item">
+            <app-button variant="subtle" [selected]="true" (click)="onButtonClick($event)">
+              Selected Subtle
+            </app-button>
+          </div>
+        </div>
+      </div>
+
       <!-- Full Width -->
       <div class="showcase__section">
         <h2 class="showcase__section__title">Full Width</h2>
-        <app-button variant="primary" [fullWidth]="true" (click)="onButtonClick($event)">
-          <svg slot="icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-            <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1" fill="none" />
-          </svg>
-          Full Width Button
-        </app-button>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <app-button variant="primary" [fullWidth]="true" (click)="onButtonClick($event)">
+              <svg slot="icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1" fill="none" />
+              </svg>
+              Full Width Button
+            </app-button>
+          </div>
+        </div>
       </div>
     </div>
   `,
