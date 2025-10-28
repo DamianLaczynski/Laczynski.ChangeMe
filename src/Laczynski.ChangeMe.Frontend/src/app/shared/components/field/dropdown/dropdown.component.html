@@ -1,0 +1,165 @@
+<app-field
+  [fieldType]="'select'"
+  [label]="label()"
+  [placeholder]="placeholder()"
+  [helpText]="helpText()"
+  [errorText]="errorText()"
+  [warningText]="warningText()"
+  [successText]="successText()"
+  [required]="required()"
+  [disabled]="disabled()"
+  [readonly]="readonly()"
+  [autocomplete]="autocomplete()"
+  [id]="id()"
+  [name]="name()"
+  [state]="state()"
+  [size]="size()"
+  [variant]="variant()"
+>
+  <div class="input-wrapper" [class]="wrapperClasses">
+    <!-- Dropdown Trigger (styled as input with chevron inside) -->
+    <div
+      class="input dropdown-trigger"
+      [attr.tabindex]="disabled() ? -1 : 0"
+      [attr.aria-expanded]="isExpanded()"
+      [attr.aria-haspopup]="true"
+      [attr.aria-label]="ariaLabel() || label()"
+      (click)="toggleDropdown(); $event.stopPropagation()"
+      (keydown.enter)="toggleDropdown(); $event.preventDefault(); $event.stopPropagation()"
+      (keydown.space)="toggleDropdown(); $event.preventDefault(); $event.stopPropagation()"
+      (keydown.escape)="closeDropdown(); $event.stopPropagation()"
+      (focus)="onFocus($event)"
+    >
+      <!-- Display text -->
+      <span
+        class="dropdown-display-text"
+        [class.dropdown-placeholder]="selectedValues().size === 0"
+      >
+        {{ displayText() }}
+      </span>
+
+      <!-- Clear button (inside input) -->
+      <button
+        *ngIf="clearable() && selectedValues().size > 0 && !disabled()"
+        type="button"
+        class="dropdown-clear-btn"
+        (click)="clearSelection(); $event.stopPropagation()"
+        [attr.aria-label]="'Clear selection'"
+        tabindex="-1"
+      >
+        <svg
+          width="12"
+          height="12"
+          viewBox="0 0 12 12"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M9.5 2.5L2.5 9.5M2.5 2.5L9.5 9.5"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+          />
+        </svg>
+      </button>
+
+      <!-- Chevron icon (inside input, always visible) -->
+      <div class="dropdown-chevron" [class.dropdown-chevron--expanded]="isExpanded()">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M15.8527 7.64582C16.0484 7.84073 16.0489 8.15731 15.854 8.35292L10.389 13.8374C10.1741 14.0531 9.82477 14.0531 9.60982 13.8374L4.14484 8.35292C3.94993 8.15731 3.95049 7.84073 4.1461 7.64582C4.34171 7.4509 4.65829 7.45147 4.85321 7.64708L9.99942 12.8117L15.1456 7.64708C15.3406 7.45147 15.6571 7.4509 15.8527 7.64582Z"
+            fill="currentColor"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>
+</app-field>
+
+<!-- Dropdown Panel (positioned relative to host component) -->
+<div
+  *ngIf="isExpanded()"
+  #dropdownPanel
+  class="dropdown-panel"
+  [class.dropdown-panel--small]="size() === 'small'"
+  [class.dropdown-panel--medium]="size() === 'medium'"
+  [class.dropdown-panel--large]="size() === 'large'"
+  [style.max-height]="maxHeight()"
+>
+  <!-- Search input -->
+  <div *ngIf="searchable()" class="dropdown-panel__search">
+    <app-text
+      [size]="size()"
+      placeholder="Search..."
+      (input)="onSearchInput($event)"
+      (click)="$event.stopPropagation()"
+    />
+  </div>
+
+  <!-- Items list -->
+  <div class="dropdown-panel__list">
+    @for (item of filteredItems(); track item.value) {
+      <div
+        [ngClass]="getItemClasses(item)"
+        [attr.role]="item.type === 'header' || item.type === 'divider' ? 'separator' : 'option'"
+        [attr.aria-selected]="isItemSelected(item)"
+        [attr.aria-disabled]="item.disabled"
+        (click)="selectItem(item, $event)"
+      >
+        @if (item.type === 'header') {
+          <!-- Header item -->
+          <div class="dropdown-panel__item-header">
+            {{ item.label }}
+          </div>
+        } @else if (item.type === 'divider') {
+          <!-- Divider -->
+          <div class="dropdown-panel__divider"></div>
+        } @else {
+          <!-- Regular item -->
+          <div class="dropdown-panel__item-container">
+            <!-- Checkmark/Checkbox control -->
+            @if (mode() === 'single' && isItemSelected(item)) {
+              <!-- Single select checkmark -->
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M14.0458 3.4856C14.3299 3.78703 14.3158 4.26169 14.0144 4.54579L6.08456 12.0197C5.74829 12.3366 5.22042 12.3269 4.89609 11.9977L2.21576 9.27737C1.92504 8.98231 1.92856 8.50745 2.22361 8.21674C2.51867 7.92602 2.99353 7.92954 3.28424 8.22459L5.51839 10.4921L12.9856 3.45421C13.287 3.17011 13.7617 3.18416 14.0458 3.4856Z"
+                  fill="currentColor"
+                />
+              </svg>
+            } @else if (mode() === 'multi') {
+              <app-checkbox
+                size="medium"
+                [ngModel]="isItemSelected(item)"
+                (ngModelChange)="selectItem(item, $event)"
+              />
+            }
+
+            <!-- Icon (if provided) -->
+            @if (item.icon) {
+              <div class="dropdown-panel__item-icon" [innerHTML]="item.icon"></div>
+            }
+
+            <!-- Label -->
+            <div class="dropdown-panel__item-text">
+              {{ item.label }}
+            </div>
+          </div>
+        }
+      </div>
+    } @empty {
+      <div class="dropdown-panel__empty">No items found</div>
+    }
+  </div>
+</div>
