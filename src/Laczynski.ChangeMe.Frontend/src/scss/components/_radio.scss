@@ -1,0 +1,320 @@
+// Radio Component Styles based on Fluent 2 Design System
+
+// ==============================================================
+// RADIO BUTTON
+// ==============================================================
+
+.radio-wrapper {
+  display: inline-flex;
+}
+
+.radio-container {
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 4px;
+  cursor: pointer;
+  user-select: none;
+
+  &:has(.radio-input:disabled) {
+    cursor: not-allowed;
+  }
+}
+
+// Hidden native radio
+.radio-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+// Visual radio container
+.radio-visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.radio-svg {
+  display: block;
+  width: 32px;
+  height: 32px;
+}
+
+// Label text
+.radio-label {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  color: var(--Neutral-Foreground-1-Rest, #242424);
+  font-size: 14px;
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
+  font-weight: 400;
+  line-height: 20px;
+  word-wrap: break-word;
+
+  &--disabled {
+    color: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+  }
+
+  &--required::after {
+    content: ' *';
+    color: var(--Shared-Red-Foreground, #D13438);
+  }
+}
+
+// ==============================================================
+// LAYOUT VARIANTS
+// ==============================================================
+
+// Layout: Icon + Label After (default)
+.radio--after {
+  .radio-container {
+    flex-direction: row;
+    padding-right: 8px;
+  }
+
+  .radio-label {
+    padding-right: 8px;
+  }
+}
+
+// Layout: Icon + Label Below
+.radio--below {
+  .radio-container {
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 8px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+
+  .radio-label {
+    padding: 0;
+    text-align: center;
+  }
+}
+
+// Layout: Icon Only
+.radio--icon-only {
+  .radio-container {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+// ==============================================================
+// UNCHECKED STATE
+// ==============================================================
+
+.radio--unchecked {
+  // Rest
+  .radio-circle-unchecked {
+    stroke: var(--Neutral-Stroke-Accessible-Rest, #616161);
+    fill: none;
+    stroke-width: 1;
+  }
+
+  // Hover
+  .radio-container:hover & .radio-circle-unchecked {
+    stroke: var(--Neutral-Stroke-Accessible-Hover, #575757);
+  }
+
+  // Pressed
+  .radio-container:active & .radio-circle-unchecked {
+    stroke: var(--Neutral-Stroke-Accessible-Pressed, #4D4D4D);
+  }
+
+  // Disabled
+  &.radio--disabled {
+    .radio-circle-unchecked {
+      stroke: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+    }
+
+    .radio-label {
+      color: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+    }
+  }
+}
+
+// ==============================================================
+// CHECKED STATE
+// ==============================================================
+
+.radio--checked {
+  // Rest
+  .radio-circle-checked {
+    stroke: var(--Brand-Stroke-Compound-Rest, #0F6CBD);
+    fill: none;
+    stroke-width: 1;
+  }
+
+  .radio-dot {
+    fill: var(--Brand-Stroke-Compound-Rest, #0F6CBD);
+    stroke: var(--Brand-Stroke-Compound-Rest, #0F6CBD);
+    stroke-width: 1;
+  }
+
+  // Hover
+  .radio-container:hover & {
+    .radio-circle-checked {
+      stroke: var(--Brand-Stroke-Compound-Hover, #115EA3);
+    }
+
+    .radio-dot {
+      fill: var(--Brand-Stroke-Compound-Hover, #115EA3);
+      stroke: var(--Brand-Stroke-Compound-Hover, #115EA3);
+    }
+  }
+
+  // Pressed
+  .radio-container:active & {
+    .radio-circle-checked {
+      stroke: var(--Brand-Stroke-Compound-Pressed, #0F548C);
+    }
+
+    .radio-dot {
+      fill: var(--Brand-Stroke-Compound-Pressed, #0F548C);
+      stroke: var(--Brand-Stroke-Compound-Pressed, #0F548C);
+    }
+  }
+
+  // Disabled
+  &.radio--disabled {
+    .radio-circle-checked {
+      stroke: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+    }
+
+    .radio-dot {
+      fill: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+      stroke: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+    }
+
+    .radio-label {
+      color: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+    }
+  }
+}
+
+// ==============================================================
+// SIZE VARIANTS
+// ==============================================================
+
+.radio--small {
+  .radio-svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .radio-label {
+    font-size: 12px;
+    line-height: 16px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+
+  &.radio--icon-only .radio-container {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.radio--medium {
+  // Default size (already defined above)
+}
+
+.radio--large {
+  .radio-svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  .radio-label {
+    font-size: 16px;
+    line-height: 24px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  &.radio--icon-only .radio-container {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+// ==============================================================
+// DISABLED STATE (applies to all variants)
+// ==============================================================
+
+.radio--disabled {
+  cursor: not-allowed;
+
+  .radio-container {
+    cursor: not-allowed;
+  }
+}
+
+// ==============================================================
+// RADIO GROUP
+// ==============================================================
+
+.radio-group-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.radio-group-label {
+  display: block;
+  color: var(--Neutral-Foreground-2-Rest, #424242);
+  font-size: 14px;
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
+  font-weight: 600;
+  line-height: 20px;
+
+  &--disabled {
+    color: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+  }
+
+  &--required::after {
+    content: ' *';
+    color: var(--Shared-Red-Foreground, #D13438);
+  }
+
+  &--small {
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  &--large {
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
+
+.radio-group {
+  display: flex;
+  gap: 0;
+}
+
+.radio-group--vertical {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.radio-group--horizontal {
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.radio-group--disabled {
+  .radio-group-label {
+    color: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+  }
+}
+
