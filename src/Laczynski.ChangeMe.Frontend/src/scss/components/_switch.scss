@@ -1,0 +1,270 @@
+// Switch Component Styles based on Fluent 2 Design System
+// Implements toggle switch with unchecked and checked states
+
+.switch-wrapper {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+
+  &.switch--label-above {
+    align-items: flex-start;
+  }
+}
+
+.switch-container {
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+
+  &:has(.switch-input:disabled) {
+    cursor: not-allowed;
+  }
+}
+
+// Hidden native checkbox
+.switch-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+// Visual switch container
+.switch-visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.switch-svg {
+  display: block;
+  width: 56px;
+  height: 36px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// Label positioning
+.switch-label-above {
+  padding-right: 8px;
+  padding-bottom: 4px;
+}
+
+.switch-label-before {
+  padding-right: 4px;
+  order: -1;
+}
+
+.switch-label-after {
+  padding-left: 4px;
+  padding-right: 8px;
+}
+
+// Label text styles
+.switch-label {
+  color: var(--Neutral-Foreground-1-Rest, #242424);
+  font-size: 14px;
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
+  font-weight: 400;
+  line-height: 20px;
+  word-wrap: break-word;
+
+  &--disabled {
+    color: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+  }
+
+  &--required::after {
+    content: ' *';
+    color: var(--Shared-Red-Foreground, #D13438);
+  }
+}
+
+
+// ===== UNCHECKED STATE =====
+.switch--unchecked {
+  .switch-stroke {
+    fill: var(--Neutral-Stroke-Accessible-Rest, #616161);
+    transition: fill 0.2s ease;
+  }
+
+  .switch-thumb {
+    fill: var(--Neutral-Stroke-Accessible-Rest, #616161);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  // Hover state
+  .switch-container:hover:not(:has(.switch-input:disabled)) & {
+    .switch-stroke {
+      fill: var(--Neutral-Stroke-Accessible-Hover, #575757);
+    }
+    .switch-thumb {
+      fill: var(--Neutral-Stroke-Accessible-Hover, #575757);
+    }
+  }
+
+  // Pressed state
+  .switch-container:active:not(:has(.switch-input:disabled)) & {
+    .switch-stroke {
+      fill: var(--Neutral-Stroke-Accessible-Pressed, #4D4D4D);
+    }
+    .switch-thumb {
+      fill: var(--Neutral-Stroke-Accessible-Pressed, #4D4D4D);
+    }
+  }
+
+  // Focus state
+  .switch-input:focus-visible ~ .switch-visual & {
+    outline: 2px solid var(--Stroke-Focus-2, #000000);
+    outline-offset: 2px;
+    border-radius: 20px;
+  }
+}
+
+// ===== CHECKED STATE =====
+.switch--checked {
+  .switch-background {
+    fill: var(--Brand-Background-Compound-Rest, #0F6CBD);
+    transition: fill 0.2s ease;
+  }
+
+  .switch-thumb-checked {
+    fill: var(--Colors-Neutral-White, #FFFFFF);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  // Hover state
+  .switch-container:hover:not(:has(.switch-input:disabled)) & {
+    .switch-background {
+      fill: var(--Brand-Background-Compound-Hover, #115EA3);
+    }
+  }
+
+  // Pressed state
+  .switch-container:active:not(:has(.switch-input:disabled)) & {
+    .switch-background {
+      fill: var(--Brand-Background-Compound-Pressed, #0F548C);
+    }
+  }
+
+  // Focus state
+  .switch-input:focus-visible ~ .switch-visual & {
+    outline: 2px solid var(--Stroke-Focus-2, #000000);
+    outline-offset: 2px;
+    border-radius: 20px;
+  }
+}
+
+// ===== DISABLED STATE =====
+.switch--disabled {
+  opacity: 1;
+
+  .switch-label {
+    color: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+  }
+
+  &.switch--unchecked {
+    .switch-stroke {
+      fill: var(--Neutral-Stroke-Disabled-Rest, #E0E0E0);
+    }
+    .switch-thumb {
+      fill: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+    }
+  }
+
+  &.switch--checked {
+    .switch-background {
+      fill: var(--Neutral-Background-Disabled-Rest, #F0F0F0);
+    }
+    .switch-thumb-checked {
+      fill: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+    }
+  }
+}
+
+// ===== SIZE VARIANTS =====
+.switch--small {
+  .switch-svg {
+    width: 44px;
+    height: 28px;
+    transform: scale(0.8);
+    transform-origin: center;
+  }
+
+  .switch-label {
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+}
+
+.switch--medium {
+  // Default size - already defined above
+  .switch-svg {
+    width: 56px;
+    height: 36px;
+  }
+}
+
+.switch--large {
+  .switch-svg {
+    width: 68px;
+    height: 44px;
+    transform: scale(1.2);
+    transform-origin: center;
+  }
+
+  .switch-label {
+    font-size: 16px;
+    line-height: 22px;
+  }
+
+}
+
+// ===== ACCESSIBILITY =====
+.switch-input:focus-visible ~ .switch-visual {
+  .switch-svg {
+    outline: 2px solid var(--Stroke-Focus-2, #000000);
+    outline-offset: 2px;
+    border-radius: 20px;
+  }
+}
+
+// ===== ANIMATION =====
+.switch-visual {
+  .switch-svg {
+    transition: transform 0.15s ease-in-out;
+  }
+}
+
+// Smooth transition between states
+.switch--unchecked .switch-thumb,
+.switch--checked .switch-thumb-checked {
+  transition: cx 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              fill 0.2s ease;
+}
+
+.switch--unchecked .switch-stroke,
+.switch--checked .switch-background {
+  transition: fill 0.2s ease;
+}
+
+// ===== RTL SUPPORT =====
+[dir="rtl"] {
+  .switch-label-before {
+    padding-left: 4px;
+    padding-right: 8px;
+    order: 1;
+  }
+
+  .switch-label-after {
+    padding-left: 8px;
+    padding-right: 4px;
+    order: -1;
+  }
+}
+
