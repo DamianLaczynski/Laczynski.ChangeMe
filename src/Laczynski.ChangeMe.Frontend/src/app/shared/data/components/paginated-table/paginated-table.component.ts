@@ -15,14 +15,17 @@ import { PaginationParameters } from '../../models/pagination-parameters.model';
 import { DataGridColumn } from './models/data-grid-column.model';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ButtonComponent } from '../../../components/button/button.component';
-import { Option, SelectComponent } from '@shared/components/field/select/select.component';
 import { FormsModule } from '@angular/forms';
-import { LoadingIndicatorComponent } from '@shared/components/loading-indicator/loading-indicator.component';
+import { SpinnerComponent } from '@shared/components/spinner';
+import {
+  DropdownComponent,
+  DropdownItem,
+} from '@shared/components/field/dropdown/dropdown.component';
 
 @Component({
   selector: 'app-paginated-table',
   standalone: true,
-  imports: [CommonModule, ButtonComponent, SelectComponent, FormsModule, LoadingIndicatorComponent],
+  imports: [CommonModule, ButtonComponent, FormsModule, SpinnerComponent, DropdownComponent],
   templateUrl: './paginated-table.component.html',
 })
 export class PaginatedTableComponent<T, P extends PaginationParameters = PaginationParameters>
@@ -225,7 +228,7 @@ export class PaginatedTableComponent<T, P extends PaginationParameters = Paginat
     return classes.join(' ');
   }
 
-  getPageSizeOptions(): Option[] {
+  getPageSizeOptions(): DropdownItem[] {
     return (
       this.config().pageSizeOptions?.map(size => ({
         value: size,
