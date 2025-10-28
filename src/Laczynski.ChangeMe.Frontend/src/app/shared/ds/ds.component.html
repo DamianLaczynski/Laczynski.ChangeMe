@@ -1,0 +1,14 @@
+<div style="max-height: 100vh; max-width: 100vw">
+  <app-splitter [panels]="panels()" orientation="horizontal">
+    <ng-template appSplitterPanel="sidebar">
+      <app-scroll-panel maxHeight="100vh">
+        <app-ds-sidebar></app-ds-sidebar>
+      </app-scroll-panel>
+    </ng-template>
+    <ng-template appSplitterPanel="content">
+      <app-scroll-panel maxHeight="100vh">
+        <router-outlet></router-outlet>
+      </app-scroll-panel>
+    </ng-template>
+  </app-splitter>
+</div>

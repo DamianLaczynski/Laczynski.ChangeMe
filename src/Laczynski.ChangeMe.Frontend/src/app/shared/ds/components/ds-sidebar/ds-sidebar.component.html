@@ -1,0 +1,12 @@
+<div style="display: flex; gap: 8px; justify-content: center; align-items: center; margin: 12px">
+  <app-text placeholder="Search..." [showClearButton]="true">Design System</app-text>
+  <app-button>Search</app-button>
+</div>
+<app-divider></app-divider>
+<app-tree
+  [nodes]="treeNodes"
+  [showIcon]="false"
+  (nodeSelect)="onNodeSelect($event)"
+  [showQuickActions]="true"
+>
+</app-tree>
