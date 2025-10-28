@@ -1,10 +1,12 @@
-import { Component, forwardRef } from '@angular/core';
+import { Component, forwardRef, input, model, effect, output, OnInit } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { CheckboxStyle, Size, StateType } from '../../utils';
+import { CommonModule } from '@angular/common';
 import { FieldComponent } from '../field/field.component';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-checkbox',
-  imports: [FieldComponent],
+  imports: [CommonModule, FieldComponent],
   templateUrl: './checkbox.component.html',
   providers: [
     {
@@ -14,11 +16,92 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
     },
   ],
 })
-export class CheckboxComponent extends FieldComponent {
+export class CheckboxComponent extends FieldComponent implements ControlValueAccessor, OnInit {
+  // Component inputs
+  checkboxStyle = input<CheckboxStyle>('standard');
+  indeterminate = model<boolean>(false);
+
+  constructor() {
+    super();
+    effect(() => {
+      // Synchronize indeterminate state with the native checkbox element
+      if (this.indeterminate()) {
+        this.value = false;
+      }
+    });
+  }
+
+  get isChecked(): boolean {
+    return this.value === true && !this.indeterminate();
+  }
+
+  get isUnchecked(): boolean {
+    return this.value == false && !this.indeterminate();
+  }
+
+  get isIndeterminate(): boolean {
+    return this.indeterminate();
+  }
+
+  get checkboxClasses(): string {
+    const classes = ['checkbox'];
+
+    classes.push(`checkbox--${this.checkboxStyle()}`);
+
+    if (this.isChecked) {
+      classes.push('checkbox--checked');
+    } else if (this.isIndeterminate) {
+      classes.push('checkbox--indeterminate');
+    } else {
+      classes.push('checkbox--unchecked');
+    }
+
+    if (this.disabled()) {
+      classes.push('checkbox--disabled');
+    }
+
+    classes.push(`checkbox--${this.size()}`);
+
+    return classes.join(' ');
+  }
+
   onCheckboxChange(event: Event): void {
     const target = event.target as HTMLInputElement;
-    this.value = target.checked;
+
+    if (this.indeterminate()) {
+      // Cycle: indeterminate -> checked
+      this.indeterminate.set(false);
+      this.value = true;
+    } else {
+      // Normal toggle: unchecked <-> checked
+      this.value = target.checked;
+    }
+
     this.onChange(this.value);
     this.change.emit(this.value);
+  }
+
+  onCheckboxClick(event: MouseEvent): void {
+    // Prevent default to control the state manually
+    if (this.disabled() || this.readonly()) {
+      event.preventDefault();
+      return;
+    }
+  }
+
+  override onFocus(event: FocusEvent): void {
+    this._isFocused = true;
+    this.focus.emit(event);
+  }
+
+  override onBlur(event: FocusEvent): void {
+    this._isFocused = false;
+    this.onTouched();
+    this.blur.emit(event);
+  }
+
+  // ControlValueAccessor methods
+  override writeValue(value: any): void {
+    this.value = value || false;
   }
 }

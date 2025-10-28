@@ -1,7 +1,5 @@
 <app-field
-  [fieldType]="'checkbox'"
-  [label]="label()"
-  [placeholder]="placeholder()"
+  [fieldType]="'number'"
   [helpText]="helpText()"
   [errorText]="errorText()"
   [warningText]="warningText()"
@@ -9,25 +7,198 @@
   [required]="required()"
   [disabled]="disabled()"
   [readonly]="readonly()"
-  [autocomplete]="autocomplete()"
   [id]="id()"
   [name]="name()"
   [state]="state()"
   [size]="size()"
 >
-  <div class="field__checkbox">
-    <input
-      [id]="id()"
-      [name]="name()"
-      type="checkbox"
-      [checked]="value"
-      [disabled]="disabled()"
-      (change)="onCheckboxChange($event)"
-      (focus)="onFocus($event)"
-      (blur)="onBlur($event)"
-    />
-    <label [for]="id()" class="field__label" [class.required]="required()">
-      {{ label() }}
+  <div class="checkbox-wrapper" [ngClass]="checkboxClasses">
+    <label class="checkbox-container">
+      <!-- Hidden native checkbox for accessibility and form integration -->
+      <input
+        type="checkbox"
+        [id]="id()"
+        [name]="name()"
+        [checked]="isChecked"
+        [indeterminate]="isIndeterminate"
+        [disabled]="disabled()"
+        [attr.aria-label]="ariaLabel() || label()"
+        [attr.aria-describedby]="ariaDescribedBy()"
+        [attr.required]="required() ? true : null"
+        class="checkbox-input"
+        (change)="onCheckboxChange($event)"
+        (focus)="onFocus($event)"
+        (blur)="onBlur($event)"
+        (click)="onCheckboxClick($event)"
+      />
+
+      <!-- Visual checkbox element -->
+      <div class="checkbox-visual">
+        <!-- Standard Style SVGs -->
+        @if (checkboxStyle() === 'standard') {
+          <!-- Unchecked -->
+          @if (isUnchecked) {
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              class="checkbox-svg"
+            >
+              <mask id="path-1-inside-1" fill="white">
+                <path
+                  d="M8 10C8 8.89543 8.89543 8 10 8H22C23.1046 8 24 8.89543 24 10V22C24 23.1046 23.1046 24 22 24H10C8.89543 24 8 23.1046 8 22V10Z"
+                />
+              </mask>
+              <path
+                d="M10 8V9H22V8V7H10V8ZM24 10H23V22H24H25V10H24ZM22 24V23H10V24V25H22V24ZM8 22H9V10H8H7V22H8ZM10 24V23C9.44772 23 9 22.5523 9 22H8H7C7 23.6569 8.34315 25 10 25V24ZM24 22H23C23 22.5523 22.5523 23 22 23V24V25C23.6569 25 25 23.6569 25 22H24ZM22 8V9C22.5523 9 23 9.44772 23 10H24H25C25 8.34315 23.6569 7 22 7V8ZM10 8V7C8.34315 7 7 8.34315 7 10H8H9C9 9.44772 9.44772 9 10 9V8Z"
+                class="checkbox-stroke"
+                mask="url(#path-1-inside-1)"
+              />
+            </svg>
+          }
+
+          <!-- Checked -->
+          @if (isChecked) {
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              class="checkbox-svg"
+            >
+              <g transform="translate(8, 8)">
+                <path
+                  d="M0 2C0 0.895431 0.895431 0 2 0H14C15.1046 0 16 0.895431 16 2V14C16 15.1046 15.1046 16 14 16H2C0.895431 16 0 15.1046 0 14V2Z"
+                  class="checkbox-background"
+                />
+                <path
+                  d="M11.765 5.20474C12.0661 5.48915 12.0797 5.96383 11.7953 6.26497L7.54526 10.765C7.40613 10.9123 7.21332 10.997 7.01071 10.9999C6.8081 11.0028 6.61295 10.9236 6.46967 10.7803L4.21967 8.53033C3.92678 8.23744 3.92678 7.76257 4.21967 7.46967C4.51256 7.17678 4.98744 7.17678 5.28033 7.46967L6.98463 9.17397L10.7047 5.23503C10.9891 4.9339 11.4638 4.92033 11.765 5.20474Z"
+                  class="checkbox-checkmark"
+                />
+              </g>
+            </svg>
+          }
+
+          <!-- Indeterminate -->
+          @if (isIndeterminate) {
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              class="checkbox-svg"
+            >
+              <g transform="translate(8, 8)">
+                <mask id="path-1-inside-2" fill="white">
+                  <path
+                    d="M0 2C0 0.895431 0.895431 0 2 0H14C15.1046 0 16 0.895431 16 2V14C16 15.1046 15.1046 16 14 16H2C0.895431 16 0 15.1046 0 14V2Z"
+                  />
+                </mask>
+                <path
+                  d="M2 0V1H14V0V-1H2V0ZM16 2H15V14H16H17V2H16ZM14 16V15H2V16V17H14V16ZM0 14H1V2H0H-1V14H0ZM2 16V15C1.44772 15 1 14.5523 1 14H0H-1C-1 15.6569 0.343146 17 2 17V16ZM16 14H15C15 14.5523 14.5523 15 14 15V16V17C15.6569 17 17 15.6569 17 14H16ZM14 0V1C14.5523 1 15 1.44772 15 2H16H17C17 0.343146 15.6569 -1 14 -1V0ZM2 0V-1C0.343146 -1 -1 0.343146 -1 2H0H1C1 1.44772 1.44772 1 2 1V0Z"
+                  class="checkbox-stroke-indeterminate"
+                  mask="url(#path-1-inside-2)"
+                />
+                <path
+                  d="M4 6C4 4.89543 4.89543 4 6 4H10C11.1046 4 12 4.89543 12 6V10C12 11.1046 11.1046 12 10 12H6C4.89543 12 4 11.1046 4 10V6Z"
+                  class="checkbox-indeterminate-mark"
+                />
+              </g>
+            </svg>
+          }
+        }
+
+        <!-- Circular Style SVGs -->
+        @if (checkboxStyle() === 'circular') {
+          <!-- Unchecked -->
+          @if (isUnchecked) {
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              class="checkbox-svg"
+            >
+              <mask id="path-1-inside-3" fill="white">
+                <path
+                  d="M8 16C8 11.5817 11.5817 8 16 8C20.4183 8 24 11.5817 24 16C24 20.4183 20.4183 24 16 24C11.5817 24 8 20.4183 8 16Z"
+                />
+              </mask>
+              <path
+                d="M16 24V23C12.134 23 9 19.866 9 16H8H7C7 20.9706 11.0294 25 16 25V24ZM24 16H23C23 19.866 19.866 23 16 23V24V25C20.9706 25 25 20.9706 25 16H24ZM16 8V9C19.866 9 23 12.134 23 16H24H25C25 11.0294 20.9706 7 16 7V8ZM16 8V7C11.0294 7 7 11.0294 7 16H8H9C9 12.134 12.134 9 16 9V8Z"
+                class="checkbox-stroke"
+                mask="url(#path-1-inside-3)"
+              />
+            </svg>
+          }
+
+          <!-- Checked -->
+          @if (isChecked) {
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              class="checkbox-svg"
+            >
+              <g transform="translate(8, 8)">
+                <path
+                  d="M0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8Z"
+                  class="checkbox-background"
+                />
+                <path
+                  d="M11.765 5.20474C12.0661 5.48915 12.0797 5.96383 11.7953 6.26497L7.54526 10.765C7.40613 10.9123 7.21332 10.997 7.01071 10.9999C6.8081 11.0028 6.61295 10.9236 6.46967 10.7803L4.21967 8.53033C3.92678 8.23744 3.92678 7.76257 4.21967 7.46967C4.51256 7.17678 4.98744 7.17678 5.28033 7.46967L6.98463 9.17397L10.7047 5.23503C10.9891 4.9339 11.4638 4.92033 11.765 5.20474Z"
+                  class="checkbox-checkmark"
+                />
+              </g>
+            </svg>
+          }
+
+          <!-- Indeterminate -->
+          @if (isIndeterminate) {
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              class="checkbox-svg"
+            >
+              <mask id="path-1-inside-4" fill="white">
+                <path
+                  d="M8 16C8 11.5817 11.5817 8 16 8C20.4183 8 24 11.5817 24 16C24 20.4183 20.4183 24 16 24C11.5817 24 8 20.4183 8 16Z"
+                />
+              </mask>
+              <path
+                d="M16 24V23C12.134 23 9 19.866 9 16H8H7C7 20.9706 11.0294 25 16 25V24ZM24 16H23C23 19.866 19.866 23 16 23V24V25C20.9706 25 25 20.9706 25 16H24ZM16 8V9C19.866 9 23 12.134 23 16H24H25C25 11.0294 20.9706 7 16 7V8ZM16 8V7C11.0294 7 7 11.0294 7 16H8H9C9 12.134 12.134 9 16 9V8Z"
+                class="checkbox-stroke-indeterminate"
+                mask="url(#path-1-inside-4)"
+              />
+              <path
+                d="M12 16C12 13.7909 13.7909 12 16 12C18.2091 12 20 13.7909 20 16C20 18.2091 18.2091 20 16 20C13.7909 20 12 18.2091 12 16Z"
+                class="checkbox-indeterminate-mark"
+              />
+            </svg>
+          }
+        }
+      </div>
+
+      <!-- Label text -->
+      @if (label()) {
+        <span
+          class="checkbox-label"
+          [class.checkbox-label--disabled]="disabled()"
+          [class.checkbox-label--required]="required()"
+        >
+          {{ label() }}
+        </span>
+      }
     </label>
   </div>
 </app-field>
