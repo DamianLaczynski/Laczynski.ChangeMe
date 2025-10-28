@@ -76,14 +76,20 @@ export class CardComponent {
     this.quickActionClick.emit(event);
   }
 
-  onPrimaryAction(): void {
+  onPrimaryAction(event: MouseEvent): void {
+    event.stopPropagation();
+    event.preventDefault();
+
     const action = this.primaryAction();
     if (action && !action.disabled && !this.disabled()) {
       action.action();
     }
   }
 
-  onSecondaryAction(): void {
+  onSecondaryAction(event: MouseEvent): void {
+    event.stopPropagation();
+    event.preventDefault();
+
     const action = this.secondaryAction();
     if (action && !action.disabled && !this.disabled()) {
       action.action();
