@@ -1,0 +1,73 @@
+<app-field
+  [fieldType]="'slider'"
+  [label]="label()"
+  [placeholder]="placeholder()"
+  [helpText]="helpText()"
+  [errorText]="errorText()"
+  [warningText]="warningText()"
+  [successText]="successText()"
+  [required]="required()"
+  [disabled]="disabled()"
+  [readonly]="readonly()"
+  [autocomplete]="autocomplete()"
+  [id]="id()"
+  [name]="name()"
+  [state]="state()"
+  [size]="size()"
+  [variant]="variant()"
+>
+  <div class="slider-wrapper" [ngClass]="sliderClasses">
+    <!-- Slider container -->
+    <div class="slider-container">
+      <!-- Slider input wrapper -->
+      <div class="slider-input-wrapper" (mousedown)="onMouseDown()" (mouseup)="onMouseUp()">
+        <!-- Native range input (hidden) -->
+        <input
+          #sliderInput
+          [id]="id()"
+          [name]="name()"
+          type="range"
+          class="slider-input"
+          [min]="min()"
+          [max]="max()"
+          [step]="step()"
+          [value]="value"
+          [required]="required()"
+          [disabled]="disabled()"
+          [readonly]="readonly()"
+          [attr.aria-label]="ariaLabel() || label()"
+          [attr.aria-describedby]="ariaDescribedBy()"
+          [attr.aria-valuemin]="min()"
+          [attr.aria-valuemax]="max()"
+          [attr.aria-valuenow]="value"
+          (input)="onSliderInput($event)"
+          (change)="onSliderChange($event)"
+          (focus)="onFocus($event)"
+          (blur)="onBlur($event)"
+        />
+
+        <!-- Custom slider visualization -->
+        <div class="slider-visual">
+          <!-- Rail (unfilled track) -->
+          <div class="slider-rail">
+            <div class="slider-rail-fill"></div>
+          </div>
+
+          <!-- Track (filled part) -->
+          <div class="slider-track-wrapper" [style.width.%]="getFillPercentage()">
+            <div class="slider-track">
+              <div class="slider-track-fill"></div>
+            </div>
+          </div>
+
+          <!-- Thumb (draggable handle) -->
+          <div class="slider-thumb-wrapper" [style.left.%]="getThumbPosition()">
+            <div class="slider-thumb">
+              <div class="slider-thumb-inner"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-field>

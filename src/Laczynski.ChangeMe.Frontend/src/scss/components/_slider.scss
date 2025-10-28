@@ -1,0 +1,401 @@
+// Slider Component Styles based on Fluent 2 Design System
+// Implements range slider with track, rail, and thumb
+
+
+.slider-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+// ===== INPUT WRAPPER =====
+.slider-input-wrapper {
+  position: relative;
+  width: 100%;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  .slider--disabled & {
+    cursor: not-allowed;
+  }
+
+  .slider--readonly & {
+    cursor: default;
+  }
+}
+
+// ===== NATIVE INPUT (Hidden) =====
+.slider-input {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  cursor: pointer;
+  z-index: 10;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  &[readonly] {
+    cursor: default;
+  }
+}
+
+// ===== VISUAL SLIDER =====
+.slider-visual {
+  position: absolute;
+  width: 100%;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  border-radius: 2px;
+}
+
+// ===== RAIL (Unfilled track) =====
+.slider-rail {
+  position: absolute;
+  width: 100%;
+  height: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.slider-rail-fill {
+  width: 100%;
+  height: 4px;
+  background: var(--Neutral-Stroke-Accessible-Rest, #616161);
+  border-radius: 2px;
+  transition: background 0.2s ease;
+}
+
+// ===== TRACK (Filled part) =====
+.slider-track-wrapper {
+  position: absolute;
+  height: 4px;
+  display: flex;
+  align-items: center;
+  z-index: 1;
+}
+
+.slider-track {
+  width: 100%;
+  height: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.slider-track-fill {
+  width: 100%;
+  height: 4px;
+  background: var(--Brand-Background-Compound-Rest, #0F6CBD);
+  border-radius: 2px 0 0 2px;
+  transition: background 0.2s ease;
+}
+
+// ===== THUMB (Draggable handle) =====
+.slider-thumb-wrapper {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.slider-thumb {
+  width: 18px;
+  height: 18px;
+  padding: 3px;
+  background: var(--Neutral-Background-1-Rest, white);
+  border-radius: 15px;
+  outline: 1px solid var(--Neutral-Stroke-1-Rest, #D1D1D1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.slider-thumb-inner {
+  width: 12px;
+  height: 12px;
+  background: var(--Brand-Background-Compound-Rest, #0F6CBD);
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+
+
+// ===== STATE: HOVER =====
+.slider:not(.slider--disabled):not(.slider--readonly) {
+  .slider-input:hover ~ .slider-visual {
+    .slider-track-fill {
+      background: var(--Brand-Background-Compound-Hover, #115EA3);
+    }
+
+    .slider-thumb-inner {
+      background: var(--Brand-Background-Compound-Hover, #115EA3);
+    }
+  }
+}
+
+// ===== STATE: PRESSED/DRAGGING =====
+.slider--dragging:not(.slider--disabled):not(.slider--readonly),
+.slider:not(.slider--disabled):not(.slider--readonly) .slider-input:active ~ .slider-visual {
+  .slider-track-fill {
+    background: var(--Brand-Background-Compound-Pressed, #0F548C);
+  }
+
+  .slider-thumb-inner {
+    background: var(--Brand-Background-Compound-Pressed, #0F548C);
+  }
+}
+
+// ===== STATE: DISABLED =====
+.slider--disabled {
+  opacity: 1;
+
+  .slider-label {
+    color: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+  }
+
+  .slider-value {
+    color: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+  }
+
+  .slider-rail-fill {
+    background: var(--Neutral-Stroke-Transparent-Disabled-Rest, rgba(255, 255, 255, 0));
+  }
+
+  .slider-track-fill {
+    background: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+  }
+
+  .slider-thumb {
+    outline: 1px solid var(--Neutral-Stroke-Disabled-Rest, #E0E0E0);
+  }
+
+  .slider-thumb-inner {
+    background: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+  }
+
+}
+
+// ===== SIZE VARIANTS =====
+.slider--small {
+  .slider-rail,
+  .slider-track-wrapper,
+  .slider-track {
+    height: 2px;
+  }
+
+  .slider-rail-fill,
+  .slider-track-fill {
+    height: 2px;
+  }
+
+  .slider-input-wrapper {
+    height: 24px;
+  }
+
+  .slider-thumb-wrapper {
+    top: 50%;
+  }
+
+  .slider-thumb {
+    width: 14px;
+    height: 14px;
+    padding: 2px;
+  }
+
+  .slider-thumb-inner {
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+  }
+
+  .slider-value {
+    font-size: 12px;
+    line-height: 16px;
+  }
+}
+
+.slider--medium {
+  // Default size - already defined above
+}
+
+.slider--large {
+  .slider-rail,
+  .slider-track-wrapper,
+  .slider-track {
+    height: 6px;
+  }
+
+  .slider-rail-fill,
+  .slider-track-fill {
+    height: 6px;
+  }
+
+  .slider-input-wrapper {
+    height: 28px;
+  }
+
+  .slider-thumb-wrapper {
+    top: 50%;
+  }
+
+  .slider-thumb {
+    width: 22px;
+    height: 22px;
+    padding: 4px;
+  }
+
+  .slider-thumb-inner {
+    width: 14px;
+    height: 14px;
+    border-radius: 7px;
+  }
+
+  .slider-value {
+    font-size: 16px;
+    line-height: 22px;
+  }
+}
+
+// ===== STATE TYPE VARIANTS =====
+.slider--error {
+  .slider-track-fill {
+    background: var(--Shared-Red-Background-2-Rest, #D13438);
+  }
+
+  .slider-thumb-inner {
+    background: var(--Shared-Red-Background-2-Rest, #D13438);
+  }
+
+  &:not(.slider--disabled):not(.slider--readonly) {
+    .slider-input:hover ~ .slider-visual {
+      .slider-track-fill {
+        background: var(--Shared-Red-Background-2-Hover, #B92E32);
+      }
+
+      .slider-thumb-inner {
+        background: var(--Shared-Red-Background-2-Hover, #B92E32);
+      }
+    }
+  }
+}
+
+.slider--warning {
+  .slider-track-fill {
+    background: var(--Shared-Orange-Foreground, #F7630C);
+  }
+
+  .slider-thumb-inner {
+    background: var(--Shared-Orange-Foreground, #F7630C);
+  }
+
+  &:not(.slider--disabled):not(.slider--readonly) {
+    .slider-input:hover ~ .slider-visual {
+      .slider-track-fill {
+        background: var(--Shared-Orange-Foreground-Hover, #DC570B);
+      }
+
+      .slider-thumb-inner {
+        background: var(--Shared-Orange-Foreground-Hover, #DC570B);
+      }
+    }
+  }
+}
+
+.slider--success {
+  .slider-track-fill {
+    background: var(--Shared-Green-Foreground, #0E700E);
+  }
+
+  .slider-thumb-inner {
+    background: var(--Shared-Green-Foreground, #0E700E);
+  }
+
+  &:not(.slider--disabled):not(.slider--readonly) {
+    .slider-input:hover ~ .slider-visual {
+      .slider-track-fill {
+        background: var(--Shared-Green-Foreground-Hover, #0C600C);
+      }
+
+      .slider-thumb-inner {
+        background: var(--Shared-Green-Foreground-Hover, #0C600C);
+      }
+    }
+  }
+}
+
+// ===== ACCESSIBILITY =====
+.slider-input:focus {
+  outline: none;
+}
+
+// ===== ANIMATIONS =====
+.slider-track-fill,
+.slider-thumb,
+.slider-thumb-inner,
+.slider-rail-fill {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// ===== VERTICAL ORIENTATION =====
+.slider--vertical {
+  .slider-wrapper {
+    width: auto;
+    height: 200px;
+  }
+
+  .slider-input-wrapper {
+    width: 24px;
+    height: 100%;
+  }
+
+  .slider-visual {
+    width: 24px;
+    height: 100%;
+    flex-direction: column-reverse;
+  }
+
+  .slider-rail {
+    width: 4px;
+    height: 100%;
+    padding: 8px 0;
+  }
+
+  .slider-track-wrapper {
+    width: 4px;
+    height: auto;
+    padding-left: 0;
+    padding-bottom: 8px;
+  }
+
+  .slider-thumb-wrapper {
+    left: 50%;
+    top: auto;
+    bottom: 0;
+    transform: translate(-50%, 50%);
+  }
+
+  .slider-labels {
+    flex-direction: column;
+    padding: 8px 0;
+    margin-top: 0;
+    margin-left: 4px;
+  }
+}
+
+// ===== RTL SUPPORT =====
+[dir="rtl"] {
+  .slider-track-fill {
+    border-radius: 0 2px 2px 0;
+  }
+}
+
+
