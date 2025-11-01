@@ -1,0 +1,141 @@
+<app-field
+  [fieldType]="'file'"
+  [label]="label()"
+  [helpText]="helpText()"
+  [errorText]="errorText()"
+  [warningText]="warningText()"
+  [successText]="successText()"
+  [required]="required()"
+  [disabled]="disabled()"
+  [readonly]="readonly()"
+  [id]="id()"
+  [name]="name()"
+  [state]="state()"
+  [size]="size()"
+  [variant]="variant()"
+>
+  <div class="file-input-wrapper">
+    <!-- File Input Area / Drop Zone -->
+    <div
+      class="file-input-area"
+      [class]="fileWrapperClasses()"
+      (click)="triggerFileInput()"
+      (keydown.enter)="triggerFileInput()"
+      (keydown.space)="triggerFileInput()"
+      tabindex="0"
+      [attr.aria-label]="ariaLabel() || label() || 'File upload'"
+      [attr.aria-describedby]="ariaDescribedBy()"
+      [attr.aria-invalid]="state() === 'error'"
+      role="button"
+    >
+      <input
+        #fileInput
+        class="file-input"
+        type="file"
+        [id]="id()"
+        [name]="name()"
+        [accept]="accept()"
+        [multiple]="multiple()"
+        [disabled]="disabled()"
+        [required]="required()"
+        (change)="onFileInputChange($event)"
+      />
+
+      <!-- Full Drop Zone Display -->
+      <app-icon [icon]="'arrow_upload'" [size]="size()" />
+
+      <p class="file-input-area__text">{{ displayText() }}</p>
+      @if (displayHint()) {
+        <p class="file-input-area__hint">{{ displayHint() }}</p>
+      }
+    </div>
+
+    <!-- Selected Files List -->
+    @if (selectedFiles().length > 0) {
+      <div class="file-list">
+        @for (fileInfo of selectedFiles(); track fileInfo.id) {
+          <div class="file-item" [class]="fileItemClasses()">
+            <!-- File Icon -->
+            <div class="file-item__icon">
+              @switch (getFileIcon(fileInfo.type)) {
+                @case ('image') {
+                  <app-icon [icon]="'image'" [size]="size()" />
+                }
+                @case ('video') {
+                  <app-icon [icon]="'video'" [size]="size()" />
+                }
+                @case ('audio') {
+                  <app-icon [icon]="'audio'" [size]="size()" />
+                }
+                @case ('document') {
+                  <app-icon [icon]="'document'" [size]="size()" />
+                }
+                @case ('archive') {
+                  <app-icon [icon]="'archive'" [size]="size()" />
+                }
+                @default {
+                  <app-icon [icon]="'document'" [size]="size()" />
+                }
+              }
+            </div>
+
+            <!-- File Info -->
+            <div class="file-item__info">
+              <div class="file-item__name" [title]="fileInfo.name">
+                {{ fileInfo.name }}
+              </div>
+              <div class="file-item__meta">
+                <span class="file-item__size">{{ formatFileSize(fileInfo.size) }}</span>
+                @if (fileInfo.type !== 'unknown') {
+                  <span class="file-item__separator">•</span>
+                  <span class="file-item__type">{{ fileInfo.type }}</span>
+                }
+              </div>
+            </div>
+
+            <!-- Remove Button -->
+            @if (!disabled() && !readonly()) {
+              <app-action-button
+                [show]="true"
+                [icon]="'dismiss'"
+                [size]="size()"
+                (click)="removeFile($index)"
+              ></app-action-button>
+            }
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Image Preview (optional) -->
+    @if (showPreview() && selectedFiles().length > 0) {
+      <div class="file-preview">
+        <div class="file-preview__grid">
+          @for (fileInfo of selectedFiles(); track fileInfo.id) {
+            @if (getFileIcon(fileInfo.type) === 'image') {
+              <div class="file-preview__item">
+                <img
+                  [src]="getImagePreview(fileInfo)"
+                  [alt]="fileInfo.name"
+                  class="file-preview__image"
+                  (error)="onImageError($event)"
+                  loading="lazy"
+                />
+                @if (!disabled() && !readonly()) {
+                  <button
+                    type="button"
+                    class="file-preview__remove"
+                    (click)="removeFileByFile(fileInfo.file)"
+                    [attr.aria-label]="'Remove ' + fileInfo.name"
+                  >
+                    <app-icon [icon]="'dismiss'" [size]="size()" />
+                  </button>
+                }
+              </div>
+            }
+          }
+        </div>
+      </div>
+    }
+  </div>
+</app-field>
