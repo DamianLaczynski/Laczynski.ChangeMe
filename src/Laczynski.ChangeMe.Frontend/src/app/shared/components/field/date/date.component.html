@@ -1,0 +1,299 @@
+<app-field
+  [fieldType]="'date'"
+  [label]="label()"
+  [placeholder]="placeholder()"
+  [helpText]="helpText()"
+  [errorText]="errorText()"
+  [warningText]="warningText()"
+  [successText]="successText()"
+  [required]="required()"
+  [disabled]="disabled()"
+  [readonly]="readonly()"
+  [id]="id()"
+  [name]="name()"
+  [state]="state()"
+  [size]="size()"
+  [variant]="variant()"
+>
+  <div class="input-wrapper" [class]="wrapperClasses">
+    <input
+      class="input"
+      type="text"
+      [id]="id()"
+      [name]="name()"
+      [placeholder]="placeholder()"
+      [required]="required()"
+      [disabled]="disabled()"
+      [readonly]="true"
+      [value]="displayText()"
+      [attr.aria-label]="ariaLabel() || label()"
+      [attr.aria-describedby]="ariaDescribedBy()"
+      [attr.aria-invalid]="state() === 'error'"
+      [attr.aria-expanded]="isExpanded()"
+      [attr.aria-haspopup]="'dialog'"
+      (click)="togglePanel()"
+      (blur)="onBlur($event)"
+      (focus)="onFocus($event)"
+      (keydown)="onKeyDown($event)"
+    />
+    @if (!disabled() && !readonly()) {
+      <div class="field__actions">
+        <!-- Calendar Icon Button -->
+        <app-action-button
+          [show]="true"
+          [size]="size()"
+          [icon]="getIcon()"
+          (click)="togglePanel()"
+        ></app-action-button>
+
+        <!-- Clear Button -->
+        @if (value) {
+          <app-action-button
+            [show]="true"
+            [icon]="'dismiss'"
+            [size]="size()"
+            (click)="clear()"
+          ></app-action-button>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Date Picker Panel -->
+  @if (isExpanded()) {
+    <div #datePanel class="date-panel" [attr.data-size]="size()">
+      @if (dateType() === 'time') {
+        <!-- Custom Time Picker -->
+        <div class="time-picker">
+          <div class="time-picker__spinners">
+            <!-- Hour Spinner -->
+            <div class="time-picker__spinner">
+              <button type="button" class="time-picker__btn" (click)="incrementHour()">
+                <app-icon [icon]="'chevron_up'" [size]="size()" />
+              </button>
+              <input
+                type="number"
+                class="time-picker__input"
+                [value]="selectedHour()"
+                [min]="use24HourFormat() ? 0 : 1"
+                [max]="use24HourFormat() ? 23 : 12"
+                (input)="onHourInput($event)"
+                (blur)="updateTimeFromSpinner()"
+              />
+              <button type="button" class="time-picker__btn" (click)="decrementHour()">
+                <app-icon [icon]="'chevron_down'" [size]="size()" />
+              </button>
+            </div>
+
+            <span class="time-picker__separator">:</span>
+
+            <!-- Minute Spinner -->
+            <div class="time-picker__spinner">
+              <button type="button" class="time-picker__btn" (click)="incrementMinute()">
+                <app-icon [icon]="'chevron_up'" [size]="size()" />
+              </button>
+              <input
+                type="number"
+                class="time-picker__input"
+                [value]="selectedMinute()"
+                min="0"
+                max="59"
+                (input)="onMinuteInput($event)"
+                (blur)="updateTimeFromSpinner()"
+              />
+              <button type="button" class="time-picker__btn" (click)="decrementMinute()">
+                <app-icon [icon]="'chevron_down'" [size]="size()" />
+              </button>
+            </div>
+          </div>
+        </div>
+      } @else if (dateType() === 'week') {
+        <!-- Week Picker -->
+        <div class="date-calendar">
+          <!-- Calendar Header -->
+          <div class="date-calendar__header">
+            <button type="button" class="date-calendar__nav" (click)="previousYear($event)">
+              <app-icon [icon]="'chevron_left'" [size]="size()" />
+            </button>
+            <span class="date-calendar__title">{{ currentMonth().getFullYear() }}</span>
+            <button type="button" class="date-calendar__nav" (click)="nextYear($event)">
+              <app-icon [icon]="'chevron_right'" [size]="size()" />
+            </button>
+          </div>
+
+          <!-- Week List -->
+          <div class="date-calendar__weeks">
+            @for (week of calendarWeeks(); track week.weekNumber) {
+              <button type="button" [class]="getWeekClasses(week)" (click)="selectWeek(week)">
+                <span class="date-calendar__week-number">W{{ week.weekNumber }}</span>
+                <span class="date-calendar__week-range">
+                  {{ week.startDate | date: 'MMM d' }} - {{ week.endDate | date: 'MMM d' }}
+                </span>
+              </button>
+            }
+          </div>
+
+          <!-- Calendar Footer -->
+          <div class="date-calendar__footer">
+            <button type="button" class="date-calendar__today-btn" (click)="goToToday()">
+              This Week
+            </button>
+          </div>
+        </div>
+      } @else if (dateType() === 'month' || calendarView() === 'months') {
+        <!-- Month Picker -->
+        <div class="date-panel__month-picker">
+          <div class="date-calendar__header">
+            <button type="button" class="date-calendar__nav" (click)="previousYear($event)">
+              <app-icon [icon]="'chevron_left'" [size]="size()" />
+            </button>
+            <button
+              type="button"
+              class="date-calendar__title date-calendar__title--clickable"
+              (click)="switchToYearsView($event)"
+            >
+              {{ currentMonth().getFullYear() }}
+            </button>
+            <button type="button" class="date-calendar__nav" (click)="nextYear($event)">
+              <app-icon [icon]="'chevron_right'" [size]="size()" />
+            </button>
+          </div>
+          <div class="date-panel__months">
+            @for (month of months; track month; let i = $index) {
+              <button
+                type="button"
+                class="date-panel__month"
+                [class.date-panel__month--selected]="
+                  selectedDate() && selectedDate()!.getMonth() === i
+                "
+                (click)="selectMonth(i)"
+              >
+                {{ month.substring(0, 3) }}
+              </button>
+            }
+          </div>
+        </div>
+      } @else if (calendarView() === 'years') {
+        <!-- Year Picker -->
+        <div class="date-panel__year-picker">
+          <div class="date-calendar__header">
+            <button type="button" class="date-calendar__nav" (click)="previousYearRange($event)">
+              <app-icon [icon]="'chevron_left'" [size]="size()" />
+            </button>
+            <span class="date-calendar__title">{{ getYearRangeText() }}</span>
+            <button type="button" class="date-calendar__nav" (click)="nextYearRange($event)">
+              <app-icon [icon]="'chevron_right'" [size]="size()" />
+            </button>
+          </div>
+          <div class="date-panel__years">
+            @for (yearItem of calendarYears(); track yearItem.year) {
+              <button
+                type="button"
+                [class]="getYearClasses(yearItem)"
+                (click)="selectYear(yearItem.year)"
+              >
+                {{ yearItem.year }}
+              </button>
+            }
+          </div>
+        </div>
+      } @else {
+        <!-- Date Calendar (Days View) -->
+        <div class="date-calendar">
+          <!-- Calendar Header -->
+          <div class="date-calendar__header">
+            <button type="button" class="date-calendar__nav" (click)="previousMonth($event)">
+              <app-icon [icon]="'chevron_left'" [size]="size()" />
+            </button>
+            <button
+              type="button"
+              class="date-calendar__title date-calendar__title--clickable"
+              (click)="switchToMonthsView($event)"
+            >
+              {{ monthYearText() }}
+            </button>
+            <button type="button" class="date-calendar__nav" (click)="nextMonth($event)">
+              <app-icon [icon]="'chevron_right'" [size]="size()" />
+            </button>
+          </div>
+
+          <!-- Week Days Header -->
+          <div class="date-calendar__weekdays">
+            @for (day of weekDays; track day) {
+              <div class="date-calendar__weekday">{{ day }}</div>
+            }
+          </div>
+
+          <!-- Calendar Days Grid -->
+          <div class="date-calendar__grid">
+            @for (day of calendarDays(); track day.date) {
+              <button
+                type="button"
+                [class]="getDayClasses(day)"
+                [disabled]="day.isDisabled"
+                (click)="selectDate(day)"
+              >
+                {{ day.day }}
+              </button>
+            }
+          </div>
+
+          <!-- Calendar Footer -->
+          <div class="date-calendar__footer">
+            <button type="button" class="date-calendar__today-btn" (click)="goToToday()">
+              Today
+            </button>
+          </div>
+
+          <!-- Custom Time Picker for datetime-local -->
+          @if (dateType() === 'datetime-local') {
+            <div class="time-picker time-picker--inline">
+              <label class="time-picker__label">Time:</label>
+              <div class="time-picker__spinners">
+                <!-- Hour Spinner -->
+                <div class="time-picker__spinner">
+                  <button type="button" class="time-picker__btn" (click)="incrementHour()">
+                    <app-icon [icon]="'chevron_up'" [size]="size()" />
+                  </button>
+                  <input
+                    type="number"
+                    class="time-picker__input"
+                    [value]="selectedHour()"
+                    [min]="use24HourFormat() ? 0 : 1"
+                    [max]="use24HourFormat() ? 23 : 12"
+                    (input)="onHourInput($event)"
+                    (blur)="updateTimeFromSpinner()"
+                  />
+                  <button type="button" class="time-picker__btn" (click)="decrementHour()">
+                    <app-icon [icon]="'chevron_down'" [size]="size()" />
+                  </button>
+                </div>
+
+                <span class="time-picker__separator">:</span>
+
+                <!-- Minute Spinner -->
+                <div class="time-picker__spinner">
+                  <button type="button" class="time-picker__btn" (click)="incrementMinute()">
+                    <app-icon [icon]="'chevron_up'" [size]="size()" />
+                  </button>
+                  <input
+                    type="number"
+                    class="time-picker__input"
+                    [value]="selectedMinute()"
+                    min="0"
+                    max="59"
+                    (input)="onMinuteInput($event)"
+                    (blur)="updateTimeFromSpinner()"
+                  />
+                  <button type="button" class="time-picker__btn" (click)="decrementMinute()">
+                    <app-icon [icon]="'chevron_down'" [size]="size()" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+</app-field>

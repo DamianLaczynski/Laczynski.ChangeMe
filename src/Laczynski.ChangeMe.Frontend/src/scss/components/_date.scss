@@ -1,0 +1,689 @@
+// ==========================================================================
+// Date Component - Fluent 2 Design System
+// ==========================================================================
+
+@use '../utils/variables' as *;
+
+// Calendar Icon Button
+.field__action--calendar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  transition: all $duration-ultra-fast $easing-ease-in-out;
+  color: $color-neutral-foreground2-rest;
+  width: $spacing-5;
+  height: $spacing-5;
+  min-width: $spacing-5;
+  min-height: $spacing-5;
+  border-radius: $border-radius-200;
+
+  svg,
+  ng-icon {
+    width: $spacing-4;
+    height: $spacing-4;
+    stroke-width: 1.5;
+  }
+
+  &:hover {
+    color: $color-neutral-foreground-rest;
+    background-color: $color-subtle-background-hover;
+  }
+
+  &:active {
+    color: $color-neutral-foreground-rest;
+    background-color: $color-subtle-background-pressed;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-brand-primary;
+    outline-offset: 2px;
+  }
+
+  // Disabled state
+  .input-wrapper--disabled & {
+    color: $color-neutral-foreground-disabled;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  // Read-only state
+  .input-wrapper--read-only & {
+    color: $color-neutral-foreground-disabled;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+// Date Panel Container
+.date-panel {
+  position: absolute;
+  top: calc(100% + $spacing-1);
+  left: 0;
+  z-index: 1000;
+  background: $color-neutral-background-rest;
+  border: 1px solid $color-neutral-stroke-rest;
+  border-radius: $border-radius-600;
+  box-shadow: $elevation-16;
+  padding: $spacing-3;
+  min-width: 280px;
+  animation: fadeInScale 0.15s $easing-decelerate-mid;
+
+  &[data-size='small'] {
+    padding: $spacing-2;
+    min-width: 240px;
+    font-size: $font-size-200;
+  }
+
+  &[data-size='large'] {
+    padding: $spacing-4;
+    min-width: 320px;
+    font-size: $font-size-400;
+  }
+}
+
+// Calendar Container
+.date-calendar {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+}
+
+// Calendar Header
+.date-calendar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-1;
+}
+
+.date-calendar__title {
+  font-size: $font-size-300;
+  font-weight: $font-weight-semibold;
+  color: $color-neutral-foreground-rest;
+  flex: 1;
+  text-align: center;
+  background: transparent;
+  border: none;
+  padding: $spacing-1 $spacing-2;
+  cursor: default;
+
+  &--clickable {
+    cursor: pointer;
+    border-radius: $border-radius-400;
+    transition: all $duration-ultra-fast $easing-ease-in-out;
+
+    &:hover {
+      background-color: $color-subtle-background-hover;
+      color: $color-brand-primary;
+    }
+
+    &:active {
+      background-color: $color-subtle-background-pressed;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $color-brand-primary;
+      outline-offset: 2px;
+    }
+  }
+}
+
+.date-calendar__nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: $spacing-6;
+  height: $spacing-6;
+  background: transparent;
+  border: none;
+  border-radius: $border-radius-400;
+  cursor: pointer;
+  color: $color-neutral-foreground2-rest;
+  transition: all $duration-ultra-fast $easing-ease-in-out;
+
+  svg,
+  ng-icon {
+    width: $spacing-4;
+    height: $spacing-4;
+  }
+
+  &:hover {
+    background-color: $color-subtle-background-hover;
+    color: $color-neutral-foreground-rest;
+  }
+
+  &:active {
+    background-color: $color-subtle-background-pressed;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-brand-primary;
+    outline-offset: 2px;
+  }
+}
+
+// Week Days Header
+.date-calendar__weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: $spacing-05;
+  margin-bottom: $spacing-05;
+}
+
+.date-calendar__weekday {
+  text-align: center;
+  font-size: $font-size-200;
+  font-weight: $font-weight-semibold;
+  color: $color-neutral-foreground2-rest;
+  padding: $spacing-1;
+}
+
+// Calendar Grid
+.date-calendar__grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: $spacing-05;
+}
+
+// Calendar Day
+.date-calendar__day {
+  aspect-ratio: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: $border-radius-400;
+  cursor: pointer;
+  font-size: $font-size-300;
+  font-weight: $font-weight-regular;
+  color: $color-neutral-foreground-rest;
+  transition: all $duration-ultra-fast $easing-ease-in-out;
+  position: relative;
+  padding: 0;
+  min-width: $spacing-7;
+  min-height: $spacing-7;
+
+  &:hover:not(&--disabled) {
+    background-color: $color-subtle-background-hover;
+    color: $color-neutral-foreground-rest;
+  }
+
+  &:active:not(&--disabled) {
+    background-color: $color-subtle-background-pressed;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-brand-primary;
+    outline-offset: 2px;
+  }
+
+  // Other month days
+  &--other-month {
+    color: $color-neutral-foreground-disabled;
+    opacity: 0.6;
+  }
+
+  // Today
+  &--today {
+    border-color: $color-brand-primary;
+    font-weight: $font-weight-semibold;
+  }
+
+  // Selected day
+  &--selected {
+    background-color: $color-brand-primary;
+    color: $color-neutral-background-rest;
+    font-weight: $font-weight-semibold;
+
+    &:hover {
+      background-color: $color-brand-primary-hover;
+      color: $color-neutral-background-rest;
+    }
+
+    &:active {
+      background-color: $color-brand-primary-pressed;
+    }
+  }
+
+  // Disabled day
+  &--disabled {
+    color: $color-neutral-foreground-disabled;
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0.4;
+  }
+
+  // Size variants
+  &--small {
+    min-width: $spacing-6;
+    min-height: $spacing-6;
+    font-size: $font-size-200;
+  }
+
+  &--large {
+    min-width: $spacing-8;
+    min-height: $spacing-8;
+    font-size: $font-size-400;
+  }
+}
+
+// Calendar Footer
+.date-calendar__footer {
+  display: flex;
+  justify-content: center;
+  padding-top: $spacing-2;
+  border-top: 1px solid $color-neutral-stroke-rest;
+  margin-top: $spacing-1;
+}
+
+.date-calendar__today-btn {
+  padding: $spacing-1 $spacing-3;
+  background: transparent;
+  border: 1px solid $color-neutral-stroke-rest;
+  border-radius: $border-radius-400;
+  cursor: pointer;
+  font-size: $font-size-300;
+  font-weight: $font-weight-semibold;
+  color: $color-brand-primary;
+  transition: all $duration-ultra-fast $easing-ease-in-out;
+
+  &:hover {
+    background-color: $color-subtle-background-hover;
+    border-color: $color-brand-primary;
+  }
+
+  &:active {
+    background-color: $color-subtle-background-pressed;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-brand-primary;
+    outline-offset: 2px;
+  }
+}
+
+// Month Picker
+.date-panel__month-picker {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+}
+
+.date-panel__months {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $spacing-1;
+}
+
+.date-panel__month {
+  padding: $spacing-2;
+  background: transparent;
+  border: 1px solid $color-neutral-stroke-rest;
+  border-radius: $border-radius-400;
+  cursor: pointer;
+  font-size: $font-size-300;
+  font-weight: $font-weight-regular;
+  color: $color-neutral-foreground-rest;
+  transition: all $duration-ultra-fast $easing-ease-in-out;
+
+  &:hover {
+    background-color: $color-subtle-background-hover;
+    border-color: $color-brand-primary;
+  }
+
+  &:active {
+    background-color: $color-subtle-background-pressed;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-brand-primary;
+    outline-offset: 2px;
+  }
+
+  &--selected {
+    background-color: $color-brand-primary;
+    color: $color-neutral-background-rest;
+    border-color: $color-brand-primary;
+    font-weight: $font-weight-semibold;
+
+    &:hover {
+      background-color: $color-brand-primary-hover;
+    }
+  }
+}
+
+// Year Picker
+.date-panel__year-picker {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+}
+
+.date-panel__years {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $spacing-1;
+}
+
+.date-calendar__year {
+  padding: $spacing-2;
+  background: transparent;
+  border: 1px solid $color-neutral-stroke-rest;
+  border-radius: $border-radius-400;
+  cursor: pointer;
+  font-size: $font-size-300;
+  font-weight: $font-weight-regular;
+  color: $color-neutral-foreground-rest;
+  transition: all $duration-ultra-fast $easing-ease-in-out;
+
+  &:hover {
+    background-color: $color-subtle-background-hover;
+    border-color: $color-brand-primary;
+  }
+
+  &:active {
+    background-color: $color-subtle-background-pressed;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-brand-primary;
+    outline-offset: 2px;
+  }
+
+  &--selected {
+    background-color: $color-brand-primary;
+    color: $color-neutral-background-rest;
+    border-color: $color-brand-primary;
+    font-weight: $font-weight-semibold;
+
+    &:hover {
+      background-color: $color-brand-primary-hover;
+    }
+  }
+
+  &--current {
+    border-color: $color-brand-primary;
+    font-weight: $font-weight-semibold;
+  }
+}
+
+// Week Picker
+.date-calendar__weeks {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-1;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: $spacing-1;
+
+  // Custom scrollbar
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $color-neutral-background-hover;
+    border-radius: $border-radius-400;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $color-neutral-stroke-rest;
+    border-radius: $border-radius-400;
+
+    &:hover {
+      background: $color-neutral-stroke-hover;
+    }
+  }
+}
+
+.date-calendar__week {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-2 $spacing-3;
+  background: transparent;
+  border: 1px solid $color-neutral-stroke-rest;
+  border-radius: $border-radius-400;
+  cursor: pointer;
+  font-size: $font-size-300;
+  color: $color-neutral-foreground-rest;
+  transition: all $duration-ultra-fast $easing-ease-in-out;
+
+  &:hover {
+    background-color: $color-subtle-background-hover;
+    border-color: $color-brand-primary;
+  }
+
+  &:active {
+    background-color: $color-subtle-background-pressed;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-brand-primary;
+    outline-offset: 2px;
+  }
+
+  &--selected {
+    background-color: $color-brand-primary;
+    color: $color-neutral-background-rest;
+    border-color: $color-brand-primary;
+    font-weight: $font-weight-semibold;
+
+    &:hover {
+      background-color: $color-brand-primary-hover;
+    }
+  }
+}
+
+.date-calendar__week-number {
+  font-weight: $font-weight-semibold;
+  min-width: $spacing-8;
+}
+
+.date-calendar__week-range {
+  font-size: $font-size-200;
+  opacity: 0.8;
+}
+
+// Custom Time Picker
+.time-picker {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+  padding: $spacing-3;
+
+  &--inline {
+    padding-top: $spacing-2;
+    border-top: 1px solid $color-neutral-stroke-rest;
+    margin-top: $spacing-2;
+  }
+}
+
+.time-picker__label {
+  font-size: $font-size-300;
+  font-weight: $font-weight-semibold;
+  color: $color-neutral-foreground-rest;
+  margin-bottom: $spacing-1;
+}
+
+.time-picker__spinners {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-2;
+}
+
+.time-picker__spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-1;
+}
+
+.time-picker__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: $spacing-7;
+  height: $spacing-6;
+  background: transparent;
+  border: 1px solid $color-neutral-stroke-rest;
+  border-radius: $border-radius-400;
+  cursor: pointer;
+  color: $color-neutral-foreground2-rest;
+  transition: all $duration-ultra-fast $easing-ease-in-out;
+
+  svg,
+  ng-icon {
+    width: $spacing-4;
+    height: $spacing-4;
+  }
+
+  &:hover {
+    background-color: $color-subtle-background-hover;
+    border-color: $color-brand-primary;
+    color: $color-neutral-foreground-rest;
+  }
+
+  &:active {
+    background-color: $color-subtle-background-pressed;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-brand-primary;
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+.time-picker__input {
+  width: $spacing-10;
+  padding: $spacing-2;
+  background: $color-neutral-background-rest;
+  border: 1px solid $color-neutral-stroke-rest;
+  border-radius: $border-radius-400;
+  font-size: $font-size-400;
+  font-weight: $font-weight-semibold;
+  color: $color-neutral-foreground-rest;
+  font-family: $font-family-base;
+  text-align: center;
+  transition: all $duration-ultra-fast $easing-ease-in-out;
+
+  // Remove spinner arrows from number input
+  -moz-appearance: textfield;
+  
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  &:hover {
+    border-color: $color-neutral-stroke-hover;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $color-brand-primary;
+    box-shadow: 0 0 0 1px $color-brand-primary;
+  }
+
+  &:disabled {
+    background-color: $color-neutral-background-disabled;
+    color: $color-neutral-foreground-disabled;
+    cursor: not-allowed;
+  }
+}
+
+.time-picker__separator {
+  font-size: $font-size-500;
+  font-weight: $font-weight-semibold;
+  color: $color-neutral-foreground-rest;
+  line-height: 1;
+  padding-top: $spacing-1;
+}
+
+// Animations
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .date-calendar__day {
+    border: 1px solid currentColor;
+
+    &--selected {
+      background-color: $color-neutral-foreground-rest;
+      color: $color-neutral-background-rest;
+      border-color: $color-neutral-foreground-rest;
+    }
+
+    &--today {
+      border-width: 2px;
+    }
+  }
+
+  .field__action--calendar {
+    border: 1px solid currentColor;
+  }
+
+  .date-panel {
+    border-width: 2px;
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .date-panel {
+    animation: none;
+  }
+
+  .field__action--calendar,
+  .date-calendar__nav,
+  .date-calendar__day,
+  .date-calendar__today-btn,
+  .date-panel__month,
+  .date-panel__time-input {
+    transition: none;
+  }
+}
+
+// Dark mode support (if needed)
+@media (prefers-color-scheme: dark) {
+  .date-panel {
+    background: $color-neutral-background-rest;
+    border-color: $color-neutral-stroke-rest;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .date-panel {
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 90vw;
+    max-width: 320px;
+  }
+}
+
