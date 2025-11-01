@@ -1,0 +1,462 @@
+// ==========================================================================
+// Tabs Component - Fluent 2 Design System (BEM Block)
+// ==========================================================================
+
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use '../utils/functions' as *;
+
+@include block('tabs') {
+  // Container for tabs
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0;
+  position: relative;
+
+  // Single tab item
+  @include element('tab') {
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: $spacing-2;
+    padding: $spacing-3 $spacing-3;
+    background: transparent;
+    border-radius: $border-radius-400;
+    cursor: pointer;
+    transition: background-color $duration-faster $easing-ease-in-out;
+    border: none;
+    outline: none;
+    font-family: $font-family-base;
+
+    &:hover:not(.tabs__tab--disabled) {
+      background-color: rgba($color-neutral-foreground-rest, 0.03);
+    }
+
+    &:active:not(.tabs__tab--disabled) {
+      background-color: rgba($color-neutral-foreground-rest, 0.06);
+    }
+
+    @include focus-ring($color-brand-primary);
+  }
+
+  // Tab icon
+  @include element('icon') {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-shrink: 0;
+
+    svg {
+      width: 20px;
+      height: 20px;
+      fill: $color-neutral-foreground2-rest;
+      transition: fill $duration-faster $easing-ease-in-out;
+    }
+
+    .tabs__tab--selected & {
+      svg {
+        fill: $color-brand-primary;
+      }
+    }
+  }
+
+  // Tab title wrapper
+  @include element('title') {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding-left: $spacing-05;
+    padding-right: $spacing-05;
+  }
+
+  // Tab text
+  @include element('text') {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    color: $color-neutral-foreground2-rest;
+    font-size: $font-size-300;
+    font-weight: $font-weight-regular;
+    line-height: $line-height-300;
+    word-wrap: break-word;
+    transition: color $duration-faster $easing-ease-in-out,
+                font-weight $duration-faster $easing-ease-in-out;
+
+    .tabs__tab--selected & {
+      color: $color-neutral-foreground-rest;
+      font-weight: $font-weight-semibold;
+    }
+  }
+
+  // Selection indicator (bottom bar for horizontal, left bar for vertical)
+  @include element('indicator') {
+    position: absolute;
+    pointer-events: none;
+  }
+
+  // Selector bar (actual visible indicator for horizontal)
+  @include element('selector') {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 3px;
+    background: $color-brand-primary;
+    border-radius: $border-radius-circular;
+    transition: width $duration-normal $easing-decelerate-mid,
+                left $duration-normal $easing-decelerate-mid,
+                transform $duration-normal $easing-decelerate-mid;
+    
+    // Hidden by default
+    opacity: 0;
+    width: 0;
+
+    .tabs__tab--selected & {
+      opacity: 1;
+    }
+  }
+
+  // More button (overflow menu)
+  @include element('more-button') {
+    margin-left: auto;
+  }
+
+  // ==========================================================================
+  // Orientation Modifiers
+  // ==========================================================================
+
+  // Horizontal orientation (default)
+  @include modifier('horizontal') {
+    flex-direction: row;
+
+    .tabs__indicator {
+      left: 0;
+      bottom: 0;
+      height: 3px;
+      width: 100%;
+    }
+  }
+
+  // Vertical orientation
+  @include modifier('vertical') {
+    flex-direction: column;
+    align-items: flex-start;
+
+    .tabs__indicator {
+      left: 0;
+      top: 0;
+      width: 3px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    .tabs__selector {
+      display: none; // Use SVG indicator instead
+    }
+
+    .tabs__more-button {
+      margin-left: 0;
+      margin-top: auto;
+    }
+  }
+
+  // ==========================================================================
+  // Size Modifiers
+  // ==========================================================================
+
+  @include modifier('small') {
+    .tabs__tab {
+      height: $spacing-8; // 32px for horizontal, 24px actual for vertical
+      padding: $spacing-2 $spacing-2; // 8px for horizontal
+      gap: $spacing-1; // 4px for horizontal
+    }
+
+    .tabs__icon svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .tabs__text {
+      font-size: $font-size-200; // 12px
+      line-height: $line-height-200; // 16px
+    }
+
+    .tabs__selector {
+      height: 2px;
+    }
+
+    // Vertical small adjustments
+    &.tabs--vertical {
+      .tabs__tab {
+        height: 24px; // 24px for vertical small
+        padding: $spacing-05 $spacing-2; // 2px 6px for vertical small
+        gap: $spacing-05; // 2px
+      }
+
+      .tabs__indicator {
+        width: 3px;
+        height: 24px;
+      }
+    }
+  }
+
+  @include modifier('medium') {
+    .tabs__tab {
+      height: $spacing-11; // 44px for horizontal
+      padding: $spacing-3 $spacing-3; // 12px 10px
+      gap: $spacing-2; // 6px
+    }
+
+    .tabs__icon svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .tabs__text {
+      font-size: $font-size-300; // 14px
+      line-height: $line-height-300; // 20px
+    }
+
+    .tabs__selector {
+      height: 3px;
+    }
+
+    // Vertical medium adjustments
+    &.tabs--vertical {
+      .tabs__tab {
+        height: 32px; // 32px for vertical medium
+        padding: $spacing-2 $spacing-3; // 6px 10px for vertical medium
+      }
+
+      .tabs__indicator {
+        width: 3px;
+        height: 32px;
+      }
+    }
+  }
+
+  @include modifier('large') {
+    .tabs__tab {
+      height: $spacing-13; // 52px
+      padding: $spacing-4 $spacing-4; // 16px
+      gap: $spacing-2; // 8px
+    }
+
+    .tabs__icon svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .tabs__text {
+      font-size: $font-size-400; // 16px
+      line-height: $line-height-400; // 22px
+    }
+
+    .tabs__selector {
+      height: 4px;
+    }
+  }
+
+  // ==========================================================================
+  // Layout Modifiers
+  // ==========================================================================
+
+  // Icon before text (default)
+  @include modifier('icon-before') {
+    // Default layout already defined
+  }
+
+  // Text only
+  @include modifier('text-only') {
+    .tabs__icon {
+      display: none;
+    }
+  }
+
+  // Icon only
+  @include modifier('icon-only') {
+    .tabs__title {
+      display: none;
+    }
+  }
+
+  // ==========================================================================
+  // Style Modifiers
+  // ==========================================================================
+
+  @include modifier('transparent') {
+    // Default style - already defined
+  }
+
+  @include modifier('subtle') {
+    .tabs__tab {
+      &:hover:not(.tabs__tab--disabled) {
+        background-color: $color-subtle-background-hover;
+      }
+
+      &:active:not(.tabs__tab--disabled) {
+        background-color: $color-subtle-background-pressed;
+      }
+    }
+  }
+
+  @include modifier('subtle-circular') {
+    .tabs__tab {
+      border-radius: $border-radius-circular;
+
+      &:hover:not(.tabs__tab--disabled):not(.tabs__tab--selected) {
+        background-color: $color-subtle-background-hover;
+        outline: 1px solid $color-neutral-stroke-hover;
+        outline-offset: -1px;
+      }
+
+      &:active:not(.tabs__tab--disabled):not(.tabs__tab--selected) {
+        background-color: $color-subtle-background-pressed;
+        outline: 1px solid $color-neutral-stroke-pressed;
+        outline-offset: -1px;
+      }
+
+      &.tabs__tab--selected {
+        background-color: #EBF3FC; // Brand-Background-2-Rest
+        outline: 1px solid $color-brand-primary;
+        outline-offset: -1px;
+
+        &:hover {
+          background-color: #CFE4FA; // Brand-Background-2-Hover
+          outline-color: #115EA3; // Brand-Stroke-Compound-Hover
+        }
+
+        &:active {
+          background-color: #96C6FA; // Brand-Background-2-Pressed
+          outline-color: #0F548C; // Brand-Stroke-Compound-Pressed
+        }
+
+        .tabs__icon svg {
+          fill: $color-brand-primary;
+        }
+
+        .tabs__text {
+          color: #115EA3; // Brand-Foreground-2-Rest
+        }
+      }
+
+      &.tabs__tab--disabled {
+        background-color: #F0F0F0; // Neutral-Background-Disabled
+        outline: 1px solid #E0E0E0; // Neutral-Stroke-Disabled
+        outline-offset: -1px;
+      }
+    }
+
+    // Hide bottom/left indicator for circular style
+    .tabs__indicator {
+      display: none;
+    }
+
+    // Vertical circular spacing adjustments
+    &.tabs--vertical {
+      gap: $spacing-2; // 8px gap between vertical circular tabs
+
+      &.tabs--small {
+        gap: $spacing-2; // 6px gap for small vertical circular tabs
+      }
+    }
+  }
+
+  @include modifier('filled-circular') {
+    .tabs__tab {
+      border-radius: $border-radius-circular;
+
+      &:not(.tabs__tab--selected) {
+        background-color: #F5F5F5; // Neutral-Background-3-Rest
+
+        &:hover:not(.tabs__tab--disabled) {
+          background-color: #EBEBEB; // Neutral-Background-3-Hover
+        }
+
+        &:active:not(.tabs__tab--disabled) {
+          background-color: #D6D6D6; // Neutral-Background-3-Pressed
+        }
+      }
+
+      &.tabs__tab--selected {
+        background-color: $color-brand-primary; // Brand-Background-1-Rest
+
+        &:hover {
+          background-color: #115EA3; // Brand-Background-1-Hover
+        }
+
+        &:active {
+          background-color: #0C3B5E; // Brand-Background-1-Pressed
+        }
+
+        .tabs__icon svg {
+          fill: $color-neutral-foreground-on-brand;
+        }
+
+        .tabs__text {
+          color: $color-neutral-foreground-on-brand;
+        }
+      }
+
+      &.tabs__tab--disabled {
+        background-color: #F0F0F0; // Neutral-Background-Disabled
+        
+        &.tabs__tab--selected {
+          outline: 1px solid #E0E0E0; // Neutral-Stroke-Disabled
+          outline-offset: -1px;
+        }
+      }
+    }
+
+    // Hide bottom/left indicator for circular style
+    .tabs__indicator {
+      display: none;
+    }
+  }
+
+  // ==========================================================================
+  // Tab State Modifiers
+  // ==========================================================================
+
+  @include element-modifier('tab', 'selected') {
+    // Styles applied via element selectors above
+  }
+
+  @include element-modifier('tab', 'disabled') {
+    cursor: not-allowed;
+    pointer-events: none;
+
+    .tabs__icon svg {
+      fill: $color-neutral-foreground-disabled;
+    }
+
+    .tabs__text {
+      color: $color-neutral-foreground-disabled;
+    }
+  }
+
+  // ==========================================================================
+  // Circular Modifier (Legacy compatibility)
+  // ==========================================================================
+
+  @include modifier('circular') {
+    .tabs__tab {
+      border-radius: $border-radius-circular;
+    }
+  }
+
+  // ==========================================================================
+  // Small Circular Adjustments
+  // ==========================================================================
+
+  &.tabs--small.tabs--subtle-circular.tabs--vertical {
+    .tabs__tab {
+      height: 24px;
+      padding: $spacing-1 $spacing-2; // 4px 8px
+    }
+  }
+}
+
+
