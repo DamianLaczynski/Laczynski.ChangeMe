@@ -1,0 +1,193 @@
+<app-field
+  [fieldType]="'date'"
+  [label]="label()"
+  [placeholder]="placeholder()"
+  [helpText]="helpText()"
+  [errorText]="errorText()"
+  [warningText]="warningText()"
+  [successText]="successText()"
+  [required]="required()"
+  [disabled]="disabled()"
+  [readonly]="readonly()"
+  [id]="id()"
+  [name]="name()"
+  [state]="state()"
+  [size]="size()"
+  [variant]="variant()"
+>
+  <div class="input-wrapper" [class]="wrapperClasses">
+    <input
+      class="input"
+      type="text"
+      [id]="id()"
+      [name]="name()"
+      [placeholder]="placeholder()"
+      [required]="required()"
+      [disabled]="disabled()"
+      [readonly]="true"
+      [value]="displayText()"
+      [attr.aria-label]="ariaLabel() || label()"
+      [attr.aria-describedby]="ariaDescribedBy()"
+      [attr.aria-invalid]="state() === 'error'"
+      [attr.aria-expanded]="isExpanded()"
+      [attr.aria-haspopup]="'dialog'"
+      (click)="togglePanel()"
+      (blur)="onBlur($event)"
+      (focus)="onFocus($event)"
+      (keydown)="onKeyDown($event)"
+    />
+    @if (!disabled() && !readonly()) {
+      <div class="field__actions">
+        <!-- Calendar Icon Button -->
+
+        <app-action-button
+          [show]="true"
+          [size]="size()"
+          [icon]="'calendar'"
+          (click)="togglePanel()"
+        ></app-action-button>
+        <!-- Clear Button -->
+        @if (value && (value.startDate || value.endDate)) {
+          <app-action-button
+            [show]="true"
+            [icon]="'dismiss'"
+            [size]="size()"
+            (click)="clear()"
+          ></app-action-button>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Date Range Picker Panel -->
+  @if (isExpanded()) {
+    <div
+      #datePanel
+      class="date-range-panel"
+      [attr.data-size]="size()"
+      (click)="onPanelClick($event)"
+    >
+      <!-- Calendar Section -->
+      <div class="date-range-panel__calendar">
+        @if (calendarView() === 'months') {
+          <!-- Month Picker -->
+          <div class="date-range-panel__month-picker">
+            <div class="date-range-calendar__header">
+              <button type="button" class="date-range-calendar__nav" (click)="previousYear($event)">
+                <app-icon [icon]="'chevron_left'" [size]="size()" />
+              </button>
+              <button
+                type="button"
+                class="date-range-calendar__title date-range-calendar__title--clickable"
+                (click)="switchToYearsView($event)"
+              >
+                {{ currentMonth().getFullYear() }}
+              </button>
+              <button type="button" class="date-range-calendar__nav" (click)="nextYear($event)">
+                <app-icon [icon]="'chevron_right'" [size]="size()" />
+              </button>
+            </div>
+            <div class="date-range-panel__months">
+              @for (month of calendarMonths(); track month.index) {
+                <button
+                  type="button"
+                  [class]="getMonthClasses(month)"
+                  (click)="selectMonth(month.index, $event)"
+                >
+                  {{ month.name }}
+                </button>
+              }
+            </div>
+          </div>
+        } @else if (calendarView() === 'years') {
+          <!-- Year Picker -->
+          <div class="date-range-panel__year-picker">
+            <div class="date-range-calendar__header">
+              <button
+                type="button"
+                class="date-range-calendar__nav"
+                (click)="previousYearRange($event)"
+              >
+                <app-icon [icon]="'chevron_left'" [size]="size()" />
+              </button>
+              <span class="date-range-calendar__title">{{ getYearRangeText() }}</span>
+              <button
+                type="button"
+                class="date-range-calendar__nav"
+                (click)="nextYearRange($event)"
+              >
+                <app-icon [icon]="'chevron_right'" [size]="size()" />
+              </button>
+            </div>
+            <div class="date-range-panel__years">
+              @for (yearItem of calendarYears(); track yearItem.year) {
+                <button
+                  type="button"
+                  [class]="getYearClasses(yearItem)"
+                  (click)="selectYear(yearItem.year, $event)"
+                >
+                  {{ yearItem.year }}
+                </button>
+              }
+            </div>
+          </div>
+        } @else {
+          <!-- Date Calendar (Days View) -->
+          <div class="date-range-calendar">
+            <!-- Calendar Header -->
+            <div class="date-range-calendar__header">
+              <button
+                type="button"
+                class="date-range-calendar__nav"
+                (click)="previousMonth($event)"
+              >
+                <app-icon [icon]="'chevron_left'" [size]="size()" />
+              </button>
+              @if (showMonthYearPicker()) {
+                <button
+                  type="button"
+                  class="date-range-calendar__title date-range-calendar__title--clickable"
+                  (click)="switchToMonthsView($event)"
+                >
+                  {{ monthYearText() }}
+                </button>
+              } @else {
+                <span class="date-range-calendar__title">
+                  {{ monthYearText() }}
+                </span>
+              }
+              <button type="button" class="date-range-calendar__nav" (click)="nextMonth($event)">
+                <app-icon [icon]="'chevron_right'" [size]="size()" />
+              </button>
+            </div>
+
+            <!-- Week Days Header -->
+            <div class="date-range-calendar__weekdays">
+              @for (day of weekDays; track day) {
+                <div class="date-range-calendar__weekday">{{ day }}</div>
+              }
+            </div>
+
+            <!-- Calendar Days Grid -->
+            <div class="date-range-calendar__grid">
+              @for (day of calendarDays(); track trackByDate($index, day)) {
+                <button
+                  type="button"
+                  [class]="getDayClasses(day)"
+                  [disabled]="day.isDisabled"
+                  (click)="selectDate(day, $event)"
+                  (mouseenter)="onDateHover(day)"
+                  (mouseleave)="onDateLeave()"
+                  [attr.data-date]="day.date"
+                  [attr.data-disabled]="day.isDisabled"
+                >
+                  {{ day.day }}
+                </button>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</app-field>
