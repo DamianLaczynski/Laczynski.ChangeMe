@@ -1,12 +1,13 @@
 import { Component, forwardRef, input, model, effect, output, OnInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { CheckboxStyle, Size, StateType } from '../../utils';
-import { CommonModule } from '@angular/common';
+import { CheckboxStyle } from '../../utils';
 import { FieldComponent } from '../field/field.component';
+import { IconComponent } from '@shared/components/icon/icon.component';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-checkbox',
-  imports: [CommonModule, FieldComponent],
+  imports: [FieldComponent, IconComponent, NgClass],
   templateUrl: './checkbox.component.html',
   providers: [
     {

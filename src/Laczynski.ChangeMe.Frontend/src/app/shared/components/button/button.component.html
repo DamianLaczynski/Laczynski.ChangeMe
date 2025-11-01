@@ -6,5 +6,8 @@
   [attr.aria-pressed]="selected() ? 'true' : null"
   (click)="onClick($event)"
 >
+  @if (icon()) {
+    <app-icon [icon]="icon()" [size]="size()" />
+  }
   <ng-content></ng-content>
 </button>

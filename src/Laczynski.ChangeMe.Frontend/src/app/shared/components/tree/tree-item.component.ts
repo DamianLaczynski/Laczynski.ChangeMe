@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Size } from '../utils';
+import { IconComponent } from '../icon/icon.component';
 
 export interface TreeNode<T = any> {
   id: string | number;
@@ -27,14 +28,13 @@ export interface TreeNode<T = any> {
 
 @Component({
   selector: 'app-tree-item',
-  standalone: true,
-  imports: [CommonModule],
+
+  imports: [CommonModule, IconComponent],
   templateUrl: './tree-item.component.html',
 })
 export class TreeItemComponent {
   node = input.required<TreeNode>();
   size = input<Size>('medium');
-  showIcon = input<boolean>(true);
   showQuickActions = input<boolean>(false);
   quickActionsTemplate = input<TemplateRef<any> | null>(null);
   focusedNodeId = input<string | number | null>(null);

@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-switch-showcase',
-  standalone: true,
+
   imports: [SwitchComponent, CommonModule, FormsModule, JsonPipe],
   template: `
     <div class="showcase showcase--responsive">

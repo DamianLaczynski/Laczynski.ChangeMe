@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-slider-showcase',
-  standalone: true,
+
   imports: [CommonModule, SliderComponent, FormsModule, JsonPipe],
   template: `
     <div class="showcase showcase--responsive">

@@ -5,7 +5,6 @@ import { ToastPosition } from './models/toast.model';
 @Component({
   selector: 'app-toast',
   templateUrl: './toast.component.html',
-  standalone: true,
 })
 export class ToastComponent {
   title = input<string>('');

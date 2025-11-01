@@ -2,10 +2,13 @@ import { Routes } from '@angular/router';
 import { AccordionShowcaseComponent } from '@shared/components/accordion/accordion.showcase.component';
 import { BreadcrumbShowcaseComponent } from '@shared/components/breadcrumb/breadcrumb.showcase.component';
 import { ButtonShowcaseComponent } from '@shared/components/button/button.showcase.component';
+import { DateShowcaseComponent } from '@shared/components/field/date/date.showcase.component';
+import { DateRangeShowcaseComponent } from '@shared/components/field/date-range/date-range.showcase.component';
 import { DropdownShowcaseComponent } from '@shared/components/field/dropdown/dropdown.showcase.component';
 import { NumberShowcaseComponent } from '@shared/components/field/number/number.showcase.component';
+import { PasswordShowcaseComponent } from '@shared/components/field/password/password.showcase.component';
 import { TextShowcaseComponent } from '@shared/components/field/text/text.showcase.component';
-import { HorizontalTabsShowcaseComponent } from '@shared/components/horizontal-tabs/horizontal-tabs.showcase.component';
+import { TabsShowcaseComponent } from '@shared/components/tabs/tabs.showcase.component';
 import { InputShowcaseComponent } from '@shared/components/input/input.showcase.component';
 import { SkeletonShowcaseComponent } from '@shared/components/skeleton/skeleton.showcase.component';
 import { TreeShowcaseComponent } from '@shared/components/tree/tree.showcase.component';
@@ -19,11 +22,16 @@ import { DividerShowcaseComponent } from '@shared/components/divider/divider.sho
 import { BadgeShowcaseComponent } from '@shared/components/badge/badge.showcase.component';
 import { CardShowcaseComponent } from '@shared/components/card/card.showcase.component';
 import { CheckboxShowcaseComponent } from '@shared/components/field/checkbox/checkbox.showcase.component';
+import { ColorShowcaseComponent } from '@shared/components/field/color/color.showcase.component';
 import { SwitchShowcaseComponent } from '@shared/components/field/switch/switch.showcase.component';
 import { RadioShowcaseComponent } from '@shared/components/field/radio/radio.showcase.component';
 import { SplitterShowcaseComponent } from '@shared/components/splitter/splitter.showcase.component';
 import { ScrollPanelShowcaseComponent } from '@shared/components/scroll-panel/scroll-panel.showcase.component';
 import { SpinnerShowcaseComponent } from '@shared/components/spinner/spinner.showcase.component';
+import { FileShowcaseComponent } from '@shared/components/field/file/file.showcase.component';
+import { StepperShowcaseComponent } from '@shared/components/field/stepper/stepper.showcase.component';
+import { ToastShowcaseComponent } from '@shared/components/toast/toast.showcase.component';
+import { NavShowcaseComponent } from '@shared/components/nav';
 
 export const dsRoutes: Routes = [
   {
@@ -51,7 +59,10 @@ export const dsRoutes: Routes = [
     path: 'card',
     component: CardShowcaseComponent,
   },
-
+  {
+    path: 'data-grid',
+    component: DataGridShowcaseComponent,
+  },
   {
     path: 'dialog',
     component: DialogShowcaseComponent,
@@ -65,12 +76,28 @@ export const dsRoutes: Routes = [
     component: CheckboxShowcaseComponent,
   },
   {
+    path: 'color',
+    component: ColorShowcaseComponent,
+  },
+  {
+    path: 'date',
+    component: DateShowcaseComponent,
+  },
+  {
+    path: 'date-range',
+    component: DateRangeShowcaseComponent,
+  },
+  {
     path: 'dropdown',
     component: DropdownShowcaseComponent,
   },
   {
     path: 'number',
     component: NumberShowcaseComponent,
+  },
+  {
+    path: 'password',
+    component: PasswordShowcaseComponent,
   },
   {
     path: 'radio',
@@ -88,12 +115,22 @@ export const dsRoutes: Routes = [
     path: 'text',
     component: TextShowcaseComponent,
   },
-
+  {
+    path: 'tabs',
+    component: TabsShowcaseComponent,
+  },
   {
     path: 'input',
     component: InputShowcaseComponent,
   },
-
+  {
+    path: 'menu',
+    component: MenuShowcaseComponent,
+  },
+  {
+    path: 'nav',
+    component: NavShowcaseComponent,
+  },
   {
     path: 'progress-bar',
     component: ProgressBarShowcaseComponent,
@@ -111,6 +148,10 @@ export const dsRoutes: Routes = [
     component: SpinnerShowcaseComponent,
   },
   {
+    path: 'stepper',
+    component: StepperShowcaseComponent,
+  },
+  {
     path: 'skeleton',
     component: SkeletonShowcaseComponent,
   },
@@ -119,7 +160,15 @@ export const dsRoutes: Routes = [
     component: TagShowcaseComponent,
   },
   {
+    path: 'toast',
+    component: ToastShowcaseComponent,
+  },
+  {
     path: 'tree',
     component: TreeShowcaseComponent,
+  },
+  {
+    path: 'file',
+    component: FileShowcaseComponent,
   },
 ];

@@ -55,11 +55,11 @@ import { TreeNode } from './tree-item.component';
         <div class="showcase__grid">
           <div class="showcase__item">
             <h3>With Icons</h3>
-            <app-tree [nodes]="iconTree()" [showIcon]="true"></app-tree>
+            <app-tree [nodes]="iconTree()"></app-tree>
           </div>
           <div class="showcase__item">
             <h3>Without Icons</h3>
-            <app-tree [nodes]="iconTree()" [showIcon]="false"></app-tree>
+            <app-tree [nodes]="iconTree()"></app-tree>
           </div>
         </div>
       </div>
@@ -156,9 +156,10 @@ export class TreeShowcaseComponent {
       label: 'Root Item 1',
       hasChildren: true,
       expanded: false,
+      icon: 'folder',
       children: [
-        { id: 11, label: 'Child Item 1.1' },
-        { id: 12, label: 'Child Item 1.2' },
+        { id: 11, label: 'Child Item 1.1', icon: 'document' },
+        { id: 12, label: 'Child Item 1.2', icon: 'document' },
       ],
     },
     {

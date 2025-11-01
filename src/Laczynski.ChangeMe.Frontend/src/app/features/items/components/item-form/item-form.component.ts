@@ -11,28 +11,23 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { StateContainerComponent, State, StateService } from '@shared/state';
 import { ItemsService } from '../../services/items.service';
 import { Item, CreateItemRequest, UpdateItemRequest } from '../../models/item.model';
 import { ApiErrorService } from '@shared/api';
 import { NumberComponent } from '@shared/components/field/number/number.component';
-import { TextareaComponent } from '@shared/components/field/textarea/textarea.component';
 import { TextComponent } from '@shared/components/field/text/text.component';
-import { UrlComponent } from '@shared/components/field/url/url.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
 
 @Component({
   selector: 'app-item-form',
-  standalone: true,
+
   imports: [
     CommonModule,
     ReactiveFormsModule,
     StateContainerComponent,
     NumberComponent,
-    TextareaComponent,
     TextComponent,
-    UrlComponent,
     ButtonComponent,
   ],
   templateUrl: './item-form.component.html',

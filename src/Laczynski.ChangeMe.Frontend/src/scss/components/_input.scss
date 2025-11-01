@@ -93,7 +93,6 @@
   box-sizing: border-box;
   vertical-align: middle;
   border-radius: $border-radius-400;
-  transition: all $duration-ultra-fast $easing-ease-in-out;
   gap: $spacing-05;
 
    // Filled variant (default)
@@ -169,7 +168,6 @@
   &--disabled {
     background-color: transparent;
     border-color: $color-neutral-stroke-disabled;
-    cursor: not-allowed;
     
     .input {
       color: $color-neutral-foreground-disabled;
@@ -201,7 +199,6 @@
   font-family: $font-family-base;
   font-weight: $font-weight-regular;
   letter-spacing: $letter-spacing-normal;
-  transition: all $duration-ultra-fast $easing-ease-in-out;
 
   // Placeholder styles
   &::placeholder {
@@ -301,11 +298,11 @@
     right: -1px;
     background-color: $color-brand-primary; 
     transform: scaleX(0);
-    transition: transform $duration-ultra-fast $easing-ease-in-out;
     border-bottom-left-radius: $border-radius-400;
     border-bottom-right-radius: $border-radius-400;
     border-bottom: 2px solid $color-brand-primary;
     clip-path: inset(calc(100% - 2px) 0px 0px);
+    transition: transform $duration-fast $easing-decelerate-max;
   }
 
   &:focus-within::after {
@@ -333,5 +330,58 @@
 .input-wrapper--underlined {
   &::after {
     border-radius: $border-radius-200;
+  }
+}
+.field__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-1;
+  padding-right: $spacing-2;
+}
+
+.field__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  transition: all $duration-ultra-fast $easing-ease-in-out;
+  color: $color-neutral-foreground2-rest;
+  border-radius: $border-radius-200;
+
+  &:active {
+    color: $color-neutral-foreground-rest;
+  }
+
+  svg:hover {
+    color: $color-neutral-foreground2-hover;
+  }
+
+}
+
+.input-wrapper {
+  &--small {
+    .field__actions {
+      padding-right: $spacing-1;
+      gap: $spacing-05;
+    }
+  }
+
+  &--medium {
+    .field__actions {
+      padding-right: $spacing-2;
+      gap: $spacing-1;
+    }
+  }
+
+  &--large {
+    .field__actions {
+      padding-right: $spacing-3;
+      gap: $spacing-1;
+    }
   }
 }

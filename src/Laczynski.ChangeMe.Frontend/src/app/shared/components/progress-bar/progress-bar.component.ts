@@ -7,7 +7,7 @@ export type ProgressBarType = 'determinate' | 'indeterminate';
 @Component({
   selector: 'app-progress-bar',
   templateUrl: './progress-bar.component.html',
-  standalone: true,
+
   imports: [CommonModule],
 })
 export class ProgressBarComponent {

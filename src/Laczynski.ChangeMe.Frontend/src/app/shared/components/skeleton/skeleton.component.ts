@@ -6,7 +6,7 @@ export type SkeletonShape = 'rectangle' | 'circle';
 @Component({
   selector: 'app-skeleton',
   templateUrl: './skeleton.component.html',
-  standalone: true,
+
   imports: [CommonModule],
 })
 export class SkeletonComponent {

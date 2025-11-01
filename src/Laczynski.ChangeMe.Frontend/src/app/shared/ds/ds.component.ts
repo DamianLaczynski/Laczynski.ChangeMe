@@ -1,24 +1,12 @@
-import { Component, HostListener, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { DsSidebarComponent } from './components/ds-sidebar/ds-sidebar.component';
-import {
-  SplitterComponent,
-  SplitterPanel,
-  SplitterPanelDirective,
-} from '@shared/components/splitter';
-import { ScrollPanelComponent } from '@shared/components/scroll-panel';
+import { SplitterPanel } from '@shared/components/splitter';
 
 @Component({
   selector: 'app-ds',
-  imports: [
-    CommonModule,
-    RouterOutlet,
-    DsSidebarComponent,
-    SplitterComponent,
-    SplitterPanelDirective,
-    ScrollPanelComponent,
-  ],
+  imports: [CommonModule, RouterOutlet, DsSidebarComponent],
   templateUrl: './ds.component.html',
 })
 export class DsComponent {

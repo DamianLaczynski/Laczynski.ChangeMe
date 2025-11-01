@@ -23,7 +23,7 @@ import { Item, ItemSearchParameters } from '../../models/item.model';
 
 @Component({
   selector: 'app-items-infinite-list',
-  standalone: true,
+
   imports: [
     CommonModule,
     FormsModule,

@@ -9,7 +9,7 @@ export type LabelSize = 'small' | 'small-bold' | 'medium' | 'medium-bold' | 'lar
 
 @Component({
   selector: 'app-input',
-  standalone: true,
+
   imports: [CommonModule],
   template: `
     <div class="input-container">

@@ -1,4 +1,4 @@
-import { Component, forwardRef, input, model, output, OnInit } from '@angular/core';
+import { Component, forwardRef, input, OnInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { SwitchLabelPosition } from '../../utils';
 import { CommonModule } from '@angular/common';

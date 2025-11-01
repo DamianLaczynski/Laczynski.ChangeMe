@@ -1,8 +1,6 @@
 // ==========================================================================
 // 7-1 Pattern SCSS Architecture with BEM Methodology
 // ==========================================================================
-@use 'bootstrap/dist/css/bootstrap-grid.css' as *;
-@use 'bootstrap/dist/css/bootstrap-utilities.css' as *;
 
 // 1. Utils - Variables, functions, mixins, and utilities
 @use 'utils/variables';
@@ -19,7 +17,6 @@
 
 // 4. Layout - Layout-related sections
 
-
 // 5. Components - Reusable UI components (BEM blocks)
 @use 'components/accordion';
 @use 'components/badge';
@@ -27,10 +24,18 @@
 @use 'components/button';
 @use 'components/card';
 @use 'components/checkbox';
+@use 'components/color';
+@use 'components/data-grid';
+@use 'components/date';
+@use 'components/date-range';
 @use 'components/dialog';
 @use 'components/divider';
 @use 'components/dropdown';
+@use 'components/file';
+@use 'components/tabs';
 @use 'components/input';
+@use 'components/menu';
+@use 'components/nav';
 @use 'components/number';
 @use 'components/paginated-table';
 @use 'components/progress-bar';
@@ -40,14 +45,13 @@
 @use 'components/slider';
 @use 'components/spinner';
 @use 'components/splitter';
+@use 'components/stepper';
 @use 'components/switch';
 @use 'components/tag';
 @use 'components/toast';
-@use 'components/toast-container';
 @use 'components/tree';
 
 // 6. Pages - Page-specific styles
 @use 'pages/showcase';
 
 // 7. Themes - Theme-related styles
-

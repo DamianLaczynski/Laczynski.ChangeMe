@@ -165,9 +165,15 @@ textarea {
   padding: 0; /* 2 */
 }
 
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
 [type="number"]::-webkit-inner-spin-button,
 [type="number"]::-webkit-outer-spin-button {
   height: auto;
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 [type="search"] {

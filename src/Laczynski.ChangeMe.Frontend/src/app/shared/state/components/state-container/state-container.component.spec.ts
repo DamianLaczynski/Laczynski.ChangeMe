@@ -10,7 +10,7 @@ import { StateContainerComponent } from './state-container.component';
 // Mock the LoadingIndicatorComponent since it's an external dependency
 @Component({
   selector: 'app-loading-indicator',
-  standalone: true,
+
   imports: [CommonModule],
   template: '<div class="loading-indicator">{{ message }}</div>',
 })
@@ -21,7 +21,7 @@ class MockLoadingIndicatorComponent {
 // Test host component to test content projection
 @Component({
   selector: 'app-test-host',
-  standalone: true,
+
   imports: [StateContainerComponent, CommonModule],
   template: `
     <app-state-container

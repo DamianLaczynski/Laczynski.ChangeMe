@@ -1,13 +1,13 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { CardComponent } from './card.component';
 import { QuickAction } from '../utils';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-card-showcase',
-  standalone: true,
-  imports: [CommonModule, FormsModule, CardComponent],
+
+  imports: [CommonModule, CardComponent, FormsModule],
   template: `
     <div class="showcase">
       <h1>Card Component - Fluent 2 Design System</h1>
@@ -22,7 +22,7 @@ import { QuickAction } from '../utils';
               title="Card Title"
               subtitle="Additional metadata"
               bodyText="Copilot is an AI tool designed to improve productivity by integrating with Microsoft applications, offering content generation and task automation features."
-              [headerIcon]="imageIcon"
+              [headerIcon]="'image'"
               [showQuickAction]="true"
               [primaryAction]="primaryAction"
               [secondaryAction]="secondaryAction"
@@ -37,7 +37,7 @@ import { QuickAction } from '../utils';
               title="Card Title"
               subtitle="Additional metadata"
               bodyText="Copilot is an AI tool designed to improve productivity by integrating with Microsoft applications."
-              [headerIcon]="imageIcon"
+              [headerIcon]="'image'"
               [showQuickAction]="true"
               [primaryAction]="primaryAction"
               [secondaryAction]="secondaryAction"
@@ -52,7 +52,7 @@ import { QuickAction } from '../utils';
               title="Card Title"
               subtitle="Additional metadata"
               bodyText="Copilot is an AI tool designed to improve productivity by integrating with Microsoft applications."
-              [headerIcon]="imageIcon"
+              [headerIcon]="'image'"
               [showQuickAction]="true"
               [primaryAction]="primaryAction"
               [secondaryAction]="secondaryAction"
@@ -73,7 +73,7 @@ import { QuickAction } from '../utils';
               title="Disabled Card"
               subtitle="This card is disabled"
               bodyText="This card is disabled and cannot be interacted with."
-              [headerIcon]="imageIcon"
+              [headerIcon]="'image'"
               [showQuickAction]="true"
               [primaryAction]="primaryAction"
               [secondaryAction]="secondaryAction"
@@ -88,7 +88,7 @@ import { QuickAction } from '../utils';
               title="Clickable Card"
               subtitle="Click anywhere on this card"
               bodyText="This card is clickable and responds to click events with hover effects."
-              [headerIcon]="imageIcon"
+              [headerIcon]="'image'"
               [showQuickAction]="true"
               [primaryAction]="primaryAction"
               [secondaryAction]="secondaryAction"
@@ -110,7 +110,7 @@ import { QuickAction } from '../utils';
               title="Simple Card"
               subtitle="No action buttons"
               bodyText="This card doesn't have any footer actions, just header and body content."
-              [headerIcon]="imageIcon"
+              [headerIcon]="'image'"
               [showQuickAction]="true"
               [showFooter]="false"
             >
@@ -123,7 +123,7 @@ import { QuickAction } from '../utils';
               title="Single Action Card"
               subtitle="One button only"
               bodyText="This card has only a primary action button in the footer."
-              [headerIcon]="imageIcon"
+              [headerIcon]="'image'"
               [showQuickAction]="true"
               [primaryAction]="primaryAction"
             >
@@ -154,7 +154,7 @@ import { QuickAction } from '../utils';
               subtitle="With custom body template"
               [showHeader]="false"
               [showFooter]="false"
-              [headerIcon]="imageIcon"
+              [headerIcon]="'image'"
               [showQuickAction]="true"
               [primaryAction]="primaryAction"
             >
@@ -179,7 +179,7 @@ import { QuickAction } from '../utils';
             <app-card
               title="Projected Content"
               subtitle="Using ng-content"
-              [headerIcon]="imageIcon"
+              [headerIcon]="'image'"
               [showFooter]="false"
             >
               <div style="padding: 8px; display: flex; flex-direction: column; gap: 8px;">
@@ -208,7 +208,7 @@ import { QuickAction } from '../utils';
               [title]="card.title"
               [subtitle]="card.subtitle"
               [bodyText]="card.body"
-              [headerIcon]="imageIcon"
+              [headerIcon]="'image'"
               [showQuickAction]="true"
               [primaryAction]="card.action"
               [clickable]="true"
@@ -254,7 +254,7 @@ import { QuickAction } from '../utils';
             [title]="interactiveCard.title"
             [subtitle]="interactiveCard.subtitle"
             [bodyText]="interactiveCard.body"
-            [headerIcon]="imageIcon"
+            [headerIcon]="'image'"
             [showQuickAction]="interactiveCard.showQuickAction"
             [primaryAction]="interactiveCard.showFooter ? primaryAction : null"
             [secondaryAction]="interactiveCard.showFooter ? secondaryAction : null"
@@ -281,37 +281,6 @@ import { QuickAction } from '../utils';
         </div>
       </section>
     </div>
-
-    <!-- SVG Templates -->
-    <ng-template #imageIcon>
-      <svg
-        width="32"
-        height="32"
-        viewBox="0 0 32 32"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M16 4C9.37258 4 4 9.37258 4 16C4 18.9242 5.04592 21.604 6.78407 23.6859L14.2303 16.233C15.2068 15.2556 16.7909 15.2556 17.7674 16.233L25.2149 23.6872C26.9537 21.6051 28 18.9248 28 16C28 9.37258 22.6274 4 16 4ZM23.8101 25.1109L16.3526 17.6466C16.1573 17.4511 15.8404 17.4511 15.6451 17.6466L8.18866 25.1098C10.2878 26.9114 13.0168 28 16 28C18.9826 28 21.7111 26.9118 23.8101 25.1109ZM2 16C2 8.26801 8.26801 2 16 2C23.732 2 30 8.26801 30 16C30 23.732 23.732 30 16 30C8.26801 30 2 23.732 2 16ZM20.5 13C19.6716 13 19 12.3284 19 11.5C19 10.6716 19.6716 10 20.5 10C21.3284 10 22 10.6716 22 11.5C22 12.3284 21.3284 13 20.5 13ZM20.5 15C22.433 15 24 13.433 24 11.5C24 9.567 22.433 8 20.5 8C18.567 8 17 9.567 17 11.5C17 13.433 18.567 15 20.5 15Z"
-          fill="var(--Neutral-Foreground-1-Rest, #242424)"
-        />
-      </svg>
-    </ng-template>
-
-    <ng-template #moreIcon>
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 20 20"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M6.25 10C6.25 10.6904 5.69036 11.25 5 11.25C4.30964 11.25 3.75 10.6904 3.75 10C3.75 9.30964 4.30964 8.75 5 8.75C5.69036 8.75 6.25 9.30964 6.25 10ZM11.25 10C11.25 10.6904 10.6904 11.25 10 11.25C9.30964 11.25 8.75 10.6904 8.75 10C8.75 9.30964 9.30964 8.75 10 8.75C10.6904 8.75 11.25 9.30964 11.25 10ZM15 11.25C15.6904 11.25 16.25 10.6904 16.25 10C16.25 9.30964 15.6904 8.75 15 8.75C14.3096 8.75 13.75 9.30964 13.75 10C13.75 10.6904 14.3096 11.25 15 11.25Z"
-          fill="var(--Neutral-Foreground-2-Rest, #424242)"
-        />
-      </svg>
-    </ng-template>
   `,
   styles: [
     `
@@ -462,6 +431,7 @@ export class CardShowcaseComponent {
       action: {
         label: 'Open',
         variant: 'primary' as const,
+        icon: 'open',
         action: () => this.logEvent('Collaboration card clicked'),
       },
     },

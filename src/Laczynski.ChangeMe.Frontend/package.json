@@ -28,9 +28,7 @@
     "@angular/platform-browser": "^19.2.0",
     "@angular/platform-browser-dynamic": "^19.2.0",
     "@angular/router": "^19.2.0",
-    "@ng-icons/core": "^31.4.0",
-    "@ng-icons/heroicons": "^31.4.0",
-    "bootstrap": "^5.3.8",
+    "@fluentui/svg-icons": "^1.1.313",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"

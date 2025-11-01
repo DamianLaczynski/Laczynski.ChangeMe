@@ -24,7 +24,7 @@ import {
 
 @Component({
   selector: 'app-paginated-table',
-  standalone: true,
+
   imports: [CommonModule, ButtonComponent, FormsModule, SpinnerComponent, DropdownComponent],
   templateUrl: './paginated-table.component.html',
 })

@@ -1,19 +1,19 @@
 import { Component, input } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { BadgeColor, BadgeSize, BadgeAppearance } from '../utils';
+import { BadgeColor, BadgeAppearance, Size } from '../utils';
+import { IconComponent } from '../icon/icon.component';
 
 @Component({
   selector: 'app-badge',
   templateUrl: './badge.component.html',
-  standalone: true,
-  imports: [CommonModule],
+
+  imports: [IconComponent],
 })
 export class BadgeComponent {
   color = input<BadgeColor>('brand');
-  size = input<BadgeSize>('medium');
+  size = input<Size>('medium');
   appearance = input<BadgeAppearance>('filled');
   text = input.required<string>();
-  showIcon = input<boolean>(false);
+  icon = input<string>('');
   ariaLabel = input<string>('');
 
   get badgeClasses(): string {
@@ -24,20 +24,5 @@ export class BadgeComponent {
     classes.push(`badge--${this.appearance()}`);
 
     return classes.join(' ');
-  }
-
-  get iconSize(): number {
-    switch (this.size()) {
-      case 'small':
-        return 12;
-      case 'medium':
-        return 12;
-      case 'large':
-        return 16;
-      case 'extra-large':
-        return 20;
-      default:
-        return 12;
-    }
   }
 }

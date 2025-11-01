@@ -4,7 +4,7 @@ import { BreadcrumbItem } from './breadcrumb.component';
 
 @Component({
   selector: 'app-breadcrumb-showcase',
-  standalone: true,
+
   imports: [BreadcrumbComponent],
   template: `
     <div class="showcase showcase--responsive">
@@ -109,9 +109,9 @@ export class BreadcrumbShowcaseComponent {
   // Breadcrumbs with icons
   breadcrumbsWithIcons: BreadcrumbItem[] = [
     { id: 1, label: 'Home', icon: 'home', url: '/' },
-    { id: 2, label: 'Products', icon: 'products', url: '/products' },
-    { id: 3, label: 'Electronics', icon: 'electronics', url: '/products/electronics' },
-    { id: 4, label: 'Current Page', icon: 'page', current: true },
+    { id: 2, label: 'Products', icon: 'projection_screen', url: '/products' },
+    { id: 3, label: 'Electronics', icon: 'laptop', url: '/products/electronics' },
+    { id: 4, label: 'Current Page', icon: 'star', current: true },
   ];
 
   // Breadcrumbs without icons
@@ -123,23 +123,23 @@ export class BreadcrumbShowcaseComponent {
 
   // Medium size breadcrumbs
   breadcrumbsMedium: BreadcrumbItem[] = [
-    { id: 1, label: 'Dashboard', icon: 'dashboard' },
+    { id: 1, label: 'Dashboard', icon: 'home' },
     { id: 2, label: 'Settings', icon: 'settings' },
-    { id: 3, label: 'Profile', icon: 'profile', current: true },
+    { id: 3, label: 'Profile', icon: 'person', current: true },
   ];
 
   // Small size breadcrumbs
   breadcrumbsSmall: BreadcrumbItem[] = [
-    { id: 1, label: 'Root', icon: 'root' },
-    { id: 2, label: 'Folder', icon: 'folder' },
-    { id: 3, label: 'File', icon: 'file', current: true },
+    { id: 1, label: 'Root', icon: 'home' },
+    { id: 2, label: 'Folder', icon: 'folder_open' },
+    { id: 3, label: 'File', icon: 'document', current: true },
   ];
 
   // Breadcrumbs with disabled item
   breadcrumbsWithDisabled: BreadcrumbItem[] = [
     { id: 1, label: 'Home', icon: 'home', url: '/' },
-    { id: 2, label: 'Disabled', icon: 'disabled', disabled: true },
-    { id: 3, label: 'Current Page', icon: 'page', current: true },
+    { id: 2, label: 'Disabled', icon: 'subtract_circle', disabled: true },
+    { id: 3, label: 'Current Page', icon: 'star', current: true },
   ];
 
   // Long breadcrumb path

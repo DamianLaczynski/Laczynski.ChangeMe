@@ -1,11 +1,11 @@
 import { Component, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { FieldComponent } from '../field/field.component';
-import { ClearButtonComponent } from '../clear-button.component';
+import { ActionButtonComponent } from '../action-button.component';
 
 @Component({
   selector: 'app-text',
-  imports: [FieldComponent, ClearButtonComponent],
+  imports: [FieldComponent, ActionButtonComponent],
   templateUrl: './text.component.html',
   providers: [
     {

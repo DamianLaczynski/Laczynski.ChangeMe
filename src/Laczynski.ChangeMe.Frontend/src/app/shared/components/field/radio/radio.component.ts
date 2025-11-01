@@ -1,12 +1,12 @@
 import { Component, input, output } from '@angular/core';
 import { RadioLayout, Size } from '../../utils';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
+import { IconComponent } from '@shared/components/icon/icon.component';
 
 @Component({
   selector: 'app-radio',
-  imports: [CommonModule],
+  imports: [NgClass, IconComponent],
   templateUrl: './radio.component.html',
-  standalone: true,
 })
 export class RadioComponent {
   id = input.required<string | number>();
@@ -32,7 +32,6 @@ export class RadioComponent {
     const classes = ['radio'];
 
     classes.push(`radio--${this.layout()}`);
-    classes.push(this.isChecked ? 'radio--checked' : 'radio--unchecked');
     classes.push(`radio--${this.size()}`);
 
     if (this.disabled()) {

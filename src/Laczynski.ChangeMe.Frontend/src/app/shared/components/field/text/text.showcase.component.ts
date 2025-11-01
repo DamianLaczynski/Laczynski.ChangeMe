@@ -5,7 +5,7 @@ import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-text-showcase',
-  standalone: true,
+
   imports: [TextComponent, FormsModule, JsonPipe],
   template: `
     <div class="showcase showcase--responsive">

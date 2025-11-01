@@ -3,7 +3,7 @@ import { DividerComponent } from './divider.component';
 
 @Component({
   selector: 'app-divider-showcase',
-  standalone: true,
+
   imports: [DividerComponent],
   template: `
     <div class="showcase showcase--responsive">

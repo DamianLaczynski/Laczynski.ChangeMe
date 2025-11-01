@@ -21,22 +21,18 @@ import { State, StateService } from '@shared/state';
 import { ItemsService } from '../../services/items.service';
 import { Item, ItemSearchParameters } from '../../models/item.model';
 import { ButtonComponent } from '@shared/components/button/button.component';
-import { ModalComponent } from '@shared/components/modal/modal.component';
 import { ItemFormComponent } from '../item-form/item-form.component';
-import { SearchComponent } from '@shared/components/field/search/search.component';
 
 @Component({
   selector: 'app-items-list',
-  standalone: true,
+
   imports: [
     CommonModule,
     FormsModule,
     RouterModule,
     PaginatedTableComponent,
     ButtonComponent,
-    ModalComponent,
     ItemFormComponent,
-    SearchComponent,
   ],
   templateUrl: './items-list.component.html',
 })

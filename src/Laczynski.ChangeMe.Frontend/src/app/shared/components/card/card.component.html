@@ -12,7 +12,7 @@
         <!-- Header Icon -->
         @if (headerIcon()) {
           <div class="card__header-icon">
-            <ng-container *ngTemplateOutlet="headerIcon()!"></ng-container>
+            <app-icon [icon]="headerIcon()" [size]="'large'" />
           </div>
         }
 
@@ -73,16 +73,7 @@
             (click)="onPrimaryAction($event)"
           >
             @if (primaryAction()!.icon) {
-              <svg slot="icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                <circle
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  fill="none"
-                />
-              </svg>
+              <app-icon [icon]="primaryAction()!.icon" [size]="primaryAction()!.size" />
             }
             {{ primaryAction()!.label }}
           </app-button>
@@ -96,16 +87,7 @@
             (click)="onSecondaryAction($event)"
           >
             @if (secondaryAction()!.icon) {
-              <svg slot="icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                <circle
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  fill="none"
-                />
-              </svg>
+              <app-icon [icon]="secondaryAction()!.icon" [size]="secondaryAction()!.size" />
             }
             {{ secondaryAction()!.label }}
           </app-button>

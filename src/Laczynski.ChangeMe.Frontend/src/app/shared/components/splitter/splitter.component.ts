@@ -17,7 +17,6 @@ import { SplitterOrientation } from '../utils';
 
 @Directive({
   selector: '[appSplitterPanel]',
-  standalone: true,
 })
 export class SplitterPanelDirective {
   @Input('appSplitterPanel') id!: string;
@@ -42,7 +41,7 @@ export interface SplitterResizeEvent {
 
 @Component({
   selector: 'app-splitter',
-  standalone: true,
+
   imports: [CommonModule],
   templateUrl: './splitter.component.html',
 })

@@ -1,6 +1,6 @@
 import { Component, input, output } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { Size } from '../utils';
+import { IconComponent } from '../icon/icon.component';
 
 export interface BreadcrumbItem {
   id: string | number;
@@ -13,8 +13,8 @@ export interface BreadcrumbItem {
 
 @Component({
   selector: 'app-breadcrumb',
-  standalone: true,
-  imports: [CommonModule],
+
+  imports: [IconComponent],
   templateUrl: './breadcrumb.component.html',
 })
 export class BreadcrumbComponent {

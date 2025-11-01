@@ -34,7 +34,7 @@ export type FieldType =
 @Component({
   selector: 'app-field',
   templateUrl: './field.component.html',
-  standalone: true,
+
   imports: [CommonModule],
 })
 export class FieldComponent implements ControlValueAccessor, OnInit, OnDestroy {

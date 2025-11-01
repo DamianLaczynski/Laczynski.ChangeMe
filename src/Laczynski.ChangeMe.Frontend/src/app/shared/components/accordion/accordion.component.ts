@@ -1,14 +1,14 @@
 import { Component, input, output, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { Size } from '../utils';
+import { IconComponent } from '../icon/icon.component';
 
 export type ChevronPosition = 'before' | 'after';
 
 @Component({
   selector: 'app-accordion',
   templateUrl: './accordion.component.html',
-  standalone: true,
-  imports: [CommonModule],
+
+  imports: [IconComponent],
 })
 export class AccordionComponent {
   title = input.required<string>();
@@ -16,7 +16,7 @@ export class AccordionComponent {
   chevronPosition = input<ChevronPosition>('before');
   disabled = input<boolean>(false);
   expanded = signal<boolean>(false);
-  showIcon = input<boolean>(false);
+  icon = input<string>('');
 
   toggle = output<boolean>();
 

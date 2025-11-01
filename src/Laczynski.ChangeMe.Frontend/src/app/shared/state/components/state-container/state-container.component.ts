@@ -4,7 +4,7 @@ import { State } from '../../models/state.model';
 
 @Component({
   selector: 'app-state-container',
-  standalone: true,
+
   imports: [CommonModule],
   templateUrl: './state-container.component.html',
 })

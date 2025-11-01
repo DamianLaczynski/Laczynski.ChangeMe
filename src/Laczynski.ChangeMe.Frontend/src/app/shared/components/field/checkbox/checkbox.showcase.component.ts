@@ -6,7 +6,7 @@ import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-checkbox-showcase',
-  standalone: true,
+
   imports: [CheckboxComponent, CommonModule, FormsModule, JsonPipe],
   template: `
     <div class="showcase showcase--responsive">

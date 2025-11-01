@@ -14,7 +14,7 @@ import { InfinityListConfig } from './models/infinity-list-config.model';
 
 @Component({
   selector: 'app-infinity-list',
-  standalone: true,
+
   imports: [CommonModule],
   templateUrl: './infinity-list.component.html',
   styles: [

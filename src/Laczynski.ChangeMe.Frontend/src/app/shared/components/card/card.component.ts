@@ -2,12 +2,13 @@ import { Component, input, output, model, contentChild, TemplateRef } from '@ang
 import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../button/button.component';
 import { CardStyle, QuickAction } from '../utils';
+import { IconComponent } from '../icon/icon.component';
 
 @Component({
   selector: 'app-card',
   templateUrl: './card.component.html',
-  standalone: true,
-  imports: [CommonModule, ButtonComponent],
+
+  imports: [CommonModule, ButtonComponent, IconComponent],
 })
 export class CardComponent {
   // Inputs
@@ -21,7 +22,7 @@ export class CardComponent {
 
   // Header
   showHeader = input<boolean>(true);
-  headerIcon = input<TemplateRef<any> | null>(null);
+  headerIcon = input<string>('');
   showQuickAction = input<boolean>(false);
 
   // Footer

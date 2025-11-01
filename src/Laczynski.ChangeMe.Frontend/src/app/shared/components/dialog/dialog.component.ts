@@ -2,14 +2,15 @@ import { Component, input, output, model, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { QuickAction } from '../utils';
 import { ButtonComponent } from '../button/button.component';
+import { IconComponent } from '../icon/icon.component';
 
 export type DialogBackdrop = 'static' | 'dynamic';
 
 @Component({
   selector: 'app-dialog',
   templateUrl: './dialog.component.html',
-  standalone: true,
-  imports: [CommonModule, ButtonComponent],
+
+  imports: [CommonModule, ButtonComponent, IconComponent],
 })
 export class DialogComponent {
   title = input<string>('');

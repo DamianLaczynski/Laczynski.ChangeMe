@@ -29,6 +29,11 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/@fluentui/svg-icons/icons",
+                "output": "assets/icons"
               }
             ],
             "styles": [
@@ -97,6 +102,11 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+             {
+                "glob": "**/*",
+                "input": "node_modules/@fluentui/svg-icons/icons",
+                "output": "assets/icons"
               }
             ],
             "styles": [

@@ -1,25 +1,33 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ToastComponent } from './toast.component';
 import { ToastContainerComponent } from './toast-container.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ButtonComponent } from '@shared/components/button/button.component';
+import { ToastService } from './services/toast.service';
 
 @Component({
   selector: 'app-toast-showcase',
-  imports: [ToastComponent, ToastContainerComponent, CommonModule, FormsModule],
+  imports: [ToastComponent, ToastContainerComponent, CommonModule, FormsModule, ButtonComponent],
   template: `
     <div class="showcase showcase--responsive">
-      <h1 class="showcase__title">Toast Component Showcase</h1>
+      <h1 class="showcase__title">Toast Component</h1>
       <p class="showcase__description">
-        Comprehensive showcase of the Toast component built with Fluent 2 Design System. All
-        variants are responsive and accessible.
+        Toast notifications built with Fluent 2 Design System. Toasts provide brief messages about
+        app processes at the bottom or top of the screen. They're meant to be noticed without being
+        disruptive.
       </p>
 
       <!-- Toast Intents -->
       <div class="showcase__section">
         <h2 class="showcase__section__title">Toast Intents</h2>
+        <p class="showcase__section__description">
+          Toast components support different intent types to communicate the nature of the message:
+          info, success, warning, and error.
+        </p>
         <div class="showcase__grid">
           <div class="showcase__item">
+            <h3 class="showcase__item__title">Info</h3>
             <app-toast
               intent="info"
               title="Information Toast"
@@ -28,6 +36,7 @@ import { FormsModule } from '@angular/forms';
             ></app-toast>
           </div>
           <div class="showcase__item">
+            <h3 class="showcase__item__title">Success</h3>
             <app-toast
               intent="success"
               title="Success Toast"
@@ -36,6 +45,7 @@ import { FormsModule } from '@angular/forms';
             ></app-toast>
           </div>
           <div class="showcase__item">
+            <h3 class="showcase__item__title">Warning</h3>
             <app-toast
               intent="warning"
               title="Warning Toast"
@@ -44,6 +54,7 @@ import { FormsModule } from '@angular/forms';
             ></app-toast>
           </div>
           <div class="showcase__item">
+            <h3 class="showcase__item__title">Error</h3>
             <app-toast
               intent="danger"
               title="Error Toast"
@@ -57,8 +68,12 @@ import { FormsModule } from '@angular/forms';
       <!-- Toast Sizes -->
       <div class="showcase__section">
         <h2 class="showcase__section__title">Toast Sizes</h2>
+        <p class="showcase__section__description">
+          Toasts are available in three sizes: small, medium (default), and large.
+        </p>
         <div class="showcase__grid">
           <div class="showcase__item">
+            <h3 class="showcase__item__title">Small</h3>
             <app-toast
               intent="info"
               title="Small Toast"
@@ -68,6 +83,7 @@ import { FormsModule } from '@angular/forms';
             ></app-toast>
           </div>
           <div class="showcase__item">
+            <h3 class="showcase__item__title">Medium (Default)</h3>
             <app-toast
               intent="success"
               title="Medium Toast"
@@ -77,6 +93,7 @@ import { FormsModule } from '@angular/forms';
             ></app-toast>
           </div>
           <div class="showcase__item">
+            <h3 class="showcase__item__title">Large</h3>
             <app-toast
               intent="warning"
               title="Large Toast"
@@ -91,8 +108,12 @@ import { FormsModule } from '@angular/forms';
       <!-- Toast Variants -->
       <div class="showcase__section">
         <h2 class="showcase__section__title">Toast Variants</h2>
+        <p class="showcase__section__description">
+          Toast components support three visual variants: solid (default), outline, and ghost.
+        </p>
         <div class="showcase__grid">
           <div class="showcase__item">
+            <h3 class="showcase__item__title">Solid (Default)</h3>
             <app-toast
               intent="info"
               title="Solid Variant"
@@ -102,6 +123,7 @@ import { FormsModule } from '@angular/forms';
             ></app-toast>
           </div>
           <div class="showcase__item">
+            <h3 class="showcase__item__title">Outline</h3>
             <app-toast
               intent="success"
               title="Outline Variant"
@@ -111,6 +133,7 @@ import { FormsModule } from '@angular/forms';
             ></app-toast>
           </div>
           <div class="showcase__item">
+            <h3 class="showcase__item__title">Ghost</h3>
             <app-toast
               intent="warning"
               title="Ghost Variant"
@@ -124,47 +147,100 @@ import { FormsModule } from '@angular/forms';
 
       <!-- Interactive Examples -->
       <div class="showcase__section">
-        <h2 class="showcase__section__title">Interactive Examples</h2>
-        <div class="showcase__grid">
-          <div class="showcase__item">
-            <form class="showcase__form">
-              <button type="button" (click)="showToast('info')" class="btn btn--primary">
-                Show Info Toast
-              </button>
-              <button type="button" (click)="showToast('success')" class="btn btn--success">
-                Show Success Toast
-              </button>
-              <button type="button" (click)="showToast('warning')" class="btn btn--warning">
-                Show Warning Toast
-              </button>
-              <button type="button" (click)="showToast('danger')" class="btn btn--danger">
-                Show Error Toast
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-
-      <!-- Toast Container Example -->
-      <div class="showcase__section">
-        <h2 class="showcase__section__title">Toast Container</h2>
+        <h2 class="showcase__section__title">Interactive Toast Service</h2>
+        <p class="showcase__section__description">
+          Click the buttons below to trigger toast notifications using the ToastService. Toasts will
+          appear in the top-right corner.
+        </p>
         <div class="showcase__grid">
           <div class="showcase__item">
             <app-toast-container position="top-right"></app-toast-container>
             <div class="showcase__form">
-              <button type="button" (click)="addToast('info')" class="btn btn--primary">
-                Add Info Toast
-              </button>
-              <button type="button" (click)="addToast('success')" class="btn btn--success">
-                Add Success Toast
-              </button>
-              <button type="button" (click)="addToast('warning')" class="btn btn--warning">
-                Add Warning Toast
-              </button>
-              <button type="button" (click)="addToast('danger')" class="btn btn--danger">
-                Add Error Toast
-              </button>
+              <app-button
+                type="button"
+                (click)="showInfoToast()"
+                intent="primary"
+                label="Show Info Toast"
+              >
+                Show Info Toast</app-button
+              >
+              <app-button
+                type="button"
+                (click)="showSuccessToast()"
+                intent="success"
+                label="Show Success Toast"
+              >
+                Show Success Toast</app-button
+              >
+              <app-button
+                type="button"
+                (click)="showWarningToast()"
+                intent="warning"
+                label="Show Warning Toast"
+              >
+                Show Warning Toast</app-button
+              >
+              <app-button
+                type="button"
+                (click)="showErrorToast()"
+                intent="danger"
+                label="Show Error Toast"
+              >
+                Show Error Toast</app-button
+              >
             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Toast Options -->
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Toast Options</h2>
+        <p class="showcase__section__description">
+          Toasts support various options including dismissible, auto-dismiss duration, and progress
+          indicators.
+        </p>
+        <div class="showcase__grid showcase__grid--large">
+          <div class="showcase__item">
+            <h3 class="showcase__item__title">Dismissible</h3>
+            <app-toast
+              intent="info"
+              title="Dismissible Toast"
+              message="Click the X to dismiss"
+              [dismissible]="true"
+              [visible]="true"
+            ></app-toast>
+          </div>
+          <div class="showcase__item">
+            <h3 class="showcase__item__title">With Progress Bar</h3>
+            <app-toast
+              intent="success"
+              title="Auto Dismiss"
+              message="This toast will auto dismiss in 5s"
+              [duration]="5000"
+              [showProgress]="true"
+              [visible]="true"
+            ></app-toast>
+          </div>
+          <div class="showcase__item">
+            <h3 class="showcase__item__title">Without Icon</h3>
+            <app-toast
+              intent="warning"
+              title="No Icon"
+              message="This toast has no icon"
+              [showIcon]="false"
+              [visible]="true"
+            ></app-toast>
+          </div>
+          <div class="showcase__item">
+            <h3 class="showcase__item__title">Without Progress</h3>
+            <app-toast
+              intent="info"
+              title="No Progress"
+              message="This toast has no progress bar"
+              [showProgress]="false"
+              [visible]="true"
+            ></app-toast>
           </div>
         </div>
       </div>
@@ -172,6 +248,9 @@ import { FormsModule } from '@angular/forms';
       <!-- All Variants Combined -->
       <div class="showcase__section">
         <h2 class="showcase__section__title">All Variants Combined</h2>
+        <p class="showcase__section__description">
+          A comprehensive view of different toast combinations.
+        </p>
         <div class="showcase__grid showcase__grid--large">
           <div class="showcase__item">
             <app-toast
@@ -213,37 +292,30 @@ import { FormsModule } from '@angular/forms';
               [visible]="true"
             ></app-toast>
           </div>
-          <div class="showcase__item">
-            <app-toast
-              intent="info"
-              title="Dismissible Toast"
-              message="This toast can be dismissed"
-              [dismissible]="true"
-              [visible]="true"
-            ></app-toast>
-          </div>
-          <div class="showcase__item">
-            <app-toast
-              intent="success"
-              title="Auto Dismiss"
-              message="This toast will auto dismiss"
-              [duration]="3000"
-              [visible]="true"
-            ></app-toast>
-          </div>
         </div>
       </div>
     </div>
   `,
 })
 export class ToastShowcaseComponent {
-  showToast(intent: string) {
-    // This would typically use a toast service
-    console.log(`Showing ${intent} toast`);
+  private toastService = inject(ToastService);
+
+  showInfoToast() {
+    this.toastService.info(
+      'Information',
+      'This is an informational message that will auto-dismiss.',
+    );
   }
 
-  addToast(intent: string) {
-    // This would typically use a toast service
-    console.log(`Adding ${intent} toast`);
+  showSuccessToast() {
+    this.toastService.success('Success!', 'Your operation completed successfully.');
+  }
+
+  showWarningToast() {
+    this.toastService.warn('Warning', 'Please review your input before proceeding.');
+  }
+
+  showErrorToast() {
+    this.toastService.error('Error', 'Something went wrong. Please try again.');
   }
 }

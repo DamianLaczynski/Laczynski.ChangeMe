@@ -6,7 +6,7 @@ import { DropdownItem, DropdownGroup } from './dropdown.component';
 
 @Component({
   selector: 'app-dropdown-showcase',
-  standalone: true,
+
   imports: [DropdownComponent, FormsModule, JsonPipe],
   template: `
     <div class="showcase showcase--responsive">
@@ -457,4 +457,3 @@ export class DropdownShowcaseComponent {
     { value: 'ja', label: 'Japanese' },
   ];
 }
-

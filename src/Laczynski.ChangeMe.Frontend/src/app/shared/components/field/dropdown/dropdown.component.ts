@@ -9,13 +9,14 @@ import {
   ViewChild,
   HostListener,
   effect,
-  model,
 } from '@angular/core';
-import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FieldComponent } from '../field/field.component';
 import { TextComponent } from '../text/text.component';
 import { CheckboxComponent } from '../checkbox/checkbox.component';
+import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { IconComponent } from '@shared/components/icon/icon.component';
+import { ActionButtonComponent } from '../action-button.component';
 
 export interface DropdownItem {
   value: string | number;
@@ -35,8 +36,16 @@ export type DropdownMode = 'single' | 'multi';
 
 @Component({
   selector: 'app-dropdown',
-  standalone: true,
-  imports: [CommonModule, FieldComponent, TextComponent, CheckboxComponent, FormsModule],
+
+  imports: [
+    CommonModule,
+    FieldComponent,
+    TextComponent,
+    CheckboxComponent,
+    FormsModule,
+    IconComponent,
+    ActionButtonComponent,
+  ],
   templateUrl: './dropdown.component.html',
   host: {
     '[style.position]': '"relative"',

@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-accordion-showcase',
-  standalone: true,
+
   imports: [AccordionComponent, CommonModule],
   template: `
     <div class="showcase showcase--responsive">
@@ -62,13 +62,13 @@ import { CommonModule } from '@angular/common';
         <h2 class="showcase__section__title">With Icon</h2>
         <div class="showcase__grid">
           <div class="showcase__item">
-            <app-accordion title="Accordion with Icon" chevronPosition="before" [showIcon]="true">
+            <app-accordion title="Accordion with Icon" chevronPosition="before" icon="star">
               <p>This accordion has both an icon and a chevron on the left side.</p>
               <p>The icon is a placeholder circle that can be replaced with any icon.</p>
             </app-accordion>
           </div>
           <div class="showcase__item">
-            <app-accordion title="Accordion with Icon" chevronPosition="after" [showIcon]="true">
+            <app-accordion title="Accordion with Icon" chevronPosition="after" icon="star">
               <p>This accordion has an icon on the left and a chevron on the right.</p>
               <p>The icon is a placeholder circle that can be replaced with any icon.</p>
             </app-accordion>
@@ -180,7 +180,7 @@ import { CommonModule } from '@angular/common';
               title="Medium Before Icon"
               size="medium"
               chevronPosition="before"
-              [showIcon]="true"
+              icon="star"
             >
               <p>Medium size with chevron before and icon.</p>
             </app-accordion>
@@ -191,7 +191,7 @@ import { CommonModule } from '@angular/common';
               title="Medium After Icon"
               size="medium"
               chevronPosition="after"
-              [showIcon]="true"
+              icon="star"
             >
               <p>Medium size with chevron after and icon.</p>
             </app-accordion>

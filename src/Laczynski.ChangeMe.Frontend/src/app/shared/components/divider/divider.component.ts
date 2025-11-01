@@ -1,12 +1,9 @@
 import { Component, input } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { DividerOrientation, DividerAlignment } from '../utils';
 
 @Component({
   selector: 'app-divider',
   templateUrl: './divider.component.html',
-  standalone: true,
-  imports: [CommonModule],
 })
 export class DividerComponent {
   orientation = input<DividerOrientation>('horizontal');

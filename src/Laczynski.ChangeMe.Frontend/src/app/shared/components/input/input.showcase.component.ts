@@ -5,7 +5,7 @@ import { InputComponent } from './input.component';
 
 @Component({
   selector: 'app-input-showcase',
-  standalone: true,
+
   imports: [CommonModule, FormsModule, InputComponent],
   template: `
     <div class="showcase showcase--responsive">

@@ -10,7 +10,7 @@ import { CardComponent } from '../card/card.component';
 
 @Component({
   selector: 'app-splitter-showcase',
-  standalone: true,
+
   imports: [CommonModule, SplitterComponent, SplitterPanelDirective, CardComponent],
   template: `
     <div class="showcase showcase--responsive">

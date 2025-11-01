@@ -6,7 +6,7 @@ import { CardComponent } from '../card/card.component';
 
 @Component({
   selector: 'app-scroll-panel-showcase',
-  standalone: true,
+
   imports: [CommonModule, ScrollPanelComponent, ButtonComponent, CardComponent],
   template: `
     <div class="showcase">

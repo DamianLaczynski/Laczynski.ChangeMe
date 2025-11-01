@@ -4,7 +4,10 @@
 
 @use '../utils/variables' as *;
 
-// Toast container
+// ==========================================================================
+// Toast Container
+// ==========================================================================
+
 .toast-container {
   position: fixed;
   z-index: $z-index-tooltip;
@@ -47,7 +50,10 @@
   }
 }
 
-// Toast base styles
+// ==========================================================================
+// Toast Base
+// ==========================================================================
+
 .toast {
   position: relative;
   display: flex;
@@ -61,6 +67,8 @@
   border: 1px solid $color-neutral-stroke-rest;
   color: $color-neutral-foreground-rest;
   font-family: $font-family-base;
+  font-size: $font-size-300;
+  font-weight: $font-weight-regular;
   line-height: $line-height-300;
   transition: all $duration-normal $easing-ease-in-out;
   transform: translateX(0);
@@ -70,93 +78,116 @@
   z-index: $z-index-tooltip;
   pointer-events: auto;
 
-  // Icon styles
-  &__icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    width: $spacing-5;
-    height: $spacing-5;
-    margin-top: $spacing-05;
+  // Hover state
+  &:hover {
+    box-shadow: $elevation-16;
+    transform: translateY(-1px);
   }
 
-  &__icon-svg {
-    width: 100%;
-    height: 100%;
+  // Focus state
+  &:focus-visible {
+    outline: 2px solid $color-brand-primary;
+    outline-offset: 2px;
+  }
+}
+
+// ==========================================================================
+// Toast Elements
+// ==========================================================================
+
+// Icon
+.toast__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: $spacing-5;
+  height: $spacing-5;
+  margin-top: $spacing-05;
+}
+
+.toast__icon-svg {
+  width: 100%;
+  height: 100%;
+}
+
+// Content
+.toast__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.toast__title {
+  font-size: $font-size-300;
+  font-weight: $font-weight-semibold;
+  line-height: $line-height-300;
+  margin-bottom: $spacing-1;
+  color: inherit;
+}
+
+.toast__message {
+  font-size: $font-size-300;
+  font-weight: $font-weight-regular;
+  line-height: $line-height-300;
+  color: $color-neutral-foreground2-rest;
+}
+
+// Actions
+.toast__actions {
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-1;
+  flex-shrink: 0;
+}
+
+.toast__dismiss {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: $spacing-6;
+  height: $spacing-6;
+  border: none;
+  border-radius: $border-radius-200;
+  background: transparent;
+  color: $color-neutral-foreground2-rest;
+  cursor: pointer;
+  transition: all $duration-ultra-fast $easing-ease-in-out;
+
+  &:hover {
+    color: $color-neutral-foreground-rest;
+    background-color: $color-neutral-background-hover;
   }
 
-  // Content area
-  &__content {
-    flex: 1;
-    min-width: 0;
+  &:focus-visible {
+    outline: 2px solid $color-brand-primary;
+    outline-offset: 2px;
   }
+}
 
-  &__title {
-    font-size: $font-size-300;
-    font-weight: $font-weight-semibold;
-    margin-bottom: $spacing-1;
-    color: inherit;
-    line-height: $line-height-300;
-  }
+.toast__dismiss-icon {
+  width: $spacing-4;
+  height: $spacing-4;
+}
 
-  &__message {
-    font-size: $font-size-300;
-    color: $color-neutral-foreground2-rest;
-    line-height: $line-height-300;
-  }
+// Progress bar
+.toast__progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: $spacing-1;
+  width: 100%;
+  background-color: currentColor;
+  border-radius: 0 0 $border-radius-400 $border-radius-400;
+  animation: toast-progress-single linear;
+  transform-origin: left center;
+}
 
-  // Actions area
-  &__actions {
-    display: flex;
-    align-items: flex-start;
-    gap: $spacing-1;
-    flex-shrink: 0;
-  }
+// ==========================================================================
+// Toast Size Variants
+// ==========================================================================
 
-  &__dismiss {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: $spacing-6;
-    height: $spacing-6;
-    border: none;
-    border-radius: $border-radius-200;
-    background: transparent;
-    color: $color-neutral-foreground2-rest;
-    cursor: pointer;
-    transition: all $duration-ultra-fast $easing-ease-in-out;
-
-    &:hover {
-      color: $color-neutral-foreground-rest;
-      background-color: $color-neutral-background-hover;
-    }
-
-    &:focus-visible {
-      outline: 2px solid $color-brand-primary;
-      outline-offset: 2px;
-    }
-  }
-
-  &__dismiss-icon {
-    width: $spacing-4;
-    height: $spacing-4;
-  }
-
-  // Progress bar
-  &__progress {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 3px;
-    width: 100%;
-    background-color: currentColor;
-    border-radius: 0 0 $border-radius-400 $border-radius-400;
-    animation: toast-progress-single linear;
-    transform-origin: center;
-  }
-
-  // Size variants
+.toast {
+  // Small size
   &--small {
     padding: $spacing-3 $spacing-4;
     min-width: 250px;
@@ -178,12 +209,14 @@
     }
   }
 
+  // Medium size (default)
   &--medium {
     padding: $spacing-4;
     min-width: 300px;
     max-width: 400px;
   }
 
+  // Large size
   &--large {
     padding: $spacing-5;
     min-width: 350px;
@@ -204,10 +237,16 @@
       line-height: $line-height-400;
     }
   }
+}
 
-  // Intent variants (matching utils.ts)
+// ==========================================================================
+// Toast Intent Variants
+// ==========================================================================
+
+.toast {
+  // Info state
   &--info {
-    border-left: 4px solid $color-shared-blue-foreground;
+    border-left: $spacing-1 solid $color-shared-blue-foreground;
     background-color: $color-shared-blue-background;
 
     .toast__icon {
@@ -219,8 +258,9 @@
     }
   }
 
+  // Success state
   &--success {
-    border-left: 4px solid $color-shared-green-foreground;
+    border-left: $spacing-1 solid $color-shared-green-foreground;
     background-color: $color-shared-green-background;
 
     .toast__icon {
@@ -232,8 +272,9 @@
     }
   }
 
+  // Warning state
   &--warning {
-    border-left: 4px solid $color-shared-yellow-foreground;
+    border-left: $spacing-1 solid $color-shared-yellow-foreground;
     background-color: $color-shared-yellow-background;
 
     .toast__icon {
@@ -245,8 +286,9 @@
     }
   }
 
+  // Error state
   &--error {
-    border-left: 4px solid $color-shared-red-foreground;
+    border-left: $spacing-1 solid $color-shared-red-foreground;
     background-color: $color-shared-red-background;
 
     .toast__icon {
@@ -260,7 +302,7 @@
 
   // Legacy support for 'danger' (maps to error)
   &--danger {
-    border-left: 4px solid $color-shared-red-foreground;
+    border-left: $spacing-1 solid $color-shared-red-foreground;
     background-color: $color-shared-red-background;
 
     .toast__icon {
@@ -271,39 +313,67 @@
       background-color: $color-shared-red-foreground;
     }
   }
+}
 
-  // Variant styles
+// ==========================================================================
+// Toast Style Variants
+// ==========================================================================
+
+.toast {
+  // Outline variant
   &--outline {
     background-color: $color-neutral-background-rest;
     border-width: 2px;
     border-style: solid;
+    border-left-width: 2px;
 
     &.toast--info {
       border-color: $color-shared-blue-foreground;
       color: $color-shared-blue-foreground;
+
+      .toast__title {
+        color: $color-shared-blue-foreground;
+      }
     }
 
     &.toast--success {
       border-color: $color-shared-green-foreground;
       color: $color-shared-green-foreground;
+
+      .toast__title {
+        color: $color-shared-green-foreground;
+      }
     }
 
     &.toast--warning {
       border-color: $color-shared-yellow-foreground;
       color: $color-shared-yellow-foreground;
+
+      .toast__title {
+        color: $color-shared-yellow-foreground;
+      }
     }
 
     &.toast--error {
       border-color: $color-shared-red-foreground;
       color: $color-shared-red-foreground;
+
+      .toast__title {
+        color: $color-shared-red-foreground;
+      }
     }
 
     &.toast--danger {
       border-color: $color-shared-red-foreground;
       color: $color-shared-red-foreground;
+
+      .toast__title {
+        color: $color-shared-red-foreground;
+      }
     }
   }
 
+  // Ghost variant
   &--ghost {
     background-color: transparent;
     border: none;
@@ -311,62 +381,80 @@
 
     &.toast--info {
       color: $color-shared-blue-foreground;
+
+      .toast__title {
+        color: $color-shared-blue-foreground;
+      }
     }
 
     &.toast--success {
       color: $color-shared-green-foreground;
+
+      .toast__title {
+        color: $color-shared-green-foreground;
+      }
     }
 
     &.toast--warning {
       color: $color-shared-yellow-foreground;
+
+      .toast__title {
+        color: $color-shared-yellow-foreground;
+      }
     }
 
     &.toast--error {
       color: $color-shared-red-foreground;
+
+      .toast__title {
+        color: $color-shared-red-foreground;
+      }
     }
 
     &.toast--danger {
       color: $color-shared-red-foreground;
+
+      .toast__title {
+        color: $color-shared-red-foreground;
+      }
     }
   }
+}
 
-  // Animation states
+// ==========================================================================
+// Toast Animation States
+// ==========================================================================
+
+.toast {
+  // Hidden state
   &--hidden {
     opacity: 0;
     pointer-events: none;
     transform: translateX(100%);
   }
 
+  // Slide in animations
   &--slide-in-left {
-    animation: toast-slide-in-left $duration-normal $easing-ease-in-out;
+    animation: toast-slide-in-left $duration-normal $easing-decelerate-mid;
   }
 
   &--slide-in-right {
-    animation: toast-slide-in-right $duration-normal $easing-ease-in-out;
+    animation: toast-slide-in-right $duration-normal $easing-decelerate-mid;
   }
 
   &--slide-in-top {
-    animation: toast-slide-in-top $duration-normal $easing-ease-in-out;
+    animation: toast-slide-in-top $duration-normal $easing-decelerate-mid;
   }
 
   &--slide-in-bottom {
-    animation: toast-slide-in-bottom $duration-normal $easing-ease-in-out;
-  }
-
-  // Hover effects
-  &:hover {
-    box-shadow: $elevation-16;
-    transform: translateY(-1px);
-  }
-
-  // Focus styles
-  &:focus-visible {
-    outline: 2px solid $color-brand-primary;
-    outline-offset: 2px;
+    animation: toast-slide-in-bottom $duration-normal $easing-decelerate-mid;
   }
 }
 
-// Animations
+// ==========================================================================
+// Toast Animations
+// ==========================================================================
+
 @keyframes toast-slide-in-left {
   from {
     transform: translateX(-100%);
@@ -420,7 +508,10 @@
   }
 }
 
-// Responsive adjustments
+// ==========================================================================
+// Responsive Adjustments
+// ==========================================================================
+
 @media (max-width: $breakpoint-small) {
   .toast {
     min-width: 280px;

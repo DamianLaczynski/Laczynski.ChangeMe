@@ -7,7 +7,6 @@
   align-items: center;
   justify-content: center;
   border-radius: 4px;
-  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
   font-weight: 600;
   overflow: hidden;
   box-sizing: border-box;
@@ -127,40 +126,40 @@
   // ========================================================================
 
   &--brand.badge--filled {
-    background: var(--Brand-Background-1-Rest, #0F6CBD);
-    outline: 1px var(--Brand-Stroke-1-Rest, #0F6CBD) solid;
+    background: var(--Brand-Background-1-Rest, #0f6cbd);
+    outline: 1px var(--Brand-Stroke-1-Rest, #0f6cbd) solid;
     outline-offset: -1px;
 
     .badge__text {
       color: var(--Neutral-Foreground-On-Brand-Rest, white);
     }
 
-    .badge__icon-svg path {
-      fill: var(--Neutral-Foreground-On-Brand-Rest, white);
+    .badge__icon {
+      color: var(--Neutral-Foreground-On-Brand-Rest, white);
     }
   }
 
   &--danger.badge--filled {
-    background: var(--Status-Danger-Background-3-Rest, #C50F1F);
+    background: var(--Status-Danger-Background-3-Rest, #c50f1f);
 
     .badge__text {
       color: var(--Neutral-Foreground-On-Brand-Rest, white);
     }
 
-    .badge__icon-svg path {
-      fill: var(--Neutral-Foreground-On-Brand-Rest, white);
+    .badge__icon {
+      color: var(--Neutral-Foreground-On-Brand-Rest, white);
     }
   }
 
   &--success.badge--filled {
-    background: var(--Status-Success-Background-3-Rest, #107C10);
+    background: var(--Status-Success-Background-3-Rest, #107c10);
 
     .badge__text {
       color: var(--Neutral-Foreground-On-Brand-Rest, white);
     }
 
-    .badge__icon-svg path {
-      fill: var(--Neutral-Foreground-On-Brand-Rest, white);
+    .badge__icon {
+      color: var(--Neutral-Foreground-On-Brand-Rest, white);
     }
   }
 
@@ -171,44 +170,44 @@
       color: var(--Neutral-Background-1-Rest, white);
     }
 
-    .badge__icon-svg path {
-      fill: var(--Neutral-Background-1-Rest, white);
+    .badge__icon {
+      color: var(--Neutral-Background-1-Rest, white);
     }
   }
 
   &--informative.badge--filled {
-    background: var(--Neutral-Background-5-Rest, #EBEBEB);
+    background: var(--Neutral-Background-5-Rest, #ebebeb);
 
     .badge__text {
       color: var(--Neutral-Foreground-3-Rest, #616161);
     }
 
-    .badge__icon-svg path {
-      fill: var(--Neutral-Foreground-3-Rest, #616161);
+    .badge__icon {
+      color: var(--Neutral-Foreground-3-Rest, #616161);
     }
   }
 
   &--subtle.badge--filled {
-    background: var(--Neutral-Background-5-Rest, #EBEBEB);
+    background: var(--Neutral-Background-5-Rest, #ebebeb);
 
     .badge__text {
       color: var(--Neutral-Foreground-1-Rest, #242424);
     }
 
-    .badge__icon-svg path {
-      fill: var(--Neutral-Foreground-1-Rest, #242424);
+    .badge__icon {
+      color: var(--Neutral-Foreground-1-Rest, #242424);
     }
   }
 
   &--warning.badge--filled {
-    background: var(--Status-Warning-Background-3-Rest, #F7630C);
+    background: var(--Status-Warning-Background-3-Rest, #f7630c);
 
     .badge__text {
       color: var(--Neutral-Foreground-Static-Rest, #242424);
     }
 
-    .badge__icon-svg path {
-      fill: var(--Neutral-Foreground-Static-Rest, #242424);
+    .badge__icon {
+      color: var(--Neutral-Foreground-Static-Rest, #242424);
     }
   }
 
@@ -217,44 +216,44 @@
   // ========================================================================
 
   &--brand.badge--tint {
-    background: var(--Brand-Background-2-Rest, #EBF3FC);
-    outline: 1px var(--Brand-Stroke-2-Rest, #B4D6FA) solid;
+    background: var(--Brand-Background-2-Rest, #ebf3fc);
+    outline: 1px var(--Brand-Stroke-2-Rest, #b4d6fa) solid;
     outline-offset: -1px;
 
     .badge__text {
-      color: var(--Brand-Foreground-2-Rest, #115EA3);
+      color: var(--Brand-Foreground-2-Rest, #115ea3);
     }
 
-    .badge__icon-svg path {
-      fill: var(--Brand-Foreground-2-Rest, #115EA3);
+    .badge__icon {
+      color: var(--Brand-Foreground-2-Rest, #115ea3);
     }
   }
 
   &--danger.badge--tint {
-    background: var(--Status-Danger-Background-1-Rest, #FDF3F4);
-    outline: 1px var(--Status-Danger-Stroke-1-Rest, #EEACB2) solid;
+    background: var(--Status-Danger-Background-1-Rest, #fdf3f4);
+    outline: 1px var(--Status-Danger-Stroke-1-Rest, #eeacb2) solid;
     outline-offset: -1px;
 
     .badge__text {
-      color: var(--Status-Danger-Foreground-1-Rest, #B10E1C);
+      color: var(--Status-Danger-Foreground-1-Rest, #b10e1c);
     }
 
-    .badge__icon-svg path {
-      fill: var(--Status-Danger-Foreground-1-Rest, #B10E1C);
+    .badge__icon {
+      color: var(--Status-Danger-Foreground-1-Rest, #b10e1c);
     }
   }
 
   &--success.badge--tint {
-    background: var(--Status-Success-Background-1-Rest, #F1FAF1);
-    outline: 1px var(--Status-Success-Stroke-1-Rest, #9FD89F) solid;
+    background: var(--Status-Success-Background-1-Rest, #f1faf1);
+    outline: 1px var(--Status-Success-Stroke-1-Rest, #9fd89f) solid;
     outline-offset: -1px;
 
     .badge__text {
-      color: var(--Status-Success-Foreground-1-Rest, #0E700E);
+      color: var(--Status-Success-Foreground-1-Rest, #0e700e);
     }
 
-    .badge__icon-svg path {
-      fill: var(--Status-Success-Foreground-1-Rest, #0E700E);
+    .badge__icon {
+      color: var(--Status-Success-Foreground-1-Rest, #0e700e);
     }
   }
 
@@ -267,50 +266,50 @@
       color: var(--Neutral-Background-1-Rest, white);
     }
 
-    .badge__icon-svg path {
-      fill: var(--Neutral-Background-1-Rest, white);
+    .badge__icon {
+      color: var(--Neutral-Background-1-Rest, white);
     }
   }
 
   &--informative.badge--tint {
-    background: var(--Neutral-Background-4-Rest, #F0F0F0);
-    outline: 1px var(--Neutral-Stroke-2-Rest, #E0E0E0) solid;
+    background: var(--Neutral-Background-4-Rest, #f0f0f0);
+    outline: 1px var(--Neutral-Stroke-2-Rest, #e0e0e0) solid;
     outline-offset: -1px;
 
     .badge__text {
       color: var(--Neutral-Foreground-3-Rest, #616161);
     }
 
-    .badge__icon-svg path {
-      fill: var(--Neutral-Foreground-3-Rest, #616161);
+    .badge__icon {
+      color: var(--Neutral-Foreground-3-Rest, #616161);
     }
   }
 
   &--subtle.badge--tint {
     background: var(--Neutral-Background-1-Rest, white);
-    outline: 1px var(--Neutral-Stroke-2-Rest, #E0E0E0) solid;
+    outline: 1px var(--Neutral-Stroke-2-Rest, #e0e0e0) solid;
     outline-offset: -1px;
 
     .badge__text {
       color: var(--Neutral-Foreground-3-Rest, #616161);
     }
 
-    .badge__icon-svg path {
-      fill: var(--Neutral-Foreground-3-Rest, #616161);
+    .badge__icon {
+      color: var(--Neutral-Foreground-3-Rest, #616161);
     }
   }
 
   &--warning.badge--tint {
-    background: var(--Status-Warning-Background-1-Rest, #FFF9F5);
-    outline: 1px var(--Status-Warning-Stroke-1-Rest, #FDCFB4) solid;
+    background: var(--Status-Warning-Background-1-Rest, #fff9f5);
+    outline: 1px var(--Status-Warning-Stroke-1-Rest, #fdcfb4) solid;
     outline-offset: -1px;
 
     .badge__text {
-      color: var(--Status-Warning-Foreground-2-Rest, #8A3707);
+      color: var(--Status-Warning-Foreground-2-Rest, #8a3707);
     }
 
-    .badge__icon-svg path {
-      fill: var(--Status-Warning-Foreground-2-Rest, #8A3707);
+    .badge__icon {
+      color: var(--Status-Warning-Foreground-2-Rest, #8a3707);
     }
   }
 
@@ -320,43 +319,43 @@
 
   &--brand.badge--outline {
     background: transparent;
-    outline: 1px var(--Brand-Stroke-1-Rest, #0F6CBD) solid;
+    outline: 1px var(--Brand-Stroke-1-Rest, #0f6cbd) solid;
     outline-offset: -1px;
 
     .badge__text {
-      color: var(--Brand-Foreground-1-Rest, #0F6CBD);
+      color: var(--Brand-Foreground-1-Rest, #0f6cbd);
     }
 
-    .badge__icon-svg path {
-      fill: var(--Brand-Foreground-1-Rest, #0F6CBD);
+    .badge__icon {
+      color: var(--Brand-Foreground-1-Rest, #0f6cbd);
     }
   }
 
   &--danger.badge--outline {
     background: transparent;
-    outline: 1px var(--Status-Danger-Stroke-2-Rest, #C50F1F) solid;
+    outline: 1px var(--Status-Danger-Stroke-2-Rest, #c50f1f) solid;
     outline-offset: -1px;
 
     .badge__text {
-      color: var(--Status-Danger-Foreground-3-Rest, #C50F1F);
+      color: var(--Status-Danger-Foreground-3-Rest, #c50f1f);
     }
 
-    .badge__icon-svg path {
-      fill: var(--Status-Danger-Foreground-3-Rest, #C50F1F);
+    .badge__icon {
+      color: var(--Status-Danger-Foreground-3-Rest, #c50f1f);
     }
   }
 
   &--success.badge--outline {
     background: transparent;
-    outline: 1px var(--Status-Success-Stroke-2-Rest, #107C10) solid;
+    outline: 1px var(--Status-Success-Stroke-2-Rest, #107c10) solid;
     outline-offset: -1px;
 
     .badge__text {
-      color: var(--Status-Success-Foreground-3-Rest, #107C10);
+      color: var(--Status-Success-Foreground-3-Rest, #107c10);
     }
 
-    .badge__icon-svg path {
-      fill: var(--Status-Success-Foreground-3-Rest, #107C10);
+    .badge__icon {
+      color: var(--Status-Success-Foreground-3-Rest, #107c10);
     }
   }
 
@@ -369,22 +368,22 @@
       color: var(--Neutral-Foreground-3-Rest, #616161);
     }
 
-    .badge__icon-svg path {
-      fill: var(--Neutral-Foreground-3-Rest, #616161);
+    .badge__icon {
+      color: var(--Neutral-Foreground-3-Rest, #616161);
     }
   }
 
   &--informative.badge--outline {
     background: transparent;
-    outline: 1px var(--Neutral-Stroke-2-Rest, #E0E0E0) solid;
+    outline: 1px var(--Neutral-Stroke-2-Rest, #e0e0e0) solid;
     outline-offset: -1px;
 
     .badge__text {
       color: var(--Neutral-Foreground-3-Rest, #616161);
     }
 
-    .badge__icon-svg path {
-      fill: var(--Neutral-Foreground-3-Rest, #616161);
+    .badge__icon {
+      color: var(--Neutral-Foreground-3-Rest, #616161);
     }
   }
 
@@ -397,22 +396,22 @@
       color: var(--Neutral-Foreground-On-Brand-Rest, white);
     }
 
-    .badge__icon-svg path {
-      fill: var(--Neutral-Foreground-On-Brand-Rest, white);
+    .badge__icon {
+      color: var(--Neutral-Foreground-On-Brand-Rest, white);
     }
   }
 
   &--warning.badge--outline {
     background: transparent;
-    outline: 1px var(--Status-Warning-Foreground-2-Rest, #8A3707) solid;
+    outline: 1px var(--Status-Warning-Foreground-2-Rest, #8a3707) solid;
     outline-offset: -1px;
 
     .badge__text {
-      color: var(--Status-Warning-Foreground-2-Rest, #8A3707);
+      color: var(--Status-Warning-Foreground-2-Rest, #8a3707);
     }
 
-    .badge__icon-svg path {
-      fill: var(--Status-Warning-Foreground-2-Rest, #8A3707);
+    .badge__icon {
+      color: var(--Status-Warning-Foreground-2-Rest, #8a3707);
     }
   }
 
@@ -424,11 +423,11 @@
     background: transparent;
 
     .badge__text {
-      color: var(--Brand-Foreground-1-Rest, #0F6CBD);
+      color: var(--Brand-Foreground-1-Rest, #0f6cbd);
     }
 
-    .badge__icon-svg path {
-      fill: var(--Brand-Foreground-1-Rest, #0F6CBD);
+    .badge__icon {
+      color: var(--Brand-Foreground-1-Rest, #0f6cbd);
     }
   }
 
@@ -436,11 +435,11 @@
     background: transparent;
 
     .badge__text {
-      color: var(--Status-Danger-Foreground-3-Rest, #C50F1F);
+      color: var(--Status-Danger-Foreground-3-Rest, #c50f1f);
     }
 
-    .badge__icon-svg path {
-      fill: var(--Status-Danger-Foreground-3-Rest, #C50F1F);
+    .badge__icon {
+      color: var(--Status-Danger-Foreground-3-Rest, #c50f1f);
     }
   }
 
@@ -448,11 +447,11 @@
     background: transparent;
 
     .badge__text {
-      color: var(--Status-Success-Foreground-3-Rest, #107C10);
+      color: var(--Status-Success-Foreground-3-Rest, #107c10);
     }
 
-    .badge__icon-svg path {
-      fill: var(--Status-Success-Foreground-3-Rest, #107C10);
+    .badge__icon {
+      color: var(--Status-Success-Foreground-3-Rest, #107c10);
     }
   }
 
@@ -463,8 +462,8 @@
       color: var(--Neutral-Foreground-3-Rest, #616161);
     }
 
-    .badge__icon-svg path {
-      fill: var(--Neutral-Foreground-3-Rest, #616161);
+    .badge__icon {
+      color: var(--Neutral-Foreground-3-Rest, #616161);
     }
   }
 
@@ -475,8 +474,8 @@
       color: var(--Neutral-Foreground-3-Rest, #616161);
     }
 
-    .badge__icon-svg path {
-      fill: var(--Neutral-Foreground-3-Rest, #616161);
+    .badge__icon {
+      color: var(--Neutral-Foreground-3-Rest, #616161);
     }
   }
 
@@ -487,8 +486,8 @@
       color: var(--Neutral-Foreground-On-Brand-Rest, white);
     }
 
-    .badge__icon-svg path {
-      fill: var(--Neutral-Foreground-On-Brand-Rest, white);
+    .badge__icon {
+      color: var(--Neutral-Foreground-On-Brand-Rest, white);
     }
   }
 
@@ -496,13 +495,11 @@
     background: transparent;
 
     .badge__text {
-      color: var(--Status-Warning-Foreground-2-Rest, #8A3707);
+      color: var(--Status-Warning-Foreground-2-Rest, #8a3707);
     }
 
-    .badge__icon-svg path {
-      fill: var(--Status-Warning-Foreground-2-Rest, #8A3707);
+    .badge__icon {
+      color: var(--Status-Warning-Foreground-2-Rest, #8a3707);
     }
   }
 }
-
-

@@ -1,12 +1,14 @@
 import { Component, input, output, model } from '@angular/core';
 import { ButtonStyle, Size } from '../utils';
+import { IconComponent } from '../icon/icon.component';
 
 export type ButtonType = 'button' | 'submit' | 'reset';
 
 @Component({
   selector: 'app-button',
   templateUrl: './button.component.html',
-  standalone: true,
+
+  imports: [IconComponent],
 })
 export class ButtonComponent {
   variant = input<ButtonStyle, ButtonStyle | undefined>('secondary', {
@@ -16,6 +18,9 @@ export class ButtonComponent {
     transform: (value: Size | undefined) => value ?? 'medium',
   });
   iconOnly = input<boolean>(false);
+  icon = input<string, string | undefined>('', {
+    transform: (value: string | undefined) => value ?? '',
+  });
   selected = input<boolean>(false);
 
   type = input<ButtonType>('button');

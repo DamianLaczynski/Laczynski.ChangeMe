@@ -1,11 +1,12 @@
 import { Component, input, forwardRef, computed } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { FieldComponent } from '../field/field.component';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
+import { ActionButtonComponent } from '../action-button.component';
 
 @Component({
   selector: 'app-number',
-  imports: [FieldComponent, CommonModule],
+  imports: [FieldComponent, ActionButtonComponent, NgClass],
   templateUrl: './number.component.html',
   providers: [
     {
@@ -20,12 +21,6 @@ export class NumberComponent extends FieldComponent {
   min = input<number | undefined>(undefined);
   max = input<number | undefined>(undefined);
 
-  // Determine if stepper style is "darker" (for filled/filled-gray variants)
-  stepperStyle = computed(() => {
-    const variant = this.variant();
-    return variant === 'filled' || variant === 'filled-gray' ? 'darker' : 'default';
-  });
-
   increment(): void {
     if (this.disabled() || this.readonly()) {
       return;
@@ -35,7 +30,6 @@ export class NumberComponent extends FieldComponent {
     const stepValue = this.parseNumber(this.step());
     const newValue = currentValue + stepValue;
 
-    // Check max constraint
     if (this.max() !== undefined && newValue > this.max()!) {
       return;
     }
@@ -52,7 +46,6 @@ export class NumberComponent extends FieldComponent {
     const stepValue = this.parseNumber(this.step());
     const newValue = currentValue - stepValue;
 
-    // Check min constraint
     if (this.min() !== undefined && newValue < this.min()!) {
       return;
     }
@@ -78,16 +71,13 @@ export class NumberComponent extends FieldComponent {
     const target = event.target as HTMLInputElement;
     let inputValue = target.value;
 
-    // Allow empty value, minus sign, and decimal point for intermediate input
     if (inputValue === '' || inputValue === '-' || inputValue === '.') {
       this.value = inputValue;
       return;
     }
 
-    // Validate numeric input
     const numericValue = this.parseNumber(inputValue);
 
-    // Apply min/max constraints
     if (this.min() !== undefined && numericValue < this.min()!) {
       this.value = this.min()!.toString();
       target.value = this.value;
@@ -100,5 +90,9 @@ export class NumberComponent extends FieldComponent {
 
     this.onChange(this.value);
     this.change.emit(this.value);
+  }
+
+  getStepperClasses(): string {
+    return `number-stepper--${this.size()}`;
   }
 }

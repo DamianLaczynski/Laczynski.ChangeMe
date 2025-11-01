@@ -5,7 +5,7 @@ import { QuickAction } from '../utils';
 
 @Component({
   selector: 'app-dialog-showcase',
-  standalone: true,
+
   imports: [DialogComponent, ButtonComponent],
   template: `
     <div class="showcase">

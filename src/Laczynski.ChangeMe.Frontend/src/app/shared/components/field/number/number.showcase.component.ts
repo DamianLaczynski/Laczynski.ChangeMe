@@ -5,7 +5,7 @@ import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-number-showcase',
-  standalone: true,
+
   imports: [NumberComponent, FormsModule, JsonPipe],
   template: `
     <div class="showcase showcase--responsive">
@@ -151,6 +151,51 @@ import { JsonPipe } from '@angular/common';
               label="Temperature (Step: 5)"
               placeholder="0"
               variant="filled-lighter"
+              [(ngModel)]="temperature"
+              [ngModelOptions]="{ standalone: true }"
+              [step]="5"
+              [min]="-50"
+              [max]="50"
+              helpText="Min: -50, Max: 50, Step: 5"
+            ></app-number>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stepper Variants -->
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Stepper Variants (Filled Gray)</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <app-number
+              label="Quantity (Step: 1)"
+              placeholder="0"
+              variant="filled-gray"
+              [(ngModel)]="quantity"
+              [ngModelOptions]="{ standalone: true }"
+              [step]="1"
+              [min]="0"
+              [max]="100"
+              helpText="Min: 0, Max: 100, Step: 1"
+            ></app-number>
+          </div>
+          <div class="showcase__item">
+            <app-number
+              label="Price (Step: 0.01)"
+              placeholder="0.00"
+              variant="filled-gray"
+              [(ngModel)]="price"
+              [ngModelOptions]="{ standalone: true }"
+              [step]="0.01"
+              [min]="0"
+              helpText="Min: 0, Step: 0.01"
+            ></app-number>
+          </div>
+          <div class="showcase__item">
+            <app-number
+              label="Temperature (Step: 5)"
+              placeholder="0"
+              variant="filled-gray"
               [(ngModel)]="temperature"
               [ngModelOptions]="{ standalone: true }"
               [step]="5"

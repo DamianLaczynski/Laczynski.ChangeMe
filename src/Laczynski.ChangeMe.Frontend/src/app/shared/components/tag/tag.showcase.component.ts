@@ -16,7 +16,7 @@ import { CommonModule } from '@angular/common';
       <!-- Filled Style (Default) -->
       <div class="showcase__section">
         <h2 class="showcase__section__title">Filled Style (Default)</h2>
-        
+
         <h3 class="showcase__subsection__title">All Sizes - Rest State</h3>
         <div class="showcase__grid">
           <app-tag
@@ -94,31 +94,16 @@ import { CommonModule } from '@angular/common';
 
         <h3 class="showcase__subsection__title">Without Dismiss Button</h3>
         <div class="showcase__grid">
-          <app-tag
-            tagStyle="filled"
-            size="extra-small"
-            text="No Dismiss"
-            [dismissible]="false"
-          />
-          <app-tag
-            tagStyle="filled"
-            size="small"
-            text="No Dismiss"
-            [dismissible]="false"
-          />
-          <app-tag
-            tagStyle="filled"
-            size="medium"
-            text="No Dismiss"
-            [dismissible]="false"
-          />
+          <app-tag tagStyle="filled" size="extra-small" text="No Dismiss" [dismissible]="false" />
+          <app-tag tagStyle="filled" size="small" text="No Dismiss" [dismissible]="false" />
+          <app-tag tagStyle="filled" size="medium" text="No Dismiss" [dismissible]="false" />
         </div>
       </div>
 
       <!-- Brand Style -->
       <div class="showcase__section">
         <h2 class="showcase__section__title">Brand Style</h2>
-        
+
         <h3 class="showcase__subsection__title">All Sizes - Rest State</h3>
         <div class="showcase__grid">
           <app-tag
@@ -127,12 +112,7 @@ import { CommonModule } from '@angular/common';
             text="Extra Small Brand"
             (dismiss)="onDismiss($event)"
           />
-          <app-tag
-            tagStyle="brand"
-            size="small"
-            text="Small Brand"
-            (dismiss)="onDismiss($event)"
-          />
+          <app-tag tagStyle="brand" size="small" text="Small Brand" (dismiss)="onDismiss($event)" />
           <app-tag
             tagStyle="brand"
             size="medium"
@@ -195,7 +175,7 @@ import { CommonModule } from '@angular/common';
       <!-- Outline Style -->
       <div class="showcase__section">
         <h2 class="showcase__section__title">Outline Style</h2>
-        
+
         <h3 class="showcase__subsection__title">All Sizes - Rest State</h3>
         <div class="showcase__grid">
           <app-tag
@@ -272,7 +252,7 @@ import { CommonModule } from '@angular/common';
       <!-- Two-Line Layout (Medium only) -->
       <div class="showcase__section">
         <h2 class="showcase__section__title">Two-Line Layout (Medium Size Only)</h2>
-        
+
         <h3 class="showcase__subsection__title">All Styles with Secondary Text</h3>
         <div class="showcase__grid">
           <app-tag
@@ -358,7 +338,7 @@ import { CommonModule } from '@angular/common';
       <!-- Interactive Examples -->
       <div class="showcase__section">
         <h2 class="showcase__section__title">Interactive Examples</h2>
-        
+
         <h3 class="showcase__subsection__title">Toggleable Selection</h3>
         <div class="showcase__grid">
           @for (tag of interactiveTags; track tag.id) {
@@ -404,18 +384,8 @@ import { CommonModule } from '@angular/common';
             [selected]="filterTags.react"
             (tagClick)="toggleFilter('react')"
           />
-          <app-tag
-            tagStyle="outline"
-            size="small"
-            text="CSS"
-            [dismissible]="false"
-          />
-          <app-tag
-            tagStyle="outline"
-            size="small"
-            text="HTML"
-            [dismissible]="false"
-          />
+          <app-tag tagStyle="outline" size="small" text="CSS" [dismissible]="false" />
+          <app-tag tagStyle="outline" size="small" text="HTML" [dismissible]="false" />
         </div>
       </div>
 
@@ -424,7 +394,9 @@ import { CommonModule } from '@angular/common';
         <h2 class="showcase__section__title">Action Log</h2>
         <div class="showcase__log">
           @if (actionLog.length === 0) {
-            <p class="showcase__log__empty">No actions yet. Interact with tags above to see logs.</p>
+            <p class="showcase__log__empty">
+              No actions yet. Interact with tags above to see logs.
+            </p>
           }
           @for (action of actionLog; track action.id) {
             <div class="showcase__log__item">
@@ -436,7 +408,6 @@ import { CommonModule } from '@angular/common';
       </div>
     </div>
   `,
-  standalone: true,
 })
 export class TagShowcaseComponent {
   interactiveTags = [
@@ -465,7 +436,7 @@ export class TagShowcaseComponent {
   }
 
   toggleTagSelection(id: number): void {
-    const tag = this.interactiveTags.find((t) => t.id === id);
+    const tag = this.interactiveTags.find(t => t.id === id);
     if (tag) {
       tag.selected = !tag.selected;
       this.logAction(`Tag "${tag.text}" ${tag.selected ? 'selected' : 'unselected'}`);
@@ -473,7 +444,7 @@ export class TagShowcaseComponent {
   }
 
   removeTag(id: number): void {
-    const tagIndex = this.interactiveTags.findIndex((t) => t.id === id);
+    const tagIndex = this.interactiveTags.findIndex(t => t.id === id);
     if (tagIndex !== -1) {
       const tag = this.interactiveTags[tagIndex];
       this.logAction(`Tag "${tag.text}" removed`);
@@ -500,4 +471,3 @@ export class TagShowcaseComponent {
     }
   }
 }
-

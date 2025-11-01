@@ -16,7 +16,7 @@ export type TreeStyle = 'subtle' | 'flat';
 
 @Component({
   selector: 'app-tree',
-  standalone: true,
+
   imports: [CommonModule, TreeItemComponent],
   templateUrl: './tree.component.html',
 })
@@ -24,7 +24,6 @@ export class TreeComponent {
   nodes = model<TreeNode[]>([]);
   size = input<Size>('medium');
   style = input<TreeStyle>('subtle');
-  showIcon = input<boolean>(true);
   showQuickActions = input<boolean>(false);
 
   quickActionsTemplate = contentChild<TemplateRef<any>>('quickActions');

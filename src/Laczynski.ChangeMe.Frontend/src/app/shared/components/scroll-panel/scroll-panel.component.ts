@@ -7,7 +7,7 @@ export type ScrollPanelBehavior = 'auto' | 'always' | 'never';
 @Component({
   selector: 'app-scroll-panel',
   templateUrl: './scroll-panel.component.html',
-  standalone: true,
+
   imports: [CommonModule],
 })
 export class ScrollPanelComponent {

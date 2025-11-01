@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-badge-showcase',
-  standalone: true,
+
   imports: [BadgeComponent, CommonModule],
   template: `
     <div class="showcase showcase--responsive">
@@ -23,7 +23,6 @@ import { CommonModule } from '@angular/common';
           <app-badge text="Small" size="small" appearance="filled" />
           <app-badge text="Medium" size="medium" appearance="filled" />
           <app-badge text="Large" size="large" appearance="filled" />
-          <app-badge text="Extra Large" size="extra-large" appearance="filled" />
         </div>
 
         <h3 class="showcase__subsection__title">All Colors</h3>
@@ -39,32 +38,14 @@ import { CommonModule } from '@angular/common';
 
         <h3 class="showcase__subsection__title">With Icons</h3>
         <div class="showcase__grid">
-          <app-badge
-            text="Brand"
-            color="brand"
-            [showIcon]="true"
-            size="extra-large"
-            appearance="filled"
-          />
-          <app-badge
-            text="Danger"
-            color="danger"
-            [showIcon]="true"
-            size="extra-large"
-            appearance="filled"
-          />
-          <app-badge
-            text="Success"
-            color="success"
-            [showIcon]="true"
-            size="extra-large"
-            appearance="filled"
-          />
+          <app-badge text="Brand" color="brand" icon="star" size="large" appearance="filled" />
+          <app-badge text="Danger" color="danger" icon="star" size="large" appearance="filled" />
+          <app-badge text="Success" color="success" icon="star" size="large" appearance="filled" />
           <app-badge
             text="Important"
             color="important"
-            [showIcon]="true"
-            size="extra-large"
+            icon="star"
+            size="large"
             appearance="filled"
           />
         </div>
@@ -79,7 +60,6 @@ import { CommonModule } from '@angular/common';
           <app-badge text="Small" size="small" color="brand" appearance="tint" />
           <app-badge text="Medium" size="medium" color="brand" appearance="tint" />
           <app-badge text="Large" size="large" color="brand" appearance="tint" />
-          <app-badge text="Extra Large" size="extra-large" color="brand" appearance="tint" />
         </div>
 
         <h3 class="showcase__subsection__title">All Colors</h3>
@@ -95,28 +75,10 @@ import { CommonModule } from '@angular/common';
 
         <h3 class="showcase__subsection__title">With Icons</h3>
         <div class="showcase__grid">
-          <app-badge text="Brand" color="brand" [showIcon]="true" size="large" appearance="tint" />
-          <app-badge
-            text="Danger"
-            color="danger"
-            [showIcon]="true"
-            size="large"
-            appearance="tint"
-          />
-          <app-badge
-            text="Success"
-            color="success"
-            [showIcon]="true"
-            size="large"
-            appearance="tint"
-          />
-          <app-badge
-            text="Warning"
-            color="warning"
-            [showIcon]="true"
-            size="large"
-            appearance="tint"
-          />
+          <app-badge text="Brand" color="brand" icon="star" size="large" appearance="tint" />
+          <app-badge text="Danger" color="danger" icon="star" size="large" appearance="tint" />
+          <app-badge text="Success" color="success" icon="star" size="large" appearance="tint" />
+          <app-badge text="Warning" color="warning" icon="star" size="large" appearance="tint" />
         </div>
       </div>
 
@@ -129,7 +91,6 @@ import { CommonModule } from '@angular/common';
           <app-badge text="Small" size="small" color="brand" appearance="outline" />
           <app-badge text="Medium" size="medium" color="brand" appearance="outline" />
           <app-badge text="Large" size="large" color="brand" appearance="outline" />
-          <app-badge text="Extra Large" size="extra-large" color="brand" appearance="outline" />
         </div>
 
         <h3 class="showcase__subsection__title">All Colors</h3>
@@ -145,31 +106,19 @@ import { CommonModule } from '@angular/common';
 
         <h3 class="showcase__subsection__title">With Icons</h3>
         <div class="showcase__grid">
-          <app-badge
-            text="Brand"
-            color="brand"
-            [showIcon]="true"
-            size="medium"
-            appearance="outline"
-          />
-          <app-badge
-            text="Danger"
-            color="danger"
-            [showIcon]="true"
-            size="medium"
-            appearance="outline"
-          />
+          <app-badge text="Brand" color="brand" icon="star" size="medium" appearance="outline" />
+          <app-badge text="Danger" color="danger" icon="star" size="medium" appearance="outline" />
           <app-badge
             text="Success"
             color="success"
-            [showIcon]="true"
+            icon="star"
             size="medium"
             appearance="outline"
           />
           <app-badge
             text="Important"
             color="important"
-            [showIcon]="true"
+            icon="star"
             size="medium"
             appearance="outline"
           />
@@ -185,7 +134,6 @@ import { CommonModule } from '@angular/common';
           <app-badge text="Small" size="small" color="brand" appearance="subtle" />
           <app-badge text="Medium" size="medium" color="brand" appearance="subtle" />
           <app-badge text="Large" size="large" color="brand" appearance="subtle" />
-          <app-badge text="Extra Large" size="extra-large" color="brand" appearance="subtle" />
         </div>
 
         <h3 class="showcase__subsection__title">All Colors</h3>
@@ -201,34 +149,10 @@ import { CommonModule } from '@angular/common';
 
         <h3 class="showcase__subsection__title">With Icons</h3>
         <div class="showcase__grid">
-          <app-badge
-            text="Brand"
-            color="brand"
-            [showIcon]="true"
-            size="large"
-            appearance="subtle"
-          />
-          <app-badge
-            text="Danger"
-            color="danger"
-            [showIcon]="true"
-            size="large"
-            appearance="subtle"
-          />
-          <app-badge
-            text="Success"
-            color="success"
-            [showIcon]="true"
-            size="large"
-            appearance="subtle"
-          />
-          <app-badge
-            text="Warning"
-            color="warning"
-            [showIcon]="true"
-            size="large"
-            appearance="subtle"
-          />
+          <app-badge text="Brand" color="brand" icon="star" size="large" appearance="subtle" />
+          <app-badge text="Danger" color="danger" icon="star" size="large" appearance="subtle" />
+          <app-badge text="Success" color="success" icon="star" size="large" appearance="subtle" />
+          <app-badge text="Warning" color="warning" icon="star" size="large" appearance="subtle" />
         </div>
       </div>
 
@@ -238,9 +162,9 @@ import { CommonModule } from '@angular/common';
 
         <h3 class="showcase__subsection__title">Status Indicators</h3>
         <div class="showcase__grid">
-          <app-badge text="Active" color="success" appearance="filled" [showIcon]="true" />
-          <app-badge text="Pending" color="warning" appearance="tint" [showIcon]="true" />
-          <app-badge text="Error" color="danger" appearance="filled" [showIcon]="true" />
+          <app-badge text="Active" color="success" appearance="filled" icon="star" />
+          <app-badge text="Pending" color="warning" appearance="tint" icon="star" />
+          <app-badge text="Error" color="danger" appearance="filled" icon="star" />
           <app-badge text="Disabled" color="informative" appearance="tint" />
         </div>
 
@@ -254,7 +178,7 @@ import { CommonModule } from '@angular/common';
 
         <h3 class="showcase__subsection__title">Feature Tags</h3>
         <div class="showcase__grid">
-          <app-badge text="New" color="brand" appearance="tint" [showIcon]="true" />
+          <app-badge text="New" color="brand" appearance="tint" icon="star" />
           <app-badge text="Beta" color="informative" appearance="outline" />
           <app-badge text="Pro" color="important" appearance="filled" />
           <app-badge text="Premium" color="warning" appearance="tint" />
@@ -278,15 +202,13 @@ import { CommonModule } from '@angular/common';
           <app-badge text="16px" size="small" color="brand" />
           <app-badge text="20px" size="medium" color="brand" />
           <app-badge text="24px" size="large" color="brand" />
-          <app-badge text="32px" size="extra-large" color="brand" />
         </div>
 
         <h3 class="showcase__subsection__title">With Icons - Size Comparison</h3>
         <div class="showcase__grid" style="align-items: center;">
-          <app-badge text="16px" size="small" color="success" [showIcon]="true" />
-          <app-badge text="20px" size="medium" color="success" [showIcon]="true" />
-          <app-badge text="24px" size="large" color="success" [showIcon]="true" />
-          <app-badge text="32px" size="extra-large" color="success" [showIcon]="true" />
+          <app-badge text="16px" size="small" color="success" icon="star" />
+          <app-badge text="20px" size="medium" color="success" icon="star" />
+          <app-badge text="24px" size="large" color="success" icon="star" />
         </div>
       </div>
 

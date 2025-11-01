@@ -5,7 +5,7 @@ import { TagStyle, TagSize } from '../utils';
 @Component({
   selector: 'app-tag',
   templateUrl: './tag.component.html',
-  standalone: true,
+
   imports: [CommonModule],
 })
 export class TagComponent {

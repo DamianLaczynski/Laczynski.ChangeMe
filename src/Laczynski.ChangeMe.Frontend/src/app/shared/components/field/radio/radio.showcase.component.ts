@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angul
 
 @Component({
   selector: 'app-radio-showcase',
-  standalone: true,
+
   imports: [RadioGroupComponent, CommonModule, FormsModule, ReactiveFormsModule, JsonPipe],
   template: `
     <div class="showcase showcase--responsive">
