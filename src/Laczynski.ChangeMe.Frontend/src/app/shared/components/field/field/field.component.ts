@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy, input, output, model } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Size, StateType } from '../../utils';
-import { InputVariant } from '@shared/components/input/input.component';
+import { InputVariant, Size, StateType } from '../../utils';
 
 export type FieldType =
   | 'text'

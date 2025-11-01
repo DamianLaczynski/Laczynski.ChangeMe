@@ -13,7 +13,6 @@ import { SkeletonShowcaseComponent } from '@shared/components/skeleton/skeleton.
 import { TreeShowcaseComponent } from '@shared/components/tree/tree.showcase.component';
 import { DialogShowcaseComponent } from '@shared/components/dialog/dialog.showcase.component';
 import { MenuShowcaseComponent } from '@shared/components/menu/menu.showcase.component';
-import { DataGridShowcaseComponent } from '@shared/components/data-grid/data-grid.showcase.component';
 import { TagShowcaseComponent } from '@shared/components/tag/tag.showcase.component';
 import { ProgressBarShowcaseComponent } from '@shared/components/progress-bar/progress-bar.showcase.component';
 import { SliderShowcaseComponent } from '@shared/components/field/slider/slider.showcase.component';
@@ -57,10 +56,6 @@ export const dsRoutes: Routes = [
   {
     path: 'card',
     component: CardShowcaseComponent,
-  },
-  {
-    path: 'data-grid',
-    component: DataGridShowcaseComponent,
   },
   {
     path: 'dialog',
