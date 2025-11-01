@@ -1,14 +1,9 @@
 import { Component, input, output } from '@angular/core';
-import { Size } from '../utils';
+import { Node, Size } from '../utils';
 import { IconComponent } from '../icon/icon.component';
 
-export interface BreadcrumbItem {
-  id: string | number;
-  label: string;
-  icon?: string;
+export interface BreadcrumbItem<T = any> extends Node<T> {
   url?: string;
-  disabled?: boolean;
-  current?: boolean;
 }
 
 @Component({
@@ -17,13 +12,13 @@ export interface BreadcrumbItem {
   imports: [IconComponent],
   templateUrl: './breadcrumb.component.html',
 })
-export class BreadcrumbComponent {
-  items = input.required<BreadcrumbItem[]>();
+export class BreadcrumbComponent<T extends BreadcrumbItem> {
+  items = input.required<T[]>();
   size = input<Size>('large');
   showIcons = input<boolean>(true);
   ariaLabel = input<string>('Breadcrumb');
 
-  itemClick = output<BreadcrumbItem>();
+  itemClick = output<T>();
 
   breadcrumbClasses(): string {
     const classes = ['breadcrumb'];
@@ -31,10 +26,10 @@ export class BreadcrumbComponent {
     return classes.join(' ');
   }
 
-  itemClasses(item: BreadcrumbItem): string {
+  itemClasses(item: T): string {
     const classes = ['breadcrumb__button'];
 
-    if (item.current) {
+    if (item.selected) {
       classes.push('breadcrumb__button--current');
     }
 
@@ -45,8 +40,8 @@ export class BreadcrumbComponent {
     return classes.join(' ');
   }
 
-  onItemClick(item: BreadcrumbItem): void {
-    if (item.disabled || item.current) {
+  onItemClick(item: T): void {
+    if (item.disabled || item.selected) {
       return;
     }
 

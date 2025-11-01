@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { BreadcrumbComponent } from './breadcrumb.component';
-import { BreadcrumbItem } from './breadcrumb.component';
+import { Node } from '../utils';
 
 @Component({
   selector: 'app-breadcrumb-showcase',
@@ -107,61 +107,61 @@ import { BreadcrumbItem } from './breadcrumb.component';
 })
 export class BreadcrumbShowcaseComponent {
   // Breadcrumbs with icons
-  breadcrumbsWithIcons: BreadcrumbItem[] = [
-    { id: 1, label: 'Home', icon: 'home', url: '/' },
-    { id: 2, label: 'Products', icon: 'projection_screen', url: '/products' },
-    { id: 3, label: 'Electronics', icon: 'laptop', url: '/products/electronics' },
-    { id: 4, label: 'Current Page', icon: 'star', current: true },
+  breadcrumbsWithIcons: Node<{ url?: string }>[] = [
+    { id: 1, label: 'Home', icon: 'home', data: { url: '/' } },
+    { id: 2, label: 'Products', icon: 'projection_screen', data: { url: '/products' } },
+    { id: 3, label: 'Electronics', icon: 'laptop', data: { url: '/products/electronics' } },
+    { id: 4, label: 'Current Page', icon: 'star', selected: true },
   ];
 
   // Breadcrumbs without icons
-  breadcrumbsWithoutIcons: BreadcrumbItem[] = [
-    { id: 1, label: 'Home', url: '/' },
-    { id: 2, label: 'Products', url: '/products' },
-    { id: 3, label: 'Current Page', current: true },
+  breadcrumbsWithoutIcons: Node<{ url?: string }>[] = [
+    { id: 1, label: 'Home', data: { url: '/' } },
+    { id: 2, label: 'Products', data: { url: '/products' } },
+    { id: 3, label: 'Current Page', selected: true },
   ];
 
   // Medium size breadcrumbs
-  breadcrumbsMedium: BreadcrumbItem[] = [
-    { id: 1, label: 'Dashboard', icon: 'home' },
-    { id: 2, label: 'Settings', icon: 'settings' },
-    { id: 3, label: 'Profile', icon: 'person', current: true },
+  breadcrumbsMedium: Node<{ url?: string }>[] = [
+    { id: 1, label: 'Dashboard', icon: 'home', data: { url: '/' } },
+    { id: 2, label: 'Settings', icon: 'settings', data: { url: '/settings' } },
+    { id: 3, label: 'Profile', icon: 'person', selected: true },
   ];
 
   // Small size breadcrumbs
-  breadcrumbsSmall: BreadcrumbItem[] = [
-    { id: 1, label: 'Root', icon: 'home' },
-    { id: 2, label: 'Folder', icon: 'folder_open' },
-    { id: 3, label: 'File', icon: 'document', current: true },
+  breadcrumbsSmall: Node<{ url?: string }>[] = [
+    { id: 1, label: 'Root', icon: 'home', data: { url: '/' } },
+    { id: 2, label: 'Folder', icon: 'folder_open', data: { url: '/folder' } },
+    { id: 3, label: 'File', icon: 'document', selected: true },
   ];
 
   // Breadcrumbs with disabled item
-  breadcrumbsWithDisabled: BreadcrumbItem[] = [
-    { id: 1, label: 'Home', icon: 'home', url: '/' },
+  breadcrumbsWithDisabled: Node<{ url?: string }>[] = [
+    { id: 1, label: 'Home', icon: 'home', data: { url: '/' } },
     { id: 2, label: 'Disabled', icon: 'subtract_circle', disabled: true },
-    { id: 3, label: 'Current Page', icon: 'star', current: true },
+    { id: 3, label: 'Current Page', icon: 'star', selected: true },
   ];
 
   // Long breadcrumb path
-  longBreadcrumbs: BreadcrumbItem[] = [
-    { id: 1, label: 'Home', url: '/' },
-    { id: 2, label: 'Category', url: '/category' },
-    { id: 3, label: 'Subcategory', url: '/category/sub' },
-    { id: 4, label: 'Product Type', url: '/category/sub/type' },
-    { id: 5, label: 'Product Details', url: '/category/sub/type/details' },
-    { id: 6, label: 'Current Product', current: true },
+  longBreadcrumbs: Node<{ url?: string }>[] = [
+    { id: 1, label: 'Home', data: { url: '/' } },
+    { id: 2, label: 'Category', data: { url: '/category' } },
+    { id: 3, label: 'Subcategory', data: { url: '/category/sub' } },
+    { id: 4, label: 'Product Type', data: { url: '/category/sub/type' } },
+    { id: 5, label: 'Product Details', data: { url: '/category/sub/type/details' } },
+    { id: 6, label: 'Current Product', selected: true },
   ];
 
   /**
    * Handle breadcrumb click event
    */
-  onBreadcrumbClick(item: BreadcrumbItem): void {
+  onBreadcrumbClick(item: Node<{ url?: string }>): void {
     console.log('Breadcrumb clicked:', item);
 
     // In a real application, you would navigate to the URL
-    if (item.url) {
+    if (item.data?.url) {
       // this.router.navigate([item.url]);
-      alert(`Navigating to: ${item.url}`);
+      alert(`Navigating to: ${item.data.url}`);
     }
   }
 }

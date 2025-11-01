@@ -9,10 +9,8 @@ import {
   effect,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TreeItemComponent, TreeNode } from './tree-item.component';
-import { Size } from '../utils';
-
-export type TreeStyle = 'subtle' | 'flat';
+import { TreeItemComponent } from './tree-item.component';
+import { Size, TreeNode, TreeStyle } from '../utils';
 
 @Component({
   selector: 'app-tree',
@@ -20,20 +18,20 @@ export type TreeStyle = 'subtle' | 'flat';
   imports: [CommonModule, TreeItemComponent],
   templateUrl: './tree.component.html',
 })
-export class TreeComponent {
-  nodes = model<TreeNode[]>([]);
+export class TreeComponent<T extends TreeNode<any>> {
+  nodes = model<T[]>([]);
   size = input<Size>('medium');
   style = input<TreeStyle>('subtle');
   showQuickActions = input<boolean>(false);
 
   quickActionsTemplate = contentChild<TemplateRef<any>>('quickActions');
 
-  nodeClick = output<TreeNode>();
-  nodeToggle = output<TreeNode>();
-  nodeSelect = output<TreeNode>();
+  nodeClick = output<T>();
+  nodeToggle = output<T>();
+  nodeSelect = output<T>();
 
   focusedNodeId = signal<string | number | null>(null);
-  private flattenedNodes: TreeNode[] = [];
+  private flattenedNodes: T[] = [];
 
   constructor() {
     effect(() => {
@@ -56,18 +54,18 @@ export class TreeComponent {
     return classes.join(' ');
   }
 
-  onNodeClick(node: TreeNode): void {
+  onNodeClick(node: T): void {
     this.onNodeSelect(node);
     this.nodeClick.emit(node);
   }
 
-  onNodeToggle(node: TreeNode): void {
+  onNodeToggle(node: T): void {
     this.nodeToggle.emit(node);
     // Update flattened nodes after toggle as visibility changed
     this.flattenedNodes = this.getFlattenedVisibleNodes(this.nodes());
   }
 
-  onNodeSelect(node: TreeNode): void {
+  onNodeSelect(node: T): void {
     this.clearSelection(this.nodes());
     node.selected = true;
     this.focusedNodeId.set(node.id);
@@ -75,12 +73,12 @@ export class TreeComponent {
     this.nodeSelect.emit(node);
   }
 
-  onKeyNavigation(event: { key: string; node: TreeNode }): void {
+  onKeyNavigation(event: { key: string; node: T }): void {
     const currentIndex = this.flattenedNodes.findIndex(n => n.id === event.node.id);
 
     if (currentIndex === -1) return;
 
-    let targetNode: TreeNode | null = null;
+    let targetNode: T | null = null;
 
     switch (event.key) {
       case 'ArrowDown':
@@ -113,24 +111,24 @@ export class TreeComponent {
     }
   }
 
-  private clearSelection(nodes: TreeNode[]): void {
+  private clearSelection(nodes: T[]): void {
     nodes.forEach(node => {
       node.selected = false;
       if (node.children && node.children.length > 0) {
-        this.clearSelection(node.children);
+        this.clearSelection(node.children as T[]);
       }
     });
   }
 
-  private getFlattenedVisibleNodes(nodes: TreeNode[]): TreeNode[] {
-    const result: TreeNode[] = [];
+  private getFlattenedVisibleNodes(nodes: T[]): T[] {
+    const result: T[] = [];
 
-    const traverse = (nodes: TreeNode[]) => {
+    const traverse = (nodes: T[]) => {
       nodes.forEach(node => {
         result.push(node);
         // Only include children if node is expanded
         if (node.expanded && node.children && node.children.length > 0) {
-          traverse(node.children);
+          traverse(node.children as T[]);
         }
       });
     };

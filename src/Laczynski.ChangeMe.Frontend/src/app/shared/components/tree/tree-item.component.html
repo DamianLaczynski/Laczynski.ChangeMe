@@ -55,10 +55,10 @@
         [showQuickActions]="showQuickActions()"
         [quickActionsTemplate]="quickActionsTemplate() || null"
         [focusedNodeId]="focusedNodeId()"
-        (nodeClick)="nodeClick.emit($event)"
-        (nodeToggle)="nodeToggle.emit($event)"
-        (nodeSelect)="nodeSelect.emit($event)"
-        (keyNavigation)="keyNavigation.emit($event)"
+        (nodeClick)="nodeClick.emit($any($event))"
+        (nodeToggle)="nodeToggle.emit($any($event))"
+        (nodeSelect)="nodeSelect.emit($any($event))"
+        (keyNavigation)="keyNavigation.emit($any($event))"
       />
     }
   </div>

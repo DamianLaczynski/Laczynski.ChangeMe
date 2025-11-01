@@ -9,7 +9,6 @@ import { NumberShowcaseComponent } from '@shared/components/field/number/number.
 import { PasswordShowcaseComponent } from '@shared/components/field/password/password.showcase.component';
 import { TextShowcaseComponent } from '@shared/components/field/text/text.showcase.component';
 import { TabsShowcaseComponent } from '@shared/components/tabs/tabs.showcase.component';
-import { InputShowcaseComponent } from '@shared/components/input/input.showcase.component';
 import { SkeletonShowcaseComponent } from '@shared/components/skeleton/skeleton.showcase.component';
 import { TreeShowcaseComponent } from '@shared/components/tree/tree.showcase.component';
 import { DialogShowcaseComponent } from '@shared/components/dialog/dialog.showcase.component';
@@ -118,10 +117,6 @@ export const dsRoutes: Routes = [
   {
     path: 'tabs',
     component: TabsShowcaseComponent,
-  },
-  {
-    path: 'input',
-    component: InputShowcaseComponent,
   },
   {
     path: 'menu',

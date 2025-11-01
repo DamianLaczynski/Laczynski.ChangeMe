@@ -1,8 +1,6 @@
 import { Component, input, output, signal } from '@angular/core';
-import { Size } from '../utils';
+import { ChevronPosition, Size } from '../utils';
 import { IconComponent } from '../icon/icon.component';
-
-export type ChevronPosition = 'before' | 'after';
 
 @Component({
   selector: 'app-accordion',

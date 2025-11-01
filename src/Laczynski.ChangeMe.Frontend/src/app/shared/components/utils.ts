@@ -35,6 +35,16 @@ export type SpinnerSize =
   | 'extra-large'
   | 'huge';
 export type SpinnerLabelPosition = 'after' | 'before' | 'above' | 'below' | 'none';
+export type ChevronPosition = 'before' | 'after';
+export type InputSize = 'small' | 'medium' | 'large';
+export type InputVariant = 'filled' | 'filled-gray' | 'filled-lighter' | 'underlined';
+export type InputType = 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search';
+export type LabelSize = 'small' | 'small-bold' | 'medium' | 'medium-bold' | 'large';
+export type TreeStyle = 'subtle' | 'flat';
+export type TabLayout = 'icon-before' | 'text-only' | 'icon-only';
+export type TabAppearance = 'transparent' | 'subtle' | 'subtle-circular' | 'filled-circular';
+export type TabOrientation = 'horizontal' | 'vertical';
+
 export interface QuickAction {
   label: string;
   variant?: ButtonStyle;
@@ -44,6 +54,23 @@ export interface QuickAction {
   action: () => void;
 }
 
+export type Node<T = any> = {
+  id: string | number;
+  label: string;
+  icon?: string;
+  disabled?: boolean;
+  selected?: boolean;
+  data?: T;
+  onClick?: () => void;
+};
+
+export interface TreeNode<T = any> extends Node<T> {
+  hasChildren?: boolean;
+  children?: TreeNode<T>[];
+  expanded?: boolean;
+  parent?: TreeNode<T>;
+  level?: number;
+}
 // Legacy support - keeping for backward compatibility
 export type Intent = 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info';
 export type Variant = 'solid' | 'outline' | 'ghost';

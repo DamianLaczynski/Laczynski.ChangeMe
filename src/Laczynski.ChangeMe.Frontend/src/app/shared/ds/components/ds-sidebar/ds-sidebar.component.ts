@@ -41,7 +41,6 @@ export class DsSidebarComponent {
     { id: 'dialog', label: 'Dialog', icon: 'dialog' },
     { id: 'divider', label: 'Divider', icon: 'divider' },
     { id: 'tabs', label: 'Tabs', icon: 'tabs' },
-    { id: 'input', label: 'Input', icon: 'input' },
     { id: 'menu', label: 'Menu', icon: 'menu' },
     { id: 'nav', label: 'Nav', icon: 'nav' },
     { id: 'progress-bar', label: 'Progress Bar', icon: 'progress-bar' },

@@ -5,7 +5,7 @@
         <!-- Breadcrumb Button -->
         <button
           [class]="itemClasses(item)"
-          [attr.aria-current]="item.current ? 'page' : null"
+          [attr.aria-current]="item.selected ? 'page' : null"
           [attr.aria-disabled]="item.disabled"
           [disabled]="item.disabled"
           (click)="onItemClick(item)"
@@ -14,7 +14,7 @@
           <!-- Icon (if provided) -->
           @if (showIcons() && item.icon) {
             <div class="breadcrumb__icon">
-              @if (item.current) {
+              @if (item.selected) {
                 <app-icon [icon]="item.icon" [size]="size()" variant="filled" />
               } @else {
                 <app-icon [icon]="item.icon" [size]="size()" variant="regular" />

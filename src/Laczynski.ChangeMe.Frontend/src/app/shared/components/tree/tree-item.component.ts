@@ -9,22 +9,8 @@ import {
   viewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Size } from '../utils';
+import { Size, TreeNode } from '../utils';
 import { IconComponent } from '../icon/icon.component';
-
-export interface TreeNode<T = any> {
-  id: string | number;
-  label: string;
-  icon?: string;
-  hasChildren?: boolean;
-  children?: TreeNode<T>[];
-  disabled?: boolean;
-  expanded?: boolean;
-  selected?: boolean;
-  data?: T;
-  parent?: TreeNode<T>;
-  level?: number;
-}
 
 @Component({
   selector: 'app-tree-item',
@@ -32,17 +18,17 @@ export interface TreeNode<T = any> {
   imports: [CommonModule, IconComponent],
   templateUrl: './tree-item.component.html',
 })
-export class TreeItemComponent {
-  node = input.required<TreeNode>();
+export class TreeItemComponent<T extends TreeNode<any>> {
+  node = input.required<T>();
   size = input<Size>('medium');
   showQuickActions = input<boolean>(false);
   quickActionsTemplate = input<TemplateRef<any> | null>(null);
   focusedNodeId = input<string | number | null>(null);
 
-  nodeClick = output<TreeNode>();
-  nodeToggle = output<TreeNode>();
-  nodeSelect = output<TreeNode>();
-  keyNavigation = output<{ key: string; node: TreeNode }>();
+  nodeClick = output<T>();
+  nodeToggle = output<T>();
+  nodeSelect = output<T>();
+  keyNavigation = output<{ key: string; node: T }>();
 
   expanded = signal<boolean>(false);
 
