@@ -1,0 +1,381 @@
+// =============================================================================
+// Menu Component Styles (Fluent 2 Design System)
+// =============================================================================
+
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use '../utils/functions' as *;
+
+// =============================================================================
+// Menu Container
+// =============================================================================
+
+.menu {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: $spacing-05; // 2px
+  padding: $spacing-1; // 4px
+  background: $color-neutral-background-rest; // white
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.12);
+  overflow: visible; // Changed from hidden to allow submenu to be visible
+  border-radius: $border-radius-400; // 4px
+  min-width: 120px;
+
+  // =============================================================================
+  // Section
+  // =============================================================================
+
+  &__section {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-05; // 2px
+
+    &--not-first {
+      margin-top: $spacing-05; // 2px
+    }
+  }
+
+  // =============================================================================
+  // Section Header
+  // =============================================================================
+
+  &__section-header {
+    display: inline-flex;
+    align-self: stretch;
+    min-width: 120px;
+    min-height: 32px;
+    padding: $spacing-2 6px; // 8px 6px
+    background: $color-neutral-background-rest; // white
+    border-radius: $border-radius-400; // 4px
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    &--disabled {
+      .menu__section-header-text {
+        color: $color-neutral-foreground-disabled; // #BDBDBD
+      }
+    }
+
+    &-text {
+      flex: 1 1 0;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      color: $color-neutral-foreground2-rest; // #424242
+      font-size: $font-size-200; // 12px
+      font-family: $font-family-base;
+      font-weight: $font-weight-bold; // 700
+      line-height: $line-height-200; // 16px
+      word-wrap: break-word;
+    }
+  }
+
+  // =============================================================================
+  // Menu Item
+  // =============================================================================
+
+  &__item {
+    display: inline-flex;
+    align-self: stretch;
+    min-width: 120px;
+    min-height: 32px;
+    background: $color-neutral-background-rest; // white
+    border-radius: $border-radius-400; // 4px
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: $spacing-1; // 4px
+    cursor: pointer;
+    transition: background $duration-fast $easing-ease-in-out;
+    position: relative; // For submenu positioning
+
+    // Hover state
+    &--hover:not(&--disabled) {
+      background: $color-subtle-background-hover; // #F5F5F5
+
+      .menu__item-text {
+        color: $color-neutral-foreground2-hover; // #242424
+      }
+
+      .menu__item-shortcut {
+        color: $color-neutral-foreground2-hover; // #424242
+      }
+    }
+
+    // Pressed state
+    &--pressed:not(&--disabled) {
+      background: $color-subtle-background-pressed; // #E0E0E0
+
+      .menu__item-text {
+        color: $color-neutral-foreground2-pressed; // #242424
+      }
+
+      .menu__item-shortcut {
+        color: $color-neutral-foreground2-pressed; // #424242
+      }
+    }
+
+    // Selected state
+    &--selected:not(&--disabled) {
+      background: $color-subtle-background-selected; // #EBEBEB
+
+      .menu__item-text {
+        color: $color-neutral-foreground-selected; // #242424
+      }
+
+      .menu__item-shortcut {
+        color: $color-neutral-foreground-selected; // #424242
+      }
+    }
+
+    // Disabled state
+    &--disabled {
+      cursor: not-allowed;
+
+      .menu__item-text,
+      .menu__item-shortcut {
+        color: $color-neutral-foreground-disabled; // #BDBDBD
+      }
+    }
+
+    // Split item variant
+    &--split {
+      gap: $spacing-1; // 4px
+    }
+  }
+
+  // =============================================================================
+  // Item Content
+  // =============================================================================
+
+  &__item-content {
+    flex: 1 1 0;
+    display: flex;
+    padding: 6px $spacing-05 6px 6px; // 6px 2px 6px 6px
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: $spacing-1; // 4px
+
+    &--split {
+      padding-right: $spacing-05; // 2px
+    }
+  }
+
+  // =============================================================================
+  // Item Icon
+  // =============================================================================
+
+  &__item-icon {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  // =============================================================================
+  // Text Container
+  // =============================================================================
+
+  &__item-text-container {
+    flex: 1 1 0;
+    padding: 0 $spacing-05; // 0 2px
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    display: inline-flex;
+  }
+
+  &__item-text {
+    align-self: stretch;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    color: $color-neutral-foreground2-rest; // #424242
+    font-size: $font-size-300; // 14px
+    font-family: $font-family-base;
+    font-weight: $font-weight-regular; // 400
+    line-height: $line-height-300; // 20px
+    word-wrap: break-word;
+  }
+
+  // =============================================================================
+  // End Content (Shortcut & Chevron)
+  // =============================================================================
+
+  &__item-end-content {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: $spacing-1; // 4px
+  }
+
+  &__item-shortcut-container {
+    padding: 0 $spacing-05 0 6px; // 0 2px 0 6px
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  &__item-shortcut {
+    text-align: right;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    color: $color-neutral-foreground2-rest; // #616161
+    font-size: $font-size-300; // 14px
+    font-family: $font-family-base;
+    font-weight: $font-weight-regular; // 400
+    line-height: $line-height-300; // 20px
+    word-wrap: break-word;
+  }
+
+  &__item-chevron {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  // =============================================================================
+  // Split Button
+  // =============================================================================
+
+  &__split-button {
+    width: 25px;
+    align-self: stretch;
+    max-width: 25px;
+    min-width: 25px;
+    padding: 6px $spacing-05; // 6px 2px
+    position: relative;
+    background: $color-neutral-background-rest; // white
+    border-top-right-radius: $border-radius-400; // 4px
+    border-bottom-right-radius: $border-radius-400; // 4px
+    justify-content: flex-end;
+    align-items: center;
+    display: flex;
+    transition: background $duration-fast $easing-ease-in-out;
+
+    &:hover:not(&--disabled) {
+      background: $color-subtle-background-hover; // #F5F5F5
+    }
+
+    &:active:not(&--disabled) {
+      background: $color-subtle-background-pressed; // #E0E0E0
+    }
+
+    &--disabled {
+      cursor: not-allowed;
+    }
+  }
+
+  &__split-chevron {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    z-index: 2;
+
+    svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__split-divider {
+    left: 0;
+    top: 4px;
+    position: absolute;
+    width: 1px;
+    height: 24px;
+    z-index: 1;
+
+    svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  // =============================================================================
+  // Submenu
+  // =============================================================================
+
+  &__submenu {
+    position: absolute;
+    left: 100%;
+    top: -4px; // Offset to align with parent item (accounting for menu padding)
+    margin-left: $spacing-1; // 4px gap between parent and submenu
+    z-index: 1001;
+    animation: submenuSlideIn $duration-fast $easing-decelerate-mid;
+  }
+
+  // Submenu animation
+  @keyframes submenuSlideIn {
+    from {
+      opacity: 0;
+      transform: translateX(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  // =============================================================================
+  // Divider
+  // =============================================================================
+
+  &__divider {
+    width: 100%;
+    height: 5px;
+    min-width: 120px;
+    max-height: 5px;
+    padding: $spacing-2 6px; // 8px 6px
+    position: relative;
+    justify-content: flex-start;
+    align-items: flex-start;
+    display: inline-flex;
+
+    &::before {
+      content: '';
+      width: calc(100% + 8px);
+      height: 1px;
+      left: -4px;
+      top: 2px;
+      position: absolute;
+      background: $color-neutral-stroke-rest; // #E0E0E0
+    }
+  }
+}
+
+// =============================================================================
+// Responsive Design
+// =============================================================================
+
+@media (max-width: 768px) {
+  .menu {
+    min-width: 100%;
+    max-width: 100%;
+  }
+}
+
