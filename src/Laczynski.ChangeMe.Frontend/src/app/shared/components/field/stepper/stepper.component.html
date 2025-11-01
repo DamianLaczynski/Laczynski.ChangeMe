@@ -1,0 +1,54 @@
+<div [ngClass]="stepperClasses()">
+  <div class="stepper-container">
+    @for (step of steps(); track step.id; let i = $index) {
+      <div class="stepper-item">
+        <!-- Step -->
+        <div
+          [ngClass]="getStepClasses(step, i)"
+          (click)="onStepClick(step, i)"
+          [attr.aria-current]="i === currentStepIndex() ? 'step' : null"
+          [attr.aria-disabled]="step.disabled"
+          role="button"
+          [tabindex]="step.disabled ? -1 : 0"
+        >
+          <!-- Step Indicator -->
+          <div [ngClass]="getIndicatorClasses(step, i)">
+            @if (indicatorType() === 'numeric') {
+              <!-- Numeric Indicator -->
+              @if (step.completed) {
+                <!-- Checkmark icon for completed steps -->
+                <app-icon [icon]="'checkmark'" [size]="size()" />
+              } @else {
+                <span class="stepper-number">{{ i + 1 }}</span>
+              }
+            } @else {
+              <!-- Icon Indicator -->
+              @if (step.icon) {
+                <span class="stepper-icon">{{ step.icon }}</span>
+              } @else {
+                <span class="stepper-number">{{ i + 1 }}</span>
+              }
+            }
+          </div>
+
+          <!-- Step Content -->
+          @if (showLabels()) {
+            <div class="stepper-content">
+              <div class="stepper-label">{{ step.label }}</div>
+              @if (showDescriptions() && step.description) {
+                <div class="stepper-description">{{ step.description }}</div>
+              }
+            </div>
+          }
+        </div>
+
+        <!-- Connector (line between steps) -->
+        @if (i < steps().length - 1) {
+          <div [ngClass]="getConnectorClasses(i)">
+            <div class="stepper-connector-line"></div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>
