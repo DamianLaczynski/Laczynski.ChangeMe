@@ -1,0 +1,246 @@
+// ==========================================================================
+// Color Picker Component - Fluent 2 Design System
+// ==========================================================================
+
+@use '../utils/variables' as *;
+
+.color-preview {
+  margin: 0 $spacing-2;
+
+  border-radius: $border-radius-400;
+  border: 1px solid $color-neutral-stroke-rest;
+}
+
+// Color Panel Container
+.color-panel {
+  position: absolute;
+  top: calc(100% + $spacing-1);
+  left: 0;
+  z-index: 1000;
+  background: $color-neutral-background-rest;
+  border: 1px solid $color-neutral-stroke-rest;
+  border-radius: $border-radius-600;
+  box-shadow: $elevation-16;
+  padding: $spacing-4;
+  min-width: 300px;
+
+  &[data-size='small'] {
+    padding: $spacing-3;
+    min-width: 260px;
+  }
+
+  &[data-size='large'] {
+    padding: $spacing-5;
+    min-width: 340px;
+  }
+}
+
+// Saturation & Lightness Picker
+.color-picker {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1.2;
+  border-radius: $border-radius-400;
+  cursor: crosshair;
+  overflow: hidden;
+  margin-bottom: $spacing-3;
+  border: 1px solid $color-neutral-stroke-rest;
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+
+    &--white {
+      background: linear-gradient(to right, #fff, transparent);
+    }
+
+    &--black {
+      background: linear-gradient(to top, #000, transparent);
+    }
+  }
+
+  &__handle {
+    position: absolute;
+    width: $spacing-4;
+    height: $spacing-4;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    box-shadow:
+      0 0 0 1px rgba(0, 0, 0, 0.3),
+      0 2px 4px rgba(0, 0, 0, 0.2);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    transition: transform $duration-ultra-fast $easing-ease-in-out;
+
+    &:hover {
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+  }
+
+  &:active &__handle {
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+}
+
+// Color Sliders
+.color-slider {
+  margin-bottom: $spacing-3;
+
+  &__label {
+    display: block;
+    font-size: $font-size-200;
+    font-weight: $font-weight-semibold;
+    color: $color-neutral-foreground-rest;
+    margin-bottom: $spacing-1;
+  }
+
+  &__alpha-wrapper {
+    position: relative;
+    width: 100%;
+    height: $spacing-5;
+    border-radius: $border-radius-400;
+    overflow: hidden;
+    border: 1px solid $color-neutral-stroke-rest;
+  }
+
+  &__alpha-checkered {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(45deg, #ccc 25%, transparent 25%),
+      linear-gradient(-45deg, #ccc 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #ccc 75%),
+      linear-gradient(-45deg, transparent 75%, #ccc 75%);
+    background-size: 8px 8px;
+    background-position:
+      0 0,
+      0 4px,
+      4px -4px,
+      -4px 0px;
+    pointer-events: none;
+  }
+
+  &__input {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: $spacing-5;
+    border-radius: $border-radius-400;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+    background: transparent;
+    border: 1px solid $color-neutral-stroke-rest;
+
+    // Hue gradient
+    &--hue {
+      background: linear-gradient(
+        to right,
+        #ff0000 0%,
+        #ffff00 17%,
+        #00ff00 33%,
+        #00ffff 50%,
+        #0000ff 67%,
+        #ff00ff 83%,
+        #ff0000 100%
+      );
+    }
+
+    // Alpha gradient (set via inline style)
+    &--alpha {
+      position: absolute;
+      inset: 0;
+      border: none;
+    }
+
+    // Remove default styling
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: $spacing-4;
+      height: $spacing-4;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid $color-brand-primary;
+      cursor: pointer;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+      transition: all $duration-ultra-fast $easing-ease-in-out;
+
+      &:hover {
+        transform: scale(1.1);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      }
+
+      &:active {
+        transform: scale(0.95);
+      }
+    }
+
+    &::-moz-range-thumb {
+      width: $spacing-4;
+      height: $spacing-4;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid $color-brand-primary;
+      cursor: pointer;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+      transition: all $duration-ultra-fast $easing-ease-in-out;
+
+      &:hover {
+        transform: scale(1.1);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      }
+
+      &:active {
+        transform: scale(0.95);
+      }
+    }
+
+    &::-webkit-slider-runnable-track {
+      height: 100%;
+      border-radius: $border-radius-400;
+    }
+
+    &::-moz-range-track {
+      height: 100%;
+      border-radius: $border-radius-400;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $color-brand-primary;
+      outline-offset: 2px;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+
+      &::-webkit-slider-thumb {
+        cursor: not-allowed;
+      }
+
+      &::-moz-range-thumb {
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+// Preset Colors
+.color-presets {
+  margin-bottom: $spacing-3;
+
+  &__label {
+    font-size: $font-size-200;
+    font-weight: $font-weight-semibold;
+    color: $color-neutral-foreground-rest;
+    margin-bottom: $spacing-2;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: $spacing-1;
+  }
+}

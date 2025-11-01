@@ -1,0 +1,141 @@
+<app-field
+  [fieldType]="'color'"
+  [label]="label()"
+  [placeholder]="placeholder()"
+  [helpText]="helpText()"
+  [errorText]="errorText()"
+  [warningText]="warningText()"
+  [successText]="successText()"
+  [required]="required()"
+  [disabled]="disabled()"
+  [readonly]="readonly()"
+  [id]="id()"
+  [name]="name()"
+  [state]="state()"
+  [size]="size()"
+  [variant]="variant()"
+>
+  <div class="input-wrapper" [class]="wrapperClasses">
+    <!-- Color Preview -->
+    @if (value) {
+      <app-icon
+        [icon]="'square'"
+        [size]="size()"
+        variant="filled"
+        [style.color]="value ? displayValue() : 'inherit'"
+        class="color-preview"
+        (click)="togglePanel()"
+      ></app-icon>
+    }
+
+    <input
+      class="input"
+      type="text"
+      [id]="id()"
+      [name]="name()"
+      [placeholder]="placeholder()"
+      [required]="required()"
+      [disabled]="disabled()"
+      [readonly]="readonly()"
+      [value]="value || ''"
+      [attr.aria-label]="ariaLabel() || label()"
+      [attr.aria-describedby]="ariaDescribedBy()"
+      [attr.aria-invalid]="state() === 'error'"
+      [attr.aria-expanded]="isExpanded()"
+      [attr.aria-haspopup]="'dialog'"
+      (click)="!disabled() && !readonly() ? togglePanel() : null"
+      (blur)="onBlur($event)"
+      (focus)="onFocus($event)"
+      (keydown)="onKeyDown($event)"
+    />
+
+    @if (!disabled() && !readonly()) {
+      <div class="field__actions">
+        <!-- Eye Dropper Button -->
+        @if (showEyeDropper() && isEyeDropperSupported()) {
+          <app-action-button
+            [show]="true"
+            [icon]="'eyedropper'"
+            [size]="size()"
+            (click)="openEyeDropper()"
+          ></app-action-button>
+        }
+        <!-- Color Picker Icon Button -->
+        <app-action-button
+          [show]="true"
+          [icon]="'color'"
+          [size]="size()"
+          (click)="togglePanel()"
+        ></app-action-button>
+
+        <!-- Clear Button -->
+        @if (value) {
+          <app-action-button
+            [show]="true"
+            [icon]="'dismiss'"
+            [size]="size()"
+            (click)="clear()"
+          ></app-action-button>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Color Picker Panel -->
+  @if (isExpanded()) {
+    <div #colorPanel class="color-panel" [attr.data-size]="size()">
+      <!-- Saturation & Lightness Picker -->
+      <div
+        #saturationPicker
+        class="color-picker"
+        [style.background-color]="getHueColor()"
+        (mousedown)="onSaturationPickerMouseDown($event)"
+      >
+        <div class="color-picker__overlay color-picker__overlay--white"></div>
+        <div class="color-picker__overlay color-picker__overlay--black"></div>
+        <div
+          class="color-picker__handle"
+          [style.left.px]="pickerX()"
+          [style.top.px]="pickerY()"
+        ></div>
+      </div>
+
+      <!-- Hue Slider -->
+      <div class="color-slider">
+        <label class="color-slider__label" [attr.for]="id() + '-hue'">Hue</label>
+        <input
+          type="range"
+          class="color-slider__input color-slider__input--hue"
+          [id]="id() + '-hue'"
+          min="0"
+          max="360"
+          [value]="hueValue()"
+          (input)="onHueChange($event)"
+        />
+      </div>
+
+      <!-- Alpha Slider -->
+      @if (showAlpha()) {
+        <div class="color-slider">
+          <label class="color-slider__label" [attr.for]="id() + '-alpha'">Opacity</label>
+          <div class="color-slider__alpha-wrapper">
+            <div class="color-slider__alpha-checkered"></div>
+            <input
+              type="range"
+              class="color-slider__input color-slider__input--alpha"
+              [id]="id() + '-alpha'"
+              min="0"
+              max="1"
+              step="0.01"
+              [value]="alphaValue()"
+              [style.background]="
+                'linear-gradient(to right, transparent, ' + currentColor().hex + ')'
+              "
+              (input)="onAlphaChange($event)"
+            />
+          </div>
+        </div>
+      }
+    </div>
+  }
+</app-field>
