@@ -43,7 +43,6 @@ export class DsSidebarComponent {
     { id: 'tabs', label: 'Tabs', icon: 'tabs' },
     { id: 'menu', label: 'Menu', icon: 'group_list' },
     { id: 'nav', label: 'Nav', icon: 'navigation' },
-    { id: 'node', label: 'Node', icon: 'rectangle_landscape' },
     { id: 'progress-bar', label: 'Progress Bar', icon: 'spacebar' },
     { id: 'scroll-panel', label: 'Scroll Panel', icon: 'dual_screen_vertical_scroll' },
     { id: 'skeleton', label: 'Skeleton', icon: 'checkbox_indeterminate' },
@@ -53,6 +52,7 @@ export class DsSidebarComponent {
     { id: 'tag', label: 'Tag', icon: 'tag' },
     { id: 'toast', label: 'Toast', icon: 'alert' },
     { id: 'tree', label: 'Tree', icon: 'text_bullet_list_tree' },
+    { id: 'tree-node', label: 'Tree Node', icon: 'rectangle_landscape' },
   ];
 
   constructor() {

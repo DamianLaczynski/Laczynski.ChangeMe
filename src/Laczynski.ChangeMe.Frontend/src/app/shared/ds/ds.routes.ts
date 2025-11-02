@@ -123,10 +123,6 @@ export const dsRoutes: Routes = [
     component: NavShowcaseComponent,
   },
   {
-    path: 'node',
-    component: NodeShowcaseComponent,
-  },
-  {
     path: 'progress-bar',
     component: ProgressBarShowcaseComponent,
   },
@@ -161,6 +157,10 @@ export const dsRoutes: Routes = [
   {
     path: 'tree',
     component: TreeShowcaseComponent,
+  },
+  {
+    path: 'tree-node',
+    component: NodeShowcaseComponent,
   },
   {
     path: 'file',
