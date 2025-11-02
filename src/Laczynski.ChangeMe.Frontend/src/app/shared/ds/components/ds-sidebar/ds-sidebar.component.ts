@@ -37,7 +37,6 @@ export class DsSidebarComponent {
     { id: 'breadcrumb', label: 'Breadcrumb', icon: 'arrow_routing' },
     { id: 'button', label: 'Button', icon: 'button' },
     { id: 'card', label: 'Card', icon: 'contact_card' },
-    { id: 'data-grid', label: 'Data Grid', icon: 'grid' },
     { id: 'dialog', label: 'Dialog', icon: 'window' },
     { id: 'divider', label: 'Divider', icon: 'divider_tall' },
     { id: 'tabs', label: 'Tabs', icon: 'tabs' },
