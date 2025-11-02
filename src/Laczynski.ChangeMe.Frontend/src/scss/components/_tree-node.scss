@@ -1,0 +1,242 @@
+// ==========================================================================
+// Node Component - Universal Fluent 2 Design System Component (BEM Block)
+// Fully configurable via inputs, no variant dependencies
+// ==========================================================================
+
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use '../utils/functions' as *;
+
+@include block('tree-node') {
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  // Prevent text wrapping
+  .tree-node__label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  // ==========================================================================
+  // Structure Elements
+  // ==========================================================================
+
+  // Wrapper with padding
+  @include element('wrapper') {
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: $spacing-05; // 2px
+    padding: $spacing-05; // 2px
+    border-radius: $border-radius-400; // 4px
+    transition: background-color $duration-faster $easing-ease-in-out;
+  }
+
+  // Selection indicator
+  @include element('selection-indicator') {
+    width: 4px;
+    height: 20px;
+    border-radius: $border-radius-200; // 2px
+    background-color: $color-brand-primary;
+    opacity: 0;
+    transition: opacity $duration-fast $easing-decelerate-mid;
+    flex-shrink: 0;
+
+    @include modifier('visible') {
+      opacity: 1;
+    }
+  }
+
+  // Content wrapper
+  @include element('content') {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: flex-start;
+    gap: $spacing-2; // 8px
+    padding: $spacing-2 $spacing-3; // 6px 10px
+    cursor: pointer;
+    min-height: 32px;
+    box-sizing: border-box;
+    border-radius: $border-radius-400; // 4px
+    background-color: transparent;
+    color: $color-neutral-foreground2-rest;
+    transition: background-color $duration-fast $easing-decelerate-mid;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-family: $font-family-base;
+
+    @include focus-ring($color-brand-primary);
+
+    &:hover:not(:disabled) {
+      background-color: $color-subtle-background-hover;
+    }
+
+    &:active:not(:disabled) {
+      background-color: $color-subtle-background-pressed;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
+
+  // Label
+  @include element('label') {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    color: currentColor;
+    font-size: $font-size-300; // 14px
+    font-family: $font-family-base;
+    font-weight: $font-weight-regular;
+    line-height: $line-height-300; // 20px
+    word-wrap: break-word;
+  }
+
+  // Quick Actions
+  @include element('quick-actions') {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: $spacing-05; // 2px
+    padding: $spacing-1; // 4px
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity $duration-faster $easing-ease-in-out,
+      visibility $duration-faster $easing-ease-in-out;
+  }
+
+  // Children container
+  @include element('children') {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-05; // 2px
+    width: 100%;
+    padding-left: $spacing-6; // 24px - indent for hierarchy
+    padding-top: $spacing-05; // 2px
+  }
+
+  // ==========================================================================
+  // State Modifiers
+  // ==========================================================================
+
+  @include modifier('selected') {
+    .tree-node__content {
+      background-color: $color-subtle-background-selected;
+
+      &:hover {
+        background-color: $color-subtle-background-hover;
+      }
+    }
+
+    .tree-node__label {
+      font-weight: $font-weight-semibold; // 600
+      color: $color-neutral-foreground-rest;
+    }
+
+    .tree-node__icon {
+      color: $color-brand-primary;
+    }
+  }
+
+  @include modifier('disabled') {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: not-allowed;
+
+    .tree-node__content {
+      cursor: not-allowed;
+    }
+
+    .tree-node__icon svg {
+      fill: $color-neutral-foreground-disabled;
+    }
+
+    .tree-node__label {
+      color: $color-neutral-foreground-disabled;
+    }
+  }
+
+  @include modifier('focused') {
+    // Focus styles handled by focus-ring mixin on content
+  }
+
+  @include modifier('hovered') {
+    .tree-node__wrapper:not(.tree-node--disabled &) {
+      .tree-node__quick-actions {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+  }
+
+  @include modifier('expanded') {
+    // Chevron rotation handled by icon changes
+  }
+
+  @include modifier('branch') {
+    // Has children - no special styles needed
+  }
+
+  @include modifier('leaf') {
+    // No children - no special styles needed
+  }
+
+  // ==========================================================================
+  // Size Modifiers
+  // ==========================================================================
+
+  @include modifier('small') {
+    .tree-node__content {
+      padding: $spacing-1 $spacing-2; // 4px 8px
+      min-height: 24px;
+      gap: $spacing-1; // 4px
+    }
+
+    .tree-node__label {
+      font-size: $font-size-200; // 12px
+      line-height: $line-height-200; // 16px
+    }
+
+    .tree-node__selection-indicator {
+      height: 16px;
+    }
+
+    .tree-node__children {
+      padding-left: $spacing-5; // 20px
+    }
+  }
+
+  @include modifier('medium') {
+    // Default size - already defined above
+  }
+
+  @include modifier('large') {
+    .tree-node__content {
+      padding: $spacing-2 $spacing-3; // 8px 12px
+      min-height: 40px;
+      gap: $spacing-3; // 12px
+    }
+
+    .tree-node__label {
+      font-size: $font-size-400; // 16px
+      line-height: $line-height-400; // 22px
+    }
+
+    .tree-node__selection-indicator {
+      height: 24px;
+    }
+
+    .tree-node__children {
+      padding-left: $spacing-8; // 32px
+    }
+  }
+}

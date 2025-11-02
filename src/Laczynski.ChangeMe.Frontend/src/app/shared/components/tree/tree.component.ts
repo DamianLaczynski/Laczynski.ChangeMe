@@ -9,27 +9,30 @@ import {
   effect,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TreeItemComponent } from './tree-item.component';
+import { TreeNodeComponent } from '../tree-node/tree-node.component';
 import { Size, TreeNode, TreeStyle } from '../utils';
 
 @Component({
   selector: 'app-tree',
-
-  imports: [CommonModule, TreeItemComponent],
   templateUrl: './tree.component.html',
+  imports: [CommonModule, TreeNodeComponent],
 })
 export class TreeComponent<T extends TreeNode<any>> {
+  // Inputs
   nodes = model<T[]>([]);
   size = input<Size>('medium');
   style = input<TreeStyle>('subtle');
   showQuickActions = input<boolean>(false);
 
+  // Template
   quickActionsTemplate = contentChild<TemplateRef<any>>('quickActions');
 
+  // Outputs
   nodeClick = output<T>();
   nodeToggle = output<T>();
   nodeSelect = output<T>();
 
+  // Internal state
   focusedNodeId = signal<string | number | null>(null);
   private flattenedNodes: T[] = [];
 

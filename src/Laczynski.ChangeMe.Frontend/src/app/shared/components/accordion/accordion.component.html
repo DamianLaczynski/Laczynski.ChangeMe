@@ -1,45 +1,17 @@
 <div class="accordion" [class]="accordionClasses()">
-  <button
-    class="accordion__header"
-    type="button"
-    [attr.aria-expanded]="expanded()"
-    [attr.aria-disabled]="disabled()"
-    [disabled]="disabled()"
-    (click)="onToggle()"
-    (keydown)="onKeyDown($event)"
-  >
-    <div class="accordion__content">
-      @if (chevronPosition() === 'before') {
-        <div class="accordion__left">
-          <span class="accordion__chevron">
-            <!-- Chevron -->
-            <app-icon [icon]="'chevron_down'" [size]="size()" variant="regular" />
-          </span>
-          @if (icon()) {
-            <app-icon [icon]="icon()" [size]="size()" variant="regular" />
-          }
-        </div>
-      }
-
-      @if (chevronPosition() === 'after' && icon()) {
-        <app-icon [icon]="icon()" [size]="size()" variant="regular" />
-      }
-
-      <!-- Text -->
-      <span class="accordion__text">
-        {{ title() }}
-      </span>
-    </div>
-
-    <!-- Right Section (for chevron-after) -->
-    @if (chevronPosition() === 'after') {
-      <div class="accordion__right">
-        <span class="accordion__chevron">
-          <app-icon [icon]="'chevron_up'" [size]="size()" variant="regular" />
-        </span>
-      </div>
-    }
-  </button>
+  <!-- Accordion Header using Node Component -->
+  <app-tree-node
+    [node]="accordionNode()"
+    [size]="size()"
+    [showChevron]="true"
+    [chevronPosition]="chevronPosition()"
+    [chevronIconCollapsed]="chevronPosition() === 'before' ? 'chevron_right' : 'chevron_down'"
+    [chevronIconExpanded]="chevronPosition() === 'before' ? 'chevron_down' : 'chevron_up'"
+    [asButton]="true"
+    [expandOnClick]="true"
+    [selectOnClick]="false"
+    (nodeToggle)="onNodeToggle($event)"
+  />
 
   <!-- Accordion Panel -->
   <div class="accordion__panel">

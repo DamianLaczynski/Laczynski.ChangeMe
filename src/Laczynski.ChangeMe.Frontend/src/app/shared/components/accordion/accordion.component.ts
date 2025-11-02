@@ -1,15 +1,14 @@
-import { Component, input, output, signal } from '@angular/core';
-import { ChevronPosition, Size } from '../utils';
-import { IconComponent } from '../icon/icon.component';
+import { Component, input, output, signal, computed } from '@angular/core';
+import { ChevronPosition, Size, TreeNode } from '../utils';
+import { TreeNodeComponent } from '../tree-node/tree-node.component';
 
 @Component({
   selector: 'app-accordion',
   templateUrl: './accordion.component.html',
-
-  imports: [IconComponent],
+  imports: [TreeNodeComponent],
 })
 export class AccordionComponent {
-  title = input.required<string>();
+  label = input.required<string>();
   size = input<Size>('medium');
   chevronPosition = input<ChevronPosition>('before');
   disabled = input<boolean>(false);
@@ -18,11 +17,21 @@ export class AccordionComponent {
 
   toggle = output<boolean>();
 
+  // Create a TreeNode for the accordion header
+  accordionNode = computed<TreeNode<any>>(() => ({
+    id: 'accordion-node',
+    label: this.label(),
+    icon: this.icon(),
+    disabled: this.disabled(),
+    hasChildren: true,
+    expanded: this.expanded(),
+    children: [],
+  }));
+
   accordionClasses(): string {
-    const classes = [];
+    const classes = ['accordion'];
 
     classes.push(`accordion--${this.size()}`);
-    classes.push(`accordion--chevron-${this.chevronPosition()}`);
 
     if (this.expanded()) {
       classes.push('accordion--expanded');
@@ -35,27 +44,12 @@ export class AccordionComponent {
     return classes.join(' ');
   }
 
-  onToggle(): void {
+  onNodeToggle(node: TreeNode<any>): void {
     if (this.disabled()) {
       return;
     }
 
-    this.expanded.set(!this.expanded());
+    this.expanded.set(node.expanded || false);
     this.toggle.emit(this.expanded());
-  }
-
-  onKeyDown(event: KeyboardEvent): void {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      this.onToggle();
-    }
-  }
-
-  getChevronRotation(): string {
-    if (this.expanded()) {
-      return this.chevronPosition() === 'before' ? 'rotate(0deg)' : 'rotate(180deg)';
-    } else {
-      return this.chevronPosition() === 'before' ? 'rotate(-90deg)' : 'rotate(0deg)';
-    }
   }
 }

@@ -1,11 +1,18 @@
 <div [class]="treeClasses()" role="tree" [attr.aria-label]="'Tree view'">
   @for (node of nodes(); track node.id) {
-    <app-tree-item
+    <app-tree-node
       [node]="node"
       [size]="size()"
+      [asButton]="false"
+      [showSelectionIndicator]="false"
+      [showChevron]="true"
+      [chevronPosition]="'before'"
+      [chevronIconCollapsed]="'chevron_right'"
+      [chevronIconExpanded]="'chevron_down'"
+      [expandOnClick]="false"
+      [selectOnClick]="true"
       [showQuickActions]="showQuickActions()"
       [quickActionsTemplate]="quickActionsTemplate() || null"
-      [focusedNodeId]="focusedNodeId()"
       (nodeClick)="onNodeClick($event)"
       (nodeToggle)="onNodeToggle($event)"
       (nodeSelect)="onNodeSelect($event)"

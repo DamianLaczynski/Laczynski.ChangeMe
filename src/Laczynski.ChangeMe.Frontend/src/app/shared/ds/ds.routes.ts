@@ -30,6 +30,7 @@ import { FileShowcaseComponent } from '@shared/components/field/file/file.showca
 import { StepperShowcaseComponent } from '@shared/components/field/stepper/stepper.showcase.component';
 import { ToastShowcaseComponent } from '@shared/components/toast/toast.showcase.component';
 import { NavShowcaseComponent } from '@shared/components/nav';
+import { NodeShowcaseComponent } from '@shared/components/tree-node/tree-node.showcase.component';
 
 export const dsRoutes: Routes = [
   {
@@ -120,6 +121,10 @@ export const dsRoutes: Routes = [
   {
     path: 'nav',
     component: NavShowcaseComponent,
+  },
+  {
+    path: 'node',
+    component: NodeShowcaseComponent,
   },
   {
     path: 'progress-bar',
