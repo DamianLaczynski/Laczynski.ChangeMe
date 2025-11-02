@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { CardComponent } from './card.component';
 import { QuickAction } from '../utils';
 import { FormsModule } from '@angular/forms';
+import { CheckboxComponent } from '../field/checkbox';
+import { DropdownComponent } from '../field/dropdown';
 
 @Component({
   selector: 'app-card-showcase',
 
-  imports: [CommonModule, CardComponent, FormsModule],
+  imports: [CommonModule, CardComponent, FormsModule, CheckboxComponent, DropdownComponent],
   template: `
     <div class="showcase">
       <h1>Card Component - Fluent 2 Design System</h1>
@@ -223,30 +225,27 @@ import { FormsModule } from '@angular/forms';
         <h2>Interactive Example</h2>
 
         <div class="showcase-controls">
-          <label>
-            <input type="checkbox" [(ngModel)]="interactiveCard.disabled" />
-            Disabled
-          </label>
-          <label>
-            <input type="checkbox" [(ngModel)]="interactiveCard.clickable" />
-            Clickable
-          </label>
-          <label>
-            <input type="checkbox" [(ngModel)]="interactiveCard.showQuickAction" />
-            Show Quick Action
-          </label>
-          <label>
-            <input type="checkbox" [(ngModel)]="interactiveCard.showFooter" />
-            Show Footer
-          </label>
-          <label>
-            Style:
-            <select [(ngModel)]="interactiveCard.style">
-              <option value="filled">Filled</option>
-              <option value="outline">Outline</option>
-              <option value="subtle">Subtle</option>
-            </select>
-          </label>
+          <app-checkbox label="Disabled" [(ngModel)]="interactiveCard.disabled" />
+          <app-checkbox label="Clickable" [(ngModel)]="interactiveCard.clickable" />
+          <app-checkbox label="Show Quick Action" [(ngModel)]="interactiveCard.showQuickAction" />
+          <app-checkbox label="Show Footer" [(ngModel)]="interactiveCard.showFooter" />
+          <app-dropdown
+            [items]="[
+              {
+                value: 'filled',
+                label: 'Filled',
+              },
+              {
+                value: 'outline',
+                label: 'Outline',
+              },
+              {
+                value: 'subtle',
+                label: 'Subtle',
+              },
+            ]"
+            [(ngModel)]="interactiveCard.style"
+          />
         </div>
 
         <div class="showcase-item" style="margin-top: 20px;">

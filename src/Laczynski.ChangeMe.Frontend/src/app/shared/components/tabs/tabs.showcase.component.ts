@@ -328,10 +328,10 @@ export class TabsShowcaseComponent {
 
   // Vertical layout tabs
   verticalLayoutTabs = signal<Node[]>([
-    { id: 'vlayout1', label: 'Dashboard', icon: 'dashboard' },
+    { id: 'vlayout1', label: 'Dashboard', icon: 'home' },
     { id: 'vlayout2', label: 'Analytics', icon: 'line' },
-    { id: 'vlayout3', label: 'Reports', icon: 'reports' },
-    { id: 'vlayout4', label: 'Team', icon: 'team' },
+    { id: 'vlayout3', label: 'Reports', icon: 'document_copy' },
+    { id: 'vlayout4', label: 'Team', icon: 'people_team' },
   ]);
 
   // Vertical style tabs
