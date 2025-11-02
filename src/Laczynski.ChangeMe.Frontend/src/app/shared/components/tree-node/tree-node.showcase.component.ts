@@ -428,14 +428,14 @@ import { ButtonComponent } from '../button/button.component';
     <!-- Quick Actions Template -->
     <ng-template #quickActions let-node>
       <app-button
-        [variant]="'transparent'"
+        [variant]="'subtle'"
         [size]="'small'"
         [icon]="'edit'"
         (click)="onQuickAction('edit', node)"
         aria-label="Edit"
       />
       <app-button
-        [variant]="'transparent'"
+        [variant]="'subtle'"
         [size]="'small'"
         [icon]="'delete'"
         (click)="onQuickAction('delete', node)"

@@ -1,0 +1,87 @@
+<!-- Node container with modifiers -->
+<div [class]="nodeClasses()">
+  <!-- Wrapper -->
+  <div class="node__wrapper">
+    <!-- Selection Indicator -->
+    @if (showSelectionIndicator()) {
+      <span [class]="selectionIndicatorClasses()"></span>
+    }
+
+    <!-- Content (as button or div) -->
+    @if (asButton()) {
+      <button
+        type="button"
+        [class]="contentClasses()"
+        [disabled]="node().disabled || false"
+        [attr.aria-label]="node().label"
+        (click)="onContentClick($event)"
+        (focus)="onFocus()"
+        (blur)="onBlur()"
+        (mouseenter)="onMouseEnter()"
+        (mouseleave)="onMouseLeave()"
+      >
+        <ng-container *ngTemplateOutlet="beforeTemplate()!"></ng-container>
+
+        @if (node().icon) {
+          <span class="node__icon">
+            @if (node().selected) {
+              <app-icon [icon]="node().icon" [size]="size()" variant="filled" />
+            } @else {
+              <app-icon [icon]="node().icon" [size]="size()" variant="regular" />
+            }
+          </span>
+        }
+
+        <!-- Label -->
+        <span class="node__label">{{ node().label }}</span>
+
+        <ng-container *ngTemplateOutlet="afterTemplate()!"></ng-container>
+        <!-- Quick Actions -->
+        @if (showQuickActions() && quickActionsTemplate()) {
+          <div class="node__quick-actions">
+            <ng-container
+              *ngTemplateOutlet="quickActionsTemplate()!; context: { $implicit: node() }"
+            ></ng-container>
+          </div>
+        }
+      </button>
+    } @else {
+      <div
+        [class]="contentClasses()"
+        [attr.tabindex]="getTabIndex()"
+        [attr.role]="getRole()"
+        [attr.aria-selected]="node().selected ? 'true' : null"
+        [attr.aria-disabled]="node().disabled ? 'true' : null"
+        (click)="onContentClick($event)"
+        (focus)="onFocus()"
+        (blur)="onBlur()"
+        (mouseenter)="onMouseEnter()"
+        (mouseleave)="onMouseLeave()"
+      >
+        <ng-container *ngTemplateOutlet="beforeTemplate()!"></ng-container>
+        @if (node().icon) {
+          <span class="node__icon">
+            @if (node().selected) {
+              <app-icon [icon]="node().icon" [size]="size()" variant="filled" />
+            } @else {
+              <app-icon [icon]="node().icon" [size]="size()" variant="regular" />
+            }
+          </span>
+        }
+
+        <!-- Label -->
+        <span class="node__label">{{ node().label }}</span>
+        <ng-container *ngTemplateOutlet="afterTemplate()!"></ng-container>
+
+        <!-- Quick Actions -->
+        @if (showQuickActions() && quickActionsTemplate()) {
+          <div class="node__quick-actions">
+            <ng-container
+              *ngTemplateOutlet="quickActionsTemplate()!; context: { $implicit: node() }"
+            ></ng-container>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

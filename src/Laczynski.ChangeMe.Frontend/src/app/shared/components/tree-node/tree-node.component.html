@@ -1,79 +1,51 @@
 <div
   #nodeElement
-  [class]="nodeClasses()"
-  [attr.role]="getRole()"
-  [attr.aria-expanded]="getAriaExpanded()"
+  [class]="treeNodeClasses()"
+  [attr.role]="'treeitem'"
+  [attr.aria-expanded]="hasChildren() ? (expanded() ? 'true' : 'false') : null"
   [attr.aria-selected]="node().selected ? 'true' : null"
   [attr.aria-disabled]="node().disabled ? 'true' : null"
   [attr.aria-level]="(node().level || 0) + 1"
-  [attr.tabindex]="getTabIndex()"
+  [attr.tabindex]="node().disabled ? -1 : 0"
   (keydown)="onKeyDown($event)"
 >
-  <!-- Wrapper -->
   <div class="tree-node__wrapper">
-    <!-- Selection Indicator -->
-    @if (showSelectionIndicator()) {
-      <span [class]="selectionIndicatorClasses()"></span>
-    }
-
-    <!-- Chevron (before position) -->
-    @if (shouldShowChevron() && chevronPosition() === 'before') {
-      <div (click)="onChevronClick($event)">
-        @if (expanded()) {
-          <app-icon [icon]="chevronIconExpanded()" [size]="size()" />
-        } @else {
-          <app-icon [icon]="chevronIconCollapsed()" [size]="size()" />
+    <!-- Node Component -->
+    <app-node
+      [node]="node()"
+      [size]="size()"
+      [showSelectionIndicator]="showSelectionIndicator()"
+      [asButton]="asButton()"
+      [selectOnClick]="selectOnClick()"
+      [showQuickActions]="showQuickActions()"
+      [quickActionsTemplate]="quickActionsTemplate() || null"
+      (nodeClick)="onNodeClick($event)"
+      (nodeSelect)="onNodeSelect($any($event))"
+    >
+      <ng-template #before>
+        @if (shouldShowChevron() && chevronPosition() === 'before') {
+          <div class="tree-node__chevron" (click)="onChevronClick($event)">
+            @if (expanded()) {
+              <app-icon [icon]="chevronIconExpanded()" [size]="size()" />
+            } @else {
+              <app-icon [icon]="chevronIconCollapsed()" [size]="size()" />
+            }
+          </div>
         }
-      </div>
-    }
+      </ng-template>
 
-    <!-- Content (as button or div) -->
-    @if (asButton()) {
-      <button
-        type="button"
-        [class]="contentClasses()"
-        [disabled]="node().disabled || false"
-        [attr.aria-label]="node().label"
-        (click)="onContentClick($event)"
-        (focus)="onFocus()"
-        (blur)="onBlur()"
-        (mouseenter)="onMouseEnter()"
-        (mouseleave)="onMouseLeave()"
-      >
-        <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
-      </button>
-    } @else {
-      <div
-        [class]="contentClasses()"
-        (click)="onContentClick($event)"
-        (focus)="onFocus()"
-        (blur)="onBlur()"
-        (mouseenter)="onMouseEnter()"
-        (mouseleave)="onMouseLeave()"
-      >
-        <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
-      </div>
-    }
-
-    <!-- Chevron (after position) -->
-    @if (shouldShowChevron() && chevronPosition() === 'after') {
-      <div (click)="onChevronClick($event)">
-        @if (expanded()) {
-          <app-icon [icon]="chevronIconExpanded()" [size]="size()" />
-        } @else {
-          <app-icon [icon]="chevronIconCollapsed()" [size]="size()" />
+      <ng-template #after>
+        @if (shouldShowChevron() && chevronPosition() === 'after') {
+          <div class="tree-node__chevron" (click)="onChevronClick($event)">
+            @if (expanded()) {
+              <app-icon [icon]="chevronIconExpanded()" [size]="size()" />
+            } @else {
+              <app-icon [icon]="chevronIconCollapsed()" [size]="size()" />
+            }
+          </div>
         }
-      </div>
-    }
-
-    <!-- Quick Actions -->
-    @if (showQuickActions() && quickActionsTemplate()) {
-      <div class="tree-node__quick-actions">
-        <ng-container
-          *ngTemplateOutlet="quickActionsTemplate()!; context: { $implicit: node() }"
-        ></ng-container>
-      </div>
-    }
+      </ng-template>
+    </app-node>
   </div>
 
   <!-- Children (recursive) -->
@@ -102,20 +74,3 @@
     </div>
   }
 </div>
-
-<!-- Content Template -->
-<ng-template #contentTemplate>
-  <!-- Icon -->
-  @if (node().icon) {
-    <span class="tree-node__icon">
-      @if (node().selected) {
-        <app-icon [icon]="node().icon" [size]="size()" variant="filled" />
-      } @else {
-        <app-icon [icon]="node().icon" [size]="size()" variant="regular" />
-      }
-    </span>
-  }
-
-  <!-- Label -->
-  <span class="tree-node__label">{{ node().label }}</span>
-</ng-template>

@@ -9,13 +9,14 @@ import {
   viewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NodeComponent } from '../node/node.component';
 import { IconComponent } from '../icon/icon.component';
 import { Size, TreeNode, ChevronPosition } from '../utils';
 
 @Component({
   selector: 'app-tree-node',
   templateUrl: './tree-node.component.html',
-  imports: [CommonModule, IconComponent],
+  imports: [CommonModule, NodeComponent, IconComponent],
 })
 export class TreeNodeComponent<T extends TreeNode<any> = TreeNode<any>> {
   // Inputs - Node Data
@@ -44,10 +45,8 @@ export class TreeNodeComponent<T extends TreeNode<any> = TreeNode<any>> {
   nodeSelect = output<T>();
   keyNavigation = output<{ key: string; node: T }>();
 
-  // State
+  // State - Tree-specific (manages expanded state for tree hierarchy)
   expanded = signal<boolean>(false);
-  isFocused = signal<boolean>(false);
-  isHovered = signal<boolean>(false);
 
   private nodeElement = viewChild<ElementRef>('nodeElement');
 
@@ -59,11 +58,9 @@ export class TreeNodeComponent<T extends TreeNode<any> = TreeNode<any>> {
         this.expanded.set(node.expanded);
       }
     });
-
-    // Focus the element when it becomes focused
   }
 
-  // Computed properties
+  // Tree-specific computed properties
   isLeaf(): boolean {
     return !this.node().hasChildren || !this.node().children || this.node().children?.length === 0;
   }
@@ -76,83 +73,32 @@ export class TreeNodeComponent<T extends TreeNode<any> = TreeNode<any>> {
     return this.showChevron() && this.hasChildren();
   }
 
-  // CSS class generators
-  nodeClasses(): string {
+  // CSS class generators for tree container
+  treeNodeClasses(): string {
     const classes = ['tree-node'];
 
     classes.push(`tree-node--${this.size()}`);
 
-    if (this.node().selected) {
-      classes.push('tree-node--selected');
-    }
-
-    if (this.node().disabled) {
-      classes.push('tree-node--disabled');
-    }
-
-    if (this.isFocused()) {
-      classes.push('tree-node--focused');
-    }
-
-    if (this.isHovered()) {
-      classes.push('tree-node--hovered');
-    }
-
-    if (this.hasChildren()) {
-      classes.push('tree-node--branch');
-      if (this.expanded()) {
-        classes.push('tree-node--expanded');
-      }
-    } else {
-      classes.push('tree-node--leaf');
-    }
-
     return classes.join(' ');
   }
 
-  contentClasses(): string {
-    const classes = ['tree-node__content'];
+  // Event handlers - forward from node component
+  onNodeClick(node: T): void {
+    this.nodeClick.emit(node);
 
-    if (this.asButton()) {
-      classes.push('tree-node__content--button');
-    }
-
-    return classes.join(' ');
-  }
-
-  selectionIndicatorClasses(): string {
-    const classes = ['tree-node__selection-indicator'];
-
-    if (this.node().selected) {
-      classes.push('tree-node__selection-indicator--visible');
-    }
-
-    return classes.join(' ');
-  }
-
-  // Event handlers
-  onContentClick(event: MouseEvent | Event): void {
-    if (this.node().disabled) {
-      return;
-    }
-
-    if (event instanceof MouseEvent) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-
-    // Always emit click event
-    this.nodeClick.emit(this.node());
-
-    // Handle expand behavior
+    // Handle expand behavior for tree
     if (this.expandOnClick() && this.hasChildren()) {
       this.toggleNode();
     }
 
     // Handle select behavior
     if (this.selectOnClick()) {
-      this.nodeSelect.emit(this.node());
+      this.nodeSelect.emit(node);
     }
+  }
+
+  onNodeToggle(node: T): void {
+    this.toggleNode();
   }
 
   onChevronClick(event: Event): void {
@@ -163,6 +109,10 @@ export class TreeNodeComponent<T extends TreeNode<any> = TreeNode<any>> {
     }
 
     this.toggleNode();
+  }
+
+  onNodeSelect(node: T): void {
+    this.nodeSelect.emit(node);
   }
 
   toggleNode(): void {
@@ -176,38 +126,7 @@ export class TreeNodeComponent<T extends TreeNode<any> = TreeNode<any>> {
     this.nodeToggle.emit(node);
   }
 
-  onFocus(): void {
-    this.isFocused.set(true);
-  }
-
-  onBlur(): void {
-    this.isFocused.set(false);
-  }
-
-  onMouseEnter(): void {
-    this.isHovered.set(true);
-  }
-
-  onMouseLeave(): void {
-    this.isHovered.set(false);
-  }
-
-  getTabIndex(): number {
-    return this.node().disabled ? -1 : 0;
-  }
-
-  getRole(): string {
-    if (this.asButton() || (this.expandOnClick() && this.hasChildren())) {
-      return 'button';
-    }
-    return 'treeitem';
-  }
-
-  getAriaExpanded(): string | null {
-    return this.hasChildren() ? String(this.expanded()) : null;
-  }
-
-  // Keyboard navigation
+  // Keyboard navigation - Tree-specific
   onKeyDown(event: KeyboardEvent): void {
     if (this.node().disabled) {
       return;
@@ -221,7 +140,7 @@ export class TreeNodeComponent<T extends TreeNode<any> = TreeNode<any>> {
       case ' ':
         event.preventDefault();
         event.stopPropagation();
-        this.onContentClick(event);
+        this.onNodeClick(node);
         break;
 
       case 'ArrowRight':
