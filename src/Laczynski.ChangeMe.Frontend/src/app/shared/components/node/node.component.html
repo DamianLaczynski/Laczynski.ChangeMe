@@ -4,7 +4,25 @@
   <div class="node__wrapper">
     <!-- Selection Indicator -->
     @if (showSelectionIndicator()) {
-      <span [class]="selectionIndicatorClasses()"></span>
+      <div class="node__indicator">
+        @if (indicatorPosition() === 'horizontal' && node().selected) {
+          <div class="node__selector" [style.width]="getSelectorWidth()"></div>
+        }
+        @if (indicatorPosition() === 'vertical' && node().selected) {
+          <svg
+            width="3"
+            [attr.height]="getSelectorHeight()"
+            [attr.viewBox]="'0 0 3 ' + getSelectorHeightValue()"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              [attr.d]="getVerticalIndicatorPath()"
+              fill="var(--Brand-Stroke-Compound-Rest, #0F6CBD)"
+            />
+          </svg>
+        }
+      </div>
     }
 
     <!-- Content (as button or div) -->
@@ -20,9 +38,11 @@
         (mouseenter)="onMouseEnter()"
         (mouseleave)="onMouseLeave()"
       >
-        <ng-container *ngTemplateOutlet="beforeTemplate()!"></ng-container>
+        @if (!iconOnly()) {
+          <ng-container *ngTemplateOutlet="beforeTemplate()!"></ng-container>
+        }
 
-        @if (node().icon) {
+        @if (shouldShowIcon()) {
           <span class="node__icon">
             @if (node().selected) {
               <app-icon [icon]="node().icon" [size]="size()" variant="filled" />
@@ -32,17 +52,20 @@
           </span>
         }
 
-        <!-- Label -->
-        <span class="node__label">{{ node().label }}</span>
+        @if (shouldShowLabel()) {
+          <span class="node__label">{{ node().label }}</span>
+        }
 
-        <ng-container *ngTemplateOutlet="afterTemplate()!"></ng-container>
-        <!-- Quick Actions -->
-        @if (showQuickActions() && quickActionsTemplate()) {
-          <div class="node__quick-actions">
-            <ng-container
-              *ngTemplateOutlet="quickActionsTemplate()!; context: { $implicit: node() }"
-            ></ng-container>
-          </div>
+        @if (!iconOnly()) {
+          <ng-container *ngTemplateOutlet="afterTemplate()!"></ng-container>
+          <!-- Quick Actions -->
+          @if (showQuickActions() && quickActionsTemplate()) {
+            <div class="node__quick-actions">
+              <ng-container
+                *ngTemplateOutlet="quickActionsTemplate()!; context: { $implicit: node() }"
+              ></ng-container>
+            </div>
+          }
         }
       </button>
     } @else {
@@ -58,8 +81,11 @@
         (mouseenter)="onMouseEnter()"
         (mouseleave)="onMouseLeave()"
       >
-        <ng-container *ngTemplateOutlet="beforeTemplate()!"></ng-container>
-        @if (node().icon) {
+        @if (!iconOnly()) {
+          <ng-container *ngTemplateOutlet="beforeTemplate()!"></ng-container>
+        }
+
+        @if (shouldShowIcon()) {
           <span class="node__icon">
             @if (node().selected) {
               <app-icon [icon]="node().icon" [size]="size()" variant="filled" />
@@ -69,17 +95,20 @@
           </span>
         }
 
-        <!-- Label -->
-        <span class="node__label">{{ node().label }}</span>
-        <ng-container *ngTemplateOutlet="afterTemplate()!"></ng-container>
+        @if (shouldShowLabel()) {
+          <span class="node__label">{{ node().label }}</span>
+        }
 
-        <!-- Quick Actions -->
-        @if (showQuickActions() && quickActionsTemplate()) {
-          <div class="node__quick-actions">
-            <ng-container
-              *ngTemplateOutlet="quickActionsTemplate()!; context: { $implicit: node() }"
-            ></ng-container>
-          </div>
+        @if (!iconOnly()) {
+          <ng-container *ngTemplateOutlet="afterTemplate()!"></ng-container>
+          <!-- Quick Actions -->
+          @if (showQuickActions() && quickActionsTemplate()) {
+            <div class="node__quick-actions">
+              <ng-container
+                *ngTemplateOutlet="quickActionsTemplate()!; context: { $implicit: node() }"
+              ></ng-container>
+            </div>
+          }
         }
       </div>
     }

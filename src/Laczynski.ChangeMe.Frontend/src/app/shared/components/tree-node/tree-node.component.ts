@@ -11,16 +11,25 @@ import {
 import { CommonModule } from '@angular/common';
 import { NodeComponent } from '../node/node.component';
 import { IconComponent } from '../icon/icon.component';
-import { Size, TreeNode, ChevronPosition } from '../utils';
+import { Size, ChevronPosition } from '../utils';
+import { Node } from '../node/node.component';
+
+export interface TreeNode<T = any> extends Node<T> {
+  hasChildren?: boolean;
+  children?: TreeNode<T>[];
+  expanded?: boolean;
+  parent?: TreeNode<T>;
+  level?: number;
+}
 
 @Component({
   selector: 'app-tree-node',
   templateUrl: './tree-node.component.html',
   imports: [CommonModule, NodeComponent, IconComponent],
 })
-export class TreeNodeComponent<T extends TreeNode<any> = TreeNode<any>> {
+export class TreeNodeComponent {
   // Inputs - Node Data
-  node = input.required<T>();
+  node = input.required<TreeNode>();
   size = input<Size>('medium');
 
   // Inputs - Visual Configuration
@@ -29,6 +38,7 @@ export class TreeNodeComponent<T extends TreeNode<any> = TreeNode<any>> {
   chevronPosition = input<ChevronPosition>('before');
   chevronIconCollapsed = input<string>('chevron_right');
   chevronIconExpanded = input<string>('chevron_down');
+  iconOnly = input<boolean>(false);
 
   // Inputs - Behavior Configuration
   asButton = input<boolean>(false);
@@ -40,10 +50,10 @@ export class TreeNodeComponent<T extends TreeNode<any> = TreeNode<any>> {
   quickActionsTemplate = input<TemplateRef<any> | null>(null);
 
   // Outputs
-  nodeClick = output<T>();
-  nodeToggle = output<T>();
-  nodeSelect = output<T>();
-  keyNavigation = output<{ key: string; node: T }>();
+  nodeClick = output<TreeNode>();
+  nodeToggle = output<TreeNode>();
+  nodeSelect = output<TreeNode>();
+  keyNavigation = output<{ key: string; node: TreeNode }>();
 
   // State - Tree-specific (manages expanded state for tree hierarchy)
   expanded = signal<boolean>(false);
@@ -83,7 +93,7 @@ export class TreeNodeComponent<T extends TreeNode<any> = TreeNode<any>> {
   }
 
   // Event handlers - forward from node component
-  onNodeClick(node: T): void {
+  onNodeClick(node: TreeNode): void {
     this.nodeClick.emit(node);
 
     // Handle expand behavior for tree
@@ -97,7 +107,7 @@ export class TreeNodeComponent<T extends TreeNode<any> = TreeNode<any>> {
     }
   }
 
-  onNodeToggle(node: T): void {
+  onNodeToggle(node: TreeNode): void {
     this.toggleNode();
   }
 
@@ -111,7 +121,7 @@ export class TreeNodeComponent<T extends TreeNode<any> = TreeNode<any>> {
     this.toggleNode();
   }
 
-  onNodeSelect(node: T): void {
+  onNodeSelect(node: TreeNode): void {
     this.nodeSelect.emit(node);
   }
 

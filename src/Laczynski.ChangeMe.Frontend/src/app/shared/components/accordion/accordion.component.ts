@@ -1,5 +1,6 @@
 import { Component, input, output, signal, computed } from '@angular/core';
-import { ChevronPosition, Size, TreeNode } from '../utils';
+import { ChevronPosition, Size } from '../utils';
+import { TreeNode } from '../tree-node/tree-node.component';
 import { TreeNodeComponent } from '../tree-node/tree-node.component';
 
 @Component({

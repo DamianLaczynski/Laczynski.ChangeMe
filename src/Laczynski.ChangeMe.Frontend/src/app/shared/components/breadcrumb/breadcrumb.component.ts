@@ -1,5 +1,6 @@
 import { Component, input, output } from '@angular/core';
-import { Node, Size } from '../utils';
+import { Size } from '../utils';
+import { Node } from '../node/node.component';
 import { NodeComponent } from '../node/node.component';
 import { IconComponent } from '../icon/icon.component';
 

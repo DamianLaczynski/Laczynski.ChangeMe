@@ -11,7 +11,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { NavState, NavNodeConfig } from './models';
 import { TreeNodeComponent } from '../tree-node/tree-node.component';
-import { Node } from '../utils';
+import { Node } from '../node/node.component';
 
 @Component({
   selector: 'app-nav',

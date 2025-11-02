@@ -1,12 +1,12 @@
 import { Component, input } from '@angular/core';
-import { DividerOrientation, DividerAlignment } from '../utils';
+import { DividerAlignment, Orientation } from '../utils';
 
 @Component({
   selector: 'app-divider',
   templateUrl: './divider.component.html',
 })
 export class DividerComponent {
-  orientation = input<DividerOrientation>('horizontal');
+  orientation = input<Orientation>('horizontal');
   alignment = input<DividerAlignment>('center');
   text = input<string>('');
   ariaLabel = input<string>('');

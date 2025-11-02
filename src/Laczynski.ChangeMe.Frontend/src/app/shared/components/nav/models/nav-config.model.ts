@@ -1,4 +1,5 @@
-import { Size, TreeNode } from '../../utils';
+import { Size } from '../../utils';
+import { TreeNode } from '../../tree-node/tree-node.component';
 
 // Nav Component Types
 export type NavState = 'collapsed' | 'expanded';

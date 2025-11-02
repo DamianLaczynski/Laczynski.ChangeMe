@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { BreadcrumbComponent } from './breadcrumb.component';
-import { Node } from '../utils';
+import { Node } from '../node/node.component';
 
 @Component({
   selector: 'app-breadcrumb-showcase',

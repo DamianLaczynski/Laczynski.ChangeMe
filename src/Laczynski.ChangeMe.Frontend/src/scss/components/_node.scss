@@ -31,7 +31,13 @@
     transition: background-color $duration-faster $easing-ease-in-out;
   }
 
-  // Selection indicator
+  // Indicator container
+  @include element('indicator') {
+    position: absolute;
+    pointer-events: none;
+  }
+
+  // Selection indicator (for vertical position)
   @include element('selection-indicator') {
     width: 4px;
     height: 20px;
@@ -42,6 +48,36 @@
     flex-shrink: 0;
 
     @include modifier('visible') {
+      opacity: 1;
+    }
+
+    @include modifier('horizontal') {
+      display: none; // Not used for horizontal, use selector instead
+    }
+
+    @include modifier('vertical') {
+      display: block;
+    }
+  }
+
+  // Selector bar (for horizontal indicator)
+  @include element('selector') {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 3px;
+    background: $color-brand-primary;
+    border-radius: $border-radius-circular;
+    transition:
+      width $duration-normal $easing-decelerate-mid,
+      left $duration-normal $easing-decelerate-mid,
+      transform $duration-normal $easing-decelerate-mid;
+
+    // Hidden by default
+    opacity: 0;
+    width: 0;
+
+    .node--selected & {
       opacity: 1;
     }
   }
@@ -141,8 +177,8 @@
       cursor: not-allowed;
     }
 
-    .node__icon svg {
-      fill: $color-neutral-foreground-disabled;
+    .node__icon {
+      color: $color-neutral-foreground-disabled;
     }
 
     .node__label {
@@ -160,6 +196,199 @@
         opacity: 1;
         visibility: visible;
       }
+    }
+  }
+
+  // ==========================================================================
+  // Indicator Position Modifiers
+  // ==========================================================================
+
+  @include modifier('indicator-horizontal') {
+    position: relative;
+
+    .node__indicator {
+      left: 0;
+      bottom: 0;
+      height: 3px;
+      width: 100%;
+    }
+  }
+
+  @include modifier('indicator-vertical') {
+    position: relative;
+
+    .node__indicator {
+      left: 0;
+      top: 0;
+      width: 3px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    .node__selector {
+      display: none; // Use SVG indicator instead
+    }
+  }
+
+  // ==========================================================================
+  // Layout Modifiers
+  // ==========================================================================
+
+  @include modifier('icon-before') {
+    // Default layout already defined
+  }
+
+  @include modifier('text-only') {
+    .node__icon {
+      display: none;
+    }
+  }
+
+  @include modifier('icon-only') {
+    .node__label {
+      display: none;
+    }
+  }
+
+  // ==========================================================================
+  // Variant Modifiers (Tab Appearance)
+  // ==========================================================================
+
+  @include modifier('transparent') {
+    // Default style - already defined
+    .node__content {
+      background: transparent;
+
+      &:hover:not(:disabled) {
+        background-color: rgba($color-neutral-foreground-rest, 0.03);
+      }
+
+      &:active:not(:disabled) {
+        background-color: rgba($color-neutral-foreground-rest, 0.06);
+      }
+    }
+  }
+
+  @include modifier('subtle') {
+    .node__content {
+      &:hover:not(:disabled) {
+        background-color: $color-subtle-background-hover;
+      }
+
+      &:active:not(:disabled) {
+        background-color: $color-subtle-background-pressed;
+      }
+    }
+  }
+
+  @include modifier('subtle-circular') {
+    .node__content {
+      border-radius: $border-radius-circular;
+
+      &:hover:not(:disabled):not(.node--selected &) {
+        background-color: $color-subtle-background-hover;
+        outline: 1px solid $color-neutral-stroke-hover;
+        outline-offset: -1px;
+      }
+
+      &:active:not(:disabled):not(.node--selected &) {
+        background-color: $color-subtle-background-pressed;
+        outline: 1px solid $color-neutral-stroke-pressed;
+        outline-offset: -1px;
+      }
+    }
+
+    &.node--selected {
+      .node__content {
+        background-color: #ebf3fc; // Brand-Background-2-Rest
+        outline: 1px solid $color-brand-primary;
+        outline-offset: -1px;
+
+        &:hover {
+          background-color: #cfe4fa; // Brand-Background-2-Hover
+          outline-color: #115ea3; // Brand-Stroke-Compound-Hover
+        }
+
+        &:active {
+          background-color: #96c6fa; // Brand-Background-2-Pressed
+          outline-color: #0f548c; // Brand-Stroke-Compound-Pressed
+        }
+
+        .node__icon {
+          color: $color-brand-primary;
+        }
+
+        .node__label {
+          color: #115ea3; // Brand-Foreground-2-Rest
+        }
+      }
+
+      &.node--disabled {
+        .node__content {
+          background-color: #f0f0f0; // Neutral-Background-Disabled
+          outline: 1px solid #e0e0e0; // Neutral-Stroke-Disabled
+          outline-offset: -1px;
+        }
+      }
+    }
+
+    // Hide indicator for circular style
+    .node__indicator {
+      display: none;
+    }
+  }
+
+  @include modifier('filled-circular') {
+    .node__content {
+      border-radius: $border-radius-circular;
+    }
+
+    &.node--selected {
+      .node__content {
+        background-color: $color-brand-primary; // Brand-Background-1-Rest
+
+        &:hover {
+          background-color: #115ea3; // Brand-Background-1-Hover
+        }
+
+        &:active {
+          background-color: #0c3b5e; // Brand-Background-1-Pressed
+        }
+
+        .node__icon {
+          color: $color-neutral-foreground-on-brand;
+        }
+
+        .node__label {
+          color: $color-neutral-foreground-on-brand;
+        }
+      }
+
+      &.node--disabled {
+        .node__content {
+          background-color: #f0f0f0; // Neutral-Background-Disabled
+
+          outline: 1px solid #e0e0e0; // Neutral-Stroke-Disabled
+          outline-offset: -1px;
+        }
+      }
+    }
+
+    // Hide indicator for circular style
+    .node__indicator {
+      display: none;
+    }
+  }
+
+  // ==========================================================================
+  // Icon Only Modifier
+  // ==========================================================================
+
+  @include modifier('icon-only') {
+    .node__label,
+    .node__quick-actions {
+      display: none;
     }
   }
 
@@ -182,6 +411,17 @@
     .node__selection-indicator {
       height: 16px;
     }
+
+    .node__selector {
+      height: 2px;
+    }
+
+    &.node--indicator-vertical {
+      .node__indicator {
+        width: 3px;
+        height: 24px;
+      }
+    }
   }
 
   @include modifier('medium') {
@@ -202,6 +442,25 @@
 
     .node__selection-indicator {
       height: 24px;
+    }
+
+    .node__selector {
+      height: 4px;
+    }
+  }
+
+  // ==========================================================================
+  // Icon Styles
+  // ==========================================================================
+
+  @include element('icon') {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-shrink: 0;
+
+    svg {
+      transition: color $duration-faster $easing-ease-in-out;
     }
   }
 }

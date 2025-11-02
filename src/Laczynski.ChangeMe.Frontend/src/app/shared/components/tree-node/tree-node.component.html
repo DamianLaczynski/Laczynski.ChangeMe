@@ -15,12 +15,14 @@
       [node]="node()"
       [size]="size()"
       [showSelectionIndicator]="showSelectionIndicator()"
+      [indicatorPosition]="'vertical'"
+      [iconOnly]="iconOnly()"
       [asButton]="asButton()"
       [selectOnClick]="selectOnClick()"
       [showQuickActions]="showQuickActions()"
       [quickActionsTemplate]="quickActionsTemplate() || null"
       (nodeClick)="onNodeClick($event)"
-      (nodeSelect)="onNodeSelect($any($event))"
+      (nodeSelect)="onNodeSelect($event)"
     >
       <ng-template #before>
         @if (shouldShowChevron() && chevronPosition() === 'before') {
@@ -60,15 +62,16 @@
           [chevronPosition]="chevronPosition()"
           [chevronIconCollapsed]="chevronIconCollapsed()"
           [chevronIconExpanded]="chevronIconExpanded()"
+          [iconOnly]="iconOnly()"
           [asButton]="asButton()"
           [expandOnClick]="expandOnClick()"
           [selectOnClick]="selectOnClick()"
           [showQuickActions]="showQuickActions()"
           [quickActionsTemplate]="quickActionsTemplate() || null"
-          (nodeClick)="nodeClick.emit($any($event))"
-          (nodeToggle)="nodeToggle.emit($any($event))"
-          (nodeSelect)="nodeSelect.emit($any($event))"
-          (keyNavigation)="keyNavigation.emit($any($event))"
+          (nodeClick)="nodeClick.emit($event)"
+          (nodeToggle)="nodeToggle.emit($event)"
+          (nodeSelect)="nodeSelect.emit($event)"
+          (keyNavigation)="keyNavigation.emit($event)"
         />
       }
     </div>

@@ -2,7 +2,7 @@ import { Component, signal } from '@angular/core';
 import { TreeComponent } from './tree.component';
 import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../button/button.component';
-import { TreeNode } from '../utils';
+import { TreeNode } from '../tree-node/tree-node.component';
 
 @Component({
   selector: 'app-tree-showcase',

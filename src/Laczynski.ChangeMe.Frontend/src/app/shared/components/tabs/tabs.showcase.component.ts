@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { TabsComponent } from './tabs.component';
 import { CommonModule } from '@angular/common';
-import { Node } from '../utils';
+import { Node } from '../node/node.component';
 
 @Component({
   selector: 'app-tabs-showcase',

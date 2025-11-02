@@ -1,7 +1,7 @@
 import { Component, signal, TemplateRef, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TreeNodeComponent } from './tree-node.component';
-import { TreeNode } from '../utils';
+import { TreeNode } from './tree-node.component';
 import { ButtonComponent } from '../button/button.component';
 
 @Component({
