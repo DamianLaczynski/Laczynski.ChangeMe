@@ -325,17 +325,17 @@ export class DropdownShowcaseComponent {
     {
       value: 'us',
       label: 'United States',
-      icon: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect width="20" height="20" fill="#B22234"/><rect y="1" width="20" height="1.5" fill="white"/><rect y="4" width="20" height="1.5" fill="white"/><rect y="7" width="20" height="1.5" fill="white"/></svg>',
+      icon: 'star',
     },
     {
       value: 'uk',
       label: 'United Kingdom',
-      icon: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect width="20" height="20" fill="#012169"/></svg>',
+      icon: 'star',
     },
     {
       value: 'fr',
       label: 'France',
-      icon: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect width="7" height="20" fill="#002395"/><rect x="7" width="6" height="20" fill="white"/><rect x="13" width="7" height="20" fill="#ED2939"/></svg>',
+      icon: 'star',
     },
   ];
 
@@ -343,17 +343,17 @@ export class DropdownShowcaseComponent {
     {
       value: 'edit',
       label: 'Edit',
-      icon: '<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M14 3a1 1 0 011.707-.707l2 2a1 1 0 010 1.414l-9 9a1 1 0 01-.39.242l-3 1a1 1 0 01-1.28-1.28l1-3a1 1 0 01.242-.39l9-9z"/></svg>',
+      icon: 'star',
     },
     {
       value: 'delete',
       label: 'Delete',
-      icon: '<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M7 3a1 1 0 00-1 1v1H3a1 1 0 000 2h1v9a2 2 0 002 2h8a2 2 0 002-2V7h1a1 1 0 100-2h-3V4a1 1 0 00-1-1H7z"/></svg>',
+      icon: 'star',
     },
     {
       value: 'download',
       label: 'Download',
-      icon: '<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M10 3a1 1 0 011 1v8.586l2.293-2.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 12.586V4a1 1 0 011-1z"/><path d="M3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"/></svg>',
+      icon: 'star',
     },
   ];
 

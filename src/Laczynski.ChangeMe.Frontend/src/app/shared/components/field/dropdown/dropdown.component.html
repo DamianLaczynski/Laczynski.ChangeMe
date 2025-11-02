@@ -83,48 +83,39 @@
   <!-- Items list -->
   <div class="dropdown-panel__list">
     @for (item of filteredItems(); track item.value) {
-      <div
-        [ngClass]="getItemClasses(item)"
-        [attr.role]="item.type === 'header' || item.type === 'divider' ? 'separator' : 'option'"
-        [attr.aria-selected]="isItemSelected(item)"
-        [attr.aria-disabled]="item.disabled"
-        (click)="selectItem(item, $event)"
-      >
-        @if (item.type === 'header') {
-          <!-- Header item -->
-          <div class="dropdown-panel__item-header">
-            {{ item.label }}
-          </div>
-        } @else if (item.type === 'divider') {
-          <!-- Divider -->
-          <div class="dropdown-panel__divider"></div>
-        } @else {
-          <!-- Regular item -->
-          <div class="dropdown-panel__item-container">
-            <!-- Checkmark/Checkbox control -->
-            @if (mode() === 'single' && isItemSelected(item)) {
-              <!-- Single select checkmark -->
+      @if (item.type === 'header') {
+        <!-- Header item -->
+        <div class="dropdown-panel__item-header">
+          {{ item.label }}
+        </div>
+      } @else if (item.type === 'divider') {
+        <!-- Divider -->
+        <div class="dropdown-panel__divider"></div>
+      } @else {
+        <!-- Regular item using NodeComponent -->
+        <app-node
+          [node]="itemToNode(item)"
+          [size]="size()"
+          [asButton]="true"
+          [selectOnClick]="false"
+          [showSelectionIndicator]="false"
+          (nodeClick)="selectItem(item)"
+        >
+          <!-- Before template for checkbox/checkmark -->
+          <ng-template #before>
+            @if (shouldShowCheckmark(item)) {
               <app-icon [icon]="'checkmark'" [size]="size()" />
-            } @else if (mode() === 'multi') {
+            } @else if (shouldShowCheckbox(item)) {
               <app-checkbox
                 size="medium"
                 [ngModel]="isItemSelected(item)"
                 (ngModelChange)="selectItem(item, $event)"
+                (click)="$event.stopPropagation()"
               />
             }
-
-            <!-- Icon (if provided) -->
-            @if (item.icon) {
-              <div class="dropdown-panel__item-icon" [innerHTML]="item.icon"></div>
-            }
-
-            <!-- Label -->
-            <div class="dropdown-panel__item-text">
-              {{ item.label }}
-            </div>
-          </div>
-        }
-      </div>
+          </ng-template>
+        </app-node>
+      }
     } @empty {
       <div class="dropdown-panel__empty">No items found</div>
     }

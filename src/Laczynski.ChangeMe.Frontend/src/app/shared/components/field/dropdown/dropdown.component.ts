@@ -17,6 +17,7 @@ import { CheckboxComponent } from '../checkbox/checkbox.component';
 import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { ActionButtonComponent } from '../action-button.component';
+import { NodeComponent, Node } from '../../node/node.component';
 
 export interface DropdownItem {
   value: string | number;
@@ -45,6 +46,7 @@ export type DropdownMode = 'single' | 'multi';
     FormsModule,
     IconComponent,
     ActionButtonComponent,
+    NodeComponent,
   ],
   templateUrl: './dropdown.component.html',
   host: {
@@ -241,28 +243,32 @@ export class DropdownComponent extends FieldComponent {
     super.writeValue(value);
   }
 
-  getItemClasses(item: DropdownItem): string {
-    const classes = ['dropdown-panel__item'];
+  /**
+   * Convert DropdownItem to Node format
+   */
+  itemToNode(item: DropdownItem): Node<DropdownItem> {
+    return {
+      id: item.value,
+      label: item.label,
+      icon: item.icon,
+      disabled: item.disabled || false,
+      selected: this.isItemSelected(item),
+      data: item,
+      onClick: () => this.selectItem(item),
+    };
+  }
 
-    if (item.type === 'header') {
-      classes.push('dropdown-panel__item--header');
-    }
+  /**
+   * Check if item should show checkbox (for multi-select mode)
+   */
+  shouldShowCheckbox(item: DropdownItem): boolean {
+    return this.mode() === 'multi' && item.type !== 'header' && item.type !== 'divider';
+  }
 
-    if (item.type === 'divider') {
-      classes.push('dropdown-panel__item--divider');
-      return classes.join(' ');
-    }
-
-    if (item.disabled) {
-      classes.push('dropdown-panel__item--disabled');
-    }
-
-    if (this.isItemSelected(item)) {
-      classes.push('dropdown-panel__item--selected');
-    }
-
-    classes.push(`dropdown-panel__item--${this.size()}`);
-
-    return classes.join(' ');
+  /**
+   * Check if item should show checkmark (for single-select mode)
+   */
+  shouldShowCheckmark(item: DropdownItem): boolean {
+    return this.mode() === 'single' && this.isItemSelected(item) && item.type !== 'header' && item.type !== 'divider';
   }
 }
