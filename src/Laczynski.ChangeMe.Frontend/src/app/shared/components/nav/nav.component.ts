@@ -60,17 +60,6 @@ export class NavComponent {
     return classes.join(' ');
   }
 
-  // Generate CSS classes for hamburger button
-  hamburgerClasses(): string {
-    const classes = ['nav__hamburger'];
-
-    if (this.isCollapsed()) {
-      classes.push('nav__hamburger--collapsed');
-    }
-
-    return classes.join(' ');
-  }
-
   // Generate CSS classes for content area
   contentClasses(): string {
     const classes = ['nav__content'];
