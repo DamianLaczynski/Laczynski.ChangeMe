@@ -27,6 +27,11 @@ export class DsSidebarComponent {
     { id: 'slider', label: 'Slider', icon: 'arrow_maximize' },
     { id: 'switch', label: 'Switch', icon: 'tap_single' },
     { id: 'text', label: 'Text', icon: 'text_align_left' },
+    { id: 'email', label: 'Email', icon: 'mail' },
+    { id: 'search', label: 'Search', icon: 'search' },
+    { id: 'tel', label: 'Tel', icon: 'call' },
+    { id: 'textarea', label: 'Textarea', icon: 'text_field' },
+    { id: 'url', label: 'URL', icon: 'link' },
     // Layout Components Section
     { id: 'layout-components', isSectionHeader: true, label: 'Layout Components' },
     { id: 'accordion', label: 'Accordion', icon: 'slide_text' },

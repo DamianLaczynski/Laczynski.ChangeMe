@@ -1,0 +1,41 @@
+<app-field
+  [fieldType]="'textarea'"
+  [label]="label()"
+  [placeholder]="placeholder()"
+  [helpText]="helpText()"
+  [errorText]="errorText()"
+  [warningText]="warningText()"
+  [successText]="successText()"
+  [required]="required()"
+  [disabled]="disabled()"
+  [readonly]="readonly()"
+  [autocomplete]="autocomplete()"
+  [id]="id()"
+  [name]="name()"
+  [state]="state()"
+  [size]="size()"
+  [variant]="variant()"
+>
+  <div class="input-wrapper" [class]="wrapperClasses">
+    <textarea
+      class="input"
+      [id]="id()"
+      [name]="name()"
+      [placeholder]="placeholder()"
+      [required]="required()"
+      [disabled]="disabled()"
+      [readonly]="readonly()"
+      [rows]="rows()"
+      [cols]="cols() || undefined"
+      [attr.aria-label]="ariaLabel() || label()"
+      [attr.aria-describedby]="ariaDescribedBy()"
+      [attr.aria-invalid]="state() === 'error'"
+      (input)="onInputChange($event)"
+      (blur)="onBlur($event)"
+      (focus)="onFocus($event)"
+      (keyup)="onKeyUp($event)"
+      (keydown)="onKeyDown($event)"
+      >{{ value }}</textarea
+    >
+  </div>
+</app-field>

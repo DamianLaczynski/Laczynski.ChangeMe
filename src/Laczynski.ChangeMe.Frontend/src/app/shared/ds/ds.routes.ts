@@ -8,6 +8,11 @@ import { DropdownShowcaseComponent } from '@shared/components/field/dropdown/dro
 import { NumberShowcaseComponent } from '@shared/components/field/number/number.showcase.component';
 import { PasswordShowcaseComponent } from '@shared/components/field/password/password.showcase.component';
 import { TextShowcaseComponent } from '@shared/components/field/text/text.showcase.component';
+import { EmailShowcaseComponent } from '@shared/components/field/email/email.showcase.component';
+import { SearchShowcaseComponent } from '@shared/components/field/search/search.showcase.component';
+import { TelShowcaseComponent } from '@shared/components/field/tel/tel.showcase.component';
+import { TextareaShowcaseComponent } from '@shared/components/field/textarea/textarea.showcase.component';
+import { UrlShowcaseComponent } from '@shared/components/field/url/url.showcase.component';
 import { TabsShowcaseComponent } from '@shared/components/tabs/tabs.showcase.component';
 import { SkeletonShowcaseComponent } from '@shared/components/skeleton/skeleton.showcase.component';
 import { TreeShowcaseComponent } from '@shared/components/tree/tree.showcase.component';
@@ -109,6 +114,26 @@ export const dsRoutes: Routes = [
   {
     path: 'text',
     component: TextShowcaseComponent,
+  },
+  {
+    path: 'email',
+    component: EmailShowcaseComponent,
+  },
+  {
+    path: 'search',
+    component: SearchShowcaseComponent,
+  },
+  {
+    path: 'tel',
+    component: TelShowcaseComponent,
+  },
+  {
+    path: 'textarea',
+    component: TextareaShowcaseComponent,
+  },
+  {
+    path: 'url',
+    component: UrlShowcaseComponent,
   },
   {
     path: 'tabs',
