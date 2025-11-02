@@ -1,34 +1,18 @@
-<nav [class]="breadcrumbClasses()" [attr.aria-label]="ariaLabel()">
+<nav
+  [class]="breadcrumbClasses()"
+  [attr.aria-label]="ariaLabel()"
+  [class.breadcrumb--hide-icons]="!showIcons()"
+>
   <ol class="breadcrumb__list">
     @for (item of items(); track item.id; let isLast = $last) {
       <li class="breadcrumb__item">
-        <!-- Breadcrumb Button -->
-        <button
-          [class]="itemClasses(item)"
-          [attr.aria-current]="item.selected ? 'page' : null"
-          [attr.aria-disabled]="item.disabled"
-          [disabled]="item.disabled"
-          (click)="onItemClick(item)"
-          type="button"
-        >
-          <!-- Icon (if provided) -->
-          @if (showIcons() && item.icon) {
-            <div class="breadcrumb__icon">
-              @if (item.selected) {
-                <app-icon [icon]="item.icon" [size]="size()" variant="filled" />
-              } @else {
-                <app-icon [icon]="item.icon" [size]="size()" variant="regular" />
-              }
-            </div>
-          }
-
-          <!-- Text -->
-          <div class="breadcrumb__text-wrapper">
-            <div class="breadcrumb__text">
-              {{ item.label }}
-            </div>
-          </div>
-        </button>
+        <app-node
+          [node]="item"
+          [size]="size()"
+          [asButton]="true"
+          [selectOnClick]="false"
+          (nodeClick)="onNodeClick(item)"
+        />
 
         <!-- Divider (chevron) - not shown for last item -->
         @if (!isLast) {

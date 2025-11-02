@@ -1,5 +1,6 @@
 import { Component, input, output } from '@angular/core';
 import { Node, Size } from '../utils';
+import { NodeComponent } from '../node/node.component';
 import { IconComponent } from '../icon/icon.component';
 
 export interface BreadcrumbItem<T = any> extends Node<T> {
@@ -8,8 +9,7 @@ export interface BreadcrumbItem<T = any> extends Node<T> {
 
 @Component({
   selector: 'app-breadcrumb',
-
-  imports: [IconComponent],
+  imports: [NodeComponent, IconComponent],
   templateUrl: './breadcrumb.component.html',
 })
 export class BreadcrumbComponent<T extends BreadcrumbItem> {
@@ -26,25 +26,15 @@ export class BreadcrumbComponent<T extends BreadcrumbItem> {
     return classes.join(' ');
   }
 
-  itemClasses(item: T): string {
-    const classes = ['breadcrumb__button'];
-
-    if (item.selected) {
-      classes.push('breadcrumb__button--current');
-    }
-
-    if (item.disabled) {
-      classes.push('breadcrumb__button--disabled');
-    }
-
-    return classes.join(' ');
-  }
-
   onItemClick(item: T): void {
     if (item.disabled || item.selected) {
       return;
     }
 
     this.itemClick.emit(item);
+  }
+
+  onNodeClick(item: T): void {
+    this.onItemClick(item);
   }
 }
