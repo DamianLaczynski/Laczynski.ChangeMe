@@ -29,8 +29,8 @@ import { SpinnerShowcaseComponent } from '@shared/components/spinner/spinner.sho
 import { FileShowcaseComponent } from '@shared/components/field/file/file.showcase.component';
 import { StepperShowcaseComponent } from '@shared/components/field/stepper/stepper.showcase.component';
 import { ToastShowcaseComponent } from '@shared/components/toast/toast.showcase.component';
-import { NavShowcaseComponent } from '@shared/components/nav';
 import { NodeShowcaseComponent } from '@shared/components/tree-node/tree-node.showcase.component';
+import { NavShowcaseComponent } from '@shared/components/nav/nav.showcase.component';
 
 export const dsRoutes: Routes = [
   {

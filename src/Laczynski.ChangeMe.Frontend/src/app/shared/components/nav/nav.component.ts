@@ -9,63 +9,43 @@ import {
   viewChildren,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NavState, NavNodeConfig } from './models';
-import { TreeNodeComponent } from '../tree-node/tree-node.component';
+import { TreeNode, TreeNodeComponent } from '../tree-node/tree-node.component';
+import { NavSectionHeaderComponent } from './nav-section-header.component';
 import { Node } from '../node/node.component';
+import { DividerComponent } from '../divider';
+import { ButtonComponent } from '../button/button.component';
+import { Size } from '../utils';
+
+export interface NavNode extends TreeNode<any> {
+  isDivider?: boolean;
+  isSectionHeader?: boolean;
+  size?: Size;
+}
 
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
-
-  imports: [CommonModule, TreeNodeComponent],
+  imports: [
+    CommonModule,
+    TreeNodeComponent,
+    NavSectionHeaderComponent,
+    DividerComponent,
+    ButtonComponent,
+  ],
 })
 export class NavComponent {
   // Configuration inputs
   width = input<number>(260);
   collapsedWidth = input<number>(56);
   collapsible = input<boolean>(true);
-  defaultState = input<NavState>('collapsed');
-  items = input<NavNodeConfig[]>([]);
+  isCollapsed = model<boolean>(false);
 
-  // State management
-  state = model<NavState>(this.defaultState());
+  items = input<NavNode[]>([]);
 
-  // Outputs
-  stateChange = output<NavState>();
-  hamburgerClick = output<void>();
-
-  // Internal state
-  isCollapsed = signal<boolean>(this.defaultState() === 'collapsed');
   currentFocusIndex = signal<number>(0);
 
   // View children for keyboard navigation
   navNodes = viewChildren(TreeNodeComponent, { read: ElementRef });
-
-  constructor() {
-    // Initialize collapsed state based on defaultState
-    this.isCollapsed.set(this.defaultState() === 'collapsed');
-
-    // Sync isCollapsed with defaultState changes
-    effect(() => {
-      this.isCollapsed.set(this.defaultState() === 'collapsed');
-    });
-
-    // Sync open property with expanded for backward compatibility
-    effect(() => {
-      this.items().forEach(item => {
-        if (item.open !== undefined && item.expanded === undefined) {
-          item.expanded = item.open;
-        }
-        if (item.children) {
-          item.hasChildren = true;
-        }
-        // Ensure id is set
-        if (!item.id) {
-          item.id = item.label;
-        }
-      });
-    });
-  }
 
   // Generate CSS classes for nav container
   navClasses(): string {
@@ -108,11 +88,7 @@ export class NavComponent {
       return;
     }
 
-    const newState: NavState = this.isCollapsed() ? 'expanded' : 'collapsed';
     this.isCollapsed.set(!this.isCollapsed());
-    this.state.set(newState);
-    this.stateChange.emit(newState);
-    this.hamburgerClick.emit();
   }
 
   // Handle hamburger button click
@@ -128,7 +104,7 @@ export class NavComponent {
   }
 
   // Handle item click
-  onItemClick(item: Node): void {
+  onItemClick(item: NavNode): void {
     if (item.onClick) {
       item.onClick();
     }
@@ -167,13 +143,12 @@ export class NavComponent {
     }
   }
 
-  // Get all visible items (flatten structure)
   private getVisibleItems(): Array<{
-    item: NavNodeConfig;
+    item: NavNode;
     isChild: boolean;
     parentIndex?: number;
   }> {
-    const visible: Array<{ item: NavNodeConfig; isChild: boolean; parentIndex?: number }> = [];
+    const visible: Array<{ item: NavNode; isChild: boolean; parentIndex?: number }> = [];
 
     this.items().forEach((item, parentIndex) => {
       visible.push({ item, isChild: false });
@@ -182,7 +157,7 @@ export class NavComponent {
       if (!this.isCollapsed() && item.expanded && item.children) {
         item.children.forEach(child => {
           visible.push({
-            item: { ...child, id: child.id || child.label } as NavNodeConfig,
+            item: { ...child, id: child.id || child.label } as NavNode,
             isChild: true,
             parentIndex,
           });
@@ -194,7 +169,7 @@ export class NavComponent {
   }
 
   // Move focus down
-  private moveFocusDown(visibleItems: Array<{ item: NavNodeConfig; isChild: boolean }>): void {
+  private moveFocusDown(visibleItems: Array<{ item: NavNode; isChild: boolean }>): void {
     const currentIndex = this.currentFocusIndex();
     const nextIndex = Math.min(currentIndex + 1, visibleItems.length - 1);
     this.currentFocusIndex.set(nextIndex);
@@ -202,7 +177,7 @@ export class NavComponent {
   }
 
   // Move focus up
-  private moveFocusUp(visibleItems: Array<{ item: NavNodeConfig; isChild: boolean }>): void {
+  private moveFocusUp(visibleItems: Array<{ item: NavNode; isChild: boolean }>): void {
     const currentIndex = this.currentFocusIndex();
     const prevIndex = Math.max(currentIndex - 1, 0);
     this.currentFocusIndex.set(prevIndex);
@@ -210,7 +185,7 @@ export class NavComponent {
   }
 
   // Move focus to first item
-  private moveFocusToFirst(visibleItems: Array<{ item: NavNodeConfig; isChild: boolean }>): void {
+  private moveFocusToFirst(visibleItems: Array<{ item: NavNode; isChild: boolean }>): void {
     if (visibleItems.length > 0) {
       this.currentFocusIndex.set(0);
       this.focusItem(0);
@@ -218,7 +193,7 @@ export class NavComponent {
   }
 
   // Move focus to last item
-  private moveFocusToLast(visibleItems: Array<{ item: NavNodeConfig; isChild: boolean }>): void {
+  private moveFocusToLast(visibleItems: Array<{ item: NavNode; isChild: boolean }>): void {
     if (visibleItems.length > 0) {
       const lastIndex = visibleItems.length - 1;
       this.currentFocusIndex.set(lastIndex);
@@ -238,9 +213,7 @@ export class NavComponent {
   }
 
   // Activate current item (click)
-  private activateCurrentItem(
-    visibleItems: Array<{ item: NavNodeConfig; isChild: boolean }>,
-  ): void {
+  private activateCurrentItem(visibleItems: Array<{ item: NavNode; isChild: boolean }>): void {
     const currentIndex = this.currentFocusIndex();
     const currentItem = visibleItems[currentIndex];
 
