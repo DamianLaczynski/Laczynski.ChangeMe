@@ -1,7 +1,7 @@
 <div [class]="getCarouselClasses()" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
   <!-- Carousel Content -->
   <div class="carousel__content">
-    <div class="carousel__track" [style.transform]="'translateX(-' + (currentIndex() * 100) + '%)'">
+    <div class="carousel__track" [style.transform]="'translateX(-' + currentIndex() * 100 + '%)'">
       @for (item of items(); track item.id) {
         <div
           class="carousel__slide"
@@ -10,7 +10,11 @@
         >
           @if (item.image) {
             <div class="carousel__image-container">
-              <img [src]="item.image" [alt]="item.title || 'Carousel image'" class="carousel__image" />
+              <img
+                [src]="item.image"
+                [alt]="item.title || 'Carousel image'"
+                class="carousel__image"
+              />
               @if (item.title || item.description) {
                 <div class="carousel__overlay">
                   @if (item.title) {
@@ -41,7 +45,9 @@
   </div>
 
   <!-- Navigation (Controls + Indicators) -->
-  @if ((showControls() && (hasPrevious() || hasNext())) || (showIndicators() && items().length > 1)) {
+  @if (
+    (showControls() && (hasPrevious() || hasNext())) || (showIndicators() && items().length > 1)
+  ) {
     <div class="carousel__navigation">
       <!-- Previous Button -->
       @if (showControls() && hasPrevious()) {

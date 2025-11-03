@@ -231,7 +231,7 @@ import { JsonPipe } from '@angular/common';
                 <pre>{{ { totpCode: formData.totpCode || '(empty)' } | json }}</pre>
                 <div>
                   <strong>Code Length:</strong>
-                  {{ formData.totpCode?.length || 0 }}/6
+                  {{ formData.totpCode.length || 0 }}/6
                 </div>
                 <div>
                   <strong>Is Valid:</strong>

@@ -6,3 +6,5 @@ export interface CarouselItem {
   content?: any; // For custom content projection
   [key: string]: any; // Allow additional properties
 }
+
+

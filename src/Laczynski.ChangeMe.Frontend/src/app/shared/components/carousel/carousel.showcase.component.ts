@@ -153,9 +153,7 @@ import { CarouselItem } from './models/carousel-item.model';
       <!-- Non-looping Carousel -->
       <div class="showcase__section">
         <h2 class="showcase__section__title">Non-looping Carousel</h2>
-        <p class="showcase__section__description">
-          Carousel that stops at first and last slide.
-        </p>
+        <p class="showcase__section__description">Carousel that stops at first and last slide.</p>
         <div class="showcase__preview">
           <app-carousel
             [items]="basicItems()"
