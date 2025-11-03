@@ -1,0 +1,194 @@
+// ==========================================================================
+// Rating Component - Fluent 2 Design System (BEM Block)
+// ==========================================================================
+
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use '../utils/functions' as *;
+
+@include block('rating') {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-2;
+  font-family: $font-family-base;
+
+  // Size Modifiers
+  @include modifier('small') {
+    gap: $spacing-1;
+
+    @include element('star') {
+      padding: $spacing-05;
+    }
+
+    @include element('value') {
+      font-size: $font-size-200;
+      line-height: $line-height-200;
+    }
+  }
+
+  @include modifier('medium') {
+    gap: $spacing-2;
+
+    @include element('star') {
+      padding: $spacing-1;
+    }
+
+    @include element('value') {
+      font-size: $font-size-300;
+      line-height: $line-height-300;
+    }
+  }
+
+  @include modifier('large') {
+    gap: $spacing-3;
+
+    @include element('star') {
+      padding: $spacing-2;
+    }
+
+    @include element('value') {
+      font-size: $font-size-400;
+      line-height: $line-height-400;
+    }
+  }
+
+  // Elements
+  @include element('stars') {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-1;
+    flex-wrap: wrap;
+  }
+
+  @include element('star-wrapper') {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @include element('star') {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    padding: $spacing-1;
+    margin: 0;
+    cursor: pointer;
+    color: $color-neutral-foreground2-rest;
+    transition: color $duration-faster $easing-ease-in-out,
+                transform $duration-faster $easing-ease-in-out;
+    border-radius: $border-radius-400;
+    outline: none;
+    position: relative;
+
+    // Half star overlay
+    @include modifier('half') {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50%;
+      height: 100%;
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: all;
+
+      @include modifier('half-left') {
+        clip-path: inset(0 50% 0 0);
+      }
+
+      @include modifier('half-filled') {
+        opacity: 1;
+      }
+
+      &:hover:not(:disabled) {
+        opacity: 1;
+      }
+    }
+
+    // Hover state
+    &:hover:not(:disabled) {
+      color: $color-brand-primary;
+      transform: scale(1.1);
+      background-color: $color-neutral-background-hover;
+    }
+
+    // Active/pressed state
+    &:active:not(:disabled) {
+      transform: scale(0.95);
+      background-color: $color-neutral-background-pressed;
+    }
+
+    // Focus state
+    &:focus-visible {
+      outline: 2px solid $color-brand-primary;
+      outline-offset: 2px;
+    }
+
+    // Filled state
+    @include modifier('filled') {
+      color: $color-brand-primary;
+    }
+
+    // Disabled state
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  }
+
+  @include element('value') {
+    display: inline-flex;
+    align-items: center;
+    color: $color-neutral-foreground2-rest;
+    font-weight: $font-weight-medium;
+    margin-left: $spacing-1;
+    white-space: nowrap;
+  }
+
+  // Modifiers
+  @include modifier('disabled') {
+    pointer-events: none;
+    opacity: 0.6;
+
+    @include element('star') {
+      cursor: not-allowed;
+      
+      &:hover {
+        transform: none;
+        background-color: transparent;
+      }
+    }
+  }
+
+  @include modifier('readonly') {
+    pointer-events: none;
+
+    @include element('star') {
+      cursor: default;
+      
+      &:hover {
+        transform: none;
+        background-color: transparent;
+      }
+
+      &:focus-visible {
+        outline: none;
+      }
+    }
+  }
+
+  // Responsive adjustments
+  @include respond-to(small) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $spacing-2;
+
+    @include element('value') {
+      margin-left: 0;
+      margin-top: $spacing-1;
+    }
+  }
+}

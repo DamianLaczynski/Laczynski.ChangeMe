@@ -1,0 +1,164 @@
+// ==========================================================================
+// Pagination Component - Fluent 2 Design System (BEM Block)
+// ==========================================================================
+
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use '../utils/functions' as *;
+
+@include block('pagination') {
+  display: flex;
+  align-items: center;
+  gap: $spacing-4;
+  flex-wrap: wrap;
+  font-family: $font-family-base;
+
+  // Size Modifiers
+  @include modifier('small') {
+    gap: $spacing-2;
+    font-size: $font-size-200;
+    line-height: $line-height-200;
+
+    @include element('info-text') {
+      font-size: $font-size-200;
+      line-height: $line-height-200;
+    }
+  }
+
+  @include modifier('medium') {
+    gap: $spacing-3;
+    font-size: $font-size-300;
+    line-height: $line-height-300;
+
+    @include element('info-text') {
+      font-size: $font-size-300;
+      line-height: $line-height-300;
+    }
+  }
+
+  @include modifier('large') {
+    gap: $spacing-4;
+    font-size: $font-size-400;
+    line-height: $line-height-400;
+
+    @include element('info-text') {
+      font-size: $font-size-400;
+      line-height: $line-height-400;
+    }
+  }
+
+  // Elements
+  @include element('info') {
+    display: flex;
+    align-items: center;
+    color: $color-neutral-foreground2-rest;
+    flex-shrink: 0;
+  }
+
+  @include element('info-text') {
+    font-weight: $font-weight-regular;
+    color: $color-neutral-foreground2-rest;
+  }
+
+  @include element('controls') {
+    display: flex;
+    align-items: center;
+    gap: $spacing-1;
+    flex-wrap: wrap;
+  }
+
+  @include element('button') {
+    flex-shrink: 0;
+
+    // Button type modifiers
+    // @include modifier('first')
+    // @include modifier('previous'),
+    // @include modifier('next'),
+    // @include modifier('last') {
+    //   // Navigation buttons use subtle variant
+    // }
+
+    @include modifier('page') {
+      // Page number buttons
+      min-width: 32px;
+      font-weight: $font-weight-regular;
+
+      &.pagination--small & {
+        min-width: 24px;
+      }
+
+      &.pagination--large & {
+        min-width: 40px;
+      }
+    }
+  }
+
+  @include element('pages') {
+    display: flex;
+    align-items: center;
+    gap: $spacing-1;
+    flex-wrap: wrap;
+  }
+
+  @include element('ellipsis') {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
+    color: $color-neutral-foreground2-rest;
+    font-weight: $font-weight-medium;
+    user-select: none;
+    pointer-events: none;
+
+    .pagination--small & {
+      min-width: 24px;
+      height: 24px;
+      font-size: $font-size-200;
+    }
+
+    .pagination--large & {
+      min-width: 40px;
+      height: 40px;
+      font-size: $font-size-400;
+    }
+  }
+
+  @include element('page-size') {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+
+  @include element('page-size-selector') {
+    min-width: 100px;
+  }
+
+  // Responsive adjustments
+  @include respond-to(small) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: $spacing-3;
+
+    @include element('info') {
+      justify-content: center;
+      text-align: center;
+    }
+
+    @include element('controls') {
+      justify-content: center;
+    }
+
+    @include element('page-size') {
+      margin-left: 0;
+      justify-content: center;
+      width: 100%;
+    }
+
+    @include element('page-size-selector') {
+      width: 100%;
+      max-width: 200px;
+    }
+  }
+}

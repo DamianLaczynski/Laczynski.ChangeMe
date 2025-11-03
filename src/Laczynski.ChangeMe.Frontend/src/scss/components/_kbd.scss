@@ -1,0 +1,87 @@
+// ==========================================================================
+// Kbd Component - Fluent 2 Design System (BEM Block)
+// ==========================================================================
+
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use '../utils/functions' as *;
+
+@include block('kbd') {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: $font-family-mono;
+  font-weight: $font-weight-regular;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
+  box-sizing: border-box;
+
+  // Size variants
+  @include modifier('small') {
+    min-width: 18px;
+    height: 18px;
+    padding: $spacing-05 $spacing-1;
+    font-size: $font-size-100;
+    border-radius: $border-radius-200;
+  }
+
+  @include modifier('medium') {
+    min-width: 20px;
+    height: 20px;
+    padding: $spacing-05 $spacing-1;
+    font-size: $font-size-100;
+    border-radius: $border-radius-200;
+  }
+
+  @include modifier('large') {
+    min-width: 24px;
+    height: 24px;
+    padding: $spacing-1 $spacing-2;
+    font-size: $font-size-200;
+    border-radius: $border-radius-200;
+  }
+
+  // Appearance variants
+  @include modifier('default') {
+    background: $color-neutral-background-rest;
+    border: 1px solid $color-neutral-stroke-rest;
+    color: $color-neutral-foreground2-rest;
+    box-shadow:
+      0 1px 0 0 rgba(0, 0, 0, 0.1),
+      inset 0 -1px 0 0 rgba(0, 0, 0, 0.05);
+  }
+
+  @include modifier('filled') {
+    background: $color-neutral-background-hover;
+    border: 1px solid $color-neutral-stroke-rest;
+    color: $color-neutral-foreground2-rest;
+    box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1);
+  }
+
+  // Responsive adjustments for small screens
+  @include respond-to(small) {
+    &.kbd--small {
+      min-width: 16px;
+      height: 16px;
+      padding: $spacing-05 $spacing-05;
+      font-size: $font-size-100;
+    }
+
+    &.kbd--medium {
+      min-width: 18px;
+      height: 18px;
+      padding: $spacing-05 $spacing-1;
+      font-size: $font-size-100;
+    }
+
+    &.kbd--large {
+      min-width: 22px;
+      height: 22px;
+      padding: $spacing-05 $spacing-2;
+      font-size: $font-size-200;
+    }
+  }
+}

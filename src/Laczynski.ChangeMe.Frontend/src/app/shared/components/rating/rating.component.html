@@ -1,0 +1,78 @@
+<div [class]="getRatingClasses()" [attr.aria-label]="getAriaLabel()" role="group">
+  <div class="rating__stars">
+    @for (star of stars(); track star) {
+      <div class="rating__star-wrapper">
+        @if (readOnly()) {
+          <!-- Read-only mode: use div instead of button -->
+          <div
+            class="rating__star"
+            [class.rating__star--filled]="isStarFilled(star)"
+          >
+            <app-icon
+              icon="star"
+              [size]="size()"
+              [variant]="isStarFilled(star) ? 'filled' : 'regular'"
+            />
+          </div>
+          @if (allowHalf()) {
+            <!-- Half star overlay (read-only) -->
+            <div
+              class="rating__star rating__star--half rating__star--half-left"
+              [class.rating__star--half-filled]="isStarHalfFilled(star)"
+            >
+              <app-icon
+                icon="star"
+                [size]="size()"
+                variant="filled"
+              />
+            </div>
+          }
+        } @else {
+          <!-- Interactive mode: use button -->
+          <button
+            type="button"
+            class="rating__star"
+            [class.rating__star--filled]="isStarFilled(star)"
+            [disabled]="disabled()"
+            (click)="onStarClick(star)"
+            (mouseenter)="onStarHover(star)"
+            (mouseleave)="onStarLeave()"
+            [attr.aria-label]="'Rate ' + star + ' stars'"
+            tabindex="0"
+          >
+            <app-icon
+              icon="star"
+              [size]="size()"
+              [variant]="isStarFilled(star) ? 'filled' : 'regular'"
+            />
+          </button>
+          @if (allowHalf()) {
+            <!-- Half star overlay (for left half click) -->
+            <button
+              type="button"
+              class="rating__star rating__star--half rating__star--half-left"
+              [class.rating__star--half-filled]="isStarHalfFilled(star)"
+              [disabled]="disabled()"
+              (click)="onHalfStarClick(star, true)"
+              (mouseenter)="onHalfStarHover(star, true)"
+              (mouseleave)="onStarLeave()"
+              [attr.aria-label]="'Rate ' + (star - 0.5) + ' stars'"
+              tabindex="0"
+            >
+              <app-icon
+                icon="star"
+                [size]="size()"
+                variant="filled"
+              />
+            </button>
+          }
+        }
+      </div>
+    }
+  </div>
+  @if (showValue()) {
+    <div class="rating__value">
+      {{ displayValue().toFixed(allowHalf() ? 1 : 0) }} / {{ max() }}
+    </div>
+  }
+</div>

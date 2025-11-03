@@ -1,0 +1,110 @@
+@if (visible()) {
+  <div [class]="getBackdropClasses()" (click)="onBackdropClick($event)">
+    <div [class]="getContentClasses()">
+      <!-- Search Input -->
+      <div class="command-palette__search">
+        <app-icon
+          icon="search"
+          size="medium"
+          variant="regular"
+          class="command-palette__search-icon"
+        ></app-icon>
+        <input
+          #searchInput
+          type="text"
+          class="command-palette__search-input"
+          [placeholder]="placeholder()"
+          [value]="searchQuery()"
+          (input)="onSearchInput($event)"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        @if (searchQuery()) {
+          <button
+            class="command-palette__search-clear"
+            (click)="searchQuery.set('')"
+            aria-label="Clear search"
+          >
+            <app-icon icon="dismiss" size="small" variant="regular"></app-icon>
+          </button>
+        }
+      </div>
+
+      <!-- Command List -->
+      <div class="command-palette__list" #commandList>
+        @if (hasResults()) {
+          @for (section of groupedCommands(); track section.header) {
+            <div [class]="getSectionClasses(section, $index)">
+              @if (groupedCommands().length > 1) {
+                <div class="command-palette__section-header">{{ section.header }}</div>
+              }
+              <div class="command-palette__section-items">
+                @for (command of section.items; track command.id) {
+                  <div
+                    [class]="getCommandItemClasses(command, $index)"
+                    (click)="onCommandClick(command)"
+                    (mouseenter)="selectedIndex.set(getCommandIndex(command))"
+                  >
+                    <div class="command-palette__item-content">
+                      @if (shouldShowIcon(command)) {
+                        <div class="command-palette__item-icon">
+                          <app-icon
+                            [icon]="command.icon!"
+                            size="medium"
+                            [variant]="getIconTheme(command)"
+                          ></app-icon>
+                        </div>
+                      }
+                      <div class="command-palette__item-text">
+                        <div class="command-palette__item-label">{{ command.label }}</div>
+                        @if (command.description) {
+                          <div class="command-palette__item-description">
+                            {{ command.description }}
+                          </div>
+                        }
+                      </div>
+                      @if (command.shortcut) {
+                        <div class="command-palette__item-shortcut">
+                          @for (key of command.shortcut.split('+'); track key; let last = $last) {
+                            <kbd class="command-palette__shortcut-key">{{ key.trim() }}</kbd>
+                            @if (!last) {
+                              <span class="command-palette__shortcut-separator">+</span>
+                            }
+                          }
+                        </div>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        } @else {
+          <div class="command-palette__empty">
+            <div class="command-palette__empty-icon">
+              <app-icon icon="search" size="large" variant="regular"></app-icon>
+            </div>
+            <div class="command-palette__empty-text">{{ getEmptyStateMessage() }}</div>
+          </div>
+        }
+      </div>
+
+      <!-- Footer with hint -->
+      <div class="command-palette__footer">
+        <div class="command-palette__hint">
+          <kbd class="command-palette__hint-key">↑</kbd>
+          <kbd class="command-palette__hint-key">↓</kbd>
+          <span class="command-palette__hint-text">to navigate</span>
+        </div>
+        <div class="command-palette__hint">
+          <kbd class="command-palette__hint-key">Enter</kbd>
+          <span class="command-palette__hint-text">to select</span>
+        </div>
+        <div class="command-palette__hint">
+          <kbd class="command-palette__hint-key">Esc</kbd>
+          <span class="command-palette__hint-text">to close</span>
+        </div>
+      </div>
+    </div>
+  </div>
+}

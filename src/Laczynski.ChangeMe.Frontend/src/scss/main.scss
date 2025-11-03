@@ -24,7 +24,11 @@
 @use 'components/button';
 @use 'components/calendar';
 @use 'components/card';
+@use 'components/command-palette';
 @use 'components/checkbox';
+@use 'components/toolbar';
+@use 'components/drawer';
+@use 'components/carousel';
 @use 'components/color';
 @use 'components/date';
 @use 'components/date-range';
@@ -34,14 +38,17 @@
 @use 'components/file';
 @use 'components/tabs';
 @use 'components/input';
+@use 'components/kbd';
 @use 'components/menu';
 @use 'components/nav';
 @use 'components/node';
 @use 'components/number';
 @use 'components/tree-node';
 @use 'components/paginated-table';
+@use 'components/pagination';
 @use 'components/progress-bar';
 @use 'components/radio';
+@use 'components/rating';
 @use 'components/scroll-panel';
 @use 'components/skeleton';
 @use 'components/slider';
@@ -52,6 +59,7 @@
 @use 'components/tag';
 @use 'components/time';
 @use 'components/toast';
+@use 'components/tooltip';
 @use 'components/totp';
 @use 'components/tree';
 

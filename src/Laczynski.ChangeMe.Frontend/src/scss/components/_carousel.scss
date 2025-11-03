@@ -1,0 +1,277 @@
+// ==========================================================================
+// Carousel Component - Fluent 2 Design System (BEM Block)
+// ==========================================================================
+
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use '../utils/functions' as *;
+
+@include block('carousel') {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: $color-neutral-background-rest;
+  border-radius: $border-radius-800; // 8px
+  overflow: hidden;
+
+  // Size Modifiers
+  @include modifier('small') {
+    @include element('content') {
+      min-height: 200px;
+    }
+  }
+
+  @include modifier('medium') {
+    @include element('content') {
+      min-height: 400px;
+    }
+  }
+
+  @include modifier('large') {
+    @include element('content') {
+      min-height: 600px;
+    }
+  }
+
+  // Elements
+  @include element('container') {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  @include element('content') {
+    position: relative;
+    width: 100%;
+    flex: 1 1 auto;
+    overflow: hidden;
+    border-radius: $border-radius-800 $border-radius-800 0 0;
+  }
+
+  @include element('track') {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform $duration-fast $easing-decelerate-mid;
+    will-change: transform;
+  }
+
+  @include element('slide') {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+
+    @include modifier('active') {
+      // Active slide styling if needed
+    }
+  }
+
+  @include element('image-container') {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  @include element('image') {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  @include element('overlay') {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: $spacing-6 $spacing-4;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.7) 0%,
+      rgba(0, 0, 0, 0.4) 50%,
+      transparent 100%
+    );
+    color: $color-neutral-foreground-on-brand;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-1;
+  }
+
+  @include element('title') {
+    font-size: $font-size-600; // 24px
+    font-weight: $font-weight-semibold;
+    line-height: $line-height-600; // 32px
+    margin: 0;
+    color: $color-neutral-foreground-on-brand;
+  }
+
+  @include element('description') {
+    font-size: $font-size-300; // 14px
+    font-weight: $font-weight-regular;
+    line-height: $line-height-300; // 20px
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  @include element('custom-content') {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing-6;
+    text-align: center;
+    color: $color-neutral-foreground-rest;
+    background: $color-neutral-background-rest;
+
+    .carousel__title {
+      color: $color-neutral-foreground-rest;
+      margin-bottom: $spacing-2;
+    }
+
+    .carousel__description {
+      color: $color-neutral-foreground2-rest;
+      max-width: 600px;
+    }
+  }
+
+  // Navigation container (bottom navigation bar)
+  @include element('navigation') {
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: $spacing-3; // 12px
+    width: 100%;
+    padding: $spacing-3 $spacing-4; // 12px vertical, 16px horizontal
+    background: transparent;
+    flex-shrink: 0;
+  }
+
+  // Control wrapper
+  @include element('control-wrapper') {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: $spacing-2; // 8px
+
+    @include modifier('previous') {
+      justify-content: flex-start;
+    }
+
+    @include modifier('next') {
+      justify-content: flex-end;
+    }
+  }
+
+  // Indicators container
+  @include element('indicators') {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 0;
+    border-radius: $border-radius-800; // 8px
+    padding: 0;
+    background: transparent;
+  }
+
+  // Individual indicator button
+  @include element('indicator') {
+    @include button-reset;
+    padding: $spacing-2 $spacing-1; // 8px top/bottom, 4px left/right
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-radius: $border-radius-400; // 4px
+    background: transparent;
+    transition: background $duration-fast $easing-decelerate-mid;
+    @include focus-ring;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    &:focus-visible {
+      outline-offset: 2px;
+    }
+  }
+
+  // Indicator bar (rectangular shape)
+  @include element('indicator-bar') {
+    display: block;
+    border-radius: $border-radius-400; // 4px
+    background: $color-neutral-foreground2-rest; // #424242
+    transition: all $duration-fast $easing-decelerate-mid;
+    
+    // Inactive state: 8x8px square with opacity 0.3
+    width: 8px;
+    height: 8px;
+    opacity: 0.3;
+  }
+
+  // Active indicator state
+  @include element-modifier('indicator', 'active') {
+    .carousel__indicator-bar {
+      // Active state: 16x8px rectangle, full opacity
+      width: 16px;
+      height: 8px;
+      opacity: 1;
+      background: $color-neutral-foreground2-rest; // #424242
+    }
+  }
+
+  // Responsive adjustments
+  @include respond-to(small) {
+    @include modifier('small') {
+      @include element('content') {
+        min-height: 150px;
+      }
+    }
+
+    @include modifier('medium') {
+      @include element('content') {
+        min-height: 300px;
+      }
+    }
+
+    @include modifier('large') {
+      @include element('content') {
+        min-height: 400px;
+      }
+    }
+
+    @include element('navigation') {
+      gap: $spacing-2; // 8px on mobile
+      padding: $spacing-2 $spacing-3; // 8px vertical, 12px horizontal
+    }
+
+    @include element('overlay') {
+      padding: $spacing-4 $spacing-3;
+    }
+
+    @include element('title') {
+      font-size: $font-size-500; // 20px
+      line-height: $line-height-500; // 28px
+    }
+
+    @include element('description') {
+      font-size: $font-size-200; // 12px
+      line-height: $line-height-200; // 16px
+    }
+  }
+}

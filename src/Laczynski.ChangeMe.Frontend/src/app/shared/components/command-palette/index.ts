@@ -1,0 +1,3 @@
+export * from './command-palette.component';
+export * from './models/command-item.model';
+

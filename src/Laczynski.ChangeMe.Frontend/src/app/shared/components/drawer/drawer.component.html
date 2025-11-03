@@ -1,0 +1,89 @@
+@if (visible()) {
+  <div
+    [class]="drawerClasses()"
+    role="dialog"
+    [attr.aria-modal]="true"
+    [attr.aria-hidden]="!visible()"
+    [attr.aria-labelledby]="title() ? 'drawer-title' : null"
+  >
+    <div [class]="backdropClasses()" (click)="onBackdropClick($event)"></div>
+    <div [class]="contentClasses()" role="document">
+      <!-- Header -->
+      <div [class]="headerClasses()">
+        @if (title()) {
+          <h2 id="drawer-title" class="drawer__title">
+            {{ title() }}
+          </h2>
+        }
+
+        @if (closable()) {
+          <div class="drawer__close-container">
+            <app-button
+              variant="subtle"
+              [iconOnly]="true"
+              [ariaLabel]="'Close drawer'"
+              (click)="onCloseClick()"
+              class="drawer__close-button"
+            >
+              <app-icon [icon]="'dismiss'" [size]="'medium'" />
+            </app-button>
+          </div>
+        }
+      </div>
+
+      <!-- Body -->
+      <div [class]="bodyClasses()">
+        @if (bodyText()) {
+          <p class="drawer__text">{{ bodyText() }}</p>
+        }
+
+        <ng-content></ng-content>
+      </div>
+
+      <!-- Footer -->
+      @if (hasActions()) {
+        <div [class]="footerClasses()">
+          <div class="drawer__footer-left">
+            @for (action of additionalActions(); track action.label) {
+              <app-button
+                [variant]="action.variant"
+                [size]="action.size"
+                [disabled]="action.disabled ?? false"
+                [icon]="action.icon"
+                (click)="handleAdditionalAction(action)"
+              >
+                {{ action.label }}
+              </app-button>
+            }
+          </div>
+
+          <div class="drawer__footer-right">
+            @if (primaryAction()) {
+              <app-button
+                [variant]="primaryAction()!.variant"
+                [size]="primaryAction()!.size"
+                [disabled]="primaryAction()!.disabled ?? false"
+                [icon]="primaryAction()!.icon"
+                (click)="handlePrimaryAction()"
+              >
+                {{ primaryAction()!.label }}
+              </app-button>
+            }
+
+            @if (secondaryAction()) {
+              <app-button
+                [variant]="secondaryAction()!.variant"
+                [size]="secondaryAction()!.size"
+                [disabled]="secondaryAction()!.disabled ?? false"
+                [icon]="secondaryAction()!.icon"
+                (click)="handleSecondaryAction()"
+              >
+                {{ secondaryAction()!.label }}
+              </app-button>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+}

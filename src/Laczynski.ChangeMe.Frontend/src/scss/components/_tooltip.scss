@@ -1,0 +1,174 @@
+// ==========================================================================
+// Tooltip Component - Fluent 2 Design System (BEM Block)
+// ==========================================================================
+
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+
+@include block('tooltip') {
+  position: relative;
+  display: inline-block;
+
+  // Base tooltip popup styles
+  &__popup {
+    position: absolute;
+    z-index: $z-index-tooltip;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity $duration-faster $easing-decelerate-min,
+                transform $duration-faster $easing-decelerate-min;
+    white-space: nowrap;
+    max-width: 300px;
+
+    // Content
+    &__content {
+      display: inline-block;
+      padding: $spacing-2 $spacing-3;
+      background-color: $color-neutral-foreground-rest;
+      color: $color-neutral-background-rest;
+      font-family: $font-family-base;
+      font-size: $font-size-200;
+      font-weight: $font-weight-regular;
+      line-height: $line-height-200;
+      border-radius: $border-radius-400;
+      box-shadow: $elevation-8;
+      word-wrap: break-word;
+      white-space: normal;
+    }
+
+    // Arrow
+    &__arrow {
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-style: solid;
+
+      &[data-position='top'] {
+        bottom: -4px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 4px 4px 0 4px;
+        border-color: $color-neutral-foreground-rest transparent transparent transparent;
+      }
+
+      &[data-position='bottom'] {
+        top: -4px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 0 4px 4px 4px;
+        border-color: transparent transparent $color-neutral-foreground-rest transparent;
+      }
+
+      &[data-position='left'] {
+        right: -4px;
+        top: 50%;
+        transform: translateY(-50%);
+        border-width: 4px 0 4px 4px;
+        border-color: transparent transparent transparent $color-neutral-foreground-rest;
+      }
+
+      &[data-position='right'] {
+        left: -4px;
+        top: 50%;
+        transform: translateY(-50%);
+        border-width: 4px 4px 4px 0;
+        border-color: transparent $color-neutral-foreground-rest transparent transparent;
+      }
+    }
+
+    // Position variants - Top
+    &--top {
+      bottom: 100% !important;
+      left: 50% !important;
+      top: auto !important;
+      right: auto !important;
+      margin-bottom: 4px;
+      transform: translateX(-50%) translateY(-2px) scale(0.95);
+
+      &.tooltip__popup--visible {
+        transform: translateX(-50%) translateY(0) scale(1);
+      }
+    }
+
+    // Position variants - Bottom
+    &--bottom {
+      top: 100% !important;
+      left: 50% !important;
+      bottom: auto !important;
+      right: auto !important;
+      margin-top: 4px;
+      transform: translateX(-50%) translateY(2px) scale(0.95);
+
+      &.tooltip__popup--visible {
+        transform: translateX(-50%) translateY(0) scale(1);
+      }
+    }
+
+    // Position variants - Left
+    &--left {
+      right: 100% !important;
+      top: 50% !important;
+      left: auto !important;
+      bottom: auto !important;
+      margin-right: 4px;
+      transform: translateY(-50%) translateX(-2px) scale(0.95);
+
+      &.tooltip__popup--visible {
+        transform: translateY(-50%) translateX(0) scale(1);
+      }
+    }
+
+    // Position variants - Right
+    &--right {
+      left: 100% !important;
+      top: 50% !important;
+      right: auto !important;
+      bottom: auto !important;
+      margin-left: 4px;
+      transform: translateY(-50%) translateX(2px) scale(0.95);
+
+      &.tooltip__popup--visible {
+        transform: translateY(-50%) translateX(0) scale(1);
+      }
+    }
+
+    // Visible state - must be after position modifiers
+    &.tooltip__popup--visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    // Size variants
+    &--small {
+      max-width: 200px;
+
+      .tooltip__popup__content {
+        padding: $spacing-1 $spacing-2;
+        font-size: $font-size-100;
+        line-height: $line-height-100;
+      }
+    }
+
+    &--medium {
+      max-width: 300px;
+
+      .tooltip__popup__content {
+        padding: $spacing-2 $spacing-3;
+        font-size: $font-size-200;
+        line-height: $line-height-200;
+      }
+    }
+
+    &--large {
+      max-width: 400px;
+
+      .tooltip__popup__content {
+        padding: $spacing-3 $spacing-4;
+        font-size: $font-size-300;
+        line-height: $line-height-300;
+        white-space: normal;
+      }
+    }
+  }
+}
+

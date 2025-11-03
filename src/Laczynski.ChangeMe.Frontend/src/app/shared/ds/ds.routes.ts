@@ -4,6 +4,11 @@ import { BreadcrumbShowcaseComponent } from '@shared/components/breadcrumb/bread
 import { ButtonShowcaseComponent } from '@shared/components/button/button.showcase.component';
 import { CalendarShowcaseComponent } from '@shared/components/calendar/calendar.showcase.component';
 import { TimeShowcaseComponent } from '@shared/components/time/time.showcase.component';
+import { CommandPaletteShowcaseComponent } from '@shared/components/command-palette/command-palette.showcase.component';
+import { ToolbarShowcaseComponent } from '@shared/components/toolbar/toolbar.showcase.component';
+import { DrawerShowcaseComponent } from '@shared/components/drawer/drawer.showcase.component';
+import { PaginationShowcaseComponent } from '@shared/components/pagination/pagination.showcase.component';
+import { CarouselShowcaseComponent } from '@shared/components/carousel/carousel.showcase.component';
 import { DateShowcaseComponent } from '@shared/components/field/date/date.showcase.component';
 import { DateRangeShowcaseComponent } from '@shared/components/field/date-range/date-range.showcase.component';
 import { DropdownShowcaseComponent } from '@shared/components/field/dropdown/dropdown.showcase.component';
@@ -39,6 +44,9 @@ import { ToastShowcaseComponent } from '@shared/components/toast/toast.showcase.
 import { TotpShowcaseComponent } from '@shared/components/field/totp/totp.showcase.component';
 import { NodeShowcaseComponent } from '@shared/components/tree-node/tree-node.showcase.component';
 import { NavShowcaseComponent } from '@shared/components/nav/nav.showcase.component';
+import { KbdShowcaseComponent } from '@shared/components/kbd/kbd.showcase.component';
+import { TooltipShowcaseComponent } from '@shared/components/tooltip/tooltip.showcase.component';
+import { RatingShowcaseComponent } from '@shared/components/rating/rating.showcase.component';
 
 export const dsRoutes: Routes = [
   {
@@ -205,5 +213,37 @@ export const dsRoutes: Routes = [
   {
     path: 'totp',
     component: TotpShowcaseComponent,
+  },
+  {
+    path: 'command-palette',
+    component: CommandPaletteShowcaseComponent,
+  },
+  {
+    path: 'toolbar',
+    component: ToolbarShowcaseComponent,
+  },
+  {
+    path: 'pagination',
+    component: PaginationShowcaseComponent,
+  },
+  {
+    path: 'carousel',
+    component: CarouselShowcaseComponent,
+  },
+  {
+    path: 'drawer',
+    component: DrawerShowcaseComponent,
+  },
+  {
+    path: 'kbd',
+    component: KbdShowcaseComponent,
+  },
+  {
+    path: 'tooltip',
+    component: TooltipShowcaseComponent,
+  },
+  {
+    path: 'rating',
+    component: RatingShowcaseComponent,
   },
 ];

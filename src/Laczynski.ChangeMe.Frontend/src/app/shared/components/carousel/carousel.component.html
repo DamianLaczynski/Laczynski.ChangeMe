@@ -1,0 +1,92 @@
+<div [class]="getCarouselClasses()" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
+  <!-- Carousel Content -->
+  <div class="carousel__content">
+    <div class="carousel__track" [style.transform]="'translateX(-' + (currentIndex() * 100) + '%)'">
+      @for (item of items(); track item.id) {
+        <div
+          class="carousel__slide"
+          [class.carousel__slide--active]="currentIndex() === $index"
+          (click)="onItemClick(item, $index)"
+        >
+          @if (item.image) {
+            <div class="carousel__image-container">
+              <img [src]="item.image" [alt]="item.title || 'Carousel image'" class="carousel__image" />
+              @if (item.title || item.description) {
+                <div class="carousel__overlay">
+                  @if (item.title) {
+                    <h3 class="carousel__title">{{ item.title }}</h3>
+                  }
+                  @if (item.description) {
+                    <p class="carousel__description">{{ item.description }}</p>
+                  }
+                </div>
+              }
+            </div>
+          } @else {
+            <div class="carousel__custom-content">
+              @if (item.title) {
+                <h3 class="carousel__title">{{ item.title }}</h3>
+              }
+              @if (item.description) {
+                <p class="carousel__description">{{ item.description }}</p>
+              }
+              @if (item.content) {
+                <div [innerHTML]="item.content"></div>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Navigation (Controls + Indicators) -->
+  @if ((showControls() && (hasPrevious() || hasNext())) || (showIndicators() && items().length > 1)) {
+    <div class="carousel__navigation">
+      <!-- Previous Button -->
+      @if (showControls() && hasPrevious()) {
+        <div class="carousel__control-wrapper carousel__control-wrapper--previous">
+          <app-button
+            variant="subtle"
+            size="small"
+            icon="chevron_left"
+            [iconOnly]="true"
+            ariaLabel="Previous slide"
+            (click)="onControlClick($event, 'previous')"
+          />
+        </div>
+      }
+
+      <!-- Indicators -->
+      @if (showIndicators() && items().length > 1) {
+        <div class="carousel__indicators">
+          @for (item of items(); track item.id) {
+            <button
+              class="carousel__indicator"
+              [class.carousel__indicator--active]="currentIndex() === $index"
+              (click)="goToIndex($index)"
+              [attr.aria-label]="'Go to slide ' + ($index + 1)"
+              type="button"
+            >
+              <span class="carousel__indicator-bar"></span>
+            </button>
+          }
+        </div>
+      }
+
+      <!-- Next Button -->
+      @if (showControls() && hasNext()) {
+        <div class="carousel__control-wrapper carousel__control-wrapper--next">
+          <app-button
+            variant="subtle"
+            size="small"
+            icon="chevron_right"
+            [iconOnly]="true"
+            ariaLabel="Next slide"
+            (click)="onControlClick($event, 'next')"
+          />
+        </div>
+      }
+    </div>
+  }
+</div>

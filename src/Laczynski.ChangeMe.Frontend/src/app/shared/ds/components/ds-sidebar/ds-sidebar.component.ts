@@ -63,10 +63,18 @@ export class DsSidebarComponent {
     { id: 'tree-node', label: 'Tree Node', icon: 'rectangle_landscape' },
     { id: 'badge', label: 'Badge', icon: 'badge' },
     { id: 'tag', label: 'Tag', icon: 'tag' },
+    { id: 'kbd', label: 'Kbd', icon: 'keyboard' },
+    { id: 'rating', label: 'Rating', icon: 'star' },
+    { id: 'tooltip', label: 'Tooltip', icon: 'help_circle' },
     // Actions Section
     { id: 'actions', isSectionHeader: true, label: 'Actions' },
     { id: 'button', label: 'Button', icon: 'button' },
     { id: 'stepper', label: 'Stepper', icon: 'timeline' },
+    { id: 'command-palette', label: 'Command Palette', icon: 'search' },
+    { id: 'toolbar', label: 'Toolbar', icon: 'toolbox' },
+    { id: 'pagination', label: 'Pagination', icon: 'arrow_next' },
+    { id: 'carousel', label: 'Carousel', icon: 'arrow_circle_right' },
+    { id: 'drawer', label: 'Drawer', icon: 'panel_left' },
     // Calendar Section
     { id: 'calendar-components', isSectionHeader: true, label: 'Calendar Components' },
     { id: 'calendar', label: 'Calendar', icon: 'calendar_view_month' },

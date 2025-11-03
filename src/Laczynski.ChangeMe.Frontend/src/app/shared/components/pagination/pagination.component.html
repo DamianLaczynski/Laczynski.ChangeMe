@@ -1,0 +1,105 @@
+<div [class]="getPaginationClasses()">
+  <!-- Info Text -->
+  @if (config().showInfo) {
+    <div class="pagination__info">
+      <span class="pagination__info-text">{{ infoText() }}</span>
+    </div>
+  }
+
+  <!-- Navigation Controls -->
+  <div class="pagination__controls">
+    <!-- First Page Button -->
+    @if (config().showFirstLast) {
+      <app-button
+        [variant]="'subtle'"
+        [size]="size()"
+        [disabled]="!canGoToFirst()"
+        (click)="onFirstClick()"
+        ariaLabel="First page"
+        class="pagination__button pagination__button--first"
+      >
+        First
+      </app-button>
+    }
+
+    <!-- Previous Page Button -->
+    <app-button
+      [variant]="'subtle'"
+      [size]="size()"
+      [iconOnly]="true"
+      [disabled]="!canGoToPrevious()"
+      (click)="onPreviousClick()"
+      ariaLabel="Previous page"
+      class="pagination__button pagination__button--previous"
+    >
+      <app-icon icon="chevron_left" [size]="size()" />
+    </app-button>
+
+    <!-- Page Numbers -->
+    @if (config().showPageNumbers) {
+      <div class="pagination__pages">
+        @for (page of visiblePages(); track page) {
+          @if (isEllipsis(page)) {
+            <span class="pagination__ellipsis">…</span>
+          } @else {
+            <app-button
+              [variant]="getButtonVariant(page)"
+              [size]="size()"
+              [selected]="page === config().currentPage"
+              (click)="onPageClick(page)"
+              [attr.aria-label]="'Page ' + page"
+              [attr.aria-current]="page === config().currentPage ? 'page' : null"
+              class="pagination__button pagination__button--page"
+            >
+              {{ page }}
+            </app-button>
+          }
+        }
+      </div>
+    }
+
+    <!-- Next Page Button -->
+    <app-button
+      [variant]="'subtle'"
+      [size]="size()"
+      [iconOnly]="true"
+      [disabled]="!canGoToNext()"
+      (click)="onNextClick()"
+      ariaLabel="Next page"
+      class="pagination__button pagination__button--next"
+    >
+      <app-icon icon="chevron_right" [size]="size()" />
+    </app-button>
+
+    <!-- Last Page Button -->
+    @if (config().showFirstLast) {
+      <app-button
+        [variant]="'subtle'"
+        [size]="size()"
+        [disabled]="!canGoToLast()"
+        (click)="onLastClick()"
+        ariaLabel="Last page"
+        class="pagination__button pagination__button--last"
+      >
+        Last
+      </app-button>
+    }
+  </div>
+
+  <!-- Page Size Selector -->
+  @if (
+    config().showPageSizeSelector &&
+    config().pageSizeOptions &&
+    config().pageSizeOptions!.length > 0
+  ) {
+    <div class="pagination__page-size">
+      <app-dropdown
+        [items]="getPageSizeItems()"
+        [size]="size()"
+        (selectionChange)="onPageSizeSelected($event[0])"
+        placeholder="Per page"
+        class="pagination__page-size-selector"
+      />
+    </div>
+  }
+</div>

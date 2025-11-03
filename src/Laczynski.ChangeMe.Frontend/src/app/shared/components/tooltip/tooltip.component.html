@@ -1,0 +1,15 @@
+<ng-content></ng-content>
+@if (visible() && text()) {
+  <div
+    [class]="tooltipClasses()"
+    role="tooltip"
+    [attr.aria-hidden]="!visible()"
+    [attr.id]="tooltipIdValue"
+  >
+    <div class="tooltip__popup__content">
+      {{ text() }}
+    </div>
+    <div class="tooltip__popup__arrow" [attr.data-position]="position()"></div>
+  </div>
+}
+
