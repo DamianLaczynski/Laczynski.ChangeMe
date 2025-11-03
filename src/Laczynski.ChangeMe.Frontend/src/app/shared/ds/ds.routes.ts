@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import { AccordionShowcaseComponent } from '@shared/components/accordion/accordion.showcase.component';
 import { BreadcrumbShowcaseComponent } from '@shared/components/breadcrumb/breadcrumb.showcase.component';
 import { ButtonShowcaseComponent } from '@shared/components/button/button.showcase.component';
+import { CalendarShowcaseComponent } from '@shared/components/calendar/calendar.showcase.component';
+import { TimeShowcaseComponent } from '@shared/components/time/time.showcase.component';
 import { DateShowcaseComponent } from '@shared/components/field/date/date.showcase.component';
 import { DateRangeShowcaseComponent } from '@shared/components/field/date-range/date-range.showcase.component';
 import { DropdownShowcaseComponent } from '@shared/components/field/dropdown/dropdown.showcase.component';
@@ -34,6 +36,7 @@ import { SpinnerShowcaseComponent } from '@shared/components/spinner/spinner.sho
 import { FileShowcaseComponent } from '@shared/components/field/file/file.showcase.component';
 import { StepperShowcaseComponent } from '@shared/components/field/stepper/stepper.showcase.component';
 import { ToastShowcaseComponent } from '@shared/components/toast/toast.showcase.component';
+import { TotpShowcaseComponent } from '@shared/components/field/totp/totp.showcase.component';
 import { NodeShowcaseComponent } from '@shared/components/tree-node/tree-node.showcase.component';
 import { NavShowcaseComponent } from '@shared/components/nav/nav.showcase.component';
 
@@ -58,6 +61,10 @@ export const dsRoutes: Routes = [
   {
     path: 'button',
     component: ButtonShowcaseComponent,
+  },
+  {
+    path: 'calendar',
+    component: CalendarShowcaseComponent,
   },
   {
     path: 'card',
@@ -176,6 +183,10 @@ export const dsRoutes: Routes = [
     component: TagShowcaseComponent,
   },
   {
+    path: 'time',
+    component: TimeShowcaseComponent,
+  },
+  {
     path: 'toast',
     component: ToastShowcaseComponent,
   },
@@ -190,5 +201,9 @@ export const dsRoutes: Routes = [
   {
     path: 'file',
     component: FileShowcaseComponent,
+  },
+  {
+    path: 'totp',
+    component: TotpShowcaseComponent,
   },
 ];

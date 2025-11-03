@@ -1,0 +1,125 @@
+// ==========================================================================
+// TOTP Component - Fluent 2 Design System
+// ==========================================================================
+
+@use '../utils/variables' as *;
+
+// TOTP Wrapper - holds label and all digit fields
+.totp-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: $spacing-1;
+
+  &__label {
+    display: inline-flex;
+    align-items: flex-end;
+    gap: $spacing-1;
+    font-family: $font-family-base;
+    color: $color-neutral-foreground-rest;
+    word-wrap: break-word;
+    margin-bottom: $spacing-1;
+
+    // Size variants
+    &--small {
+      font-size: $font-size-200;
+      line-height: $line-height-200;
+      font-weight: $font-weight-regular;
+    }
+
+    &--medium {
+      font-size: $font-size-300;
+      line-height: $line-height-300;
+      font-weight: $font-weight-regular;
+    }
+
+    &--large {
+      font-size: $font-size-400;
+      line-height: $line-height-400;
+      font-weight: $font-weight-semibold;
+    }
+
+    // Disabled state
+    &--disabled {
+      color: $color-neutral-foreground-disabled;
+    }
+
+    // Required indicator
+    &--required::after {
+      content: ' *';
+      color: $color-shared-red-foreground;
+    }
+  }
+}
+
+// TOTP Container - holds all digit fields
+.totp-container {
+  display: inline-flex;
+  align-items: stretch;
+  gap: $spacing-2;
+  width: 100%;
+
+  // Size variants
+  &--small {
+    gap: $spacing-1;
+  }
+
+  &--medium {
+    gap: $spacing-2;
+  }
+
+  &--large {
+    gap: $spacing-3;
+  }
+
+  // Make each field equal width
+  app-field {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+// Individual digit input within field
+.totp-digit {
+  width: 100%;
+  text-align: center;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: $color-neutral-foreground-rest;
+  font-family: $font-family-base;
+  font-weight: $font-weight-semibold;
+  letter-spacing: $letter-spacing-normal;
+  padding: 0;
+
+  // Remove number input arrows
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  -moz-appearance: textfield;
+
+  // Placeholder styles
+  &::placeholder {
+    color: $color-neutral-foreground2-rest;
+    opacity: 1;
+  }
+
+  // Focus styles
+  &:focus {
+    color: $color-neutral-foreground-rest;
+  }
+
+  // Disabled styles
+  &:disabled {
+    color: $color-neutral-foreground-disabled;
+    cursor: not-allowed;
+  }
+
+  // Read only styles
+  &:read-only {
+    cursor: default;
+  }
+}

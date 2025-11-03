@@ -14,18 +14,10 @@ import { CommonModule } from '@angular/common';
 import { FieldComponent } from '../field/field.component';
 import { ActionButtonComponent } from '../action-button.component';
 import { IconComponent } from '@shared/components/icon/icon.component';
+import { CalendarComponent, CalendarDay, CalendarView } from '@shared/components/calendar';
+import { TimeComponent } from '@shared/components/time';
 
 export type DateFieldType = 'date' | 'datetime-local' | 'time' | 'month' | 'week';
-export type CalendarView = 'days' | 'months' | 'years';
-
-interface CalendarDay {
-  date: Date;
-  day: number;
-  isCurrentMonth: boolean;
-  isToday: boolean;
-  isSelected: boolean;
-  isDisabled: boolean;
-}
 
 interface CalendarWeek {
   weekNumber: number;
@@ -43,7 +35,7 @@ interface CalendarYear {
 @Component({
   selector: 'app-date',
 
-  imports: [CommonModule, FieldComponent, ActionButtonComponent, IconComponent],
+  imports: [CommonModule, FieldComponent, ActionButtonComponent, IconComponent, CalendarComponent, TimeComponent],
   templateUrl: './date.component.html',
   host: {
     '[style.position]': '"relative"',
@@ -74,8 +66,6 @@ export class DateComponent extends FieldComponent {
   currentMonth = signal<Date>(new Date());
   selectedDate = signal<Date | null>(null);
   selectedTime = signal<string>('');
-  selectedHour = signal<number>(12);
-  selectedMinute = signal<number>(0);
   use24HourFormat = signal<boolean>(true);
   calendarView = signal<CalendarView>('days');
   selectedWeek = signal<number | null>(null);
@@ -112,38 +102,9 @@ export class DateComponent extends FieldComponent {
     return date ? this.formatDate(date) : '';
   });
 
-  monthYearText = computed(() => {
-    const month = this.currentMonth();
-    return this.formatMonthYear(month);
-  });
-
-  calendarDays = computed(() => {
-    return this.generateCalendarDays();
-  });
-
   calendarWeeks = computed(() => {
     return this.generateCalendarWeeks();
   });
-
-  calendarYears = computed(() => {
-    return this.generateCalendarYears();
-  });
-
-  weekDays = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
-  months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
 
   constructor(private elementRef: ElementRef) {
     super();
@@ -204,7 +165,7 @@ export class DateComponent extends FieldComponent {
     this.isExpanded.set(false);
   }
 
-  selectDate(day: CalendarDay): void {
+  onCalendarDateSelect(day: CalendarDay): void {
     if (day.isDisabled) {
       return;
     }
@@ -218,7 +179,7 @@ export class DateComponent extends FieldComponent {
     // For datetime-local, keep panel open to select time
   }
 
-  selectMonth(monthIndex: number): void {
+  onCalendarMonthSelect(monthIndex: number): void {
     const newDate = new Date(this.currentMonth());
     newDate.setMonth(monthIndex);
 
@@ -232,7 +193,7 @@ export class DateComponent extends FieldComponent {
     }
   }
 
-  selectYear(year: number): void {
+  onCalendarYearSelect(year: number): void {
     const newDate = new Date(this.currentMonth());
     newDate.setFullYear(year);
     this.currentMonth.set(newDate);
@@ -246,76 +207,49 @@ export class DateComponent extends FieldComponent {
     this.closePanel();
   }
 
-  switchToMonthsView(event?: Event): void {
-    if (event) {
-      event.stopPropagation();
-    }
+  onCalendarSwitchToMonthsView(): void {
     this.calendarView.set('months');
   }
 
-  switchToYearsView(event?: Event): void {
-    if (event) {
-      event.stopPropagation();
-    }
+  onCalendarSwitchToYearsView(): void {
     this.calendarView.set('years');
   }
 
-  switchToDaysView(event?: Event): void {
-    if (event) {
-      event.stopPropagation();
-    }
+  onCalendarSwitchToDaysView(): void {
     this.calendarView.set('days');
   }
 
-  previousMonth(event?: Event): void {
-    if (event) {
-      event.stopPropagation();
-    }
+  onCalendarPreviousMonth(): void {
     const newMonth = new Date(this.currentMonth());
     newMonth.setMonth(newMonth.getMonth() - 1);
     this.currentMonth.set(newMonth);
   }
 
-  nextMonth(event?: Event): void {
-    if (event) {
-      event.stopPropagation();
-    }
+  onCalendarNextMonth(): void {
     const newMonth = new Date(this.currentMonth());
     newMonth.setMonth(newMonth.getMonth() + 1);
     this.currentMonth.set(newMonth);
   }
 
-  previousYear(event?: Event): void {
-    if (event) {
-      event.stopPropagation();
-    }
+  onCalendarPreviousYear(): void {
     const newMonth = new Date(this.currentMonth());
     newMonth.setFullYear(newMonth.getFullYear() - 1);
     this.currentMonth.set(newMonth);
   }
 
-  nextYear(event?: Event): void {
-    if (event) {
-      event.stopPropagation();
-    }
+  onCalendarNextYear(): void {
     const newMonth = new Date(this.currentMonth());
     newMonth.setFullYear(newMonth.getFullYear() + 1);
     this.currentMonth.set(newMonth);
   }
 
-  previousYearRange(event?: Event): void {
-    if (event) {
-      event.stopPropagation();
-    }
+  onCalendarPreviousYearRange(): void {
     const newMonth = new Date(this.currentMonth());
     newMonth.setFullYear(newMonth.getFullYear() - 12);
     this.currentMonth.set(newMonth);
   }
 
-  nextYearRange(event?: Event): void {
-    if (event) {
-      event.stopPropagation();
-    }
+  onCalendarNextYearRange(): void {
     const newMonth = new Date(this.currentMonth());
     newMonth.setFullYear(newMonth.getFullYear() + 12);
     this.currentMonth.set(newMonth);
@@ -330,108 +264,8 @@ export class DateComponent extends FieldComponent {
     }
   }
 
-  onTimeChange(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    this.selectedTime.set(target.value);
-  }
-
-  incrementHour(): void {
-    const currentHour = this.selectedHour();
-    const maxHour = this.use24HourFormat() ? 23 : 12;
-    const minHour = this.use24HourFormat() ? 0 : 1;
-
-    if (currentHour >= maxHour) {
-      this.selectedHour.set(minHour);
-    } else {
-      this.selectedHour.set(currentHour + 1);
-    }
-    this.updateTimeFromSpinner();
-  }
-
-  decrementHour(): void {
-    const currentHour = this.selectedHour();
-    const maxHour = this.use24HourFormat() ? 23 : 12;
-    const minHour = this.use24HourFormat() ? 0 : 1;
-
-    if (currentHour <= minHour) {
-      this.selectedHour.set(maxHour);
-    } else {
-      this.selectedHour.set(currentHour - 1);
-    }
-    this.updateTimeFromSpinner();
-  }
-
-  incrementMinute(): void {
-    const currentMinute = this.selectedMinute();
-    const step = this.getMinuteStep();
-
-    if (currentMinute + step >= 60) {
-      this.selectedMinute.set(0);
-      this.incrementHour();
-    } else {
-      this.selectedMinute.set(currentMinute + step);
-    }
-    this.updateTimeFromSpinner();
-  }
-
-  decrementMinute(): void {
-    const currentMinute = this.selectedMinute();
-    const step = this.getMinuteStep();
-
-    if (currentMinute - step < 0) {
-      this.selectedMinute.set(60 - step);
-      this.decrementHour();
-    } else {
-      this.selectedMinute.set(currentMinute - step);
-    }
-    this.updateTimeFromSpinner();
-  }
-
-  onHourInput(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    let hour = parseInt(target.value) || 0;
-
-    if (this.use24HourFormat()) {
-      hour = Math.max(0, Math.min(23, hour));
-    } else {
-      hour = Math.max(1, Math.min(12, hour));
-    }
-
-    this.selectedHour.set(hour);
-    this.updateTimeFromSpinner();
-  }
-
-  onMinuteInput(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    let minute = parseInt(target.value) || 0;
-    minute = Math.max(0, Math.min(59, minute));
-
-    this.selectedMinute.set(minute);
-    this.updateTimeFromSpinner();
-  }
-
-  updateTimeFromSpinner(): void {
-    const hour = this.selectedHour();
-    const minute = this.selectedMinute();
-    const timeStr = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+  onTimeChange(timeStr: string): void {
     this.selectedTime.set(timeStr);
-  }
-
-  private getMinuteStep(): number {
-    const step = this.step();
-    if (!step) return 1;
-
-    const stepNum = typeof step === 'string' ? parseInt(step) : step;
-    // Convert seconds to minutes if step is in seconds
-    return Math.max(1, Math.floor(stepNum / 60)) || 1;
-  }
-
-  private parseTimeString(timeStr: string): { hour: number; minute: number } {
-    const [hourStr, minuteStr] = timeStr.split(':');
-    return {
-      hour: parseInt(hourStr) || 0,
-      minute: parseInt(minuteStr) || 0,
-    };
   }
 
   private generateCalendarWeeks(): CalendarWeek[] {
@@ -492,98 +326,6 @@ export class DateComponent extends FieldComponent {
     return years;
   }
 
-  getYearRangeText(): string {
-    const years = this.calendarYears();
-    if (years.length === 0) return '';
-    return `${years[0].year} - ${years[years.length - 1].year}`;
-  }
-
-  private generateCalendarDays(): CalendarDay[] {
-    const month = this.currentMonth();
-    const year = month.getFullYear();
-    const monthIndex = month.getMonth();
-
-    const firstDayOfMonth = new Date(year, monthIndex, 1);
-    const lastDayOfMonth = new Date(year, monthIndex + 1, 0);
-
-    // Get day of week (0 = Sunday, 1 = Monday, etc.)
-    // We want Monday as first day, so adjust
-    let firstDayWeekday = firstDayOfMonth.getDay();
-    firstDayWeekday = firstDayWeekday === 0 ? 6 : firstDayWeekday - 1;
-
-    const days: CalendarDay[] = [];
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const selected = this.selectedDate();
-    const selectedDateOnly = selected
-      ? new Date(selected.getFullYear(), selected.getMonth(), selected.getDate())
-      : null;
-
-    // Add days from previous month
-    for (let i = firstDayWeekday - 1; i >= 0; i--) {
-      const date = new Date(year, monthIndex, -i);
-      days.push({
-        date,
-        day: date.getDate(),
-        isCurrentMonth: false,
-        isToday: this.isSameDay(date, today),
-        isSelected: selectedDateOnly ? this.isSameDay(date, selectedDateOnly) : false,
-        isDisabled: this.isDateDisabled(date),
-      });
-    }
-
-    // Add days of current month
-    for (let day = 1; day <= lastDayOfMonth.getDate(); day++) {
-      const date = new Date(year, monthIndex, day);
-      days.push({
-        date,
-        day,
-        isCurrentMonth: true,
-        isToday: this.isSameDay(date, today),
-        isSelected: selectedDateOnly ? this.isSameDay(date, selectedDateOnly) : false,
-        isDisabled: this.isDateDisabled(date),
-      });
-    }
-
-    // Add days from next month to complete the grid
-    const remainingDays = 42 - days.length; // 6 rows * 7 days
-    for (let day = 1; day <= remainingDays; day++) {
-      const date = new Date(year, monthIndex + 1, day);
-      days.push({
-        date,
-        day,
-        isCurrentMonth: false,
-        isToday: this.isSameDay(date, today),
-        isSelected: selectedDateOnly ? this.isSameDay(date, selectedDateOnly) : false,
-        isDisabled: this.isDateDisabled(date),
-      });
-    }
-
-    return days;
-  }
-
-  private isSameDay(date1: Date, date2: Date): boolean {
-    return (
-      date1.getFullYear() === date2.getFullYear() &&
-      date1.getMonth() === date2.getMonth() &&
-      date1.getDate() === date2.getDate()
-    );
-  }
-
-  private isDateDisabled(date: Date): boolean {
-    const dateStr = this.toISODate(date);
-
-    if (this.min() && dateStr < this.min()) {
-      return true;
-    }
-
-    if (this.max() && dateStr > this.max()) {
-      return true;
-    }
-
-    return false;
-  }
 
   private formatDate(date: Date): string {
     return date.toLocaleDateString('en-US', {
@@ -643,8 +385,6 @@ export class DateComponent extends FieldComponent {
     if (!value) {
       this.selectedDate.set(null);
       this.selectedTime.set('');
-      this.selectedHour.set(12);
-      this.selectedMinute.set(0);
       super.writeValue('');
       return;
     }
@@ -653,17 +393,11 @@ export class DateComponent extends FieldComponent {
 
     if (type === 'time') {
       this.selectedTime.set(value);
-      const parsed = this.parseTimeString(value);
-      this.selectedHour.set(parsed.hour);
-      this.selectedMinute.set(parsed.minute);
     } else if (type === 'datetime-local') {
       const [datePart, timePart] = value.split('T');
       this.selectedDate.set(new Date(datePart));
       if (timePart) {
         this.selectedTime.set(timePart);
-        const parsed = this.parseTimeString(timePart);
-        this.selectedHour.set(parsed.hour);
-        this.selectedMinute.set(parsed.minute);
       }
     } else {
       this.selectedDate.set(new Date(value));
@@ -672,35 +406,9 @@ export class DateComponent extends FieldComponent {
     super.writeValue(value);
   }
 
-  getDayClasses(day: CalendarDay): string {
-    const classes = ['date-calendar__day'];
-
-    if (!day.isCurrentMonth) {
-      classes.push('date-calendar__day--other-month');
-    }
-
-    if (day.isToday) {
-      classes.push('date-calendar__day--today');
-    }
-
-    if (day.isSelected) {
-      classes.push('date-calendar__day--selected');
-    }
-
-    if (day.isDisabled) {
-      classes.push('date-calendar__day--disabled');
-    }
-
-    classes.push(`date-calendar__day--${this.size()}`);
-
-    return classes.join(' ');
-  }
-
   override clear(): void {
     this.selectedDate.set(null);
     this.selectedTime.set('');
-    this.selectedHour.set(12);
-    this.selectedMinute.set(0);
     super.clear();
   }
 
@@ -718,16 +426,7 @@ export class DateComponent extends FieldComponent {
     } else {
       this.calendarView.set('days');
     }
-    // Initialize time if empty
-    if (
-      !this.selectedTime() &&
-      (this.dateType() === 'time' || this.dateType() === 'datetime-local')
-    ) {
-      const now = new Date();
-      this.selectedHour.set(now.getHours());
-      this.selectedMinute.set(now.getMinutes());
-      this.updateTimeFromSpinner();
-    }
+    // Time component will initialize itself from value
   }
 
   getWeekClasses(week: CalendarWeek): string {
@@ -740,20 +439,6 @@ export class DateComponent extends FieldComponent {
     return classes.join(' ');
   }
 
-  getYearClasses(yearItem: CalendarYear): string {
-    const classes = ['date-calendar__year'];
-
-    if (yearItem.isSelected) {
-      classes.push('date-calendar__year--selected');
-    }
-
-    const currentYear = new Date().getFullYear();
-    if (yearItem.year === currentYear) {
-      classes.push('date-calendar__year--current');
-    }
-
-    return classes.join(' ');
-  }
 
   getIcon(): string {
     if (this.dateType() === 'date') {

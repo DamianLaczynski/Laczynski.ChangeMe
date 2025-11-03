@@ -1,0 +1,72 @@
+<div class="totp-wrapper">
+  @if (label()) {
+    <label class="totp-wrapper__label" [ngClass]="labelClasses">
+      {{ label() }}
+    </label>
+  }
+  <div [class]="getTotpContainerClasses()">
+    @for (digit of digits(); track $index) {
+      <app-field
+        [fieldType]="'text'"
+        [disabled]="disabled()"
+        [readonly]="readonly()"
+        [state]="state()"
+        [size]="size()"
+        [variant]="variant()"
+        [id]="id() + '-' + $index"
+        [name]="name() + '-' + $index"
+      >
+        <div class="input-wrapper" [class]="wrapperClasses">
+          <input
+            #digitInput
+            class="input totp-digit"
+            type="text"
+            inputmode="numeric"
+            maxlength="1"
+            pattern="[0-9]"
+            [value]="getDigitValue($index)"
+            [disabled]="disabled()"
+            [readonly]="readonly()"
+            [attr.aria-label]="'Digit ' + ($index + 1) + ' of ' + digitsCount()"
+            [attr.aria-describedby]="ariaDescribedBy()"
+            [attr.aria-invalid]="state() === 'error'"
+            [attr.data-index]="$index"
+            (input)="onDigitInput($event, $index)"
+            (keydown)="onDigitKeyDown($event, $index)"
+            (paste)="onDigitPaste($event, $index)"
+            (focus)="onDigitFocus($event)"
+            (blur)="onBlur($event)"
+          />
+        </div>
+      </app-field>
+    }
+  </div>
+  <!-- Help Text -->
+  @if (helpText() && state() !== 'error' && state() !== 'success' && state() !== 'warning') {
+    <span class="input-label input-label--help" [ngClass]="labelClasses">
+      {{ helpText() }}
+    </span>
+  }
+
+  <!-- Error Text -->
+  @if (errorText() && state() === 'error') {
+    <span class="input-label input-label--error" [ngClass]="labelClasses">
+      {{ errorText() }}
+    </span>
+  }
+
+  <!-- Warning Text -->
+  @if (warningText() && state() === 'warning') {
+    <span class="input-label input-label--warning" [ngClass]="labelClasses">
+      {{ warningText() }}
+    </span>
+  }
+
+  <!-- Success Text -->
+  @if (successText() && state() === 'success') {
+    <span class="input-label input-label--success" [ngClass]="labelClasses">
+      {{ successText() }}
+    </span>
+  }
+</div>
+

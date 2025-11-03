@@ -31,6 +31,7 @@ export class DsSidebarComponent {
     { id: 'search', label: 'Search', icon: 'search' },
     { id: 'tel', label: 'Tel', icon: 'call' },
     { id: 'textarea', label: 'Textarea', icon: 'text_field' },
+    { id: 'totp', label: 'TOTP', icon: 'lock' },
     { id: 'url', label: 'URL', icon: 'link' },
     // Layout Components Section
     { id: 'layout-components', isSectionHeader: true, label: 'Layout Components' },
@@ -66,6 +67,10 @@ export class DsSidebarComponent {
     { id: 'actions', isSectionHeader: true, label: 'Actions' },
     { id: 'button', label: 'Button', icon: 'button' },
     { id: 'stepper', label: 'Stepper', icon: 'timeline' },
+    // Calendar Section
+    { id: 'calendar-components', isSectionHeader: true, label: 'Calendar Components' },
+    { id: 'calendar', label: 'Calendar', icon: 'calendar_view_month' },
+    { id: 'time', label: 'Time', icon: 'clock' },
   ];
 
   constructor() {

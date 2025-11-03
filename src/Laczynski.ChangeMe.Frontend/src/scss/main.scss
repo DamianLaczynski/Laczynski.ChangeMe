@@ -22,6 +22,7 @@
 @use 'components/badge';
 @use 'components/breadcrumb';
 @use 'components/button';
+@use 'components/calendar';
 @use 'components/card';
 @use 'components/checkbox';
 @use 'components/color';
@@ -49,7 +50,9 @@
 @use 'components/stepper';
 @use 'components/switch';
 @use 'components/tag';
+@use 'components/time';
 @use 'components/toast';
+@use 'components/totp';
 @use 'components/tree';
 
 // 6. Pages - Page-specific styles

@@ -1,0 +1,67 @@
+<div class="time-picker" [class.time-picker--inline]="inline()">
+  @if (showLabel()) {
+    <label class="time-picker__label">{{ label() }}:</label>
+  }
+  <div class="time-picker__spinners">
+    <!-- Hour Spinner -->
+    <div class="time-picker__spinner">
+      <app-button
+        variant="subtle"
+        [size]="size()"
+        [iconOnly]="true"
+        icon="chevron_up"
+        [disabled]="disabled()"
+        (click)="incrementHour()"
+      />
+      <input
+        type="number"
+        class="time-picker__input"
+        [value]="selectedHour()"
+        [min]="use24HourFormat() ? 0 : 1"
+        [max]="use24HourFormat() ? 23 : 12"
+        [disabled]="disabled()"
+        (input)="onHourInput($event)"
+      />
+      <app-button
+        variant="subtle"
+        [size]="size()"
+        [iconOnly]="true"
+        icon="chevron_down"
+        [disabled]="disabled()"
+        (click)="decrementHour()"
+      />
+    </div>
+
+    <span class="time-picker__separator">:</span>
+
+    <!-- Minute Spinner -->
+    <div class="time-picker__spinner">
+      <app-button
+        variant="subtle"
+        [size]="size()"
+        [iconOnly]="true"
+        icon="chevron_up"
+        [disabled]="disabled()"
+        (click)="incrementMinute()"
+      />
+      <input
+        type="number"
+        class="time-picker__input"
+        [value]="selectedMinute()"
+        min="0"
+        max="59"
+        [disabled]="disabled()"
+        (input)="onMinuteInput($event)"
+      />
+      <app-button
+        variant="subtle"
+        [size]="size()"
+        [iconOnly]="true"
+        icon="chevron_down"
+        [disabled]="disabled()"
+        (click)="decrementMinute()"
+      />
+    </div>
+  </div>
+</div>
+

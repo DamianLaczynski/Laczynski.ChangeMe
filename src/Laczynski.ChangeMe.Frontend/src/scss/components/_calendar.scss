@@ -1,0 +1,360 @@
+// ==========================================================================
+// Calendar Component - Fluent 2 Design System
+// ==========================================================================
+
+@use '../utils/variables' as *;
+
+// Calendar Container
+.calendar {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+}
+
+// Calendar Header
+.calendar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-1;
+
+  // Navigation buttons (using button component)
+  app-button {
+    flex-shrink: 0;
+  }
+}
+
+.calendar__title {
+  font-size: $font-size-300;
+  font-weight: $font-weight-semibold;
+  color: $color-neutral-foreground-rest;
+  flex: 1;
+  text-align: center;
+  padding: $spacing-1 $spacing-2;
+}
+
+.calendar__title-button {
+  flex: 1;
+  text-align: center;
+  font-size: $font-size-300;
+  font-weight: $font-weight-semibold;
+  color: $color-neutral-foreground-rest;
+  border-radius: $border-radius-400;
+  transition: all $duration-ultra-fast $easing-ease-in-out;
+
+  &:hover {
+    background-color: $color-subtle-background-hover;
+    color: $color-brand-primary;
+  }
+
+  &:active {
+    background-color: $color-subtle-background-pressed;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-brand-primary;
+    outline-offset: 2px;
+  }
+}
+
+// Week Days Header
+.calendar__weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: $spacing-05;
+  margin-bottom: $spacing-05;
+}
+
+.calendar__weekday {
+  text-align: center;
+  font-size: $font-size-200;
+  font-weight: $font-weight-semibold;
+  color: $color-neutral-foreground2-rest;
+  padding: $spacing-1;
+}
+
+// Calendar Grid
+.calendar__grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: $spacing-05;
+}
+
+// Calendar Day
+.calendar__day {
+  aspect-ratio: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: $border-radius-400;
+  cursor: pointer;
+  font-size: $font-size-300;
+  font-weight: $font-weight-regular;
+  color: $color-neutral-foreground-rest;
+  transition: all $duration-ultra-fast $easing-ease-in-out;
+  position: relative;
+  padding: 0;
+  min-width: $spacing-7;
+  min-height: $spacing-7;
+
+  &:hover:not(&--disabled) {
+    background-color: $color-subtle-background-hover;
+    color: $color-neutral-foreground-rest;
+  }
+
+  &:active:not(&--disabled) {
+    background-color: $color-subtle-background-pressed;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-brand-primary;
+    outline-offset: 2px;
+    z-index: 1;
+  }
+
+  // Other month days
+  &--other-month {
+    color: $color-neutral-foreground-disabled;
+    opacity: 0.6;
+  }
+
+  // Today
+  &--today {
+    border-color: $color-brand-primary;
+    font-weight: $font-weight-semibold;
+  }
+
+  // In range (between start and end)
+  &--in-range {
+    background-color: $color-neutral-background-brand-hover;
+    border-radius: 0;
+
+    &:hover {
+      background-color: $color-neutral-background-brand-selected;
+    }
+  }
+
+  // Range start
+  &--range-start {
+    background-color: $color-brand-primary;
+    color: $color-neutral-background-rest;
+    font-weight: $font-weight-semibold;
+    border-top-left-radius: $border-radius-400;
+    border-bottom-left-radius: $border-radius-400;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+
+    &:hover {
+      background-color: $color-brand-primary-hover;
+      color: $color-neutral-background-rest;
+    }
+
+    &:active {
+      background-color: $color-brand-primary-pressed;
+    }
+
+    // If also range end (single day selection)
+    &.calendar__day--range-end {
+      border-radius: $border-radius-400;
+    }
+  }
+
+  // Range end
+  &--range-end {
+    background-color: $color-brand-primary;
+    color: $color-neutral-background-rest;
+    font-weight: $font-weight-semibold;
+    border-top-right-radius: $border-radius-400;
+    border-bottom-right-radius: $border-radius-400;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+
+    &:hover {
+      background-color: $color-brand-primary-hover;
+      color: $color-neutral-background-rest;
+    }
+
+    &:active {
+      background-color: $color-brand-primary-pressed;
+    }
+  }
+
+  // Selected day
+  &--selected {
+    &:not(&--range-start):not(&--range-end) {
+      background-color: $color-brand-primary;
+      color: $color-neutral-background-rest;
+      font-weight: $font-weight-semibold;
+
+      &:hover {
+        background-color: $color-brand-primary-hover;
+        color: $color-neutral-background-rest;
+      }
+
+      &:active {
+        background-color: $color-brand-primary-pressed;
+      }
+    }
+  }
+
+  // Disabled day
+  &--disabled {
+    color: $color-neutral-foreground-disabled;
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0.4;
+  }
+
+  // Size variants
+  &--small {
+    min-width: $spacing-6;
+    min-height: $spacing-6;
+    font-size: $font-size-200;
+  }
+
+  &--large {
+    min-width: $spacing-8;
+    min-height: $spacing-8;
+    font-size: $font-size-400;
+  }
+}
+
+// Month Picker
+.calendar__month-picker {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+}
+
+.calendar__months {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $spacing-1;
+}
+
+.calendar__month {
+  padding: $spacing-2;
+  background: transparent;
+  border: 1px solid $color-neutral-stroke-rest;
+  border-radius: $border-radius-400;
+  cursor: pointer;
+  font-size: $font-size-300;
+  font-weight: $font-weight-regular;
+  color: $color-neutral-foreground-rest;
+  transition: all $duration-ultra-fast $easing-ease-in-out;
+
+  &:hover {
+    background-color: $color-subtle-background-hover;
+    border-color: $color-brand-primary;
+  }
+
+  &:active {
+    background-color: $color-subtle-background-pressed;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-brand-primary;
+    outline-offset: 2px;
+  }
+
+  &--selected {
+    background-color: $color-brand-primary;
+    color: $color-neutral-background-rest;
+    border-color: $color-brand-primary;
+    font-weight: $font-weight-semibold;
+
+    &:hover {
+      background-color: $color-brand-primary-hover;
+    }
+  }
+}
+
+// Year Picker
+.calendar__year-picker {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+}
+
+.calendar__years {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $spacing-1;
+}
+
+.calendar__year {
+  padding: $spacing-2;
+  background: transparent;
+  border: 1px solid $color-neutral-stroke-rest;
+  border-radius: $border-radius-400;
+  cursor: pointer;
+  font-size: $font-size-300;
+  font-weight: $font-weight-regular;
+  color: $color-neutral-foreground-rest;
+  transition: all $duration-ultra-fast $easing-ease-in-out;
+
+  &:hover {
+    background-color: $color-subtle-background-hover;
+    border-color: $color-brand-primary;
+  }
+
+  &:active {
+    background-color: $color-subtle-background-pressed;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-brand-primary;
+    outline-offset: 2px;
+  }
+
+  &--selected {
+    background-color: $color-brand-primary;
+    color: $color-neutral-background-rest;
+    border-color: $color-brand-primary;
+    font-weight: $font-weight-semibold;
+
+    &:hover {
+      background-color: $color-brand-primary-hover;
+    }
+  }
+
+  &--current {
+    border-color: $color-brand-primary;
+    font-weight: $font-weight-semibold;
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .calendar__day {
+    border: 1px solid currentColor;
+
+    &--range-start,
+    &--range-end,
+    &--selected {
+      background-color: $color-neutral-foreground-rest;
+      color: $color-neutral-background-rest;
+      border-color: $color-neutral-foreground-rest;
+    }
+
+    &--in-range {
+      border-style: dashed;
+    }
+
+    &--today {
+      border-width: 2px;
+    }
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .calendar__nav,
+  .calendar__day,
+  .calendar__month,
+  .calendar__year {
+    transition: none;
+  }
+}
