@@ -1,0 +1,259 @@
+<div
+  #videoContainer
+  [class]="videoClasses()"
+  [class.video--controls-hidden]="!showControls()"
+  (mouseenter)="onMouseEnter()"
+  (mouseleave)="onMouseLeave(); onControlsClickOutside()"
+  (mousemove)="onMouseMove()"
+  (click)="onControlsClickOutside()"
+>
+  <!-- Video Container -->
+  <div class="video__container">
+    <video
+      #videoElement
+      class="video__element"
+      [src]="src()"
+      [poster]="poster()"
+      [autoplay]="autoplay()"
+      [loop]="loop()"
+      [muted]="muted()"
+      [controls]="controls()"
+    ></video>
+
+    <!-- Custom Controls Overlay -->
+    @if (!controls()) {
+      <div
+        class="video__controls-overlay"
+        [class.video__controls-overlay--visible]="showControls()"
+      >
+        <!-- Action Indicators -->
+        @if (showSkipForwardIndicator()) {
+          <div class="video__action-indicator video__action-indicator--skip-forward">
+            <app-icon
+              icon="skip_forward_10"
+              size="large"
+              variant="filled"
+              class="video__action-indicator-icon"
+            />
+            <span class="video__action-indicator-text">+{{ skipSeconds() }}s</span>
+          </div>
+        }
+        @if (showSkipBackwardIndicator()) {
+          <div class="video__action-indicator video__action-indicator--skip-backward">
+            <app-icon
+              icon="skip_back_10"
+              size="large"
+              variant="filled"
+              class="video__action-indicator-icon"
+            />
+            <span class="video__action-indicator-text">-{{ skipSeconds() }}s</span>
+          </div>
+        }
+        @if (showPlayIndicator()) {
+          <div class="video__action-indicator video__action-indicator--play">
+            <app-icon
+              icon="play"
+              size="large"
+              variant="filled"
+              class="video__action-indicator-icon"
+            />
+            <span class="video__action-indicator-text">Play</span>
+          </div>
+        }
+        @if (showPauseIndicator()) {
+          <div class="video__action-indicator video__action-indicator--pause">
+            <app-icon
+              icon="pause"
+              size="large"
+              variant="filled"
+              class="video__action-indicator-icon"
+            />
+            <span class="video__action-indicator-text">Pause</span>
+          </div>
+        }
+
+        <!-- Center Play/Pause Button -->
+        @if (showPlayButton() && !isPlaying()) {
+          <div class="video__center-control">
+            <app-button
+              variant="primary"
+              size="large"
+              icon="play"
+              [iconOnly]="true"
+              ariaLabel="Play video"
+              (click)="togglePlay()"
+            />
+          </div>
+        }
+
+        <!-- Bottom Controls Bar -->
+        <div class="video__controls-bar">
+          <!-- First Row: Progress Slider (full width) -->
+          @if (showProgressBar()) {
+            <div class="video__progress-row">
+              <app-slider
+                class="video__progress-slider"
+                [valueModel]="currentTime()"
+                [min]="0"
+                [max]="duration()"
+                [step]="0.1"
+                [label]="''"
+                (change)="onProgressChange($event)"
+              />
+            </div>
+          }
+
+          <!-- Second Row: All Other Controls -->
+          <div class="video__controls-row">
+            <!-- Skip Backward Button -->
+            @if (showSkipButtons()) {
+              <app-button
+                variant="primary"
+                icon="skip_back_10"
+                [iconOnly]="true"
+                [ariaLabel]="'Skip backward ' + skipSeconds() + ' seconds'"
+                (click)="skipBackward()"
+              />
+            }
+
+            <!-- Play/Pause Button -->
+            @if (showPlayButton()) {
+              <app-button
+                variant="primary"
+                [icon]="isPlaying() ? 'pause' : 'play'"
+                [iconOnly]="true"
+                [ariaLabel]="isPlaying() ? 'Pause' : 'Play'"
+                (click)="togglePlay()"
+              />
+            }
+
+            <!-- Skip Forward Button -->
+            @if (showSkipButtons()) {
+              <app-button
+                variant="primary"
+                icon="skip_forward_10"
+                [iconOnly]="true"
+                [ariaLabel]="'Skip forward ' + skipSeconds() + ' seconds'"
+                (click)="skipForward()"
+              />
+            }
+
+            <!-- Volume Control -->
+            @if (showVolumeButton()) {
+              <div class="video__volume-inline">
+                <app-button
+                  variant="primary"
+                  [icon]="isMuted() ? 'speaker_mute' : 'speaker_2'"
+                  [iconOnly]="true"
+                  [ariaLabel]="isMuted() ? 'Unmute' : 'Mute'"
+                  (click)="toggleMute(); $event.stopPropagation()"
+                />
+                <app-slider
+                  class="video__volume-slider"
+                  [valueModel]="volume()"
+                  [min]="0"
+                  [max]="1"
+                  [step]="0.01"
+                  [size]="'small'"
+                  [label]="''"
+                  (change)="onVolumeChange($event)"
+                />
+              </div>
+            }
+
+            <!-- Time Display -->
+            @if (showProgressBar()) {
+              <div class="video__time">
+                <span class="video__time-current">{{ formattedTime() }}</span>
+                <span class="video__time-separator">/</span>
+                <span class="video__time-duration">{{ formattedDuration() }}</span>
+              </div>
+            }
+
+            <!-- Speed Control -->
+            @if (showSpeedButton()) {
+              <div class="video__speed-container">
+                <app-button
+                  variant="primary"
+                  icon="top_speed"
+                  [iconOnly]="false"
+                  [ariaLabel]="'Playback speed: ' + getCurrentSpeedLabel()"
+                  (click)="toggleSpeedMenu(); $event.stopPropagation()"
+                >
+                  {{ getCurrentSpeedLabel() }}
+                </app-button>
+                @if (showSpeedMenu()) {
+                  <div class="video__speed-menu" (click)="$event.stopPropagation()">
+                    @for (option of speedOptions; track option.value) {
+                      <button
+                        type="button"
+                        class="video__speed-menu-item"
+                        [class.video__speed-menu-item--active]="playbackRate() === option.value"
+                        (click)="setPlaybackRate(option.value)"
+                      >
+                        {{ option.label }}
+                      </button>
+                    }
+                  </div>
+                }
+              </div>
+            }
+
+            <!-- Quality Control -->
+            @if (showQualityButton() && qualityOptions().length > 0) {
+              <div class="video__quality-container">
+                <app-button
+                  variant="primary"
+                  icon="hd"
+                  [iconOnly]="false"
+                  [ariaLabel]="'Video quality: ' + getCurrentQualityLabel()"
+                  (click)="toggleQualityMenu(); $event.stopPropagation()"
+                >
+                  {{ getCurrentQualityLabel() }}
+                </app-button>
+                @if (showQualityMenu()) {
+                  <div class="video__quality-menu" (click)="$event.stopPropagation()">
+                    @for (option of qualityOptions(); track option.value) {
+                      <button
+                        type="button"
+                        class="video__quality-menu-item"
+                        [class.video__quality-menu-item--active]="currentQuality() === option.value"
+                        (click)="setQuality(option.value)"
+                      >
+                        {{ option.label }}
+                      </button>
+                    }
+                  </div>
+                }
+              </div>
+            }
+
+            <!-- Picture-in-Picture Button -->
+            @if (showPictureInPictureButton() && supportsPictureInPicture()) {
+              <app-button
+                variant="primary"
+                icon="picture_in_picture"
+                [iconOnly]="true"
+                [ariaLabel]="
+                  isPictureInPicture() ? 'Exit Picture-in-Picture' : 'Enter Picture-in-Picture'
+                "
+                (click)="togglePictureInPicture()"
+              />
+            }
+
+            <!-- Fullscreen Button -->
+            @if (showFullscreenButton()) {
+              <app-button
+                variant="primary"
+                [icon]="isFullscreen() ? 'full_screen_minimize' : 'full_screen_maximize'"
+                [iconOnly]="true"
+                [ariaLabel]="isFullscreen() ? 'Exit fullscreen' : 'Enter fullscreen'"
+                (click)="toggleFullscreen()"
+              />
+            }
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

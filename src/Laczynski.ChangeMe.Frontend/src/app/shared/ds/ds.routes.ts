@@ -47,6 +47,7 @@ import { NavShowcaseComponent } from '@shared/components/nav/nav.showcase.compon
 import { KbdShowcaseComponent } from '@shared/components/kbd/kbd.showcase.component';
 import { TooltipShowcaseComponent } from '@shared/components/tooltip/tooltip.showcase.component';
 import { RatingShowcaseComponent } from '@shared/components/rating/rating.showcase.component';
+import { VideoShowcaseComponent } from '@shared/components/video/video.showcase.component';
 
 export const dsRoutes: Routes = [
   {
@@ -245,5 +246,9 @@ export const dsRoutes: Routes = [
   {
     path: 'rating',
     component: RatingShowcaseComponent,
+  },
+  {
+    path: 'video',
+    component: VideoShowcaseComponent,
   },
 ];

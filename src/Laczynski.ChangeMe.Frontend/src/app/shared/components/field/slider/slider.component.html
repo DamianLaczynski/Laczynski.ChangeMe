@@ -31,7 +31,7 @@
           [min]="min()"
           [max]="max()"
           [step]="step()"
-          [value]="value"
+          [value]="currentValue"
           [required]="required()"
           [disabled]="disabled()"
           [readonly]="readonly()"
@@ -39,7 +39,7 @@
           [attr.aria-describedby]="ariaDescribedBy()"
           [attr.aria-valuemin]="min()"
           [attr.aria-valuemax]="max()"
-          [attr.aria-valuenow]="value"
+          [attr.aria-valuenow]="currentValue"
           (input)="onSliderInput($event)"
           (change)="onSliderChange($event)"
           (focus)="onFocus($event)"
@@ -62,9 +62,7 @@
 
           <!-- Thumb (draggable handle) -->
           <div class="slider-thumb-wrapper" [style.left.%]="getThumbPosition()">
-            <div class="slider-thumb">
-              <div class="slider-thumb-inner"></div>
-            </div>
+            <div class="slider-thumb"></div>
           </div>
         </div>
       </div>

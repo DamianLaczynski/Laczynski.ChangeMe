@@ -7,6 +7,7 @@ import {
   OnInit,
   ViewChild,
   ElementRef,
+  effect,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Size, StateType } from '../../utils';
@@ -29,6 +30,7 @@ export class SliderComponent extends FieldComponent implements ControlValueAcces
   @ViewChild('sliderInput') sliderInput!: ElementRef<HTMLInputElement>;
 
   // Component inputs
+  valueModel = model<number>();
 
   // Slider-specific inputs
   min = input<number>(0);
@@ -67,7 +69,7 @@ export class SliderComponent extends FieldComponent implements ControlValueAcces
 
   getFillPercentage(): number {
     const range = this.max() - this.min();
-    const valueOffset = this.value - this.min();
+    const valueOffset = this.currentValue - this.min();
     return (valueOffset / range) * 100;
   }
 
@@ -75,17 +77,40 @@ export class SliderComponent extends FieldComponent implements ControlValueAcces
     return this.getFillPercentage();
   }
 
+  get currentValue(): number {
+    return this.valueModel() !== undefined && this.valueModel() !== null
+      ? this.valueModel()!
+      : this.value;
+  }
+
+  private setCurrentValue(value: number): void {
+    if (this.valueModel() !== undefined && this.valueModel() !== null) {
+      this.valueModel.set(value);
+    } else {
+      this.value = value;
+    }
+    this.onChange(value);
+  }
+
   onSliderInput(event: Event): void {
     const target = event.target as HTMLInputElement;
-    this.value = parseFloat(target.value);
-    this.onChange(this.value);
+    const newValue = parseFloat(target.value);
+
+    // Validate the value before setting
+    if (isFinite(newValue) && !isNaN(newValue)) {
+      this.setCurrentValue(newValue);
+    }
   }
 
   onSliderChange(event: Event): void {
     const target = event.target as HTMLInputElement;
-    this.value = parseFloat(target.value);
-    this.onChange(this.value);
-    this.change.emit(this.value);
+    const newValue = parseFloat(target.value);
+
+    // Validate the value before setting and emitting
+    if (isFinite(newValue) && !isNaN(newValue)) {
+      this.setCurrentValue(newValue);
+      this.change.emit(newValue);
+    }
   }
 
   override onBlur(event: FocusEvent): void {
@@ -108,15 +133,24 @@ export class SliderComponent extends FieldComponent implements ControlValueAcces
   // ControlValueAccessor methods
   override writeValue(value: any): void {
     if (value !== null && value !== undefined) {
-      this.value = parseFloat(value);
+      const numValue = parseFloat(value);
+      if (this.valueModel() !== undefined && this.valueModel() !== null) {
+        this.valueModel.set(numValue);
+      } else {
+        this.value = numValue;
+      }
     } else {
-      this.value = this.min();
+      const minValue = this.min();
+      if (this.valueModel() !== undefined && this.valueModel() !== null) {
+        this.valueModel.set(minValue);
+      } else {
+        this.value = minValue;
+      }
     }
   }
 
   setValue(value: number): void {
-    this.value = value;
-    this.onChange(this.value);
-    this.change.emit(this.value);
+    this.setCurrentValue(value);
+    this.change.emit(value);
   }
 }

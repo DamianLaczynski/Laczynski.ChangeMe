@@ -75,6 +75,7 @@ export class DsSidebarComponent {
     { id: 'pagination', label: 'Pagination', icon: 'arrow_next' },
     { id: 'carousel', label: 'Carousel', icon: 'arrow_circle_right' },
     { id: 'drawer', label: 'Drawer', icon: 'panel_left' },
+    { id: 'video', label: 'Video', icon: 'video' },
     // Calendar Section
     { id: 'calendar-components', isSectionHeader: true, label: 'Calendar Components' },
     { id: 'calendar', label: 'Calendar', icon: 'calendar_view_month' },

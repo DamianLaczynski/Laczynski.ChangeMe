@@ -1,7 +1,6 @@
 // Slider Component Styles based on Fluent 2 Design System
 // Implements range slider with track, rail, and thumb
 
-
 .slider-container {
   display: flex;
   flex-direction: column;
@@ -93,7 +92,7 @@
 .slider-track-fill {
   width: 100%;
   height: 4px;
-  background: var(--Brand-Background-Compound-Rest, #0F6CBD);
+  background: var(--Brand-Background-Compound-Rest, #0f6cbd);
   border-radius: 2px 0 0 2px;
   transition: background 0.2s ease;
 }
@@ -105,39 +104,30 @@
   transform: translate(-50%, -50%);
   z-index: 2;
   pointer-events: none;
+  // Disable transition on positioning to prevent desync during auto-sliding
+  transition: none;
 }
 
 .slider-thumb {
   width: 18px;
   height: 18px;
-  padding: 3px;
-  background: var(--Neutral-Background-1-Rest, white);
+  background: var(--Brand-Background-Compound-Rest, #0f6cbd);
   border-radius: 15px;
-  outline: 1px solid var(--Neutral-Stroke-1-Rest, #D1D1D1);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: all 0.2s ease;
+  outline: 1px solid var(--Neutral-Stroke-1-Rest, #d1d1d1);
+  transition:
+    background 0.2s ease,
+    outline 0.2s ease;
 }
-
-.slider-thumb-inner {
-  width: 12px;
-  height: 12px;
-  background: var(--Brand-Background-Compound-Rest, #0F6CBD);
-  border-radius: 6px;
-  transition: background 0.2s ease;
-}
-
 
 // ===== STATE: HOVER =====
 .slider:not(.slider--disabled):not(.slider--readonly) {
   .slider-input:hover ~ .slider-visual {
     .slider-track-fill {
-      background: var(--Brand-Background-Compound-Hover, #115EA3);
+      background: var(--Brand-Background-Compound-Hover, #115ea3);
     }
 
-    .slider-thumb-inner {
-      background: var(--Brand-Background-Compound-Hover, #115EA3);
+    .slider-thumb {
+      background: var(--Brand-Background-Compound-Hover, #115ea3);
     }
   }
 }
@@ -146,11 +136,11 @@
 .slider--dragging:not(.slider--disabled):not(.slider--readonly),
 .slider:not(.slider--disabled):not(.slider--readonly) .slider-input:active ~ .slider-visual {
   .slider-track-fill {
-    background: var(--Brand-Background-Compound-Pressed, #0F548C);
+    background: var(--Brand-Background-Compound-Pressed, #0f548c);
   }
 
-  .slider-thumb-inner {
-    background: var(--Brand-Background-Compound-Pressed, #0F548C);
+  .slider-thumb {
+    background: var(--Brand-Background-Compound-Pressed, #0f548c);
   }
 }
 
@@ -159,11 +149,11 @@
   opacity: 1;
 
   .slider-label {
-    color: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+    color: var(--Neutral-Foreground-Disabled-Rest, #bdbdbd);
   }
 
   .slider-value {
-    color: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+    color: var(--Neutral-Foreground-Disabled-Rest, #bdbdbd);
   }
 
   .slider-rail-fill {
@@ -171,17 +161,13 @@
   }
 
   .slider-track-fill {
-    background: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+    background: var(--Neutral-Foreground-Disabled-Rest, #bdbdbd);
   }
 
   .slider-thumb {
-    outline: 1px solid var(--Neutral-Stroke-Disabled-Rest, #E0E0E0);
+    outline: 1px solid var(--Neutral-Stroke-Disabled-Rest, #e0e0e0);
+    background: var(--Neutral-Foreground-Disabled-Rest, #bdbdbd);
   }
-
-  .slider-thumb-inner {
-    background: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
-  }
-
 }
 
 // ===== SIZE VARIANTS =====
@@ -208,13 +194,6 @@
   .slider-thumb {
     width: 14px;
     height: 14px;
-    padding: 2px;
-  }
-
-  .slider-thumb-inner {
-    width: 10px;
-    height: 10px;
-    border-radius: 5px;
   }
 
   .slider-value {
@@ -223,9 +202,7 @@
   }
 }
 
-.slider--medium {
-  // Default size - already defined above
-}
+// .slider--medium - Default size - already defined above
 
 .slider--large {
   .slider-rail,
@@ -250,13 +227,6 @@
   .slider-thumb {
     width: 22px;
     height: 22px;
-    padding: 4px;
-  }
-
-  .slider-thumb-inner {
-    width: 14px;
-    height: 14px;
-    border-radius: 7px;
   }
 
   .slider-value {
@@ -268,21 +238,21 @@
 // ===== STATE TYPE VARIANTS =====
 .slider--error {
   .slider-track-fill {
-    background: var(--Shared-Red-Background-2-Rest, #D13438);
+    background: var(--Shared-Red-Background-2-Rest, #d13438);
   }
 
-  .slider-thumb-inner {
-    background: var(--Shared-Red-Background-2-Rest, #D13438);
+  .slider-thumb {
+    background: var(--Shared-Red-Background-2-Rest, #d13438);
   }
 
   &:not(.slider--disabled):not(.slider--readonly) {
     .slider-input:hover ~ .slider-visual {
       .slider-track-fill {
-        background: var(--Shared-Red-Background-2-Hover, #B92E32);
+        background: var(--Shared-Red-Background-2-Hover, #b92e32);
       }
 
-      .slider-thumb-inner {
-        background: var(--Shared-Red-Background-2-Hover, #B92E32);
+      .slider-thumb {
+        background: var(--Shared-Red-Background-2-Hover, #b92e32);
       }
     }
   }
@@ -290,21 +260,21 @@
 
 .slider--warning {
   .slider-track-fill {
-    background: var(--Shared-Orange-Foreground, #F7630C);
+    background: var(--Shared-Orange-Foreground, #f7630c);
   }
 
-  .slider-thumb-inner {
-    background: var(--Shared-Orange-Foreground, #F7630C);
+  .slider-thumb {
+    background: var(--Shared-Orange-Foreground, #f7630c);
   }
 
   &:not(.slider--disabled):not(.slider--readonly) {
     .slider-input:hover ~ .slider-visual {
       .slider-track-fill {
-        background: var(--Shared-Orange-Foreground-Hover, #DC570B);
+        background: var(--Shared-Orange-Foreground-Hover, #dc570b);
       }
 
-      .slider-thumb-inner {
-        background: var(--Shared-Orange-Foreground-Hover, #DC570B);
+      .slider-thumb {
+        background: var(--Shared-Orange-Foreground-Hover, #dc570b);
       }
     }
   }
@@ -312,21 +282,21 @@
 
 .slider--success {
   .slider-track-fill {
-    background: var(--Shared-Green-Foreground, #0E700E);
+    background: var(--Shared-Green-Foreground, #0e700e);
   }
 
-  .slider-thumb-inner {
-    background: var(--Shared-Green-Foreground, #0E700E);
+  .slider-thumb {
+    background: var(--Shared-Green-Foreground, #0e700e);
   }
 
   &:not(.slider--disabled):not(.slider--readonly) {
     .slider-input:hover ~ .slider-visual {
       .slider-track-fill {
-        background: var(--Shared-Green-Foreground-Hover, #0C600C);
+        background: var(--Shared-Green-Foreground-Hover, #0c600c);
       }
 
-      .slider-thumb-inner {
-        background: var(--Shared-Green-Foreground-Hover, #0C600C);
+      .slider-thumb {
+        background: var(--Shared-Green-Foreground-Hover, #0c600c);
       }
     }
   }
@@ -338,11 +308,11 @@
 }
 
 // ===== ANIMATIONS =====
+// Note: Specific transitions are defined above for better control
+// This section ensures rail and track transitions are consistent
 .slider-track-fill,
-.slider-thumb,
-.slider-thumb-inner,
 .slider-rail-fill {
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 // ===== VERTICAL ORIENTATION =====
@@ -392,10 +362,8 @@
 }
 
 // ===== RTL SUPPORT =====
-[dir="rtl"] {
+[dir='rtl'] {
   .slider-track-fill {
     border-radius: 0 2px 2px 0;
   }
 }
-
-

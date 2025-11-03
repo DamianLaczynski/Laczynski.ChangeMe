@@ -1,0 +1,976 @@
+// ==========================================================================
+// Video Component - Fluent 2 Design System (BEM Block)
+// ==========================================================================
+
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use '../utils/functions' as *;
+
+@include block('video') {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: $color-neutral-background-rest;
+  border-radius: $border-radius-800; // 8px
+  overflow: hidden;
+
+  // Size Modifiers
+  @include modifier('small') {
+    @include element('container') {
+      min-height: 200px;
+    }
+  }
+
+  @include modifier('medium') {
+    @include element('container') {
+      min-height: 400px;
+    }
+  }
+
+  @include modifier('large') {
+    @include element('container') {
+      min-height: 600px;
+    }
+  }
+
+  // Playing state - reduce opacity but keep controls visible
+  @include modifier('playing') {
+    @include element('controls-overlay') {
+      opacity: 0.4;
+      pointer-events: all;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+
+    @include element('controls-bar') {
+      opacity: 0.4;
+      transition: opacity $duration-fast $easing-decelerate-mid;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+
+    @include element('center-control') {
+      opacity: 0 !important;
+      pointer-events: none !important;
+      display: none !important;
+    }
+  }
+
+  // Hovered state - full visibility
+  @include modifier('hovered') {
+    @include element('controls-overlay') {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    @include element('controls-bar') {
+      opacity: 1;
+    }
+
+    @include element('center-control') {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+
+  // Show center control on hover when video is not playing
+  @include modifier('hovered') {
+    &:not(.video--playing) {
+      .video__center-control {
+        opacity: 1;
+        pointer-events: all;
+      }
+    }
+  }
+
+  // Fullscreen modifier
+  @include modifier('fullscreen') {
+    @include element('controls-bar') {
+      padding: $spacing-6 $spacing-7;
+      gap: $spacing-4;
+    }
+
+    @include element('progress-bar') {
+      height: 10px;
+
+      &:hover {
+        height: 14px;
+      }
+    }
+
+    @include element('time') {
+      font-size: $font-size-500;
+      gap: $spacing-3;
+    }
+
+    @include element('volume-slider-wrapper') {
+      padding: $spacing-4 $spacing-5;
+    }
+
+    @include element('volume-bar') {
+      width: 100px;
+      height: 10px;
+
+      &:hover {
+        height: 14px;
+      }
+    }
+  }
+
+  // Elements
+  @include element('container') {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    border-radius: $border-radius-800;
+    overflow: hidden;
+  }
+
+  @include element('element') {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  // Controls Overlay
+  @include element('controls-overlay') {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: transparent;
+    transition: opacity $duration-fast $easing-decelerate-mid;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 10;
+
+    // Visible state
+    &--visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+  }
+
+  // Controls hidden state
+  @include modifier('controls-hidden') {
+    @include element('controls-overlay') {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    @include element('controls-bar') {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    // Still allow interaction when hovered
+    &:hover {
+      @include element('controls-overlay') {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      @include element('controls-bar') {
+        opacity: 1;
+        pointer-events: all;
+      }
+    }
+  }
+
+  // Action Indicators (visual feedback for skip/play/pause)
+  @include element('action-indicator') {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-2; // 8px
+    padding: $spacing-4 $spacing-6; // 16px vertical, 24px horizontal
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: $border-radius-800; // 8px
+    z-index: 25;
+    pointer-events: none;
+    animation:
+      videoActionIndicatorFadeIn 0.2s ease-out,
+      videoActionIndicatorFadeOut 0.3s ease-in 0.7s forwards;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+
+    &-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: $color-brand-primary;
+
+      // Ensure icon inherits color from modifier
+      //   ::ng-deep svg {
+      //     fill: currentColor;
+      //   }
+    }
+
+    &-text {
+      font-size: $font-size-400; // 16px
+      font-weight: $font-weight-semibold;
+      color: rgba(255, 255, 255, 1);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+      white-space: nowrap;
+    }
+  }
+
+  @keyframes videoActionIndicatorFadeIn {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+
+  @keyframes videoActionIndicatorFadeOut {
+    from {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.9);
+    }
+  }
+
+  // Center Control (Large Play Button)
+  @include element('center-control') {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+  }
+
+  // Controls Bar (Bottom Bar)
+  @include element('controls-bar') {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-3; // 12px
+    padding: $spacing-5 $spacing-6; // 20px vertical, 24px horizontal
+    // background: linear-gradient(
+    //   to top,
+    //   rgba(0, 0, 0, 0.85) 0%,
+    //   rgba(0, 0, 0, 0.8) 20%,
+    //   rgba(0, 0, 0, 0.75) 40%,
+    //   rgba(0, 0, 0, 0.65) 60%,
+    //   rgba(0, 0, 0, 0.5) 80%,
+    //   rgba(0, 0, 0, 0.3) 90%,
+    //   transparent 100%
+    // );
+    //backdrop-filter: blur(8px);
+    //-webkit-backdrop-filter: blur(8px);
+    z-index: 20;
+    //transition: opacity $duration-fast $easing-decelerate-mid;
+
+    // &:hover {
+    //   background: linear-gradient(
+    //     to top,
+    //     rgba(0, 0, 0, 0.92) 0%,
+    //     rgba(0, 0, 0, 0.88) 20%,
+    //     rgba(0, 0, 0, 0.83) 40%,
+    //     rgba(0, 0, 0, 0.73) 60%,
+    //     rgba(0, 0, 0, 0.58) 80%,
+    //     rgba(0, 0, 0, 0.38) 90%,
+    //     transparent 100%
+    //   );
+    // }
+
+    // Override button styles for video controls
+    // ::ng-deep app-button,
+    // app-button {
+    //   .button--subtle {
+    //     color: rgba(255, 255, 255, 0.9);
+    //     background-color: rgba(255, 255, 255, 0.1);
+
+    //     &:hover:not(.button--disabled) {
+    //       color: rgba(255, 255, 255, 1);
+    //       background-color: rgba(255, 255, 255, 0.2);
+    //     }
+
+    //     &:active:not(.button--disabled),
+    //     &.button--pressed:not(.button--disabled) {
+    //       color: rgba(255, 255, 255, 1);
+    //       background-color: rgba(255, 255, 255, 0.25);
+    //     }
+
+    //     .button__icon {
+    //       fill: rgba(255, 255, 255, 0.9);
+    //     }
+
+    //     &:hover:not(.button--disabled) .button__icon {
+    //       fill: rgba(255, 255, 255, 1);
+    //     }
+    //   }
+    // }
+  }
+
+  // Progress Row (first row - full width slider)
+  @include element('progress-row') {
+    width: 100%;
+    flex-shrink: 0;
+  }
+
+  // Controls Row (second row - all other controls)
+  @include element('controls-row') {
+    display: flex;
+    align-items: center;
+    gap: $spacing-3; // 12px
+    width: 100%;
+    flex-wrap: nowrap;
+  }
+
+  // Volume Inline (inside progress container)
+  @include element('volume-inline') {
+    display: flex;
+    align-items: center;
+    gap: $spacing-2; // 8px
+    flex-shrink: 0;
+  }
+
+  // Progress Slider (using slider component) - pierwsza linia, pełna szerokość
+  @include element('progress-slider') {
+    width: 100%;
+
+    // // Hide field wrapper label when empty
+    // ::ng-deep .field {
+    //   margin: 0;
+    // }
+
+    // ::ng-deep .field__label,
+    // ::ng-deep .input-label {
+    //   display: none;
+    // }
+
+    // ::ng-deep .slider-wrapper {
+    //   margin: 0;
+    // }
+
+    // ::ng-deep .slider-input-wrapper {
+    //   height: 8px;
+    //   padding: $spacing-2 0; // Add padding for easier clicking
+    // }
+
+    // ::ng-deep .slider-visual {
+    //   height: 8px;
+    // }
+
+    // ::ng-deep .slider-rail,
+    // ::ng-deep .slider-rail-fill,
+    // ::ng-deep .slider-track-wrapper,
+    // ::ng-deep .slider-track,
+    // ::ng-deep .slider-track-fill {
+    //   height: 8px;
+    // }
+
+    // ::ng-deep .slider-rail-fill {
+    //   background: rgba(0, 0, 0, 0.25);
+    // }
+
+    // ::ng-deep .slider-track-fill {
+    //   background: $color-brand-primary;
+    //   box-shadow: 0 0 4px rgba(0, 120, 212, 0.5);
+    // }
+
+    // ::ng-deep .slider-thumb {
+    //   width: 18px;
+    //   height: 18px;
+    //   background: $color-brand-primary;
+    //   border: 2px solid rgba(255, 255, 255, 1);
+    //   border-radius: 50%;
+    //   opacity: 0;
+    //   box-shadow:
+    //     0 2px 8px rgba(0, 120, 212, 0.6),
+    //     0 0 4px rgba(0, 120, 212, 0.4),
+    //     inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    // }
+
+    // ::ng-deep .slider-thumb-inner {
+    //   display: none;
+    // }
+
+    // &:hover,
+    // &:focus-within {
+    //   ::ng-deep .slider-input-wrapper {
+    //     height: 12px;
+    //   }
+
+    //   ::ng-deep .slider-visual,
+    //   ::ng-deep .slider-rail,
+    //   ::ng-deep .slider-rail-fill,
+    //   ::ng-deep .slider-track-wrapper,
+    //   ::ng-deep .slider-track,
+    //   ::ng-deep .slider-track-fill {
+    //     height: 12px;
+    //   }
+
+    //   ::ng-deep .slider-rail-fill {
+    //     background: rgba(0, 0, 0, 0.3);
+    //   }
+
+    //   ::ng-deep .slider-thumb {
+    //     opacity: 1;
+    //     transform: translate(-50%, -50%) scale(1.15);
+    //   }
+    // }
+  }
+
+  @include element('progress-bar') {
+    position: relative;
+    width: 100%;
+    height: 8px;
+    cursor: pointer;
+    border-radius: $border-radius-600; // 6px
+    background: transparent;
+    padding: $spacing-2 0; // Add padding for easier clicking
+    @include focus-ring($color-brand-primary);
+
+    &:focus-visible {
+      outline-offset: 2px;
+    }
+
+    &:hover {
+      height: 12px;
+
+      .video__progress-track {
+        height: 12px;
+      }
+
+      .video__progress-fill {
+        height: 12px;
+      }
+    }
+  }
+
+  @include element('progress-track') {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: $border-radius-600;
+    transition:
+      height $duration-fast $easing-decelerate-mid,
+      background $duration-fast $easing-decelerate-mid;
+
+    .video__progress-bar:hover & {
+      background: rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  @include element('progress-fill') {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: $color-brand-primary;
+    border-radius: $border-radius-400;
+    transition:
+      width $duration-fast $easing-decelerate-mid,
+      height $duration-fast $easing-decelerate-mid;
+    box-shadow: 0 0 4px rgba(0, 120, 212, 0.5);
+  }
+
+  @include element('progress-thumb') {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 18px;
+    height: 18px;
+    background: $color-brand-primary;
+    border-radius: 50%;
+    opacity: 0;
+    transition:
+      opacity $duration-fast $easing-decelerate-mid,
+      transform $duration-fast $easing-decelerate-mid;
+    pointer-events: none;
+    box-shadow:
+      0 2px 8px rgba(0, 120, 212, 0.6),
+      0 0 4px rgba(0, 120, 212, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 1);
+  }
+
+  @include element('progress-bar') {
+    &:hover,
+    &:focus-visible {
+      .video__progress-thumb {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.15);
+      }
+    }
+  }
+
+  @include element('time') {
+    display: flex;
+    align-items: center;
+    gap: $spacing-2; // 8px
+    font-size: $font-size-400; // 16px
+    font-weight: $font-weight-medium;
+    line-height: $line-height-400; // 24px
+    color: rgba(255, 255, 255, 0.9);
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-left: auto; // wyrównanie do prawej w controls-row
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  }
+
+  @include element('time-current') {
+    color: rgba(255, 255, 255, 1);
+    font-weight: $font-weight-semibold;
+  }
+
+  @include element('time-separator') {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  @include element('time-duration') {
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  // Volume Container
+  @include element('volume-container') {
+    display: flex;
+    align-items: center;
+    gap: $spacing-3; // 12px
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  @include element('volume-slider-wrapper') {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: $spacing-2;
+    padding: $spacing-4 $spacing-3;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: $border-radius-800;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    z-index: 30;
+  }
+
+  // Volume Slider (using slider component) - horizontal inline
+  @include element('volume-slider') {
+    width: 80px;
+    min-width: 80px;
+
+    // Hide field wrapper label when empty
+    // ::ng-deep .field {
+    //   margin: 0;
+    // }
+
+    // ::ng-deep .field__label,
+    // ::ng-deep .input-label {
+    //   display: none;
+    // }
+
+    // ::ng-deep .slider-wrapper {
+    //   margin: 0;
+    // }
+
+    // ::ng-deep .slider-input-wrapper {
+    //   height: 8px;
+    //   padding: $spacing-2 0;
+    // }
+
+    // ::ng-deep .slider-visual {
+    //   height: 8px;
+    // }
+
+    // ::ng-deep .slider-rail,
+    // ::ng-deep .slider-rail-fill,
+    // ::ng-deep .slider-track-wrapper,
+    // ::ng-deep .slider-track,
+    // ::ng-deep .slider-track-fill {
+    //   height: 8px;
+    // }
+
+    // ::ng-deep .slider-rail-fill {
+    //   background: rgba(255, 255, 255, 0.25);
+    // }
+
+    // ::ng-deep .slider-track-fill {
+    //   background: $color-brand-primary;
+    //   box-shadow: 0 0 4px rgba(0, 120, 212, 0.5);
+    // }
+
+    // ::ng-deep .slider-thumb {
+    //   width: 18px;
+    //   height: 18px;
+    //   background: $color-brand-primary;
+    //   border: 2px solid rgba(255, 255, 255, 1);
+    //   border-radius: 50%;
+    //   opacity: 0;
+    //   box-shadow:
+    //     0 2px 8px rgba(0, 120, 212, 0.6),
+    //     0 0 4px rgba(0, 120, 212, 0.4),
+    //     inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    // }
+
+    // ::ng-deep .slider-thumb-inner {
+    //   display: none;
+    // }
+
+    // &:hover,
+    // &:focus-within {
+    //   ::ng-deep .slider-input-wrapper {
+    //     height: 12px;
+    //   }
+
+    //   ::ng-deep .slider-visual,
+    //   ::ng-deep .slider-rail,
+    //   ::ng-deep .slider-rail-fill,
+    //   ::ng-deep .slider-track-wrapper,
+    //   ::ng-deep .slider-track,
+    //   ::ng-deep .slider-track-fill {
+    //     height: 12px;
+    //   }
+
+    //   ::ng-deep .slider-rail-fill {
+    //     background: rgba(255, 255, 255, 0.3);
+    //   }
+
+    //   ::ng-deep .slider-thumb {
+    //     opacity: 1;
+    //     transform: translate(-50%, -50%) scale(1.15);
+    //   }
+    // }
+  }
+
+  @include element('volume-bar') {
+    width: 8px;
+    height: 120px;
+    position: relative;
+
+    &:hover {
+      width: 12px;
+
+      .video__volume-fill-track {
+        width: 12px;
+      }
+
+      .video__volume-fill {
+        width: 12px;
+      }
+    }
+  }
+
+  @include element('volume-track') {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    border-radius: $border-radius-600;
+    background: transparent;
+    @include focus-ring($color-brand-primary);
+
+    &:focus-visible {
+      outline-offset: 2px;
+    }
+  }
+
+  @include element('volume-fill-track') {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: $border-radius-600;
+    transition:
+      height $duration-fast $easing-decelerate-mid,
+      background $duration-fast $easing-decelerate-mid,
+      width $duration-fast $easing-decelerate-mid;
+
+    .video__volume-track:hover & {
+      background: rgba(255, 255, 255, 0.3);
+    }
+  }
+
+  @include element('volume-fill') {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: $color-brand-primary;
+    border-radius: $border-radius-600;
+    transition:
+      height $duration-fast $easing-decelerate-mid,
+      width $duration-fast $easing-decelerate-mid;
+    box-shadow: 0 0 4px rgba(0, 120, 212, 0.5);
+  }
+
+  @include element('volume-thumb') {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    width: 18px;
+    height: 18px;
+    background: $color-brand-primary;
+    border-radius: 50%;
+    opacity: 1;
+    transition:
+      opacity $duration-fast $easing-decelerate-mid,
+      transform $duration-fast $easing-decelerate-mid;
+    pointer-events: none;
+    box-shadow:
+      0 2px 8px rgba(0, 120, 212, 0.6),
+      0 0 4px rgba(0, 120, 212, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 1);
+  }
+
+  @include element('volume-track') {
+    &:hover,
+    &:focus-visible {
+      .video__volume-thumb {
+        transform: translate(-50%, 50%) scale(1.15);
+      }
+    }
+  }
+
+  // Speed Container
+  @include element('speed-container') {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  @include element('speed-menu') {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    margin-bottom: $spacing-2;
+    min-width: 120px;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: $border-radius-800;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    padding: $spacing-1;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-1;
+  }
+
+  @include element('speed-menu-item') {
+    @include button-reset;
+    padding: $spacing-2 $spacing-3;
+    color: rgba(255, 255, 255, 0.9);
+    background: transparent;
+    border-radius: $border-radius-400;
+    font-size: $font-size-300;
+    font-weight: $font-weight-regular;
+    text-align: left;
+    cursor: pointer;
+    transition:
+      background $duration-fast $easing-decelerate-mid,
+      color $duration-fast $easing-decelerate-mid;
+    @include focus-ring($color-brand-primary);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 1);
+    }
+
+    &:focus-visible {
+      outline-offset: 2px;
+    }
+
+    @include modifier('active') {
+      background: rgba(0, 120, 212, 0.3);
+      color: rgba(255, 255, 255, 1);
+      font-weight: $font-weight-semibold;
+    }
+  }
+
+  // Quality Container
+  @include element('quality-container') {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  @include element('quality-menu') {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    margin-bottom: $spacing-2;
+    min-width: 120px;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: $border-radius-800;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    padding: $spacing-1;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-1;
+  }
+
+  @include element('quality-menu-item') {
+    @include button-reset;
+    padding: $spacing-2 $spacing-3;
+    color: rgba(255, 255, 255, 0.9);
+    background: transparent;
+    border-radius: $border-radius-400;
+    font-size: $font-size-300;
+    font-weight: $font-weight-regular;
+    text-align: left;
+    cursor: pointer;
+    transition:
+      background $duration-fast $easing-decelerate-mid,
+      color $duration-fast $easing-decelerate-mid;
+    @include focus-ring($color-brand-primary);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 1);
+    }
+
+    &:focus-visible {
+      outline-offset: 2px;
+    }
+
+    @include modifier('active') {
+      background: rgba(0, 120, 212, 0.3);
+      color: rgba(255, 255, 255, 1);
+      font-weight: $font-weight-semibold;
+    }
+  }
+
+  // Fullscreen styles
+  &:fullscreen,
+  &:-webkit-full-screen,
+  &:-moz-full-screen,
+  &:-ms-fullscreen {
+    @include element('controls-bar') {
+      padding: $spacing-6 $spacing-7; // 24px vertical, 28px horizontal
+      gap: $spacing-4; // 16px
+    }
+
+    @include element('progress-bar') {
+      height: 10px;
+
+      &:hover {
+        height: 14px;
+      }
+    }
+
+    @include element('time') {
+      font-size: $font-size-500; // 18px
+      gap: $spacing-3; // 12px
+    }
+
+    @include element('volume-slider-wrapper') {
+      padding: $spacing-5 $spacing-4;
+    }
+
+    @include element('volume-bar') {
+      width: 10px;
+      height: 150px;
+
+      &:hover {
+        width: 14px;
+      }
+    }
+  }
+
+  // Fullscreen API support - when container is in fullscreen
+  &:fullscreen,
+  &:-webkit-full-screen,
+  &:-moz-full-screen,
+  &:-ms-fullscreen {
+    // Ensure video fills the container in fullscreen
+    @include element('container') {
+      width: 100vw;
+      height: 100vh;
+      min-height: 100vh;
+    }
+
+    @include element('element') {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    // Ensure controls are visible and properly styled
+    @include element('controls-overlay') {
+      opacity: 1;
+      pointer-events: all;
+    }
+  }
+
+  // Responsive adjustments
+  @include respond-to(small) {
+    @include modifier('small') {
+      @include element('container') {
+        min-height: 150px;
+      }
+    }
+
+    @include modifier('medium') {
+      @include element('container') {
+        min-height: 300px;
+      }
+    }
+
+    @include modifier('large') {
+      @include element('container') {
+        min-height: 400px;
+      }
+    }
+
+    @include element('controls-bar') {
+      gap: $spacing-1; // 4px on mobile
+      padding: $spacing-2 $spacing-3; // 8px vertical, 12px horizontal
+    }
+
+    @include element('volume-container') {
+      display: none; // Hide volume slider on mobile
+    }
+
+    @include element('time') {
+      font-size: $font-size-100; // 10px
+    }
+  }
+}
