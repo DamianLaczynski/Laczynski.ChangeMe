@@ -1,11 +1,10 @@
 import { Component, forwardRef, input } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { FieldComponent } from '../field/field.component';
-import { ActionButtonComponent } from '../action-button.component';
 
 @Component({
   selector: 'app-textarea',
-  imports: [FieldComponent, ActionButtonComponent],
+  imports: [FieldComponent],
   templateUrl: './textarea.component.html',
   providers: [
     {

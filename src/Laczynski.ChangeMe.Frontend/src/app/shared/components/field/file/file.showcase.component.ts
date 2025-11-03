@@ -15,7 +15,34 @@ import { CommonModule, JsonPipe } from '@angular/common';
         <h3>Basic Usage</h3>
         <div class="showcase__grid">
           <div class="showcase__item">
-            <app-file label="Upload File" [showPreview]="true" />
+            <app-file label="Upload File" />
+          </div>
+          <div class="showcase__item">
+            <app-file label="Upload File (Inline Mode)" [mode]="'inline'" placeholder="Click to select a file" />
+          </div>
+        </div>
+      </section>
+
+      <section class="showcase__section">
+        <h3>Component Modes</h3>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h4>Area Mode (Default)</h4>
+            <app-file
+              label="Drag & Drop Area"
+              mode="area"
+              uploadText="Click to upload or drag and drop"
+              helpText="Area mode with drag and drop support"
+            />
+          </div>
+          <div class="showcase__item">
+            <h4>Inline Mode</h4>
+            <app-file
+              label="Inline File Input"
+              [mode]="'inline'"
+              placeholder="Click to select a file"
+              helpText="Inline mode that looks like a text input"
+            />
           </div>
         </div>
       </section>
@@ -27,7 +54,6 @@ import { CommonModule, JsonPipe } from '@angular/common';
             <app-file
               label="Upload Multiple Files"
               [multiple]="true"
-              [showPreview]="true"
               uploadText="Click to upload or drag and drop multiple files"
               uploadHint="PDF, DOC, DOCX files up to 10MB"
             />
@@ -61,7 +87,11 @@ import { CommonModule, JsonPipe } from '@angular/common';
         <h3>File Size Limit</h3>
         <div class="showcase__grid">
           <div class="showcase__item">
-            <app-file label="Max 5MB" [maxSize]="5 * 1024 * 1024" uploadHint="Files up to 5MB" />
+            <app-file
+              label="Max 5MB"
+              [maxSize]="5 * 1024 * 1024"
+              uploadHint="Files up to 5MB"
+            />
           </div>
         </div>
       </section>
@@ -75,21 +105,6 @@ import { CommonModule, JsonPipe } from '@angular/common';
               [multiple]="true"
               [maxFiles]="3"
               uploadHint="Maximum 3 files"
-            />
-          </div>
-        </div>
-      </section>
-
-      <section class="showcase__section">
-        <h3>With Preview</h3>
-        <div class="showcase__grid">
-          <div class="showcase__item">
-            <app-file
-              label="Upload Images with Preview"
-              accept="image/*"
-              [multiple]="true"
-              [showPreview]="true"
-              uploadText="Upload images"
             />
           </div>
         </div>
@@ -179,7 +194,6 @@ import { CommonModule, JsonPipe } from '@angular/common';
             label="Avatar"
             formControlName="avatar"
             accept="image/*"
-            [showPreview]="true"
             helpText="Upload your profile picture"
           />
           <app-file
@@ -233,7 +247,6 @@ import { CommonModule, JsonPipe } from '@angular/common';
               [maxFiles]="5"
               [maxSize]="10 * 1024 * 1024"
               accept="image/*,.pdf"
-              [showPreview]="true"
               size="large"
               variant="filled"
               [required]="true"
@@ -352,3 +365,4 @@ export class FileShowcaseComponent {
     ]);
   }
 }
+

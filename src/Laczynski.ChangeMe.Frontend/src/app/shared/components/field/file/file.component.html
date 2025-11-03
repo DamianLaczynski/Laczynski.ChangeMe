@@ -1,6 +1,7 @@
 <app-field
   [fieldType]="'file'"
   [label]="label()"
+  [placeholder]="placeholder()"
   [helpText]="helpText()"
   [errorText]="errorText()"
   [warningText]="warningText()"
@@ -14,25 +15,13 @@
   [size]="size()"
   [variant]="variant()"
 >
-  <div class="file-input-wrapper">
-    <!-- File Input Area / Drop Zone -->
-    <div
-      class="file-input-area"
-      [class]="fileWrapperClasses()"
-      (click)="triggerFileInput()"
-      (keydown.enter)="triggerFileInput()"
-      (keydown.space)="triggerFileInput()"
-      tabindex="0"
-      [attr.aria-label]="ariaLabel() || label() || 'File upload'"
-      [attr.aria-describedby]="ariaDescribedBy()"
-      [attr.aria-invalid]="state() === 'error'"
-      role="button"
-    >
+  <!-- Inline Mode (text-input-like) -->
+  @if (mode() === 'inline') {
+    <div class="input-wrapper" [class]="wrapperClasses">
       <input
         #fileInput
         class="file-input"
         type="file"
-        [id]="id()"
         [name]="name()"
         [accept]="accept()"
         [multiple]="multiple()"
@@ -40,102 +29,115 @@
         [required]="required()"
         (change)="onFileInputChange($event)"
       />
+      <input
+        class="input file-display"
+        type="text"
+        [id]="id()"
+        [value]="displayText()"
+        [placeholder]="placeholder()"
+        [readonly]="true"
+        [disabled]="disabled()"
+        [attr.aria-label]="ariaLabel() || label() || 'File input'"
+        [attr.aria-describedby]="ariaDescribedBy()"
+        [attr.aria-invalid]="state() === 'error'"
+        (click)="triggerFileInput()"
+        (focus)="onFocus($event)"
+        (blur)="onBlur($event)"
+        (keydown.enter)="triggerFileInput()"
+        (keydown.space)="triggerFileInput()"
+        tabindex="0"
+        role="button"
+      />
+      @if (!disabled() && !readonly()) {
+        <div class="field__actions">
+          <!-- Browse Button -->
+          <app-action-button
+            [show]="true"
+            [icon]="'document'"
+            [size]="size()"
+            (click)="triggerFileInput()"
+          ></app-action-button>
 
-      <!-- Full Drop Zone Display -->
-      <app-icon [icon]="'arrow_upload'" [size]="size()" />
-
-      <p class="file-input-area__text">{{ displayText() }}</p>
-      @if (displayHint()) {
-        <p class="file-input-area__hint">{{ displayHint() }}</p>
+          <!-- Clear Button -->
+          @if (selectedFiles().length > 0) {
+            <app-action-button
+              [show]="true"
+              [icon]="'dismiss'"
+              [size]="size()"
+              (click)="clear()"
+            ></app-action-button>
+          }
+        </div>
       }
     </div>
+  }
 
+  <!-- Area Mode (drag-and-drop area) -->
+  @if (mode() === 'area') {
+    <div class="input-wrapper" [class]="wrapperClasses">
+      <!-- File Input Area / Drop Zone -->
+      <div
+        class="file"
+        [class]="fileWrapperClasses()"
+        (click)="triggerFileInput()"
+        (keydown.enter)="triggerFileInput()"
+        (keydown.space)="triggerFileInput()"
+        tabindex="0"
+        [attr.aria-label]="ariaLabel() || label() || 'File upload'"
+        [attr.aria-describedby]="ariaDescribedBy()"
+        [attr.aria-invalid]="state() === 'error'"
+        role="button"
+      >
+        <input
+          #fileInput
+          class="file-input"
+          type="file"
+          [id]="id()"
+          [name]="name()"
+          [accept]="accept()"
+          [multiple]="multiple()"
+          [disabled]="disabled()"
+          [required]="required()"
+          (change)="onFileInputChange($event)"
+        />
+
+        <!-- Full Drop Zone Display -->
+        <app-icon [icon]="'arrow_upload'" [size]="size()" class="file__icon" />
+
+        <p class="file__text">{{ displayText() }}</p>
+        @if (displayHint()) {
+          <p class="file__hint">{{ displayHint() }}</p>
+        }
+      </div>
+    </div>
     <!-- Selected Files List -->
     @if (selectedFiles().length > 0) {
       <div class="file-list">
         @for (fileInfo of selectedFiles(); track fileInfo.id) {
-          <div class="file-item" [class]="fileItemClasses()">
-            <!-- File Icon -->
-            <div class="file-item__icon">
-              @switch (getFileIcon(fileInfo.type)) {
-                @case ('image') {
-                  <app-icon [icon]="'image'" [size]="size()" />
-                }
-                @case ('video') {
-                  <app-icon [icon]="'video'" [size]="size()" />
-                }
-                @case ('audio') {
-                  <app-icon [icon]="'audio'" [size]="size()" />
-                }
-                @case ('document') {
-                  <app-icon [icon]="'document'" [size]="size()" />
-                }
-                @case ('archive') {
-                  <app-icon [icon]="'archive'" [size]="size()" />
-                }
-                @default {
-                  <app-icon [icon]="'document'" [size]="size()" />
-                }
-              }
-            </div>
+          <app-node
+            class="file-list__item"
+            [node]="fileInfoToNode(fileInfo)"
+            [size]="size()"
+            [showSelectionIndicator]="false"
+            [asButton]="false"
+          >
+            <ng-template #before> </ng-template>
 
-            <!-- File Info -->
-            <div class="file-item__info">
-              <div class="file-item__name" [title]="fileInfo.name">
-                {{ fileInfo.name }}
-              </div>
-              <div class="file-item__meta">
-                <span class="file-item__size">{{ formatFileSize(fileInfo.size) }}</span>
-                @if (fileInfo.type !== 'unknown') {
-                  <span class="file-item__separator">•</span>
-                  <span class="file-item__type">{{ fileInfo.type }}</span>
-                }
-              </div>
-            </div>
+            <ng-template #after>
+              <div class="file-item__meta">{{ getFileMeta(fileInfo) }}</div>
 
-            <!-- Remove Button -->
-            @if (!disabled() && !readonly()) {
-              <app-action-button
-                [show]="true"
+              <app-button
                 [icon]="'dismiss'"
                 [size]="size()"
+                variant="subtle"
+                [iconOnly]="true"
                 (click)="removeFile($index)"
-              ></app-action-button>
-            }
-          </div>
+                [ariaLabel]="'Remove ' + fileInfo.name"
+              ></app-button>
+            </ng-template>
+          </app-node>
         }
       </div>
     }
-
-    <!-- Image Preview (optional) -->
-    @if (showPreview() && selectedFiles().length > 0) {
-      <div class="file-preview">
-        <div class="file-preview__grid">
-          @for (fileInfo of selectedFiles(); track fileInfo.id) {
-            @if (getFileIcon(fileInfo.type) === 'image') {
-              <div class="file-preview__item">
-                <img
-                  [src]="getImagePreview(fileInfo)"
-                  [alt]="fileInfo.name"
-                  class="file-preview__image"
-                  (error)="onImageError($event)"
-                  loading="lazy"
-                />
-                @if (!disabled() && !readonly()) {
-                  <button
-                    type="button"
-                    class="file-preview__remove"
-                    (click)="removeFileByFile(fileInfo.file)"
-                    [attr.aria-label]="'Remove ' + fileInfo.name"
-                  >
-                    <app-icon [icon]="'dismiss'" [size]="size()" />
-                  </button>
-                }
-              </div>
-            }
-          }
-        </div>
-      </div>
-    }
-  </div>
+  }
 </app-field>

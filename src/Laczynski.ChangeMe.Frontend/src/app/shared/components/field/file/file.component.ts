@@ -14,6 +14,8 @@ import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FieldComponent } from '../field/field.component';
 import { IconComponent } from '@shared/components/icon/icon.component';
+import { NodeComponent, Node } from '../../node/node.component';
+import { ButtonComponent } from '@shared/components/button/button.component';
 import { ActionButtonComponent } from '../action-button.component';
 
 export interface FileInfo {
@@ -23,13 +25,21 @@ export interface FileInfo {
   type: string;
   lastModified: number;
   id: string; // Unique identifier for tracking
-  previewUrl?: string; // Cached preview URL for images
 }
+
+export type FileComponentMode = 'inline' | 'area';
 
 @Component({
   selector: 'app-file',
-
-  imports: [CommonModule, FieldComponent, IconComponent, ActionButtonComponent],
+  standalone: true,
+  imports: [
+    CommonModule,
+    FieldComponent,
+    IconComponent,
+    NodeComponent,
+    ButtonComponent,
+    ActionButtonComponent,
+  ],
   templateUrl: './file.component.html',
   host: {
     '[style.position]': '"relative"',
@@ -52,11 +62,11 @@ export interface FileInfo {
 })
 export class FileComponent extends FieldComponent implements ControlValueAccessor, OnDestroy {
   // Inputs
+  mode = input<FileComponentMode>('area'); // 'inline' or 'area'
   accept = input<string>('');
   multiple = input<boolean>(false);
   maxFiles = input<number | null>(null);
   maxSize = input<number | null>(null); // in bytes
-  showPreview = input<boolean>(false);
   uploadText = input<string>('Click to upload or drag and drop');
   uploadHint = input<string>('');
 
@@ -69,7 +79,6 @@ export class FileComponent extends FieldComponent implements ControlValueAccesso
   isDragOver = signal<boolean>(false);
   isUploading = signal<boolean>(false);
   uploadProgress = signal<number>(0);
-  private previewUrls: Map<string, string> = new Map(); // Map by file ID
   private fileIdCounter = 0; // Counter for generating unique IDs
 
   @ViewChild('fileInput') fileInput?: ElementRef<HTMLInputElement>;
@@ -78,6 +87,9 @@ export class FileComponent extends FieldComponent implements ControlValueAccesso
   displayText = computed(() => {
     const files = this.selectedFiles();
     if (files.length === 0) {
+      if (this.mode() === 'inline') {
+        return '';
+      }
       return this.uploadText() || 'Click to upload or drag and drop';
     }
     if (files.length === 1) {
@@ -98,35 +110,58 @@ export class FileComponent extends FieldComponent implements ControlValueAccesso
   fileWrapperClasses = computed(() => {
     const size = this.size();
     const state = this.state();
-    const classes = [`file-input-area--${size}`];
+    const variant = this.variant();
+    const mode = this.mode();
+    const classes = [
+      mode === 'inline' ? 'file-input-wrapper' : 'file',
+      mode === 'inline' ? `file-input-wrapper--${size}` : `file--${size}`,
+      mode === 'inline' ? `file-input-wrapper--${variant}` : `file--${variant}`,
+    ];
 
     if (this.disabled()) {
-      classes.push('file-input-area--disabled');
+      classes.push(mode === 'inline' ? 'file-input-wrapper--disabled' : 'file--disabled');
+    }
+
+    if (this.readonly()) {
+      classes.push(mode === 'inline' ? 'file-input-wrapper--read-only' : 'file--read-only');
     }
 
     if (state === 'error') {
-      classes.push('file-input-area--error');
+      classes.push(mode === 'inline' ? 'file-input-wrapper--error' : 'file--error');
     } else if (state === 'warning') {
-      classes.push('file-input-area--warning');
+      classes.push(mode === 'inline' ? 'file-input-wrapper--warning' : 'file--warning');
     } else if (state === 'success') {
-      classes.push('file-input-area--success');
+      classes.push(mode === 'inline' ? 'file-input-wrapper--success' : 'file--success');
     }
 
-    if (this.isDragOver()) {
-      classes.push('file-input-area--drag-over');
+    if (mode === 'area' && this.isDragOver()) {
+      classes.push('file--drag-over');
     }
 
     return classes.join(' ');
   });
 
-  fileItemClasses = computed(() => {
-    return `file-item--${this.size()}`;
-  });
+  // Convert FileInfo to Node for display
+  fileInfoToNode(fileInfo: FileInfo): Node {
+    const meta = `${this.formatFileSize(fileInfo.size)}${fileInfo.type !== 'unknown' ? ` • ${fileInfo.type}` : ''}`;
+    return {
+      id: fileInfo.id,
+      label: fileInfo.name,
+      icon: this.getFileIcon(fileInfo.type),
+      disabled: this.disabled() || this.readonly(),
+      data: fileInfo,
+    };
+  }
+
+  // Get file metadata for display
+  getFileMeta(fileInfo: FileInfo): string {
+    return `${this.formatFileSize(fileInfo.size)}${fileInfo.type !== 'unknown' ? ` • ${fileInfo.type}` : ''}`;
+  }
 
   // Methods
   @HostListener('dragover', ['$event'])
   onDragOver(event: DragEvent): void {
-    if (this.disabled()) {
+    if (this.disabled() || this.mode() === 'inline') {
       return;
     }
     event.preventDefault();
@@ -136,7 +171,7 @@ export class FileComponent extends FieldComponent implements ControlValueAccesso
 
   @HostListener('dragleave', ['$event'])
   onDragLeave(event: DragEvent): void {
-    if (this.disabled()) {
+    if (this.disabled() || this.mode() === 'inline') {
       return;
     }
     event.preventDefault();
@@ -146,7 +181,7 @@ export class FileComponent extends FieldComponent implements ControlValueAccesso
 
   @HostListener('drop', ['$event'])
   onDrop(event: DragEvent): void {
-    if (this.disabled()) {
+    if (this.disabled() || this.mode() === 'inline') {
       return;
     }
     event.preventDefault();
@@ -223,13 +258,6 @@ export class FileComponent extends FieldComponent implements ControlValueAccesso
         id,
       };
 
-      // Generate preview URL for images immediately
-      if (file.type.startsWith('image/')) {
-        const url = URL.createObjectURL(file);
-        this.previewUrls.set(id, url);
-        fileInfo.previewUrl = url;
-      }
-
       return fileInfo;
     });
 
@@ -254,13 +282,6 @@ export class FileComponent extends FieldComponent implements ControlValueAccesso
       return;
     }
     const removedFile = files[index];
-
-    // Clean up preview URL if exists
-    if (removedFile.id && this.previewUrls.has(removedFile.id)) {
-      const url = this.previewUrls.get(removedFile.id)!;
-      URL.revokeObjectURL(url);
-      this.previewUrls.delete(removedFile.id);
-    }
 
     const newFiles = files.filter((_, i) => i !== index);
     this.selectedFiles.set(newFiles);
@@ -324,58 +345,12 @@ export class FileComponent extends FieldComponent implements ControlValueAccesso
     return 'file';
   }
 
-  onImageError(event: Event): void {
-    const img = event.target as HTMLImageElement;
-    if (img) {
-      img.src = '';
-      img.style.display = 'none';
-    }
-  }
-
-  getImagePreview(fileInfo: FileInfo): string {
-    if (!fileInfo.file.type.startsWith('image/')) {
-      return '';
-    }
-
-    // Return cached preview URL if exists
-    if (fileInfo.previewUrl) {
-      return fileInfo.previewUrl;
-    }
-
-    // Check if URL already exists in map
-    if (fileInfo.id && this.previewUrls.has(fileInfo.id)) {
-      const url = this.previewUrls.get(fileInfo.id)!;
-      fileInfo.previewUrl = url;
-      return url;
-    }
-
-    // Create new URL and cache it
-    const url = URL.createObjectURL(fileInfo.file);
-    if (fileInfo.id) {
-      this.previewUrls.set(fileInfo.id, url);
-      fileInfo.previewUrl = url;
-    }
-    return url;
-  }
-
   override ngOnDestroy(): void {
-    // Clean up preview URLs to prevent memory leaks
-    this.previewUrls.forEach(url => URL.revokeObjectURL(url));
-    this.previewUrls.clear();
+    // Component cleanup if needed
   }
 
   // ControlValueAccessor implementation
   override writeValue(value: File | File[] | null): void {
-    // Clean up old preview URLs before setting new files
-    const currentFiles = this.selectedFiles();
-    currentFiles.forEach(fileInfo => {
-      if (fileInfo.id && this.previewUrls.has(fileInfo.id)) {
-        const url = this.previewUrls.get(fileInfo.id)!;
-        URL.revokeObjectURL(url);
-        this.previewUrls.delete(fileInfo.id);
-      }
-    });
-
     if (!value) {
       this.selectedFiles.set([]);
       super.writeValue(null);
@@ -394,13 +369,6 @@ export class FileComponent extends FieldComponent implements ControlValueAccesso
         id,
       };
 
-      // Generate preview URL for images
-      if (file.type.startsWith('image/')) {
-        const url = URL.createObjectURL(file);
-        this.previewUrls.set(id, url);
-        fileInfo.previewUrl = url;
-      }
-
       return fileInfo;
     });
 
@@ -409,11 +377,28 @@ export class FileComponent extends FieldComponent implements ControlValueAccesso
   }
 
   override clear(): void {
-    // Clean up all preview URLs
-    this.previewUrls.forEach(url => URL.revokeObjectURL(url));
-    this.previewUrls.clear();
+    const files = this.selectedFiles();
+    // Emit fileRemove for all files before clearing
+    files.forEach(fileInfo => {
+      this.fileRemove.emit(fileInfo.file);
+    });
 
     super.clear();
     this.selectedFiles.set([]);
+    if (this.fileInput?.nativeElement) {
+      this.fileInput.nativeElement.value = '';
+    }
+  }
+
+  override onFocus(event: FocusEvent): void {
+    this._isFocused = true;
+    this.focus.emit(event);
+  }
+
+  override onBlur(event: FocusEvent): void {
+    this._isFocused = false;
+    this.onTouched();
+    this.blur.emit(event);
   }
 }
+

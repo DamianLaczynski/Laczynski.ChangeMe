@@ -3,118 +3,28 @@
 // ==========================================================================
 
 @use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use '../utils/functions' as *;
 
-// File Input Container
-.file-input-wrapper {
-  position: relative;
+// ==========================================================================
+// File Area Mode (Drag and Drop)
+// ==========================================================================
+
+.file {
   width: 100%;
-}
-
-// File Input Area (Drop Zone)
-.file-input-area {
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: $spacing-20;
   padding: $spacing-4;
-  border: 2px dashed $color-neutral-stroke-rest;
-  border-radius: $border-radius-600;
-  background-color: $color-neutral-background-rest;
-  transition: all $duration-ultra-fast $easing-ease-in-out;
   cursor: pointer;
   text-align: center;
   gap: $spacing-2;
+  box-sizing: border-box;
 
-  &:hover:not(.file-input-area--disabled) {
-    border-color: $color-neutral-stroke-hover;
-    background-color: $color-neutral-background-hover;
-  }
-
-  &:focus-within:not(.file-input-area--disabled) {
-    border-color: $color-brand-primary;
-    outline: 2px solid transparent;
-    outline-offset: 2px;
-
-    &::before {
-      content: '';
-      position: absolute;
-      inset: -2px;
-      border: 2px solid $color-brand-primary;
-      border-radius: $border-radius-600;
-      pointer-events: none;
-    }
-  }
-
-  // Drag over state
   &--drag-over {
-    border-color: $color-brand-primary;
     background-color: $color-neutral-background-brand-hover;
-    border-style: solid;
-  }
-
-  // Disabled state
-  &--disabled {
-    background-color: $color-neutral-background-disabled;
-    border-color: $color-neutral-stroke-disabled;
-    cursor: not-allowed;
-    opacity: 0.6;
-
-    .file-input-area__icon,
-    .file-input-area__text,
-    .file-input-area__hint {
-      color: $color-neutral-foreground-disabled;
-    }
-  }
-
-  // Error state
-  &--error {
-    border-color: $color-shared-red-foreground;
-
-    &:hover:not(.file-input-area--disabled) {
-      border-color: $color-shared-red-foreground;
-      background-color: $color-shared-red-background;
-    }
-  }
-
-  // Warning state
-  &--warning {
-    border-color: $color-shared-yellow-foreground;
-
-    &:hover:not(.file-input-area--disabled) {
-      border-color: $color-shared-yellow-foreground;
-      background-color: $color-shared-yellow-background;
-    }
-  }
-
-  // Success state
-  &--success {
-    border-color: $color-shared-green-foreground;
-
-    &:hover:not(.file-input-area--disabled) {
-      border-color: $color-shared-green-foreground;
-      background-color: $color-shared-green-background;
-    }
-  }
-
-  // Size variants
-  &--small {
-    min-height: $spacing-16;
-    padding: $spacing-3;
-    gap: $spacing-1;
-  }
-
-  &--medium {
-    min-height: $spacing-20;
-    padding: $spacing-4;
-    gap: $spacing-2;
-  }
-
-  &--large {
-    min-height: $spacing-20;
-    padding: $spacing-5;
-    gap: $spacing-3;
   }
 }
 
@@ -128,82 +38,47 @@
   z-index: -1;
 }
 
-// File Input Area Elements
-.file-input-area__icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: $color-neutral-foreground2-rest;
-  transition: color $duration-ultra-fast $easing-ease-in-out;
-  flex-shrink: 0;
+// File Elements
+.file__icon {
+  color: $color-neutral-foreground-rest;
 
-  svg {
-    width: $spacing-8;
-    height: $spacing-8;
-    stroke-width: 1.5;
+  .file--drag-over & {
+    color: $color-brand-primary;
   }
 
-  .file-input-area--small & {
-    svg {
-      width: $spacing-6;
-      height: $spacing-6;
-    }
-  }
-
-  .file-input-area--large & {
-    svg {
-      width: $spacing-10;
-      height: $spacing-10;
-    }
+  .file--disabled & {
+    color: $color-neutral-foreground-disabled;
   }
 }
 
-.file-input-area__text {
+.file__text {
   font-family: $font-family-base;
   font-size: $font-size-300;
   font-weight: $font-weight-regular;
   line-height: $line-height-300;
   color: $color-neutral-foreground-rest;
   margin: 0;
-  transition: color $duration-ultra-fast $easing-ease-in-out;
+  letter-spacing: $letter-spacing-normal;
 
-  .file-input-area--small & {
-    font-size: $font-size-200;
-    line-height: $line-height-200;
-  }
-
-  .file-input-area--large & {
-    font-size: $font-size-400;
-    line-height: $line-height-400;
-    font-weight: $font-weight-semibold;
-  }
-
-  .file-input-area--drag-over & {
+  .file--drag-over & {
     color: $color-brand-primary;
+  }
+
+  .file--disabled & {
+    color: $color-neutral-foreground-disabled;
   }
 }
 
-.file-input-area__hint {
+.file__hint {
   font-family: $font-family-base;
   font-size: $font-size-200;
   font-weight: $font-weight-regular;
   line-height: $line-height-200;
-  color: $color-neutral-foreground2-rest;
   margin: 0;
-  transition: color $duration-ultra-fast $easing-ease-in-out;
+  letter-spacing: $letter-spacing-normal;
 
-  .file-input-area--small & {
-    font-size: $font-size-100;
-    line-height: $line-height-100;
-  }
-
-  .file-input-area--large & {
-    font-size: $font-size-300;
-    line-height: $line-height-300;
-  }
-
-  .file-input-area--drag-over & {
-    color: $color-neutral-foreground2-brand-hover;
+  .file--disabled & {
+    color: $color-neutral-foreground-disabled;
   }
 }
 
@@ -216,306 +91,32 @@
   width: 100%;
 }
 
-// File Item
-.file-item {
-  display: flex;
-  align-items: center;
-  gap: $spacing-2;
-  padding: $spacing-2 $spacing-3;
-  background-color: $color-neutral-background-rest;
+.file-list__item {
   border: 1px solid $color-neutral-stroke-rest;
   border-radius: $border-radius-400;
-  transition: all $duration-ultra-fast $easing-ease-in-out;
-
-  &:hover {
-    background-color: $color-neutral-background-hover;
-    border-color: $color-neutral-stroke-hover;
-  }
-
-  &--small {
-    padding: $spacing-1 $spacing-2;
-    gap: $spacing-1;
-  }
-
-  &--large {
-    padding: $spacing-3 $spacing-4;
-    gap: $spacing-3;
-  }
 }
 
-// File Icon
-.file-item__icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: $spacing-6;
-  height: $spacing-6;
-  color: $color-neutral-foreground2-rest;
+// ==========================================================================
+// File Inline Mode (Text Input Style)
+// ==========================================================================
 
-  svg {
-    width: $spacing-5;
-    height: $spacing-5;
-    stroke-width: 1.5;
-  }
-
-  .file-item--small & {
-    width: $spacing-5;
-    height: $spacing-5;
-
-    svg {
-      width: $spacing-4;
-      height: $spacing-4;
-    }
-  }
-
-  .file-item--large & {
-    width: $spacing-7;
-    height: $spacing-7;
-
-    svg {
-      width: $spacing-6;
-      height: $spacing-6;
-    }
-  }
-}
-
-// File Info
-.file-item__info {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: $spacing-05;
-}
-
-.file-item__name {
-  font-family: $font-family-base;
-  font-size: $font-size-300;
-  font-weight: $font-weight-regular;
-  line-height: $line-height-300;
-  color: $color-neutral-foreground-rest;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  word-break: break-all;
-
-  .file-item--small & {
-    font-size: $font-size-200;
-    line-height: $line-height-200;
-  }
-
-  .file-item--large & {
-    font-size: $font-size-400;
-    line-height: $line-height-400;
-  }
-}
-
-.file-item__meta {
-  display: flex;
-  align-items: center;
-  gap: $spacing-2;
-  font-family: $font-family-base;
-  font-size: $font-size-200;
-  font-weight: $font-weight-regular;
-  line-height: $line-height-200;
-  color: $color-neutral-foreground2-rest;
-
-  .file-item--small & {
-    font-size: $font-size-100;
-    line-height: $line-height-100;
-    gap: $spacing-1;
-  }
-
-  .file-item--large & {
-    font-size: $font-size-300;
-    line-height: $line-height-300;
-  }
-}
-
-.file-item__size {
-  // Size displayed inline
-}
-
-.file-item__type {
-  // Type displayed inline
-}
-
-// File Remove Button
-.file-item__remove {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: $spacing-6;
-  height: $spacing-6;
-  padding: 0;
-  margin: 0;
-  background: transparent;
-  border: none;
-  border-radius: $border-radius-200;
+.file-display {
   cursor: pointer;
-  color: $color-neutral-foreground2-rest;
-  transition: all $duration-ultra-fast $easing-ease-in-out;
 
-  &:hover {
-    color: $color-neutral-foreground-rest;
-    background-color: $color-subtle-background-hover;
-  }
+  &:read-only {
+    cursor: pointer;
 
-  &:active {
-    background-color: $color-subtle-background-pressed;
-  }
+    &:hover:not(:disabled) {
+      color: $color-neutral-foreground-rest;
+    }
 
-  &:focus-visible {
-    outline: 2px solid $color-brand-primary;
-    outline-offset: 2px;
-  }
-
-  svg {
-    width: $spacing-4;
-    height: $spacing-4;
-    stroke-width: 2;
-  }
-
-  .file-item--small & {
-    width: $spacing-5;
-    height: $spacing-5;
-
-    svg {
-      width: $spacing-3;
-      height: $spacing-3;
+    &:focus {
+      cursor: pointer;
+      outline: none;
     }
   }
 
-  .file-item--large & {
-    width: $spacing-7;
-    height: $spacing-7;
-
-    svg {
-      width: $spacing-5;
-      height: $spacing-5;
-    }
-  }
-
-  .file-item--disabled & {
+  &:disabled {
     cursor: not-allowed;
-    opacity: 0.5;
-    pointer-events: none;
   }
 }
-
-// File Preview (optional - for images)
-.file-preview {
-  display: flex;
-  flex-direction: column;
-  gap: $spacing-2;
-  margin-top: $spacing-3;
-}
-
-.file-preview__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: $spacing-2;
-}
-
-.file-preview__item {
-  position: relative;
-  aspect-ratio: 1;
-  border-radius: $border-radius-400;
-  overflow: hidden;
-  border: 1px solid $color-neutral-stroke-rest;
-  background-color: $color-neutral-background-rest;
-}
-
-.file-preview__image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.file-preview__remove {
-  position: absolute;
-  top: $spacing-1;
-  right: $spacing-1;
-  width: $spacing-5;
-  height: $spacing-5;
-  padding: 0;
-  margin: 0;
-  background-color: rgba(0, 0, 0, 0.6);
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  color: $color-neutral-foreground-on-brand;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all $duration-ultra-fast $easing-ease-in-out;
-
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.8);
-  }
-
-  svg {
-    width: $spacing-3;
-    height: $spacing-3;
-    stroke-width: 2;
-  }
-}
-
-
-// Progress indicator (for upload scenarios)
-.file-progress {
-  width: 100%;
-  height: $spacing-1;
-  background-color: $color-neutral-background-hover;
-  border-radius: $border-radius-400;
-  overflow: hidden;
-  margin-top: $spacing-2;
-}
-
-.file-progress__bar {
-  height: 100%;
-  background-color: $color-brand-primary;
-  transition: width $duration-normal $easing-ease-in-out;
-  border-radius: $border-radius-400;
-}
-
-// Accessibility improvements
-.file-input-area:focus-visible {
-  outline: 2px solid $color-brand-primary;
-  outline-offset: 2px;
-}
-
-// High contrast mode support
-@media (prefers-contrast: high) {
-  .file-input-area {
-    border-width: 3px;
-    border-color: currentColor;
-  }
-
-  .file-item {
-    border-width: 2px;
-    border-color: currentColor;
-  }
-
-  .file-item__remove {
-    border: 1px solid currentColor;
-  }
-}
-
-// Reduced motion support
-@media (prefers-reduced-motion: reduce) {
-  .file-input-area,
-  .file-item,
-  .file-item__remove,
-  .file-progress__bar {
-    transition: none;
-  }
-}
-
-// Dark mode support (if needed in future)
-@media (prefers-color-scheme: dark) {
-  // Add dark mode styles if needed
-}
-
