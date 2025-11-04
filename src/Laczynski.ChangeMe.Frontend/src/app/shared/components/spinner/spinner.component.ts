@@ -5,7 +5,13 @@ import { SpinnerSize, SpinnerLabelPosition, StateType } from '../utils';
 @Component({
   selector: 'app-spinner',
   templateUrl: './spinner.component.html',
-
+  styles: [
+    `
+      :host {
+        display: flex;
+      }
+    `,
+  ],
   imports: [CommonModule],
 })
 export class SpinnerComponent {

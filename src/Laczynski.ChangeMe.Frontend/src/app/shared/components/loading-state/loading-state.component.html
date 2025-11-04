@@ -1,0 +1,99 @@
+@if (overlay()) {
+  @if (fullScreen()) {
+    <!-- Full screen overlay -->
+    <div [class]="overlayClasses()">
+      <div [class]="loadingStateClasses()">
+        <div class="loading-state__spinner">
+          @if (customSpinner(); as spinnerTemplate) {
+            <ng-container *ngTemplateOutlet="spinnerTemplate"></ng-container>
+          } @else {
+            <app-spinner [size]="spinnerSize()" [labelPosition]="'none'" />
+          }
+        </div>
+
+        <div class="loading-state__content">
+          @if (hasTitle()) {
+            <h3 class="loading-state__title">{{ title() }}</h3>
+          }
+
+          @if (hasDescription()) {
+            <p class="loading-state__description">{{ description() }}</p>
+          }
+
+          @if (hasCustomContent()) {
+            <div class="loading-state__custom-content">
+              @if (customContent(); as contentTemplate) {
+                <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  } @else {
+    <!-- Container overlay -->
+    <div [class]="wrapperClasses()">
+      <!-- Content below overlay -->
+      <ng-content></ng-content>
+
+      <!-- Overlay with loading state -->
+      <div [class]="overlayClasses()">
+        <div [class]="loadingStateClasses()">
+          <div class="loading-state__spinner">
+            @if (customSpinner(); as spinnerTemplate) {
+              <ng-container *ngTemplateOutlet="spinnerTemplate"></ng-container>
+            } @else {
+              <app-spinner [size]="spinnerSize()" [labelPosition]="'none'" />
+            }
+          </div>
+
+          <div class="loading-state__content">
+            @if (hasTitle()) {
+              <h3 class="loading-state__title">{{ title() }}</h3>
+            }
+
+            @if (hasDescription()) {
+              <p class="loading-state__description">{{ description() }}</p>
+            }
+
+            @if (hasCustomContent()) {
+              <div class="loading-state__custom-content">
+                @if (customContent(); as contentTemplate) {
+                  <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+} @else {
+  <div [class]="loadingStateClasses()">
+    <div class="loading-state__spinner">
+      @if (customSpinner(); as spinnerTemplate) {
+        <ng-container *ngTemplateOutlet="spinnerTemplate"></ng-container>
+      } @else {
+        <app-spinner [size]="spinnerSize()" [labelPosition]="'none'" />
+      }
+    </div>
+
+    <div class="loading-state__content">
+      @if (hasTitle()) {
+        <h3 class="loading-state__title">{{ title() }}</h3>
+      }
+
+      @if (hasDescription()) {
+        <p class="loading-state__description">{{ description() }}</p>
+      }
+
+      @if (hasCustomContent()) {
+        <div class="loading-state__custom-content">
+          @if (customContent(); as contentTemplate) {
+            <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+          }
+        </div>
+      }
+    </div>
+  </div>
+}

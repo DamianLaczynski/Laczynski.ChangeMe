@@ -1,0 +1,55 @@
+<div [class]="emptyStateClasses()">
+  @if (hasIcon()) {
+    <div class="empty-state__icon">
+      @if (customIcon(); as iconTemplate) {
+        <ng-container *ngTemplateOutlet="iconTemplate"></ng-container>
+      } @else if (icon()) {
+        <app-icon [icon]="icon()" [size]="size()" />
+      }
+    </div>
+  }
+
+  <div class="empty-state__content">
+    @if (title()) {
+      <h3 class="empty-state__title">{{ title() }}</h3>
+    }
+
+    @if (description()) {
+      <p class="empty-state__description">{{ description() }}</p>
+    }
+
+    @if (customContent(); as contentTemplate) {
+      <div class="empty-state__custom-content">
+        <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+      </div>
+    }
+  </div>
+
+  @if (hasActions()) {
+    <div class="empty-state__actions">
+      @if (primaryAction(); as primary) {
+        <app-button
+          [variant]="primary.variant || 'primary'"
+          [size]="primary.size || size()"
+          [icon]="primary.icon || ''"
+          [disabled]="primary.disabled || false"
+          (click)="onActionClick(primary, $event)"
+        >
+          {{ primary.label }}
+        </app-button>
+      }
+
+      @if (secondaryAction(); as secondary) {
+        <app-button
+          [variant]="secondary.variant || 'secondary'"
+          [size]="secondary.size || size()"
+          [icon]="secondary.icon || ''"
+          [disabled]="secondary.disabled || false"
+          (click)="onActionClick(secondary, $event)"
+        >
+          {{ secondary.label }}
+        </app-button>
+      }
+    </div>
+  }
+</div>

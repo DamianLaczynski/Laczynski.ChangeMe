@@ -1,0 +1,234 @@
+// ==========================================================================
+// State Base Styles - Common styles for empty-state, error-state, loading-state
+// ==========================================================================
+
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use '../utils/functions' as *;
+
+// Mixin for state component base styles
+// Must be called inside a block
+@mixin state-base() {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: $font-family-base;
+  padding: $spacing-8 $spacing-4;
+  max-width: 100%;
+
+  // Common content element
+  @include element('content') {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-2;
+    max-width: 100%;
+  }
+
+  // Common title element
+  @include element('title') {
+    margin: 0;
+    font-weight: $font-weight-semibold;
+    line-height: $line-height-500;
+  }
+
+  // Common description element
+  @include element('description') {
+    margin: 0;
+    font-weight: $font-weight-regular;
+    color: $color-neutral-foreground2-rest;
+    line-height: $line-height-400;
+    max-width: 500px;
+  }
+
+  // Common custom-content element
+  @include element('custom-content') {
+    margin-top: $spacing-2;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  // Common size modifiers
+  @include modifier('small') {
+    padding: $spacing-6 $spacing-3;
+
+    @include element('title') {
+      font-size: $font-size-500;
+      line-height: $line-height-500;
+    }
+
+    @include element('description') {
+      font-size: $font-size-300;
+      line-height: $line-height-300;
+    }
+  }
+
+  @include modifier('medium') {
+    padding: $spacing-8 $spacing-4;
+
+    @include element('title') {
+      font-size: $font-size-600;
+      line-height: $line-height-600;
+    }
+
+    @include element('description') {
+      font-size: $font-size-400;
+      line-height: $line-height-400;
+    }
+  }
+
+  @include modifier('large') {
+    padding: $spacing-12 $spacing-6;
+
+    @include element('title') {
+      font-size: $font-size-700;
+      line-height: $line-height-700;
+    }
+
+    @include element('description') {
+      font-size: $font-size-500;
+      line-height: $line-height-500;
+    }
+  }
+
+  // Common responsive adjustments
+  @include respond-to(small) {
+    padding: $spacing-6 $spacing-3;
+
+    @include element('title') {
+      font-size: $font-size-500;
+      line-height: $line-height-500;
+    }
+
+    @include element('description') {
+      font-size: $font-size-300;
+      line-height: $line-height-300;
+    }
+  }
+}
+
+// Mixin for icon/spinner element (used by empty-state and error-state)
+// Must be called inside a block
+@mixin state-icon($icon-color: $color-neutral-foreground2-rest) {
+  @include element('icon') {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: $spacing-4;
+    color: $icon-color;
+  }
+
+  // Size modifiers for icon
+  @include modifier('small') {
+    @include element('icon') {
+      margin-bottom: $spacing-3;
+    }
+  }
+
+  @include modifier('medium') {
+    @include element('icon') {
+      margin-bottom: $spacing-4;
+    }
+  }
+
+  @include modifier('large') {
+    @include element('icon') {
+      margin-bottom: $spacing-6;
+
+      app-icon {
+        width: 80px;
+        height: 80px;
+      }
+    }
+  }
+
+  @include respond-to(small) {
+    @include element('icon') {
+      margin-bottom: $spacing-3;
+    }
+  }
+}
+
+// Mixin for spinner element (used by loading-state)
+// Must be called inside a block
+@mixin state-spinner() {
+  @include element('spinner') {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: $spacing-4;
+    color: $color-neutral-foreground2-rest;
+  }
+
+  // Size modifiers for spinner
+  @include modifier('small') {
+    @include element('spinner') {
+      margin-bottom: $spacing-3;
+    }
+  }
+
+  @include modifier('medium') {
+    @include element('spinner') {
+      margin-bottom: $spacing-4;
+    }
+  }
+
+  @include modifier('large') {
+    @include element('spinner') {
+      margin-bottom: $spacing-6;
+    }
+  }
+
+  @include respond-to(small) {
+    @include element('spinner') {
+      margin-bottom: $spacing-3;
+    }
+  }
+}
+
+// Mixin for actions element (used by empty-state and error-state)
+// Must be called inside a block
+@mixin state-actions() {
+  @include element('actions') {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-2;
+    margin-top: $spacing-6;
+    flex-wrap: wrap;
+  }
+
+  // Size modifiers for actions
+  @include modifier('small') {
+    @include element('actions') {
+      margin-top: $spacing-4;
+    }
+  }
+
+  @include modifier('medium') {
+    @include element('actions') {
+      margin-top: $spacing-6;
+    }
+  }
+
+  @include modifier('large') {
+    @include element('actions') {
+      margin-top: $spacing-8;
+    }
+  }
+
+  // Responsive adjustments for actions
+  @include respond-to(small) {
+    @include element('actions') {
+      flex-direction: column;
+      width: 100%;
+
+      app-button {
+        width: 100%;
+      }
+    }
+  }
+}

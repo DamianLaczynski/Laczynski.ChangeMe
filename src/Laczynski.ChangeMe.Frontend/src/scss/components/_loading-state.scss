@@ -1,0 +1,97 @@
+// ==========================================================================
+// Loading State Component - Fluent 2 Design System (BEM Block)
+// ==========================================================================
+
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use '../utils/functions' as *;
+@use 'state-base' as *;
+
+@include block('loading-state') {
+  // Base styles
+  @include state-base();
+
+  // Spinner styles
+  @include state-spinner();
+
+  // Loading-state specific title color
+  @include element('title') {
+    color: $color-neutral-foreground-rest;
+  }
+
+  // Overlay Modifier
+  @include modifier('overlay') {
+    padding: $spacing-4;
+  }
+
+  // Wrapper for overlay mode
+  @include element('wrapper') {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 200px;
+  }
+
+  // Overlay element
+  @include element('overlay') {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 10;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    transition:
+      backdrop-filter 0.2s ease,
+      background-color 0.2s ease;
+
+    // Dark theme support
+    @media (prefers-color-scheme: dark) {
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    // Full screen modifier
+    @include modifier('fullscreen') {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 9999;
+      background-color: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+
+      // Dark theme support for fullscreen
+      @media (prefers-color-scheme: dark) {
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+    }
+
+    // Blur modifier
+    @include modifier('blur') {
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+
+    // Loading state inside overlay
+    .loading-state {
+      background-color: transparent;
+      box-shadow: none;
+    }
+  }
+
+  // Responsive adjustments for overlay
+  @include respond-to(small) {
+    @include modifier('overlay') {
+      padding: $spacing-3;
+    }
+  }
+}

@@ -19,6 +19,9 @@ import { TabsShowcaseComponent } from '@shared/components/tabs/tabs.showcase.com
 import { SkeletonShowcaseComponent } from '@shared/components/skeleton/skeleton.showcase.component';
 import { TreeShowcaseComponent } from '@shared/components/tree/tree.showcase.component';
 import { DialogShowcaseComponent } from '@shared/components/dialog/dialog.showcase.component';
+import { EmptyStateShowcaseComponent } from '@shared/components/empty-state/empty-state.showcase.component';
+import { ErrorStateShowcaseComponent } from '@shared/components/error-state/error-state.showcase.component';
+import { LoadingStateShowcaseComponent } from '@shared/components/loading-state/loading-state.showcase.component';
 import { MenuShowcaseComponent } from '@shared/components/menu/menu.showcase.component';
 import { TagShowcaseComponent } from '@shared/components/tag/tag.showcase.component';
 import { ProgressBarShowcaseComponent } from '@shared/components/progress-bar/progress-bar.showcase.component';
@@ -77,6 +80,18 @@ export const dsRoutes: Routes = [
   {
     path: 'divider',
     component: DividerShowcaseComponent,
+  },
+  {
+    path: 'empty-state',
+    component: EmptyStateShowcaseComponent,
+  },
+  {
+    path: 'error-state',
+    component: ErrorStateShowcaseComponent,
+  },
+  {
+    path: 'loading-state',
+    component: LoadingStateShowcaseComponent,
   },
   {
     path: 'checkbox',

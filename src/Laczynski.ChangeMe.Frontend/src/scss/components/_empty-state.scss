@@ -1,0 +1,24 @@
+// ==========================================================================
+// Empty State Component - Fluent 2 Design System (BEM Block)
+// ==========================================================================
+
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use '../utils/functions' as *;
+@use 'state-base' as *;
+
+@include block('empty-state') {
+  // Base styles
+  @include state-base();
+
+  // Icon styles
+  @include state-icon($color-neutral-foreground2-rest);
+
+  // Actions styles
+  @include state-actions();
+
+  // Empty-state specific title color
+  @include element('title') {
+    color: $color-neutral-foreground-rest;
+  }
+}
