@@ -1,376 +1,536 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, viewChild, TemplateRef } from '@angular/core';
 import { NavComponent, NavNode } from './nav.component';
 import { CommonModule } from '@angular/common';
+import { ButtonComponent } from '../button/button.component';
 
 @Component({
   selector: 'app-nav-showcase',
-  imports: [CommonModule, NavComponent],
+  imports: [NavComponent, CommonModule, ButtonComponent],
   template: `
     <div class="showcase showcase--responsive">
       <h1 class="showcase__title">Nav Component Showcase</h1>
       <p class="showcase__description">
-        Comprehensive showcase of the Nav component built with Fluent 2 Design System. Features
-        collapsible navigation with hamburger menu, hierarchical navigation nodes, sub-items, and
-        customizable layouts.
+        Comprehensive showcase of the Nav component built with Fluent 2 Design System. Navigation
+        supports hierarchical structures, icons, section headers, dividers, selection indicators,
+        quick actions, and various appearance variants.
       </p>
 
-      <!-- Keyboard Navigation Info -->
-      <div
-        class="showcase__info"
-        style="background: #F0F0F0; padding: 16px; border-radius: 8px; margin-bottom: 24px;"
-      >
-        <h3 style="margin: 0 0 12px 0; font-size: 16px; font-weight: 600;">
-          ⌨️ Keyboard Navigation
-        </h3>
-        <ul style="margin: 0; padding-left: 24px; line-height: 24px;">
-          <li><kbd>↑</kbd> / <kbd>↓</kbd> - Navigate between items</li>
-          <li><kbd>←</kbd> - Collapse group (when focused on group)</li>
-          <li><kbd>→</kbd> - Expand group (when focused on group)</li>
-          <li><kbd>Enter</kbd> / <kbd>Space</kbd> - Activate item or toggle group</li>
-          <li><kbd>Home</kbd> - Focus first item</li>
-          <li><kbd>End</kbd> - Focus last item</li>
-          <li><kbd>Tab</kbd> - Move to next focusable element</li>
-        </ul>
+      <!-- ========================================= -->
+      <!-- BASIC NAVIGATION -->
+      <!-- ========================================= -->
+
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Basic Navigation</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>Simple Navigation</h3>
+            <app-nav [items]="basicNavItems()" />
+          </div>
+          <div class="showcase__item">
+            <h3>With Icons</h3>
+            <app-nav [items]="navWithIcons()" />
+          </div>
+          <div class="showcase__item">
+            <h3>With Nested Items</h3>
+            <app-nav [items]="nestedNavItems()" />
+          </div>
+        </div>
       </div>
 
       <!-- ========================================= -->
-      <!-- BASIC NAV WRAPPER -->
+      <!-- SECTION HEADERS AND DIVIDERS -->
       <!-- ========================================= -->
 
-      <!-- Configuration-based Nav (Recommended) -->
       <div class="showcase__section">
-        <h2 class="showcase__section__title">Configuration-based Nav (Recommended)</h2>
-        <p style="margin-bottom: 16px; color: #424242;">
-          Simply pass an array of <code>NavNode</code> items - no manual template needed!
-        </p>
+        <h2 class="showcase__section__title">Section Headers and Dividers</h2>
         <div class="showcase__grid">
           <div class="showcase__item">
+            <h3>With Section Headers</h3>
+            <app-nav [items]="navWithSectionHeaders()" />
+          </div>
+          <div class="showcase__item">
+            <h3>With Dividers</h3>
+            <app-nav [items]="navWithDividers()" />
+          </div>
+          <div class="showcase__item">
+            <h3>Combined Structure</h3>
+            <app-nav [items]="navWithSectionsAndDividers()" />
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================= -->
+      <!-- SIZE VARIANTS -->
+      <!-- ========================================= -->
+
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Size Variants</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>Small</h3>
+            <app-nav [items]="sizeNavItems('small')" [size]="'small'" />
+          </div>
+          <div class="showcase__item">
+            <h3>Medium (Default)</h3>
+            <app-nav [items]="sizeNavItems('medium')" [size]="'medium'" />
+          </div>
+          <div class="showcase__item">
+            <h3>Large</h3>
+            <app-nav [items]="sizeNavItems('large')" [size]="'large'" />
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================= -->
+      <!-- APPEARANCE VARIANTS -->
+      <!-- ========================================= -->
+
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Appearance Variants</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>Transparent (Default)</h3>
+            <app-nav [items]="basicNavItems()" [variant]="'transparent'" />
+          </div>
+          <div class="showcase__item">
+            <h3>Subtle</h3>
+            <app-nav [items]="basicNavItems()" [variant]="'subtle'" />
+          </div>
+          <div class="showcase__item">
+            <h3>Subtle Circular</h3>
+            <app-nav [items]="basicNavItems()" [variant]="'subtle-circular'" />
+          </div>
+          <div class="showcase__item">
+            <h3>Filled Circular</h3>
+            <app-nav [items]="basicNavItems()" [variant]="'filled-circular'" />
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================= -->
+      <!-- SELECTION INDICATORS -->
+      <!-- ========================================= -->
+
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Selection Indicators</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>Horizontal Indicator</h3>
             <app-nav
-              [width]="260"
-              [collapsible]="true"
-              [isCollapsed]="false"
-              [items]="configItems()"
+              [items]="selectionNavItems()"
+              [showSelectionIndicator]="true"
+              [indicatorPosition]="'horizontal'"
+            />
+          </div>
+          <div class="showcase__item">
+            <h3>Vertical Indicator</h3>
+            <app-nav
+              [items]="selectionNavItems()"
+              [showSelectionIndicator]="true"
+              [indicatorPosition]="'vertical'"
+            />
+          </div>
+          <div class="showcase__item">
+            <h3>No Indicator</h3>
+            <app-nav [items]="selectionNavItems()" [showSelectionIndicator]="false" />
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================= -->
+      <!-- CHEVRON POSITIONS -->
+      <!-- ========================================= -->
+
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Chevron Positions</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>Before</h3>
+            <app-nav [items]="nestedNavItems()" [chevronPosition]="'before'" />
+          </div>
+          <div class="showcase__item">
+            <h3>After (Default)</h3>
+            <app-nav [items]="nestedNavItems()" [chevronPosition]="'after'" />
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================= -->
+      <!-- CUSTOM CHEVRON ICONS -->
+      <!-- ========================================= -->
+
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Custom Chevron Icons</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>Custom Icons</h3>
+            <app-nav
+              [items]="nestedNavItems()"
+              [chevronIconCollapsed]="'arrow_right'"
+              [chevronIconExpanded]="'arrow_down'"
+            />
+          </div>
+          <div class="showcase__item">
+            <h3>Custom Icons (After)</h3>
+            <app-nav
+              [items]="nestedNavItems()"
+              [chevronPosition]="'after'"
+              [chevronIconCollapsed]="'star'"
+              [chevronIconExpanded]="'star_filled'"
             />
           </div>
         </div>
       </div>
 
-      <!-- Complete Configuration Example with All Item Types -->
+      <!-- ========================================= -->
+      <!-- EXPAND/SELECT BEHAVIOR -->
+      <!-- ========================================= -->
+
       <div class="showcase__section">
-        <h2 class="showcase__section__title">Complete Configuration with All Item Types</h2>
-        <p style="margin-bottom: 16px; color: #424242;">
-          Example showcasing all item types: App Item, Navigation Nodes, Section Headers, and
-          Dividers in a unified configuration array.
-        </p>
+        <h2 class="showcase__section__title">Expand/Select Behavior</h2>
         <div class="showcase__grid">
           <div class="showcase__item">
+            <h3>Auto-detect (Default)</h3>
+            <app-nav [items]="behaviorNavItems()" />
+            <p style="font-size: 12px; margin-top: 8px; color: #666;">
+              Items with children expand, items without children select.
+            </p>
+          </div>
+          <div class="showcase__item">
+            <h3>Always Expand</h3>
+            <app-nav [items]="behaviorNavItems()" [expandOnClick]="true" />
+          </div>
+          <div class="showcase__item">
+            <h3>Always Select</h3>
+            <app-nav [items]="behaviorNavItems()" [selectOnClick]="true" />
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================= -->
+      <!-- QUICK ACTIONS -->
+      <!-- ========================================= -->
+
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Quick Actions</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>With Quick Actions</h3>
             <app-nav
+              [items]="quickActionsNavItems()"
+              [showQuickActions]="true"
+              [quickActionsTemplate]="quickActionsTemplate"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================= -->
+      <!-- DISABLED STATE -->
+      <!-- ========================================= -->
+
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Disabled State</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>Disabled Items</h3>
+            <app-nav [items]="disabledNavItems()" />
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================= -->
+      <!-- WIDTH CONFIGURATION -->
+      <!-- ========================================= -->
+
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Width Configuration</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>Default Width (260px)</h3>
+            <app-nav [items]="basicNavItems()" />
+          </div>
+          <div class="showcase__item">
+            <h3>Custom Width (320px)</h3>
+            <app-nav [items]="basicNavItems()" [width]="320" />
+          </div>
+          <div class="showcase__item">
+            <h3>Narrow Width (200px)</h3>
+            <app-nav [items]="basicNavItems()" [width]="200" />
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================= -->
+      <!-- COMPLEX EXAMPLE -->
+      <!-- ========================================= -->
+
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Complex Example</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item" style="grid-column: 1 / -1;">
+            <h3>Full Featured Navigation</h3>
+            <app-nav
+              [items]="complexNavItems()"
               [width]="280"
-              [collapsible]="true"
-              [isCollapsed]="false"
-              [items]="completeConfigItems()"
+              [size]="'medium'"
+              [variant]="'subtle'"
+              [showSelectionIndicator]="true"
+              [indicatorPosition]="'vertical'"
+              [chevronPosition]="'after'"
             />
           </div>
         </div>
       </div>
 
-      <!-- Collapsible Nav Demo -->
+      <!-- ========================================= -->
+      <!-- EVENT TRACKING -->
+      <!-- ========================================= -->
+
       <div class="showcase__section">
-        <h2 class="showcase__section__title">Collapsible Nav Demo (Click Hamburger to Toggle)</h2>
-        <p style="margin-bottom: 16px; color: #424242;">
-          In collapsed state, only icons and selection indicators are visible. Text labels are
-          hidden.
-        </p>
+        <h2 class="showcase__section__title">Event Tracking</h2>
         <div class="showcase__grid">
           <div class="showcase__item">
-            <app-nav
-              [width]="260"
-              [collapsedWidth]="56"
-              [collapsible]="true"
-              [isCollapsed]="true"
-              [items]="configItems()"
-            />
+            <h3>Click Events</h3>
+            <app-nav [items]="trackedNavItems()" />
+            <div style="margin-top: 16px; padding: 12px; background: #f5f5f5; border-radius: 4px;">
+              <p style="font-size: 12px; margin: 0 0 8px 0;">
+                <strong>Last Clicked:</strong> {{ lastClickedItem() || 'None' }}
+              </p>
+              <p style="font-size: 12px; margin: 0;">
+                <strong>Click Count:</strong> {{ clickCount() }}
+              </p>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Expanded Nav -->
-      <div class="showcase__section">
-        <h2 class="showcase__section__title">Nav (Expanded by Default)</h2>
-        <div class="showcase__grid">
-          <div class="showcase__item">
-            <app-nav [width]="260" [collapsible]="true" [isCollapsed]="false">
-              <div style="padding: 20px; text-align: center; color: #0F6CBD;">
-                <p style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">
-                  Expanded Navigation
-                </p>
-                <p style="font-size: 12px; opacity: 0.8;">This nav starts in expanded state.</p>
-              </div>
-            </app-nav>
-          </div>
+      <!-- Quick Actions Template -->
+      <ng-template #quickActionsTemplate let-node>
+        <div style="display: flex; gap: 4px; align-items: center;">
+          <app-button
+            variant="primary"
+            size="small"
+            (click)="onQuickActionClick('edit', node); $event.stopPropagation()"
+          >
+            Edit
+          </app-button>
+          <app-button
+            variant="primary"
+            size="small"
+            (click)="onQuickActionClick('delete', node); $event.stopPropagation()"
+          >
+            Delete
+          </app-button>
         </div>
-      </div>
-
-      <!-- Non-Collapsible Nav -->
-      <div class="showcase__section">
-        <h2 class="showcase__section__title">Non-Collapsible Nav</h2>
-        <div class="showcase__grid">
-          <div class="showcase__item">
-            <app-nav [width]="260" [collapsible]="false">
-              <div style="padding: 20px; text-align: center; color: #0F6CBD;">
-                <p style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">
-                  Fixed Navigation
-                </p>
-                <p style="font-size: 12px; opacity: 0.8;">This nav cannot be collapsed.</p>
-              </div>
-            </app-nav>
-          </div>
-        </div>
-      </div>
-
-      <!-- Width Variants -->
-      <div class="showcase__section">
-        <h2 class="showcase__section__title">Width Variants</h2>
-        <div class="showcase__grid">
-          <div class="showcase__item">
-            <h3>Compact (220px)</h3>
-            <app-nav [width]="220" [collapsible]="true" [isCollapsed]="false">
-              <div style="padding: 16px; text-align: center; color: #0F6CBD; font-size: 12px;">
-                Compact Nav
-              </div>
-            </app-nav>
-          </div>
-          <div class="showcase__item">
-            <h3>Standard (260px)</h3>
-            <app-nav [width]="260" [collapsible]="true" [isCollapsed]="false">
-              <div style="padding: 16px; text-align: center; color: #0F6CBD; font-size: 12px;">
-                Standard Nav
-              </div>
-            </app-nav>
-          </div>
-          <div class="showcase__item">
-            <h3>Wide (320px)</h3>
-            <app-nav [width]="320" [collapsible]="true" [isCollapsed]="false">
-              <div style="padding: 16px; text-align: center; color: #0F6CBD; font-size: 12px;">
-                Wide Nav
-              </div>
-            </app-nav>
-          </div>
-        </div>
-      </div>
-
-      <!-- Event Logging -->
-      <div class="showcase__section">
-        <h2 class="showcase__section__title">Event Logging</h2>
-        <div class="showcase__grid">
-          <div class="showcase__item">
-            <p><strong>Last Event:</strong> {{ lastEvent() }}</p>
-            <p><strong>Selected Node:</strong> {{ selectedNode() }}</p>
-            <p><strong>Nav State:</strong> {{ lastState() || 'N/A' }}</p>
-            <p><strong>Hamburger Clicks:</strong> {{ hamburgerClickCount() }}</p>
-          </div>
-        </div>
-      </div>
+      </ng-template>
     </div>
   `,
 })
 export class NavShowcaseComponent {
-  lastState = signal<boolean | null>(null);
-  hamburgerClickCount = signal<number>(0);
-  lastEvent = signal<string>('None');
-  selectedNode = signal<string>('Dashboard');
+  quickActionsTemplate = viewChild<TemplateRef<any>>('quickActionsTemplate');
 
-  // Example configuration-based items with all item types
-  configItems = signal<NavNode[]>([
-    // Navigation Nodes
+  lastClickedItem = signal<string>('');
+  clickCount = signal<number>(0);
+
+  // Basic navigation items
+  basicNavItems = signal<NavNode[]>([
+    { id: '1', label: 'Home', icon: 'home' },
+    { id: '2', label: 'Dashboard', icon: 'dashboard' },
+    { id: '3', label: 'Settings', icon: 'settings' },
+  ]);
+
+  // Navigation with icons
+  navWithIcons = signal<NavNode[]>([
+    { id: '1', label: 'Home', icon: 'home' },
+    { id: '2', label: 'Dashboard', icon: 'dashboard' },
+    { id: '3', label: 'Reports', icon: 'chart' },
+    { id: '4', label: 'Messages', icon: 'mail' },
+    { id: '5', label: 'Notifications', icon: 'bell' },
+  ]);
+
+  // Nested navigation items
+  nestedNavItems = signal<NavNode[]>([
     {
-      id: 'home',
-      label: 'Home',
-      icon: 'home',
-      selected: true,
-      onClick: () => this.onNodeClick('Home'),
-    },
-    {
-      id: 'projects',
-      label: 'Projects',
-      icon: 'folder',
-      expanded: true,
+      id: '1',
+      label: 'Dashboard',
+      icon: 'dashboard',
       hasChildren: true,
       children: [
-        {
-          id: 'project-a',
-          label: 'Project A',
-          icon: 'document',
-          onClick: () => this.onSubItemClick('Project A'),
-        },
-        {
-          id: 'project-b',
-          label: 'Project B',
-          icon: 'document',
-          onClick: () => this.onSubItemClick('Project B'),
-        },
+        { id: '1-1', label: 'Overview' },
+        { id: '1-2', label: 'Analytics' },
+        { id: '1-3', label: 'Reports' },
       ],
     },
     {
-      id: 'reports',
-      label: 'Reports',
-      icon: 'chart',
-      onClick: () => this.onNodeClick('Reports'),
-    },
-    // Section Header
-    {
-      id: 'admin-header',
-      label: 'Administration',
-      isSectionHeader: true,
-    },
-    {
-      id: 'settings',
+      id: '2',
       label: 'Settings',
       icon: 'settings',
-      onClick: () => this.onNodeClick('Settings'),
-    },
-    {
-      id: 'users',
-      label: 'Users',
-      icon: 'people',
-      expanded: false,
       hasChildren: true,
       children: [
+        { id: '2-1', label: 'General' },
+        { id: '2-2', label: 'Security' },
         {
-          id: 'active-users',
-          label: 'Active Users',
-          onClick: () => this.onSubItemClick('Active Users'),
-        },
-        {
-          id: 'pending',
-          label: 'Pending',
-          onClick: () => this.onSubItemClick('Pending'),
+          id: '2-3',
+          label: 'Advanced',
+          hasChildren: true,
+          children: [
+            { id: '2-3-1', label: 'API Keys' },
+            { id: '2-3-2', label: 'Integrations' },
+          ],
         },
       ],
     },
-    // Divider
+    { id: '3', label: 'Profile', icon: 'person' },
+  ]);
+
+  // Navigation with section headers
+  navWithSectionHeaders = signal<NavNode[]>([
+    { id: 'header1', label: 'Main', isSectionHeader: true },
+    { id: '1', label: 'Home', icon: 'home' },
+    { id: '2', label: 'Dashboard', icon: 'dashboard' },
+    { id: 'header2', label: 'Settings', isSectionHeader: true },
+    { id: '3', label: 'General', icon: 'settings' },
+    { id: '4', label: 'Security', icon: 'lock' },
+  ]);
+
+  // Navigation with dividers
+  navWithDividers = signal<NavNode[]>([
+    { id: '1', label: 'Home', icon: 'home' },
+    { id: '2', label: 'Dashboard', icon: 'dashboard' },
+    { id: 'divider1', label: 'Divider', isDivider: true },
+    { id: '3', label: 'Settings', icon: 'settings' },
+    { id: '4', label: 'Profile', icon: 'person' },
+  ]);
+
+  // Navigation with sections and dividers
+  navWithSectionsAndDividers = signal<NavNode[]>([
+    { id: 'header1', label: 'Navigation', isSectionHeader: true },
+    { id: '1', label: 'Home', icon: 'home' },
+    { id: '2', label: 'Dashboard', icon: 'dashboard' },
+    { id: 'divider1', label: 'Divider', isDivider: true },
+    { id: 'header2', label: 'Account', isSectionHeader: true },
+    { id: '3', label: 'Profile', icon: 'person' },
+    { id: '4', label: 'Settings', icon: 'settings' },
+  ]);
+
+  // Size navigation items
+  sizeNavItems = (size: 'small' | 'medium' | 'large'): NavNode[] => [
+    { id: '1', label: 'Home', icon: 'home', size },
+    { id: '2', label: 'Dashboard', icon: 'dashboard', size },
+    { id: '3', label: 'Settings', icon: 'settings', size },
+  ];
+
+  // Selection navigation items
+  selectionNavItems = signal<NavNode[]>([
+    { id: '1', label: 'Home', icon: 'home', selected: true },
+    { id: '2', label: 'Dashboard', icon: 'dashboard' },
+    { id: '3', label: 'Settings', icon: 'settings' },
+    { id: '4', label: 'Profile', icon: 'person' },
+  ]);
+
+  // Behavior navigation items
+  behaviorNavItems = signal<NavNode[]>([
     {
-      id: 'divider-1',
-      label: '',
-      isDivider: true,
+      id: '1',
+      label: 'Expandable Item',
+      icon: 'folder',
+      hasChildren: true,
+      children: [
+        { id: '1-1', label: 'Child 1' },
+        { id: '1-2', label: 'Child 2' },
+      ],
     },
+    { id: '2', label: 'Selectable Item', icon: 'file' },
     {
-      id: 'help',
-      label: 'Help',
-      icon: 'help',
-      onClick: () => this.onNodeClick('Help'),
-    },
-    {
-      id: 'feedback',
-      label: 'Feedback',
-      icon: 'feedback',
-      onClick: () => this.onNodeClick('Feedback'),
+      id: '3',
+      label: 'Another Expandable',
+      icon: 'folder',
+      hasChildren: true,
+      children: [{ id: '3-1', label: 'Nested Child' }],
     },
   ]);
 
-  // Complete configuration example showcasing all features
-  completeConfigItems = signal<NavNode[]>([
+  // Quick actions navigation items
+  quickActionsNavItems = signal<NavNode[]>([
+    { id: '1', label: 'Home', icon: 'home' },
+    { id: '2', label: 'Dashboard', icon: 'dashboard' },
+    { id: '3', label: 'Settings', icon: 'settings' },
+  ]);
+
+  // Disabled navigation items
+  disabledNavItems = signal<NavNode[]>([
+    { id: '1', label: 'Home', icon: 'home' },
+    { id: '2', label: 'Dashboard', icon: 'dashboard', disabled: true },
+    { id: '3', label: 'Settings', icon: 'settings' },
     {
-      id: 'dashboard',
+      id: '4',
+      label: 'Disabled Parent',
+      icon: 'folder',
+      disabled: true,
+      hasChildren: true,
+      children: [
+        { id: '4-1', label: 'Child 1' },
+        { id: '4-2', label: 'Child 2' },
+      ],
+    },
+  ]);
+
+  // Complex navigation items
+  complexNavItems = signal<NavNode[]>([
+    { id: 'header1', label: 'Main Navigation', isSectionHeader: true },
+    {
+      id: '1',
       label: 'Dashboard',
       icon: 'dashboard',
       selected: true,
-      onClick: () => this.onNodeClick('Dashboard'),
-    },
-    {
-      id: 'main-section-header',
-      label: 'Main Section',
-      isSectionHeader: true,
-    },
-    {
-      id: 'analytics',
-      label: 'Analytics',
-      icon: 'chart',
-      expanded: true,
       hasChildren: true,
       children: [
-        {
-          id: 'overview',
-          label: 'Overview',
-          onClick: () => this.onSubItemClick('Overview'),
-        },
-        {
-          id: 'reports',
-          label: 'Reports',
-          selected: true,
-          onClick: () => this.onSubItemClick('Reports'),
-        },
-        {
-          id: 'charts',
-          label: 'Charts',
-          onClick: () => this.onSubItemClick('Charts'),
-        },
+        { id: '1-1', label: 'Overview', icon: 'chart' },
+        { id: '1-2', label: 'Analytics', icon: 'bar_chart' },
+        { id: '1-3', label: 'Reports', icon: 'description' },
       ],
     },
+    { id: '2', label: 'Projects', icon: 'folder', hasChildren: true, children: [] },
+    { id: 'divider1', label: 'Divider', isDivider: true },
+    { id: 'header2', label: 'Account', isSectionHeader: true },
+    { id: '3', label: 'Profile', icon: 'person' },
+    { id: '4', label: 'Settings', icon: 'settings', hasChildren: true, children: [] },
+    { id: 'divider2', label: 'Divider', isDivider: true },
+    { id: '5', label: 'Help', icon: 'help' },
+    { id: '6', label: 'Logout', icon: 'logout', disabled: false },
+  ]);
+
+  // Tracked navigation items
+  trackedNavItems = signal<NavNode[]>([
     {
-      id: 'projects',
-      label: 'Projects',
-      icon: 'folder',
-      expanded: false,
-      hasChildren: true,
-      children: [
-        {
-          id: 'active-projects',
-          label: 'Active Projects',
-          onClick: () => this.onSubItemClick('Active Projects'),
-        },
-        {
-          id: 'archived',
-          label: 'Archived',
-          onClick: () => this.onSubItemClick('Archived'),
-        },
-      ],
+      id: '1',
+      label: 'Home',
+      icon: 'home',
+      onClick: () => this.onNavItemClick('Home'),
     },
     {
-      id: 'settings-header',
+      id: '2',
+      label: 'Dashboard',
+      icon: 'dashboard',
+      onClick: () => this.onNavItemClick('Dashboard'),
+    },
+    {
+      id: '3',
       label: 'Settings',
-      isSectionHeader: true,
-    },
-    {
-      id: 'profile',
-      label: 'Profile',
-      icon: 'person',
-      onClick: () => this.onNodeClick('Profile'),
-    },
-    {
-      id: 'preferences',
-      label: 'Preferences',
       icon: 'settings',
-      onClick: () => this.onNodeClick('Preferences'),
-    },
-    {
-      id: 'divider-2',
-      label: '',
-      isDivider: true,
-    },
-    {
-      id: 'help',
-      label: 'Help & Support',
-      icon: 'help',
-      onClick: () => this.onNodeClick('Help'),
-    },
-    {
-      id: 'logout',
-      label: 'Logout',
-      icon: 'sign_out',
-      onClick: () => this.onNodeClick('Logout'),
+      onClick: () => this.onNavItemClick('Settings'),
     },
   ]);
 
-  onNodeClick(label: string): void {
-    this.selectedNode.set(label);
-    this.lastEvent.set(`Node clicked: ${label}`);
-    console.log('Node clicked:', label);
+  onNavItemClick(label: string): void {
+    this.lastClickedItem.set(label);
+    this.clickCount.update(count => count + 1);
+    console.log('Nav item clicked:', label);
   }
 
-  onSubItemClick(label: string): void {
-    this.selectedNode.set(label);
-    this.lastEvent.set(`Sub item clicked: ${label}`);
-    console.log('Sub item clicked:', label);
+  onQuickActionClick(action: string, node: NavNode): void {
+    console.log('Quick action clicked:', action, node);
+    alert(`Quick action: ${action} on ${node.label}`);
   }
 }

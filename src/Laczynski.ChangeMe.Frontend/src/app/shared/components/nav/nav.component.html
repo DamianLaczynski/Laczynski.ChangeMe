@@ -1,47 +1,38 @@
-<nav
-  [class]="navClasses()"
-  [style.width.px]="getCurrentWidth()"
-  style="height: 100vh; overflow: auto"
->
-  <!-- Hamburger Button (only if collapsible) -->
-  @if (collapsible()) {
-    <app-button
-      [fullWidth]="true"
-      [icon]="'navigation'"
-      variant="subtle"
-      (click)="onHamburgerClick($event)"
-    ></app-button>
-  }
-
+<nav class="nav" [style.width.px]="width()">
   <!-- Content Area -->
-  <div [class]="contentClasses()" role="navigation" aria-label="Main navigation">
+  <div class="nav__content" role="navigation" aria-label="Main navigation">
     <!-- Auto-rendered items if provided -->
-    @if (items().length > 0) {
-      @for (item of items(); track item.id || item.label; let i = $index) {
-        @if (item.isSectionHeader) {
-          <app-nav-section-header [label]="item.label" />
-        } @else if (item.isDivider) {
-          <app-divider orientation="horizontal" />
-        } @else {
-          <!-- Main navigation items -->
-          <app-tree-node
-            [node]="$any(item)"
-            [size]="item.size || 'medium'"
-            [asButton]="true"
-            [showSelectionIndicator]="true"
-            [chevronPosition]="'after'"
-            [chevronIconCollapsed]="'chevron_down'"
-            [chevronIconExpanded]="'chevron_up'"
-            [expandOnClick]="!!(item.children && item.children.length > 0)"
-            [selectOnClick]="!(item.children && item.children.length > 0)"
-            (nodeClick)="onItemClick($event)"
-          >
-          </app-tree-node>
-        }
+    @for (item of items(); track item.id || item.label; let i = $index) {
+      @if (item.isSectionHeader) {
+        <app-nav-section-header [label]="item.label" />
+      } @else if (item.isDivider) {
+        <app-divider orientation="horizontal" />
+      } @else {
+        <app-tree-node
+          [node]="item"
+          [size]="getItemSize(item)"
+          [asButton]="asButton()"
+          [showSelectionIndicator]="showSelectionIndicator()"
+          [indicatorPosition]="indicatorPosition()"
+          [variant]="variant()"
+          [chevronPosition]="chevronPosition()"
+          [chevronIconCollapsed]="chevronIconCollapsed()"
+          [chevronIconExpanded]="chevronIconExpanded()"
+          [expandOnClick]="shouldExpandOnClick(item)"
+          [selectOnClick]="shouldSelectOnClick(item)"
+          [showQuickActions]="showQuickActions()"
+          [quickActionsTemplate]="quickActionsTemplate()"
+          (nodeClick)="onItemClick($event)"
+        >
+          @if (contentTemplate()) {
+            <ng-template #content let-node>
+              <ng-container
+                *ngTemplateOutlet="contentTemplate()!; context: { $implicit: node }"
+              ></ng-container>
+            </ng-template>
+          }
+        </app-tree-node>
       }
-    } @else {
-      <!-- Custom content via ng-content -->
-      <ng-content></ng-content>
     }
   </div>
 </nav>
