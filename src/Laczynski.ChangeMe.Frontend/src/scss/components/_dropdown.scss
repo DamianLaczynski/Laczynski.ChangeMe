@@ -83,6 +83,9 @@
     padding: $spacing-1;
     overflow-y: auto;
     max-height: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-1;
   }
 
   // =============================================================================

@@ -9,6 +9,13 @@ import { NgClass } from '@angular/common';
   selector: 'app-checkbox',
   imports: [FieldComponent, IconComponent, NgClass],
   templateUrl: './checkbox.component.html',
+  styles: [
+    `
+      :host {
+        display: flex;
+      }
+    `,
+  ],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
