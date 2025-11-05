@@ -33,38 +33,44 @@
         [disabled]="node().disabled || false"
         [attr.aria-label]="node().label"
         (click)="onContentClick($event)"
-        (focus)="onFocus()"
-        (blur)="onBlur()"
-        (mouseenter)="onMouseEnter()"
-        (mouseleave)="onMouseLeave()"
       >
-        @if (!iconOnly()) {
-          <ng-container *ngTemplateOutlet="beforeTemplate()!"></ng-container>
-        }
+        @if (contentTemplate()) {
+          <!-- Custom content template -->
+          <ng-container
+            *ngTemplateOutlet="contentTemplate()!; context: { $implicit: node() }"
+          ></ng-container>
+        } @else {
+          <!-- Default content -->
+          @if (!iconOnly() && beforeTemplate()) {
+            <ng-container *ngTemplateOutlet="beforeTemplate()!"></ng-container>
+          }
 
-        @if (shouldShowIcon()) {
-          <span class="node__icon">
-            @if (node().selected) {
-              <app-icon [icon]="node().icon" [size]="size()" variant="filled" />
-            } @else {
-              <app-icon [icon]="node().icon" [size]="size()" variant="regular" />
+          @if (shouldShowIcon()) {
+            <span class="node__icon">
+              @if (node().selected) {
+                <app-icon [icon]="node().icon" [size]="size()" variant="filled" />
+              } @else {
+                <app-icon [icon]="node().icon" [size]="size()" variant="regular" />
+              }
+            </span>
+          }
+
+          @if (shouldShowLabel()) {
+            <span class="node__label">{{ node().label }}</span>
+          }
+
+          @if (!iconOnly()) {
+            @if (afterTemplate()) {
+              <ng-container *ngTemplateOutlet="afterTemplate()!"></ng-container>
             }
-          </span>
-        }
-
-        @if (shouldShowLabel()) {
-          <span class="node__label">{{ node().label }}</span>
-        }
-
-        @if (!iconOnly()) {
-          <ng-container *ngTemplateOutlet="afterTemplate()!"></ng-container>
-          <!-- Quick Actions -->
-          @if (showQuickActions() && quickActionsTemplate()) {
-            <div class="node__quick-actions">
-              <ng-container
-                *ngTemplateOutlet="quickActionsTemplate()!; context: { $implicit: node() }"
-              ></ng-container>
-            </div>
+            <!-- Quick Actions -->
+            @if (showQuickActions() && quickActionsTemplate()) {
+              <div class="node__quick-actions">
+                <ng-container
+                  *ngTemplateOutlet="quickActionsTemplate()!; context: { $implicit: node() }"
+                ></ng-container>
+              </div>
+            }
           }
         }
       </button>
@@ -76,38 +82,44 @@
         [attr.aria-selected]="node().selected ? 'true' : null"
         [attr.aria-disabled]="node().disabled ? 'true' : null"
         (click)="onContentClick($event)"
-        (focus)="onFocus()"
-        (blur)="onBlur()"
-        (mouseenter)="onMouseEnter()"
-        (mouseleave)="onMouseLeave()"
       >
-        @if (!iconOnly()) {
-          <ng-container *ngTemplateOutlet="beforeTemplate()!"></ng-container>
-        }
+        @if (contentTemplate()) {
+          <!-- Custom content template -->
+          <ng-container
+            *ngTemplateOutlet="contentTemplate()!; context: { $implicit: node() }"
+          ></ng-container>
+        } @else {
+          <!-- Default content -->
+          @if (!iconOnly() && beforeTemplate()) {
+            <ng-container *ngTemplateOutlet="beforeTemplate()!"></ng-container>
+          }
 
-        @if (shouldShowIcon()) {
-          <span class="node__icon">
-            @if (node().selected) {
-              <app-icon [icon]="node().icon" [size]="size()" variant="filled" />
-            } @else {
-              <app-icon [icon]="node().icon" [size]="size()" variant="regular" />
+          @if (shouldShowIcon()) {
+            <span class="node__icon">
+              @if (node().selected) {
+                <app-icon [icon]="node().icon" [size]="size()" variant="filled" />
+              } @else {
+                <app-icon [icon]="node().icon" [size]="size()" variant="regular" />
+              }
+            </span>
+          }
+
+          @if (shouldShowLabel()) {
+            <span class="node__label">{{ node().label }}</span>
+          }
+
+          @if (!iconOnly()) {
+            @if (afterTemplate()) {
+              <ng-container *ngTemplateOutlet="afterTemplate()!"></ng-container>
             }
-          </span>
-        }
-
-        @if (shouldShowLabel()) {
-          <span class="node__label">{{ node().label }}</span>
-        }
-
-        @if (!iconOnly()) {
-          <ng-container *ngTemplateOutlet="afterTemplate()!"></ng-container>
-          <!-- Quick Actions -->
-          @if (showQuickActions() && quickActionsTemplate()) {
-            <div class="node__quick-actions">
-              <ng-container
-                *ngTemplateOutlet="quickActionsTemplate()!; context: { $implicit: node() }"
-              ></ng-container>
-            </div>
+            <!-- Quick Actions -->
+            @if (showQuickActions() && quickActionsTemplate()) {
+              <div class="node__quick-actions">
+                <ng-container
+                  *ngTemplateOutlet="quickActionsTemplate()!; context: { $implicit: node() }"
+                ></ng-container>
+              </div>
+            }
           }
         }
       </div>

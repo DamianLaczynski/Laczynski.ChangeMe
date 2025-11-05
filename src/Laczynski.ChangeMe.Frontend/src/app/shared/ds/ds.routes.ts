@@ -41,6 +41,7 @@ import { StepperShowcaseComponent } from '@shared/components/field/stepper/stepp
 import { ToastShowcaseComponent } from '@shared/components/toast/toast.showcase.component';
 import { TotpShowcaseComponent } from '@shared/components/field/totp/totp.showcase.component';
 import { NodeShowcaseComponent } from '@shared/components/tree-node/tree-node.showcase.component';
+import { NodeComponentShowcaseComponent } from '@shared/components/node/node.showcase.component';
 import { NavShowcaseComponent } from '@shared/components/nav/nav.showcase.component';
 
 export const dsRoutes: Routes = [
@@ -212,6 +213,10 @@ export const dsRoutes: Routes = [
   {
     path: 'tree-node',
     component: NodeShowcaseComponent,
+  },
+  {
+    path: 'node',
+    component: NodeComponentShowcaseComponent,
   },
   {
     path: 'file',

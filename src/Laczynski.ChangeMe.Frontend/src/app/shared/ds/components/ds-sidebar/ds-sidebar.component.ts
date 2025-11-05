@@ -61,6 +61,7 @@ export class DsSidebarComponent {
     { id: 'data-display', isSectionHeader: true, label: 'Data Display' },
     { id: 'tree', label: 'Tree', icon: 'text_bullet_list_tree' },
     { id: 'tree-node', label: 'Tree Node', icon: 'rectangle_landscape' },
+    { id: 'node', label: 'Node', icon: 'circle' },
     { id: 'badge', label: 'Badge', icon: 'badge' },
     { id: 'tag', label: 'Tag', icon: 'tag' },
     { id: 'empty-state', label: 'Empty State', icon: 'document_dismiss' },

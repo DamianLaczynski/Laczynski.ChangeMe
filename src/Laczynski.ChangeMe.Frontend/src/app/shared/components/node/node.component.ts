@@ -2,7 +2,6 @@ import {
   Component,
   input,
   output,
-  signal,
   TemplateRef,
   ElementRef,
   viewChild,
@@ -60,10 +59,7 @@ export class NodeComponent {
 
   beforeTemplate = contentChild<TemplateRef<any>>('before');
   afterTemplate = contentChild<TemplateRef<any>>('after');
-
-  // State
-  isFocused = signal<boolean>(false);
-  isHovered = signal<boolean>(false);
+  contentTemplate = contentChild<TemplateRef<any>>('content');
 
   private nodeElement = viewChild<ElementRef>('nodeElement');
 
@@ -80,14 +76,6 @@ export class NodeComponent {
 
     if (node.disabled) {
       classes.push('node--disabled');
-    }
-
-    if (this.isFocused()) {
-      classes.push('node--focused');
-    }
-
-    if (this.isHovered()) {
-      classes.push('node--hovered');
     }
 
     // Add variant classes
@@ -222,22 +210,6 @@ export class NodeComponent {
     if (this.selectOnClick()) {
       this.nodeSelect.emit(this.node());
     }
-  }
-
-  onFocus(): void {
-    this.isFocused.set(true);
-  }
-
-  onBlur(): void {
-    this.isFocused.set(false);
-  }
-
-  onMouseEnter(): void {
-    this.isHovered.set(true);
-  }
-
-  onMouseLeave(): void {
-    this.isHovered.set(false);
   }
 
   getTabIndex(): number {

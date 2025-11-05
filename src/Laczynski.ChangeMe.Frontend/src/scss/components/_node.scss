@@ -115,6 +115,14 @@
       cursor: not-allowed;
       opacity: 0.5;
     }
+
+    // Show quick actions on hover
+    &:hover:not(:disabled) {
+      .node__quick-actions {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
   }
 
   // Label
@@ -182,19 +190,6 @@
 
     .node__label {
       color: $color-neutral-foreground-disabled;
-    }
-  }
-
-  @include modifier('focused') {
-    // Focus styles handled by focus-ring mixin on content
-  }
-
-  @include modifier('hovered') {
-    .node__wrapper:not(.node--disabled &) {
-      .node__quick-actions {
-        opacity: 1;
-        visibility: visible;
-      }
     }
   }
 
