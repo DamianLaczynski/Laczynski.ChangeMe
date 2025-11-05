@@ -41,10 +41,6 @@
           ></ng-container>
         } @else {
           <!-- Default content -->
-          @if (!iconOnly() && beforeTemplate()) {
-            <ng-container *ngTemplateOutlet="beforeTemplate()!"></ng-container>
-          }
-
           @if (shouldShowIcon()) {
             <span class="node__icon">
               @if (node().selected) {
@@ -59,18 +55,13 @@
             <span class="node__label">{{ node().label }}</span>
           }
 
-          @if (!iconOnly()) {
-            @if (afterTemplate()) {
-              <ng-container *ngTemplateOutlet="afterTemplate()!"></ng-container>
-            }
-            <!-- Quick Actions -->
-            @if (showQuickActions() && quickActionsTemplate()) {
-              <div class="node__quick-actions">
-                <ng-container
-                  *ngTemplateOutlet="quickActionsTemplate()!; context: { $implicit: node() }"
-                ></ng-container>
-              </div>
-            }
+          <!-- Quick Actions -->
+          @if (showQuickActions() && quickActionsTemplate()) {
+            <div class="node__quick-actions">
+              <ng-container
+                *ngTemplateOutlet="quickActionsTemplate()!; context: { $implicit: node() }"
+              ></ng-container>
+            </div>
           }
         }
       </button>
@@ -90,10 +81,6 @@
           ></ng-container>
         } @else {
           <!-- Default content -->
-          @if (!iconOnly() && beforeTemplate()) {
-            <ng-container *ngTemplateOutlet="beforeTemplate()!"></ng-container>
-          }
-
           @if (shouldShowIcon()) {
             <span class="node__icon">
               @if (node().selected) {
@@ -108,18 +95,13 @@
             <span class="node__label">{{ node().label }}</span>
           }
 
-          @if (!iconOnly()) {
-            @if (afterTemplate()) {
-              <ng-container *ngTemplateOutlet="afterTemplate()!"></ng-container>
-            }
-            <!-- Quick Actions -->
-            @if (showQuickActions() && quickActionsTemplate()) {
-              <div class="node__quick-actions">
-                <ng-container
-                  *ngTemplateOutlet="quickActionsTemplate()!; context: { $implicit: node() }"
-                ></ng-container>
-              </div>
-            }
+          <!-- Quick Actions -->
+          @if (showQuickActions() && quickActionsTemplate()) {
+            <div class="node__quick-actions">
+              <ng-container
+                *ngTemplateOutlet="quickActionsTemplate()!; context: { $implicit: node() }"
+              ></ng-container>
+            </div>
           }
         }
       </div>

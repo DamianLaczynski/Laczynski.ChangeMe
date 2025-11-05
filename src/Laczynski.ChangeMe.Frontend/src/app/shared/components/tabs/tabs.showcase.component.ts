@@ -55,24 +55,6 @@ import { Node } from '../node/node.component';
         </div>
       </div>
 
-      <!-- Layout Variants -->
-      <div class="showcase__section">
-        <h2 class="showcase__section__title">Horizontal Layout Variants</h2>
-        <div class="showcase__grid">
-          <div class="showcase__item">
-            <h3>Icon Before Text</h3>
-            <app-tabs [tabs]="layoutTabs()" layout="icon-before"></app-tabs>
-          </div>
-          <div class="showcase__item">
-            <h3>Text Only</h3>
-            <app-tabs [tabs]="layoutTabs()" layout="text-only"></app-tabs>
-          </div>
-          <div class="showcase__item">
-            <h3>Icon Only</h3>
-            <app-tabs [tabs]="layoutTabs()" layout="icon-only"></app-tabs>
-          </div>
-        </div>
-      </div>
 
       <!-- Style Variants -->
       <div class="showcase__section">
@@ -134,36 +116,6 @@ import { Node } from '../node/node.component';
         </div>
       </div>
 
-      <!-- Vertical Layout Variants -->
-      <div class="showcase__section">
-        <h2 class="showcase__section__title">Vertical Layout Variants</h2>
-        <div class="showcase__grid showcase__grid--large">
-          <div class="showcase__item">
-            <h3>Icon Before Text</h3>
-            <app-tabs
-              [tabs]="verticalLayoutTabs()"
-              layout="icon-before"
-              orientation="vertical"
-            ></app-tabs>
-          </div>
-          <div class="showcase__item">
-            <h3>Text Only</h3>
-            <app-tabs
-              [tabs]="verticalLayoutTabs()"
-              layout="text-only"
-              orientation="vertical"
-            ></app-tabs>
-          </div>
-          <div class="showcase__item">
-            <h3>Icon Only</h3>
-            <app-tabs
-              [tabs]="verticalLayoutTabs()"
-              layout="icon-only"
-              orientation="vertical"
-            ></app-tabs>
-          </div>
-        </div>
-      </div>
 
       <!-- Vertical Style Variants -->
       <div class="showcase__section">
@@ -193,32 +145,11 @@ import { Node } from '../node/node.component';
         <h2 class="showcase__section__title">Vertical Circular Small Tabs</h2>
         <div class="showcase__grid showcase__grid--large">
           <div class="showcase__item">
-            <h3>Small + Subtle Circular + Icon Before</h3>
+            <h3>Small + Subtle Circular</h3>
             <app-tabs
               [tabs]="verticalCircularTabs()"
               size="small"
               appearance="subtle-circular"
-              layout="icon-before"
-              orientation="vertical"
-            ></app-tabs>
-          </div>
-          <div class="showcase__item">
-            <h3>Small + Subtle Circular + Text Only</h3>
-            <app-tabs
-              [tabs]="verticalCircularTabs()"
-              size="small"
-              appearance="subtle-circular"
-              layout="text-only"
-              orientation="vertical"
-            ></app-tabs>
-          </div>
-          <div class="showcase__item">
-            <h3>Small + Subtle Circular + Icon Only</h3>
-            <app-tabs
-              [tabs]="verticalCircularTabs()"
-              size="small"
-              appearance="subtle-circular"
-              layout="icon-only"
               orientation="vertical"
             ></app-tabs>
           </div>
@@ -230,8 +161,8 @@ import { Node } from '../node/node.component';
         <h2 class="showcase__section__title">Combined Examples</h2>
         <div class="showcase__grid showcase__grid--large">
           <div class="showcase__item">
-            <h3>Horizontal: Small + Text Only</h3>
-            <app-tabs [tabs]="combinedTabs()" size="small" layout="text-only"></app-tabs>
+            <h3>Horizontal: Small</h3>
+            <app-tabs [tabs]="combinedTabs()" size="small"></app-tabs>
           </div>
           <div class="showcase__item">
             <h3>Vertical: Medium + Transparent</h3>

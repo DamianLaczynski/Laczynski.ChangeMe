@@ -9,8 +9,13 @@
         <app-node
           [node]="item"
           [size]="size()"
-          [asButton]="true"
-          [selectOnClick]="false"
+          [showSelectionIndicator]="showSelectionIndicator()"
+          [indicatorPosition]="indicatorPosition()"
+          [variant]="variant()"
+          [asButton]="asButton()"
+          [selectOnClick]="selectOnClick()"
+          [showQuickActions]="showQuickActions()"
+          [quickActionsTemplate]="quickActionsTemplate()"
           (nodeClick)="onNodeClick(item)"
         />
 

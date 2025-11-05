@@ -1,5 +1,5 @@
-import { Component, input, output, signal, computed } from '@angular/core';
-import { ChevronPosition, Size } from '../utils';
+import { Component, input, output, signal, computed, TemplateRef } from '@angular/core';
+import { ChevronPosition, Size, Appearance, Orientation } from '../utils';
 import { TreeNode } from '../tree-node/tree-node.component';
 import { TreeNodeComponent } from '../tree-node/tree-node.component';
 
@@ -16,6 +16,17 @@ export class AccordionComponent {
   expanded = signal<boolean>(false);
   icon = input<string>('');
 
+  // Visual Configuration
+  showSelectionIndicator = input<boolean>(false);
+  indicatorPosition = input<Orientation>('vertical');
+  variant = input<Appearance | undefined>(undefined);
+  chevronIconCollapsed = input<string | undefined>(undefined);
+  chevronIconExpanded = input<string | undefined>(undefined);
+
+  // Quick Actions
+  showQuickActions = input<boolean>(false);
+  quickActionsTemplate = input<TemplateRef<any> | null>(null);
+
   toggle = output<boolean>();
 
   // Create a TreeNode for the accordion header
@@ -28,6 +39,21 @@ export class AccordionComponent {
     expanded: this.expanded(),
     children: [],
   }));
+
+  // Computed chevron icons based on position if not explicitly provided
+  computedChevronIconCollapsed = computed<string>(() => {
+    if (this.chevronIconCollapsed() !== undefined) {
+      return this.chevronIconCollapsed()!;
+    }
+    return this.chevronPosition() === 'before' ? 'chevron_right' : 'chevron_down';
+  });
+
+  computedChevronIconExpanded = computed<string>(() => {
+    if (this.chevronIconExpanded() !== undefined) {
+      return this.chevronIconExpanded()!;
+    }
+    return this.chevronPosition() === 'before' ? 'chevron_down' : 'chevron_up';
+  });
 
   accordionClasses(): string {
     const classes = ['accordion'];

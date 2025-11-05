@@ -1,6 +1,6 @@
 import { Component, input, output, signal, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Size, Appearance, Layout, Orientation } from '../utils';
+import { Size, Appearance, Orientation } from '../utils';
 import { Node } from '../node/node.component';
 import { NodeComponent } from '../node/node.component';
 
@@ -18,12 +18,10 @@ import { NodeComponent } from '../node/node.component';
         <app-node
           [node]="getNodeWithSelection(tab)"
           [size]="size()"
-          [layout]="layout()"
           [variant]="appearance()"
           [asButton]="true"
           [showSelectionIndicator]="true"
           [indicatorPosition]="orientation()"
-          [iconOnly]="layout() === 'icon-only'"
           [selectOnClick]="false"
           (nodeClick)="onTabClick(tab)"
         />
@@ -43,7 +41,6 @@ export class TabsComponent<T extends Node> {
   tabs = input.required<T[]>();
   selectedTabId = input<string | number>();
   size = input<Size>('medium');
-  layout = input<Layout>('icon-before');
   appearance = input<Appearance>('transparent');
   circular = input<boolean>(false);
   showMoreButton = input<boolean>(false);
@@ -76,7 +73,6 @@ export class TabsComponent<T extends Node> {
     const classes = ['tabs'];
 
     classes.push(`tabs--${this.size()}`);
-    classes.push(`tabs--${this.layout()}`);
     classes.push(`tabs--${this.appearance()}`);
     classes.push(`tabs--${this.orientation()}`);
 

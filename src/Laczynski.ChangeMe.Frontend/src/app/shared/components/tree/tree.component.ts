@@ -1,7 +1,7 @@
 import { Component, input, output, TemplateRef, contentChild, model } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TreeNodeComponent } from '../tree-node/tree-node.component';
-import { Size, TreeStyle } from '../utils';
+import { Size, TreeStyle, Appearance, Orientation, ChevronPosition } from '../utils';
 import { TreeNode } from '../tree-node/tree-node.component';
 
 @Component({
@@ -10,11 +10,29 @@ import { TreeNode } from '../tree-node/tree-node.component';
   imports: [CommonModule, TreeNodeComponent],
 })
 export class TreeComponent {
-  // Inputs
+  // Inputs - Tree Data
   nodes = model<TreeNode[]>([]);
   size = input<Size>('medium');
   style = input<TreeStyle>('subtle');
+
+  // Inputs - Visual Configuration
+  showSelectionIndicator = input<boolean>(false);
+  indicatorPosition = input<Orientation>('vertical');
+  variant = input<Appearance | undefined>(undefined);
+  chevronPosition = input<ChevronPosition>('before');
+  chevronIconCollapsed = input<string>('chevron_right');
+  chevronIconExpanded = input<string>('chevron_down');
+
+  // Inputs - Behavior Configuration
+  asButton = input<boolean>(false);
+  expandOnClick = input<boolean>(false);
+  selectOnClick = input<boolean>(true);
+
+  // Inputs - Quick Actions
   showQuickActions = input<boolean>(false);
+
+  // Content Projection
+  contentTemplate = contentChild<TemplateRef<any>>('content');
 
   // Template
   quickActionsTemplate = contentChild<TemplateRef<any>>('quickActions');

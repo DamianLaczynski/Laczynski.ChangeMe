@@ -17,7 +17,6 @@ import { TextareaShowcaseComponent } from '@shared/components/field/textarea/tex
 import { UrlShowcaseComponent } from '@shared/components/field/url/url.showcase.component';
 import { TabsShowcaseComponent } from '@shared/components/tabs/tabs.showcase.component';
 import { SkeletonShowcaseComponent } from '@shared/components/skeleton/skeleton.showcase.component';
-import { TreeShowcaseComponent } from '@shared/components/tree/tree.showcase.component';
 import { DialogShowcaseComponent } from '@shared/components/dialog/dialog.showcase.component';
 import { EmptyStateShowcaseComponent } from '@shared/components/empty-state/empty-state.showcase.component';
 import { ErrorStateShowcaseComponent } from '@shared/components/error-state/error-state.showcase.component';
@@ -40,9 +39,10 @@ import { FileShowcaseComponent } from '@shared/components/field/file/file.showca
 import { StepperShowcaseComponent } from '@shared/components/field/stepper/stepper.showcase.component';
 import { ToastShowcaseComponent } from '@shared/components/toast/toast.showcase.component';
 import { TotpShowcaseComponent } from '@shared/components/field/totp/totp.showcase.component';
-import { NodeShowcaseComponent } from '@shared/components/tree-node/tree-node.showcase.component';
-import { NodeComponentShowcaseComponent } from '@shared/components/node/node.showcase.component';
 import { NavShowcaseComponent } from '@shared/components/nav/nav.showcase.component';
+import { NodeShowcaseComponent } from '@shared/components/node/node.showcase.component';
+import { TreeShowcaseComponent } from '@shared/components/tree/tree.showcase.component';
+import { TreeNodeShowcaseComponent } from '@shared/components/tree-node/tree-node.showcase.component';
 
 export const dsRoutes: Routes = [
   {
@@ -171,6 +171,18 @@ export const dsRoutes: Routes = [
     component: NavShowcaseComponent,
   },
   {
+    path: 'node',
+    component: NodeShowcaseComponent,
+  },
+  {
+    path: 'tree',
+    component: TreeShowcaseComponent,
+  },
+  {
+    path: 'tree-node',
+    component: TreeNodeShowcaseComponent,
+  },
+  {
     path: 'progress-bar',
     component: ProgressBarShowcaseComponent,
   },
@@ -205,18 +217,6 @@ export const dsRoutes: Routes = [
   {
     path: 'toast',
     component: ToastShowcaseComponent,
-  },
-  {
-    path: 'tree',
-    component: TreeShowcaseComponent,
-  },
-  {
-    path: 'tree-node',
-    component: NodeShowcaseComponent,
-  },
-  {
-    path: 'node',
-    component: NodeComponentShowcaseComponent,
   },
   {
     path: 'file',

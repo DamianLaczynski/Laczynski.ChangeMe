@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
-import { Size, Appearance, Orientation, Layout } from '../utils';
+import { Size, Appearance, Orientation } from '../utils';
 
 export type Node<T = any> = {
   id: string | number;
@@ -42,8 +42,6 @@ export class NodeComponent {
   showSelectionIndicator = input<boolean>(false);
   indicatorPosition = input<Orientation>('horizontal');
   variant = input<Appearance | undefined>(undefined);
-  layout = input<Layout | undefined>(undefined);
-  iconOnly = input<boolean>(false);
 
   // Inputs - Behavior Configuration
   asButton = input<boolean>(false);
@@ -57,8 +55,6 @@ export class NodeComponent {
   nodeClick = output<Node>();
   nodeSelect = output<Node>();
 
-  beforeTemplate = contentChild<TemplateRef<any>>('before');
-  afterTemplate = contentChild<TemplateRef<any>>('after');
   contentTemplate = contentChild<TemplateRef<any>>('content');
 
   private nodeElement = viewChild<ElementRef>('nodeElement');
@@ -84,21 +80,10 @@ export class NodeComponent {
       classes.push(`node--${variant}`);
     }
 
-    // Add layout classes
-    const layout = this.layout();
-    if (layout) {
-      classes.push(`node--${layout}`);
-    }
-
     // Add indicator position classes
     const indicatorPosition = this.indicatorPosition();
     if (this.showSelectionIndicator()) {
       classes.push(`node--indicator-${indicatorPosition}`);
-    }
-
-    // Add icon-only class
-    if (this.iconOnly()) {
-      classes.push('node--icon-only');
     }
 
     return classes.join(' ');
@@ -131,10 +116,6 @@ export class NodeComponent {
    * Check if icon should be shown
    */
   shouldShowIcon(): boolean {
-    const layout = this.layout();
-    if (layout === 'text-only') {
-      return false;
-    }
     return !!this.node().icon;
   }
 
@@ -142,23 +123,13 @@ export class NodeComponent {
    * Check if label should be shown
    */
   shouldShowLabel(): boolean {
-    if (this.iconOnly()) {
-      return false;
-    }
-    const layout = this.layout();
-    return layout !== 'icon-only';
+    return true;
   }
 
   /**
    * Get selector width for horizontal indicator
    */
   getSelectorWidth(): string {
-    if (this.layout() === 'icon-only') {
-      return '16px';
-    }
-    if (this.layout() === 'text-only') {
-      return '80%';
-    }
     return '70%';
   }
 

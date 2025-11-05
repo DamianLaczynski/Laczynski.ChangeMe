@@ -3,20 +3,26 @@
   <app-tree-node
     [node]="accordionNode()"
     [size]="size()"
-    [showChevron]="true"
+    [showSelectionIndicator]="showSelectionIndicator()"
+    [indicatorPosition]="indicatorPosition()"
+    [variant]="variant()"
     [chevronPosition]="chevronPosition()"
-    [chevronIconCollapsed]="chevronPosition() === 'before' ? 'chevron_right' : 'chevron_down'"
-    [chevronIconExpanded]="chevronPosition() === 'before' ? 'chevron_down' : 'chevron_up'"
+    [chevronIconCollapsed]="computedChevronIconCollapsed()"
+    [chevronIconExpanded]="computedChevronIconExpanded()"
     [asButton]="true"
     [expandOnClick]="true"
     [selectOnClick]="false"
+    [showQuickActions]="showQuickActions()"
+    [quickActionsTemplate]="quickActionsTemplate() || null"
     (nodeToggle)="onNodeToggle($event)"
   />
 
   <!-- Accordion Panel -->
-  <div class="accordion__panel">
-    <div class="accordion__panel-content">
-      <ng-content></ng-content>
+  @if (expanded()) {
+    <div class="accordion__panel">
+      <div class="accordion__panel-content">
+        <ng-content></ng-content>
+      </div>
     </div>
-  </div>
+  }
 </div>

@@ -226,26 +226,6 @@
   }
 
   // ==========================================================================
-  // Layout Modifiers
-  // ==========================================================================
-
-  @include modifier('icon-before') {
-    // Default layout already defined
-  }
-
-  @include modifier('text-only') {
-    .node__icon {
-      display: none;
-    }
-  }
-
-  @include modifier('icon-only') {
-    .node__label {
-      display: none;
-    }
-  }
-
-  // ==========================================================================
   // Variant Modifiers (Tab Appearance)
   // ==========================================================================
 
@@ -371,17 +351,6 @@
 
     // Hide indicator for circular style
     .node__indicator {
-      display: none;
-    }
-  }
-
-  // ==========================================================================
-  // Icon Only Modifier
-  // ==========================================================================
-
-  @include modifier('icon-only') {
-    .node__label,
-    .node__quick-actions {
       display: none;
     }
   }

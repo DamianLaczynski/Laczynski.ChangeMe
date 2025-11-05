@@ -1,694 +1,902 @@
-import { Component, signal, TemplateRef, viewChild } from '@angular/core';
+import { Component, signal, viewChild, TemplateRef } from '@angular/core';
+import { TreeNodeComponent, TreeNode } from './tree-node.component';
 import { CommonModule } from '@angular/common';
-import { TreeNodeComponent } from './tree-node.component';
-import { TreeNode } from './tree-node.component';
 import { ButtonComponent } from '../button/button.component';
 
 @Component({
-  selector: 'app-node-showcase',
-  imports: [CommonModule, TreeNodeComponent, ButtonComponent],
+  selector: 'app-tree-node-showcase',
+  imports: [TreeNodeComponent, CommonModule, ButtonComponent],
   template: `
-    <div class="showcase">
-      <h1 class="showcase__title">Node Component</h1>
+    <div class="showcase showcase--responsive">
+      <h1 class="showcase__title">Tree Node Component Showcase</h1>
       <p class="showcase__description">
-        Uniwersalny, w pełni konfigurowalny komponent do wyświetlania hierarchicznych struktur
-        danych. Może być używany do nawigacji, drzew, list i wielu innych przypadków użycia.
+        Comprehensive showcase of the TreeNode component built with Fluent 2 Design System. Tree
+        nodes support hierarchical structures, expand/collapse functionality, selection indicators,
+        and keyboard navigation.
       </p>
 
-      <!-- Section: Podstawowa konfiguracja -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Podstawowa konfiguracja</h2>
+      <!-- ========================================= -->
+      <!-- BASIC TREE NODES -->
+      <!-- ========================================= -->
 
-        <div class="showcase__example">
-          <h3>Prosty element (div)</h3>
-          <div style="max-width: 400px;">
-            <app-tree-node
-              [node]="simpleNode()"
-              [size]="'medium'"
-              (nodeClick)="onNodeClick($event)"
-            />
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Basic Tree Nodes</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>Leaf Node (No Children)</h3>
+            <app-tree-node [node]="leafNode()" />
           </div>
-          <div class="showcase__info">
-            Podstawowy node renderowany jako <code>div</code>, bez chevrona.
+          <div class="showcase__item">
+            <h3>Parent Node (Collapsed)</h3>
+            <app-tree-node [node]="parentNodeCollapsed()" />
           </div>
-        </div>
-
-        <div class="showcase__example">
-          <h3>Element jako przycisk</h3>
-          <div style="max-width: 400px;">
-            <app-tree-node
-              [node]="simpleNode()"
-              [size]="'medium'"
-              [asButton]="true"
-              (nodeClick)="onNodeClick($event)"
-            />
-          </div>
-          <div class="showcase__info">
-            Node renderowany jako <code>button</code> dla lepszej dostępności.
+          <div class="showcase__item">
+            <h3>Parent Node (Expanded)</h3>
+            <app-tree-node [node]="parentNodeExpanded()" />
           </div>
         </div>
-      </section>
+      </div>
 
-      <!-- Section: Chevron Configuration -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Konfiguracja Chevrona</h2>
+      <!-- ========================================= -->
+      <!-- SIZE VARIANTS -->
+      <!-- ========================================= -->
 
-        <div class="showcase__example">
-          <h3>Chevron po lewej (before)</h3>
-          <div style="max-width: 400px;">
-            <app-tree-node
-              [node]="branchNode()"
-              [showChevron]="true"
-              [chevronPosition]="'before'"
-              (nodeClick)="onNodeClick($event)"
-              (nodeToggle)="onNodeToggle($event)"
-            />
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Size Variants</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>Small</h3>
+            <app-tree-node [node]="sizeNode()" size="small" />
+          </div>
+          <div class="showcase__item">
+            <h3>Medium (Default)</h3>
+            <app-tree-node [node]="sizeNode()" size="medium" />
+          </div>
+          <div class="showcase__item">
+            <h3>Large</h3>
+            <app-tree-node [node]="sizeNode()" size="large" />
           </div>
         </div>
+      </div>
 
-        <div class="showcase__example">
-          <h3>Chevron po prawej (after)</h3>
-          <div style="max-width: 400px;">
-            <app-tree-node
-              [node]="branchNode()"
-              [showChevron]="true"
-              [chevronPosition]="'after'"
-              (nodeClick)="onNodeClick($event)"
-              (nodeToggle)="onNodeToggle($event)"
-            />
+      <!-- ========================================= -->
+      <!-- APPEARANCE VARIANTS -->
+      <!-- ========================================= -->
+
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Appearance Variants</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>Transparent (Default)</h3>
+            <app-tree-node [node]="appearanceNode()" variant="transparent" />
+          </div>
+          <div class="showcase__item">
+            <h3>Subtle</h3>
+            <app-tree-node [node]="appearanceNode()" variant="subtle" />
+          </div>
+          <div class="showcase__item">
+            <h3>Subtle Circular</h3>
+            <app-tree-node [node]="appearanceNode()" variant="subtle-circular" />
+          </div>
+          <div class="showcase__item">
+            <h3>Filled Circular</h3>
+            <app-tree-node [node]="appearanceNode()" variant="filled-circular" />
           </div>
         </div>
+      </div>
 
-        <div class="showcase__example">
-          <h3>Własne ikony chevrona</h3>
-          <div style="max-width: 400px;">
-            <app-tree-node
-              [node]="branchNode()"
-              [showChevron]="true"
-              [chevronPosition]="'after'"
-              [chevronIconCollapsed]="'chevron_down'"
-              [chevronIconExpanded]="'chevron_up'"
-              (nodeClick)="onNodeClick($event)"
-              (nodeToggle)="onNodeToggle($event)"
-            />
-          </div>
-          <div class="showcase__info">
-            Możliwość ustawienia własnych ikon dla stanów collapsed/expanded.
-          </div>
-        </div>
+      <!-- ========================================= -->
+      <!-- SELECTION INDICATORS -->
+      <!-- ========================================= -->
 
-        <div class="showcase__example">
-          <h3>Bez chevrona</h3>
-          <div style="max-width: 400px;">
-            <app-tree-node
-              [node]="branchNode()"
-              [showChevron]="false"
-              (nodeClick)="onNodeClick($event)"
-              (nodeToggle)="onNodeToggle($event)"
-            />
-          </div>
-        </div>
-      </section>
-
-      <!-- Section: Selection Indicator -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Selection Indicator</h2>
-
-        <div class="showcase__example">
-          <h3>Z wskaźnikiem zaznaczenia</h3>
-          <div style="max-width: 300px; background: #F0F0F0; padding: 8px; border-radius: 8px;">
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Selection Indicators</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>Horizontal Indicator (Selected)</h3>
             <app-tree-node
               [node]="selectedNode()"
               [showSelectionIndicator]="true"
-              [asButton]="true"
-              (nodeClick)="onNodeClick($event)"
+              indicatorPosition="horizontal"
             />
+          </div>
+          <div class="showcase__item">
+            <h3>Horizontal Indicator (Not Selected)</h3>
             <app-tree-node
               [node]="unselectedNode()"
               [showSelectionIndicator]="true"
-              [asButton]="true"
-              (nodeClick)="onNodeClick($event)"
+              indicatorPosition="horizontal"
             />
           </div>
-          <div class="showcase__info">Wskaźnik po lewej stronie pokazuje zaznaczony element.</div>
-        </div>
-      </section>
-
-      <!-- Section: Behavior Configuration -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Konfiguracja zachowania</h2>
-
-        <div class="showcase__example">
-          <h3>Expand on Click</h3>
-          <div style="max-width: 400px;">
+          <div class="showcase__item">
+            <h3>Vertical Indicator (Selected)</h3>
             <app-tree-node
-              [node]="branchNodeWithChildren()"
-              [showChevron]="true"
-              [chevronPosition]="'after'"
+              [node]="selectedNode()"
+              [showSelectionIndicator]="true"
+              indicatorPosition="vertical"
+            />
+          </div>
+          <div class="showcase__item">
+            <h3>Vertical Indicator (Not Selected)</h3>
+            <app-tree-node
+              [node]="unselectedNode()"
+              [showSelectionIndicator]="true"
+              indicatorPosition="vertical"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================= -->
+      <!-- CHEVRON POSITIONS -->
+      <!-- ========================================= -->
+
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Chevron Positions</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>Chevron Before (Default)</h3>
+            <app-tree-node [node]="chevronNode()" chevronPosition="before" />
+          </div>
+          <div class="showcase__item">
+            <h3>Chevron After</h3>
+            <app-tree-node [node]="chevronNode()" chevronPosition="after" />
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================= -->
+      <!-- STATES -->
+      <!-- ========================================= -->
+
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">States</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>Normal State</h3>
+            <app-tree-node [node]="normalNode()" />
+          </div>
+          <div class="showcase__item">
+            <h3>Selected State</h3>
+            <app-tree-node [node]="selectedTreeNode()" />
+          </div>
+          <div class="showcase__item">
+            <h3>Disabled State</h3>
+            <app-tree-node [node]="disabledNode()" />
+          </div>
+          <div class="showcase__item">
+            <h3>Selected + Disabled</h3>
+            <app-tree-node [node]="selectedDisabledNode()" />
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================= -->
+      <!-- EXPAND ON CLICK -->
+      <!-- ========================================= -->
+
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Expand On Click Behavior</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>Expand On Click (false - Default)</h3>
+            <p style="margin-bottom: 8px; font-size: 12px; color: #666;">
+              Click node to select, click chevron to expand
+            </p>
+            <app-tree-node
+              [node]="expandOnClickNode()"
+              [expandOnClick]="false"
+              (nodeClick)="onNodeClick($event)"
+              (nodeToggle)="onNodeToggle($event)"
+            />
+            <p style="margin-top: 8px; font-size: 12px;">
+              Expanded: {{ expandOnClickNode().expanded ? 'Yes' : 'No' }}
+            </p>
+          </div>
+          <div class="showcase__item">
+            <h3>Expand On Click (true)</h3>
+            <p style="margin-bottom: 8px; font-size: 12px; color: #666;">
+              Click node to both select and expand
+            </p>
+            <app-tree-node
+              [node]="expandOnClickNodeTrue()"
               [expandOnClick]="true"
+              (nodeClick)="onNodeClick($event)"
+              (nodeToggle)="onNodeToggle($event)"
+            />
+            <p style="margin-top: 8px; font-size: 12px;">
+              Expanded: {{ expandOnClickNodeTrue().expanded ? 'Yes' : 'No' }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================= -->
+      <!-- SELECT ON CLICK -->
+      <!-- ========================================= -->
+
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Select On Click Behavior</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>Select On Click (Default: true)</h3>
+            <p style="margin-bottom: 8px; font-size: 12px; color: #666;">
+              Click to select - will emit both click and select events
+            </p>
+            <app-tree-node
+              [node]="selectableNode()"
+              [selectOnClick]="true"
+              (nodeClick)="onNodeClick($event)"
+              (nodeSelect)="onNodeSelect($event)"
+            />
+            <p style="margin-top: 8px; font-size: 12px;">
+              Selected: {{ selectableNode().selected ? 'Yes' : 'No' }}
+            </p>
+          </div>
+          <div class="showcase__item">
+            <h3>Select On Click (false)</h3>
+            <p style="margin-bottom: 8px; font-size: 12px; color: #666;">
+              Click only - will emit only click event, not select
+            </p>
+            <app-tree-node
+              [node]="nonSelectableNode()"
               [selectOnClick]="false"
               (nodeClick)="onNodeClick($event)"
-              (nodeToggle)="onNodeToggle($event)"
-            />
-          </div>
-          <div class="showcase__info">
-            Kliknięcie w element rozwija/zwija węzeł. Idealne dla grup nawigacji.
-          </div>
-        </div>
-
-        <div class="showcase__example">
-          <h3>Select on Click (default)</h3>
-          <div style="max-width: 400px;">
-            <app-tree-node
-              [node]="branchNodeWithChildren()"
-              [showChevron]="true"
-              [chevronPosition]="'before'"
-              [expandOnClick]="false"
-              [selectOnClick]="true"
-              (nodeClick)="onNodeClick($event)"
               (nodeSelect)="onNodeSelect($event)"
             />
-          </div>
-          <div class="showcase__info">
-            Kliknięcie w element emituje <code>nodeSelect</code>. Chevron służy do rozwijania.
+            <p style="margin-top: 8px; font-size: 12px;">
+              Selected: {{ nonSelectableNode().selected ? 'Yes' : 'No' }}
+            </p>
           </div>
         </div>
-      </section>
+      </div>
 
-      <!-- Section: Quick Actions -->
-      <section class="showcase__section">
+      <!-- ========================================= -->
+      <!-- QUICK ACTIONS -->
+      <!-- ========================================= -->
+
+      <div class="showcase__section">
         <h2 class="showcase__section__title">Quick Actions</h2>
-
-        <div class="showcase__example">
-          <h3>Z szybkimi akcjami</h3>
-          <div style="max-width: 400px;">
-            <app-tree-node
-              [node]="{ id: 'with-actions', label: 'Hover Me', icon: 'document' }"
-              [showQuickActions]="true"
-              [quickActionsTemplate]="quickActionsTemplate() || null"
-              (nodeClick)="onNodeClick($event)"
-            />
-          </div>
-          <div class="showcase__info">Najedź myszką, aby zobaczyć przyciski akcji.</div>
-        </div>
-      </section>
-
-      <!-- Section: Rozmiary -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Rozmiary</h2>
-
         <div class="showcase__grid">
           <div class="showcase__item">
-            <label>Small</label>
-            <div style="max-width: 300px; background: #F0F0F0; padding: 8px; border-radius: 8px;">
-              <app-tree-node
-                [node]="{ id: 'small', label: 'Small Size', icon: 'home' }"
-                [size]="'small'"
-                [asButton]="true"
-                (nodeClick)="onNodeClick($event)"
-              />
-            </div>
-          </div>
-
-          <div class="showcase__item">
-            <label>Medium (Default)</label>
-            <div style="max-width: 300px; background: #F0F0F0; padding: 8px; border-radius: 8px;">
-              <app-tree-node
-                [node]="{ id: 'medium', label: 'Medium Size', icon: 'home' }"
-                [size]="'medium'"
-                [asButton]="true"
-                (nodeClick)="onNodeClick($event)"
-              />
-            </div>
-          </div>
-
-          <div class="showcase__item">
-            <label>Large</label>
-            <div style="max-width: 300px; background: #F0F0F0; padding: 8px; border-radius: 8px;">
-              <app-tree-node
-                [node]="{ id: 'large', label: 'Large Size', icon: 'home' }"
-                [size]="'large'"
-                [asButton]="true"
-                (nodeClick)="onNodeClick($event)"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Section: Use Cases -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Przykłady użycia</h2>
-
-        <div class="showcase__example">
-          <h3>Nawigacja boczna (Side Navigation)</h3>
-          <div style="max-width: 300px; background: #F0F0F0; padding: 8px; border-radius: 8px;">
+            <h3>With Quick Actions Template</h3>
             <app-tree-node
-              [node]="navExample().nodes[0]"
-              [asButton]="true"
-              [showSelectionIndicator]="true"
-              [showChevron]="false"
-              (nodeClick)="onNodeClick($event)"
-            />
-            <app-tree-node
-              [node]="navExample().nodes[1]"
-              [asButton]="true"
-              [showSelectionIndicator]="true"
-              [showChevron]="true"
-              [chevronPosition]="'after'"
-              [expandOnClick]="true"
-              (nodeClick)="onNodeClick($event)"
-              (nodeToggle)="onNodeToggle($event)"
-            />
-            <app-tree-node
-              [node]="navExample().nodes[2]"
-              [asButton]="true"
-              [showSelectionIndicator]="true"
-              [showChevron]="false"
-              (nodeClick)="onNodeClick($event)"
-            />
-          </div>
-          <div class="showcase__info">
-            Konfiguracja dla nawigacji: <code>asButton</code>, <code>showSelectionIndicator</code>,
-            chevron po prawej dla grup.
-          </div>
-        </div>
-
-        <div class="showcase__example">
-          <h3>Drzewo plików (File Tree)</h3>
-          <div style="max-width: 400px;">
-            <app-tree-node
-              [node]="treeExample()"
-              [showChevron]="true"
-              [chevronPosition]="'before'"
-              [expandOnClick]="false"
-              [selectOnClick]="true"
+              [node]="quickActionsNode()"
               [showQuickActions]="true"
-              [quickActionsTemplate]="quickActionsTemplate() || null"
-              (nodeClick)="onNodeClick($event)"
-              (nodeToggle)="onNodeToggle($event)"
-              (nodeSelect)="onNodeSelect($event)"
+              [quickActionsTemplate]="quickActionsTemplate"
             />
           </div>
-          <div class="showcase__info">
-            Konfiguracja dla drzewa: chevron po lewej, <code>selectOnClick</code>, quick actions.
-          </div>
         </div>
-      </section>
+      </div>
 
-      <!-- Section: States -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Stany</h2>
+      <!-- ========================================= -->
+      <!-- NESTED STRUCTURES -->
+      <!-- ========================================= -->
 
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Nested Structures</h2>
         <div class="showcase__grid">
           <div class="showcase__item">
-            <label>Normal</label>
-            <div style="max-width: 300px; background: #F0F0F0; padding: 8px; border-radius: 8px;">
-              <app-tree-node
-                [node]="{ id: 'normal', label: 'Normal State', icon: 'home' }"
-                [asButton]="true"
-                (nodeClick)="onNodeClick($event)"
-              />
-            </div>
+            <h3>Two Levels</h3>
+            <app-tree-node [node]="twoLevelNode()" />
           </div>
-
           <div class="showcase__item">
-            <label>Selected</label>
-            <div style="max-width: 300px; background: #F0F0F0; padding: 8px; border-radius: 8px;">
-              <app-tree-node
-                [node]="{ id: 'selected', label: 'Selected State', icon: 'home', selected: true }"
-                [asButton]="true"
-                [showSelectionIndicator]="true"
-                (nodeClick)="onNodeClick($event)"
-              />
-            </div>
+            <h3>Three Levels</h3>
+            <app-tree-node [node]="threeLevelNode()" />
           </div>
-
           <div class="showcase__item">
-            <label>Disabled</label>
-            <div style="max-width: 300px; background: #F0F0F0; padding: 8px; border-radius: 8px;">
-              <app-tree-node
-                [node]="{ id: 'disabled', label: 'Disabled State', icon: 'home', disabled: true }"
-                [asButton]="true"
-                (nodeClick)="onNodeClick($event)"
-              />
-            </div>
-          </div>
-
-          <div class="showcase__item">
-            <label>Expanded</label>
-            <div style="max-width: 300px;">
-              <app-tree-node
-                [node]="{
-                  id: 'expanded',
-                  label: 'Expanded State',
-                  icon: 'folder',
-                  expanded: true,
-                  hasChildren: true,
-                  children: [
-                    { id: 'child1', label: 'Child 1', icon: 'document' },
-                    { id: 'child2', label: 'Child 2', icon: 'document' },
-                  ],
-                }"
-                [showChevron]="true"
-                (nodeClick)="onNodeClick($event)"
-                (nodeToggle)="onNodeToggle($event)"
-              />
-            </div>
+            <h3>Multiple Children</h3>
+            <app-tree-node [node]="multipleChildrenNode()" />
           </div>
         </div>
-      </section>
+      </div>
 
-      <!-- Section: API -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">API Reference</h2>
+      <!-- ========================================= -->
+      <!-- AS BUTTON -->
+      <!-- ========================================= -->
 
-        <div class="showcase__info-grid">
-          <div>
-            <strong>Inputs - Data:</strong>
-            <ul style="margin: 8px 0; padding-left: 20px;">
-              <li><code>node: TreeNode</code> - Dane węzła (wymagane)</li>
-              <li><code>size: Size</code> - Rozmiar ('small' | 'medium' | 'large')</li>
-            </ul>
-
-            <strong>Inputs - Visual:</strong>
-            <ul style="margin: 8px 0; padding-left: 20px;">
-              <li><code>showSelectionIndicator: boolean</code> - Wskaźnik zaznaczenia</li>
-              <li><code>showChevron: boolean</code> - Czy pokazywać chevron</li>
-              <li><code>chevronPosition: ChevronPosition</code> - Pozycja chevrona</li>
-              <li><code>chevronIconCollapsed: string</code> - Ikona collapsed</li>
-              <li><code>chevronIconExpanded: string</code> - Ikona expanded</li>
-            </ul>
-
-            <strong>Inputs - Behavior:</strong>
-            <ul style="margin: 8px 0; padding-left: 20px;">
-              <li><code>asButton: boolean</code> - Renderuj jako button</li>
-              <li><code>expandOnClick: boolean</code> - Rozwijaj przy kliknięciu</li>
-              <li><code>selectOnClick: boolean</code> - Zaznaczaj przy kliknięciu</li>
-            </ul>
-
-            <strong>Inputs - Quick Actions:</strong>
-            <ul style="margin: 8px 0; padding-left: 20px;">
-              <li><code>showQuickActions: boolean</code> - Pokaż quick actions</li>
-              <li><code>quickActionsTemplate: TemplateRef</code> - Template akcji</li>
-            </ul>
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">As Button</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>As Button (Normal)</h3>
+            <app-tree-node [node]="buttonNode()" [asButton]="true" />
           </div>
-          <div>
-            <strong>Outputs:</strong>
-            <ul style="margin: 8px 0; padding-left: 20px;">
-              <li><code>(nodeClick)</code> - Kliknięcie węzła</li>
-              <li><code>(nodeToggle)</code> - Rozwinięcie/zwinięcie</li>
-              <li><code>(nodeSelect)</code> - Wybór węzła</li>
-              <li><code>(keyNavigation)</code> - Nawigacja klawiaturą</li>
-            </ul>
-
-            <strong>Features:</strong>
-            <ul style="margin: 8px 0; padding-left: 20px;">
-              <li>Pełna obsługa klawiatury (Arrow keys, Home, End, *)</li>
-              <li>Stany: focus, hover, selected, disabled</li>
-              <li>Rekursywne renderowanie dzieci</li>
-              <li>Accessibility (ARIA attributes, tabindex, role)</li>
-              <li>Konfigurowalne ikony i zachowanie</li>
-            </ul>
+          <div class="showcase__item">
+            <h3>As Button (Selected)</h3>
+            <app-tree-node [node]="selectedButtonNode()" [asButton]="true" />
+          </div>
+          <div class="showcase__item">
+            <h3>As Button (Disabled)</h3>
+            <app-tree-node [node]="disabledButtonNode()" [asButton]="true" />
           </div>
         </div>
-      </section>
+      </div>
 
-      <!-- Section: Status Log -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Event Log</h2>
-        <div class="showcase__status">
-          <p><strong>Last Event:</strong> {{ lastEvent() }}</p>
-          <p><strong>Clicked Node:</strong> {{ lastClickedNode() }}</p>
-          <p><strong>Toggled Node:</strong> {{ lastToggledNode() }}</p>
+      <!-- ========================================= -->
+      <!-- COMBINED EXAMPLES -->
+      <!-- ========================================= -->
+
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Combined Examples</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>Small + Subtle Circular + Chevron After</h3>
+            <app-tree-node
+              [node]="combinedNode()"
+              size="small"
+              variant="subtle-circular"
+              chevronPosition="after"
+            />
+          </div>
+          <div class="showcase__item">
+            <h3>Large + Filled Circular + Selected</h3>
+            <app-tree-node
+              [node]="selectedCombinedNode()"
+              size="large"
+              variant="filled-circular"
+              [showSelectionIndicator]="true"
+              indicatorPosition="horizontal"
+            />
+          </div>
+          <div class="showcase__item">
+            <h3>Medium + Subtle + Selected</h3>
+            <app-tree-node
+              [node]="selectedTextOnlyNode()"
+              size="medium"
+              variant="subtle"
+              [showSelectionIndicator]="true"
+              indicatorPosition="horizontal"
+            />
+          </div>
         </div>
-      </section>
+      </div>
+
+      <!-- ========================================= -->
+      <!-- EVENT LOGGING -->
+      <!-- ========================================= -->
+
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Event Logging</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <p><strong>Last Click Event:</strong> {{ lastClickEvent() }}</p>
+            <p><strong>Last Toggle Event:</strong> {{ lastToggleEvent() }}</p>
+            <p><strong>Last Select Event:</strong> {{ lastSelectEvent() }}</p>
+            <p><strong>Click Count:</strong> {{ clickCount() }}</p>
+            <p><strong>Toggle Count:</strong> {{ toggleCount() }}</p>
+            <p><strong>Select Count:</strong> {{ selectCount() }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions Template -->
+      <ng-template #quickActionsTemplate let-node>
+        <app-button
+          variant="subtle"
+          size="small"
+          [iconOnly]="true"
+          icon="edit"
+          (click)="onQuickActionClick(node, 'edit'); $event.stopPropagation()"
+        ></app-button>
+        <app-button
+          variant="subtle"
+          size="small"
+          [iconOnly]="true"
+          icon="delete"
+          (click)="onQuickActionClick(node, 'delete'); $event.stopPropagation()"
+        ></app-button>
+      </ng-template>
     </div>
-
-    <!-- Quick Actions Template -->
-    <ng-template #quickActions let-node>
-      <app-button
-        [variant]="'subtle'"
-        [size]="'small'"
-        [icon]="'edit'"
-        (click)="onQuickAction('edit', node)"
-        aria-label="Edit"
-      />
-      <app-button
-        [variant]="'subtle'"
-        [size]="'small'"
-        [icon]="'delete'"
-        (click)="onQuickAction('delete', node)"
-        aria-label="Delete"
-      />
-    </ng-template>
   `,
-  styles: [
-    `
-      .showcase {
-        padding: 24px;
-        max-width: 1400px;
-        margin: 0 auto;
-      }
-
-      .showcase__title {
-        font-size: 32px;
-        font-weight: 600;
-        margin-bottom: 12px;
-        color: #201f1e;
-      }
-
-      .showcase__description {
-        font-size: 16px;
-        color: #605e5c;
-        margin-bottom: 32px;
-        line-height: 1.6;
-      }
-
-      .showcase__section {
-        margin-bottom: 48px;
-      }
-
-      .showcase__section__title {
-        font-size: 24px;
-        font-weight: 600;
-        margin-bottom: 24px;
-        color: #323130;
-        border-bottom: 2px solid #edebe9;
-        padding-bottom: 8px;
-      }
-
-      .showcase__example {
-        margin-bottom: 32px;
-      }
-
-      .showcase__example h3 {
-        font-size: 16px;
-        font-weight: 600;
-        margin-bottom: 12px;
-        color: #323130;
-      }
-
-      .showcase__info {
-        margin-top: 12px;
-        padding: 12px;
-        background: #f3f2f1;
-        border-radius: 4px;
-        font-size: 14px;
-        color: #605e5c;
-        line-height: 1.5;
-      }
-
-      .showcase__info code {
-        background: #e1dfdd;
-        padding: 2px 6px;
-        border-radius: 3px;
-        font-family: 'Consolas', monospace;
-        font-size: 13px;
-      }
-
-      .showcase__grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 24px;
-        margin-bottom: 24px;
-      }
-
-      .showcase__item label {
-        display: block;
-        font-size: 14px;
-        font-weight: 600;
-        margin-bottom: 8px;
-        color: #323130;
-      }
-
-      .showcase__info-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-        gap: 24px;
-        background: #f3f2f1;
-        padding: 20px;
-        border-radius: 8px;
-      }
-
-      .showcase__info-grid strong {
-        display: block;
-        margin-top: 16px;
-        margin-bottom: 8px;
-        color: #323130;
-      }
-
-      .showcase__info-grid strong:first-child {
-        margin-top: 0;
-      }
-
-      .showcase__info-grid ul {
-        margin: 0;
-        padding-left: 20px;
-      }
-
-      .showcase__info-grid li {
-        margin-bottom: 4px;
-        color: #605e5c;
-        font-size: 14px;
-      }
-
-      .showcase__info-grid code {
-        background: #e1dfdd;
-        padding: 2px 6px;
-        border-radius: 3px;
-        font-family: 'Consolas', monospace;
-        font-size: 13px;
-      }
-
-      .showcase__status {
-        background: #f3f2f1;
-        padding: 16px;
-        border-radius: 8px;
-        font-family: 'Consolas', monospace;
-        font-size: 14px;
-      }
-
-      .showcase__status p {
-        margin: 8px 0;
-      }
-
-      .showcase__status strong {
-        color: #323130;
-      }
-    `,
-  ],
 })
-export class NodeShowcaseComponent {
-  // Quick actions template
-  quickActionsTemplate = viewChild<TemplateRef<any>>('quickActions');
+export class TreeNodeShowcaseComponent {
+  quickActionsTemplate = viewChild<TemplateRef<any>>('quickActionsTemplate');
 
-  // Event tracking
-  lastEvent = signal<string>('None');
-  lastClickedNode = signal<string>('None');
-  lastToggledNode = signal<string>('None');
+  lastClickEvent = signal<string>('None');
+  lastToggleEvent = signal<string>('None');
+  lastSelectEvent = signal<string>('None');
+  clickCount = signal<number>(0);
+  toggleCount = signal<number>(0);
+  selectCount = signal<number>(0);
 
-  // Example nodes
-  simpleNode = signal<TreeNode>({
-    id: 'simple',
-    label: 'Simple Node',
-    icon: 'home',
-  });
+  // Helper function to create tree nodes with proper structure
+  private createTreeNode(
+    id: string,
+    label: string,
+    icon?: string,
+    children?: TreeNode[],
+    expanded?: boolean,
+    selected?: boolean,
+    disabled?: boolean,
+    level: number = 0,
+  ): TreeNode {
+    const node: TreeNode = {
+      id,
+      label,
+      icon,
+      hasChildren: children !== undefined && children.length > 0,
+      children,
+      expanded: expanded ?? false,
+      selected: selected ?? false,
+      disabled: disabled ?? false,
+      level,
+    };
 
-  branchNode = signal<TreeNode>({
-    id: 'branch',
-    label: 'Branch Node',
-    icon: 'folder',
-    hasChildren: true,
-    expanded: false,
-  });
+    // Set parent and level for children
+    if (children) {
+      children.forEach(child => {
+        child.parent = node;
+        child.level = level + 1;
+      });
+    }
 
-  branchNodeWithChildren = signal<TreeNode>({
-    id: 'branch-with-children',
-    label: 'Parent Node',
-    icon: 'folder',
-    hasChildren: true,
-    expanded: false,
-    children: [
-      { id: 'child1', label: 'Child 1', icon: 'document' },
-      { id: 'child2', label: 'Child 2', icon: 'document' },
-      { id: 'child3', label: 'Child 3', icon: 'document' },
-    ],
-  });
+    return node;
+  }
 
-  selectedNode = signal<TreeNode>({
-    id: 'selected',
-    label: 'Selected Item',
-    icon: 'home',
-    selected: true,
-  });
+  // Basic nodes
+  leafNode = signal<TreeNode>(
+    this.createTreeNode('leaf', 'Leaf Node', 'file', undefined, false, false, false, 0),
+  );
 
-  unselectedNode = signal<TreeNode>({
-    id: 'unselected',
-    label: 'Unselected Item',
-    icon: 'home',
-    selected: false,
-  });
+  parentNodeCollapsed = signal<TreeNode>(
+    this.createTreeNode(
+      'parent-collapsed',
+      'Parent Node',
+      'folder',
+      [
+        this.createTreeNode('child1', 'Child 1', 'file', undefined, false, false, false, 1),
+        this.createTreeNode('child2', 'Child 2', 'file', undefined, false, false, false, 1),
+      ],
+      false,
+      false,
+      false,
+      0,
+    ),
+  );
 
-  navExample = signal<{ nodes: TreeNode[] }>({
-    nodes: [
-      { id: 'nav1', label: 'Home', icon: 'home', selected: true },
-      {
-        id: 'nav2',
-        label: 'Documents',
-        icon: 'folder',
-        hasChildren: true,
-        expanded: false,
-      },
-      { id: 'nav3', label: 'Settings', icon: 'settings' },
-    ],
-  });
+  parentNodeExpanded = signal<TreeNode>(
+    this.createTreeNode(
+      'parent-expanded',
+      'Parent Node',
+      'folder',
+      [
+        this.createTreeNode('child1', 'Child 1', 'file', undefined, false, false, false, 1),
+        this.createTreeNode('child2', 'Child 2', 'file', undefined, false, false, false, 1),
+      ],
+      true,
+      false,
+      false,
+      0,
+    ),
+  );
 
-  treeExample = signal<TreeNode>({
-    id: 'root',
-    label: 'Project',
-    icon: 'folder',
-    hasChildren: true,
-    expanded: true,
-    children: [
-      {
-        id: 'src',
-        label: 'src',
-        icon: 'folder',
-        hasChildren: true,
-        expanded: false,
-        children: [
-          { id: 'app', label: 'app.ts', icon: 'document' },
-          { id: 'main', label: 'main.ts', icon: 'document' },
-        ],
-      },
-      { id: 'readme', label: 'README.md', icon: 'document' },
-      { id: 'package', label: 'package.json', icon: 'document' },
-    ],
-  });
+  // Size nodes
+  sizeNode = signal<TreeNode>(
+    this.createTreeNode(
+      'size',
+      'Size Variant',
+      'folder',
+      [
+        this.createTreeNode('size-child1', 'Child 1', 'file', undefined, false, false, false, 1),
+        this.createTreeNode('size-child2', 'Child 2', 'file', undefined, false, false, false, 1),
+      ],
+      true,
+      false,
+      false,
+      0,
+    ),
+  );
+
+  // Layout nodes
+  layoutNode = signal<TreeNode>(
+    this.createTreeNode(
+      'layout',
+      'Layout Variant',
+      'folder',
+      [this.createTreeNode('layout-child1', 'Child 1', 'file', undefined, false, false, false, 1)],
+      true,
+      false,
+      false,
+      0,
+    ),
+  );
+
+  // Appearance nodes
+  appearanceNode = signal<TreeNode>(
+    this.createTreeNode(
+      'appearance',
+      'Appearance Variant',
+      'folder',
+      [
+        this.createTreeNode(
+          'appearance-child1',
+          'Child 1',
+          'file',
+          undefined,
+          false,
+          false,
+          false,
+          1,
+        ),
+      ],
+      true,
+      false,
+      false,
+      0,
+    ),
+  );
+
+  // Selection nodes
+  selectedNode = signal<TreeNode>(
+    this.createTreeNode('selected', 'Selected Node', 'folder', undefined, false, true, false, 0),
+  );
+
+  unselectedNode = signal<TreeNode>(
+    this.createTreeNode(
+      'unselected',
+      'Unselected Node',
+      'folder',
+      undefined,
+      false,
+      false,
+      false,
+      0,
+    ),
+  );
+
+  // Chevron nodes
+  chevronNode = signal<TreeNode>(
+    this.createTreeNode(
+      'chevron',
+      'Chevron Position',
+      'folder',
+      [
+        this.createTreeNode('chevron-child1', 'Child 1', 'file', undefined, false, false, false, 1),
+        this.createTreeNode('chevron-child2', 'Child 2', 'file', undefined, false, false, false, 1),
+      ],
+      true,
+      false,
+      false,
+      0,
+    ),
+  );
+
+  // State nodes
+  normalNode = signal<TreeNode>(
+    this.createTreeNode('normal', 'Normal Node', 'folder', undefined, false, false, false, 0),
+  );
+
+  selectedTreeNode = signal<TreeNode>(
+    this.createTreeNode(
+      'selected-tree',
+      'Selected Node',
+      'folder',
+      undefined,
+      false,
+      true,
+      false,
+      0,
+    ),
+  );
+
+  disabledNode = signal<TreeNode>(
+    this.createTreeNode('disabled', 'Disabled Node', 'folder', undefined, false, false, true, 0),
+  );
+
+  selectedDisabledNode = signal<TreeNode>(
+    this.createTreeNode(
+      'selected-disabled',
+      'Selected & Disabled',
+      'folder',
+      undefined,
+      false,
+      true,
+      true,
+      0,
+    ),
+  );
+
+  // Expand on click nodes
+  expandOnClickNode = signal<TreeNode>(
+    this.createTreeNode(
+      'expand-on-click',
+      'Expand On Click (false)',
+      'folder',
+      [this.createTreeNode('expand-child1', 'Child 1', 'file', undefined, false, false, false, 1)],
+      false,
+      false,
+      false,
+      0,
+    ),
+  );
+
+  expandOnClickNodeTrue = signal<TreeNode>(
+    this.createTreeNode(
+      'expand-on-click-true',
+      'Expand On Click (true)',
+      'folder',
+      [
+        this.createTreeNode(
+          'expand-true-child1',
+          'Child 1',
+          'file',
+          undefined,
+          false,
+          false,
+          false,
+          1,
+        ),
+      ],
+      false,
+      false,
+      false,
+      0,
+    ),
+  );
+
+  // Selectable nodes
+  selectableNode = signal<TreeNode>(
+    this.createTreeNode(
+      'selectable',
+      'Click to Select',
+      'folder',
+      undefined,
+      false,
+      false,
+      false,
+      0,
+    ),
+  );
+
+  nonSelectableNode = signal<TreeNode>(
+    this.createTreeNode(
+      'non-selectable',
+      'Click Only',
+      'folder',
+      undefined,
+      false,
+      false,
+      false,
+      0,
+    ),
+  );
+
+  // Quick actions node
+  quickActionsNode = signal<TreeNode>(
+    this.createTreeNode(
+      'quick-actions',
+      'Node with Quick Actions',
+      'folder',
+      [this.createTreeNode('quick-child1', 'Child 1', 'file', undefined, false, false, false, 1)],
+      true,
+      false,
+      false,
+      0,
+    ),
+  );
+
+  // Nested structures
+  twoLevelNode = signal<TreeNode>(
+    this.createTreeNode(
+      'two-level',
+      'Level 1',
+      'folder',
+      [
+        this.createTreeNode(
+          'two-level-1',
+          'Level 2 - 1',
+          'file',
+          undefined,
+          false,
+          false,
+          false,
+          1,
+        ),
+        this.createTreeNode(
+          'two-level-2',
+          'Level 2 - 2',
+          'file',
+          undefined,
+          false,
+          false,
+          false,
+          1,
+        ),
+      ],
+      true,
+      false,
+      false,
+      0,
+    ),
+  );
+
+  threeLevelNode = signal<TreeNode>(
+    this.createTreeNode(
+      'three-level',
+      'Level 1',
+      'folder',
+      [
+        this.createTreeNode(
+          'three-level-1',
+          'Level 2 - 1',
+          'folder',
+          [
+            this.createTreeNode(
+              'three-level-1-1',
+              'Level 3 - 1',
+              'file',
+              undefined,
+              false,
+              false,
+              false,
+              2,
+            ),
+            this.createTreeNode(
+              'three-level-1-2',
+              'Level 3 - 2',
+              'file',
+              undefined,
+              false,
+              false,
+              false,
+              2,
+            ),
+          ],
+          true,
+          false,
+          false,
+          1,
+        ),
+        this.createTreeNode(
+          'three-level-2',
+          'Level 2 - 2',
+          'file',
+          undefined,
+          false,
+          false,
+          false,
+          1,
+        ),
+      ],
+      true,
+      false,
+      false,
+      0,
+    ),
+  );
+
+  multipleChildrenNode = signal<TreeNode>(
+    this.createTreeNode(
+      'multiple-children',
+      'Parent with Many Children',
+      'folder',
+      [
+        this.createTreeNode('child1', 'Child 1', 'file', undefined, false, false, false, 1),
+        this.createTreeNode('child2', 'Child 2', 'file', undefined, false, false, false, 1),
+        this.createTreeNode('child3', 'Child 3', 'file', undefined, false, false, false, 1),
+        this.createTreeNode('child4', 'Child 4', 'file', undefined, false, false, false, 1),
+        this.createTreeNode('child5', 'Child 5', 'file', undefined, false, false, false, 1),
+      ],
+      true,
+      false,
+      false,
+      0,
+    ),
+  );
+
+  // Button nodes
+  buttonNode = signal<TreeNode>(
+    this.createTreeNode('button', 'Button Node', 'folder', undefined, false, false, false, 0),
+  );
+
+  selectedButtonNode = signal<TreeNode>(
+    this.createTreeNode(
+      'selected-button',
+      'Selected Button',
+      'folder',
+      undefined,
+      false,
+      true,
+      false,
+      0,
+    ),
+  );
+
+  disabledButtonNode = signal<TreeNode>(
+    this.createTreeNode(
+      'disabled-button',
+      'Disabled Button',
+      'folder',
+      undefined,
+      false,
+      false,
+      true,
+      0,
+    ),
+  );
+
+  // Combined examples
+  combinedNode = signal<TreeNode>(
+    this.createTreeNode(
+      'combined',
+      'Combined',
+      'folder',
+      [
+        this.createTreeNode(
+          'combined-child1',
+          'Child 1',
+          'file',
+          undefined,
+          false,
+          false,
+          false,
+          1,
+        ),
+      ],
+      true,
+      false,
+      false,
+      0,
+    ),
+  );
+
+  selectedCombinedNode = signal<TreeNode>(
+    this.createTreeNode(
+      'selected-combined',
+      'Selected Combined',
+      'folder',
+      undefined,
+      false,
+      true,
+      false,
+      0,
+    ),
+  );
+
+  selectedTextOnlyNode = signal<TreeNode>(
+    this.createTreeNode(
+      'selected-text-only',
+      'Selected Text Only',
+      'folder',
+      [this.createTreeNode('text-child1', 'Child 1', 'file', undefined, false, false, false, 1)],
+      true,
+      true,
+      false,
+      0,
+    ),
+  );
 
   // Event handlers
   onNodeClick(node: TreeNode): void {
-    this.lastEvent.set('Click');
-    this.lastClickedNode.set(`${node.label} (${node.id})`);
-    console.log('Node clicked:', node);
+    this.lastClickEvent.set(`Clicked: ${node.label} (${node.id})`);
+    this.clickCount.update(count => count + 1);
+
+    // Update selectable node state
+    if (node.id === 'selectable') {
+      this.selectableNode.update(n => ({ ...n, selected: !n.selected }));
+    }
   }
 
   onNodeToggle(node: TreeNode): void {
-    this.lastEvent.set('Toggle');
-    this.lastToggledNode.set(`${node.label} (expanded: ${node.expanded})`);
-    console.log('Node toggled:', node);
+    this.lastToggleEvent.set(`Toggled: ${node.label} (${node.id}) - Expanded: ${node.expanded}`);
+    this.toggleCount.update(count => count + 1);
+
+    // Update expand on click nodes
+    if (node.id === 'expand-on-click') {
+      this.expandOnClickNode.update(n => ({ ...n, expanded: node.expanded }));
+    } else if (node.id === 'expand-on-click-true') {
+      this.expandOnClickNodeTrue.update(n => ({ ...n, expanded: node.expanded }));
+    }
   }
 
   onNodeSelect(node: TreeNode): void {
-    this.lastEvent.set('Select');
-    this.lastClickedNode.set(`${node.label} (${node.id})`);
-    console.log('Node selected:', node);
+    this.lastSelectEvent.set(`Selected: ${node.label} (${node.id})`);
+    this.selectCount.update(count => count + 1);
   }
 
-  onQuickAction(action: string, node: TreeNode): void {
-    this.lastEvent.set(`Quick Action: ${action}`);
-    this.lastClickedNode.set(`${action} on ${node.label}`);
-    console.log(`Quick action: ${action}`, node);
+  onQuickActionClick(node: TreeNode, action: string): void {
+    this.lastClickEvent.set(`Quick Action: ${action} on ${node.label}`);
+    this.clickCount.update(count => count + 1);
   }
 }

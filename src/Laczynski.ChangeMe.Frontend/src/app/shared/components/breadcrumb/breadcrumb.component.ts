@@ -1,5 +1,5 @@
-import { Component, input, output } from '@angular/core';
-import { Size } from '../utils';
+import { Component, input, output, TemplateRef } from '@angular/core';
+import { Size, Appearance, Orientation } from '../utils';
 import { Node } from '../node/node.component';
 import { NodeComponent } from '../node/node.component';
 import { IconComponent } from '../icon/icon.component';
@@ -18,6 +18,19 @@ export class BreadcrumbComponent<T extends BreadcrumbItem> {
   size = input<Size>('large');
   showIcons = input<boolean>(true);
   ariaLabel = input<string>('Breadcrumb');
+
+  // Visual Configuration
+  showSelectionIndicator = input<boolean>(false);
+  indicatorPosition = input<Orientation>('horizontal');
+  variant = input<Appearance | undefined>(undefined);
+
+  // Behavior Configuration
+  asButton = input<boolean>(true);
+  selectOnClick = input<boolean>(false);
+
+  // Quick Actions
+  showQuickActions = input<boolean>(false);
+  quickActionsTemplate = input<TemplateRef<any> | null>(null);
 
   itemClick = output<T>();
 

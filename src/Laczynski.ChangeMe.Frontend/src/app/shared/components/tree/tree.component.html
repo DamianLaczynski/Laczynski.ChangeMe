@@ -3,19 +3,28 @@
     <app-tree-node
       [node]="node"
       [size]="size()"
-      [asButton]="false"
-      [showSelectionIndicator]="false"
-      [showChevron]="true"
-      [chevronPosition]="'before'"
-      [chevronIconCollapsed]="'chevron_right'"
-      [chevronIconExpanded]="'chevron_down'"
-      [expandOnClick]="false"
-      [selectOnClick]="true"
+      [showSelectionIndicator]="showSelectionIndicator()"
+      [indicatorPosition]="indicatorPosition()"
+      [variant]="variant()"
+      [chevronPosition]="chevronPosition()"
+      [chevronIconCollapsed]="chevronIconCollapsed()"
+      [chevronIconExpanded]="chevronIconExpanded()"
+      [asButton]="asButton()"
+      [expandOnClick]="expandOnClick()"
+      [selectOnClick]="selectOnClick()"
       [showQuickActions]="showQuickActions()"
       [quickActionsTemplate]="quickActionsTemplate() || null"
       (nodeClick)="onNodeClick($event)"
       (nodeToggle)="onNodeToggle($event)"
       (nodeSelect)="onNodeSelect($event)"
-    />
+    >
+      @if (contentTemplate()) {
+        <ng-template #content let-node>
+          <ng-container
+            *ngTemplateOutlet="contentTemplate()!; context: { $implicit: node }"
+          ></ng-container>
+        </ng-template>
+      }
+    </app-tree-node>
   }
 </div>

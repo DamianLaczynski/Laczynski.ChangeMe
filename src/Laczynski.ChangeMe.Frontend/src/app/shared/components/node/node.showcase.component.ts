@@ -1,693 +1,749 @@
-import { Component, signal, TemplateRef, viewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, signal, viewChild, TemplateRef } from '@angular/core';
 import { NodeComponent, Node } from './node.component';
+import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../button/button.component';
-import { IconComponent } from '../icon/icon.component';
 
 @Component({
   selector: 'app-node-showcase',
-  imports: [CommonModule, NodeComponent, ButtonComponent, IconComponent],
+  imports: [NodeComponent, CommonModule, ButtonComponent],
   template: `
-    <div class="showcase">
-      <h1 class="showcase__title">Node Component</h1>
+    <div class="showcase showcase--responsive">
+      <h1 class="showcase__title">Node Component Showcase</h1>
       <p class="showcase__description">
-        Uniwersalny, w pełni konfigurowalny komponent do wyświetlania elementów listy, nawigacji i
-        wielu innych przypadków użycia. Wspiera własne template contentu, quick actions i wiele
-        wariantów wizualnych.
+        Comprehensive showcase of the Node component built with Fluent 2 Design System. Nodes
+        support multiple sizes, layouts, appearances, selection indicators, and can be used as
+        buttons or divs.
       </p>
 
-      <!-- Section: Podstawowa konfiguracja -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Podstawowa konfiguracja</h2>
+      <!-- ========================================= -->
+      <!-- BASIC NODES -->
+      <!-- ========================================= -->
 
-        <div class="showcase__example">
-          <h3>Prosty element (div)</h3>
-          <div style="max-width: 400px;">
-            <app-node
-              [node]="simpleNode()"
-              [size]="'medium'"
-              (nodeClick)="onNodeClick($event)"
-            />
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Basic Nodes</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>Basic Node with Icon</h3>
+            <app-node [node]="basicNode()" />
           </div>
-          <div class="showcase__info">
-            Podstawowy node renderowany jako <code>div</code> z ikoną i etykietą.
+          <div class="showcase__item">
+            <h3>Node with Text Only</h3>
+            <app-node [node]="textOnlyNode()" />
           </div>
-        </div>
-
-        <div class="showcase__example">
-          <h3>Element jako przycisk</h3>
-          <div style="max-width: 400px;">
-            <app-node
-              [node]="simpleNode()"
-              [size]="'medium'"
-              [asButton]="true"
-              (nodeClick)="onNodeClick($event)"
-            />
-          </div>
-          <div class="showcase__info">
-            Node renderowany jako <code>button</code> dla lepszej dostępności.
+          <div class="showcase__item">
+            <h3>Node with Icon Only</h3>
+            <app-node [node]="iconOnlyNode()" />
           </div>
         </div>
-      </section>
+      </div>
 
-      <!-- Section: Selection Indicator -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Selection Indicator</h2>
+      <!-- ========================================= -->
+      <!-- SIZE VARIANTS -->
+      <!-- ========================================= -->
 
-        <div class="showcase__example">
-          <h3>Wskaźnik poziomy (horizontal)</h3>
-          <div style="max-width: 300px; background: #F0F0F0; padding: 8px; border-radius: 8px;">
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Size Variants</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>Small</h3>
+            <app-node [node]="sizeNode()" size="small" />
+          </div>
+          <div class="showcase__item">
+            <h3>Medium (Default)</h3>
+            <app-node [node]="sizeNode()" size="medium" />
+          </div>
+          <div class="showcase__item">
+            <h3>Large</h3>
+            <app-node [node]="sizeNode()" size="large" />
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================= -->
+      <!-- APPEARANCE VARIANTS -->
+      <!-- ========================================= -->
+
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Appearance Variants</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>Transparent (Default)</h3>
+            <app-node [node]="appearanceNode()" variant="transparent" />
+          </div>
+          <div class="showcase__item">
+            <h3>Subtle</h3>
+            <app-node [node]="appearanceNode()" variant="subtle" />
+          </div>
+          <div class="showcase__item">
+            <h3>Subtle Circular</h3>
+            <app-node [node]="appearanceNode()" variant="subtle-circular" />
+          </div>
+          <div class="showcase__item">
+            <h3>Filled Circular</h3>
+            <app-node [node]="appearanceNode()" variant="filled-circular" />
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================= -->
+      <!-- SELECTION INDICATORS -->
+      <!-- ========================================= -->
+
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Selection Indicators</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>Horizontal Indicator (Selected)</h3>
             <app-node
               [node]="selectedNode()"
               [showSelectionIndicator]="true"
-              [indicatorPosition]="'horizontal'"
-              [asButton]="true"
-              (nodeClick)="onNodeClick($event)"
+              indicatorPosition="horizontal"
             />
+          </div>
+          <div class="showcase__item">
+            <h3>Horizontal Indicator (Not Selected)</h3>
             <app-node
               [node]="unselectedNode()"
               [showSelectionIndicator]="true"
-              [indicatorPosition]="'horizontal'"
-              [asButton]="true"
-              (nodeClick)="onNodeClick($event)"
+              indicatorPosition="horizontal"
             />
           </div>
-          <div class="showcase__info">
-            Poziomy wskaźnik na dole pokazuje zaznaczony element.
-          </div>
-        </div>
-
-        <div class="showcase__example">
-          <h3>Wskaźnik pionowy (vertical)</h3>
-          <div style="max-width: 300px; background: #F0F0F0; padding: 8px; border-radius: 8px;">
+          <div class="showcase__item">
+            <h3>Vertical Indicator (Selected)</h3>
             <app-node
               [node]="selectedNode()"
               [showSelectionIndicator]="true"
-              [indicatorPosition]="'vertical'"
-              [asButton]="true"
-              (nodeClick)="onNodeClick($event)"
+              indicatorPosition="vertical"
             />
+          </div>
+          <div class="showcase__item">
+            <h3>Vertical Indicator (Not Selected)</h3>
             <app-node
               [node]="unselectedNode()"
               [showSelectionIndicator]="true"
-              [indicatorPosition]="'vertical'"
-              [asButton]="true"
-              (nodeClick)="onNodeClick($event)"
+              indicatorPosition="vertical"
             />
           </div>
-          <div class="showcase__info">
-            Pionowy wskaźnik po lewej stronie pokazuje zaznaczony element.
-          </div>
         </div>
-      </section>
+      </div>
 
-      <!-- Section: Layout Variants -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Warianty Layout</h2>
-
+      <!-- Selection Indicators -->
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Selection Indicators</h2>
         <div class="showcase__grid">
           <div class="showcase__item">
-            <label>Icon + Text (default)</label>
-            <div style="max-width: 300px; background: #F0F0F0; padding: 8px; border-radius: 8px;">
-              <app-node
-                [node]="{ id: '1', label: 'Home', icon: 'home' }"
-                [asButton]="true"
-                (nodeClick)="onNodeClick($event)"
-              />
-            </div>
+            <h3>Horizontal Indicator</h3>
+            <app-node
+              [node]="selectedNode()"
+              [showSelectionIndicator]="true"
+              indicatorPosition="horizontal"
+            />
           </div>
-
           <div class="showcase__item">
-            <label>Icon Only</label>
-            <div style="max-width: 300px; background: #F0F0F0; padding: 8px; border-radius: 8px;">
-              <app-node
-                [node]="{ id: '2', label: 'Home', icon: 'home' }"
-                [iconOnly]="true"
-                [asButton]="true"
-                (nodeClick)="onNodeClick($event)"
-              />
-            </div>
-          </div>
-
-          <div class="showcase__item">
-            <label>Text Only</label>
-            <div style="max-width: 300px; background: #F0F0F0; padding: 8px; border-radius: 8px;">
-              <app-node
-                [node]="{ id: '3', label: 'Home', icon: 'home' }"
-                [layout]="'text-only'"
-                [asButton]="true"
-                (nodeClick)="onNodeClick($event)"
-              />
-            </div>
+            <h3>Vertical Indicator</h3>
+            <app-node
+              [node]="selectedNode()"
+              [showSelectionIndicator]="true"
+              indicatorPosition="vertical"
+            />
           </div>
         </div>
-      </section>
+      </div>
 
-      <!-- Section: Appearance Variants -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Warianty Appearance</h2>
+      <!-- ========================================= -->
+      <!-- STATES -->
+      <!-- ========================================= -->
 
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">States</h2>
         <div class="showcase__grid">
           <div class="showcase__item">
-            <label>Default (bez variant)</label>
-            <div style="max-width: 300px; background: #F0F0F0; padding: 8px; border-radius: 8px;">
-              <app-node
-                [node]="{ id: 'default', label: 'Default Node', icon: 'home' }"
-                [asButton]="true"
-                (nodeClick)="onNodeClick($event)"
-              />
-            </div>
+            <h3>Normal State</h3>
+            <app-node [node]="normalNode()" />
           </div>
-
           <div class="showcase__item">
-            <label>Transparent</label>
-            <div style="max-width: 300px; background: #F0F0F0; padding: 8px; border-radius: 8px;">
-              <app-node
-                [node]="{ id: 'transparent', label: 'Transparent', icon: 'home' }"
-                [variant]="'transparent'"
-                [asButton]="true"
-                (nodeClick)="onNodeClick($event)"
-              />
-            </div>
+            <h3>Selected State</h3>
+            <app-node [node]="selectedNode()" />
           </div>
-
           <div class="showcase__item">
-            <label>Subtle</label>
-            <div style="max-width: 300px; background: #F0F0F0; padding: 8px; border-radius: 8px;">
-              <app-node
-                [node]="{ id: 'subtle', label: 'Subtle', icon: 'home' }"
-                [variant]="'subtle'"
-                [asButton]="true"
-                (nodeClick)="onNodeClick($event)"
-              />
-            </div>
+            <h3>Disabled State</h3>
+            <app-node [node]="disabledNode()" />
           </div>
-
           <div class="showcase__item">
-            <label>Subtle Circular</label>
-            <div style="max-width: 300px; background: #F0F0F0; padding: 8px; border-radius: 8px;">
-              <app-node
-                [node]="{ id: 'subtle-circular', label: 'Subtle Circular', icon: 'home' }"
-                [variant]="'subtle-circular'"
-                [asButton]="true"
-                (nodeClick)="onNodeClick($event)"
-              />
-            </div>
-          </div>
-
-          <div class="showcase__item">
-            <label>Filled Circular</label>
-            <div style="max-width: 300px; background: #F0F0F0; padding: 8px; border-radius: 8px;">
-              <app-node
-                [node]="{ id: 'filled-circular', label: 'Filled Circular', icon: 'home' }"
-                [variant]="'filled-circular'"
-                [asButton]="true"
-                (nodeClick)="onNodeClick($event)"
-              />
-            </div>
+            <h3>Selected + Disabled</h3>
+            <app-node [node]="selectedDisabledNode()" />
           </div>
         </div>
+      </div>
 
-        <div class="showcase__example">
-          <h3>Zaznaczone warianty</h3>
-          <div style="max-width: 400px; background: #F0F0F0; padding: 8px; border-radius: 8px;">
-            <app-node
-              [node]="{ id: 'selected-subtle', label: 'Selected Subtle', icon: 'home', selected: true }"
-              [variant]="'subtle'"
-              [asButton]="true"
-              (nodeClick)="onNodeClick($event)"
-            />
-            <app-node
-              [node]="{ id: 'selected-filled', label: 'Selected Filled Circular', icon: 'home', selected: true }"
-              [variant]="'filled-circular'"
-              [asButton]="true"
-              (nodeClick)="onNodeClick($event)"
-            />
-          </div>
-          <div class="showcase__info">
-            Warianty appearance mogą być używane razem z selected state.
-          </div>
-        </div>
-      </section>
+      <!-- ========================================= -->
+      <!-- AS BUTTON -->
+      <!-- ========================================= -->
 
-      <!-- Section: Quick Actions -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Quick Actions</h2>
-
-        <div class="showcase__example">
-          <h3>Z szybkimi akcjami</h3>
-          <div style="max-width: 400px;">
-            <app-node
-              [node]="{ id: 'with-actions', label: 'Hover Me', icon: 'document' }"
-              [showQuickActions]="true"
-              [quickActionsTemplate]="quickActionsTemplate() || null"
-              (nodeClick)="onNodeClick($event)"
-            />
-          </div>
-          <div class="showcase__info">Najedź myszką, aby zobaczyć przyciski akcji.</div>
-        </div>
-      </section>
-
-      <!-- Section: Custom Content Template -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Własny Template Contentu</h2>
-
-        <div class="showcase__example">
-          <h3>Custom content z własnym template</h3>
-          <div style="max-width: 400px;">
-            <app-node [node]="customContentNode()" (nodeClick)="onNodeClick($event)">
-              <ng-template #content let-node>
-                <div style="display: flex; align-items: center; gap: 12px; width: 100%;">
-                  <app-icon [icon]="node.icon" [size]="'medium'" />
-                  <div style="flex: 1;">
-                    <div style="font-weight: 600; color: #323130;">{{ node.label }}</div>
-                    <div style="font-size: 12px; color: #605e5c;">Custom content template</div>
-                  </div>
-                  <span style="background: #0078d4; color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px;">New</span>
-                </div>
-              </ng-template>
-            </app-node>
-          </div>
-          <div class="showcase__info">
-            Możesz całkowicie nadpisać domyślną zawartość używając <code>#content</code> template.
-            Template otrzymuje node jako context.
-          </div>
-        </div>
-
-        <div class="showcase__example">
-          <h3>Custom content z before/after templates</h3>
-          <div style="max-width: 400px;">
-            <app-node [node]="customContentNode()" (nodeClick)="onNodeClick($event)">
-              <ng-template #before>
-                <span style="background: #0078d4; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px; margin-right: 8px;">Badge</span>
-              </ng-template>
-              <ng-template #after>
-                <span style="color: #605e5c; font-size: 12px; margin-left: 8px;">→</span>
-              </ng-template>
-            </app-node>
-          </div>
-          <div class="showcase__info">
-            Możesz również użyć <code>#before</code> i <code>#after</code> templates do dodania
-            zawartości przed i po domyślnej zawartości.
-          </div>
-        </div>
-      </section>
-
-      <!-- Section: Rozmiary -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Rozmiary</h2>
-
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">As Button</h2>
         <div class="showcase__grid">
           <div class="showcase__item">
-            <label>Small</label>
-            <div style="max-width: 300px; background: #F0F0F0; padding: 8px; border-radius: 8px;">
-              <app-node
-                [node]="{ id: 'small', label: 'Small Size', icon: 'home' }"
-                [size]="'small'"
-                [asButton]="true"
-                (nodeClick)="onNodeClick($event)"
-              />
-            </div>
+            <h3>As Button (Normal)</h3>
+            <app-node [node]="buttonNode()" [asButton]="true" />
           </div>
-
           <div class="showcase__item">
-            <label>Medium (Default)</label>
-            <div style="max-width: 300px; background: #F0F0F0; padding: 8px; border-radius: 8px;">
-              <app-node
-                [node]="{ id: 'medium', label: 'Medium Size', icon: 'home' }"
-                [size]="'medium'"
-                [asButton]="true"
-                (nodeClick)="onNodeClick($event)"
-              />
-            </div>
+            <h3>As Button (Selected)</h3>
+            <app-node [node]="selectedButtonNode()" [asButton]="true" />
           </div>
-
           <div class="showcase__item">
-            <label>Large</label>
-            <div style="max-width: 300px; background: #F0F0F0; padding: 8px; border-radius: 8px;">
-              <app-node
-                [node]="{ id: 'large', label: 'Large Size', icon: 'home' }"
-                [size]="'large'"
-                [asButton]="true"
-                (nodeClick)="onNodeClick($event)"
-              />
-            </div>
+            <h3>As Button (Disabled)</h3>
+            <app-node [node]="disabledButtonNode()" [asButton]="true" />
           </div>
         </div>
-      </section>
+      </div>
 
-      <!-- Section: Behavior Configuration -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Konfiguracja zachowania</h2>
+      <!-- ========================================= -->
+      <!-- SELECT ON CLICK -->
+      <!-- ========================================= -->
 
-        <div class="showcase__example">
-          <h3>Select on Click (default)</h3>
-          <div style="max-width: 400px;">
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Select On Click Behavior</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>Select On Click (Default: true)</h3>
+            <p style="margin-bottom: 8px; font-size: 12px; color: #666;">
+              Click to select - will emit both click and select events
+            </p>
             <app-node
-              [node]="simpleNode()"
+              [node]="selectableNode()"
               [selectOnClick]="true"
               (nodeClick)="onNodeClick($event)"
               (nodeSelect)="onNodeSelect($event)"
             />
+            <p style="margin-top: 8px; font-size: 12px;">
+              Selected: {{ selectableNode().selected ? 'Yes' : 'No' }}
+            </p>
           </div>
-          <div class="showcase__info">
-            Kliknięcie w element emituje <code>nodeSelect</code> (domyślnie włączone).
-          </div>
-        </div>
-
-        <div class="showcase__example">
-          <h3>Bez automatycznego wyboru</h3>
-          <div style="max-width: 400px;">
+          <div class="showcase__item">
+            <h3>Select On Click (false)</h3>
+            <p style="margin-bottom: 8px; font-size: 12px; color: #666;">
+              Click only - will emit only click event, not select
+            </p>
             <app-node
-              [node]="simpleNode()"
+              [node]="nonSelectableNode()"
               [selectOnClick]="false"
               (nodeClick)="onNodeClick($event)"
+              (nodeSelect)="onNodeSelect($event)"
             />
-          </div>
-          <div class="showcase__info">
-            Kliknięcie emituje tylko <code>nodeClick</code>, bez <code>nodeSelect</code>.
+            <p style="margin-top: 8px; font-size: 12px;">
+              Selected: {{ nonSelectableNode().selected ? 'Yes' : 'No' }}
+            </p>
           </div>
         </div>
-      </section>
+      </div>
 
-      <!-- Section: States -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Stany</h2>
+      <!-- ========================================= -->
+      <!-- QUICK ACTIONS -->
+      <!-- ========================================= -->
 
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Quick Actions</h2>
         <div class="showcase__grid">
           <div class="showcase__item">
-            <label>Normal</label>
-            <div style="max-width: 300px; background: #F0F0F0; padding: 8px; border-radius: 8px;">
-              <app-node
-                [node]="{ id: 'normal', label: 'Normal State', icon: 'home' }"
-                [asButton]="true"
-                (nodeClick)="onNodeClick($event)"
-              />
-            </div>
+            <h3>With Quick Actions Template</h3>
+            <app-node
+              [node]="quickActionsNode()"
+              [showQuickActions]="true"
+              [quickActionsTemplate]="quickActionsTemplate"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================= -->
+      <!-- CUSTOM CONTENT -->
+      <!-- ========================================= -->
+
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Custom Content</h2>
+        <p style="margin-bottom: 16px; color: #424242;">
+          You can provide a custom content template using the <code>#content</code> template
+          reference. This allows you to completely customize the node's content while still
+          maintaining the node's structure and behavior.
+        </p>
+
+        <!-- Basic Custom Content -->
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>Basic Custom Content</h3>
+            <app-node [node]="customContentNode1()">
+              <ng-template #content let-node>
+                <div style="display: flex; align-items: center; gap: 8px; width: 100%;">
+                  <span style="font-size: 20px;">🎨</span>
+                  <span style="flex: 1;">{{ node.label }}</span>
+                  <span style="font-size: 12px; color: #616161;">Custom</span>
+                </div>
+              </ng-template>
+            </app-node>
           </div>
 
           <div class="showcase__item">
-            <label>Selected</label>
-            <div style="max-width: 300px; background: #F0F0F0; padding: 8px; border-radius: 8px;">
-              <app-node
-                [node]="{ id: 'selected', label: 'Selected State', icon: 'home', selected: true }"
-                [asButton]="true"
-                [showSelectionIndicator]="true"
-                (nodeClick)="onNodeClick($event)"
-              />
-            </div>
+            <h3>Custom Content with Badge</h3>
+            <app-node [node]="customContentNode2()">
+              <ng-template #content let-node>
+                <div style="display: flex; align-items: center; gap: 8px; width: 100%;">
+                  <span>{{ node.label }}</span>
+                  <span
+                    style="
+                      background: #0F6CBD;
+                      color: white;
+                      padding: 2px 8px;
+                      border-radius: 12px;
+                      font-size: 11px;
+                      font-weight: 600;
+                    "
+                  >
+                    New
+                  </span>
+                </div>
+              </ng-template>
+            </app-node>
           </div>
 
           <div class="showcase__item">
-            <label>Disabled</label>
-            <div style="max-width: 300px; background: #F0F0F0; padding: 8px; border-radius: 8px;">
-              <app-node
-                [node]="{ id: 'disabled', label: 'Disabled State', icon: 'home', disabled: true }"
-                [asButton]="true"
-                (nodeClick)="onNodeClick($event)"
-              />
-            </div>
+            <h3>Custom Content with Status</h3>
+            <app-node [node]="customContentNode3()">
+              <ng-template #content let-node>
+                <div style="display: flex; align-items: center; gap: 8px; width: 100%;">
+                  <div
+                    style="
+                      width: 8px;
+                      height: 8px;
+                      border-radius: 50%;
+                      background: #107c10;
+                    "
+                  ></div>
+                  <span style="flex: 1;">{{ node.label }}</span>
+                  <span style="font-size: 12px; color: #616161;">Online</span>
+                </div>
+              </ng-template>
+            </app-node>
           </div>
         </div>
-      </section>
 
-      <!-- Section: API -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">API Reference</h2>
-
-        <div class="showcase__info-grid">
-          <div>
-            <strong>Inputs - Data:</strong>
-            <ul style="margin: 8px 0; padding-left: 20px;">
-              <li><code>node: Node</code> - Dane węzła (wymagane)</li>
-              <li><code>size: Size</code> - Rozmiar ('small' | 'medium' | 'large')</li>
-            </ul>
-
-            <strong>Inputs - Visual:</strong>
-            <ul style="margin: 8px 0; padding-left: 20px;">
-              <li><code>showSelectionIndicator: boolean</code> - Wskaźnik zaznaczenia</li>
-              <li><code>indicatorPosition: Orientation</code> - Pozycja wskaźnika ('horizontal' | 'vertical')</li>
-              <li><code>variant: Appearance</code> - Wariant wizualny</li>
-              <li><code>layout: Layout</code> - Layout ('icon-only' | 'text-only')</li>
-              <li><code>iconOnly: boolean</code> - Tylko ikona</li>
-            </ul>
-
-            <strong>Inputs - Behavior:</strong>
-            <ul style="margin: 8px 0; padding-left: 20px;">
-              <li><code>asButton: boolean</code> - Renderuj jako button</li>
-              <li><code>selectOnClick: boolean</code> - Zaznaczaj przy kliknięciu (default: true)</li>
-            </ul>
-
-            <strong>Inputs - Quick Actions:</strong>
-            <ul style="margin: 8px 0; padding-left: 20px;">
-              <li><code>showQuickActions: boolean</code> - Pokaż quick actions</li>
-              <li><code>quickActionsTemplate: TemplateRef</code> - Template akcji</li>
-            </ul>
+        <!-- Custom Content with Selection Indicator -->
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>Custom Content + Selection Indicator</h3>
+            <app-node
+              [node]="customContentSelectedNode()"
+              [showSelectionIndicator]="true"
+              indicatorPosition="horizontal"
+            >
+              <ng-template #content let-node>
+                <div style="display: flex; align-items: center; gap: 8px; width: 100%;">
+                  <span style="font-size: 18px;">📁</span>
+                  <span style="flex: 1; font-weight: 600;">{{ node.label }}</span>
+                  <span style="font-size: 12px; color: #616161;">3 items</span>
+                </div>
+              </ng-template>
+            </app-node>
           </div>
-          <div>
-            <strong>Outputs:</strong>
-            <ul style="margin: 8px 0; padding-left: 20px;">
-              <li><code>(nodeClick)</code> - Kliknięcie węzła</li>
-              <li><code>(nodeSelect)</code> - Wybór węzła</li>
-            </ul>
 
-            <strong>Content Projection:</strong>
-            <ul style="margin: 8px 0; padding-left: 20px;">
-              <li><code>#content</code> - Własny template głównej zawartości</li>
-              <li><code>#before</code> - Template przed domyślną zawartością</li>
-              <li><code>#after</code> - Template po domyślnej zawartości</li>
-            </ul>
-
-            <strong>Features:</strong>
-            <ul style="margin: 8px 0; padding-left: 20px;">
-              <li>Własny template contentu</li>
-              <li>Stany: focus, hover, selected, disabled</li>
-              <li>Accessibility (ARIA attributes, tabindex, role)</li>
-              <li>Konfigurowalne ikony i layout</li>
-              <li>Quick actions na hover</li>
-            </ul>
+          <div class="showcase__item">
+            <h3>Custom Content as Button</h3>
+            <app-node [node]="customContentButtonNode()" [asButton]="true">
+              <ng-template #content let-node>
+                <div style="display: flex; align-items: center; gap: 8px; width: 100%;">
+                  <span style="font-size: 18px;">⚙️</span>
+                  <span style="flex: 1;">{{ node.label }}</span>
+                  <span style="font-size: 14px;">→</span>
+                </div>
+              </ng-template>
+            </app-node>
           </div>
         </div>
-      </section>
 
-      <!-- Section: Status Log -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Event Log</h2>
-        <div class="showcase__status">
-          <p><strong>Last Event:</strong> {{ lastEvent() }}</p>
-          <p><strong>Clicked Node:</strong> {{ lastClickedNode() }}</p>
-          <p><strong>Selected Node:</strong> {{ lastSelectedNode() }}</p>
+        <!-- Complex Custom Content -->
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>Complex Custom Layout</h3>
+            <app-node [node]="customContentComplexNode()">
+              <ng-template #content let-node>
+                <div style="display: flex; flex-direction: column; gap: 4px; width: 100%;">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 18px;">📄</span>
+                    <span style="flex: 1; font-weight: 600;">{{ node.label }}</span>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 8px; font-size: 12px;">
+                    <span style="color: #616161;">Modified: 2 hours ago</span>
+                    <span style="color: #616161;">•</span>
+                    <span style="color: #616161;">Size: 2.5 MB</span>
+                  </div>
+                </div>
+              </ng-template>
+            </app-node>
+          </div>
+
+          <div class="showcase__item">
+            <h3>Custom Content with Actions</h3>
+            <app-node [node]="customContentActionsNode()">
+              <ng-template #content let-node>
+                <div style="display: flex; align-items: center; gap: 8px; width: 100%;">
+                  <span style="font-size: 18px;">👤</span>
+                  <div style="flex: 1; display: flex; flex-direction: column; gap: 2px;">
+                    <span style="font-weight: 600;">{{ node.label }}</span>
+                    <span style="font-size: 12px; color: #616161;">Administrator</span>
+                  </div>
+                  <button
+                    type="button"
+                    style="
+                      background: transparent;
+                      border: 1px solid #d1d1d1;
+                      padding: 4px 8px;
+                      border-radius: 4px;
+                      cursor: pointer;
+                      font-size: 12px;
+                    "
+                    (click)="onCustomActionClick(node, 'manage'); $event.stopPropagation()"
+                  >
+                    Manage
+                  </button>
+                </div>
+              </ng-template>
+            </app-node>
+          </div>
         </div>
-      </section>
+
+        <!-- Custom Content Sizes -->
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>Small Custom Content</h3>
+            <app-node [node]="customContentSmallNode()" size="small">
+              <ng-template #content let-node>
+                <div style="display: flex; align-items: center; gap: 6px; width: 100%;">
+                  <span style="font-size: 14px;">🔔</span>
+                  <span style="flex: 1;">{{ node.label }}</span>
+                </div>
+              </ng-template>
+            </app-node>
+          </div>
+
+          <div class="showcase__item">
+            <h3>Medium Custom Content</h3>
+            <app-node [node]="customContentMediumNode()" size="medium">
+              <ng-template #content let-node>
+                <div style="display: flex; align-items: center; gap: 8px; width: 100%;">
+                  <span style="font-size: 18px;">🔔</span>
+                  <span style="flex: 1;">{{ node.label }}</span>
+                </div>
+              </ng-template>
+            </app-node>
+          </div>
+
+          <div class="showcase__item">
+            <h3>Large Custom Content</h3>
+            <app-node [node]="customContentLargeNode()" size="large">
+              <ng-template #content let-node>
+                <div style="display: flex; align-items: center; gap: 10px; width: 100%;">
+                  <span style="font-size: 22px;">🔔</span>
+                  <span style="flex: 1;">{{ node.label }}</span>
+                </div>
+              </ng-template>
+            </app-node>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================= -->
+      <!-- COMBINED EXAMPLES -->
+      <!-- ========================================= -->
+
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Combined Examples</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>Small + Subtle Circular</h3>
+            <app-node
+              [node]="combinedNode()"
+              size="small"
+              variant="subtle-circular"
+            />
+          </div>
+          <div class="showcase__item">
+            <h3>Large + Filled Circular</h3>
+            <app-node
+              [node]="combinedNode()"
+              size="large"
+              variant="filled-circular"
+            />
+          </div>
+          <div class="showcase__item">
+            <h3>Medium + Subtle + Selected</h3>
+            <app-node
+              [node]="selectedCombinedNode()"
+              size="medium"
+              variant="subtle"
+              [showSelectionIndicator]="true"
+              indicatorPosition="horizontal"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================= -->
+      <!-- EVENT LOGGING -->
+      <!-- ========================================= -->
+
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Event Logging</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <p><strong>Last Click Event:</strong> {{ lastClickEvent() }}</p>
+            <p><strong>Last Select Event:</strong> {{ lastSelectEvent() }}</p>
+            <p><strong>Click Count:</strong> {{ clickCount() }}</p>
+            <p><strong>Select Count:</strong> {{ selectCount() }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions Template -->
+      <ng-template #quickActionsTemplate let-node>
+        <app-button
+          variant="subtle"
+          size="small"
+          [iconOnly]="true"
+          icon="edit"
+          (click)="onQuickActionClick(node, 'edit'); $event.stopPropagation()"
+        ></app-button>
+        <app-button
+          variant="subtle"
+          size="small"
+          [iconOnly]="true"
+          icon="delete"
+          (click)="onQuickActionClick(node, 'delete'); $event.stopPropagation()"
+        ></app-button>
+      </ng-template>
     </div>
-
-    <!-- Quick Actions Template -->
-    <ng-template #quickActions let-node>
-      <app-button
-        [variant]="'subtle'"
-        [size]="'small'"
-        [icon]="'edit'"
-        (click)="onQuickAction('edit', node)"
-        aria-label="Edit"
-      />
-      <app-button
-        [variant]="'subtle'"
-        [size]="'small'"
-        [icon]="'delete'"
-        (click)="onQuickAction('delete', node)"
-        aria-label="Delete"
-      />
-    </ng-template>
   `,
-  styles: [
-    `
-      .showcase {
-        padding: 24px;
-        max-width: 1400px;
-        margin: 0 auto;
-      }
-
-      .showcase__title {
-        font-size: 32px;
-        font-weight: 600;
-        margin-bottom: 12px;
-        color: #201f1e;
-      }
-
-      .showcase__description {
-        font-size: 16px;
-        color: #605e5c;
-        margin-bottom: 32px;
-        line-height: 1.6;
-      }
-
-      .showcase__section {
-        margin-bottom: 48px;
-      }
-
-      .showcase__section__title {
-        font-size: 24px;
-        font-weight: 600;
-        margin-bottom: 24px;
-        color: #323130;
-        border-bottom: 2px solid #edebe9;
-        padding-bottom: 8px;
-      }
-
-      .showcase__example {
-        margin-bottom: 32px;
-      }
-
-      .showcase__example h3 {
-        font-size: 16px;
-        font-weight: 600;
-        margin-bottom: 12px;
-        color: #323130;
-      }
-
-      .showcase__info {
-        margin-top: 12px;
-        padding: 12px;
-        background: #f3f2f1;
-        border-radius: 4px;
-        font-size: 14px;
-        color: #605e5c;
-        line-height: 1.5;
-      }
-
-      .showcase__info code {
-        background: #e1dfdd;
-        padding: 2px 6px;
-        border-radius: 3px;
-        font-family: 'Consolas', monospace;
-        font-size: 13px;
-      }
-
-      .showcase__grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 24px;
-        margin-bottom: 24px;
-      }
-
-      .showcase__item label {
-        display: block;
-        font-size: 14px;
-        font-weight: 600;
-        margin-bottom: 8px;
-        color: #323130;
-      }
-
-      .showcase__info-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-        gap: 24px;
-        background: #f3f2f1;
-        padding: 20px;
-        border-radius: 8px;
-      }
-
-      .showcase__info-grid strong {
-        display: block;
-        margin-top: 16px;
-        margin-bottom: 8px;
-        color: #323130;
-      }
-
-      .showcase__info-grid strong:first-child {
-        margin-top: 0;
-      }
-
-      .showcase__info-grid ul {
-        margin: 0;
-        padding-left: 20px;
-      }
-
-      .showcase__info-grid li {
-        margin-bottom: 4px;
-        color: #605e5c;
-        font-size: 14px;
-      }
-
-      .showcase__info-grid code {
-        background: #e1dfdd;
-        padding: 2px 6px;
-        border-radius: 3px;
-        font-family: 'Consolas', monospace;
-        font-size: 13px;
-      }
-
-      .showcase__status {
-        background: #f3f2f1;
-        padding: 16px;
-        border-radius: 8px;
-        font-family: 'Consolas', monospace;
-        font-size: 14px;
-      }
-
-      .showcase__status p {
-        margin: 8px 0;
-      }
-
-      .showcase__status strong {
-        color: #323130;
-      }
-    `,
-  ],
 })
-export class NodeComponentShowcaseComponent {
-  // Quick actions template
-  quickActionsTemplate = viewChild<TemplateRef<any>>('quickActions');
+export class NodeShowcaseComponent {
+  quickActionsTemplate = viewChild<TemplateRef<any>>('quickActionsTemplate');
 
-  // Event tracking
-  lastEvent = signal<string>('None');
-  lastClickedNode = signal<string>('None');
-  lastSelectedNode = signal<string>('None');
+  lastClickEvent = signal<string>('None');
+  lastSelectEvent = signal<string>('None');
+  clickCount = signal<number>(0);
+  selectCount = signal<number>(0);
 
-  // Example nodes
-  simpleNode = signal<Node>({
-    id: 'simple',
-    label: 'Simple Node',
+  // Basic nodes
+  basicNode = signal<Node>({
+    id: 'basic',
+    label: 'Home',
     icon: 'home',
   });
 
+  textOnlyNode = signal<Node>({
+    id: 'text-only',
+    label: 'Text Only Node',
+  });
+
+  iconOnlyNode = signal<Node>({
+    id: 'icon-only',
+    label: 'Settings',
+    icon: 'settings',
+  });
+
+  // Size nodes
+  sizeNode = signal<Node>({
+    id: 'size',
+    label: 'Size Variant',
+    icon: 'home',
+  });
+
+  // Layout nodes
+  layoutNode = signal<Node>({
+    id: 'layout',
+    label: 'Layout Variant',
+    icon: 'home',
+  });
+
+  // Appearance nodes
+  appearanceNode = signal<Node>({
+    id: 'appearance',
+    label: 'Appearance Variant',
+    icon: 'home',
+  });
+
+  // Selection nodes
   selectedNode = signal<Node>({
     id: 'selected',
-    label: 'Selected Item',
+    label: 'Selected Node',
     icon: 'home',
     selected: true,
   });
 
   unselectedNode = signal<Node>({
     id: 'unselected',
-    label: 'Unselected Item',
+    label: 'Unselected Node',
     icon: 'home',
     selected: false,
   });
 
-  customContentNode = signal<Node>({
-    id: 'custom',
-    label: 'Custom Content Node',
-    icon: 'star',
+  // State nodes
+  normalNode = signal<Node>({
+    id: 'normal',
+    label: 'Normal Node',
+    icon: 'home',
+  });
+
+  disabledNode = signal<Node>({
+    id: 'disabled',
+    label: 'Disabled Node',
+    icon: 'home',
+    disabled: true,
+  });
+
+  selectedDisabledNode = signal<Node>({
+    id: 'selected-disabled',
+    label: 'Selected & Disabled',
+    icon: 'home',
+    selected: true,
+    disabled: true,
+  });
+
+  // Button nodes
+  buttonNode = signal<Node>({
+    id: 'button',
+    label: 'Button Node',
+    icon: 'home',
+    onClick: () => this.onNodeClick({ id: 'button', label: 'Button Node', icon: 'home' }),
+  });
+
+  selectedButtonNode = signal<Node>({
+    id: 'selected-button',
+    label: 'Selected Button',
+    icon: 'home',
+    selected: true,
+    onClick: () =>
+      this.onNodeClick({ id: 'selected-button', label: 'Selected Button', icon: 'home' }),
+  });
+
+  disabledButtonNode = signal<Node>({
+    id: 'disabled-button',
+    label: 'Disabled Button',
+    icon: 'home',
+    disabled: true,
+    onClick: () =>
+      this.onNodeClick({ id: 'disabled-button', label: 'Disabled Button', icon: 'home' }),
+  });
+
+  // Selectable nodes
+  selectableNode = signal<Node>({
+    id: 'selectable',
+    label: 'Click to Select',
+    icon: 'home',
+    selected: false,
+  });
+
+  nonSelectableNode = signal<Node>({
+    id: 'non-selectable',
+    label: 'Click Only',
+    icon: 'home',
+    selected: false,
+  });
+
+  // Quick actions node
+  quickActionsNode = signal<Node>({
+    id: 'quick-actions',
+    label: 'Node with Quick Actions',
+    icon: 'home',
+  });
+
+  // Custom content nodes
+  customContentNode1 = signal<Node>({
+    id: 'custom-1',
+    label: 'Custom Content',
+  });
+
+  customContentNode2 = signal<Node>({
+    id: 'custom-2',
+    label: 'Featured Item',
+  });
+
+  customContentNode3 = signal<Node>({
+    id: 'custom-3',
+    label: 'User Status',
+  });
+
+  customContentSelectedNode = signal<Node>({
+    id: 'custom-selected',
+    label: 'Documents',
+    selected: true,
+  });
+
+  customContentButtonNode = signal<Node>({
+    id: 'custom-button',
+    label: 'Settings',
+  });
+
+  customContentComplexNode = signal<Node>({
+    id: 'custom-complex',
+    label: 'Document.pdf',
+  });
+
+  customContentActionsNode = signal<Node>({
+    id: 'custom-actions',
+    label: 'John Doe',
+  });
+
+  customContentSmallNode = signal<Node>({
+    id: 'custom-small',
+    label: 'Notifications',
+  });
+
+  customContentMediumNode = signal<Node>({
+    id: 'custom-medium',
+    label: 'Notifications',
+  });
+
+  customContentLargeNode = signal<Node>({
+    id: 'custom-large',
+    label: 'Notifications',
+  });
+
+  // Combined examples
+  combinedNode = signal<Node>({
+    id: 'combined',
+    label: 'Combined',
+    icon: 'home',
+  });
+
+  selectedCombinedNode = signal<Node>({
+    id: 'selected-combined',
+    label: 'Selected Combined',
+    icon: 'home',
+    selected: true,
   });
 
   // Event handlers
   onNodeClick(node: Node): void {
-    this.lastEvent.set('Click');
-    this.lastClickedNode.set(`${node.label} (${node.id})`);
-    console.log('Node clicked:', node);
+    this.lastClickEvent.set(`Clicked: ${node.label} (${node.id})`);
+    this.clickCount.update(count => count + 1);
+
+    // Update selectable node state
+    if (node.id === 'selectable') {
+      this.selectableNode.update(n => ({ ...n, selected: !n.selected }));
+    }
   }
 
   onNodeSelect(node: Node): void {
-    this.lastEvent.set('Select');
-    this.lastSelectedNode.set(`${node.label} (${node.id})`);
-    console.log('Node selected:', node);
+    this.lastSelectEvent.set(`Selected: ${node.label} (${node.id})`);
+    this.selectCount.update(count => count + 1);
   }
 
-  onQuickAction(action: string, node: Node): void {
-    this.lastEvent.set(`Quick Action: ${action}`);
-    this.lastClickedNode.set(`${action} on ${node.label}`);
-    console.log(`Quick action: ${action}`, node);
+  onQuickActionClick(node: Node, action: string): void {
+    this.lastClickEvent.set(`Quick Action: ${action} on ${node.label}`);
+    this.clickCount.update(count => count + 1);
+  }
+
+  onCustomActionClick(node: Node, action: string): void {
+    this.lastClickEvent.set(`Custom Action: ${action} on ${node.label}`);
+    this.clickCount.update(count => count + 1);
   }
 }
-

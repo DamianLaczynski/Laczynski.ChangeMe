@@ -7,11 +7,12 @@ import {
   TemplateRef,
   ElementRef,
   viewChild,
+  contentChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NodeComponent } from '../node/node.component';
 import { IconComponent } from '../icon/icon.component';
-import { Size, ChevronPosition } from '../utils';
+import { Size, ChevronPosition, Appearance, Orientation } from '../utils';
 import { Node } from '../node/node.component';
 
 export interface TreeNode<T = any> extends Node<T> {
@@ -34,11 +35,11 @@ export class TreeNodeComponent {
 
   // Inputs - Visual Configuration
   showSelectionIndicator = input<boolean>(false);
-  showChevron = input<boolean>(true);
+  indicatorPosition = input<Orientation>('vertical');
+  variant = input<Appearance | undefined>(undefined);
   chevronPosition = input<ChevronPosition>('before');
   chevronIconCollapsed = input<string>('chevron_right');
   chevronIconExpanded = input<string>('chevron_down');
-  iconOnly = input<boolean>(false);
 
   // Inputs - Behavior Configuration
   asButton = input<boolean>(false);
@@ -49,18 +50,17 @@ export class TreeNodeComponent {
   showQuickActions = input<boolean>(false);
   quickActionsTemplate = input<TemplateRef<any> | null>(null);
 
+  // Content Projection
+  contentTemplate = contentChild<TemplateRef<any>>('content');
+
   // Outputs
   nodeClick = output<TreeNode>();
   nodeToggle = output<TreeNode>();
   nodeSelect = output<TreeNode>();
 
-  // State - Tree-specific (manages expanded state for tree hierarchy)
   expanded = signal<boolean>(false);
 
-  private nodeElement = viewChild<ElementRef>('nodeElement');
-
   constructor() {
-    // Sync expanded state with node.expanded
     effect(() => {
       const node = this.node();
       if (node.expanded !== undefined) {
@@ -79,7 +79,7 @@ export class TreeNodeComponent {
   }
 
   shouldShowChevron(): boolean {
-    return this.showChevron() && this.hasChildren();
+    return this.hasChildren();
   }
 
   // CSS class generators for tree container
@@ -95,18 +95,16 @@ export class TreeNodeComponent {
   onNodeClick(node: TreeNode): void {
     this.nodeClick.emit(node);
 
-    // Handle expand behavior for tree
     if (this.expandOnClick() && this.hasChildren()) {
       this.toggleNode();
     }
 
-    // Handle select behavior
     if (this.selectOnClick()) {
       this.nodeSelect.emit(node);
     }
   }
 
-  onNodeToggle(node: TreeNode): void {
+  onNodeToggle(): void {
     this.toggleNode();
   }
 

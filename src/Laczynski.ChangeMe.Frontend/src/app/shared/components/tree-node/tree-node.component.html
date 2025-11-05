@@ -15,8 +15,8 @@
       [node]="node()"
       [size]="size()"
       [showSelectionIndicator]="showSelectionIndicator()"
-      [indicatorPosition]="'vertical'"
-      [iconOnly]="iconOnly()"
+      [indicatorPosition]="indicatorPosition()"
+      [variant]="variant()"
       [asButton]="asButton()"
       [selectOnClick]="selectOnClick()"
       [showQuickActions]="showQuickActions()"
@@ -24,28 +24,58 @@
       (nodeClick)="onNodeClick($event)"
       (nodeSelect)="onNodeSelect($event)"
     >
-      <ng-template #before>
-        @if (shouldShowChevron() && chevronPosition() === 'before') {
-          <div class="tree-node__chevron" (click)="onChevronClick($event)">
-            @if (expanded()) {
-              <app-icon [icon]="chevronIconExpanded()" [size]="size()" />
-            } @else {
-              <app-icon [icon]="chevronIconCollapsed()" [size]="size()" />
-            }
-          </div>
-        }
-      </ng-template>
+      <ng-template #content let-node>
+        <div style="display: flex; align-items: center; gap: 8px; width: 100%">
+          @if (shouldShowChevron() && chevronPosition() === 'before') {
+            <div class="tree-node__chevron" (click)="onChevronClick($event)">
+              @if (expanded()) {
+                <app-icon [icon]="chevronIconExpanded()" [size]="size()" />
+              } @else {
+                <app-icon [icon]="chevronIconCollapsed()" [size]="size()" />
+              }
+            </div>
+          }
 
-      <ng-template #after>
-        @if (shouldShowChevron() && chevronPosition() === 'after') {
-          <div class="tree-node__chevron" (click)="onChevronClick($event)">
-            @if (expanded()) {
-              <app-icon [icon]="chevronIconExpanded()" [size]="size()" />
-            } @else {
-              <app-icon [icon]="chevronIconCollapsed()" [size]="size()" />
+          @if (contentTemplate()) {
+            <!-- Custom content template (replaces icon and label) -->
+            <ng-container
+              *ngTemplateOutlet="contentTemplate()!; context: { $implicit: node }"
+            ></ng-container>
+          } @else {
+            <!-- Default icon and label -->
+            @if (node.icon) {
+              <span class="node__icon">
+                @if (node.selected) {
+                  <app-icon [icon]="node.icon" [size]="size()" variant="filled" />
+                } @else {
+                  <app-icon [icon]="node.icon" [size]="size()" variant="regular" />
+                }
+              </span>
             }
-          </div>
-        }
+
+            @if (node.label) {
+              <span class="node__label">{{ node.label }}</span>
+            }
+          }
+
+          @if (shouldShowChevron() && chevronPosition() === 'after') {
+            <div class="tree-node__chevron" (click)="onChevronClick($event)">
+              @if (expanded()) {
+                <app-icon [icon]="chevronIconExpanded()" [size]="size()" />
+              } @else {
+                <app-icon [icon]="chevronIconCollapsed()" [size]="size()" />
+              }
+            </div>
+          }
+
+          @if (showQuickActions() && quickActionsTemplate()) {
+            <div class="node__quick-actions">
+              <ng-container
+                *ngTemplateOutlet="quickActionsTemplate()!; context: { $implicit: node }"
+              ></ng-container>
+            </div>
+          }
+        </div>
       </ng-template>
     </app-node>
   </div>
@@ -58,11 +88,11 @@
           [node]="child"
           [size]="size()"
           [showSelectionIndicator]="showSelectionIndicator()"
-          [showChevron]="showChevron()"
+          [indicatorPosition]="indicatorPosition()"
+          [variant]="variant()"
           [chevronPosition]="chevronPosition()"
           [chevronIconCollapsed]="chevronIconCollapsed()"
           [chevronIconExpanded]="chevronIconExpanded()"
-          [iconOnly]="iconOnly()"
           [asButton]="asButton()"
           [expandOnClick]="expandOnClick()"
           [selectOnClick]="selectOnClick()"
