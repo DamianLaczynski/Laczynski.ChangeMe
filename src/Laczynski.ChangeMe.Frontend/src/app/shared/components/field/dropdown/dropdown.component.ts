@@ -267,6 +267,11 @@ export class DropdownComponent extends FieldComponent {
    * Check if item should show checkmark (for single-select mode)
    */
   shouldShowCheckmark(item: DropdownItem): boolean {
-    return this.mode() === 'single' && this.isItemSelected(item) && item.type !== 'header' && item.type !== 'divider';
+    return (
+      this.mode() === 'single' &&
+      this.isItemSelected(item) &&
+      item.type !== 'header' &&
+      item.type !== 'divider'
+    );
   }
 }

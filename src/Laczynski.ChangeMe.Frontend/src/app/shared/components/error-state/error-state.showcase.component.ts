@@ -2,12 +2,11 @@ import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ErrorStateComponent } from './error-state.component';
 import { QuickAction } from '../utils';
-import { ButtonComponent } from '../button/button.component';
 import { IconComponent } from '../icon/icon.component';
 
 @Component({
   selector: 'app-error-state-showcase',
-  imports: [CommonModule, ErrorStateComponent, ButtonComponent, IconComponent],
+  imports: [CommonModule, ErrorStateComponent, IconComponent],
   template: `
     <div class="showcase showcase--responsive">
       <h1 class="showcase__title">Error State Component</h1>
@@ -314,4 +313,3 @@ export class MyComponent {
     console.log('Action clicked:', action.label);
   }
 }
-

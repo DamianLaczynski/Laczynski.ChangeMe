@@ -1,17 +1,10 @@
-import {
-  Component,
-  input,
-  output,
-  signal,
-  effect,
-} from '@angular/core';
+import { Component, input, output, signal, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IconComponent } from '@shared/components/icon/icon.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
 
 @Component({
   selector: 'app-time',
-  imports: [CommonModule, IconComponent, ButtonComponent],
+  imports: [CommonModule, ButtonComponent],
   templateUrl: './time.component.html',
   styles: [
     `
@@ -164,7 +157,6 @@ export class TimeComponent {
     this.selectedMinute.set(minute);
   }
 
-
   private formatTime(hour: number, minute: number): string {
     return `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
   }
@@ -186,4 +178,3 @@ export class TimeComponent {
     };
   }
 }
-

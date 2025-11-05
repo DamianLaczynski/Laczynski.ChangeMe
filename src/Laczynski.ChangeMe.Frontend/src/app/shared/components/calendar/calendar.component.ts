@@ -1,12 +1,5 @@
-import {
-  Component,
-  input,
-  output,
-  signal,
-  computed,
-} from '@angular/core';
+import { Component, input, output, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IconComponent } from '@shared/components/icon/icon.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
 
 export type CalendarView = 'days' | 'months' | 'years';
@@ -36,7 +29,7 @@ export interface CalendarYear {
 
 @Component({
   selector: 'app-calendar',
-  imports: [CommonModule, IconComponent, ButtonComponent],
+  imports: [CommonModule, ButtonComponent],
   templateUrl: './calendar.component.html',
   styles: [
     `
@@ -60,7 +53,7 @@ export class CalendarComponent {
   size = input<'small' | 'medium' | 'large'>('medium');
   showMonthYearPicker = input<boolean>(true);
   isDayInHoverRangeFn = input<(day: CalendarDay) => boolean>();
-  
+
   // Outputs
   dateSelect = output<CalendarDay>();
   monthSelect = output<number>();
@@ -148,9 +141,7 @@ export class CalendarComponent {
     const startDateOnly = start
       ? new Date(start.getFullYear(), start.getMonth(), start.getDate())
       : null;
-    const endDateOnly = end
-      ? new Date(end.getFullYear(), end.getMonth(), end.getDate())
-      : null;
+    const endDateOnly = end ? new Date(end.getFullYear(), end.getMonth(), end.getDate()) : null;
     const hoveredDateOnly = hovered
       ? new Date(hovered.getFullYear(), hovered.getMonth(), hovered.getDate())
       : null;
@@ -158,20 +149,50 @@ export class CalendarComponent {
     // Add days from previous month
     for (let i = firstDayWeekday - 1; i >= 0; i--) {
       const date = new Date(year, monthIndex, -i);
-      days.push(this.createCalendarDay(date, false, today, selectedDateOnly, startDateOnly, endDateOnly, hoveredDateOnly));
+      days.push(
+        this.createCalendarDay(
+          date,
+          false,
+          today,
+          selectedDateOnly,
+          startDateOnly,
+          endDateOnly,
+          hoveredDateOnly,
+        ),
+      );
     }
 
     // Add days of current month
     for (let day = 1; day <= lastDayOfMonth.getDate(); day++) {
       const date = new Date(year, monthIndex, day);
-      days.push(this.createCalendarDay(date, true, today, selectedDateOnly, startDateOnly, endDateOnly, hoveredDateOnly));
+      days.push(
+        this.createCalendarDay(
+          date,
+          true,
+          today,
+          selectedDateOnly,
+          startDateOnly,
+          endDateOnly,
+          hoveredDateOnly,
+        ),
+      );
     }
 
     // Add days from next month to complete the grid
     const remainingDays = 42 - days.length; // 6 rows * 7 days
     for (let day = 1; day <= remainingDays; day++) {
       const date = new Date(year, monthIndex + 1, day);
-      days.push(this.createCalendarDay(date, false, today, selectedDateOnly, startDateOnly, endDateOnly, hoveredDateOnly));
+      days.push(
+        this.createCalendarDay(
+          date,
+          false,
+          today,
+          selectedDateOnly,
+          startDateOnly,
+          endDateOnly,
+          hoveredDateOnly,
+        ),
+      );
     }
 
     return days;
