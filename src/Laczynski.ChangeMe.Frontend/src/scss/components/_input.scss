@@ -17,37 +17,37 @@
   // Size variants
   &--small {
     font-size: $font-size-200;
-    line-height: $line-height-200;    
+    line-height: $line-height-200;
     font-weight: $font-weight-regular;
   }
 
   &--small-bold {
-    font-size: $font-size-200; 
-    line-height: $line-height-200; 
-    font-weight: $font-weight-semibold; 
+    font-size: $font-size-200;
+    line-height: $line-height-200;
+    font-weight: $font-weight-semibold;
   }
 
   &--medium {
-    font-size: $font-size-300;  
-    line-height: $line-height-300; 
-    font-weight: $font-weight-regular; 
+    font-size: $font-size-300;
+    line-height: $line-height-300;
+    font-weight: $font-weight-regular;
   }
 
   &--medium-bold {
-    font-size: $font-size-300; 
-    line-height: $line-height-300; 
-    font-weight: $font-weight-semibold; 
+    font-size: $font-size-300;
+    line-height: $line-height-300;
+    font-weight: $font-weight-semibold;
   }
 
   &--large {
-    font-size: $font-size-400; 
-    line-height: $line-height-400; 
-    font-weight: $font-weight-semibold; 
+    font-size: $font-size-400;
+    line-height: $line-height-400;
+    font-weight: $font-weight-semibold;
   }
 
   // Disabled state
   &--disabled {
-    color: $color-neutral-foreground-disabled; 
+    color: $color-neutral-foreground-disabled;
   }
 
   // Required indicator
@@ -65,12 +65,12 @@
   &--error {
     color: $color-shared-red-foreground;
   }
-  
+
   // Warning state
   &--warning {
     color: $color-shared-yellow-foreground;
   }
-  
+
   // Success state
   &--success {
     color: $color-shared-green-foreground;
@@ -94,18 +94,27 @@
   vertical-align: middle;
   border-radius: $border-radius-400;
   gap: $spacing-05;
+  align-items: stretch;
 
-   // Filled variant (default)
-   &--filled {
+  input,
+  input.input,
+  .input {
+    border-top-left-radius: $border-radius-400;
+    border-bottom-left-radius: $border-radius-400;
+    min-height: 0;
+  }
+
+  // Filled variant (default)
+  &--filled {
     background-color: $color-neutral-background-rest;
     border: 1px solid $color-neutral-stroke-rest;
     border-bottom-color: $color-neutral-foreground-rest;
-    
+
     &:hover {
       border-color: $color-neutral-stroke-hover;
       border-bottom-color: $color-neutral-foreground-rest;
     }
-    
+
     &:focus-within {
       border-color: $color-neutral-stroke-pressed;
     }
@@ -115,7 +124,7 @@
   &--filled-gray {
     background-color: $color-neutral-background-hover;
     border: 1px solid transparent;
-    
+
     &:hover {
       background-color: $color-neutral-background-hover;
     }
@@ -127,18 +136,17 @@
     border: none;
     border-bottom: 1px solid $color-neutral-foreground-rest;
     border-radius: 0;
-    
+
     &:hover {
       border-bottom-color: $color-neutral-foreground-rest;
     }
-  
   }
 
   // Error state
   &--error {
     border-color: $color-shared-red-foreground !important;
     border: 1px solid $color-shared-red-foreground !important;
-    
+
     &.input-wrapper--underlined {
       border-bottom-color: $color-shared-red-foreground !important;
     }
@@ -148,7 +156,7 @@
   &--warning {
     border-color: $color-shared-yellow-foreground !important;
     border: 1px solid $color-shared-yellow-foreground !important;
-    
+
     &.input-wrapper--underlined {
       border-bottom-color: $color-shared-yellow-foreground !important;
     }
@@ -158,7 +166,7 @@
   &--success {
     border-color: $color-shared-green-foreground !important;
     border: 1px solid $color-shared-green-foreground !important;
-    
+
     &.input-wrapper--underlined {
       border-bottom-color: $color-shared-green-foreground !important;
     }
@@ -168,7 +176,7 @@
   &--disabled {
     background-color: transparent;
     border-color: $color-neutral-stroke-disabled;
-    
+
     .input {
       color: $color-neutral-foreground-disabled;
       cursor: not-allowed;
@@ -244,46 +252,46 @@
 .input-wrapper {
   // Small size
   &--small {
-    min-height: $spacing-6; 
-    
+    min-height: $spacing-6;
+
     .input {
-      font-size: $font-size-200; 
-      line-height: $line-height-200; 
-      padding: 0 $spacing-2; 
+      font-size: $font-size-200;
+      line-height: $line-height-200;
+      padding: 0 $spacing-2;
     }
 
     &::after {
-      height: $spacing-1; 
+      height: $spacing-1;
     }
   }
 
   // Medium size (default)
   &--medium {
-    min-height: $spacing-8; 
-    
+    min-height: $spacing-8;
+
     .input {
-      font-size: $font-size-300; 
-      line-height: $line-height-300; 
-      padding: 0 $spacing-3; 
+      font-size: $font-size-300;
+      line-height: $line-height-300;
+      padding: 0 $spacing-3;
     }
 
     &::after {
-      height: $spacing-1; 
+      height: $spacing-1;
     }
   }
 
   // Large size
   &--large {
-    min-height: $spacing-10; 
-    
+    min-height: $spacing-10;
+
     .input {
-      font-size: $font-size-400; 
-      line-height: $line-height-400; 
-      padding: 0 $spacing-4; 
+      font-size: $font-size-400;
+      line-height: $line-height-400;
+      padding: 0 $spacing-4;
     }
 
     &::after {
-      height: $spacing-1; 
+      height: $spacing-1;
     }
   }
 }
@@ -296,7 +304,7 @@
     bottom: -1px;
     left: -1px;
     right: -1px;
-    background-color: $color-brand-primary; 
+    background-color: $color-brand-primary;
     transform: scaleX(0);
     border-bottom-left-radius: $border-radius-400;
     border-bottom-right-radius: $border-radius-400;
@@ -360,7 +368,6 @@
   svg:hover {
     color: $color-neutral-foreground2-hover;
   }
-
 }
 
 .input-wrapper {

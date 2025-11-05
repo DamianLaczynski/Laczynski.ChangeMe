@@ -6,7 +6,7 @@
   [attr.aria-selected]="node().selected ? 'true' : null"
   [attr.aria-disabled]="node().disabled ? 'true' : null"
   [attr.aria-level]="(node().level || 0) + 1"
-  [attr.tabindex]="node().disabled ? -1 : 0"
+  [attr.tabindex]="-1"
   (keydown)="onKeyDown($event)"
 >
   <div class="tree-node__wrapper">
