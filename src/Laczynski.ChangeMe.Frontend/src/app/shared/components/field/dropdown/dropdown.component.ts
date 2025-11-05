@@ -76,7 +76,6 @@ export class DropdownComponent extends FieldComponent {
   isExpanded = signal<boolean>(false);
   searchQuery = signal<string>('');
   selectedValues = signal<Set<string | number>>(new Set());
-  focusedIndex = signal<number>(-1);
 
   @ViewChild('dropdownPanel') dropdownPanel?: ElementRef;
 
@@ -157,7 +156,6 @@ export class DropdownComponent extends FieldComponent {
   closeDropdown(): void {
     this.isExpanded.set(false);
     this.searchQuery.set('');
-    this.focusedIndex.set(-1);
     this.closed.emit();
   }
 

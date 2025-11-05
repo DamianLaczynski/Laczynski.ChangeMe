@@ -53,7 +53,6 @@ export class TreeNodeComponent {
   nodeClick = output<TreeNode>();
   nodeToggle = output<TreeNode>();
   nodeSelect = output<TreeNode>();
-  keyNavigation = output<{ key: string; node: TreeNode }>();
 
   // State - Tree-specific (manages expanded state for tree hierarchy)
   expanded = signal<boolean>(false);
@@ -165,26 +164,6 @@ export class TreeNodeComponent {
         this.handleArrowLeft();
         break;
 
-      case 'ArrowDown':
-        event.preventDefault();
-        this.keyNavigation.emit({ key: 'ArrowDown', node });
-        break;
-
-      case 'ArrowUp':
-        event.preventDefault();
-        this.keyNavigation.emit({ key: 'ArrowUp', node });
-        break;
-
-      case 'Home':
-        event.preventDefault();
-        this.keyNavigation.emit({ key: 'Home', node });
-        break;
-
-      case 'End':
-        event.preventDefault();
-        this.keyNavigation.emit({ key: 'End', node });
-        break;
-
       case '*':
         event.preventDefault();
         // Expand all siblings at the same level
@@ -207,9 +186,6 @@ export class TreeNodeComponent {
       this.expanded.set(true);
       node.expanded = true;
       this.nodeToggle.emit(node);
-    } else if (node.hasChildren && this.expanded() && node.children && node.children.length > 0) {
-      // If expanded, move focus to first child
-      this.keyNavigation.emit({ key: 'ArrowDown', node });
     }
   }
 
@@ -221,9 +197,6 @@ export class TreeNodeComponent {
       this.expanded.set(false);
       node.expanded = false;
       this.nodeToggle.emit(node);
-    } else if (node.parent) {
-      // If collapsed or leaf, move focus to parent
-      this.keyNavigation.emit({ key: 'ArrowUp', node });
     }
   }
 }

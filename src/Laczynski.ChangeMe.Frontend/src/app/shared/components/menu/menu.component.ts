@@ -23,7 +23,6 @@ export class MenuComponent {
 
   // Internal state
   hoveredItemId = signal<string | null>(null);
-  focusedItemId = signal<string | null>(null);
   pressedItemId = signal<string | null>(null);
   openSubmenuId = signal<string | null>(null);
 

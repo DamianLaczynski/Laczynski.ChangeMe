@@ -14,12 +14,7 @@
   }
 
   <!-- Content Area -->
-  <div
-    [class]="contentClasses()"
-    (keydown)="onContentKeyDown($event)"
-    role="navigation"
-    aria-label="Main navigation"
-  >
+  <div [class]="contentClasses()" role="navigation" aria-label="Main navigation">
     <!-- Auto-rendered items if provided -->
     @if (items().length > 0) {
       @for (item of items(); track item.id || item.label; let i = $index) {
@@ -41,9 +36,7 @@
             [chevronIconExpanded]="'chevron_up'"
             [expandOnClick]="!!(item.children && item.children.length > 0)"
             [selectOnClick]="!(item.children && item.children.length > 0)"
-            [attr.tabindex]="i === 0 ? 0 : -1"
             (nodeClick)="onItemClick($event)"
-            (focus)="onNavItemFocus(i)"
           >
           </app-tree-node>
         }
