@@ -15,7 +15,7 @@ export class CardComponent {
   title = input<string>('');
   subtitle = input<string>('');
   bodyText = input<string>('');
-  style = input<CardStyle>('filled');
+  style = input<CardStyle>('plain');
   disabled = model<boolean>(false);
   clickable = input<boolean>(false);
   orientation = input<'vertical' | 'horizontal'>('vertical');

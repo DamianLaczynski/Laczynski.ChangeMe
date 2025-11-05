@@ -18,7 +18,7 @@ export type BadgeColor =
   | 'subtle'
   | 'warning';
 export type BadgeAppearance = 'filled' | 'tint' | 'outline' | 'subtle';
-export type CardStyle = 'filled' | 'outline' | 'subtle';
+export type CardStyle = 'plain' | 'filled' | 'outline' | 'subtle';
 export type CardState = 'rest' | 'hover' | 'pressed' | 'selected' | 'disabled';
 export type SplitterOrientation = 'horizontal' | 'vertical';
 export type SpinnerSize =

@@ -1,7 +1,7 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardComponent } from './card.component';
-import { QuickAction } from '../utils';
+import { QuickAction, CardStyle } from '../utils';
 import { FormsModule } from '@angular/forms';
 import { CheckboxComponent } from '../field/checkbox';
 import { DropdownComponent } from '../field/dropdown';
@@ -407,7 +407,7 @@ export class CardShowcaseComponent {
     clickable: true,
     showQuickAction: true,
     showFooter: true,
-    style: 'filled' as 'filled' | 'outline' | 'subtle',
+    style: 'filled' as CardStyle,
   };
 
   gridCards = [

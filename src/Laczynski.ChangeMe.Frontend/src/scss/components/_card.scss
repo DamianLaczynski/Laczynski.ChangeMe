@@ -18,7 +18,7 @@
   outline: 1px solid transparent;
   outline-offset: -1px;
   box-sizing: border-box;
-  
+
   // Card Elements (BEM Elements)
   // ========================================================================
   // Header Elements
@@ -31,12 +31,12 @@
     justify-content: flex-start;
     align-items: flex-start;
     gap: $spacing-2;
-    
+
     @include modifier('custom') {
       padding: $spacing-3;
     }
   }
-  
+
   @include element('header') {
     align-self: stretch;
     display: inline-flex;
@@ -44,7 +44,7 @@
     align-items: center;
     gap: $spacing-3;
   }
-  
+
   @include element('header-icon') {
     position: relative;
     display: flex;
@@ -53,17 +53,17 @@
     width: 32px;
     height: 32px;
     flex-shrink: 0;
-    
+
     svg {
       width: 32px;
       height: 32px;
-      
+
       path {
         fill: var(--Neutral-Foreground-1-Rest, #242424);
       }
     }
   }
-  
+
   @include element('text-container') {
     flex: 1 1 0;
     display: inline-flex;
@@ -71,7 +71,7 @@
     justify-content: flex-start;
     align-items: flex-start;
   }
-  
+
   @include element('title') {
     align-self: stretch;
     color: var(--Neutral-Foreground-1-Rest, #242424);
@@ -81,7 +81,7 @@
     line-height: $line-height-300;
     word-wrap: break-word;
   }
-  
+
   @include element('subtitle') {
     align-self: stretch;
     color: var(--Neutral-Foreground-3-Rest, #616161);
@@ -91,7 +91,7 @@
     line-height: $line-height-200;
     word-wrap: break-word;
   }
-  
+
   @include element('quick-action') {
     padding: 6px;
     background: var(--Neutral-Background-Transparent-Rest, rgba(255, 255, 255, 0));
@@ -101,34 +101,34 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    
+
     &:hover:not(:disabled) {
-      background: var(--Neutral-Background-1-Hover, #F5F5F5);
+      background: var(--Neutral-Background-1-Hover, #f5f5f5);
     }
-    
+
     &:active:not(:disabled) {
-      background: var(--Neutral-Background-1-Pressed, #E0E0E0);
+      background: var(--Neutral-Background-1-Pressed, #e0e0e0);
     }
-    
+
     &:disabled {
-      background: var(--Neutral-Background-Inverted-Disabled-Rest, rgba(255, 255, 255, 0.10));
+      background: var(--Neutral-Background-Inverted-Disabled-Rest, rgba(255, 255, 255, 0.1));
       cursor: not-allowed;
-      
+
       svg path {
-        fill: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+        fill: var(--Neutral-Foreground-Disabled-Rest, #bdbdbd);
       }
     }
-    
+
     svg {
       width: 20px;
       height: 20px;
-      
+
       path {
         fill: var(--Neutral-Foreground-2-Rest, #424242);
       }
     }
   }
-  
+
   // ========================================================================
   // Body Elements
   // ========================================================================
@@ -141,12 +141,12 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    
+
     @include modifier('custom') {
       padding: $spacing-3;
     }
   }
-  
+
   @include element('body') {
     align-self: stretch;
     display: inline-flex;
@@ -154,7 +154,7 @@
     align-items: center;
     gap: $spacing-3;
   }
-  
+
   @include element('body-text') {
     flex: 1 1 0;
     display: flex;
@@ -167,7 +167,7 @@
     line-height: $line-height-200;
     word-wrap: break-word;
   }
-  
+
   // ========================================================================
   // Footer Elements
   // ========================================================================
@@ -180,12 +180,12 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    
+
     @include modifier('custom') {
       padding: $spacing-3;
     }
   }
-  
+
   @include element('footer') {
     align-self: stretch;
     display: inline-flex;
@@ -193,43 +193,52 @@
     align-items: center;
     gap: $spacing-3;
   }
-  
+
   // ========================================================================
-  // Style Modifiers - Filled (Default)
+  // Style Modifiers - Plain (Default - No hover/focus effects)
+  // ========================================================================
+  @include modifier('plain') {
+    background: var(--Neutral-Background-1-Rest, white);
+    outline-color: var(--Neutral-Stroke-Transparent-Interactive-Rest, rgba(255, 255, 255, 0));
+    // No hover, focus, or active effects
+  }
+
+  // ========================================================================
+  // Style Modifiers - Filled
   // ========================================================================
   @include modifier('filled') {
     background: var(--Neutral-Background-1-Rest, white);
     outline-color: var(--Neutral-Stroke-Transparent-Interactive-Rest, rgba(255, 255, 255, 0));
-    
+
     &:hover:not(.card--disabled):not(.card--selected) {
-      background: var(--Neutral-Background-1-Hover, #F5F5F5);
+      background: var(--Neutral-Background-1-Hover, #f5f5f5);
     }
-    
+
     &:active:not(.card--disabled):not(.card--selected),
     &.card--pressed:not(.card--disabled):not(.card--selected) {
-      background: var(--Neutral-Background-1-Pressed, #E0E0E0);
+      background: var(--Neutral-Background-1-Pressed, #e0e0e0);
     }
   }
-  
+
   // ========================================================================
   // Style Modifiers - Outline
   // ========================================================================
   @include modifier('outline') {
     background: var(--Neutral-Background-1-Rest, white);
-    outline-color: var(--Neutral-Stroke-1-Rest, #D1D1D1);
-    
+    outline-color: var(--Neutral-Stroke-1-Rest, #d1d1d1);
+
     &:hover:not(.card--disabled):not(.card--selected) {
-      background: var(--Neutral-Background-1-Hover, #F5F5F5);
-      outline-color: var(--Neutral-Stroke-1-Hover, #C7C7C7);
+      background: var(--Neutral-Background-1-Hover, #f5f5f5);
+      outline-color: var(--Neutral-Stroke-1-Hover, #c7c7c7);
     }
-    
+
     &:active:not(.card--disabled):not(.card--selected),
     &.card--pressed:not(.card--disabled):not(.card--selected) {
-      background: var(--Neutral-Background-1-Pressed, #E0E0E0);
-      outline-color: var(--Neutral-Stroke-1-Pressed, #B3B3B3);
+      background: var(--Neutral-Background-1-Pressed, #e0e0e0);
+      outline-color: var(--Neutral-Stroke-1-Pressed, #b3b3b3);
     }
   }
-  
+
   // ========================================================================
   // Style Modifiers - Subtle
   // ========================================================================
@@ -237,99 +246,100 @@
     background: transparent;
     box-shadow: none;
     outline-color: transparent;
-    
+
     &:hover:not(.card--disabled):not(.card--selected) {
-      background: var(--Neutral-Background-1-Hover, #F5F5F5);
+      background: var(--Neutral-Background-1-Hover, #f5f5f5);
     }
-    
+
     &:active:not(.card--disabled):not(.card--selected),
     &.card--pressed:not(.card--disabled):not(.card--selected) {
-      background: var(--Neutral-Background-1-Pressed, #E0E0E0);
+      background: var(--Neutral-Background-1-Pressed, #e0e0e0);
     }
   }
-  
+
   // ========================================================================
   // State Modifiers
   // ========================================================================
   @include modifier('selected') {
-    background: var(--Neutral-Background-1-Selected, #EBEBEB);
-    outline-color: var(--Neutral-Stroke-1-Selected, #BDBDBD);
-    
+    background: var(--Neutral-Background-1-Selected, #ebebeb);
+    outline-color: var(--Neutral-Stroke-1-Selected, #bdbdbd);
+
     &:hover {
-      background: var(--Neutral-Background-1-Hover, #F5F5F5);
+      background: var(--Neutral-Background-1-Hover, #f5f5f5);
     }
   }
-  
+
   @include modifier('disabled') {
-    background: var(--Neutral-Background-Disabled-Rest, #F0F0F0);
+    background: var(--Neutral-Background-Disabled-Rest, #f0f0f0);
     outline-color: var(--Neutral-Stroke-Transparent-Disabled-Rest, rgba(255, 255, 255, 0));
     cursor: not-allowed;
     pointer-events: none;
-    
+
     .card__title {
-      color: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+      color: var(--Neutral-Foreground-Disabled-Rest, #bdbdbd);
     }
-    
+
     .card__subtitle {
-      color: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+      color: var(--Neutral-Foreground-Disabled-Rest, #bdbdbd);
     }
-    
+
     .card__body-text {
-      color: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+      color: var(--Neutral-Foreground-Disabled-Rest, #bdbdbd);
     }
-    
+
     .card__header-icon svg path {
-      fill: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+      fill: var(--Neutral-Foreground-Disabled-Rest, #bdbdbd);
       opacity: 0.8;
     }
-    
+
     .card__quick-action {
-      background: var(--Neutral-Background-Inverted-Disabled-Rest, rgba(255, 255, 255, 0.10));
+      background: var(--Neutral-Background-Inverted-Disabled-Rest, rgba(255, 255, 255, 0.1));
       cursor: not-allowed;
-      
+
       svg path {
         fill: var(--Neutral-Foreground-2-Rest, #424242);
       }
     }
   }
-  
+
   @include modifier('clickable') {
     cursor: pointer;
-    
+
     @include focus-ring($color-brand-primary);
-    
+
     &:not(.card--disabled) {
       &:hover {
         transform: translateY(-1px);
-        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.14), 0px 0px 2px rgba(0, 0, 0, 0.12);
+        box-shadow:
+          0px 2px 4px rgba(0, 0, 0, 0.14),
+          0px 0px 2px rgba(0, 0, 0, 0.12);
       }
-      
+
       &:active {
         transform: translateY(0);
         box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.12);
       }
     }
   }
-  
+
   // ========================================================================
   // Orientation Modifiers
   // ========================================================================
   @include modifier('horizontal') {
     flex-direction: row;
-    
+
     .card__header-container,
     .card__body-container,
     .card__footer-container {
       flex: 1;
     }
-    
+
     .card__header-container {
-      border-right: 1px solid var(--Neutral-Stroke-2-Rest, #E0E0E0);
+      border-right: 1px solid var(--Neutral-Stroke-2-Rest, #e0e0e0);
     }
   }
-  
+
   @include modifier('vertical') {
     flex-direction: column;
   }
 }
-
