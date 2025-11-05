@@ -226,6 +226,58 @@ import { ButtonComponent } from '../button/button.component';
       </div>
 
       <!-- ========================================= -->
+      <!-- CUSTOM CONTENT -->
+      <!-- ========================================= -->
+
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Custom Content</h2>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>With Badge</h3>
+            <app-nav
+              [items]="customContentNavItems()"
+              [contentTemplate]="customContentWithBadgeTemplate"
+            />
+          </div>
+          <div class="showcase__item">
+            <h3>With Status Indicator</h3>
+            <app-nav
+              [items]="customContentNavItems()"
+              [contentTemplate]="customContentWithStatusTemplate"
+            />
+          </div>
+          <div class="showcase__item">
+            <h3>With Count Badge</h3>
+            <app-nav
+              [items]="customContentNavItems()"
+              [contentTemplate]="customContentWithCountTemplate"
+            />
+          </div>
+          <div class="showcase__item">
+            <h3>Custom Layout</h3>
+            <app-nav
+              [items]="customContentNavItems()"
+              [contentTemplate]="customContentLayoutTemplate"
+            />
+          </div>
+          <div class="showcase__item">
+            <h3>With Icon and Description</h3>
+            <app-nav
+              [items]="customContentNavItemsWithDesc()"
+              [contentTemplate]="customContentWithDescriptionTemplate"
+            />
+          </div>
+          <div class="showcase__item">
+            <h3>Colored Custom Content</h3>
+            <app-nav
+              [items]="customContentNavItems()"
+              [contentTemplate]="customContentColoredTemplate"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================= -->
       <!-- DISABLED STATE -->
       <!-- ========================================= -->
 
@@ -324,11 +376,127 @@ import { ButtonComponent } from '../button/button.component';
           </app-button>
         </div>
       </ng-template>
+
+      <!-- Custom Content Templates -->
+      <ng-template #customContentWithBadgeTemplate let-node>
+        <div style="display: flex; align-items: center; gap: 8px; width: 100%;">
+          <span>{{ node.label }}</span>
+          <span
+            style="
+              background: #0078d4;
+              color: white;
+              padding: 2px 6px;
+              border-radius: 10px;
+              font-size: 11px;
+              font-weight: 600;
+            "
+          >
+            New
+          </span>
+        </div>
+      </ng-template>
+
+      <ng-template #customContentWithStatusTemplate let-node>
+        <div style="display: flex; align-items: center; gap: 8px; width: 100%;">
+          <span
+            style="
+              width: 8px;
+              height: 8px;
+              border-radius: 50%;
+              background: #107c10;
+              flex-shrink: 0;
+            "
+          ></span>
+          <span>{{ node.label }}</span>
+        </div>
+      </ng-template>
+
+      <ng-template #customContentWithCountTemplate let-node>
+        <div
+          style="display: flex; align-items: center; justify-content: space-between; width: 100%;"
+        >
+          <span>{{ node.label }}</span>
+          <span
+            style="
+              background: #f3f2f1;
+              color: #323130;
+              padding: 2px 8px;
+              border-radius: 12px;
+              font-size: 12px;
+              font-weight: 500;
+              min-width: 20px;
+              text-align: center;
+            "
+          >
+            {{ getItemCount(node.id) }}
+          </span>
+        </div>
+      </ng-template>
+
+      <ng-template #customContentLayoutTemplate let-node>
+        <div style="display: flex; flex-direction: column; gap: 4px; width: 100%;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-weight: 500;">{{ node.label }}</span>
+          </div>
+          <div style="font-size: 11px; color: #605e5c;">Custom layout content</div>
+        </div>
+      </ng-template>
+
+      <ng-template #customContentWithDescriptionTemplate let-node>
+        <div style="display: flex; align-items: center; gap: 12px; width: 100%;">
+          @if (node.icon) {
+            <span style="font-size: 20px;">📁</span>
+          }
+          <div style="display: flex; flex-direction: column; flex: 1; min-width: 0;">
+            <span style="font-weight: 500; font-size: 14px;">{{ node.label }}</span>
+            <span
+              style="font-size: 11px; color: #605e5c; overflow: hidden; text-overflow: ellipsis;"
+            >
+              {{ getItemDescription(node.id) }}
+            </span>
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template #customContentColoredTemplate let-node>
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #{{ getItemColor(node.id) }}20, #{{
+            getItemColor(node.id)
+          }}10);
+          "
+        >
+          <span
+            style="
+              width: 4px;
+              height: 20px;
+              background: #{{ getItemColor(node.id) }};
+              border-radius: 2px;
+            "
+          ></span>
+          <span style="font-weight: 500;">{{ node.label }}</span>
+        </div>
+      </ng-template>
     </div>
   `,
 })
 export class NavShowcaseComponent {
   quickActionsTemplate = viewChild<TemplateRef<any>>('quickActionsTemplate');
+
+  customContentWithBadgeTemplate = viewChild<TemplateRef<any>>('customContentWithBadgeTemplate');
+  customContentWithStatusTemplate = viewChild<TemplateRef<any>>('customContentWithStatusTemplate');
+  customContentWithCountTemplate = viewChild<TemplateRef<any>>('customContentWithCountTemplate');
+  customContentLayoutTemplate = viewChild<TemplateRef<any>>('customContentLayoutTemplate');
+  customContentWithDescriptionTemplate = viewChild<TemplateRef<any>>(
+    'customContentWithDescriptionTemplate',
+  );
+  customContentColoredTemplate = viewChild<TemplateRef<any>>('customContentColoredTemplate');
 
   lastClickedItem = signal<string>('');
   clickCount = signal<number>(0);
@@ -523,6 +691,29 @@ export class NavShowcaseComponent {
     },
   ]);
 
+  // Custom content navigation items
+  customContentNavItems = signal<NavNode[]>([
+    {
+      id: '1',
+      label: 'Inbox',
+      children: [
+        { id: '1-1', label: 'Inbox 1' },
+        { id: '1-2', label: 'Inbox 2' },
+        { id: '1-3', label: 'Inbox 3' },
+      ],
+      hasChildren: true,
+    },
+    { id: '2', label: 'Drafts' },
+    { id: '3', label: 'Sent' },
+    { id: '4', label: 'Archive' },
+  ]);
+
+  customContentNavItemsWithDesc = signal<NavNode[]>([
+    { id: '1', label: 'Documents', icon: 'folder' },
+    { id: '2', label: 'Pictures', icon: 'image' },
+    { id: '3', label: 'Videos', icon: 'video' },
+  ]);
+
   onNavItemClick(label: string): void {
     this.lastClickedItem.set(label);
     this.clickCount.update(count => count + 1);
@@ -532,5 +723,34 @@ export class NavShowcaseComponent {
   onQuickActionClick(action: string, node: NavNode): void {
     console.log('Quick action clicked:', action, node);
     alert(`Quick action: ${action} on ${node.label}`);
+  }
+
+  getItemCount(id: string): number {
+    const counts: Record<string, number> = {
+      '1': 5,
+      '2': 12,
+      '3': 0,
+      '4': 23,
+    };
+    return counts[id] || 0;
+  }
+
+  getItemDescription(id: string): string {
+    const descriptions: Record<string, string> = {
+      '1': 'Your document files and folders',
+      '2': 'Your image collection',
+      '3': 'Your video library',
+    };
+    return descriptions[id] || 'No description';
+  }
+
+  getItemColor(id: string): string {
+    const colors: Record<string, string> = {
+      '1': '0078d4',
+      '2': '107c10',
+      '3': 'd13438',
+      '4': 'ffaa44',
+    };
+    return colors[id] || '605e5c';
   }
 }
