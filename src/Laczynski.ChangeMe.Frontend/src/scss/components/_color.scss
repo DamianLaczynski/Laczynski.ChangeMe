@@ -5,7 +5,7 @@
 @use '../utils/variables' as *;
 
 .color-preview {
-  margin: 0 $spacing-2;
+  margin: auto $spacing-2;
 
   border-radius: $border-radius-400;
   border: 1px solid $color-neutral-stroke-rest;

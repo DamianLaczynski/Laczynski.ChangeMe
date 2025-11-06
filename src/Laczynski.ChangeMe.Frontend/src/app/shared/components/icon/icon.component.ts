@@ -17,6 +17,8 @@ import { Size } from '../utils';
   styles: [
     `
       :host {
+        width: min-content;
+        height: min-content;
         display: flex;
         align-items: center;
         justify-content: center;
