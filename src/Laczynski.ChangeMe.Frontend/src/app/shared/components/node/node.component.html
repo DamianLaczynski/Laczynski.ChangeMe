@@ -32,7 +32,11 @@
         [class]="contentClasses()"
         [disabled]="node().disabled || false"
         [attr.aria-label]="node().label"
+        [attr.draggable]="draggable() && !node().disabled"
         (click)="onContentClick($event)"
+        (dragstart)="onDragStart($event)"
+        (dragend)="onDragEnd($event)"
+        (drag)="onDrag($event)"
       >
         @if (contentTemplate()) {
           <!-- Custom content template -->
@@ -72,7 +76,11 @@
         [attr.role]="getRole()"
         [attr.aria-selected]="node().selected ? 'true' : null"
         [attr.aria-disabled]="node().disabled ? 'true' : null"
+        [attr.draggable]="draggable() && !node().disabled"
         (click)="onContentClick($event)"
+        (dragstart)="onDragStart($event)"
+        (dragend)="onDragEnd($event)"
+        (drag)="onDrag($event)"
       >
         @if (contentTemplate()) {
           <!-- Custom content template -->

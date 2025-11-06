@@ -6,6 +6,14 @@ import { ButtonComponent } from '../button/button.component';
 @Component({
   selector: 'app-node-showcase',
   imports: [NodeComponent, CommonModule, ButtonComponent],
+  styles: [
+    `
+      .drag-over {
+        border-color: #0f6cbd !important;
+        background: #ebf3fc !important;
+      }
+    `,
+  ],
   template: `
     <div class="showcase showcase--responsive">
       <h1 class="showcase__title">Node Component Showcase</h1>
@@ -460,19 +468,11 @@ import { ButtonComponent } from '../button/button.component';
         <div class="showcase__grid">
           <div class="showcase__item">
             <h3>Small + Subtle Circular</h3>
-            <app-node
-              [node]="combinedNode()"
-              size="small"
-              variant="subtle-circular"
-            />
+            <app-node [node]="combinedNode()" size="small" variant="subtle-circular" />
           </div>
           <div class="showcase__item">
             <h3>Large + Filled Circular</h3>
-            <app-node
-              [node]="combinedNode()"
-              size="large"
-              variant="filled-circular"
-            />
+            <app-node [node]="combinedNode()" size="large" variant="filled-circular" />
           </div>
           <div class="showcase__item">
             <h3>Medium + Subtle + Selected</h3>
@@ -483,6 +483,217 @@ import { ButtonComponent } from '../button/button.component';
               [showSelectionIndicator]="true"
               indicatorPosition="horizontal"
             />
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================= -->
+      <!-- DRAG AND DROP -->
+      <!-- ========================================= -->
+
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Drag and Drop</h2>
+        <p class="showcase__description" style="margin-bottom: 16px;">
+          Nodes can be made draggable using the <code>draggable</code> input. Drag events are
+          emitted for integration with drop zones. Disabled nodes cannot be dragged.
+        </p>
+
+        <!-- Basic Draggable Nodes -->
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>Basic Draggable Node</h3>
+            <app-node
+              [node]="draggableNode1()"
+              [draggable]="true"
+              (dragStart)="onDragStart($event)"
+              (dragEnd)="onDragEnd($event)"
+            />
+            <p style="margin-top: 8px; font-size: 12px; color: #666;">
+              Drag this node to see the drag events
+            </p>
+          </div>
+          <div class="showcase__item">
+            <h3>Draggable with Custom Data</h3>
+            <app-node
+              [node]="draggableNode2()"
+              [draggable]="true"
+              [dragData]="{ customId: 'custom-123', type: 'document' }"
+              (dragStart)="onDragStart($event)"
+              (dragEnd)="onDragEnd($event)"
+            />
+            <p style="margin-top: 8px; font-size: 12px; color: #666;">
+              Custom drag data is included in drag events
+            </p>
+          </div>
+          <div class="showcase__item">
+            <h3>Non-Draggable Node</h3>
+            <app-node [node]="nonDraggableNode()" [draggable]="false" />
+            <p style="margin-top: 8px; font-size: 12px; color: #666;">
+              This node cannot be dragged (default behavior)
+            </p>
+          </div>
+          <div class="showcase__item">
+            <h3>Disabled Node (Not Draggable)</h3>
+            <app-node [node]="disabledDraggableNode()" [draggable]="true" />
+            <p style="margin-top: 8px; font-size: 12px; color: #666;">
+              Disabled nodes cannot be dragged even if draggable is true
+            </p>
+          </div>
+        </div>
+
+        <!-- Drag and Drop Zones -->
+        <div class="showcase__grid" style="margin-top: 24px;">
+          <div class="showcase__item">
+            <h3>Source List (Drag from here)</h3>
+            <div
+              style="
+                border: 2px dashed #d1d1d1;
+                border-radius: 8px;
+                padding: 16px;
+                min-height: 200px;
+                background: #fafafa;
+              "
+            >
+              @for (node of sourceNodes(); track node.id) {
+                <div style="margin-bottom: 8px;">
+                  <app-node
+                    [node]="node"
+                    [draggable]="true"
+                    (dragStart)="onDragStart($event)"
+                    (dragEnd)="onDragEnd($event)"
+                  />
+                </div>
+              }
+            </div>
+          </div>
+          <div class="showcase__item">
+            <h3>Drop Zone (Drop here)</h3>
+            <div
+              style="
+                border: 2px dashed #d1d1d1;
+                border-radius: 8px;
+                padding: 16px;
+                min-height: 200px;
+                background: #fafafa;
+              "
+              [class.drag-over]="isDragOver()"
+              (dragover)="onDragOver($event)"
+              (dragleave)="onDragLeave($event)"
+              (drop)="onDrop($event)"
+            >
+              @if (droppedNodes().length === 0) {
+                <p style="text-align: center; color: #999; margin-top: 60px;">Drop nodes here</p>
+              } @else {
+                @for (node of droppedNodes(); track node.id) {
+                  <div style="margin-bottom: 8px;">
+                    <app-node [node]="node" />
+                  </div>
+                }
+              }
+            </div>
+            <div style="margin-top: 8px;">
+              <app-button variant="subtle" size="small" (click)="clearDroppedNodes()">
+                Clear
+              </app-button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Draggable with Different Sizes -->
+        <div class="showcase__grid" style="margin-top: 24px;">
+          <div class="showcase__item">
+            <h3>Small Draggable</h3>
+            <app-node
+              [node]="sizeDraggableNode()"
+              size="small"
+              [draggable]="true"
+              (dragStart)="onDragStart($event)"
+            />
+          </div>
+          <div class="showcase__item">
+            <h3>Medium Draggable</h3>
+            <app-node
+              [node]="sizeDraggableNode()"
+              size="medium"
+              [draggable]="true"
+              (dragStart)="onDragStart($event)"
+            />
+          </div>
+          <div class="showcase__item">
+            <h3>Large Draggable</h3>
+            <app-node
+              [node]="sizeDraggableNode()"
+              size="large"
+              [draggable]="true"
+              (dragStart)="onDragStart($event)"
+            />
+          </div>
+        </div>
+
+        <!-- Draggable with Variants -->
+        <div class="showcase__grid" style="margin-top: 24px;">
+          <div class="showcase__item">
+            <h3>Draggable Subtle</h3>
+            <app-node
+              [node]="variantDraggableNode()"
+              variant="subtle"
+              [draggable]="true"
+              (dragStart)="onDragStart($event)"
+            />
+          </div>
+          <div class="showcase__item">
+            <h3>Draggable Subtle Circular</h3>
+            <app-node
+              [node]="variantDraggableNode()"
+              variant="subtle-circular"
+              [draggable]="true"
+              (dragStart)="onDragStart($event)"
+            />
+          </div>
+          <div class="showcase__item">
+            <h3>Draggable Filled Circular</h3>
+            <app-node
+              [node]="variantDraggableNode()"
+              variant="filled-circular"
+              [draggable]="true"
+              (dragStart)="onDragStart($event)"
+            />
+          </div>
+        </div>
+
+        <!-- Drag Events Log -->
+        <div class="showcase__grid" style="margin-top: 24px;">
+          <div class="showcase__item">
+            <h3>Drag Events Log</h3>
+            <div
+              style="
+                background: #f5f5f5;
+                border: 1px solid #d1d1d1;
+                border-radius: 4px;
+                padding: 12px;
+                max-height: 200px;
+                overflow-y: auto;
+                font-size: 12px;
+                font-family: monospace;
+              "
+            >
+              @if (dragEvents().length === 0) {
+                <p style="color: #999; margin: 0;">No drag events yet...</p>
+              } @else {
+                @for (event of dragEvents(); track $index) {
+                  <div
+                    style="margin-bottom: 4px; padding: 4px; background: white; border-radius: 2px;"
+                  >
+                    <strong>{{ event.type }}:</strong> {{ event.message }}
+                  </div>
+                }
+              }
+            </div>
+            <div style="margin-top: 8px;">
+              <app-button variant="subtle" size="small" (click)="clearDragEvents()">
+                Clear Log
+              </app-button>
+            </div>
           </div>
         </div>
       </div>
@@ -721,6 +932,60 @@ export class NodeShowcaseComponent {
     selected: true,
   });
 
+  // Drag and drop nodes
+  draggableNode1 = signal<Node>({
+    id: 'draggable-1',
+    label: 'Draggable Node',
+    icon: 'drag',
+  });
+
+  draggableNode2 = signal<Node>({
+    id: 'draggable-2',
+    label: 'Node with Custom Data',
+    icon: 'document',
+  });
+
+  nonDraggableNode = signal<Node>({
+    id: 'non-draggable',
+    label: 'Non-Draggable Node',
+    icon: 'home',
+  });
+
+  disabledDraggableNode = signal<Node>({
+    id: 'disabled-draggable',
+    label: 'Disabled Node',
+    icon: 'home',
+    disabled: true,
+  });
+
+  sizeDraggableNode = signal<Node>({
+    id: 'size-draggable',
+    label: 'Draggable',
+    icon: 'drag',
+  });
+
+  variantDraggableNode = signal<Node>({
+    id: 'variant-draggable',
+    label: 'Draggable',
+    icon: 'drag',
+  });
+
+  // Source nodes for drag and drop demo
+  sourceNodes = signal<Node[]>([
+    { id: 'source-1', label: 'Document 1', icon: 'document' },
+    { id: 'source-2', label: 'Document 2', icon: 'document' },
+    { id: 'source-3', label: 'Document 3', icon: 'document' },
+    { id: 'source-4', label: 'Folder 1', icon: 'folder' },
+    { id: 'source-5', label: 'Folder 2', icon: 'folder' },
+  ]);
+
+  // Dropped nodes
+  droppedNodes = signal<Node[]>([]);
+
+  // Drag state
+  isDragOver = signal<boolean>(false);
+  dragEvents = signal<Array<{ type: string; message: string }>>([]);
+
   // Event handlers
   onNodeClick(node: Node): void {
     this.lastClickEvent.set(`Clicked: ${node.label} (${node.id})`);
@@ -745,5 +1010,92 @@ export class NodeShowcaseComponent {
   onCustomActionClick(node: Node, action: string): void {
     this.lastClickEvent.set(`Custom Action: ${action} on ${node.label}`);
     this.clickCount.update(count => count + 1);
+  }
+
+  // Drag and drop handlers
+  onDragStart(event: { node: Node; event: DragEvent; data?: any }): void {
+    const message = `Started dragging: ${event.node.label}${
+      event.data ? ` (Data: ${JSON.stringify(event.data)})` : ''
+    }`;
+    this.dragEvents.update(events => [
+      { type: 'dragstart', message },
+      ...events.slice(0, 19), // Keep last 20 events
+    ]);
+  }
+
+  onDragEnd(event: { node: Node; event: DragEvent }): void {
+    const message = `Finished dragging: ${event.node.label}`;
+    this.dragEvents.update(events => [{ type: 'dragend', message }, ...events.slice(0, 19)]);
+  }
+
+  onDragOver(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragOver.set(true);
+    event.dataTransfer!.dropEffect = 'move';
+  }
+
+  onDragLeave(event: DragEvent): void {
+    // Only set drag over to false if we're actually leaving the drop zone
+    const relatedTarget = event.relatedTarget as HTMLElement;
+    const currentTarget = event.currentTarget as HTMLElement;
+    if (!currentTarget.contains(relatedTarget)) {
+      this.isDragOver.set(false);
+    }
+  }
+
+  onDrop(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragOver.set(false);
+
+    try {
+      const data = event.dataTransfer!.getData('application/json');
+      const nodeData = JSON.parse(data);
+      const node: Node = {
+        id: nodeData.id || `dropped-${Date.now()}`,
+        label: nodeData.label || nodeData,
+        icon: nodeData.icon,
+        disabled: nodeData.disabled,
+        selected: nodeData.selected,
+        data: nodeData.data,
+      };
+
+      // Add to dropped nodes if not already there
+      const existingIndex = this.droppedNodes().findIndex(n => n.id === node.id);
+      if (existingIndex === -1) {
+        this.droppedNodes.update(nodes => [...nodes, node]);
+        this.dragEvents.update(events => [
+          { type: 'drop', message: `Dropped: ${node.label}` },
+          ...events.slice(0, 19),
+        ]);
+      }
+    } catch (error) {
+      // Fallback to text data
+      const text = event.dataTransfer!.getData('text/plain');
+      if (text) {
+        const node: Node = {
+          id: `dropped-${Date.now()}`,
+          label: text,
+        };
+        this.droppedNodes.update(nodes => [...nodes, node]);
+        this.dragEvents.update(events => [
+          { type: 'drop', message: `Dropped: ${text}` },
+          ...events.slice(0, 19),
+        ]);
+      }
+    }
+  }
+
+  clearDroppedNodes(): void {
+    this.droppedNodes.set([]);
+    this.dragEvents.update(events => [
+      { type: 'clear', message: 'Cleared dropped nodes' },
+      ...events.slice(0, 19),
+    ]);
+  }
+
+  clearDragEvents(): void {
+    this.dragEvents.set([]);
   }
 }

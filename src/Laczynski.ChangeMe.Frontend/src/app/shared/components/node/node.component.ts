@@ -51,9 +51,16 @@ export class NodeComponent {
   showQuickActions = input<boolean>(false);
   quickActionsTemplate = input<TemplateRef<any> | null>(null);
 
+  // Inputs - Drag and Drop
+  draggable = input<boolean>(false);
+  dragData = input<any>(null);
+
   // Outputs
   nodeClick = output<Node>();
   nodeSelect = output<Node>();
+  dragStart = output<{ node: Node; event: DragEvent; data?: any }>();
+  dragEnd = output<{ node: Node; event: DragEvent }>();
+  drag = output<{ node: Node; event: DragEvent }>();
 
   contentTemplate = contentChild<TemplateRef<any>>('content');
 
@@ -94,6 +101,10 @@ export class NodeComponent {
 
     if (this.asButton()) {
       classes.push('node__content--button');
+    }
+
+    if (this.draggable() && !this.node().disabled) {
+      classes.push('node__content--draggable');
     }
 
     return classes.join(' ');
@@ -192,5 +203,28 @@ export class NodeComponent {
       return 'button';
     }
     return 'treeitem';
+  }
+
+  // Drag and drop handlers
+  onDragStart(event: DragEvent): void {
+    if (!this.draggable() || this.node().disabled) {
+      event.preventDefault();
+      return;
+    }
+
+    const dragData = this.dragData() ?? this.node();
+    event.dataTransfer!.effectAllowed = 'move';
+    event.dataTransfer!.setData('application/json', JSON.stringify(dragData));
+    event.dataTransfer!.setData('text/plain', this.node().label);
+
+    this.dragStart.emit({ node: this.node(), event, data: dragData });
+  }
+
+  onDragEnd(event: DragEvent): void {
+    this.dragEnd.emit({ node: this.node(), event });
+  }
+
+  onDrag(event: DragEvent): void {
+    this.drag.emit({ node: this.node(), event });
   }
 }

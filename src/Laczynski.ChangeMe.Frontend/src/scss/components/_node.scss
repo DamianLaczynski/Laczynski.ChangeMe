@@ -125,6 +125,13 @@
         visibility: visible;
       }
     }
+
+    // Draggable modifier
+    @include modifier('draggable') {
+      &:active {
+        cursor: grabbing;
+      }
+    }
   }
 
   // Label
