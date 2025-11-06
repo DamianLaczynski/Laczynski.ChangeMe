@@ -8,6 +8,8 @@
 @use '../utils/functions' as *;
 
 @include block('node') {
+  user-select: none;
+
   // Prevent text wrapping
   .node__label {
     white-space: nowrap;
