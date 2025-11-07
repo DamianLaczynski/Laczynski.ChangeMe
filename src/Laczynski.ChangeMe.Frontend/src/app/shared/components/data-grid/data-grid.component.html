@@ -146,10 +146,7 @@
   <!-- Pagination - only show when enabled and not loading or error -->
   @if (enablePagination() && !loading() && !error()) {
     <app-pagination
-      [totalCount]="totalCount()"
-      [pageSize]="pageSize()"
-      [currentPage]="currentPage()"
-      [pageSizeOptions]="pageSizeOptions()"
+      [config]="paginationConfig()"
       [size]="size()"
       (pageChange)="onPaginationPageChange($event)"
       (pageSizeChange)="onPaginationPageSizeChange($event)"

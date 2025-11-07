@@ -7,7 +7,7 @@ import { LoadingStateComponent } from '../loading-state/loading-state.component'
 import { EmptyStateComponent } from '../empty-state/empty-state.component';
 import { ErrorStateComponent } from '../error-state/error-state.component';
 import { IconComponent } from '../icon/icon.component';
-import { PaginationComponent } from '../pagination/pagination.component';
+import { PaginationComponent, PaginationConfig } from '../pagination/pagination.component';
 import { QuickAction } from '../utils';
 
 @Component({
@@ -64,6 +64,11 @@ export class DataGridComponent<T = any> {
   pageSize = input<number>(10);
   currentPage = input<number>(1);
   pageSizeOptions = input<number[]>([10, 20, 50, 100]);
+  paginationShowPageSizeSelector = input<boolean>(true);
+  paginationShowPageNumbers = input<boolean>(true);
+  paginationMaxVisiblePages = input<number>(7);
+  paginationShowFirstLast = input<boolean>(false);
+  paginationShowInfo = input<boolean>(false);
 
   // Outputs
   rowClick = output<DataGridRow<T>>();
@@ -96,6 +101,22 @@ export class DataGridComponent<T = any> {
 
   hasData = computed(() => {
     return this.rows().length > 0;
+  });
+
+  paginationConfig = computed<PaginationConfig>(() => {
+    const totalPages = Math.max(1, Math.ceil(this.totalCount() / this.pageSize()));
+    return {
+      currentPage: this.currentPage(),
+      totalPages: totalPages,
+      totalItems: this.totalCount(),
+      pageSize: this.pageSize(),
+      showPageSizeSelector: this.paginationShowPageSizeSelector(),
+      pageSizeOptions: this.pageSizeOptions(),
+      showPageNumbers: this.paginationShowPageNumbers(),
+      maxVisiblePages: this.paginationMaxVisiblePages(),
+      showFirstLast: this.paginationShowFirstLast(),
+      showInfo: this.paginationShowInfo(),
+    };
   });
 
   // Methods

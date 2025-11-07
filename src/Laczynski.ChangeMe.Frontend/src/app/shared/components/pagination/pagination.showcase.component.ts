@@ -1,259 +1,391 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PaginationComponent } from './pagination.component';
+import { PaginationComponent, PaginationConfig } from './pagination.component';
 
 @Component({
   selector: 'app-pagination-showcase',
   imports: [CommonModule, PaginationComponent],
   template: `
-    <div class="showcase">
-      <h1>Pagination Component</h1>
+    <div class="showcase showcase--responsive">
+      <h1 class="showcase__title">Pagination Component</h1>
       <p class="showcase__description">
-        A flexible pagination component following Fluent 2 Design System principles. Supports page
-        navigation, page size selection, and displays pagination information.
+        Comprehensive showcase of the Pagination component built with Fluent 2 Design System. The
+        Pagination component provides navigation controls for paginated data with support for page
+        numbers, navigation buttons, page size selection, and info display.
       </p>
 
-      <!-- Basic Pagination -->
-      <section class="showcase__section">
-        <h2>Basic Pagination</h2>
-        <p>Simple pagination with default settings.</p>
-        <div class="showcase__example">
+      <!-- Basic Example -->
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Basic Pagination</h2>
+        <p class="showcase__section__description">
+          Simple pagination with page numbers and navigation buttons.
+        </p>
+        <div class="showcase__preview">
           <app-pagination
-            [totalCount]="basicTotalCount"
-            [pageSize]="basicPageSize()"
-            [currentPage]="basicCurrentPage()"
-            [pageSizeOptions]="[10, 20, 50, 100]"
-            (pageChange)="onBasicPageChange($event)"
-            (pageSizeChange)="onBasicPageSizeChange($event)"
+            [config]="basicConfig()"
+            (pageChange)="onPageChange($event, 'basic')"
           />
         </div>
-        @if (basicCurrentPage() || basicPageSize()) {
-          <p class="showcase__info">
-            Current page: {{ basicCurrentPage() }}, Page size: {{ basicPageSize() }}, Total items:
-            {{ basicTotalCount }}
-          </p>
-        }
-      </section>
+      </div>
 
-      <!-- Pagination with Many Pages -->
-      <section class="showcase__section">
-        <h2>Pagination with Many Pages</h2>
-        <p>Pagination with ellipsis for large page counts.</p>
-        <div class="showcase__example">
+      <!-- With Info -->
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Pagination with Info</h2>
+        <p class="showcase__section__description">
+          Pagination displaying information about the current page and total items.
+        </p>
+        <div class="showcase__preview">
           <app-pagination
-            [totalCount]="manyPagesTotalCount"
-            [pageSize]="manyPagesPageSize()"
-            [currentPage]="manyPagesCurrentPage()"
-            [pageSizeOptions]="[5, 10, 20, 50, 100]"
-            (pageChange)="onManyPagesPageChange($event)"
-            (pageSizeChange)="onManyPagesPageSizeChange($event)"
+            [config]="infoConfig()"
+            (pageChange)="onPageChange($event, 'info')"
           />
         </div>
-        @if (manyPagesCurrentPage() || manyPagesPageSize()) {
-          <p class="showcase__info">
-            Current page: {{ manyPagesCurrentPage() }}, Page size: {{ manyPagesPageSize() }}, Total
-            items: {{ manyPagesTotalCount }}
-          </p>
-        }
-      </section>
+      </div>
 
-      <!-- Size Variants -->
-      <section class="showcase__section">
-        <h2>Size Variants</h2>
-
-        <h3>Small</h3>
-        <div class="showcase__example">
+      <!-- With First/Last Buttons -->
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Pagination with First/Last</h2>
+        <p class="showcase__section__description">
+          Pagination with first and last page navigation buttons.
+        </p>
+        <div class="showcase__preview">
           <app-pagination
-            [totalCount]="50"
-            [pageSize]="10"
-            [currentPage]="sizeSmallPage()"
-            [size]="'small'"
-            (pageChange)="sizeSmallPage.set($event)"
+            [config]="firstLastConfig()"
+            (pageChange)="onPageChange($event, 'firstLast')"
           />
         </div>
+      </div>
 
-        <h3>Medium (Default)</h3>
-        <div class="showcase__example">
+      <!-- With Page Size Selector -->
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Pagination with Page Size Selector</h2>
+        <p class="showcase__section__description">
+          Pagination with dropdown to select items per page.
+        </p>
+        <div class="showcase__preview">
           <app-pagination
-            [totalCount]="50"
-            [pageSize]="10"
-            [currentPage]="sizeMediumPage()"
-            [size]="'medium'"
-            (pageChange)="sizeMediumPage.set($event)"
+            [config]="pageSizeConfig()"
+            (pageChange)="onPageChange($event, 'pageSize')"
+            (pageSizeChange)="onPageSizeChange($event, 'pageSize')"
           />
         </div>
+      </div>
 
-        <h3>Large</h3>
-        <div class="showcase__example">
+      <!-- Full Featured -->
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Full Featured Pagination</h2>
+        <p class="showcase__section__description">
+          Complete pagination with all features: info, first/last buttons, and page size selector.
+        </p>
+        <div class="showcase__preview">
           <app-pagination
-            [totalCount]="50"
-            [pageSize]="10"
-            [currentPage]="sizeLargePage()"
-            [size]="'large'"
-            (pageChange)="sizeLargePage.set($event)"
+            [config]="fullConfig()"
+            (pageChange)="onPageChange($event, 'full')"
+            (pageSizeChange)="onPageSizeChange($event, 'full')"
           />
         </div>
-      </section>
+      </div>
 
-      <!-- Custom Page Size Options -->
-      <section class="showcase__section">
-        <h2>Custom Page Size Options</h2>
-        <p>Pagination with custom page size options.</p>
-        <div class="showcase__example">
+      <!-- Many Pages -->
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Pagination with Many Pages</h2>
+        <p class="showcase__section__description">
+          Pagination with ellipsis for large page counts (100 pages).
+        </p>
+        <div class="showcase__preview">
           <app-pagination
-            [totalCount]="75"
-            [pageSize]="customPageSize()"
-            [currentPage]="customCurrentPage()"
-            [pageSizeOptions]="[5, 15, 25, 50]"
-            (pageChange)="customCurrentPage.set($event)"
-            (pageSizeChange)="customPageSize.set($event)"
+            [config]="manyPagesConfig()"
+            (pageChange)="onPageChange($event, 'manyPages')"
           />
         </div>
-        @if (customCurrentPage() || customPageSize()) {
-          <p class="showcase__info">
-            Current page: {{ customCurrentPage() }}, Page size: {{ customPageSize() }}
-          </p>
-        }
-      </section>
+      </div>
 
-      <!-- Edge Cases -->
-      <section class="showcase__section">
-        <h2>Edge Cases</h2>
+      <!-- Sizes -->
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Pagination Sizes</h2>
+        <p class="showcase__section__description">
+          Pagination in different sizes: small, medium, and large.
+        </p>
+        <div class="showcase__preview">
+          <div class="showcase__preview-item">
+            <h3>Small</h3>
+            <app-pagination
+              [config]="smallConfig()"
+              size="small"
+              (pageChange)="onPageChange($event, 'small')"
+            />
+          </div>
+          <div class="showcase__preview-item">
+            <h3>Medium</h3>
+            <app-pagination
+              [config]="mediumConfig()"
+              size="medium"
+              (pageChange)="onPageChange($event, 'medium')"
+            />
+          </div>
+          <div class="showcase__preview-item">
+            <h3>Large</h3>
+            <app-pagination
+              [config]="largeConfig()"
+              size="large"
+              (pageChange)="onPageChange($event, 'large')"
+            />
+          </div>
+        </div>
+      </div>
 
-        <h3>Single Page</h3>
-        <div class="showcase__example">
+      <!-- Without Page Numbers -->
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Pagination without Page Numbers</h2>
+        <p class="showcase__section__description">
+          Minimal pagination with only previous/next buttons.
+        </p>
+        <div class="showcase__preview">
           <app-pagination
-            [totalCount]="5"
-            [pageSize]="10"
-            [currentPage]="1"
-            [pageSizeOptions]="[10, 20, 50]"
+            [config]="minimalConfig()"
+            (pageChange)="onPageChange($event, 'minimal')"
           />
         </div>
+      </div>
 
-        <h3>Empty Data</h3>
-        <div class="showcase__example">
-          <app-pagination
-            [totalCount]="0"
-            [pageSize]="10"
-            [currentPage]="1"
-            [pageSizeOptions]="[10, 20, 50]"
-          />
+      <!-- Usage Example -->
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Usage Example</h2>
+        <p class="showcase__section__description">
+          Example of how to use the Pagination component in your application:
+        </p>
+        <div class="showcase__code">
+          <pre><code>{{ usageExample }}</code></pre>
         </div>
-
-        <h3>First Page</h3>
-        <div class="showcase__example">
-          <app-pagination
-            [totalCount]="100"
-            [pageSize]="10"
-            [currentPage]="1"
-            [pageSizeOptions]="[10, 20, 50]"
-          />
-        </div>
-
-        <h3>Last Page</h3>
-        <div class="showcase__example">
-          <app-pagination
-            [totalCount]="100"
-            [pageSize]="10"
-            [currentPage]="10"
-            [pageSizeOptions]="[10, 20, 50]"
-          />
-        </div>
-      </section>
+      </div>
     </div>
   `,
-  styles: [
-    `
-      .showcase {
-        padding: 2rem;
-        max-width: 1400px;
-        margin: 0 auto;
-      }
-
-      .showcase__description {
-        color: var(--Neutral-Foreground-2-Rest, #424242);
-        margin-bottom: 2rem;
-      }
-
-      .showcase__section {
-        margin-bottom: 3rem;
-      }
-
-      .showcase__section h2 {
-        margin-bottom: 0.5rem;
-        color: var(--Neutral-Foreground-Rest, #242424);
-      }
-
-      .showcase__section h3 {
-        margin-top: 1.5rem;
-        margin-bottom: 0.5rem;
-        color: var(--Neutral-Foreground-Rest, #242424);
-        font-size: 1.125rem;
-      }
-
-      .showcase__section p {
-        color: var(--Neutral-Foreground-2-Rest, #424242);
-        margin-bottom: 1rem;
-      }
-
-      .showcase__example {
-        background: white;
-        border: 1px solid var(--Neutral-Stroke-Rest, #d1d1d1);
-        border-radius: 8px;
-        padding: 1rem;
-      }
-
-      .showcase__info {
-        margin-top: 0.5rem;
-        padding: 0.5rem 1rem;
-        background: var(--Neutral-Background-Brand-Selected, #d0e7ff);
-        border-radius: 4px;
-        color: var(--Neutral-Foreground-Rest, #242424);
-        font-size: 0.875rem;
-      }
-    `,
-  ],
 })
 export class PaginationShowcaseComponent {
-  // Basic pagination state
-  basicCurrentPage = signal<number>(1);
-  basicPageSize = signal<number>(10);
-  basicTotalCount = 25;
+  // State for each example
+  basicPage = signal<number>(3);
+  infoPage = signal<number>(2);
+  firstLastPage = signal<number>(5);
+  pageSizePage = signal<number>(1);
+  pageSizePageSize = signal<number>(10);
+  fullPage = signal<number>(4);
+  fullPageSize = signal<number>(20);
+  manyPagesPage = signal<number>(50);
+  smallPage = signal<number>(2);
+  mediumPage = signal<number>(2);
+  largePage = signal<number>(2);
+  minimalPage = signal<number>(3);
 
-  // Many pages pagination state
-  manyPagesCurrentPage = signal<number>(1);
-  manyPagesPageSize = signal<number>(10);
-  manyPagesTotalCount = 150;
+  smallConfig = signal<PaginationConfig>({
+    currentPage: this.smallPage(),
+    totalPages: 10,
+    totalItems: 100,
+    pageSize: 10,
+    showPageNumbers: true,
+    maxVisiblePages: 7,
+  });
 
-  // Size variants state
-  sizeSmallPage = signal<number>(1);
-  sizeMediumPage = signal<number>(1);
-  sizeLargePage = signal<number>(1);
+  mediumConfig = signal<PaginationConfig>({
+    currentPage: this.mediumPage(),
+    totalPages: 10,
+    totalItems: 100,
+    pageSize: 10,
+    showPageNumbers: true,
+    maxVisiblePages: 7,
+  });
 
-  // Custom page size options state
-  customCurrentPage = signal<number>(1);
-  customPageSize = signal<number>(15);
+  largeConfig = signal<PaginationConfig>({
+    currentPage: this.largePage(),
+    totalPages: 10,
+    totalItems: 100,
+    pageSize: 10,
+    showPageNumbers: true,
+    maxVisiblePages: 7,
+  });
 
-  // Event handlers
-  onBasicPageChange(page: number): void {
-    this.basicCurrentPage.set(page);
-    console.log('Basic pagination - Page changed to:', page);
+  basicConfig = signal<PaginationConfig>({
+    currentPage: this.basicPage(),
+    totalPages: 10,
+    totalItems: 100,
+    pageSize: 10,
+    showPageNumbers: true,
+    maxVisiblePages: 7,
+  });
+
+  infoConfig = signal<PaginationConfig>({
+    currentPage: this.infoPage(),
+    totalPages: 10,
+    totalItems: 100,
+    pageSize: 10,
+    showPageNumbers: true,
+    showInfo: true,
+    maxVisiblePages: 7,
+  });
+
+  firstLastConfig = signal<PaginationConfig>({
+    currentPage: this.firstLastPage(),
+    totalPages: 10,
+    totalItems: 100,
+    pageSize: 10,
+    showPageNumbers: true,
+    showFirstLast: true,
+    maxVisiblePages: 7,
+  });
+
+  pageSizeConfig = signal<PaginationConfig>({
+    currentPage: this.pageSizePage(),
+    totalPages: 10,
+    totalItems: 100,
+    pageSize: this.pageSizePageSize(),
+    showPageNumbers: true,
+    showPageSizeSelector: true,
+    pageSizeOptions: [10, 20, 50, 100],
+    maxVisiblePages: 7,
+  });
+
+  fullConfig = signal<PaginationConfig>({
+    currentPage: this.fullPage(),
+    totalPages: 10,
+    totalItems: 200,
+    pageSize: this.fullPageSize(),
+    showPageNumbers: true,
+    showFirstLast: true,
+    showInfo: true,
+    showPageSizeSelector: true,
+    pageSizeOptions: [10, 20, 50, 100],
+    maxVisiblePages: 7,
+  });
+
+  manyPagesConfig = signal<PaginationConfig>({
+    currentPage: this.manyPagesPage(),
+    totalPages: 100,
+    totalItems: 1000,
+    pageSize: 10,
+    showPageNumbers: true,
+    showFirstLast: true,
+    showInfo: true,
+    maxVisiblePages: 7,
+  });
+
+  minimalConfig = signal<PaginationConfig>({
+    currentPage: this.minimalPage(),
+    totalPages: 10,
+    totalItems: 100,
+    pageSize: 10,
+    showPageNumbers: false,
+    maxVisiblePages: 7,
+  });
+
+  usageExample = `// In your component
+import { PaginationComponent, PaginationConfig } from '@shared/components/pagination';
+
+@Component({
+  template: \`
+    <app-pagination
+      [config]="paginationConfig()"
+      (pageChange)="onPageChange($event)"
+      (pageSizeChange)="onPageSizeChange($event)"
+    />
+  \`
+})
+export class MyComponent {
+  currentPage = signal(1);
+  pageSize = signal(10);
+  totalItems = signal(100);
+
+  paginationConfig = computed<PaginationConfig>(() => ({
+    currentPage: this.currentPage(),
+    totalPages: Math.ceil(this.totalItems() / this.pageSize()),
+    totalItems: this.totalItems(),
+    pageSize: this.pageSize(),
+    showPageNumbers: true,
+    showFirstLast: true,
+    showInfo: true,
+    showPageSizeSelector: true,
+    pageSizeOptions: [10, 20, 50, 100],
+    maxVisiblePages: 7,
+  }));
+
+  onPageChange(page: number): void {
+    this.currentPage.set(page);
+    // Load data for the new page
   }
 
-  onBasicPageSizeChange(size: number): void {
-    this.basicPageSize.set(size);
-    this.basicCurrentPage.set(1); // Reset to first page when page size changes
-    console.log('Basic pagination - Page size changed to:', size);
+  onPageSizeChange(size: number): void {
+    this.pageSize.set(size);
+    this.currentPage.set(1); // Reset to first page
+    // Reload data with new page size
+  }
+}`;
+
+  onPageChange(page: number, example: string): void {
+    console.log(`${example} page changed to:`, page);
+
+    switch (example) {
+      case 'basic':
+        this.basicPage.set(page);
+        this.basicConfig.update(cfg => ({ ...cfg, currentPage: page }));
+        break;
+      case 'info':
+        this.infoPage.set(page);
+        this.infoConfig.update(cfg => ({ ...cfg, currentPage: page }));
+        break;
+      case 'firstLast':
+        this.firstLastPage.set(page);
+        this.firstLastConfig.update(cfg => ({ ...cfg, currentPage: page }));
+        break;
+      case 'pageSize':
+        this.pageSizePage.set(page);
+        this.pageSizeConfig.update(cfg => ({ ...cfg, currentPage: page }));
+        break;
+      case 'full':
+        this.fullPage.set(page);
+        this.fullConfig.update(cfg => ({ ...cfg, currentPage: page }));
+        break;
+      case 'manyPages':
+        this.manyPagesPage.set(page);
+        this.manyPagesConfig.update(cfg => ({ ...cfg, currentPage: page }));
+        break;
+      case 'small':
+        this.smallPage.set(page);
+        this.smallConfig.update(cfg => ({ ...cfg, currentPage: page }));
+        break;
+      case 'medium':
+        this.mediumPage.set(page);
+        this.mediumConfig.update(cfg => ({ ...cfg, currentPage: page }));
+        break;
+      case 'large':
+        this.largePage.set(page);
+        this.largeConfig.update(cfg => ({ ...cfg, currentPage: page }));
+        break;
+      case 'minimal':
+        this.minimalPage.set(page);
+        this.minimalConfig.update(cfg => ({ ...cfg, currentPage: page }));
+        break;
+    }
   }
 
-  onManyPagesPageChange(page: number): void {
-    this.manyPagesCurrentPage.set(page);
-    console.log('Many pages - Page changed to:', page);
-  }
+  onPageSizeChange(size: number, example: string): void {
+    console.log(`${example} page size changed to:`, size);
 
-  onManyPagesPageSizeChange(size: number): void {
-    this.manyPagesPageSize.set(size);
-    this.manyPagesCurrentPage.set(1); // Reset to first page when page size changes
-    console.log('Many pages - Page size changed to:', size);
+    if (example === 'pageSize') {
+      this.pageSizePageSize.set(size);
+      const totalPages = Math.ceil(100 / size);
+      this.pageSizeConfig.update(cfg => ({
+        ...cfg,
+        pageSize: size,
+        totalPages,
+      }));
+    } else if (example === 'full') {
+      this.fullPageSize.set(size);
+      const totalPages = Math.ceil(200 / size);
+      this.fullPage.set(1); // Reset to first page
+      this.fullConfig.update(cfg => ({
+        ...cfg,
+        pageSize: size,
+        totalPages,
+        currentPage: 1,
+      }));
+    }
   }
 }

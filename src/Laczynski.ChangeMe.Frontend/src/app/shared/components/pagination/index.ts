@@ -1,0 +1,3 @@
+export * from './pagination.component';
+
+
