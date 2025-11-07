@@ -61,6 +61,7 @@ export class DsSidebarComponent {
     { id: 'data-display', isSectionHeader: true, label: 'Data Display' },
     { id: 'data-grid', label: 'Data Grid', icon: 'table' },
     { id: 'pagination', label: 'Pagination', icon: 'arrow_paging' },
+    { id: 'toolbar', label: 'Toolbar', icon: 'toolbar' },
     { id: 'tree', label: 'Tree', icon: 'text_bullet_list_tree' },
     { id: 'tree-node', label: 'Tree Node', icon: 'rectangle_landscape' },
     { id: 'node', label: 'Node', icon: 'circle' },

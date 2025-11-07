@@ -1,0 +1,124 @@
+// ==========================================================================
+// Toolbar Component - Fluent 2 Design System (BEM Block)
+// ==========================================================================
+
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use '../utils/functions' as *;
+
+@include block('toolbar') {
+  display: flex;
+  align-items: center;
+  gap: $spacing-05; // 2px
+  padding: $spacing-1; // 4px
+  background: $color-neutral-background-rest;
+  border-radius: $border-radius-400; // 4px
+  width: fit-content;
+
+  // Orientation Modifiers
+  @include modifier('horizontal') {
+    flex-direction: row;
+    width: fit-content;
+    min-width: fit-content;
+  }
+
+  @include modifier('vertical') {
+    flex-direction: column;
+    width: fit-content;
+    align-items: stretch;
+    height: fit-content;
+  }
+
+  // Size Modifiers
+  @include modifier('small') {
+    gap: $spacing-05; // 2px
+    padding: $spacing-05; // 2px
+    min-height: 32px;
+  }
+
+  @include modifier('medium') {
+    gap: $spacing-1; // 4px
+    padding: $spacing-1; // 4px
+    min-height: 40px;
+  }
+
+  @include modifier('large') {
+    gap: $spacing-1; // 4px
+    padding: $spacing-2; // 8px
+    min-height: 48px;
+  }
+
+  // Overflow Modifier
+  @include modifier('overflow') {
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    @include respond-to(small) {
+      width: 100%;
+    }
+  }
+
+  // Elements
+  @include element('item') {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    flex-shrink: 0;
+
+    // Type Modifiers
+    @include modifier('custom') {
+      display: contents;
+    }
+
+    // State Modifiers
+    @include modifier('disabled') {
+      pointer-events: none;
+    }
+  }
+
+  @include element('divider') {
+    flex-shrink: 0;
+    align-self: stretch;
+
+    &.toolbar--horizontal {
+      margin: $spacing-1 0; // 4px vertical margin
+    }
+
+    &.toolbar--vertical {
+      margin: 0 $spacing-1; // 4px horizontal margin
+    }
+  }
+
+  @include element('button') {
+    // ButtonComponent handles all button styling
+    // This class is mainly for layout adjustments if needed
+    flex-shrink: 0;
+  }
+
+  // Vertical orientation specific styles
+  &.toolbar--vertical {
+    @include element('item') {
+      width: 100%;
+      justify-content: flex-start;
+    }
+
+    @include element('button') {
+      width: 100%;
+    }
+
+    @include element('divider') {
+      height: 1px;
+      width: 100%;
+      margin: $spacing-1 0;
+    }
+  }
+
+  // Responsive adjustments
+  @include respond-to(small) {
+    &.toolbar--horizontal {
+      width: 100%;
+      flex-wrap: wrap;
+    }
+  }
+}

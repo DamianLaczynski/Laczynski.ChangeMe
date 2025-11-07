@@ -45,6 +45,7 @@ import { TreeShowcaseComponent } from '@shared/components/tree/tree.showcase.com
 import { TreeNodeShowcaseComponent } from '@shared/components/tree-node/tree-node.showcase.component';
 import { DataGridShowcaseComponent } from '@shared/components/data-grid/data-grid.showcase.component';
 import { PaginationShowcaseComponent } from '@shared/components/pagination/pagination.showcase.component';
+import { ToolbarShowcaseComponent } from '@shared/components/toolbar/toolbar.showcase.component';
 
 export const dsRoutes: Routes = [
   {
@@ -163,6 +164,10 @@ export const dsRoutes: Routes = [
   {
     path: 'textarea',
     component: TextareaShowcaseComponent,
+  },
+  {
+    path: 'toolbar',
+    component: ToolbarShowcaseComponent,
   },
   {
     path: 'url',
