@@ -8,6 +8,7 @@ import {
   ElementRef,
   viewChild,
   contentChild,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NodeComponent } from '../node/node.component';
@@ -27,6 +28,7 @@ export interface TreeNode<T = any> extends Node<T> {
   selector: 'app-tree-node',
   templateUrl: './tree-node.component.html',
   imports: [CommonModule, NodeComponent, IconComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TreeNodeComponent {
   // Inputs - Node Data

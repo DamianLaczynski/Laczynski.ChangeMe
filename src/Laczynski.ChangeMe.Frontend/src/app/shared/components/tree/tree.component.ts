@@ -1,4 +1,13 @@
-import { Component, input, output, TemplateRef, contentChild, model, signal } from '@angular/core';
+import {
+  Component,
+  input,
+  output,
+  TemplateRef,
+  contentChild,
+  model,
+  signal,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TreeNodeComponent } from '../tree-node/tree-node.component';
 import { Size, TreeStyle, Appearance, Orientation, ChevronPosition } from '../utils';
@@ -8,6 +17,7 @@ import { TreeNode } from '../tree-node/tree-node.component';
   selector: 'app-tree',
   templateUrl: './tree.component.html',
   imports: [CommonModule, TreeNodeComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TreeComponent {
   // Inputs - Tree Data

@@ -7,6 +7,7 @@ import {
   ElementRef,
   viewChild,
   contentChild,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
@@ -33,6 +34,7 @@ export type Node<T = any> = {
     `,
   ],
   imports: [CommonModule, IconComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NodeComponent {
   // Inputs - Node Data
