@@ -1,0 +1,76 @@
+// =============================================================================
+// Pagination Component Styles (Fluent 2 Design System)
+// =============================================================================
+
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use '../utils/functions' as *;
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $spacing-3 $spacing-4;
+  background: $color-neutral-background-rest;
+  border-top: 1px solid $color-neutral-stroke-rest;
+  gap: $spacing-4;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: $spacing-3;
+  }
+}
+
+.pagination__info {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
+}
+
+.pagination__text {
+  font-size: $font-size-200;
+  line-height: $line-height-200;
+  color: $color-neutral-foreground2-rest;
+  font-family: $font-family-base;
+  font-weight: $font-weight-regular;
+}
+
+.pagination__controls {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: $spacing-4;
+  flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: $spacing-3;
+    width: 100%;
+  }
+}
+
+.pagination__page-nav {
+  display: flex;
+  align-items: center;
+  gap: $spacing-1;
+  flex-wrap: wrap;
+}
+
+.pagination__ellipsis {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 $spacing-1;
+  color: $color-neutral-foreground2-rest;
+  font-size: $font-size-300;
+  line-height: $line-height-300;
+  min-width: 32px;
+  height: 32px;
+  user-select: none;
+}
+

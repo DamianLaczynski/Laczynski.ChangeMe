@@ -43,6 +43,8 @@ import { NavShowcaseComponent } from '@shared/components/nav/nav.showcase.compon
 import { NodeShowcaseComponent } from '@shared/components/node/node.showcase.component';
 import { TreeShowcaseComponent } from '@shared/components/tree/tree.showcase.component';
 import { TreeNodeShowcaseComponent } from '@shared/components/tree-node/tree-node.showcase.component';
+import { DataGridShowcaseComponent } from '@shared/components/data-grid/data-grid.showcase.component';
+import { PaginationShowcaseComponent } from '@shared/components/pagination/pagination.showcase.component';
 
 export const dsRoutes: Routes = [
   {
@@ -75,8 +77,16 @@ export const dsRoutes: Routes = [
     component: CardShowcaseComponent,
   },
   {
+    path: 'data-grid',
+    component: DataGridShowcaseComponent,
+  },
+  {
     path: 'dialog',
     component: DialogShowcaseComponent,
+  },
+  {
+    path: 'pagination',
+    component: PaginationShowcaseComponent,
   },
   {
     path: 'divider',

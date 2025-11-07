@@ -1,0 +1,76 @@
+<div class="pagination">
+  <div class="pagination__info">
+    @if (totalCount() > 0) {
+      <span class="pagination__text">
+        Displaying {{ firstRecord() }} to {{ lastRecord() }} of {{ totalCount() }} items
+      </span>
+    }
+  </div>
+
+  <div class="pagination__controls">
+    <!-- Page size selector -->
+    <app-dropdown
+      [size]="size()"
+      [items]="pageSizeDropdownItems()"
+      [ngModel]="getCurrentPageSizeValue()"
+      (change)="onPageSizeChange($event)"
+    >
+    </app-dropdown>
+
+    <!-- Page navigation -->
+    <div class="pagination__page-nav">
+      <app-button
+        [icon]="'chevron_left'"
+        [iconOnly]="true"
+        [size]="size()"
+        [disabled]="!hasPreviousPage()"
+        (click)="goToFirstPage()"
+        ariaLabel="First page"
+      >
+      </app-button>
+      <app-button
+        [icon]="'chevron_left'"
+        [iconOnly]="true"
+        [size]="size()"
+        [disabled]="!hasPreviousPage()"
+        (click)="goToPreviousPage()"
+        ariaLabel="Previous page"
+      >
+      </app-button>
+
+      @for (page of visiblePages(); track page) {
+        @if (page === -1) {
+          <span class="pagination__ellipsis">...</span>
+        } @else {
+          <app-button
+            [size]="size()"
+            [selected]="page === currentPage()"
+            (click)="goToPage(page)"
+            [attr.aria-label]="'Page ' + page"
+          >
+            {{ page }}
+          </app-button>
+        }
+      }
+
+      <app-button
+        [icon]="'chevron_right'"
+        [iconOnly]="true"
+        [size]="size()"
+        [disabled]="!hasNextPage()"
+        (click)="goToNextPage()"
+        ariaLabel="Next page"
+      >
+      </app-button>
+      <app-button
+        [icon]="'chevron_right'"
+        [iconOnly]="true"
+        [size]="size()"
+        [disabled]="!hasNextPage()"
+        (click)="goToLastPage()"
+        ariaLabel="Last page"
+      >
+      </app-button>
+    </div>
+  </div>
+</div>

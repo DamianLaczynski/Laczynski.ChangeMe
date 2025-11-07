@@ -1,0 +1,158 @@
+<div [class]="getDataGridClasses()">
+  <!-- Column Headers -->
+  <div [class]="getHeaderClasses()">
+    <!-- Header Label Row -->
+    <div class="data-grid__header-row">
+      <!-- Selection Column Header -->
+      @if (selectable() && multiSelect()) {
+        <div [class]="getSelectionHeaderClasses()">
+          <app-checkbox
+            [ngModel]="allRowsSelected()"
+            [indeterminate]="someRowsSelected()"
+            (ngModelChange)="toggleAllRows()"
+          />
+        </div>
+      }
+
+      <!-- Column Headers -->
+      @for (column of columns(); track trackByColumnId($index, column)) {
+        <div
+          [class]="getHeaderCellClasses(column)"
+          [style.width]="column.width || 'auto'"
+          [style.flex]="column.width ? 'none' : '1'"
+          (click)="onHeaderClick(column, $event)"
+          [attr.role]="column.sortable ? 'button' : null"
+          [attr.tabindex]="column.sortable ? '0' : null"
+          [attr.aria-sort]="
+            column.sortable && isColumnSorted(column)
+              ? sortDirection() === 'asc'
+                ? 'ascending'
+                : 'descending'
+              : column.sortable
+                ? 'none'
+                : null
+          "
+          [attr.aria-label]="
+            column.sortable
+              ? column.header +
+                (isColumnSorted(column) ? ' sorted ' + sortDirection() : ' sortable')
+              : null
+          "
+          (keydown.enter)="column.sortable && onHeaderClick(column, $event)"
+          (keydown.space)="
+            column.sortable && onHeaderClick(column, $event); $event.preventDefault()
+          "
+        >
+          <div class="data-grid__header-label-content">
+            @if (column.headerTemplate) {
+              <div [innerHTML]="column.headerTemplate()"></div>
+            } @else {
+              <div class="data-grid__header-text">{{ column.header }}</div>
+            }
+            @if (column.sortable) {
+              <div class="data-grid__header-sort-indicator">
+                @if (getSortIcon(column)) {
+                  <app-icon
+                    [icon]="getSortIcon(column)!"
+                    [size]="size() === 'small' ? 'small' : 'medium'"
+                  />
+                }
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Data Rows -->
+  @if (error()) {
+    <div class="data-grid__state-container">
+      <app-error-state
+        [title]="errorTitle() || 'Error loading data'"
+        [description]="errorDescription() || 'An error occurred while loading the data grid.'"
+        [icon]="errorIcon()"
+        [size]="size()"
+        [primaryAction]="errorPrimaryAction()"
+        [secondaryAction]="errorSecondaryAction()"
+        (actionClick)="onErrorActionClick($event)"
+      />
+    </div>
+  } @else if (loading()) {
+    <div class="data-grid__state-container">
+      <app-loading-state
+        [title]="loadingTitle()"
+        [description]="loadingDescription()"
+        [spinnerSize]="loadingSpinnerSize()"
+        [size]="size()"
+      />
+    </div>
+  } @else if (!hasData()) {
+    <div class="data-grid__state-container">
+      <app-empty-state
+        [title]="emptyTitle() || 'No data available'"
+        [description]="emptyDescription() || 'There is no data to display.'"
+        [icon]="emptyIcon()"
+        [size]="size()"
+        [primaryAction]="emptyPrimaryAction()"
+        [secondaryAction]="emptySecondaryAction()"
+        (actionClick)="onEmptyActionClick($event)"
+      />
+    </div>
+  } @else {
+    @for (row of rows(); track trackByRowId($index, row)) {
+      <div
+        [class]="getRowClasses(row)"
+        (mouseenter)="onRowMouseEnter(row)"
+        (mouseleave)="onRowMouseLeave(row)"
+        (click)="onRowClick(row)"
+        (keydown.space)="onRowClick(row); $event.preventDefault()"
+        (keydown.enter)="onRowClick(row); $event.preventDefault()"
+        role="row"
+        [attr.tabindex]="row.disabled ? '-1' : '0'"
+        [attr.aria-selected]="isRowSelected(row)"
+        [attr.aria-disabled]="row.disabled"
+      >
+        <!-- Selection Cell -->
+        @if (selectable()) {
+          <div [class]="getSelectionCellClasses()">
+            <app-checkbox
+              [ngModel]="isRowSelected(row)"
+              (ngModelChange)="toggleRow(row)"
+              [disabled]="row.disabled || false"
+            />
+          </div>
+        }
+
+        <!-- Data Cells -->
+        @for (column of columns(); track trackByColumnId($index, column)) {
+          <div
+            [class]="getCellClasses(column)"
+            [style.width]="column.width || 'auto'"
+            [style.flex]="column.width ? 'none' : '1'"
+            (click)="onCellClick(row, column, $event)"
+          >
+            <div class="data-grid__cell-content">
+              <div class="data-grid__cell-text">
+                {{ getCellValue(row, column) }}
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
+
+  <!-- Pagination - only show when enabled and not loading or error -->
+  @if (enablePagination() && !loading() && !error()) {
+    <app-pagination
+      [totalCount]="totalCount()"
+      [pageSize]="pageSize()"
+      [currentPage]="currentPage()"
+      [pageSizeOptions]="pageSizeOptions()"
+      [size]="size()"
+      (pageChange)="onPaginationPageChange($event)"
+      (pageSizeChange)="onPaginationPageSizeChange($event)"
+    />
+  }
+</div>

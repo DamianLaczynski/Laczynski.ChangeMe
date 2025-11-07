@@ -42,10 +42,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.5);
     z-index: 10;
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
     transition:
       backdrop-filter 0.2s ease,
       background-color 0.2s ease;

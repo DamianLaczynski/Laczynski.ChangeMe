@@ -26,6 +26,7 @@
 @use 'components/card';
 @use 'components/checkbox';
 @use 'components/color';
+@use 'components/data-grid';
 @use 'components/date';
 @use 'components/date-range';
 @use 'components/dialog';
@@ -41,8 +42,9 @@
 @use 'components/nav';
 @use 'components/node';
 @use 'components/number';
-@use 'components/tree-node';
+@use 'components/pagination';
 @use 'components/paginated-table';
+@use 'components/tree-node';
 @use 'components/progress-bar';
 @use 'components/radio';
 @use 'components/scroll-panel';

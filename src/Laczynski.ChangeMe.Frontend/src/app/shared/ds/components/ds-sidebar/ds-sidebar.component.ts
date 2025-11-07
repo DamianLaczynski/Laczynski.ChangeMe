@@ -59,6 +59,8 @@ export class DsSidebarComponent {
     { id: 'toast', label: 'Toast', icon: 'alert' },
     // Data Display Section
     { id: 'data-display', isSectionHeader: true, label: 'Data Display' },
+    { id: 'data-grid', label: 'Data Grid', icon: 'table' },
+    { id: 'pagination', label: 'Pagination', icon: 'arrow_paging' },
     { id: 'tree', label: 'Tree', icon: 'text_bullet_list_tree' },
     { id: 'tree-node', label: 'Tree Node', icon: 'rectangle_landscape' },
     { id: 'node', label: 'Node', icon: 'circle' },
