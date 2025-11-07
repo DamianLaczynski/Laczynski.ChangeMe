@@ -1,5 +1,29 @@
 <div [class]="treeClasses()" role="tree" [attr.aria-label]="'Tree view'">
-  @for (node of nodes(); track node.id) {
+  @for (node of nodes(); track node.id; let isFirst = $first; let isLast = $last) {
+    <!-- Drop indicator before first root node -->
+    @if (dropZone() && isFirst && shouldRenderDropIndicator(node.id, 'before')) {
+      <div
+        class="node__drop-indicator node__drop-indicator--before"
+        [class.node__drop-indicator--active]="shouldShowDropIndicator(node.id, 'before')"
+        (dragenter)="
+          onBetweenElementsDragOver($event, node, 'before');
+          $event.preventDefault();
+          $event.stopPropagation()
+        "
+        (dragover)="
+          onBetweenElementsDragOver($event, node, 'before');
+          $event.preventDefault();
+          $event.stopPropagation()
+        "
+        (dragleave)="onBetweenElementsDragLeave($event); $event.stopPropagation()"
+        (drop)="
+          onBetweenElementsDrop($event, node, 'before');
+          $event.preventDefault();
+          $event.stopPropagation()
+        "
+      ></div>
+    }
+
     <app-tree-node
       [node]="node"
       [size]="size()"
@@ -14,9 +38,15 @@
       [selectOnClick]="selectOnClick()"
       [showQuickActions]="showQuickActions()"
       [quickActionsTemplate]="quickActionsTemplate() || null"
+      [draggable]="draggable()"
+      [dropZone]="dropZone()"
       (nodeClick)="onNodeClick($event)"
       (nodeToggle)="onNodeToggle($event)"
       (nodeSelect)="onNodeSelect($event)"
+      (dragStart)="onDragStart($event)"
+      (dragEnd)="onDragEnd($event)"
+      (drop)="onDrop($event)"
+      (dragOver)="onDragOver($event)"
     >
       @if (contentTemplate()) {
         <ng-template #content let-node>
@@ -26,5 +56,29 @@
         </ng-template>
       }
     </app-tree-node>
+
+    <!-- Drop indicator after each root node -->
+    @if (dropZone() && shouldRenderDropIndicator(node.id, 'after')) {
+      <div
+        class="node__drop-indicator node__drop-indicator--after"
+        [class.node__drop-indicator--active]="shouldShowDropIndicator(node.id, 'after')"
+        (dragenter)="
+          onBetweenElementsDragOver($event, node, 'after');
+          $event.preventDefault();
+          $event.stopPropagation()
+        "
+        (dragover)="
+          onBetweenElementsDragOver($event, node, 'after');
+          $event.preventDefault();
+          $event.stopPropagation()
+        "
+        (dragleave)="onBetweenElementsDragLeave($event); $event.stopPropagation()"
+        (drop)="
+          onBetweenElementsDrop($event, node, 'after');
+          $event.preventDefault();
+          $event.stopPropagation()
+        "
+      ></div>
+    }
   }
 </div>

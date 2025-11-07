@@ -1,7 +1,13 @@
 <!-- Node container with modifiers -->
 <div [class]="nodeClasses()">
   <!-- Wrapper -->
-  <div class="node__wrapper">
+  <div
+    class="node__wrapper"
+    [class]="dropZone() ? getDropZoneClasses() : ''"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave($event)"
+    (drop)="onDrop($event)"
+  >
     <!-- Selection Indicator -->
     @if (showSelectionIndicator()) {
       <div class="node__indicator">

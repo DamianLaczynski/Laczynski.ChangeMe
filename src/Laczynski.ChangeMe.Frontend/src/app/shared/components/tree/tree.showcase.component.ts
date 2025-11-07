@@ -375,9 +375,176 @@ import { ButtonComponent } from '../button/button.component';
                   [iconOnly]="true"
                   icon="delete"
                   (click)="onQuickActionClick(node, 'delete'); $event.stopPropagation()"
-                ></app-button>
-              </ng-template></app-tree
+                ></app-button> </ng-template
+            ></app-tree>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================= -->
+      <!-- DRAG AND DROP -->
+      <!-- ========================================= -->
+
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Drag and Drop</h2>
+        <p class="showcase__description" style="margin-bottom: 16px;">
+          Trees support drag and drop functionality for reordering and nesting nodes. Enable
+          <code>draggable</code> to make nodes draggable and <code>dropZone</code> to allow nodes to
+          accept drops. You can drop nodes before, after, or inside other nodes.
+        </p>
+
+        <!-- Basic Drag and Drop -->
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>Basic Drag and Drop</h3>
+            <p style="margin-bottom: 8px; font-size: 12px; color: #666;">
+              Drag nodes to reorder or nest them. Drop zones show visual feedback.
+            </p>
+            <app-tree
+              [nodes]="draggableTree()"
+              [draggable]="true"
+              [dropZone]="true"
+              (nodeMoved)="onNodeMoved($event)"
+            />
+            <div style="margin-top: 12px;">
+              <app-button variant="subtle" size="small" (click)="resetDraggableTree()">
+                Reset Tree
+              </app-button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Drag and Drop Demo -->
+        <div class="showcase__grid" style="margin-top: 24px;">
+          <div class="showcase__item">
+            <h3>Interactive Drag and Drop</h3>
+            <p style="margin-bottom: 8px; font-size: 12px; color: #666;">
+              Drag nodes to reorganize the tree structure. Drop indicators show where the node will
+              be placed.
+            </p>
+            <div
+              style="
+                border: 1px solid #d1d1d1;
+                border-radius: 8px;
+                padding: 16px;
+                background: #fafafa;
+                min-height: 300px;
+              "
             >
+              <app-tree
+                [nodes]="interactiveDraggableTree()"
+                [draggable]="true"
+                [dropZone]="true"
+                [showSelectionIndicator]="true"
+                indicatorPosition="vertical"
+                (nodeMoved)="onInteractiveNodeMoved($event)"
+              />
+            </div>
+            <div style="margin-top: 12px; display: flex; gap: 8px;">
+              <app-button variant="subtle" size="small" (click)="resetInteractiveTree()">
+                Reset
+              </app-button>
+              <app-button variant="subtle" size="small" (click)="expandAllInteractive()">
+                Expand All
+              </app-button>
+              <app-button variant="subtle" size="small" (click)="collapseAllInteractive()">
+                Collapse All
+              </app-button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Drag and Drop with Different Sizes -->
+        <div class="showcase__grid" style="margin-top: 24px;">
+          <div class="showcase__item">
+            <h3>Small Tree with Drag & Drop</h3>
+            <app-tree
+              [nodes]="sizeDraggableTree()"
+              size="small"
+              [draggable]="true"
+              [dropZone]="true"
+              (nodeMoved)="onNodeMoved($event)"
+            />
+          </div>
+          <div class="showcase__item">
+            <h3>Medium Tree with Drag & Drop</h3>
+            <app-tree
+              [nodes]="sizeDraggableTree()"
+              size="medium"
+              [draggable]="true"
+              [dropZone]="true"
+              (nodeMoved)="onNodeMoved($event)"
+            />
+          </div>
+          <div class="showcase__item">
+            <h3>Large Tree with Drag & Drop</h3>
+            <app-tree
+              [nodes]="sizeDraggableTree()"
+              size="large"
+              [draggable]="true"
+              [dropZone]="true"
+              (nodeMoved)="onNodeMoved($event)"
+            />
+          </div>
+        </div>
+
+        <!-- Drag and Drop with Variants -->
+        <div class="showcase__grid" style="margin-top: 24px;">
+          <div class="showcase__item">
+            <h3>Subtle Circular with Drag & Drop</h3>
+            <app-tree
+              [nodes]="variantDraggableTree()"
+              variant="subtle-circular"
+              [draggable]="true"
+              [dropZone]="true"
+              (nodeMoved)="onNodeMoved($event)"
+            />
+          </div>
+          <div class="showcase__item">
+            <h3>Filled Circular with Drag & Drop</h3>
+            <app-tree
+              [nodes]="variantDraggableTree()"
+              variant="filled-circular"
+              [draggable]="true"
+              [dropZone]="true"
+              (nodeMoved)="onNodeMoved($event)"
+            />
+          </div>
+        </div>
+
+        <!-- Drag and Drop Events Log -->
+        <div class="showcase__grid" style="margin-top: 24px;">
+          <div class="showcase__item">
+            <h3>Drag and Drop Events Log</h3>
+            <div
+              style="
+                background: #f5f5f5;
+                border: 1px solid #d1d1d1;
+                border-radius: 4px;
+                padding: 12px;
+                max-height: 200px;
+                overflow-y: auto;
+                font-size: 12px;
+                font-family: monospace;
+              "
+            >
+              @if (dragDropEvents().length === 0) {
+                <p style="color: #999; margin: 0;">No drag and drop events yet...</p>
+              } @else {
+                @for (event of dragDropEvents(); track $index) {
+                  <div
+                    style="margin-bottom: 4px; padding: 4px; background: white; border-radius: 2px;"
+                  >
+                    <strong>{{ event.type }}:</strong> {{ event.message }}
+                  </div>
+                }
+              }
+            </div>
+            <div style="margin-top: 8px;">
+              <app-button variant="subtle" size="small" (click)="clearDragDropEvents()">
+                Clear Log
+              </app-button>
+            </div>
           </div>
         </div>
       </div>
@@ -413,6 +580,7 @@ export class TreeShowcaseComponent {
   selectCount = signal<number>(0);
   selectedNodeLabel = signal<string | null>(null);
   lastClickLabel = signal<string>('None');
+  dragDropEvents = signal<Array<{ type: string; message: string }>>([]);
 
   // Helper function to create tree nodes
   private createTreeNode(
@@ -633,6 +801,50 @@ export class TreeShowcaseComponent {
     this.createTreeNode('2', 'Another Node', 'settings'),
   ]);
 
+  // Draggable trees
+  draggableTree = signal<TreeNode[]>([
+    this.createTreeNode('drag-1', 'Documents', 'folder', [
+      this.createTreeNode('drag-1-1', 'File 1.pdf', 'description'),
+      this.createTreeNode('drag-1-2', 'File 2.docx', 'description'),
+    ]),
+    this.createTreeNode('drag-2', 'Pictures', 'image', [
+      this.createTreeNode('drag-2-1', 'Photo 1.jpg', 'image'),
+    ]),
+    this.createTreeNode('drag-3', 'Videos', 'video_library'),
+    this.createTreeNode('drag-4', 'Music', 'library_music'),
+  ]);
+
+  interactiveDraggableTree = signal<TreeNode[]>([
+    this.createTreeNode('int-1', 'Project A', 'folder', [
+      this.createTreeNode('int-1-1', 'Task 1', 'description'),
+      this.createTreeNode('int-1-2', 'Task 2', 'description'),
+      this.createTreeNode('int-1-3', 'Task 3', 'description'),
+    ]),
+    this.createTreeNode('int-2', 'Project B', 'folder', [
+      this.createTreeNode('int-2-1', 'Task 1', 'description'),
+      this.createTreeNode('int-2-2', 'Task 2', 'description'),
+    ]),
+    this.createTreeNode('int-3', 'Project C', 'folder'),
+    this.createTreeNode('int-4', 'Archive', 'archive'),
+  ]);
+
+  sizeDraggableTree = signal<TreeNode[]>([
+    this.createTreeNode('size-drag-1', 'Node 1', 'home', [
+      this.createTreeNode('size-drag-1-1', 'Child 1', 'description'),
+      this.createTreeNode('size-drag-1-2', 'Child 2', 'description'),
+    ]),
+    this.createTreeNode('size-drag-2', 'Node 2', 'settings'),
+    this.createTreeNode('size-drag-3', 'Node 3', 'folder'),
+  ]);
+
+  variantDraggableTree = signal<TreeNode[]>([
+    this.createTreeNode('var-drag-1', 'Item 1', 'home', [
+      this.createTreeNode('var-drag-1-1', 'Subitem 1', 'description'),
+    ]),
+    this.createTreeNode('var-drag-2', 'Item 2', 'settings'),
+    this.createTreeNode('var-drag-3', 'Item 3', 'folder'),
+  ]);
+
   // Event handlers
   onNodeClick(node: TreeNode): void {
     this.lastClickEvent.set(`Clicked: ${node.label} (${node.id})`);
@@ -654,5 +866,88 @@ export class TreeShowcaseComponent {
   onQuickActionClick(node: TreeNode, action: string): void {
     this.lastClickEvent.set(`Quick Action: ${action} on ${node.label}`);
     this.clickCount.update(count => count + 1);
+  }
+
+  // Drag and drop handlers
+  onNodeMoved(event: {
+    node: TreeNode;
+    target: TreeNode;
+    position: 'before' | 'after' | 'inside';
+  }): void {
+    const message = `Moved "${event.node.label}" ${event.position} "${event.target.label}"`;
+    this.dragDropEvents.update(events => [{ type: 'move', message }, ...events.slice(0, 19)]);
+  }
+
+  onInteractiveNodeMoved(event: {
+    node: TreeNode;
+    target: TreeNode;
+    position: 'before' | 'after' | 'inside';
+  }): void {
+    const message = `Moved "${event.node.label}" ${event.position} "${event.target.label}"`;
+    this.dragDropEvents.update(events => [{ type: 'move', message }, ...events.slice(0, 19)]);
+  }
+
+  resetDraggableTree(): void {
+    this.draggableTree.set([
+      this.createTreeNode('drag-1', 'Documents', 'folder', [
+        this.createTreeNode('drag-1-1', 'File 1.pdf', 'description'),
+        this.createTreeNode('drag-1-2', 'File 2.docx', 'description'),
+      ]),
+      this.createTreeNode('drag-2', 'Pictures', 'image', [
+        this.createTreeNode('drag-2-1', 'Photo 1.jpg', 'image'),
+      ]),
+      this.createTreeNode('drag-3', 'Videos', 'video_library'),
+      this.createTreeNode('drag-4', 'Music', 'library_music'),
+    ]);
+    this.dragDropEvents.update(events => [
+      { type: 'reset', message: 'Tree reset to initial state' },
+      ...events.slice(0, 19),
+    ]);
+  }
+
+  resetInteractiveTree(): void {
+    this.interactiveDraggableTree.set([
+      this.createTreeNode('int-1', 'Project A', 'folder', [
+        this.createTreeNode('int-1-1', 'Task 1', 'description'),
+        this.createTreeNode('int-1-2', 'Task 2', 'description'),
+        this.createTreeNode('int-1-3', 'Task 3', 'description'),
+      ]),
+      this.createTreeNode('int-2', 'Project B', 'folder', [
+        this.createTreeNode('int-2-1', 'Task 1', 'description'),
+        this.createTreeNode('int-2-2', 'Task 2', 'description'),
+      ]),
+      this.createTreeNode('int-3', 'Project C', 'folder'),
+      this.createTreeNode('int-4', 'Archive', 'archive'),
+    ]);
+    this.dragDropEvents.update(events => [
+      { type: 'reset', message: 'Interactive tree reset' },
+      ...events.slice(0, 19),
+    ]);
+  }
+
+  expandAllInteractive(): void {
+    const expandNode = (node: TreeNode): void => {
+      if (node.children && node.children.length > 0) {
+        node.expanded = true;
+        node.children.forEach(expandNode);
+      }
+    };
+    this.interactiveDraggableTree().forEach(expandNode);
+    this.interactiveDraggableTree.set([...this.interactiveDraggableTree()]);
+  }
+
+  collapseAllInteractive(): void {
+    const collapseNode = (node: TreeNode): void => {
+      node.expanded = false;
+      if (node.children) {
+        node.children.forEach(collapseNode);
+      }
+    };
+    this.interactiveDraggableTree().forEach(collapseNode);
+    this.interactiveDraggableTree.set([...this.interactiveDraggableTree()]);
+  }
+
+  clearDragDropEvents(): void {
+    this.dragDropEvents.set([]);
   }
 }

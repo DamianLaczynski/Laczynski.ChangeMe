@@ -50,6 +50,10 @@ export class TreeNodeComponent {
   showQuickActions = input<boolean>(false);
   quickActionsTemplate = input<TemplateRef<any> | null>(null);
 
+  // Inputs - Drag and Drop
+  draggable = input<boolean>(false);
+  dropZone = input<boolean>(false);
+
   // Content Projection
   contentTemplate = contentChild<TemplateRef<any>>('content');
 
@@ -57,8 +61,21 @@ export class TreeNodeComponent {
   nodeClick = output<TreeNode>();
   nodeToggle = output<TreeNode>();
   nodeSelect = output<TreeNode>();
+  dragStart = output<{ node: TreeNode; event: DragEvent }>();
+  dragEnd = output<{ node: TreeNode; event: DragEvent }>();
+  drop = output<{ node: TreeNode; event: DragEvent; position: 'before' | 'after' | 'inside' }>();
+  dragOver = output<{
+    node: TreeNode;
+    event: DragEvent;
+    position: 'before' | 'after' | 'inside';
+  }>();
 
   expanded = signal<boolean>(false);
+
+  // Drop zone state for between-elements indicators
+  dragOverNodeId = signal<string | number | null>(null);
+  dragOverPosition = signal<'before' | 'after' | 'inside' | null>(null);
+  draggedNodeId = signal<string | number | null>(null);
 
   constructor() {
     effect(() => {
@@ -196,5 +213,120 @@ export class TreeNodeComponent {
       node.expanded = false;
       this.nodeToggle.emit(node);
     }
+  }
+
+  // Drag and drop handlers - forward from node component
+  onDragStart(event: { node: TreeNode; event: DragEvent; data?: any }): void {
+    // Track dragged node ID to hide drop areas on it and its neighbors
+    this.draggedNodeId.set(event.node.id);
+    this.dragStart.emit({ node: event.node, event: event.event });
+  }
+
+  onDragEnd(event: { node: TreeNode; event: DragEvent }): void {
+    // Clear dragged node ID
+    this.draggedNodeId.set(null);
+    this.dragEnd.emit({ node: event.node, event: event.event });
+  }
+
+  onDrop(event: {
+    node: TreeNode;
+    event: DragEvent;
+    position: 'before' | 'after' | 'inside';
+  }): void {
+    this.drop.emit({ node: event.node, event: event.event, position: event.position });
+  }
+
+  onDragOver(event: {
+    node: TreeNode;
+    event: DragEvent;
+    position: 'before' | 'after' | 'inside';
+  }): void {
+    // Clear between-elements indicators when dragging over node itself
+    if (event.position === 'inside') {
+      this.dragOverNodeId.set(null);
+      this.dragOverPosition.set(null);
+    }
+
+    this.dragOver.emit({ node: event.node, event: event.event, position: event.position });
+  }
+
+  onBetweenElementsDragOver(event: DragEvent, node: TreeNode, position: 'before' | 'after'): void {
+    if (!this.dropZone() || node.disabled) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+    event.dataTransfer!.dropEffect = 'move';
+
+    this.dragOverNodeId.set(node.id);
+    this.dragOverPosition.set(position);
+
+    this.dragOver.emit({ node, event, position });
+  }
+
+  onBetweenElementsDragLeave(event: DragEvent): void {
+    // Only clear if we're actually leaving the drop indicator
+    const relatedTarget = event.relatedTarget as HTMLElement;
+    const currentTarget = event.currentTarget as HTMLElement;
+    if (!currentTarget.contains(relatedTarget)) {
+      this.dragOverNodeId.set(null);
+      this.dragOverPosition.set(null);
+    }
+  }
+
+  onBetweenElementsDrop(event: DragEvent, node: TreeNode, position: 'before' | 'after'): void {
+    if (!this.dropZone() || node.disabled) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.dragOverNodeId.set(null);
+    this.dragOverPosition.set(null);
+
+    this.drop.emit({ node, event, position });
+  }
+
+  shouldRenderDropIndicator(nodeId: string | number, position: 'before' | 'after'): boolean {
+    const draggedId = this.draggedNodeId();
+
+    // Don't render drop indicator if this is the dragged node
+    if (draggedId === nodeId) {
+      return false;
+    }
+
+    // Don't render drop indicator before/after if the target is next to the dragged node
+    if (draggedId !== null) {
+      const children = this.node().children;
+      if (children && children.length > 0) {
+        const draggedIndex = children.findIndex(n => n.id === draggedId);
+        const targetIndex = children.findIndex(n => n.id === nodeId);
+
+        if (draggedIndex !== -1 && targetIndex !== -1) {
+          // Hide "after" indicator on node before dragged node
+          if (position === 'after' && targetIndex === draggedIndex - 1) {
+            return false;
+          }
+          // Hide "before" indicator on node after dragged node
+          if (position === 'before' && targetIndex === draggedIndex + 1) {
+            return false;
+          }
+        }
+      }
+    }
+
+    return true;
+  }
+
+  shouldShowDropIndicator(nodeId: string | number, position: 'before' | 'after'): boolean {
+    if (!this.shouldRenderDropIndicator(nodeId, position)) {
+      return false;
+    }
+
+    return (
+      this.dropZone() && this.dragOverNodeId() === nodeId && this.dragOverPosition() === position
+    );
   }
 }

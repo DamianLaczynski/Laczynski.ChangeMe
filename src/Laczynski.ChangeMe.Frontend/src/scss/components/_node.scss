@@ -10,11 +10,58 @@
 @include block('node') {
   user-select: none;
 
-  // Prevent text wrapping
-  .node__label {
+  // Label
+  @include element('label') {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    color: currentColor;
+    font-size: $font-size-300; // 14px
+    font-family: $font-family-base;
+    font-weight: $font-weight-regular;
+    line-height: $line-height-300; // 20px
+    word-wrap: break-word;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  // Drop indicators (lines before/after node)
+  @include element('drop-indicator') {
+    position: relative;
+    left: 0;
+    right: 0;
+    height: 6px;
+    min-height: 6px;
+    background-color: transparent;
+    opacity: 0;
+    transition: opacity $duration-fast $easing-decelerate-mid;
+    pointer-events: auto;
+    z-index: 10;
+    margin: -2px 0;
+    cursor: default;
+
+    // Visual line indicator
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 4px;
+      background-color: $color-brand-primary;
+      opacity: 0;
+      transition: opacity $duration-fast $easing-decelerate-mid;
+    }
+
+    @include modifier('active') {
+      opacity: 1;
+
+      &::before {
+        opacity: 1;
+      }
+    }
   }
 
   // ==========================================================================
@@ -29,7 +76,18 @@
     align-items: center;
     gap: $spacing-05; // 2px
     border-radius: $border-radius-400; // 4px
-    transition: background-color $duration-faster $easing-ease-in-out;
+    box-sizing: border-box;
+    border: 2px solid transparent;
+    transition:
+      background-color $duration-faster $easing-ease-in-out,
+      border-color $duration-fast $easing-decelerate-mid;
+
+    // Drop zone styles
+    &.node__drop-zone {
+      &.node__drop-zone--inside {
+        border: 2px solid $color-brand-primary;
+      }
+    }
   }
 
   // Indicator container
@@ -134,19 +192,6 @@
     }
   }
 
-  // Label
-  @include element('label') {
-    display: flex;
-    flex: 1;
-    align-items: center;
-    color: currentColor;
-    font-size: $font-size-300; // 14px
-    font-family: $font-family-base;
-    font-weight: $font-weight-regular;
-    line-height: $line-height-300; // 20px
-    word-wrap: break-word;
-  }
-
   // Quick Actions
   @include element('quick-actions') {
     display: flex;
@@ -159,6 +204,21 @@
     transition:
       opacity $duration-faster $easing-ease-in-out,
       visibility $duration-faster $easing-ease-in-out;
+  }
+
+  // ==========================================================================
+  // Icon Styles
+  // ==========================================================================
+
+  @include element('icon') {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-shrink: 0;
+
+    svg {
+      transition: color $duration-faster $easing-ease-in-out;
+    }
   }
 
   // ==========================================================================
@@ -418,21 +478,6 @@
 
     .node__selector {
       height: 4px;
-    }
-  }
-
-  // ==========================================================================
-  // Icon Styles
-  // ==========================================================================
-
-  @include element('icon') {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    flex-shrink: 0;
-
-    svg {
-      transition: color $duration-faster $easing-ease-in-out;
     }
   }
 }

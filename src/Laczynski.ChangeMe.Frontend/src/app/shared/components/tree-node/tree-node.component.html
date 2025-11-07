@@ -21,8 +21,14 @@
       [selectOnClick]="selectOnClick()"
       [showQuickActions]="showQuickActions()"
       [quickActionsTemplate]="quickActionsTemplate() || null"
+      [draggable]="draggable()"
+      [dropZone]="dropZone() && draggedNodeId() !== node().id"
       (nodeClick)="onNodeClick($event)"
       (nodeSelect)="onNodeSelect($event)"
+      (dragStart)="onDragStart($event)"
+      (dragEnd)="onDragEnd($event)"
+      (drop)="onDrop($event)"
+      (dragOver)="onDragOver($event)"
     >
       <ng-template #content let-node>
         <div style="display: flex; align-items: center; gap: 8px; width: 100%">
@@ -83,7 +89,31 @@
   <!-- Children (recursive) -->
   @if (expanded() && hasChildren() && node().children && node().children!.length > 0) {
     <div class="tree-node__children" role="group">
-      @for (child of node().children; track child.id) {
+      @for (child of node().children; track child.id; let isFirst = $first; let isLast = $last) {
+        <!-- Drop indicator before first child -->
+        @if (dropZone() && isFirst && shouldRenderDropIndicator(child.id, 'before')) {
+          <div
+            class="node__drop-indicator node__drop-indicator--before"
+            [class.node__drop-indicator--active]="shouldShowDropIndicator(child.id, 'before')"
+            (dragenter)="
+              onBetweenElementsDragOver($event, child, 'before');
+              $event.preventDefault();
+              $event.stopPropagation()
+            "
+            (dragover)="
+              onBetweenElementsDragOver($event, child, 'before');
+              $event.preventDefault();
+              $event.stopPropagation()
+            "
+            (dragleave)="onBetweenElementsDragLeave($event); $event.stopPropagation()"
+            (drop)="
+              onBetweenElementsDrop($event, child, 'before');
+              $event.preventDefault();
+              $event.stopPropagation()
+            "
+          ></div>
+        }
+
         <app-tree-node
           [node]="child"
           [size]="size()"
@@ -98,10 +128,40 @@
           [selectOnClick]="selectOnClick()"
           [showQuickActions]="showQuickActions()"
           [quickActionsTemplate]="quickActionsTemplate() || null"
+          [draggable]="draggable()"
+          [dropZone]="dropZone()"
           (nodeClick)="nodeClick.emit($event)"
           (nodeToggle)="nodeToggle.emit($event)"
           (nodeSelect)="nodeSelect.emit($event)"
+          (dragStart)="dragStart.emit($event)"
+          (dragEnd)="dragEnd.emit($event)"
+          (drop)="drop.emit($event)"
+          (dragOver)="onDragOver($event)"
         />
+
+        <!-- Drop indicator after each child -->
+        @if (dropZone() && shouldRenderDropIndicator(child.id, 'after')) {
+          <div
+            class="node__drop-indicator node__drop-indicator--after"
+            [class.node__drop-indicator--active]="shouldShowDropIndicator(child.id, 'after')"
+            (dragenter)="
+              onBetweenElementsDragOver($event, child, 'after');
+              $event.preventDefault();
+              $event.stopPropagation()
+            "
+            (dragover)="
+              onBetweenElementsDragOver($event, child, 'after');
+              $event.preventDefault();
+              $event.stopPropagation()
+            "
+            (dragleave)="onBetweenElementsDragLeave($event); $event.stopPropagation()"
+            (drop)="
+              onBetweenElementsDrop($event, child, 'after');
+              $event.preventDefault();
+              $event.stopPropagation()
+            "
+          ></div>
+        }
       }
     </div>
   }

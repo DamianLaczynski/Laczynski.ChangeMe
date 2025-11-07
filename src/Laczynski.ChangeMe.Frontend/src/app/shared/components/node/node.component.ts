@@ -2,6 +2,7 @@ import {
   Component,
   input,
   output,
+  signal,
   TemplateRef,
   ElementRef,
   viewChild,
@@ -54,6 +55,8 @@ export class NodeComponent {
   // Inputs - Drag and Drop
   draggable = input<boolean>(false);
   dragData = input<any>(null);
+  dropZone = input<boolean>(false);
+  dropZonePosition = input<'before' | 'after' | 'inside'>('inside');
 
   // Outputs
   nodeClick = output<Node>();
@@ -61,10 +64,17 @@ export class NodeComponent {
   dragStart = output<{ node: Node; event: DragEvent; data?: any }>();
   dragEnd = output<{ node: Node; event: DragEvent }>();
   drag = output<{ node: Node; event: DragEvent }>();
+  drop = output<{ node: Node; event: DragEvent; position: 'before' | 'after' | 'inside' }>();
+  dragOver = output<{ node: Node; event: DragEvent; position: 'before' | 'after' | 'inside' }>();
+  dragLeave = output<{ node: Node; event: DragEvent }>();
 
   contentTemplate = contentChild<TemplateRef<any>>('content');
 
   private nodeElement = viewChild<ElementRef>('nodeElement');
+
+  // Drop zone state
+  isDragOver = signal<boolean>(false);
+  dropPosition = signal<'before' | 'after' | 'inside' | null>(null);
 
   // CSS class generators
   nodeClasses(): string {
@@ -214,10 +224,48 @@ export class NodeComponent {
 
     const dragData = this.dragData() ?? this.node();
     event.dataTransfer!.effectAllowed = 'move';
-    event.dataTransfer!.setData('application/json', JSON.stringify(dragData));
+
+    // Remove circular references before serialization
+    const serializableData = this.removeCircularReferences(dragData);
+    event.dataTransfer!.setData('application/json', JSON.stringify(serializableData));
     event.dataTransfer!.setData('text/plain', this.node().label);
 
     this.dragStart.emit({ node: this.node(), event, data: dragData });
+  }
+
+  /**
+   * Remove circular references from object to allow JSON serialization
+   */
+  private removeCircularReferences(obj: any, visited = new WeakSet()): any {
+    if (obj === null || typeof obj !== 'object') {
+      return obj;
+    }
+
+    if (visited.has(obj)) {
+      return undefined; // Circular reference detected
+    }
+
+    visited.add(obj);
+
+    if (Array.isArray(obj)) {
+      return obj.map(item => this.removeCircularReferences(item, visited));
+    }
+
+    const result: any = {};
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        // Skip parent reference to break circular dependency
+        if (key === 'parent') {
+          continue;
+        }
+        const value = this.removeCircularReferences(obj[key], visited);
+        if (value !== undefined) {
+          result[key] = value;
+        }
+      }
+    }
+
+    return result;
   }
 
   onDragEnd(event: DragEvent): void {
@@ -226,5 +274,81 @@ export class NodeComponent {
 
   onDrag(event: DragEvent): void {
     this.drag.emit({ node: this.node(), event });
+  }
+
+  // Drop zone handlers
+  onDragOver(event: DragEvent): void {
+    if (!this.dropZone() || this.node().disabled) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+    event.dataTransfer!.dropEffect = 'move';
+
+    const position = this.calculateDropPosition(event);
+    this.isDragOver.set(true);
+    this.dropPosition.set(position);
+
+    this.dragOver.emit({ node: this.node(), event, position });
+  }
+
+  onDragLeave(event: DragEvent): void {
+    if (!this.dropZone()) {
+      return;
+    }
+
+    // Only clear if we're actually leaving the drop zone
+    const relatedTarget = event.relatedTarget as HTMLElement;
+    const currentTarget = event.currentTarget as HTMLElement;
+    if (!currentTarget.contains(relatedTarget)) {
+      this.isDragOver.set(false);
+      this.dropPosition.set(null);
+      this.dragLeave.emit({ node: this.node(), event });
+    }
+  }
+
+  onDrop(event: DragEvent): void {
+    if (!this.dropZone() || this.node().disabled) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    const position = this.dropPosition() || this.dropZonePosition();
+    this.isDragOver.set(false);
+    this.dropPosition.set(null);
+
+    this.drop.emit({ node: this.node(), event, position });
+  }
+
+  private calculateDropPosition(event: DragEvent): 'before' | 'after' | 'inside' {
+    if (!this.dropZone()) {
+      return 'inside';
+    }
+
+    const element = event.currentTarget as HTMLElement;
+    if (!element) {
+      return this.dropZonePosition();
+    }
+
+    // Only support 'inside' position for node component
+    // 'before' and 'after' are handled by parent tree components
+    return 'inside';
+  }
+
+  getDropZoneClasses(): string {
+    const classes = ['node__drop-zone'];
+
+    if (this.isDragOver()) {
+      classes.push('node__drop-zone--drag-over');
+      const position = this.dropPosition();
+      if (position) {
+        classes.push(`node__drop-zone--${position}`);
+      }
+    }
+
+    return classes.join(' ');
   }
 }
