@@ -1,4 +1,12 @@
-import { Component, input, output, signal, computed } from '@angular/core';
+import {
+  Component,
+  input,
+  output,
+  signal,
+  computed,
+  TemplateRef,
+  contentChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DataGridColumn, DataGridRow } from './models/data-grid-column.model';
@@ -8,6 +16,7 @@ import { EmptyStateComponent } from '../empty-state/empty-state.component';
 import { ErrorStateComponent } from '../error-state/error-state.component';
 import { IconComponent } from '../icon/icon.component';
 import { PaginationComponent, PaginationConfig } from '../pagination/pagination.component';
+import { ButtonComponent } from '../button/button.component';
 import { QuickAction } from '../utils';
 
 @Component({
@@ -22,6 +31,7 @@ import { QuickAction } from '../utils';
     ErrorStateComponent,
     IconComponent,
     PaginationComponent,
+    ButtonComponent,
   ],
 })
 export class DataGridComponent<T = any> {
@@ -70,6 +80,11 @@ export class DataGridComponent<T = any> {
   paginationShowFirstLast = input<boolean>(false);
   paginationShowInfo = input<boolean>(false);
 
+  // Expandable rows configuration
+  expandable = input<boolean>(false);
+  rowDetailsTemplate =
+    contentChild<TemplateRef<{ $implicit: DataGridRow<T> }>>('rowDetailsTemplate');
+
   // Outputs
   rowClick = output<DataGridRow<T>>();
   rowSelect = output<DataGridRow<T>>();
@@ -80,12 +95,15 @@ export class DataGridComponent<T = any> {
   sortChange = output<{ field: string; direction: 'asc' | 'desc' }>();
   pageChange = output<number>();
   pageSizeChange = output<number>();
+  rowExpand = output<DataGridRow<T>>();
+  rowCollapse = output<DataGridRow<T>>();
 
   // Internal state
   selectedRows = signal<Set<string>>(new Set());
   hoveredRowId = signal<string | null>(null);
   sortField = signal<string | null>(null);
   sortDirection = signal<'asc' | 'desc'>('asc');
+  expandedRows = signal<Set<string>>(new Set());
 
   // Computed properties
   allRowsSelected = computed(() => {
@@ -187,6 +205,10 @@ export class DataGridComponent<T = any> {
 
     if (this.hoveredRowId() === row.id) {
       classes.push('data-grid__row--hovered');
+    }
+
+    if (this.isRowExpanded(row)) {
+      classes.push('data-grid__row--expanded');
     }
 
     return classes.join(' ');
@@ -365,5 +387,41 @@ export class DataGridComponent<T = any> {
 
   onPaginationPageSizeChange(size: number): void {
     this.pageSizeChange.emit(size);
+  }
+
+  // Expandable rows methods
+  toggleRowExpansion(row: DataGridRow<T>, event?: Event): void {
+    if (row.disabled || !this.expandable()) {
+      return;
+    }
+
+    if (event) {
+      event.stopPropagation();
+    }
+
+    const expanded = new Set(this.expandedRows());
+    const isExpanded = expanded.has(row.id);
+
+    if (isExpanded) {
+      expanded.delete(row.id);
+      this.rowCollapse.emit(row);
+    } else {
+      expanded.add(row.id);
+      this.rowExpand.emit(row);
+    }
+
+    this.expandedRows.set(expanded);
+  }
+
+  isRowExpanded(row: DataGridRow<T>): boolean {
+    return this.expandedRows().has(row.id) || row.expanded === true;
+  }
+
+  getExpandIcon(row: DataGridRow<T>): string {
+    return this.isRowExpanded(row) ? 'chevron_down' : 'chevron_right';
+  }
+
+  hasRowDetails(row: DataGridRow<T>): boolean {
+    return this.expandable() && this.rowDetailsTemplate() !== null;
   }
 }

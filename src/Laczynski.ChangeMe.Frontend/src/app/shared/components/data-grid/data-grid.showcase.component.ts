@@ -237,6 +237,87 @@ interface SampleData {
         }
       </section>
 
+      <!-- Expandable Rows -->
+      <section class="showcase__section">
+        <h2>Expandable Rows (Master-Details)</h2>
+        <p>Data grid with expandable rows showing additional details when expanded.</p>
+
+        <h3>Basic Expandable Rows</h3>
+        <div class="showcase__example">
+          <app-data-grid
+            [columns]="basicColumns"
+            [rows]="expandableRows"
+            [expandable]="true"
+            [hoverable]="true"
+            (rowExpand)="onRowExpand($event)"
+            (rowCollapse)="onRowCollapse($event)"
+          >
+            <ng-template #rowDetailsTemplate let-row>
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="display: grid; grid-template-columns: 150px 1fr; gap: 8px;">
+                  <strong>Modified By:</strong>
+                  <span>{{ row.data.modifiedBy }}</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 150px 1fr; gap: 8px;">
+                  <strong>Status:</strong>
+                  <span>{{ row.data.status }}</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 150px 1fr; gap: 8px;">
+                  <strong>File Size:</strong>
+                  <span>{{ row.data.size }}</span>
+                </div>
+                <div style="margin-top: 8px; padding-top: 12px; border-top: 1px solid #d1d1d1;">
+                  <p style="margin: 0; color: #424242;">
+                    This is additional information about <strong>{{ row.data.name }}</strong
+                    >. You can display any custom content here, such as metadata, actions, or nested
+                    data.
+                  </p>
+                </div>
+              </div>
+            </ng-template>
+          </app-data-grid>
+        </div>
+        @if (expandedRowInfo()) {
+          <p class="showcase__info">{{ expandedRowInfo() }}</p>
+        }
+
+        <h3>Expandable Rows with Selection</h3>
+        <div class="showcase__example">
+          <app-data-grid
+            [columns]="basicColumns"
+            [rows]="expandableRows"
+            [expandable]="true"
+            [selectable]="true"
+            [multiSelect]="true"
+            [hoverable]="true"
+          >
+            <ng-template #rowDetailsTemplate let-row>
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="display: grid; grid-template-columns: 150px 1fr; gap: 8px;">
+                  <strong>Modified By:</strong>
+                  <span>{{ row.data.modifiedBy }}</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 150px 1fr; gap: 8px;">
+                  <strong>Status:</strong>
+                  <span>{{ row.data.status }}</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 150px 1fr; gap: 8px;">
+                  <strong>File Size:</strong>
+                  <span>{{ row.data.size }}</span>
+                </div>
+                <div style="margin-top: 8px; padding-top: 12px; border-top: 1px solid #d1d1d1;">
+                  <p style="margin: 0; color: #424242;">
+                    This is additional information about <strong>{{ row.data.name }}</strong
+                    >. You can display any custom content here, such as metadata, actions, or nested
+                    data.
+                  </p>
+                </div>
+              </div>
+            </ng-template>
+          </app-data-grid>
+        </div>
+      </section>
+
       <!-- Pagination -->
       <section class="showcase__section">
         <h2>Pagination</h2>
@@ -259,7 +340,8 @@ interface SampleData {
         </div>
         @if (currentPage() || pageSize()) {
           <p class="showcase__info">
-            Current page: {{ currentPage() }}, Page size: {{ pageSize() }}, Total items: {{ paginatedTotalCount }}
+            Current page: {{ currentPage() }}, Page size: {{ pageSize() }}, Total items:
+            {{ paginatedTotalCount }}
           </p>
         }
 
@@ -280,7 +362,8 @@ interface SampleData {
         </div>
         @if (manyPagesCurrentPage() || manyPagesPageSize()) {
           <p class="showcase__info">
-            Current page: {{ manyPagesCurrentPage() }}, Page size: {{ manyPagesPageSize() }}, Total items: {{ manyPagesTotalCount }}
+            Current page: {{ manyPagesCurrentPage() }}, Page size: {{ manyPagesPageSize() }}, Total
+            items: {{ manyPagesTotalCount }}
           </p>
         }
       </section>
@@ -341,6 +424,7 @@ interface SampleData {
 export class DataGridShowcaseComponent {
   selectedCount = 0;
   currentSort = signal<{ field: string; direction: 'asc' | 'desc' } | null>(null);
+  expandedRowInfo = signal<string>('');
 
   // Pagination state
   currentPage = signal<number>(1);
@@ -473,6 +557,46 @@ export class DataGridShowcaseComponent {
         modified: '2024-01-12 02:20 PM',
         modifiedBy: 'Alice Brown',
         size: '3.7 MB',
+        status: 'Active',
+      },
+    },
+  ];
+
+  // Expandable rows
+  expandableRows: DataGridRow<SampleData>[] = [
+    {
+      id: 'expand-1',
+      data: {
+        id: 'expand-1',
+        name: 'Project Plan.docx',
+        type: 'Word Document',
+        modified: '2024-01-20 09:00 AM',
+        modifiedBy: 'Sarah Wilson',
+        size: '4.2 MB',
+        status: 'Active',
+      },
+    },
+    {
+      id: 'expand-2',
+      data: {
+        id: 'expand-2',
+        name: 'Budget Analysis.xlsx',
+        type: 'Excel',
+        modified: '2024-01-19 02:30 PM',
+        modifiedBy: 'Mike Davis',
+        size: '6.8 MB',
+        status: 'Active',
+      },
+    },
+    {
+      id: 'expand-3',
+      data: {
+        id: 'expand-3',
+        name: 'Quarterly Report.pdf',
+        type: 'PDF Document',
+        modified: '2024-01-18 11:15 AM',
+        modifiedBy: 'Emily Chen',
+        size: '8.5 MB',
         status: 'Active',
       },
     },
@@ -628,6 +752,17 @@ export class DataGridShowcaseComponent {
     this.manyPagesPageSize.set(size);
     this.manyPagesCurrentPage.set(1); // Reset to first page when page size changes
     console.log('Many pages - Page size changed to:', size);
+  }
+
+  // Expandable rows methods
+  onRowExpand(row: DataGridRow<SampleData>): void {
+    this.expandedRowInfo.set(`Expanded row: ${row.data.name}`);
+    console.log('Row expanded:', row);
+  }
+
+  onRowCollapse(row: DataGridRow<SampleData>): void {
+    this.expandedRowInfo.set(`Collapsed row: ${row.data.name}`);
+    console.log('Row collapsed:', row);
   }
 
   // Sortable columns

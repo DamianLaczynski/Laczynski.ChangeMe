@@ -124,6 +124,13 @@
     flex-shrink: 0;
   }
 
+  &--expand {
+    padding: 5px 8px 6px 8px;
+    width: 40px;
+    flex-shrink: 0;
+    min-width: 40px;
+  }
+
   &--regular {
     .data-grid__header-text {
       font-weight: $font-weight-regular; // 400
@@ -287,6 +294,14 @@
     flex-shrink: 0;
   }
 
+  &--expand {
+    padding: $spacing-2;
+    width: 40px;
+    flex-shrink: 0;
+    min-width: 40px;
+    justify-content: center;
+  }
+
   &--primary {
     .data-grid__cell-text {
       color: $color-neutral-foreground-rest;
@@ -342,6 +357,66 @@
   color: inherit;
   font-size: inherit;
   line-height: inherit;
+}
+
+// =============================================================================
+// Expandable Rows
+// =============================================================================
+
+.data-grid__row-details {
+  background: $color-neutral-background-selected;
+  border-bottom: 1px solid $color-neutral-stroke-rest;
+  border-top: 1px solid $color-neutral-stroke-rest;
+  margin-top: -1px; // Overlap with row border
+  animation: expandRow $duration-normal $easing-ease-in-out;
+}
+
+.data-grid__row-details-content {
+  padding: $spacing-4 $spacing-4;
+  padding-left: calc(40px + $spacing-4); // Align with expand column
+  color: $color-neutral-foreground-rest;
+  font-size: $font-size-300;
+  line-height: $line-height-300;
+
+  .data-grid--small & {
+    padding: $spacing-3 $spacing-3;
+    padding-left: calc(40px + $spacing-3);
+    font-size: $font-size-200;
+    line-height: $line-height-200;
+  }
+
+  .data-grid--large & {
+    padding: $spacing-5 $spacing-5;
+    padding-left: calc(40px + $spacing-5);
+    font-size: $font-size-400;
+    line-height: $line-height-400;
+  }
+}
+
+// Adjust padding when selection column is present
+.data-grid__row:has(.data-grid__cell--selection)
+  + .data-grid__row-details
+  .data-grid__row-details-content {
+  padding-left: calc(40px + 48px + $spacing-4); // expand + selection + padding
+
+  .data-grid--small & {
+    padding-left: calc(40px + 48px + $spacing-3);
+  }
+
+  .data-grid--large & {
+    padding-left: calc(40px + 48px + $spacing-5);
+  }
+}
+
+@keyframes expandRow {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 1000px;
+  }
 }
 
 // =============================================================================

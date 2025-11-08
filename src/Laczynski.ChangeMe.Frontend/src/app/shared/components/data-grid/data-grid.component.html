@@ -3,6 +3,14 @@
   <div [class]="getHeaderClasses()">
     <!-- Header Label Row -->
     <div class="data-grid__header-row">
+      <!-- Expand Column Header -->
+      @if (expandable()) {
+        <div
+          [class]="getHeaderCellClasses(null, false)"
+          class="data-grid__header-cell--expand"
+        ></div>
+      }
+
       <!-- Selection Column Header -->
       @if (selectable() && multiSelect()) {
         <div [class]="getSelectionHeaderClasses()">
@@ -112,7 +120,25 @@
         [attr.tabindex]="row.disabled ? '-1' : '0'"
         [attr.aria-selected]="isRowSelected(row)"
         [attr.aria-disabled]="row.disabled"
+        [attr.aria-expanded]="expandable() ? isRowExpanded(row) : null"
       >
+        <!-- Expand Cell -->
+        @if (expandable()) {
+          <div [class]="getCellClasses(null, false)" class="data-grid__cell--expand">
+            @if (hasRowDetails(row)) {
+              <app-button
+                [variant]="'subtle'"
+                [size]="size()"
+                [iconOnly]="true"
+                [icon]="getExpandIcon(row)"
+                [disabled]="row.disabled || false"
+                [ariaLabel]="isRowExpanded(row) ? 'Collapse row' : 'Expand row'"
+                (click)="toggleRowExpansion(row, $event)"
+              />
+            }
+          </div>
+        }
+
         <!-- Selection Cell -->
         @if (selectable()) {
           <div [class]="getSelectionCellClasses()">
@@ -140,6 +166,17 @@
           </div>
         }
       </div>
+
+      <!-- Row Details (Expanded Content) -->
+      @if (expandable() && isRowExpanded(row) && rowDetailsTemplate()) {
+        <div class="data-grid__row-details" [attr.aria-label]="'Details for row ' + row.id">
+          <div class="data-grid__row-details-content">
+            <ng-container
+              *ngTemplateOutlet="rowDetailsTemplate()!; context: { $implicit: row }"
+            ></ng-container>
+          </div>
+        </div>
+      }
     }
   }
 
