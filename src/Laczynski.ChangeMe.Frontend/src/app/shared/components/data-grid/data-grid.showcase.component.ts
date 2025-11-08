@@ -246,6 +246,99 @@ interface SampleData {
         }
       </section>
 
+      <!-- Virtualization -->
+      <section class="showcase__section">
+        <h2>Virtualization (Large Datasets)</h2>
+        <p>
+          Data grid with virtualization enabled. Only visible rows are rendered, providing better
+          performance for large datasets. This example shows 1000 rows with smooth scrolling.
+        </p>
+        <div class="showcase__example showcase__example--virtualized">
+          <app-data-grid
+            [columns]="sortableColumns"
+            [rows]="virtualizedRows"
+            [enableVirtualization]="true"
+            [virtualizationItemHeight]="48"
+            [hoverable]="true"
+            [striped]="true"
+            [stickyHeaders]="true"
+            (sortChange)="onSortChange($event)"
+          />
+        </div>
+        <p class="showcase__info">
+          Virtualization enabled: {{ virtualizedRows.length }} rows rendered efficiently. Only
+          visible rows are in the DOM, improving performance for large datasets.
+        </p>
+      </section>
+
+      <!-- Virtualization with Selection -->
+      <section class="showcase__section">
+        <h2>Virtualization with Selection</h2>
+        <p>
+          Virtualized data grid with row selection enabled. Selection works seamlessly with
+          virtualization.
+        </p>
+        <div class="showcase__example showcase__example--virtualized">
+          <app-data-grid
+            [columns]="sortableColumns"
+            [rows]="virtualizedRows.slice(0, 500)"
+            [enableVirtualization]="true"
+            [virtualizationItemHeight]="48"
+            [selectable]="true"
+            [multiSelect]="true"
+            [hoverable]="true"
+            [striped]="true"
+            [stickyHeaders]="true"
+            (selectionChange)="onVirtualizedSelectionChange($event)"
+            (sortChange)="onSortChange($event)"
+          />
+        </div>
+        @if (virtualizedSelectedCount > 0) {
+          <p class="showcase__info">
+            Selected rows: {{ virtualizedSelectedCount }} (out of 500 rows)
+          </p>
+        }
+      </section>
+
+      <!-- Virtualization Comparison -->
+      <section class="showcase__section">
+        <h2>Virtualization vs Standard Rendering</h2>
+        <p>
+          Compare the performance difference. The virtualized version only renders visible rows,
+          while the standard version renders all rows.
+        </p>
+        <div class="showcase__grid showcase__grid--two-columns">
+          <div class="showcase__item">
+            <h3>With Virtualization (Recommended for 100+ rows)</h3>
+            <div class="showcase__example showcase__example--virtualized">
+              <app-data-grid
+                [columns]="basicColumns"
+                [rows]="comparisonRows"
+                [enableVirtualization]="true"
+                [virtualizationItemHeight]="48"
+                [hoverable]="true"
+                [striped]="true"
+              />
+            </div>
+            <p class="showcase__info">
+              {{ comparisonRows.length }} rows - Only visible rows rendered (better performance)
+            </p>
+          </div>
+          <div class="showcase__item">
+            <h3>Without Virtualization (Standard)</h3>
+            <div class="showcase__example showcase__example--scrollable">
+              <app-data-grid
+                [columns]="basicColumns"
+                [rows]="comparisonRows.slice(0, 50)"
+                [hoverable]="true"
+                [striped]="true"
+              />
+            </div>
+            <p class="showcase__info">50 rows - All rows rendered (may be slower with 100+ rows)</p>
+          </div>
+        </div>
+      </section>
+
       <!-- Full Featured Example -->
       <section class="showcase__section">
         <h2>Full Featured DataGrid</h2>
@@ -358,11 +451,36 @@ interface SampleData {
           overflow: auto;
         }
       }
+
+      .showcase__example--virtualized {
+        max-height: 480px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+
+        ::ng-deep .data-grid__viewport {
+          height: 480px;
+          overflow: auto;
+        }
+      }
+
+      .showcase__grid--two-columns {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+      }
+
+      @media (max-width: 1024px) {
+        .showcase__grid--two-columns {
+          grid-template-columns: 1fr;
+        }
+      }
     `,
   ],
 })
 export class DataGridShowcaseComponent {
   selectedCount = 0;
+  virtualizedSelectedCount = 0;
   currentSort = signal<{ field: string; direction: 'asc' | 'desc' } | null>(null);
   expandedRowInfo = signal<string>('');
 
@@ -729,4 +847,75 @@ export class DataGridShowcaseComponent {
       sortable: true,
     },
   ];
+
+  // Virtualized rows - generate 1000 rows for virtualization demo
+  virtualizedRows: DataGridRow<SampleData>[] = (() => {
+    const rows: DataGridRow<SampleData>[] = [];
+    const baseRows = this.basicRowsExtended;
+    const fileTypes = ['Word Document', 'Excel', 'PowerPoint', 'PDF Document', 'Text File'];
+    const statuses = ['Active', 'Archived', 'Draft', 'Published'];
+    const users = [
+      'John Doe',
+      'Jane Smith',
+      'Bob Johnson',
+      'Alice Brown',
+      'Sarah Wilson',
+      'Mike Davis',
+      'Emily Chen',
+    ];
+
+    for (let i = 0; i < 1000; i++) {
+      const baseRow = baseRows[i % baseRows.length];
+      const fileType = fileTypes[i % fileTypes.length];
+      const status = statuses[i % statuses.length];
+      const user = users[i % users.length];
+      const size = `${(Math.random() * 10 + 0.5).toFixed(1)} MB`;
+      const date = new Date(2024, 0, 1 + (i % 365));
+      const modified =
+        date.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+        }) +
+        ' ' +
+        date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+      rows.push({
+        id: `virtual-${i + 1}`,
+        data: {
+          id: `virtual-${i + 1}`,
+          name: `File_${i + 1}.${fileType.split(' ')[0].toLowerCase()}`,
+          type: fileType,
+          modified: modified,
+          modifiedBy: user,
+          size: size,
+          status: status,
+        },
+      });
+    }
+    return rows;
+  })();
+
+  // Comparison rows for virtualization comparison
+  comparisonRows: DataGridRow<SampleData>[] = (() => {
+    const rows: DataGridRow<SampleData>[] = [];
+    const baseRows = this.basicRowsExtended;
+    for (let i = 0; i < 200; i++) {
+      const baseRow = baseRows[i % baseRows.length];
+      rows.push({
+        id: `compare-${i + 1}`,
+        data: {
+          ...baseRow.data,
+          id: `compare-${i + 1}`,
+          name: `${baseRow.data.name.replace(/\.[^.]+$/, '')}_${i + 1}.${baseRow.data.name.split('.').pop()}`,
+        },
+      });
+    }
+    return rows;
+  })();
+
+  onVirtualizedSelectionChange(rows: DataGridRow<SampleData>[]): void {
+    this.virtualizedSelectedCount = rows.length;
+    console.log('Virtualized selected rows:', rows);
+  }
 }

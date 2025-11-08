@@ -108,74 +108,157 @@
       />
     </div>
   } @else {
-    @for (row of rows(); track trackByRowId($index, row)) {
-      <div
-        [class]="getRowClasses(row)"
-        (mouseenter)="onRowMouseEnter(row)"
-        (mouseleave)="onRowMouseLeave(row)"
-        (click)="onRowClick(row)"
-        (keydown.space)="onRowClick(row); $event.preventDefault()"
-        (keydown.enter)="onRowClick(row); $event.preventDefault()"
-        role="row"
-        [attr.tabindex]="row.disabled ? '-1' : '0'"
-        [attr.aria-selected]="isRowSelected(row)"
-        [attr.aria-disabled]="row.disabled"
-        [attr.aria-expanded]="expandable() ? isRowExpanded(row) : null"
+    @if (enableVirtualization()) {
+      <!-- Virtualized rows -->
+      <cdk-virtual-scroll-viewport
+        [itemSize]="virtualizationItemHeight()"
+        class="data-grid__viewport"
+        [style.height.px]="virtualizationViewportHeight()"
       >
-        <!-- Expand Cell -->
-        @if (expandable()) {
-          <div [class]="getCellClasses(null, false)" class="data-grid__cell--expand">
-            @if (hasRowDetails(row)) {
-              <app-button
-                [variant]="'subtle'"
-                [size]="size()"
-                [iconOnly]="true"
-                [icon]="getExpandIcon(row)"
-                [disabled]="row.disabled || false"
-                [ariaLabel]="isRowExpanded(row) ? 'Collapse row' : 'Expand row'"
-                (click)="toggleRowExpansion(row, $event)"
-              />
+        @for (row of rows(); track trackByRowId($index, row)) {
+          <div
+            [class]="getRowClasses(row)"
+            (mouseenter)="onRowMouseEnter(row)"
+            (mouseleave)="onRowMouseLeave(row)"
+            (click)="onRowClick(row)"
+            (keydown.space)="onRowClick(row); $event.preventDefault()"
+            (keydown.enter)="onRowClick(row); $event.preventDefault()"
+            role="row"
+            [attr.tabindex]="row.disabled ? '-1' : '0'"
+            [attr.aria-selected]="isRowSelected(row)"
+            [attr.aria-disabled]="row.disabled"
+            [attr.aria-expanded]="expandable() ? isRowExpanded(row) : null"
+            [style.height.px]="virtualizationItemHeight()"
+            [style.min-height.px]="virtualizationItemHeight()"
+          >
+            <!-- Expand Cell -->
+            @if (expandable()) {
+              <div [class]="getCellClasses(null, false)" class="data-grid__cell--expand">
+                @if (hasRowDetails(row)) {
+                  <app-button
+                    [variant]="'subtle'"
+                    [size]="size()"
+                    [iconOnly]="true"
+                    [icon]="getExpandIcon(row)"
+                    [disabled]="row.disabled || false"
+                    [ariaLabel]="isRowExpanded(row) ? 'Collapse row' : 'Expand row'"
+                    (click)="toggleRowExpansion(row, $event)"
+                  />
+                }
+              </div>
+            }
+
+            <!-- Selection Cell -->
+            @if (selectable()) {
+              <div [class]="getSelectionCellClasses()">
+                <app-checkbox
+                  [ngModel]="isRowSelected(row)"
+                  (ngModelChange)="toggleRow(row)"
+                  [disabled]="row.disabled || false"
+                />
+              </div>
+            }
+
+            <!-- Data Cells -->
+            @for (column of columns(); track trackByColumnId($index, column)) {
+              <div
+                [class]="getCellClasses(column)"
+                [style.width]="column.width || 'auto'"
+                [style.flex]="column.width ? 'none' : '1'"
+                (click)="onCellClick(row, column, $event)"
+              >
+                <div class="data-grid__cell-content">
+                  <div class="data-grid__cell-text">
+                    {{ getCellValue(row, column) }}
+                  </div>
+                </div>
+              </div>
             }
           </div>
-        }
 
-        <!-- Selection Cell -->
-        @if (selectable()) {
-          <div [class]="getSelectionCellClasses()">
-            <app-checkbox
-              [ngModel]="isRowSelected(row)"
-              (ngModelChange)="toggleRow(row)"
-              [disabled]="row.disabled || false"
-            />
-          </div>
-        }
-
-        <!-- Data Cells -->
-        @for (column of columns(); track trackByColumnId($index, column)) {
-          <div
-            [class]="getCellClasses(column)"
-            [style.width]="column.width || 'auto'"
-            [style.flex]="column.width ? 'none' : '1'"
-            (click)="onCellClick(row, column, $event)"
-          >
-            <div class="data-grid__cell-content">
-              <div class="data-grid__cell-text">
-                {{ getCellValue(row, column) }}
+          <!-- Row Details (Expanded Content) - Note: Expanded rows may need special handling in virtualized mode -->
+          @if (expandable() && isRowExpanded(row) && rowDetailsTemplate()) {
+            <div class="data-grid__row-details" [attr.aria-label]="'Details for row ' + row.id">
+              <div class="data-grid__row-details-content">
+                <ng-container
+                  *ngTemplateOutlet="rowDetailsTemplate()!; context: { $implicit: row }"
+                ></ng-container>
               </div>
+            </div>
+          }
+        }
+      </cdk-virtual-scroll-viewport>
+    } @else {
+      <!-- Non-virtualized rows -->
+      @for (row of rows(); track trackByRowId($index, row)) {
+        <div
+          [class]="getRowClasses(row)"
+          (mouseenter)="onRowMouseEnter(row)"
+          (mouseleave)="onRowMouseLeave(row)"
+          (click)="onRowClick(row)"
+          (keydown.space)="onRowClick(row); $event.preventDefault()"
+          (keydown.enter)="onRowClick(row); $event.preventDefault()"
+          role="row"
+          [attr.tabindex]="row.disabled ? '-1' : '0'"
+          [attr.aria-selected]="isRowSelected(row)"
+          [attr.aria-disabled]="row.disabled"
+          [attr.aria-expanded]="expandable() ? isRowExpanded(row) : null"
+        >
+          <!-- Expand Cell -->
+          @if (expandable()) {
+            <div [class]="getCellClasses(null, false)" class="data-grid__cell--expand">
+              @if (hasRowDetails(row)) {
+                <app-button
+                  [variant]="'subtle'"
+                  [size]="size()"
+                  [iconOnly]="true"
+                  [icon]="getExpandIcon(row)"
+                  [disabled]="row.disabled || false"
+                  [ariaLabel]="isRowExpanded(row) ? 'Collapse row' : 'Expand row'"
+                  (click)="toggleRowExpansion(row, $event)"
+                />
+              }
+            </div>
+          }
+
+          <!-- Selection Cell -->
+          @if (selectable()) {
+            <div [class]="getSelectionCellClasses()">
+              <app-checkbox
+                [ngModel]="isRowSelected(row)"
+                (ngModelChange)="toggleRow(row)"
+                [disabled]="row.disabled || false"
+              />
+            </div>
+          }
+
+          <!-- Data Cells -->
+          @for (column of columns(); track trackByColumnId($index, column)) {
+            <div
+              [class]="getCellClasses(column)"
+              [style.width]="column.width || 'auto'"
+              [style.flex]="column.width ? 'none' : '1'"
+              (click)="onCellClick(row, column, $event)"
+            >
+              <div class="data-grid__cell-content">
+                <div class="data-grid__cell-text">
+                  {{ getCellValue(row, column) }}
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Row Details (Expanded Content) -->
+        @if (expandable() && isRowExpanded(row) && rowDetailsTemplate()) {
+          <div class="data-grid__row-details" [attr.aria-label]="'Details for row ' + row.id">
+            <div class="data-grid__row-details-content">
+              <ng-container
+                *ngTemplateOutlet="rowDetailsTemplate()!; context: { $implicit: row }"
+              ></ng-container>
             </div>
           </div>
         }
-      </div>
-
-      <!-- Row Details (Expanded Content) -->
-      @if (expandable() && isRowExpanded(row) && rowDetailsTemplate()) {
-        <div class="data-grid__row-details" [attr.aria-label]="'Details for row ' + row.id">
-          <div class="data-grid__row-details-content">
-            <ng-container
-              *ngTemplateOutlet="rowDetailsTemplate()!; context: { $implicit: row }"
-            ></ng-container>
-          </div>
-        </div>
       }
     }
   }

@@ -18,6 +18,7 @@ import { IconComponent } from '../icon/icon.component';
 import { PaginationComponent, PaginationConfig } from '../pagination/pagination.component';
 import { ButtonComponent } from '../button/button.component';
 import { QuickAction } from '../utils';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'app-data-grid',
@@ -25,6 +26,7 @@ import { QuickAction } from '../utils';
   imports: [
     CommonModule,
     FormsModule,
+    ScrollingModule,
     CheckboxComponent,
     LoadingStateComponent,
     EmptyStateComponent,
@@ -86,6 +88,11 @@ export class DataGridComponent<T = any> {
   rowDetailsTemplate =
     contentChild<TemplateRef<{ $implicit: DataGridRow<T> }>>('rowDetailsTemplate');
 
+  // Virtualization configuration
+  enableVirtualization = input<boolean>(false);
+  virtualizationItemHeight = input<number>(48); // Default row height in pixels
+  virtualizationBufferSize = input<number>(3); // Number of items to render outside viewport
+
   // Outputs
   rowClick = output<DataGridRow<T>>();
   rowSelect = output<DataGridRow<T>>();
@@ -136,6 +143,15 @@ export class DataGridComponent<T = any> {
       showFirstLast: this.paginationShowFirstLast(),
       showInfo: this.paginationShowInfo(),
     };
+  });
+
+  virtualizationViewportHeight = computed(() => {
+    if (!this.enableVirtualization()) {
+      return null;
+    }
+    const rowCount = this.rows().length;
+    const maxVisibleRows = 10; // Maximum visible rows before scrolling
+    return this.virtualizationItemHeight() * Math.min(rowCount, maxVisibleRows);
   });
 
   // Methods
