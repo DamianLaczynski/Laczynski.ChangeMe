@@ -1,7 +1,9 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataGridComponent } from './data-grid.component';
 import { DataGridColumn, DataGridRow } from './models/data-grid-column.model';
+import { DataGridActiveFilter } from './models/data-grid-filter.model';
+import { DataGridApiService } from './services/data-grid-api.service';
 
 interface SampleData {
   id: string;
@@ -177,6 +179,37 @@ interface SampleData {
         }
       </section>
 
+      <!-- Filtering -->
+      <section class="showcase__section">
+        <h2>Filtering</h2>
+        <p>
+          Data grid with filtering enabled. Each column can have different filter types: text,
+          number, date, select, multi-select, and boolean. Filters are applied in real-time with
+          debouncing for text inputs.
+        </p>
+        <div class="showcase__example">
+          <app-data-grid
+            [columns]="filterableColumns"
+            [rows]="filterableRows"
+            [hoverable]="true"
+            (filterChange)="onFilterChange($event)"
+          />
+        </div>
+        @if (activeFilters().length > 0) {
+          <p class="showcase__info">
+            Active filters: {{ activeFilters().length }}
+            <br />
+            @for (filter of activeFilters(); track filter.columnId) {
+              <span
+                style="display: inline-block; margin-right: 8px; margin-top: 4px; padding: 4px 8px; background: #e1e1e1; border-radius: 4px; font-size: 0.875rem;"
+              >
+                {{ filter.displayText }}
+              </span>
+            }
+          </p>
+        }
+      </section>
+
       <!-- Expandable Rows -->
       <section class="showcase__section">
         <h2>Expandable Rows (Master-Details)</h2>
@@ -242,6 +275,8 @@ interface SampleData {
           <p class="showcase__info">
             Current page: {{ currentPage() }}, Page size: {{ pageSize() }}, Total items:
             {{ paginatedTotalCount }}
+            Current page: {{ currentPage() }}, Page size: {{ pageSize() }}, Total items:
+            {{ paginatedTotalCount }}
           </p>
         }
       </section>
@@ -257,7 +292,6 @@ interface SampleData {
           <app-data-grid
             [columns]="sortableColumns"
             [rows]="virtualizedRows"
-            [enableVirtualization]="true"
             [virtualizationItemHeight]="48"
             [hoverable]="true"
             [striped]="true"
@@ -282,7 +316,6 @@ interface SampleData {
           <app-data-grid
             [columns]="sortableColumns"
             [rows]="virtualizedRows.slice(0, 500)"
-            [enableVirtualization]="true"
             [virtualizationItemHeight]="48"
             [selectable]="true"
             [multiSelect]="true"
@@ -314,7 +347,6 @@ interface SampleData {
               <app-data-grid
                 [columns]="basicColumns"
                 [rows]="comparisonRows"
-                [enableVirtualization]="true"
                 [virtualizationItemHeight]="48"
                 [hoverable]="true"
                 [striped]="true"
@@ -346,7 +378,7 @@ interface SampleData {
           Complete data grid with all features enabled: selection, sorting, sticky headers,
           expandable rows, and pagination.
         </p>
-        <div class="showcase__example showcase__example--scrollable">
+        <div class="showcase__example showcase__example">
           <app-data-grid
             [columns]="sortableColumns"
             [rows]="fullFeaturedRows()"
@@ -387,6 +419,62 @@ interface SampleData {
             </ng-template>
           </app-data-grid>
         </div>
+      </section>
+
+      <!-- API Integration Example -->
+      <section class="showcase__section">
+        <h2>API Integration (Server-Side Processing)</h2>
+        <p>
+          Data grid connected to a simulated API service. Sorting, filtering, and pagination are
+          handled server-side. The API service simulates network delay (500-1000ms) and processes
+          requests on the server.
+        </p>
+        <div class="showcase__example">
+          <app-data-grid
+            [columns]="apiColumns"
+            [rows]="apiRows()"
+            [loading]="apiLoading()"
+            [loadingTitle]="'Loading data...'"
+            [loadingDescription]="'Fetching data from server...'"
+            [loadingSpinnerSize]="'medium'"
+            [enablePagination]="true"
+            [totalCount]="apiTotalCount()"
+            [currentPage]="apiCurrentPage()"
+            [pageSize]="apiPageSize()"
+            [pageSizeOptions]="[5, 10, 20, 50]"
+            [striped]="true"
+            [bordered]="true"
+            [hoverable]="true"
+            (sortChange)="onApiSortChange($event)"
+            (filterChange)="onApiFilterChange($event)"
+            (pageChange)="onApiPageChange($event)"
+            (pageSizeChange)="onApiPageSizeChange($event)"
+          />
+        </div>
+        @if (apiActiveFilters().length > 0 || apiCurrentSort()) {
+          <p class="showcase__info">
+            @if (apiCurrentSort()) {
+              <span
+                style="display: inline-block; margin-right: 8px; margin-top: 4px; padding: 4px 8px; background: #e1e1e1; border-radius: 4px; font-size: 0.875rem;"
+              >
+                Sort: {{ apiCurrentSort()?.field }} ({{ apiCurrentSort()?.direction }})
+              </span>
+            }
+            @if (apiActiveFilters().length > 0) {
+              <span
+                style="display: inline-block; margin-right: 8px; margin-top: 4px; padding: 4px 8px; background: #e1e1e1; border-radius: 4px; font-size: 0.875rem;"
+              >
+                Filters: {{ apiActiveFilters().length }}
+              </span>
+            }
+            <span
+              style="display: inline-block; margin-right: 8px; margin-top: 4px; padding: 4px 8px; background: #e1e1e1; border-radius: 4px; font-size: 0.875rem;"
+            >
+              Page: {{ apiCurrentPage() }} / {{ Math.ceil(apiTotalCount() / apiPageSize()) }},
+              Total: {{ apiTotalCount() }}
+            </span>
+          </p>
+        }
       </section>
     </div>
   `,
@@ -478,11 +566,14 @@ interface SampleData {
     `,
   ],
 })
-export class DataGridShowcaseComponent {
+export class DataGridShowcaseComponent implements OnInit {
+  private apiService = inject(DataGridApiService<SampleData>);
+
   selectedCount = 0;
   virtualizedSelectedCount = 0;
   currentSort = signal<{ field: string; direction: 'asc' | 'desc' } | null>(null);
   expandedRowInfo = signal<string>('');
+  activeFilters = signal<DataGridActiveFilter[]>([]);
 
   // Pagination state
   currentPage = signal<number>(1);
@@ -493,6 +584,18 @@ export class DataGridShowcaseComponent {
   fullFeaturedCurrentPage = signal<number>(1);
   fullFeaturedPageSize = signal<number>(10);
   fullFeaturedTotalCount = 50;
+
+  // API integration state
+  apiRows = signal<DataGridRow<SampleData>[]>([]);
+  apiLoading = signal<boolean>(false);
+  apiTotalCount = signal<number>(0);
+  apiCurrentPage = signal<number>(1);
+  apiPageSize = signal<number>(10);
+  apiCurrentSort = signal<{ field: string; direction: 'asc' | 'desc' } | null>(null);
+  apiActiveFilters = signal<DataGridActiveFilter[]>([]);
+
+  // Expose Math for template
+  Math = Math;
 
   // Empty state actions
   emptyPrimaryAction = {
@@ -917,5 +1020,400 @@ export class DataGridShowcaseComponent {
   onVirtualizedSelectionChange(rows: DataGridRow<SampleData>[]): void {
     this.virtualizedSelectedCount = rows.length;
     console.log('Virtualized selected rows:', rows);
+  }
+
+  // Filter methods
+  onFilterChange(filters: DataGridActiveFilter[]): void {
+    this.activeFilters.set(filters);
+    console.log('Active filters:', filters);
+  }
+
+  // Filterable columns with different filter types
+  filterableColumns: DataGridColumn<SampleData>[] = [
+    {
+      id: 'name',
+      header: 'Name',
+      field: 'name',
+      width: '200px',
+      style: 'primary',
+      headerStyle: 'semibold',
+      filterable: {
+        type: 'text',
+        placeholder: 'Search by name...',
+        debounceMs: 300,
+        operators: ['contains', 'equals', 'startsWith', 'endsWith'],
+        defaultOperator: 'contains',
+      },
+    },
+    {
+      id: 'type',
+      header: 'Type',
+      field: 'type',
+      width: '150px',
+      style: 'secondary',
+      headerStyle: 'regular',
+      filterable: {
+        type: 'select',
+        placeholder: 'Select type...',
+        options: [
+          { label: 'Word Document', value: 'Word Document' },
+          { label: 'Excel', value: 'Excel' },
+          { label: 'PowerPoint', value: 'PowerPoint' },
+          { label: 'PDF Document', value: 'PDF Document' },
+          { label: 'Text File', value: 'Text File' },
+        ],
+      },
+    },
+    {
+      id: 'status',
+      header: 'Status',
+      field: 'status',
+      width: '120px',
+      style: 'secondary',
+      headerStyle: 'regular',
+      filterable: {
+        type: 'multi-select',
+        placeholder: 'Select statuses...',
+        options: [
+          { label: 'Active', value: 'Active' },
+          { label: 'Archived', value: 'Archived' },
+          { label: 'Draft', value: 'Draft' },
+          { label: 'Published', value: 'Published' },
+        ],
+      },
+    },
+    {
+      id: 'modified',
+      header: 'Modified',
+      field: 'modified',
+      width: '180px',
+      style: 'secondary',
+      headerStyle: 'regular',
+      filterable: {
+        type: 'date',
+        placeholder: 'Filter by date...',
+        operators: ['equals', 'before', 'after', 'between'],
+        defaultOperator: 'equals',
+      },
+    },
+    {
+      id: 'modifiedBy',
+      header: 'Modified By',
+      field: 'modifiedBy',
+      width: '150px',
+      style: 'secondary',
+      headerStyle: 'regular',
+      filterable: {
+        type: 'text',
+        placeholder: 'Search by user...',
+        operators: ['contains', 'equals', 'startsWith', 'endsWith'],
+        defaultOperator: 'contains',
+      },
+    },
+  ];
+
+  // Filterable rows with diverse data
+  filterableRows: DataGridRow<SampleData>[] = [
+    {
+      id: 'filter-1',
+      data: {
+        id: 'filter-1',
+        name: 'Document.docx',
+        type: 'Word Document',
+        modified: '2024-01-15',
+        modifiedBy: 'John Doe',
+        size: '2.5 MB',
+        status: 'Active',
+      },
+    },
+    {
+      id: 'filter-2',
+      data: {
+        id: 'filter-2',
+        name: 'Presentation.pptx',
+        type: 'PowerPoint',
+        modified: '2024-01-14',
+        modifiedBy: 'Jane Smith',
+        size: '5.8 MB',
+        status: 'Active',
+      },
+    },
+    {
+      id: 'filter-3',
+      data: {
+        id: 'filter-3',
+        name: 'Spreadsheet.xlsx',
+        type: 'Excel',
+        modified: '2024-01-13',
+        modifiedBy: 'Bob Johnson',
+        size: '1.2 MB',
+        status: 'Archived',
+      },
+    },
+    {
+      id: 'filter-4',
+      data: {
+        id: 'filter-4',
+        name: 'Report.pdf',
+        type: 'PDF Document',
+        modified: '2024-01-12',
+        modifiedBy: 'Alice Brown',
+        size: '3.7 MB',
+        status: 'Active',
+      },
+    },
+    {
+      id: 'filter-5',
+      data: {
+        id: 'filter-5',
+        name: 'Analytics Dashboard.xlsx',
+        type: 'Excel',
+        modified: '2024-01-11',
+        modifiedBy: 'Sarah Wilson',
+        size: '4.2 MB',
+        status: 'Draft',
+      },
+    },
+    {
+      id: 'filter-6',
+      data: {
+        id: 'filter-6',
+        name: 'Meeting Notes.docx',
+        type: 'Word Document',
+        modified: '2024-01-10',
+        modifiedBy: 'Mike Davis',
+        size: '856 KB',
+        status: 'Published',
+      },
+    },
+    {
+      id: 'filter-7',
+      data: {
+        id: 'filter-7',
+        name: 'Budget Analysis.xlsx',
+        type: 'Excel',
+        modified: '2024-01-09',
+        modifiedBy: 'Emily Chen',
+        size: '6.8 MB',
+        status: 'Active',
+      },
+    },
+    {
+      id: 'filter-8',
+      data: {
+        id: 'filter-8',
+        name: 'Quarterly Report.pdf',
+        type: 'PDF Document',
+        modified: '2024-01-08',
+        modifiedBy: 'John Doe',
+        size: '8.5 MB',
+        status: 'Archived',
+      },
+    },
+    {
+      id: 'filter-9',
+      data: {
+        id: 'filter-9',
+        name: 'Project Plan.docx',
+        type: 'Word Document',
+        modified: '2024-01-07',
+        modifiedBy: 'Jane Smith',
+        size: '3.1 MB',
+        status: 'Draft',
+      },
+    },
+    {
+      id: 'filter-10',
+      data: {
+        id: 'filter-10',
+        name: 'Data Summary.txt',
+        type: 'Text File',
+        modified: '2024-01-06',
+        modifiedBy: 'Bob Johnson',
+        size: '245 KB',
+        status: 'Published',
+      },
+    },
+  ];
+
+  ngOnInit(): void {
+    // Initialize API service with mock data
+    const allApiData: DataGridRow<SampleData>[] = [];
+    const fileTypes = ['Word Document', 'Excel', 'PowerPoint', 'PDF Document', 'Text File'];
+    const statuses = ['Active', 'Archived', 'Draft', 'Published'];
+    const users = [
+      'John Doe',
+      'Jane Smith',
+      'Bob Johnson',
+      'Alice Brown',
+      'Sarah Wilson',
+      'Mike Davis',
+      'Emily Chen',
+      'David Lee',
+      'Lisa Wang',
+      'Tom Anderson',
+    ];
+
+    // Generate 100 items for API showcase
+    for (let i = 1; i <= 100; i++) {
+      const fileType = fileTypes[i % fileTypes.length];
+      const status = statuses[i % statuses.length];
+      const user = users[i % users.length];
+      const date = new Date(2024, 0, 1 + (i % 365));
+      const modified = date.toISOString().split('T')[0]; // YYYY-MM-DD format
+
+      allApiData.push({
+        id: `api-${i}`,
+        data: {
+          id: `api-${i}`,
+          name: `File_${i}.${fileType.split(' ')[0].toLowerCase()}`,
+          type: fileType,
+          modified: modified,
+          modifiedBy: user,
+          size: `${(Math.random() * 10 + 0.5).toFixed(1)} MB`,
+          status: status,
+        },
+      });
+    }
+
+    this.apiService.initializeMockData(allApiData);
+    this.loadApiData();
+  }
+
+  // API columns with sorting and filtering
+  apiColumns: DataGridColumn<SampleData>[] = [
+    {
+      id: 'name',
+      header: 'Name',
+      field: 'name',
+      width: '200px',
+      style: 'primary',
+      headerStyle: 'semibold',
+      sortable: true,
+      filterable: {
+        type: 'text',
+        placeholder: 'Search by name...',
+        debounceMs: 300,
+        operators: ['contains', 'equals', 'startsWith', 'endsWith'],
+        defaultOperator: 'contains',
+      },
+    },
+    {
+      id: 'type',
+      header: 'Type',
+      field: 'type',
+      width: '150px',
+      style: 'secondary',
+      headerStyle: 'regular',
+      sortable: true,
+      filterable: {
+        type: 'select',
+        placeholder: 'Select type...',
+        options: [
+          { label: 'Word Document', value: 'Word Document' },
+          { label: 'Excel', value: 'Excel' },
+          { label: 'PowerPoint', value: 'PowerPoint' },
+          { label: 'PDF Document', value: 'PDF Document' },
+          { label: 'Text File', value: 'Text File' },
+        ],
+      },
+    },
+    {
+      id: 'status',
+      header: 'Status',
+      field: 'status',
+      width: '120px',
+      style: 'secondary',
+      headerStyle: 'regular',
+      sortable: true,
+      filterable: {
+        type: 'multi-select',
+        placeholder: 'Select statuses...',
+        options: [
+          { label: 'Active', value: 'Active' },
+          { label: 'Archived', value: 'Archived' },
+          { label: 'Draft', value: 'Draft' },
+          { label: 'Published', value: 'Published' },
+        ],
+      },
+    },
+    {
+      id: 'modified',
+      header: 'Modified',
+      field: 'modified',
+      width: '180px',
+      style: 'secondary',
+      headerStyle: 'regular',
+      sortable: true,
+      filterable: {
+        type: 'date',
+        placeholder: 'Filter by date...',
+        operators: ['equals', 'before', 'after', 'between'],
+        defaultOperator: 'equals',
+      },
+    },
+    {
+      id: 'modifiedBy',
+      header: 'Modified By',
+      field: 'modifiedBy',
+      width: '150px',
+      style: 'secondary',
+      headerStyle: 'regular',
+      sortable: true,
+      filterable: {
+        type: 'text',
+        placeholder: 'Search by user...',
+        operators: ['contains', 'equals', 'startsWith', 'endsWith'],
+        defaultOperator: 'contains',
+      },
+    },
+  ];
+
+  // API methods
+  loadApiData(): void {
+    this.apiLoading.set(true);
+
+    const request = {
+      page: this.apiCurrentPage(),
+      pageSize: this.apiPageSize(),
+      sortField: this.apiCurrentSort()?.field,
+      sortDirection: this.apiCurrentSort()?.direction,
+      filters: this.apiActiveFilters(),
+    };
+
+    this.apiService.getData(request).subscribe({
+      next: response => {
+        this.apiRows.set(response.data);
+        this.apiTotalCount.set(response.totalCount);
+        this.apiLoading.set(false);
+      },
+      error: error => {
+        console.error('API Error:', error);
+        this.apiLoading.set(false);
+      },
+    });
+  }
+
+  onApiSortChange(sort: { field: string; direction: 'asc' | 'desc' }): void {
+    this.apiCurrentSort.set(sort);
+    this.apiCurrentPage.set(1); // Reset to first page when sorting changes
+    this.loadApiData();
+  }
+
+  onApiFilterChange(filters: DataGridActiveFilter[]): void {
+    this.apiActiveFilters.set(filters);
+    this.apiCurrentPage.set(1); // Reset to first page when filters change
+    this.loadApiData();
+  }
+
+  onApiPageChange(page: number): void {
+    this.apiCurrentPage.set(page);
+    this.loadApiData();
+  }
+
+  onApiPageSizeChange(size: number): void {
+    this.apiPageSize.set(size);
+    this.apiCurrentPage.set(1); // Reset to first page when page size changes
+    this.loadApiData();
   }
 }

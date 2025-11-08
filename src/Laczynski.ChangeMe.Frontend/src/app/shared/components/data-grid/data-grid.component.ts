@@ -6,11 +6,26 @@ import {
   computed,
   TemplateRef,
   contentChild,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DataGridColumn, DataGridRow } from './models/data-grid-column.model';
+import {
+  DataGridFilterConfig,
+  DataGridFilterValue,
+  DataGridActiveFilter,
+  DataGridFilterType,
+  TextFilterOperator,
+  NumberFilterOperator,
+  DateFilterOperator,
+} from './models/data-grid-filter.model';
 import { CheckboxComponent } from '../field/checkbox/checkbox.component';
+import { TextComponent } from '../field/text/text.component';
+import { NumberComponent } from '../field/number/number.component';
+import { DateComponent } from '../field/date/date.component';
+import { DateRangeComponent, DateRange } from '../field/date-range/date-range.component';
+import { DropdownComponent, DropdownItem } from '../field/dropdown/dropdown.component';
 import { LoadingStateComponent } from '../loading-state/loading-state.component';
 import { EmptyStateComponent } from '../empty-state/empty-state.component';
 import { ErrorStateComponent } from '../error-state/error-state.component';
@@ -28,6 +43,11 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     FormsModule,
     ScrollingModule,
     CheckboxComponent,
+    TextComponent,
+    NumberComponent,
+    DateComponent,
+    DateRangeComponent,
+    DropdownComponent,
     LoadingStateComponent,
     EmptyStateComponent,
     ErrorStateComponent,
@@ -35,6 +55,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     PaginationComponent,
     ButtonComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataGridComponent<T = any> {
   // Inputs
@@ -89,7 +110,6 @@ export class DataGridComponent<T = any> {
     contentChild<TemplateRef<{ $implicit: DataGridRow<T> }>>('rowDetailsTemplate');
 
   // Virtualization configuration
-  enableVirtualization = input<boolean>(false);
   virtualizationItemHeight = input<number>(48); // Default row height in pixels
   virtualizationBufferSize = input<number>(3); // Number of items to render outside viewport
 
@@ -105,6 +125,7 @@ export class DataGridComponent<T = any> {
   pageSizeChange = output<number>();
   rowExpand = output<DataGridRow<T>>();
   rowCollapse = output<DataGridRow<T>>();
+  filterChange = output<DataGridActiveFilter[]>();
 
   // Internal state
   selectedRows = signal<Set<string>>(new Set());
@@ -112,6 +133,13 @@ export class DataGridComponent<T = any> {
   sortField = signal<string | null>(null);
   sortDirection = signal<'asc' | 'desc'>('asc');
   expandedRows = signal<Set<string>>(new Set());
+
+  // Filter state
+  activeFilters = signal<Map<string, DataGridFilterValue>>(new Map());
+  filterDebounceTimers = new Map<string, ReturnType<typeof setTimeout>>();
+
+  // Cache for date range values to prevent creating new objects unnecessarily
+  private dateRangeCache = new Map<string, DateRange | null>();
 
   // Computed properties
   allRowsSelected = computed(() => {
@@ -146,12 +174,13 @@ export class DataGridComponent<T = any> {
   });
 
   virtualizationViewportHeight = computed(() => {
-    if (!this.enableVirtualization()) {
-      return null;
-    }
     const rowCount = this.rows().length;
     const maxVisibleRows = 10; // Maximum visible rows before scrolling
     return this.virtualizationItemHeight() * Math.min(rowCount, maxVisibleRows);
+  });
+
+  hasFilterableColumns = computed(() => {
+    return this.columns().some(col => this.isColumnFilterable(col));
   });
 
   // Methods
@@ -446,5 +475,618 @@ export class DataGridComponent<T = any> {
 
   hasRowDetails(row: DataGridRow<T>): boolean {
     return this.expandable() && this.rowDetailsTemplate() !== null;
+  }
+
+  // Filter methods
+  isColumnFilterable(column: DataGridColumn<T>): boolean {
+    return (
+      column.filterable === true ||
+      (typeof column.filterable === 'object' && column.filterable !== null)
+    );
+  }
+
+  getFilterConfig(column: DataGridColumn<T>): DataGridFilterConfig | null {
+    if (column.filterable === true) {
+      // Default text filter
+      return {
+        type: 'text',
+        placeholder: `Filter ${column.header}...`,
+        debounceMs: 300,
+      };
+    }
+    if (typeof column.filterable === 'object' && column.filterable !== null) {
+      return column.filterable;
+    }
+    return null;
+  }
+
+  getFilterValue(columnId: string): DataGridFilterValue | null {
+    return this.activeFilters().get(columnId) || null;
+  }
+
+  hasActiveFilter(columnId: string): boolean {
+    const filter = this.activeFilters().get(columnId);
+    if (!filter) return false;
+
+    // Check if filter has any meaningful value
+    if (filter.value !== null && filter.value !== undefined && filter.value !== '') {
+      return true;
+    }
+    if (filter.valueTo !== null && filter.valueTo !== undefined && filter.valueTo !== '') {
+      return true;
+    }
+    if (filter.values && filter.values.length > 0) {
+      return true;
+    }
+
+    return false;
+  }
+
+  getFilterPlaceholder(column: DataGridColumn<T>): string {
+    const config = this.getFilterConfig(column);
+    return config?.placeholder || `Filter ${column.header}...`;
+  }
+
+  // Text filter methods
+  onTextFilterChange(column: DataGridColumn<T>, value: string): void {
+    const columnId = column.id;
+    const config = this.getFilterConfig(column);
+    if (!config) return;
+
+    const debounceMs = config.debounceMs || 300;
+
+    // Clear existing timer
+    const existingTimer = this.filterDebounceTimers.get(columnId);
+    if (existingTimer) {
+      clearTimeout(existingTimer);
+    }
+
+    // Set new timer
+    const timer = setTimeout(() => {
+      const currentFilter = this.activeFilters().get(columnId) || {};
+      const operator = currentFilter.operator || config.defaultOperator || 'contains';
+
+      const newFilter: DataGridFilterValue = {
+        ...currentFilter,
+        operator: operator as TextFilterOperator,
+        value: value,
+      };
+
+      this.updateFilter(columnId, column, newFilter);
+      this.filterDebounceTimers.delete(columnId);
+    }, debounceMs);
+
+    this.filterDebounceTimers.set(columnId, timer);
+  }
+
+  onTextFilterOperatorChange(column: DataGridColumn<T>, operator: TextFilterOperator): void {
+    const columnId = column.id;
+    const currentFilter = this.activeFilters().get(columnId) || {};
+
+    const newFilter: DataGridFilterValue = {
+      ...currentFilter,
+      operator: operator,
+    };
+
+    this.updateFilter(columnId, column, newFilter);
+  }
+
+  // Number filter methods
+  onNumberFilterChange(
+    column: DataGridColumn<T>,
+    value: string,
+    operator?: NumberFilterOperator,
+  ): void {
+    const columnId = column.id;
+    const config = this.getFilterConfig(column);
+    if (!config) return;
+
+    const currentFilter = this.activeFilters().get(columnId) || {};
+    const filterOperator = operator || currentFilter.operator || config.defaultOperator || 'equals';
+
+    const newFilter: DataGridFilterValue = {
+      ...currentFilter,
+      operator: filterOperator as NumberFilterOperator,
+      value: value ? parseFloat(value) : null,
+    };
+
+    this.updateFilter(columnId, column, newFilter);
+  }
+
+  onNumberFilterOperatorChange(column: DataGridColumn<T>, operator: NumberFilterOperator): void {
+    const columnId = column.id;
+    const currentFilter = this.activeFilters().get(columnId) || {};
+
+    const newFilter: DataGridFilterValue = {
+      ...currentFilter,
+      operator: operator,
+    };
+
+    this.updateFilter(columnId, column, newFilter);
+  }
+
+  onNumberFilterValueToChange(column: DataGridColumn<T>, value: string): void {
+    const columnId = column.id;
+    const currentFilter = this.activeFilters().get(columnId) || {};
+
+    const newFilter: DataGridFilterValue = {
+      ...currentFilter,
+      valueTo: value ? parseFloat(value) : null,
+    };
+
+    this.updateFilter(columnId, column, newFilter);
+  }
+
+  // Date filter methods
+  onDateFilterChange(
+    column: DataGridColumn<T>,
+    value: string,
+    operator?: DateFilterOperator,
+  ): void {
+    const columnId = column.id;
+    const config = this.getFilterConfig(column);
+    if (!config) return;
+
+    const currentFilter = this.activeFilters().get(columnId) || {};
+    const filterOperator = operator || currentFilter.operator || config.defaultOperator || 'equals';
+
+    const newFilter: DataGridFilterValue = {
+      ...currentFilter,
+      operator: filterOperator as DateFilterOperator,
+      value: value || null,
+    };
+
+    this.updateFilter(columnId, column, newFilter);
+  }
+
+  onDateFilterOperatorChange(column: DataGridColumn<T>, operator: DateFilterOperator): void {
+    const columnId = column.id;
+    const currentFilter = this.activeFilters().get(columnId) || {};
+
+    const newFilter: DataGridFilterValue = {
+      ...currentFilter,
+      operator: operator,
+    };
+
+    this.updateFilter(columnId, column, newFilter);
+  }
+
+  onDateFilterValueToChange(column: DataGridColumn<T>, value: string): void {
+    const columnId = column.id;
+    const currentFilter = this.activeFilters().get(columnId) || {};
+
+    const newFilter: DataGridFilterValue = {
+      ...currentFilter,
+      valueTo: value || null,
+    };
+
+    this.updateFilter(columnId, column, newFilter);
+  }
+
+  // Date range filter method (for 'between' operator)
+  onDateRangeFilterChange(column: DataGridColumn<T>, range: DateRange | null): void {
+    const columnId = column.id;
+    const currentFilter = this.activeFilters().get(columnId) || {};
+
+    // Check if values actually changed to prevent infinite loops
+    const currentStartDate = currentFilter.value || null;
+    const currentEndDate = currentFilter.valueTo || null;
+    const newStartDate = range?.startDate || null;
+    const newEndDate = range?.endDate || null;
+
+    if (currentStartDate === newStartDate && currentEndDate === newEndDate) {
+      // Values haven't changed, skip update
+      return;
+    }
+
+    const newFilter: DataGridFilterValue = {
+      ...currentFilter,
+      value: newStartDate,
+      valueTo: newEndDate,
+    };
+
+    this.updateFilter(columnId, column, newFilter);
+  }
+
+  // Get date range value for binding (uses computed signal to prevent infinite loops)
+  getDateRangeValue(columnId: string): DateRange | null {
+    return this.dateRangeValues().get(columnId) || null;
+  }
+
+  // Select filter methods
+  onSelectFilterChange(column: DataGridColumn<T>, value: any): void {
+    const columnId = column.id;
+
+    const newFilter: DataGridFilterValue = {
+      value: value || null,
+    };
+
+    this.updateFilter(columnId, column, newFilter);
+  }
+
+  // Multi-select filter methods
+  onMultiSelectFilterChange(column: DataGridColumn<T>, value: any): void {
+    const columnId = column.id;
+    // Dropdown in multi mode returns array
+    const values = Array.isArray(value) ? value : value ? [value] : [];
+
+    const newFilter: DataGridFilterValue = {
+      values: values,
+    };
+
+    this.updateFilter(columnId, column, newFilter);
+  }
+
+  // Boolean filter methods
+  onBooleanFilterChange(column: DataGridColumn<T>, value: any): void {
+    const columnId = column.id;
+    // Handle null/undefined from clearable dropdown
+    let boolValue: boolean | null = null;
+    if (value === 'true' || value === true) {
+      boolValue = true;
+    } else if (value === 'false' || value === false) {
+      boolValue = false;
+    }
+
+    const newFilter: DataGridFilterValue = {
+      value: boolValue,
+    };
+
+    this.updateFilter(columnId, column, newFilter);
+  }
+
+  // Clear filter
+  clearFilter(column: DataGridColumn<T>): void {
+    const columnId = column.id;
+
+    // Clear debounce timer if exists
+    const timer = this.filterDebounceTimers.get(columnId);
+    if (timer) {
+      clearTimeout(timer);
+      this.filterDebounceTimers.delete(columnId);
+    }
+
+    const filters = new Map(this.activeFilters());
+    filters.delete(columnId);
+    this.activeFilters.set(filters);
+
+    this.emitFilterChange();
+  }
+
+  // Update filter helper
+  private updateFilter(
+    columnId: string,
+    column: DataGridColumn<T>,
+    filter: DataGridFilterValue,
+  ): void {
+    const filters = new Map(this.activeFilters());
+
+    // Check if filter is empty (no values)
+    const isEmpty =
+      !filter.value && !filter.valueTo && (!filter.values || filter.values.length === 0);
+
+    // Remove filter if empty AND has no operator
+    // Keep filter if it has operator (even without values yet) - user might be selecting values
+    if (isEmpty && !filter.operator) {
+      filters.delete(columnId);
+    } else {
+      // Keep filter if it has operator or values
+      filters.set(columnId, filter);
+    }
+
+    this.activeFilters.set(filters);
+    this.emitFilterChange();
+  }
+
+  // Emit filter change
+  private emitFilterChange(): void {
+    const activeFiltersArray: DataGridActiveFilter[] = [];
+
+    this.activeFilters().forEach((filter, columnId) => {
+      const column = this.columns().find(col => col.id === columnId);
+      if (!column) return;
+
+      const config = this.getFilterConfig(column);
+      if (!config) return;
+
+      activeFiltersArray.push({
+        columnId,
+        type: config.type,
+        filter,
+        displayText: this.getFilterDisplayText(column, filter),
+      });
+    });
+
+    this.filterChange.emit(activeFiltersArray);
+  }
+
+  // Get filter display text
+  private getFilterDisplayText(column: DataGridColumn<T>, filter: DataGridFilterValue): string {
+    const config = this.getFilterConfig(column);
+    if (!config) return '';
+
+    const operatorText = this.getOperatorText(filter.operator, config.type);
+
+    if (config.type === 'text') {
+      return `${column.header} ${operatorText} "${filter.value}"`;
+    }
+
+    if (config.type === 'number') {
+      if (filter.operator === 'between') {
+        return `${column.header} between ${filter.value} and ${filter.valueTo}`;
+      }
+      return `${column.header} ${operatorText} ${filter.value}`;
+    }
+
+    if (config.type === 'date') {
+      if (filter.operator === 'between') {
+        return `${column.header} between ${filter.value} and ${filter.valueTo}`;
+      }
+      return `${column.header} ${operatorText} ${filter.value}`;
+    }
+
+    if (config.type === 'select') {
+      const option = config.options?.find(opt => opt.value === filter.value);
+      return `${column.header} = ${option?.label || filter.value}`;
+    }
+
+    if (config.type === 'multi-select') {
+      if (!filter.values || filter.values.length === 0) return '';
+      const selectedOptions = config.options
+        ?.filter(opt => filter.values?.includes(opt.value))
+        .map(opt => opt.label)
+        .join(', ');
+      return `${column.header} in (${selectedOptions || filter.values.join(', ')})`;
+    }
+
+    if (config.type === 'boolean') {
+      if (filter.value === true) return `${column.header} = Yes`;
+      if (filter.value === false) return `${column.header} = No`;
+      return '';
+    }
+
+    return '';
+  }
+
+  // Get operator text
+  private getOperatorText(
+    operator: TextFilterOperator | NumberFilterOperator | DateFilterOperator | undefined,
+    filterType: DataGridFilterType,
+  ): string {
+    if (!operator) return '';
+
+    const operatorMap: Record<string, string> = {
+      // Text operators
+      contains: 'contains',
+      equals: '=',
+      startsWith: 'starts with',
+      endsWith: 'ends with',
+      // Number operators
+      notEquals: '!=',
+      greaterThan: '>',
+      lessThan: '<',
+      greaterOrEqual: '>=',
+      lessOrEqual: '<=',
+      between: 'between',
+      // Date operators
+      before: 'before',
+      after: 'after',
+    };
+
+    return operatorMap[operator] || operator;
+  }
+
+  private getOperatorIcon(
+    operator: TextFilterOperator | NumberFilterOperator | DateFilterOperator | undefined,
+  ): string {
+    if (!operator) return 'filter';
+
+    const iconMap: Record<string, string> = {
+      // Text operators
+      contains: 'search',
+      equals: 'checkmark',
+      startsWith: 'text_align_left',
+      endsWith: 'text_align_right',
+      // Number operators
+      notEquals: 'dismiss',
+      greaterThan: 'arrow_up',
+      lessThan: 'arrow_down',
+      greaterOrEqual: 'arrow_maximize_vertical',
+      lessOrEqual: 'arrow_minimize_vertical',
+      between: 'arrow_swap',
+      // Date operators
+      before: 'chevron_left',
+      after: 'chevron_right',
+    };
+
+    return iconMap[operator] || 'filter';
+  }
+
+  // Get filter operators for dropdown
+  getFilterOperators(column: DataGridColumn<T>): DropdownItem[] {
+    const config = this.getFilterConfig(column);
+    if (!config || !config.operators) return [];
+
+    return config.operators.map(op => ({
+      value: op,
+      label: this.getOperatorText(op, config.type),
+      icon: this.getOperatorIcon(op),
+    }));
+  }
+
+  // Get current operator icon for dropdown
+  getCurrentOperatorIcon(column: DataGridColumn<T>): string {
+    // Use computed to track changes in activeFilters
+    const filter = this.activeFilters().get(column.id);
+    const config = this.getFilterConfig(column);
+    const operator =
+      filter?.operator ||
+      config?.defaultOperator ||
+      (config?.type === 'text' ? 'contains' : 'equals');
+    return this.getOperatorIcon(operator);
+  }
+
+  // Computed map of column IDs to operator icons for reactive updates
+  operatorIcons = computed(() => {
+    const icons = new Map<string, string>();
+    this.columns().forEach(column => {
+      if (this.isColumnFilterable(column)) {
+        const filter = this.activeFilters().get(column.id);
+        const config = this.getFilterConfig(column);
+        const operator =
+          filter?.operator ||
+          config?.defaultOperator ||
+          (config?.type === 'text' ? 'contains' : 'equals');
+        icons.set(column.id, this.getOperatorIcon(operator));
+      }
+    });
+    return icons;
+  });
+
+  // Computed map of column IDs to date range values (for 'between' operator)
+  // This prevents creating new objects on every call, which causes infinite loops
+  dateRangeValues = computed(() => {
+    const ranges = new Map<string, DateRange | null>();
+    const filters = this.activeFilters();
+
+    this.columns().forEach(column => {
+      if (this.isColumnFilterable(column)) {
+        const filter = filters.get(column.id);
+        if (filter && filter.operator === 'between') {
+          const startDate = filter.value || null;
+          const endDate = filter.valueTo || null;
+
+          // Check cache first to avoid creating new objects
+          const cached = this.dateRangeCache.get(column.id);
+          if (cached && cached.startDate === startDate && cached.endDate === endDate) {
+            ranges.set(column.id, cached);
+          } else {
+            // Create new object only if values changed
+            const newRange: DateRange | null =
+              startDate || endDate
+                ? {
+                    startDate: startDate,
+                    endDate: endDate,
+                  }
+                : null;
+            ranges.set(column.id, newRange);
+            this.dateRangeCache.set(column.id, newRange);
+          }
+        } else {
+          ranges.set(column.id, null);
+          this.dateRangeCache.delete(column.id);
+        }
+      }
+    });
+    return ranges;
+  });
+
+  // Get operator icon for a column (reactive version)
+  getOperatorIconForColumn(columnId: string): string {
+    return this.operatorIcons().get(columnId) || 'filter';
+  }
+
+  // Check if filter needs operator selector
+  needsOperatorSelector(column: DataGridColumn<T>): boolean {
+    const config = this.getFilterConfig(column);
+    if (!config) return false;
+
+    if (config.showOperator !== undefined) {
+      return config.showOperator;
+    }
+
+    // Default: show for number, date, and text (if operators are defined)
+    if (config.type === 'number' || config.type === 'date') {
+      return true;
+    }
+
+    if (config.type === 'text') {
+      // Show operator selector if operators are defined
+      return config.operators !== undefined && config.operators.length > 0;
+    }
+
+    return false;
+  }
+
+  // Check if filter needs second value (for 'between' operator)
+  needsSecondValue(column: DataGridColumn<T>): boolean {
+    const filter = this.getFilterValue(column.id);
+    const config = this.getFilterConfig(column);
+
+    // Check operator from filter first
+    if (filter?.operator === 'between') {
+      return true;
+    }
+
+    // If no filter yet, check if default operator is 'between'
+    if (!filter && config?.defaultOperator === 'between') {
+      return true;
+    }
+
+    return false;
+  }
+
+  // Get dropdown items from filter options
+  getDropdownItems(column: DataGridColumn<T>): DropdownItem[] {
+    const config = this.getFilterConfig(column);
+    if (!config || !config.options) return [];
+
+    return config.options.map(opt => ({
+      value: opt.value,
+      label: opt.label,
+      disabled: opt.disabled || false,
+    }));
+  }
+
+  // Get filter cell classes
+  getFilterCellClasses(column: DataGridColumn<T> | null, isSelection: boolean = false): string {
+    const classes = ['data-grid__filter-cell'];
+
+    if (isSelection) {
+      classes.push('data-grid__filter-cell--selection');
+    }
+
+    if (column?.alignment) {
+      classes.push(`data-grid__filter-cell--${column.alignment}`);
+    }
+
+    return classes.join(' ');
+  }
+
+  // Get boolean filter options
+  getBooleanFilterOptions(): DropdownItem[] {
+    return [
+      { value: 'true', label: 'Yes' },
+      { value: 'false', label: 'No' },
+    ];
+  }
+
+  // Get boolean filter value for binding
+  getBooleanFilterValue(columnId: string): string | null {
+    const filter = this.getFilterValue(columnId);
+    if (filter?.value === true) return 'true';
+    if (filter?.value === false) return 'false';
+    return null;
+  }
+
+  // Get minimum width for column with filter
+  getColumnMinWidth(column: DataGridColumn<T>): string | null {
+    if (!this.isColumnFilterable(column)) {
+      return null;
+    }
+
+    const config = this.getFilterConfig(column);
+    if (!config) return null;
+
+    // Columns with operator selector need more space (operator button + input)
+    if (config.type === 'number' || config.type === 'date' || config.type === 'text') {
+      if (this.needsOperatorSelector(column)) {
+        return '280px'; // Operator button (~40px) + input (~200px) + gap + padding
+      }
+      return '200px'; // Just input
+    }
+
+    // Other filter types
+    return '180px';
   }
 }

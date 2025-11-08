@@ -1,3 +1,20 @@
+@if (compact()) {
+  <!-- Compact mode: Button trigger -->
+  <app-button
+    [variant]="'subtle'"
+    [size]="size()"
+    [iconOnly]="true"
+    [icon]="computedCompactIcon()"
+    [disabled]="disabled()"
+    [ariaLabel]="ariaLabel() || label() || 'Filter'"
+    [attr.aria-expanded]="isExpanded()"
+    [attr.aria-haspopup]="true"
+    [selected]="isExpanded() || selectedValues().size > 0"
+    (click)="toggleDropdown(); $event.stopPropagation()"
+    class="dropdown-trigger--compact"
+  />
+} @else {
+  <!-- Standard mode: Input trigger -->
 <app-field
   [fieldType]="'select'"
   [label]="label()"
@@ -59,6 +76,7 @@
     </div>
   </div>
 </app-field>
+}
 
 <!-- Dropdown Panel (positioned relative to host component) -->
 <div

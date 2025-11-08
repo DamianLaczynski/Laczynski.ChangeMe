@@ -19,6 +19,7 @@ export class LoadingStateComponent {
   overlay = input<boolean>(false);
   blurContent = input<boolean>(true);
   fullScreen = input<boolean>(false);
+  isLoading = input<boolean>(false);
 
   // Content projection
   customContent = contentChild<TemplateRef<any>>('customContent');

@@ -96,6 +96,7 @@
       <app-dropdown
         [items]="getPageSizeItems()"
         [size]="size()"
+        [ngModel]="config().pageSize"
         (selectionChange)="onPageSizeSelected($event[0])"
         placeholder="Per page"
         class="pagination__page-size-selector"

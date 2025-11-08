@@ -1,5 +1,6 @@
 import { Component, computed, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ButtonComponent } from '../button/button.component';
 import { IconComponent } from '../icon/icon.component';
 import { DropdownComponent, DropdownItem } from '../field/dropdown/dropdown.component';
@@ -21,7 +22,7 @@ export interface PaginationConfig {
 @Component({
   selector: 'app-pagination',
   templateUrl: './pagination.component.html',
-  imports: [CommonModule, ButtonComponent, IconComponent, DropdownComponent],
+  imports: [CommonModule, FormsModule, ButtonComponent, IconComponent, DropdownComponent],
 })
 export class PaginationComponent {
   // Inputs

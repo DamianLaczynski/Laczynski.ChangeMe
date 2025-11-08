@@ -18,6 +18,7 @@ import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { ActionButtonComponent } from '../action-button.component';
 import { NodeComponent, Node } from '../../node/node.component';
+import { ButtonComponent } from '../../button/button.component';
 
 export interface DropdownItem {
   value: string | number;
@@ -47,6 +48,7 @@ export type DropdownMode = 'single' | 'multi';
     IconComponent,
     ActionButtonComponent,
     NodeComponent,
+    ButtonComponent,
   ],
   templateUrl: './dropdown.component.html',
   host: {
@@ -68,6 +70,8 @@ export class DropdownComponent extends FieldComponent {
   searchable = input<boolean>(false);
   clearable = input<boolean>(false);
   maxHeight = input<string>('300px');
+  compact = input<boolean>(false); // Use button trigger instead of input
+  compactIcon = input<string>('filter'); // Icon for compact mode
 
   selectionChange = output<any>();
   opened = output<void>();
@@ -89,6 +93,25 @@ export class DropdownComponent extends FieldComponent {
       return selected[0]?.label || '';
     }
     return `${selected.length} selected`;
+  });
+
+  // Computed icon for compact mode - updates when selection changes
+  computedCompactIcon = computed(() => {
+    // Check if there's a selected value
+    const selectedValues = this.selectedValues();
+    if (selectedValues.size > 0) {
+      // Get all items and find the selected one
+      const allItems = this.getAllItems();
+      const selectedValue = Array.from(selectedValues)[0];
+      const selectedItem = allItems.find(item => item.value === selectedValue);
+
+      // If the selected item has an icon, use it
+      if (selectedItem?.icon) {
+        return selectedItem.icon;
+      }
+    }
+    // Otherwise use the provided compactIcon input
+    return this.compactIcon();
   });
 
   filteredItems = computed(() => {
