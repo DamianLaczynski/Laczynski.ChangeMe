@@ -100,9 +100,12 @@
 .data-grid__header {
   align-items: center;
   background: $color-neutral-background-rest;
-  position: sticky;
-  top: 0;
-  z-index: 10;
+
+  &--sticky {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
 }
 
 .data-grid__header-row {

@@ -53,36 +53,10 @@ interface SampleData {
         }
       </section>
 
-      <!-- Full Featured Example -->
-      <section class="showcase__section">
-        <h2>Full Featured DataGrid</h2>
-        <p>Full-featured data grid with selection enabled.</p>
-        <div class="showcase__example">
-          <app-data-grid
-            [columns]="fullFeaturedColumns"
-            [rows]="fullFeaturedRows"
-            [selectable]="true"
-            [multiSelect]="true"
-            [hoverable]="true"
-          />
-        </div>
-      </section>
-
       <!-- Size Variants -->
       <section class="showcase__section">
         <h2>Size Variants</h2>
-
-        <h3>Small</h3>
-        <div class="showcase__example">
-          <app-data-grid
-            [columns]="basicColumns"
-            [rows]="basicRows.slice(0, 3)"
-            [size]="'small'"
-            [hoverable]="true"
-          />
-        </div>
-
-        <h3>Medium (Default)</h3>
+        <p>Data grid supports three size variants: small, medium (default), and large.</p>
         <div class="showcase__example">
           <app-data-grid
             [columns]="basicColumns"
@@ -91,37 +65,17 @@ interface SampleData {
             [hoverable]="true"
           />
         </div>
-
-        <h3>Large</h3>
-        <div class="showcase__example">
-          <app-data-grid
-            [columns]="basicColumns"
-            [rows]="basicRows.slice(0, 3)"
-            [size]="'large'"
-            [hoverable]="true"
-          />
-        </div>
       </section>
 
       <!-- Style Variants -->
       <section class="showcase__section">
         <h2>Style Variants</h2>
-
-        <h3>Striped</h3>
+        <p>Data grid supports striped and bordered styles.</p>
         <div class="showcase__example">
           <app-data-grid
             [columns]="basicColumns"
             [rows]="basicRows"
             [striped]="true"
-            [hoverable]="true"
-          />
-        </div>
-
-        <h3>Bordered</h3>
-        <div class="showcase__example">
-          <app-data-grid
-            [columns]="basicColumns"
-            [rows]="basicRows"
             [bordered]="true"
             [hoverable]="true"
           />
@@ -132,13 +86,6 @@ interface SampleData {
       <section class="showcase__section">
         <h2>Loading State</h2>
         <p>Data grid with loading state component.</p>
-
-        <h3>Basic Loading</h3>
-        <div class="showcase__example">
-          <app-data-grid [columns]="basicColumns" [rows]="[]" [loading]="true" />
-        </div>
-
-        <h3>Loading with Title and Description</h3>
         <div class="showcase__example">
           <app-data-grid
             [columns]="basicColumns"
@@ -154,23 +101,6 @@ interface SampleData {
       <section class="showcase__section">
         <h2>Empty State</h2>
         <p>Data grid with empty state component.</p>
-
-        <h3>Basic Empty State</h3>
-        <div class="showcase__example">
-          <app-data-grid [columns]="basicColumns" [rows]="[]" />
-        </div>
-
-        <h3>Empty State with Title and Description</h3>
-        <div class="showcase__example">
-          <app-data-grid
-            [columns]="basicColumns"
-            [rows]="[]"
-            [emptyTitle]="'No files found'"
-            [emptyDescription]="'There are no files in this folder. Upload a file to get started.'"
-          />
-        </div>
-
-        <h3>Empty State with Icon and Actions</h3>
         <div class="showcase__example">
           <app-data-grid
             [columns]="basicColumns"
@@ -189,19 +119,6 @@ interface SampleData {
       <section class="showcase__section">
         <h2>Error State</h2>
         <p>Data grid with error state component.</p>
-
-        <h3>Basic Error State</h3>
-        <div class="showcase__example">
-          <app-data-grid
-            [columns]="basicColumns"
-            [rows]="[]"
-            [error]="true"
-            [errorTitle]="'Failed to load data'"
-            [errorDescription]="'An error occurred while loading the data grid. Please try again.'"
-          />
-        </div>
-
-        <h3>Error State with Actions</h3>
         <div class="showcase__example">
           <app-data-grid
             [columns]="basicColumns"
@@ -216,6 +133,29 @@ interface SampleData {
             (errorActionClick)="onErrorActionClick($event)"
           />
         </div>
+      </section>
+
+      <!-- Sticky Headers -->
+      <section class="showcase__section">
+        <h2>Sticky Headers</h2>
+        <p>
+          Data grid with sticky headers that remain visible when scrolling. Scroll down to see the
+          headers stay fixed at the top.
+        </p>
+        <div class="showcase__example showcase__example--scrollable">
+          <app-data-grid
+            [columns]="sortableColumns"
+            [rows]="stickyHeadersRows"
+            [stickyHeaders]="true"
+            [hoverable]="true"
+            (sortChange)="onSortChange($event)"
+          />
+        </div>
+        @if (currentSort()) {
+          <p class="showcase__info">
+            Current sort: {{ currentSort()?.field }} ({{ currentSort()?.direction }})
+          </p>
+        }
       </section>
 
       <!-- Sortable Columns -->
@@ -241,8 +181,6 @@ interface SampleData {
       <section class="showcase__section">
         <h2>Expandable Rows (Master-Details)</h2>
         <p>Data grid with expandable rows showing additional details when expanded.</p>
-
-        <h3>Basic Expandable Rows</h3>
         <div class="showcase__example">
           <app-data-grid
             [columns]="basicColumns"
@@ -280,50 +218,12 @@ interface SampleData {
         @if (expandedRowInfo()) {
           <p class="showcase__info">{{ expandedRowInfo() }}</p>
         }
-
-        <h3>Expandable Rows with Selection</h3>
-        <div class="showcase__example">
-          <app-data-grid
-            [columns]="basicColumns"
-            [rows]="expandableRows"
-            [expandable]="true"
-            [selectable]="true"
-            [multiSelect]="true"
-            [hoverable]="true"
-          >
-            <ng-template #rowDetailsTemplate let-row>
-              <div style="display: flex; flex-direction: column; gap: 12px;">
-                <div style="display: grid; grid-template-columns: 150px 1fr; gap: 8px;">
-                  <strong>Modified By:</strong>
-                  <span>{{ row.data.modifiedBy }}</span>
-                </div>
-                <div style="display: grid; grid-template-columns: 150px 1fr; gap: 8px;">
-                  <strong>Status:</strong>
-                  <span>{{ row.data.status }}</span>
-                </div>
-                <div style="display: grid; grid-template-columns: 150px 1fr; gap: 8px;">
-                  <strong>File Size:</strong>
-                  <span>{{ row.data.size }}</span>
-                </div>
-                <div style="margin-top: 8px; padding-top: 12px; border-top: 1px solid #d1d1d1;">
-                  <p style="margin: 0; color: #424242;">
-                    This is additional information about <strong>{{ row.data.name }}</strong
-                    >. You can display any custom content here, such as metadata, actions, or nested
-                    data.
-                  </p>
-                </div>
-              </div>
-            </ng-template>
-          </app-data-grid>
-        </div>
       </section>
 
       <!-- Pagination -->
       <section class="showcase__section">
         <h2>Pagination</h2>
         <p>Data grid with pagination controls. Navigate through pages and change page size.</p>
-
-        <h3>Basic Pagination</h3>
         <div class="showcase__example">
           <app-data-grid
             [columns]="basicColumns"
@@ -344,28 +244,56 @@ interface SampleData {
             {{ paginatedTotalCount }}
           </p>
         }
+      </section>
 
-        <h3>Pagination with Many Pages</h3>
-        <div class="showcase__example">
+      <!-- Full Featured Example -->
+      <section class="showcase__section">
+        <h2>Full Featured DataGrid</h2>
+        <p>
+          Complete data grid with all features enabled: selection, sorting, sticky headers,
+          expandable rows, and pagination.
+        </p>
+        <div class="showcase__example showcase__example--scrollable">
           <app-data-grid
-            [columns]="basicColumns"
-            [rows]="manyPagesRows()"
+            [columns]="sortableColumns"
+            [rows]="fullFeaturedRows()"
+            [selectable]="true"
+            [multiSelect]="true"
+            [stickyHeaders]="true"
+            [expandable]="true"
             [enablePagination]="true"
-            [totalCount]="manyPagesTotalCount"
-            [currentPage]="manyPagesCurrentPage()"
-            [pageSize]="manyPagesPageSize()"
+            [totalCount]="fullFeaturedTotalCount"
+            [currentPage]="fullFeaturedCurrentPage()"
+            [pageSize]="fullFeaturedPageSize()"
             [pageSizeOptions]="[5, 10, 20, 50]"
+            [striped]="true"
+            [bordered]="true"
             [hoverable]="true"
-            (pageChange)="onManyPagesPageChange($event)"
-            (pageSizeChange)="onManyPagesPageSizeChange($event)"
-          />
+            (selectionChange)="onSelectionChange($event)"
+            (sortChange)="onSortChange($event)"
+            (rowExpand)="onRowExpand($event)"
+            (rowCollapse)="onRowCollapse($event)"
+            (pageChange)="onFullFeaturedPageChange($event)"
+            (pageSizeChange)="onFullFeaturedPageSizeChange($event)"
+          >
+            <ng-template #rowDetailsTemplate let-row>
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="display: grid; grid-template-columns: 150px 1fr; gap: 8px;">
+                  <strong>Modified By:</strong>
+                  <span>{{ row.data.modifiedBy }}</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 150px 1fr; gap: 8px;">
+                  <strong>Status:</strong>
+                  <span>{{ row.data.status }}</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 150px 1fr; gap: 8px;">
+                  <strong>File Size:</strong>
+                  <span>{{ row.data.size }}</span>
+                </div>
+              </div>
+            </ng-template>
+          </app-data-grid>
         </div>
-        @if (manyPagesCurrentPage() || manyPagesPageSize()) {
-          <p class="showcase__info">
-            Current page: {{ manyPagesCurrentPage() }}, Page size: {{ manyPagesPageSize() }}, Total
-            items: {{ manyPagesTotalCount }}
-          </p>
-        }
       </section>
     </div>
   `,
@@ -418,6 +346,18 @@ interface SampleData {
         color: var(--Neutral-Foreground-Rest, #242424);
         font-size: 0.875rem;
       }
+
+      .showcase__example--scrollable {
+        max-height: 400px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+
+        ::ng-deep .data-grid {
+          max-height: 400px;
+          overflow: auto;
+        }
+      }
     `,
   ],
 })
@@ -431,10 +371,10 @@ export class DataGridShowcaseComponent {
   pageSize = signal<number>(10);
   paginatedTotalCount = 25;
 
-  // Many pages pagination state
-  manyPagesCurrentPage = signal<number>(1);
-  manyPagesPageSize = signal<number>(10);
-  manyPagesTotalCount = 150;
+  // Full featured pagination state
+  fullFeaturedCurrentPage = signal<number>(1);
+  fullFeaturedPageSize = signal<number>(10);
+  fullFeaturedTotalCount = 50;
 
   // Empty state actions
   emptyPrimaryAction = {
@@ -649,17 +589,17 @@ export class DataGridShowcaseComponent {
     return rows;
   })();
 
-  // Generate many pages rows (150 items total)
-  allManyPagesRows: DataGridRow<SampleData>[] = (() => {
+  // Generate full featured rows (50 items total)
+  allFullFeaturedRows: DataGridRow<SampleData>[] = (() => {
     const rows: DataGridRow<SampleData>[] = [];
     const baseRows = this.basicRowsExtended;
-    for (let i = 0; i < 150; i++) {
+    for (let i = 0; i < 50; i++) {
       const baseRow = baseRows[i % baseRows.length];
       rows.push({
-        id: `many-${i + 1}`,
+        id: `full-${i + 1}`,
         data: {
           ...baseRow.data,
-          id: `many-${i + 1}`,
+          id: `full-${i + 1}`,
           name: `${baseRow.data.name.replace(/\.[^.]+$/, '')} (${i + 1}).${baseRow.data.name.split('.').pop()}`,
         },
       });
@@ -667,39 +607,11 @@ export class DataGridShowcaseComponent {
     return rows;
   })();
 
-  // Full-featured columns
-  fullFeaturedColumns: DataGridColumn<SampleData>[] = [
-    {
-      id: 'name',
-      header: 'Name',
-      field: 'name',
-      style: 'primary',
-      headerStyle: 'semibold',
-    },
-    {
-      id: 'type',
-      header: 'Type',
-      field: 'type',
-      style: 'secondary',
-      headerStyle: 'regular',
-    },
-    {
-      id: 'modified',
-      header: 'Modified',
-      field: 'modified',
-      style: 'secondary',
-      headerStyle: 'regular',
-    },
-    {
-      id: 'size',
-      header: 'Size',
-      field: 'size',
-      style: 'secondary',
-      headerStyle: 'regular',
-    },
-  ];
-
-  fullFeaturedRows: DataGridRow<SampleData>[] = this.basicRowsExtended;
+  fullFeaturedRows(): DataGridRow<SampleData>[] {
+    const start = (this.fullFeaturedCurrentPage() - 1) * this.fullFeaturedPageSize();
+    const end = start + this.fullFeaturedPageSize();
+    return this.allFullFeaturedRows.slice(start, end);
+  }
 
   onSelectionChange(rows: DataGridRow<SampleData>[]): void {
     this.selectedCount = rows.length;
@@ -737,21 +649,16 @@ export class DataGridShowcaseComponent {
     console.log('Page size changed to:', size);
   }
 
-  manyPagesRows(): DataGridRow<SampleData>[] {
-    const start = (this.manyPagesCurrentPage() - 1) * this.manyPagesPageSize();
-    const end = start + this.manyPagesPageSize();
-    return this.allManyPagesRows.slice(start, end);
+  // Full featured pagination methods
+  onFullFeaturedPageChange(page: number): void {
+    this.fullFeaturedCurrentPage.set(page);
+    console.log('Full featured - Page changed to:', page);
   }
 
-  onManyPagesPageChange(page: number): void {
-    this.manyPagesCurrentPage.set(page);
-    console.log('Many pages - Page changed to:', page);
-  }
-
-  onManyPagesPageSizeChange(size: number): void {
-    this.manyPagesPageSize.set(size);
-    this.manyPagesCurrentPage.set(1); // Reset to first page when page size changes
-    console.log('Many pages - Page size changed to:', size);
+  onFullFeaturedPageSizeChange(size: number): void {
+    this.fullFeaturedPageSize.set(size);
+    this.fullFeaturedCurrentPage.set(1); // Reset to first page when page size changes
+    console.log('Full featured - Page size changed to:', size);
   }
 
   // Expandable rows methods
@@ -764,6 +671,24 @@ export class DataGridShowcaseComponent {
     this.expandedRowInfo.set(`Collapsed row: ${row.data.name}`);
     console.log('Row collapsed:', row);
   }
+
+  // Sticky headers rows - generate more rows for scrolling demonstration
+  stickyHeadersRows: DataGridRow<SampleData>[] = (() => {
+    const rows: DataGridRow<SampleData>[] = [];
+    const baseRows = this.basicRowsExtended;
+    for (let i = 0; i < 20; i++) {
+      const baseRow = baseRows[i % baseRows.length];
+      rows.push({
+        id: `sticky-${i + 1}`,
+        data: {
+          ...baseRow.data,
+          id: `sticky-${i + 1}`,
+          name: `${baseRow.data.name.replace(/\.[^.]+$/, '')} (${i + 1}).${baseRow.data.name.split('.').pop()}`,
+        },
+      });
+    }
+    return rows;
+  })();
 
   // Sortable columns
   sortableColumns: DataGridColumn<SampleData>[] = [

@@ -45,6 +45,7 @@ export class DataGridComponent<T = any> {
   hoverable = input<boolean>(true);
   size = input<'small' | 'medium' | 'large'>('medium');
   loading = input<boolean>(false);
+  stickyHeaders = input<boolean>(false);
 
   // Loading state configuration
   loadingTitle = input<string>('');
@@ -159,7 +160,13 @@ export class DataGridComponent<T = any> {
   }
 
   getHeaderClasses(): string {
-    return 'data-grid__header';
+    const classes = ['data-grid__header'];
+
+    if (this.stickyHeaders()) {
+      classes.push('data-grid__header--sticky');
+    }
+
+    return classes.join(' ');
   }
 
   getHeaderCellClasses(column: DataGridColumn<T> | null, isSelection: boolean = false): string {
