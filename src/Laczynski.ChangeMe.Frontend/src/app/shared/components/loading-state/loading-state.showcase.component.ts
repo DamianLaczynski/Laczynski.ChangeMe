@@ -1,14 +1,13 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoadingStateComponent } from './loading-state.component';
-import { SpinnerComponent } from '../spinner/spinner.component';
 import { CardComponent } from '../card/card.component';
 import { ButtonComponent } from '../button/button.component';
 import { QuickAction } from '../utils';
 
 @Component({
   selector: 'app-loading-state-showcase',
-  imports: [CommonModule, LoadingStateComponent, SpinnerComponent, CardComponent, ButtonComponent],
+  imports: [CommonModule, LoadingStateComponent, CardComponent, ButtonComponent],
   template: `
     <div class="showcase showcase--responsive">
       <h1 class="showcase__title">Loading State Component</h1>
@@ -100,25 +99,6 @@ import { QuickAction } from '../utils';
         </div>
       </div>
 
-      <!-- With Custom Spinner -->
-      <div class="showcase__section">
-        <h2 class="showcase__section__title">Loading State with Custom Spinner</h2>
-        <p class="showcase__section__description">
-          Loading state with a custom spinner template for more complex visuals.
-        </p>
-        <div class="showcase__preview">
-          <app-loading-state title="Processing..." description="This may take a few moments">
-            <ng-template #customSpinner>
-              <div
-                style="width: 64px; height: 64px; border-radius: 50%; background: var(--Neutral-Background-hover, #F3F2F1); display: flex; align-items: center; justify-content: center;"
-              >
-                <app-spinner size="large" />
-              </div>
-            </ng-template>
-          </app-loading-state>
-        </div>
-      </div>
-
       <!-- With Custom Content -->
       <div class="showcase__section">
         <h2 class="showcase__section__title">Loading State with Custom Content</h2>
@@ -127,7 +107,7 @@ import { QuickAction } from '../utils';
         </p>
         <div class="showcase__preview">
           <app-loading-state title="Initializing application">
-            <ng-template #customContent>
+            <ng-template #content>
               <div style="text-align: center; padding: 16px;">
                 <p style="margin-bottom: 16px;">Setting up your environment...</p>
                 <div style="display: flex; gap: 8px; justify-content: center;">

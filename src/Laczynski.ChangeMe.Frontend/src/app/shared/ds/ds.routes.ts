@@ -24,6 +24,7 @@ import { LoadingStateShowcaseComponent } from '@shared/components/loading-state/
 import { MenuShowcaseComponent } from '@shared/components/menu/menu.showcase.component';
 import { TagShowcaseComponent } from '@shared/components/tag/tag.showcase.component';
 import { ProgressBarShowcaseComponent } from '@shared/components/progress-bar/progress-bar.showcase.component';
+import { StateContainerShowcaseComponent } from '@shared/components/state-container/state-container.showcase.component';
 import { SliderShowcaseComponent } from '@shared/components/field/slider/slider.showcase.component';
 import { DividerShowcaseComponent } from '@shared/components/divider/divider.showcase.component';
 import { BadgeShowcaseComponent } from '@shared/components/badge/badge.showcase.component';
@@ -104,6 +105,10 @@ export const dsRoutes: Routes = [
   {
     path: 'loading-state',
     component: LoadingStateShowcaseComponent,
+  },
+  {
+    path: 'state-container',
+    component: StateContainerShowcaseComponent,
   },
   {
     path: 'checkbox',

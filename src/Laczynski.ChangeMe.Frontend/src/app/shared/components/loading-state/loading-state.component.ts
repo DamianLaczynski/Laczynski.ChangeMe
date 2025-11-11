@@ -12,7 +12,6 @@ export class LoadingStateComponent {
   // Inputs
   title = input<string>('');
   description = input<string>('');
-  spinnerSize = input<SpinnerSize>('medium');
   size = input<Size, Size | undefined>('medium', {
     transform: (value: Size | undefined) => value ?? 'medium',
   });
@@ -22,8 +21,7 @@ export class LoadingStateComponent {
   isLoading = input<boolean>(false);
 
   // Content projection
-  customContent = contentChild<TemplateRef<any>>('customContent');
-  customSpinner = contentChild<TemplateRef<any>>('customSpinner');
+  content = contentChild<TemplateRef<any>>('content');
 
   // Methods
   loadingStateClasses = computed(() => {
@@ -58,19 +56,11 @@ export class LoadingStateComponent {
     return classes.join(' ');
   });
 
-  hasSpinner(): boolean {
-    return !!this.customSpinner();
-  }
-
   hasTitle(): boolean {
     return !!this.title();
   }
 
   hasDescription(): boolean {
     return !!this.description();
-  }
-
-  hasCustomContent(): boolean {
-    return !!this.customContent();
   }
 }

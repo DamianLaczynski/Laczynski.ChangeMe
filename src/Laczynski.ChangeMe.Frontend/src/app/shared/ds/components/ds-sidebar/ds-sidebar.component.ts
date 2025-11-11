@@ -70,6 +70,7 @@ export class DsSidebarComponent {
     { id: 'empty-state', label: 'Empty State', icon: 'document_dismiss' },
     { id: 'error-state', label: 'Error State', icon: 'error_circle' },
     { id: 'loading-state', label: 'Loading State', icon: 'arrow_sync' },
+    { id: 'state-container', label: 'State Container', icon: 'database' },
     // Actions Section
     { id: 'actions', isSectionHeader: true, label: 'Actions' },
     { id: 'button', label: 'Button', icon: 'button' },

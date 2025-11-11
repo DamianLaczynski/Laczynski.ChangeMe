@@ -1,11 +1,7 @@
 <div [class]="errorStateClasses()">
-  @if (hasIcon()) {
+  @if (icon()) {
     <div class="error-state__icon">
-      @if (customIcon(); as iconTemplate) {
-        <ng-container *ngTemplateOutlet="iconTemplate"></ng-container>
-      } @else if (icon()) {
-        <app-icon [icon]="icon()" [size]="size()" />
-      }
+      <app-icon [icon]="icon()" [size]="size()" />
     </div>
   }
 
@@ -18,7 +14,7 @@
       <p class="error-state__description">{{ description() }}</p>
     }
 
-    @if (customContent(); as contentTemplate) {
+    @if (content(); as contentTemplate) {
       <div class="error-state__custom-content">
         <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
       </div>

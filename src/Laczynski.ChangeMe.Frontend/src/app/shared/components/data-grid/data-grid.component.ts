@@ -27,13 +27,13 @@ import { DateComponent } from '../field/date/date.component';
 import { DateRangeComponent, DateRange } from '../field/date-range/date-range.component';
 import { DropdownComponent, DropdownItem } from '../field/dropdown/dropdown.component';
 import { LoadingStateComponent } from '../loading-state/loading-state.component';
-import { EmptyStateComponent } from '../empty-state/empty-state.component';
-import { ErrorStateComponent } from '../error-state/error-state.component';
+import { StateContainerComponent } from '../state-container/state-container.component';
 import { IconComponent } from '../icon/icon.component';
 import { PaginationComponent, PaginationConfig } from '../pagination/pagination.component';
 import { ButtonComponent } from '../button/button.component';
 import { QuickAction } from '../utils';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { State } from '@shared/state/models/state.model';
 
 @Component({
   selector: 'app-data-grid',
@@ -49,8 +49,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     DateRangeComponent,
     DropdownComponent,
     LoadingStateComponent,
-    EmptyStateComponent,
-    ErrorStateComponent,
+    StateContainerComponent,
     IconComponent,
     PaginationComponent,
     ButtonComponent,
@@ -69,6 +68,9 @@ export class DataGridComponent<T = any> {
   size = input<'small' | 'medium' | 'large'>('medium');
   loading = input<boolean>(false);
   stickyHeaders = input<boolean>(false);
+
+  // State input (optional - if provided, will override loading/error/rows)
+  state = input<State<DataGridRow<T>[]> | null>(null);
 
   // Loading state configuration
   loadingTitle = input<string>('');
@@ -157,6 +159,35 @@ export class DataGridComponent<T = any> {
     return this.rows().length > 0;
   });
 
+  // Computed state for state-container integration
+  gridState = computed<State<DataGridRow<T>[]>>(() => {
+    const providedState = this.state();
+    if (providedState !== null) {
+      // Ensure data is always an array
+      return {
+        ...providedState,
+        data: providedState.data ?? [],
+      };
+    }
+
+    // Build state from individual inputs for backward compatibility
+    const isLoading = this.loading();
+    const isError = this.error();
+    const rows = this.rows();
+
+    // Don't set isInitial = true, let empty state handle empty arrays
+    // This ensures empty state is shown instead of initial template (which we don't provide)
+    const isInitial = false;
+
+    return {
+      isInitial,
+      isLoading,
+      isError,
+      data: rows,
+      error: isError ? this.errorDescription() || 'An error occurred' : undefined,
+    };
+  });
+
   paginationConfig = computed<PaginationConfig>(() => {
     const totalPages = Math.max(1, Math.ceil(this.totalCount() / this.pageSize()));
     return {
@@ -174,7 +205,8 @@ export class DataGridComponent<T = any> {
   });
 
   virtualizationViewportHeight = computed(() => {
-    const rowCount = this.rows().length;
+    // Use data from state if available, otherwise fall back to rows()
+    const rowCount = this.gridState().data?.length ?? this.rows().length;
     const maxVisibleRows = 10; // Maximum visible rows before scrolling
     return this.virtualizationItemHeight() * Math.min(rowCount, maxVisibleRows);
   });

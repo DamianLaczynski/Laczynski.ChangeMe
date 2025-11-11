@@ -23,8 +23,7 @@ export class EmptyStateComponent {
   secondaryAction = input<QuickAction | null>(null);
 
   // Content projection
-  customContent = contentChild<TemplateRef<any>>('customContent');
-  customIcon = contentChild<TemplateRef<any>>('customIcon');
+  content = contentChild<TemplateRef<any>>('content');
 
   // Outputs
   actionClick = output<QuickAction>();
@@ -51,12 +50,7 @@ export class EmptyStateComponent {
     }
   }
 
-  hasIcon(): boolean {
-    return !!this.icon() || !!this.customIcon();
-  }
-
   hasActions(): boolean {
     return !!(this.primaryAction() || this.secondaryAction());
   }
 }
-

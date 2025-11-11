@@ -116,28 +116,6 @@ import { IconComponent } from '../icon/icon.component';
         </div>
       </div>
 
-      <!-- With Custom Icon -->
-      <div class="showcase__section">
-        <h2 class="showcase__section__title">Empty State with Custom Icon</h2>
-        <p class="showcase__section__description">
-          Empty state with a custom icon template for more complex visuals.
-        </p>
-        <div class="showcase__preview">
-          <app-empty-state
-            title="No notifications"
-            description="You're all caught up! No new notifications."
-          >
-            <ng-template #customIcon>
-              <div
-                style="width: 64px; height: 64px; border-radius: 50%; background: var(--Neutral-Background-hover, #F3F2F1); display: flex; align-items: center; justify-content: center;"
-              >
-                <app-icon icon="checkmark_circle" size="large" />
-              </div>
-            </ng-template>
-          </app-empty-state>
-        </div>
-      </div>
-
       <!-- With Custom Content -->
       <div class="showcase__section">
         <h2 class="showcase__section__title">Empty State with Custom Content</h2>
@@ -146,7 +124,7 @@ import { IconComponent } from '../icon/icon.component';
         </p>
         <div class="showcase__preview">
           <app-empty-state title="Custom layout">
-            <ng-template #customContent>
+            <ng-template #content>
               <div style="text-align: center; padding: 16px;">
                 <p style="margin-bottom: 16px;">You can add any custom content here</p>
                 <div style="display: flex; gap: 8px; justify-content: center;">
@@ -300,4 +278,3 @@ export class MyComponent {
     console.log('Action clicked:', action.label);
   }
 }
-

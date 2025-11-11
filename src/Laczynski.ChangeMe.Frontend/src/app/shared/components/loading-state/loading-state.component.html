@@ -4,11 +4,7 @@
     <div [class]="overlayClasses()">
       <div [class]="loadingStateClasses()">
         <div class="loading-state__spinner">
-          @if (customSpinner(); as spinnerTemplate) {
-            <ng-container *ngTemplateOutlet="spinnerTemplate"></ng-container>
-          } @else {
-            <app-spinner [size]="spinnerSize()" [labelPosition]="'none'" />
-          }
+          <app-spinner [size]="size()" />
         </div>
 
         <div class="loading-state__content">
@@ -20,11 +16,9 @@
             <p class="loading-state__description">{{ description() }}</p>
           }
 
-          @if (hasCustomContent()) {
+          @if (content(); as contentTemplate) {
             <div class="loading-state__custom-content">
-              @if (customContent(); as contentTemplate) {
-                <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
-              }
+              <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
             </div>
           }
         </div>
@@ -41,11 +35,7 @@
         <div [class]="overlayClasses()">
           <div [class]="loadingStateClasses()">
             <div class="loading-state__spinner">
-              @if (customSpinner(); as spinnerTemplate) {
-                <ng-container *ngTemplateOutlet="spinnerTemplate"></ng-container>
-              } @else {
-                <app-spinner [size]="spinnerSize()" [labelPosition]="'none'" />
-              }
+              <app-spinner [size]="size()" />
             </div>
 
             <div class="loading-state__content">
@@ -57,11 +47,9 @@
                 <p class="loading-state__description">{{ description() }}</p>
               }
 
-              @if (hasCustomContent()) {
+              @if (content(); as contentTemplate) {
                 <div class="loading-state__custom-content">
-                  @if (customContent(); as contentTemplate) {
-                    <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
-                  }
+                  <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
                 </div>
               }
             </div>
@@ -73,11 +61,7 @@
 } @else {
   <div [class]="loadingStateClasses()">
     <div class="loading-state__spinner">
-      @if (customSpinner(); as spinnerTemplate) {
-        <ng-container *ngTemplateOutlet="spinnerTemplate"></ng-container>
-      } @else {
-        <app-spinner [size]="spinnerSize()" [labelPosition]="'none'" />
-      }
+      <app-spinner [size]="size()" />
     </div>
 
     <div class="loading-state__content">
@@ -89,11 +73,9 @@
         <p class="loading-state__description">{{ description() }}</p>
       }
 
-      @if (hasCustomContent()) {
+      @if (content(); as contentTemplate) {
         <div class="loading-state__custom-content">
-          @if (customContent(); as contentTemplate) {
-            <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
-          }
+          <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
         </div>
       }
     </div>

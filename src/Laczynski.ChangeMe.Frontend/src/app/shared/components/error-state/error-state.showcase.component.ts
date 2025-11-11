@@ -2,11 +2,10 @@ import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ErrorStateComponent } from './error-state.component';
 import { QuickAction } from '../utils';
-import { IconComponent } from '../icon/icon.component';
 
 @Component({
   selector: 'app-error-state-showcase',
-  imports: [CommonModule, ErrorStateComponent, IconComponent],
+  imports: [CommonModule, ErrorStateComponent],
   template: `
     <div class="showcase showcase--responsive">
       <h1 class="showcase__title">Error State Component</h1>
@@ -130,28 +129,6 @@ import { IconComponent } from '../icon/icon.component';
         </div>
       </div>
 
-      <!-- With Custom Icon Template -->
-      <div class="showcase__section">
-        <h2 class="showcase__section__title">Error State with Custom Icon Template</h2>
-        <p class="showcase__section__description">
-          Error state with a custom icon template for more complex visuals.
-        </p>
-        <div class="showcase__preview">
-          <app-error-state
-            title="System error"
-            description="A critical error has occurred. Our team has been notified."
-          >
-            <ng-template #customIcon>
-              <div
-                style="width: 64px; height: 64px; border-radius: 50%; background: var(--color-shared-red-background, #F8DADB); display: flex; align-items: center; justify-content: center;"
-              >
-                <app-icon icon="error_circle" size="large" />
-              </div>
-            </ng-template>
-          </app-error-state>
-        </div>
-      </div>
-
       <!-- With Custom Content -->
       <div class="showcase__section">
         <h2 class="showcase__section__title">Error State with Custom Content</h2>
@@ -160,7 +137,7 @@ import { IconComponent } from '../icon/icon.component';
         </p>
         <div class="showcase__preview">
           <app-error-state title="Validation error">
-            <ng-template #customContent>
+            <ng-template #content>
               <div style="text-align: center; padding: 16px;">
                 <p style="margin-bottom: 16px; color: var(--color-shared-red-foreground, #D13438);">
                   Please fix the following issues:
