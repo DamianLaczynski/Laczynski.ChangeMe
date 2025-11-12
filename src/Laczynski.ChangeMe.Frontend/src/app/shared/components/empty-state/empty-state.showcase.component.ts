@@ -3,11 +3,10 @@ import { CommonModule } from '@angular/common';
 import { EmptyStateComponent } from './empty-state.component';
 import { QuickAction } from '../utils';
 import { ButtonComponent } from '../button/button.component';
-import { IconComponent } from '../icon/icon.component';
 
 @Component({
   selector: 'app-empty-state-showcase',
-  imports: [CommonModule, EmptyStateComponent, ButtonComponent, IconComponent],
+  imports: [CommonModule, EmptyStateComponent, ButtonComponent],
   template: `
     <div class="showcase showcase--responsive">
       <h1 class="showcase__title">Empty State Component</h1>
