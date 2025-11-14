@@ -47,6 +47,7 @@ import { TreeNodeShowcaseComponent } from '@shared/components/tree-node/tree-nod
 import { DataGridShowcaseComponent } from '@shared/components/data-grid/data-grid.showcase.component';
 import { PaginationShowcaseComponent } from '@shared/components/pagination/pagination.showcase.component';
 import { ToolbarShowcaseComponent } from '@shared/components/toolbar/toolbar.showcase.component';
+import { IconShowcaseComponent } from '@shared/components/icon/icon.showcase.component';
 
 export const dsRoutes: Routes = [
   {
@@ -245,5 +246,9 @@ export const dsRoutes: Routes = [
   {
     path: 'totp',
     component: TotpShowcaseComponent,
+  },
+  {
+    path: 'icon',
+    component: IconShowcaseComponent,
   },
 ];

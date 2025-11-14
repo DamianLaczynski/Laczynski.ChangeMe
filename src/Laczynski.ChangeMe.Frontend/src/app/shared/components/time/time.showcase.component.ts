@@ -254,4 +254,3 @@ export class TimeShowcaseComponent {
     appointmentTime: signal<string>(''),
   };
 }
-

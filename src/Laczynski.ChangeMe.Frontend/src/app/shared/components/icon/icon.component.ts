@@ -1,5 +1,6 @@
 import { Component, computed, input } from '@angular/core';
 import { Size } from '../utils';
+import { IconName } from './icon-name.type';
 
 @Component({
   selector: 'app-icon',
@@ -27,8 +28,8 @@ import { Size } from '../utils';
   ],
 })
 export class IconComponent {
-  icon = input<string, string | undefined>('', {
-    transform: (value: string | undefined) => value ?? '',
+  icon = input<IconName, IconName | undefined>('' as IconName, {
+    transform: (value: IconName | undefined) => value ?? ('' as IconName),
   });
   size = input<Size, Size | undefined>('medium', {
     transform: (value: Size | undefined) => value ?? 'medium',
@@ -51,6 +52,8 @@ export class IconComponent {
         return 20;
       case 'large':
         return 24;
+      default:
+        return 20; // Default to medium size
     }
   }
 }
