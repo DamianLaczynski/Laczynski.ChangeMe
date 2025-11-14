@@ -1,0 +1,107 @@
+// ==========================================================================
+// DS Component Styles
+// ==========================================================================
+
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+
+.ds {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: relative;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $spacing-4 $spacing-6;
+    background-color: var(--color-neutral-background-rest);
+    border-bottom: 1px solid var(--color-neutral-stroke-rest);
+    flex-shrink: 0;
+    z-index: calc($z-index-fixed + 1);
+
+    &__title {
+      font-size: $font-size-600;
+      font-weight: $font-weight-semibold;
+      color: var(--color-neutral-foreground-rest);
+      margin: 0;
+      line-height: 1.2;
+
+      @include respond-to(small) {
+        font-size: $font-size-500;
+      }
+    }
+
+    &__menu-button {
+      @include respond-to(medium) {
+        display: block;
+      }
+    }
+  }
+
+  &__sidebar-wrapper {
+    height: 100%;
+    overflow: auto;
+    transition: transform $duration-fast $easing-ease-in-out;
+    background-color: var(--color-neutral-background-rest);
+    border-right: 1px solid var(--color-neutral-stroke-rest);
+    width: 280px;
+    flex-shrink: 0;
+
+    @include respond-to(medium) {
+      position: fixed;
+      left: 0;
+      top: var(--ds-header-height, 64px);
+      width: 280px;
+      max-width: 85vw;
+      height: calc(100vh - var(--ds-header-height, 64px));
+      z-index: $z-index-fixed;
+      transform: translateX(-100%);
+      box-shadow: $elevation-16;
+
+      &--open {
+        transform: translateX(0);
+      }
+    }
+  }
+
+  &__content {
+    flex: 1;
+    height: calc(100vh - var(--ds-header-height, 64px));
+    min-width: 0; // Prevents overflow
+    display: flex;
+    flex-direction: row;
+    overflow: hidden; // Prevent content from overflowing
+  }
+
+  &__main-content {
+    flex: 1;
+    height: 100%;
+    overflow: auto;
+    min-width: 0; // Prevents overflow
+  }
+
+  &__overlay {
+    display: none;
+    position: fixed;
+    top: var(--ds-header-height, 64px);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: calc($z-index-fixed - 1);
+    opacity: 0;
+    transition: opacity $duration-fast $easing-ease-in-out;
+    pointer-events: none;
+
+    @include respond-to(medium) {
+      display: block;
+
+      &--visible {
+        opacity: 1;
+        pointer-events: all;
+      }
+    }
+  }
+}

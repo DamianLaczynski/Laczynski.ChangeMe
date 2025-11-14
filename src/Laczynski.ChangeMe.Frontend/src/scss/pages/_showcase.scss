@@ -34,6 +34,9 @@
     font-weight: $font-weight-bold;
     color: var(--color-neutral-foreground-rest);
     margin-bottom: $spacing-4;
+    line-height: 1.3; // Better line height for text wrapping
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
 
   @include element('description') {
@@ -698,14 +701,13 @@
       grid-template-columns: 1fr;
 
       app-table-of-content {
-        order: 1; // Reset order for mobile
+        display: none; // Hide TOC on mobile and tablet
+      }
+    }
 
-        ::ng-deep .table-of-content {
-          position: relative;
-          top: 0;
-          max-height: none;
-          margin-bottom: $spacing-8;
-        }
+    @include respond-to(small) {
+      app-table-of-content {
+        display: none; // Hide TOC on small devices
       }
     }
   }
