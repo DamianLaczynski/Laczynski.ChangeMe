@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import { TreeNodeComponent } from '../tree-node/tree-node.component';
 import { Size, TreeStyle, Appearance, Orientation, ChevronPosition } from '../utils';
 import { TreeNode } from '../tree-node/tree-node.component';
+import { IconName } from '../icon';
 
 @Component({
   selector: 'app-tree',
@@ -30,8 +31,8 @@ export class TreeComponent {
   indicatorPosition = input<Orientation>('vertical');
   variant = input<Appearance | undefined>(undefined);
   chevronPosition = input<ChevronPosition>('before');
-  chevronIconCollapsed = input<string>('chevron_right');
-  chevronIconExpanded = input<string>('chevron_down');
+  chevronIconCollapsed = input<IconName>('chevron_right');
+  chevronIconExpanded = input<IconName>('chevron_down');
 
   // Inputs - Behavior Configuration
   asButton = input<boolean>(false);

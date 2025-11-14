@@ -2,6 +2,7 @@ import { Component, input, output, signal, computed, TemplateRef } from '@angula
 import { ChevronPosition, Size, Appearance, Orientation } from '../utils';
 import { TreeNode } from '../tree-node/tree-node.component';
 import { TreeNodeComponent } from '../tree-node/tree-node.component';
+import { IconName } from '../icon';
 
 @Component({
   selector: 'app-accordion',
@@ -14,14 +15,14 @@ export class AccordionComponent {
   chevronPosition = input<ChevronPosition>('before');
   disabled = input<boolean>(false);
   expanded = signal<boolean>(false);
-  icon = input<string>('');
+  icon = input<IconName | undefined>(undefined);
 
   // Visual Configuration
   showSelectionIndicator = input<boolean>(false);
   indicatorPosition = input<Orientation>('vertical');
   variant = input<Appearance | undefined>(undefined);
-  chevronIconCollapsed = input<string | undefined>(undefined);
-  chevronIconExpanded = input<string | undefined>(undefined);
+  chevronIconCollapsed = input<IconName | undefined>(undefined);
+  chevronIconExpanded = input<IconName | undefined>(undefined);
 
   // Quick Actions
   showQuickActions = input<boolean>(false);
@@ -41,15 +42,15 @@ export class AccordionComponent {
   }));
 
   // Computed chevron icons based on position if not explicitly provided
-  computedChevronIconCollapsed = computed<string>(() => {
-    if (this.chevronIconCollapsed() !== undefined) {
+  computedChevronIconCollapsed = computed<IconName>(() => {
+    if (this.chevronIconCollapsed()) {
       return this.chevronIconCollapsed()!;
     }
     return this.chevronPosition() === 'before' ? 'chevron_right' : 'chevron_down';
   });
 
-  computedChevronIconExpanded = computed<string>(() => {
-    if (this.chevronIconExpanded() !== undefined) {
+  computedChevronIconExpanded = computed<IconName>(() => {
+    if (this.chevronIconExpanded()) {
       return this.chevronIconExpanded()!;
     }
     return this.chevronPosition() === 'before' ? 'chevron_down' : 'chevron_up';

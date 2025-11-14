@@ -4,6 +4,7 @@ import { TreeNode, TreeNodeComponent } from '../tree-node/tree-node.component';
 import { NavSectionHeaderComponent } from './nav-section-header.component';
 import { DividerComponent } from '../divider';
 import { Size, ChevronPosition, Appearance, Orientation } from '../utils';
+import { IconName } from '../icon';
 
 export interface NavNode extends TreeNode<any> {
   isDivider?: boolean;
@@ -29,8 +30,8 @@ export class NavComponent {
   indicatorPosition = input<Orientation>('vertical');
   variant = input<Appearance | undefined>(undefined);
   chevronPosition = input<ChevronPosition>('after');
-  chevronIconCollapsed = input<string>('chevron_down');
-  chevronIconExpanded = input<string>('chevron_up');
+  chevronIconCollapsed = input<IconName>('chevron_down');
+  chevronIconExpanded = input<IconName>('chevron_up');
   asButton = input<boolean>(true);
   expandOnClick = input<boolean | undefined>(undefined);
   selectOnClick = input<boolean | undefined>(undefined);

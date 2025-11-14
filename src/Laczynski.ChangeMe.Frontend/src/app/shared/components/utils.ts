@@ -1,3 +1,5 @@
+import { IconName } from './icon';
+
 // Fluent 2 Design System Types
 export type ButtonStyle = 'primary' | 'secondary' | 'outline' | 'subtle' | 'transparent';
 export type Size = 'small' | 'medium' | 'large';
@@ -44,7 +46,7 @@ export type Orientation = 'horizontal' | 'vertical';
 export interface QuickAction {
   label: string;
   variant?: ButtonStyle;
-  icon?: string;
+  icon?: IconName;
   size?: Size;
   disabled?: boolean;
   action: () => void;

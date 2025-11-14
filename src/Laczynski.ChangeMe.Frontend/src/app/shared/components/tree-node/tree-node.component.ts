@@ -15,6 +15,7 @@ import { NodeComponent } from '../node/node.component';
 import { IconComponent } from '../icon/icon.component';
 import { Size, ChevronPosition, Appearance, Orientation } from '../utils';
 import { Node } from '../node/node.component';
+import { IconName } from '../icon';
 
 export interface TreeNode<T = any> extends Node<T> {
   hasChildren?: boolean;
@@ -40,8 +41,8 @@ export class TreeNodeComponent {
   indicatorPosition = input<Orientation>('vertical');
   variant = input<Appearance | undefined>(undefined);
   chevronPosition = input<ChevronPosition>('before');
-  chevronIconCollapsed = input<string>('chevron_right');
-  chevronIconExpanded = input<string>('chevron_down');
+  chevronIconCollapsed = input<IconName>('chevron_right');
+  chevronIconExpanded = input<IconName>('chevron_down');
 
   // Inputs - Behavior Configuration
   asButton = input<boolean>(false);

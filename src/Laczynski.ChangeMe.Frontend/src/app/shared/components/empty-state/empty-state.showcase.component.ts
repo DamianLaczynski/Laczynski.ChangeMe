@@ -148,7 +148,7 @@ import { ButtonComponent } from '../button/button.component';
             <app-empty-state
               title="No results found"
               description="We couldn't find anything matching your search. Try different keywords."
-              icon="search_off"
+              icon="search"
               [primaryAction]="searchAction()"
               (actionClick)="onActionClick($event)"
             />
@@ -168,7 +168,7 @@ import { ButtonComponent } from '../button/button.component';
             <app-empty-state
               title="Access restricted"
               description="You don't have permission to view this content. Contact your administrator for access."
-              icon="lock"
+              icon="shield"
             />
           </div>
         </div>
@@ -201,7 +201,7 @@ export class EmptyStateShowcaseComponent {
   primaryAction = signal<QuickAction>({
     label: 'Import Data',
     variant: 'primary',
-    icon: 'upload',
+    icon: 'send',
     action: () => {
       console.log('Import action clicked');
       alert('Import action clicked!');

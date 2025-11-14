@@ -5,6 +5,7 @@ import { QuickAction, CardStyle } from '../utils';
 import { FormsModule } from '@angular/forms';
 import { CheckboxComponent } from '../field/checkbox';
 import { DropdownComponent } from '../field/dropdown';
+import { IconName } from '../icon';
 
 @Component({
   selector: 'app-card-showcase',
@@ -331,7 +332,7 @@ export class CardShowcaseComponent {
       action: {
         label: 'Open',
         variant: 'primary' as const,
-        icon: 'open',
+        icon: 'open' as IconName,
         action: () => this.logEvent('Collaboration card clicked'),
       },
     },

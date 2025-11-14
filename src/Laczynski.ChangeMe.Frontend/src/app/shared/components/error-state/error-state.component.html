@@ -27,7 +27,7 @@
         <app-button
           [variant]="primary.variant || 'primary'"
           [size]="primary.size || size()"
-          [icon]="primary.icon || ''"
+          [icon]="primary.icon || undefined"
           [disabled]="primary.disabled || false"
           (click)="onActionClick(primary, $event)"
         >
@@ -39,7 +39,7 @@
         <app-button
           [variant]="secondary.variant || 'secondary'"
           [size]="secondary.size || size()"
-          [icon]="secondary.icon || ''"
+          [icon]="secondary.icon || undefined"
           [disabled]="secondary.disabled || false"
           (click)="onActionClick(secondary, $event)"
         >

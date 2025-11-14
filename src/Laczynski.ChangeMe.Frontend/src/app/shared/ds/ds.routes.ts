@@ -48,6 +48,7 @@ import { DataGridShowcaseComponent } from '@shared/components/data-grid/data-gri
 import { PaginationShowcaseComponent } from '@shared/components/pagination/pagination.showcase.component';
 import { ToolbarShowcaseComponent } from '@shared/components/toolbar/toolbar.showcase.component';
 import { IconShowcaseComponent } from '@shared/components/icon/icon.showcase.component';
+import { ColorsShowcaseComponent } from '@shared/components/colors/colors.showcase.component';
 
 export const dsRoutes: Routes = [
   {
@@ -250,5 +251,9 @@ export const dsRoutes: Routes = [
   {
     path: 'icon',
     component: IconShowcaseComponent,
+  },
+  {
+    path: 'colors',
+    component: ColorsShowcaseComponent,
   },
 ];

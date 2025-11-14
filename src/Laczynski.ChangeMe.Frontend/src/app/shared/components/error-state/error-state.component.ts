@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../button/button.component';
 import { IconComponent } from '../icon/icon.component';
 import { ButtonStyle, QuickAction, Size } from '../utils';
+import { IconName } from '../icon';
 
 @Component({
   selector: 'app-error-state',
@@ -13,7 +14,7 @@ export class ErrorStateComponent {
   // Inputs
   title = input<string>('');
   description = input<string>('');
-  icon = input<string>('error_circle');
+  icon = input<IconName>('error_circle');
   size = input<Size, Size | undefined>('medium', {
     transform: (value: Size | undefined) => value ?? 'medium',
   });

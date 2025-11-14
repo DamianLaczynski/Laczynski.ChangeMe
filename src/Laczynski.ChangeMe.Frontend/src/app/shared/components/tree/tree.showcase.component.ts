@@ -3,6 +3,7 @@ import { TreeComponent } from './tree.component';
 import { TreeNode } from '../tree-node/tree-node.component';
 import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../button/button.component';
+import { IconName } from '../icon';
 
 @Component({
   selector: 'app-tree-showcase',
@@ -168,7 +169,7 @@ import { ButtonComponent } from '../button/button.component';
             <app-tree
               [nodes]="customChevronTree()"
               chevronIconCollapsed="add"
-              chevronIconExpanded="remove"
+              chevronIconExpanded="tray_item_remove"
             />
           </div>
           <div class="showcase__item">
@@ -176,7 +177,7 @@ import { ButtonComponent } from '../button/button.component';
             <app-tree
               [nodes]="customChevronTree()"
               chevronIconCollapsed="arrow_right"
-              chevronIconExpanded="arrow_drop_down"
+              chevronIconExpanded="arrow_down"
             />
           </div>
         </div>
@@ -586,7 +587,7 @@ export class TreeShowcaseComponent {
   private createTreeNode(
     id: string,
     label: string,
-    icon?: string,
+    icon?: IconName,
     children?: TreeNode[],
     selected?: boolean,
     disabled?: boolean,
@@ -608,13 +609,13 @@ export class TreeShowcaseComponent {
   simpleTree = signal<TreeNode[]>([
     this.createTreeNode('1', 'Documents', 'folder'),
     this.createTreeNode('2', 'Pictures', 'image'),
-    this.createTreeNode('3', 'Videos', 'video_library'),
+    this.createTreeNode('3', 'Videos', 'video'),
   ]);
 
   treeWithChildren = signal<TreeNode[]>([
     this.createTreeNode('1', 'Documents', 'folder', [
-      this.createTreeNode('1-1', 'File 1.pdf', 'description'),
-      this.createTreeNode('1-2', 'File 2.docx', 'description'),
+      this.createTreeNode('1-1', 'File 1.pdf', 'document'),
+      this.createTreeNode('1-2', 'File 2.docx', 'document'),
     ]),
     this.createTreeNode('2', 'Pictures', 'image', [
       this.createTreeNode('2-1', 'Photo 1.jpg', 'image'),
@@ -626,8 +627,8 @@ export class TreeShowcaseComponent {
     this.createTreeNode('1', 'Root', 'folder', [
       this.createTreeNode('1-1', 'Level 1', 'folder', [
         this.createTreeNode('1-1-1', 'Level 2', 'folder', [
-          this.createTreeNode('1-1-1-1', 'Level 3', 'description'),
-          this.createTreeNode('1-1-1-2', 'Level 3', 'description'),
+          this.createTreeNode('1-1-1-1', 'Level 3', 'folder'),
+          this.createTreeNode('1-1-1-2', 'Level 3', 'folder'),
         ]),
       ]),
       this.createTreeNode('1-2', 'Level 1', 'folder'),
@@ -636,22 +637,16 @@ export class TreeShowcaseComponent {
 
   // Size trees
   sizeTree = signal<TreeNode[]>([
-    this.createTreeNode('1', 'Small Node', 'home', [
-      this.createTreeNode('1-1', 'Child', 'description'),
-    ]),
-    this.createTreeNode('2', 'Medium Node', 'home', [
-      this.createTreeNode('2-1', 'Child', 'description'),
-    ]),
-    this.createTreeNode('3', 'Large Node', 'home', [
-      this.createTreeNode('3-1', 'Child', 'description'),
-    ]),
+    this.createTreeNode('1', 'Small Node', 'home', [this.createTreeNode('1-1', 'Child', 'home')]),
+    this.createTreeNode('2', 'Medium Node', 'home', [this.createTreeNode('2-1', 'Child', 'home')]),
+    this.createTreeNode('3', 'Large Node', 'home', [this.createTreeNode('3-1', 'Child', 'home')]),
   ]);
 
   // Style trees
   styleTree = signal<TreeNode[]>([
     this.createTreeNode('1', 'Node 1', 'home', [
-      this.createTreeNode('1-1', 'Child 1', 'description'),
-      this.createTreeNode('1-2', 'Child 2', 'description'),
+      this.createTreeNode('1-1', 'Child 1', 'home'),
+      this.createTreeNode('1-2', 'Child 2', 'home'),
     ]),
     this.createTreeNode('2', 'Node 2', 'home'),
   ]);
@@ -659,10 +654,10 @@ export class TreeShowcaseComponent {
   // Selection trees
   selectionTree = signal<TreeNode[]>([
     this.createTreeNode('1', 'Selectable Node 1', 'home', [
-      this.createTreeNode('1-1', 'Child 1', 'description'),
+      this.createTreeNode('1-1', 'Child 1', 'home'),
     ]),
     this.createTreeNode('2', 'Selectable Node 2', 'home', [
-      this.createTreeNode('2-1', 'Child 1', 'description'),
+      this.createTreeNode('2-1', 'Child 1', 'home'),
     ]),
     this.createTreeNode('3', 'Selectable Node 3', 'home'),
   ]);
@@ -670,17 +665,17 @@ export class TreeShowcaseComponent {
   // Layout trees
   layoutTree = signal<TreeNode[]>([
     this.createTreeNode('1', 'Node with Icon', 'home', [
-      this.createTreeNode('1-1', 'Child', 'description'),
+      this.createTreeNode('1-1', 'Child', 'home'),
     ]),
     this.createTreeNode('2', 'Another Node', 'settings', [
-      this.createTreeNode('2-1', 'Child', 'description'),
+      this.createTreeNode('2-1', 'Child', 'home'),
     ]),
   ]);
 
   // Appearance trees
   appearanceTree = signal<TreeNode[]>([
     this.createTreeNode('1', 'Appearance Node', 'home', [
-      this.createTreeNode('1-1', 'Child', 'description'),
+      this.createTreeNode('1-1', 'Child', 'home'),
     ]),
     this.createTreeNode('2', 'Another Node', 'settings'),
   ]);
@@ -688,8 +683,8 @@ export class TreeShowcaseComponent {
   // Chevron trees
   chevronTree = signal<TreeNode[]>([
     this.createTreeNode('1', 'Node 1', 'home', [
-      this.createTreeNode('1-1', 'Child 1', 'description'),
-      this.createTreeNode('1-2', 'Child 2', 'description'),
+      this.createTreeNode('1-1', 'Child 1', 'home'),
+      this.createTreeNode('1-2', 'Child 2', 'home'),
     ]),
     this.createTreeNode('2', 'Node 2', 'settings'),
   ]);
@@ -697,7 +692,7 @@ export class TreeShowcaseComponent {
   // Custom chevron trees
   customChevronTree = signal<TreeNode[]>([
     this.createTreeNode('1', 'Custom Chevron', 'home', [
-      this.createTreeNode('1-1', 'Child', 'description'),
+      this.createTreeNode('1-1', 'Child', 'home'),
     ]),
     this.createTreeNode('2', 'Another Node', 'settings'),
   ]);
@@ -705,7 +700,7 @@ export class TreeShowcaseComponent {
   // Button trees
   buttonTree = signal<TreeNode[]>([
     this.createTreeNode('1', 'Button Node 1', 'home', [
-      this.createTreeNode('1-1', 'Child', 'description'),
+      this.createTreeNode('1-1', 'Child', 'home'),
     ]),
     this.createTreeNode('2', 'Button Node 2', 'settings'),
   ]);
@@ -713,8 +708,8 @@ export class TreeShowcaseComponent {
   // Expand on click trees
   expandOnClickTree = signal<TreeNode[]>([
     this.createTreeNode('1', 'Expand on Click', 'home', [
-      this.createTreeNode('1-1', 'Child 1', 'description'),
-      this.createTreeNode('1-2', 'Child 2', 'description'),
+      this.createTreeNode('1-1', 'Child 1', 'home'),
+      this.createTreeNode('1-2', 'Child 2', 'star'),
     ]),
     this.createTreeNode('2', 'Another Node', 'settings'),
   ]);
@@ -722,7 +717,7 @@ export class TreeShowcaseComponent {
   // Select on click trees
   selectOnClickTree = signal<TreeNode[]>([
     this.createTreeNode('1', 'Selectable Node', 'home', [
-      this.createTreeNode('1-1', 'Child', 'description'),
+      this.createTreeNode('1-1', 'Child', 'star'),
     ]),
     this.createTreeNode('2', 'Another Node', 'settings'),
   ]);
@@ -730,7 +725,7 @@ export class TreeShowcaseComponent {
   // Quick actions trees
   quickActionsTree = signal<TreeNode[]>([
     this.createTreeNode('1', 'Node with Actions', 'home', [
-      this.createTreeNode('1-1', 'Child with Actions', 'description'),
+      this.createTreeNode('1-1', 'Child with Actions', 'star'),
     ]),
     this.createTreeNode('2', 'Another Node', 'settings'),
   ]);
@@ -738,7 +733,7 @@ export class TreeShowcaseComponent {
   // Custom content trees
   customContentTree = signal<TreeNode[]>([
     this.createTreeNode('1', 'Custom Node 1', 'home', [
-      this.createTreeNode('1-1', 'Custom Child', 'description'),
+      this.createTreeNode('1-1', 'Custom Child', 'star'),
     ]),
     this.createTreeNode('2', 'Custom Node 2', 'settings'),
   ]);
@@ -746,7 +741,7 @@ export class TreeShowcaseComponent {
   // States trees
   statesTree = signal<TreeNode[]>([
     this.createTreeNode('1', 'Normal Node', 'home', [
-      this.createTreeNode('1-1', 'Normal Child', 'description'),
+      this.createTreeNode('1-1', 'Normal Child', 'star'),
     ]),
     this.createTreeNode('2', 'Another Normal', 'settings'),
   ]);
@@ -756,7 +751,7 @@ export class TreeShowcaseComponent {
       '1',
       'Selected Node',
       'home',
-      [this.createTreeNode('1-1', 'Child', 'description')],
+      [this.createTreeNode('1-1', 'Child', 'star')],
       true,
     ),
     this.createTreeNode('2', 'Normal Node', 'settings'),
@@ -767,7 +762,7 @@ export class TreeShowcaseComponent {
       '1',
       'Disabled Node',
       'home',
-      [this.createTreeNode('1-1', 'Disabled Child', 'description', undefined, undefined, true)],
+      [this.createTreeNode('1-1', 'Disabled Child', 'star', undefined, undefined, true)],
       undefined,
       true,
     ),
@@ -780,23 +775,23 @@ export class TreeShowcaseComponent {
       'Expanded Node',
       'home',
       [
-        this.createTreeNode('1-1', 'Visible Child', 'description'),
-        this.createTreeNode('1-2', 'Another Child', 'description'),
+        this.createTreeNode('1-1', 'Visible Child', 'star'),
+        this.createTreeNode('1-2', 'Another Child', 'star'),
       ],
       undefined,
       undefined,
       true,
     ),
     this.createTreeNode('2', 'Collapsed Node', 'settings', [
-      this.createTreeNode('2-1', 'Hidden Child', 'description'),
+      this.createTreeNode('2-1', 'Hidden Child', 'star'),
     ]),
   ]);
 
   // Combined trees
   combinedTree = signal<TreeNode[]>([
     this.createTreeNode('1', 'Combined Node', 'home', [
-      this.createTreeNode('1-1', 'Child 1', 'description'),
-      this.createTreeNode('1-2', 'Child 2', 'description'),
+      this.createTreeNode('1-1', 'Child 1', 'star'),
+      this.createTreeNode('1-2', 'Child 2', 'star'),
     ]),
     this.createTreeNode('2', 'Another Node', 'settings'),
   ]);
@@ -804,25 +799,25 @@ export class TreeShowcaseComponent {
   // Draggable trees
   draggableTree = signal<TreeNode[]>([
     this.createTreeNode('drag-1', 'Documents', 'folder', [
-      this.createTreeNode('drag-1-1', 'File 1.pdf', 'description'),
-      this.createTreeNode('drag-1-2', 'File 2.docx', 'description'),
+      this.createTreeNode('drag-1-1', 'File 1.pdf', 'star'),
+      this.createTreeNode('drag-1-2', 'File 2.docx', 'star'),
     ]),
     this.createTreeNode('drag-2', 'Pictures', 'image', [
       this.createTreeNode('drag-2-1', 'Photo 1.jpg', 'image'),
     ]),
-    this.createTreeNode('drag-3', 'Videos', 'video_library'),
-    this.createTreeNode('drag-4', 'Music', 'library_music'),
+    this.createTreeNode('drag-3', 'Videos', 'video'),
+    this.createTreeNode('drag-4', 'Music', 'music_note_1'),
   ]);
 
   interactiveDraggableTree = signal<TreeNode[]>([
     this.createTreeNode('int-1', 'Project A', 'folder', [
-      this.createTreeNode('int-1-1', 'Task 1', 'description'),
-      this.createTreeNode('int-1-2', 'Task 2', 'description'),
-      this.createTreeNode('int-1-3', 'Task 3', 'description'),
+      this.createTreeNode('int-1-1', 'Task 1', 'star'),
+      this.createTreeNode('int-1-2', 'Task 2', 'star'),
+      this.createTreeNode('int-1-3', 'Task 3', 'star'),
     ]),
     this.createTreeNode('int-2', 'Project B', 'folder', [
-      this.createTreeNode('int-2-1', 'Task 1', 'description'),
-      this.createTreeNode('int-2-2', 'Task 2', 'description'),
+      this.createTreeNode('int-2-1', 'Task 1', 'star'),
+      this.createTreeNode('int-2-2', 'Task 2', 'star'),
     ]),
     this.createTreeNode('int-3', 'Project C', 'folder'),
     this.createTreeNode('int-4', 'Archive', 'archive'),
@@ -830,8 +825,8 @@ export class TreeShowcaseComponent {
 
   sizeDraggableTree = signal<TreeNode[]>([
     this.createTreeNode('size-drag-1', 'Node 1', 'home', [
-      this.createTreeNode('size-drag-1-1', 'Child 1', 'description'),
-      this.createTreeNode('size-drag-1-2', 'Child 2', 'description'),
+      this.createTreeNode('size-drag-1-1', 'Child 1', 'star'),
+      this.createTreeNode('size-drag-1-2', 'Child 2', 'star'),
     ]),
     this.createTreeNode('size-drag-2', 'Node 2', 'settings'),
     this.createTreeNode('size-drag-3', 'Node 3', 'folder'),
@@ -839,7 +834,7 @@ export class TreeShowcaseComponent {
 
   variantDraggableTree = signal<TreeNode[]>([
     this.createTreeNode('var-drag-1', 'Item 1', 'home', [
-      this.createTreeNode('var-drag-1-1', 'Subitem 1', 'description'),
+      this.createTreeNode('var-drag-1-1', 'Subitem 1', 'star'),
     ]),
     this.createTreeNode('var-drag-2', 'Item 2', 'settings'),
     this.createTreeNode('var-drag-3', 'Item 3', 'folder'),
@@ -890,14 +885,14 @@ export class TreeShowcaseComponent {
   resetDraggableTree(): void {
     this.draggableTree.set([
       this.createTreeNode('drag-1', 'Documents', 'folder', [
-        this.createTreeNode('drag-1-1', 'File 1.pdf', 'description'),
-        this.createTreeNode('drag-1-2', 'File 2.docx', 'description'),
+        this.createTreeNode('drag-1-1', 'File 1.pdf', 'star'),
+        this.createTreeNode('drag-1-2', 'File 2.docx', 'star'),
       ]),
       this.createTreeNode('drag-2', 'Pictures', 'image', [
         this.createTreeNode('drag-2-1', 'Photo 1.jpg', 'image'),
       ]),
-      this.createTreeNode('drag-3', 'Videos', 'video_library'),
-      this.createTreeNode('drag-4', 'Music', 'library_music'),
+      this.createTreeNode('drag-3', 'Videos', 'video'),
+      this.createTreeNode('drag-4', 'Music', 'music_note_1'),
     ]);
     this.dragDropEvents.update(events => [
       { type: 'reset', message: 'Tree reset to initial state' },
@@ -908,13 +903,13 @@ export class TreeShowcaseComponent {
   resetInteractiveTree(): void {
     this.interactiveDraggableTree.set([
       this.createTreeNode('int-1', 'Project A', 'folder', [
-        this.createTreeNode('int-1-1', 'Task 1', 'description'),
-        this.createTreeNode('int-1-2', 'Task 2', 'description'),
-        this.createTreeNode('int-1-3', 'Task 3', 'description'),
+        this.createTreeNode('int-1-1', 'Task 1', 'star'),
+        this.createTreeNode('int-1-2', 'Task 2', 'star'),
+        this.createTreeNode('int-1-3', 'Task 3', 'star'),
       ]),
       this.createTreeNode('int-2', 'Project B', 'folder', [
-        this.createTreeNode('int-2-1', 'Task 1', 'description'),
-        this.createTreeNode('int-2-2', 'Task 2', 'description'),
+        this.createTreeNode('int-2-1', 'Task 1', 'star'),
+        this.createTreeNode('int-2-2', 'Task 2', 'star'),
       ]),
       this.createTreeNode('int-3', 'Project C', 'folder'),
       this.createTreeNode('int-4', 'Archive', 'archive'),

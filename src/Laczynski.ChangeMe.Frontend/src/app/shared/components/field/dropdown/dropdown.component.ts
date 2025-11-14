@@ -19,12 +19,13 @@ import { IconComponent } from '@shared/components/icon/icon.component';
 import { ActionButtonComponent } from '../action-button.component';
 import { NodeComponent, Node } from '../../node/node.component';
 import { ButtonComponent } from '../../button/button.component';
+import { IconName } from '@shared/components/icon';
 
 export interface DropdownItem {
   value: string | number;
   label: string;
   type?: 'header' | 'single' | 'multi' | 'divider';
-  icon?: string; // SVG string or icon name
+  icon?: IconName;
   disabled?: boolean;
   selected?: boolean;
 }
@@ -71,7 +72,7 @@ export class DropdownComponent extends FieldComponent {
   clearable = input<boolean>(false);
   maxHeight = input<string>('300px');
   compact = input<boolean>(false); // Use button trigger instead of input
-  compactIcon = input<string>('filter'); // Icon for compact mode
+  compactIcon = input<IconName>('filter'); // Icon for compact mode
 
   selectionChange = output<any>();
   opened = output<void>();

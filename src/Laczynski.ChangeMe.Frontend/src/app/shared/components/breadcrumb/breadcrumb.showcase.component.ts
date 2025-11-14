@@ -110,10 +110,7 @@ import { ButtonComponent } from '../button/button.component';
           </div>
           <div class="showcase__item">
             <h3>No Selection Indicator</h3>
-            <app-breadcrumb
-              [items]="selectedBreadcrumb()"
-              [showSelectionIndicator]="false"
-            />
+            <app-breadcrumb [items]="selectedBreadcrumb()" [showSelectionIndicator]="false" />
           </div>
         </div>
       </div>
@@ -149,9 +146,7 @@ import { ButtonComponent } from '../button/button.component';
               [selectOnClick]="false"
               (itemClick)="onItemClick($event)"
             />
-            <p style="margin-top: 8px; font-size: 12px;">
-              Clicked: {{ lastClickedItem() }}
-            </p>
+            <p style="margin-top: 8px; font-size: 12px;">Clicked: {{ lastClickedItem() }}</p>
           </div>
           <div class="showcase__item">
             <h3>Select On Click (true)</h3>
@@ -163,9 +158,7 @@ import { ButtonComponent } from '../button/button.component';
               [selectOnClick]="true"
               (itemClick)="onItemClick($event)"
             />
-            <p style="margin-top: 8px; font-size: 12px;">
-              Clicked: {{ lastClickedItem() }}
-            </p>
+            <p style="margin-top: 8px; font-size: 12px;">Clicked: {{ lastClickedItem() }}</p>
           </div>
         </div>
       </div>
@@ -219,19 +212,11 @@ import { ButtonComponent } from '../button/button.component';
         <div class="showcase__grid">
           <div class="showcase__item">
             <h3>Small + Subtle Circular</h3>
-            <app-breadcrumb
-              [items]="combinedBreadcrumb()"
-              size="small"
-              variant="subtle-circular"
-            />
+            <app-breadcrumb [items]="combinedBreadcrumb()" size="small" variant="subtle-circular" />
           </div>
           <div class="showcase__item">
             <h3>Large + Filled Circular</h3>
-            <app-breadcrumb
-              [items]="combinedBreadcrumb()"
-              size="large"
-              variant="filled-circular"
-            />
+            <app-breadcrumb [items]="combinedBreadcrumb()" size="large" variant="filled-circular" />
           </div>
           <div class="showcase__item">
             <h3>Medium + Subtle + Selection Indicator</h3>
@@ -277,10 +262,7 @@ import { ButtonComponent } from '../button/button.component';
         <div class="showcase__grid">
           <div class="showcase__item">
             <h3>Interactive Breadcrumb</h3>
-            <app-breadcrumb
-              [items]="interactiveBreadcrumb()"
-              (itemClick)="onItemClick($event)"
-            />
+            <app-breadcrumb [items]="interactiveBreadcrumb()" (itemClick)="onItemClick($event)" />
             <div style="margin-top: 16px;">
               <p><strong>Last Click Event:</strong> {{ lastClickEvent() }}</p>
               <p><strong>Click Count:</strong> {{ clickCount() }}</p>
@@ -326,111 +308,111 @@ export class BreadcrumbShowcaseComponent {
   breadcrumbWithIcons = signal<BreadcrumbItem[]>([
     { id: 'home', label: 'Home', icon: 'home' },
     { id: 'products', label: 'Products', icon: 'shopping_bag' },
-    { id: 'electronics', label: 'Electronics', icon: 'devices' },
+    { id: 'electronics', label: 'Electronics', icon: 'device_eq' },
   ]);
 
   // Size breadcrumbs
   sizeBreadcrumb = signal<BreadcrumbItem[]>([
     { id: 'home', label: 'Home', icon: 'home' },
     { id: 'section', label: 'Section', icon: 'folder' },
-    { id: 'page', label: 'Page', icon: 'description' },
+    { id: 'page', label: 'Page', icon: 'document' },
   ]);
 
   // Appearance breadcrumbs
   appearanceBreadcrumb = signal<BreadcrumbItem[]>([
     { id: 'home', label: 'Home', icon: 'home' },
     { id: 'section', label: 'Section', icon: 'folder' },
-    { id: 'page', label: 'Page', icon: 'description' },
+    { id: 'page', label: 'Page', icon: 'document' },
   ]);
 
   // Selected breadcrumbs
   selectedBreadcrumb = signal<BreadcrumbItem[]>([
     { id: 'home', label: 'Home', icon: 'home' },
     { id: 'products', label: 'Products', icon: 'shopping_bag' },
-    { id: 'electronics', label: 'Electronics', icon: 'devices', selected: true },
+    { id: 'electronics', label: 'Electronics', icon: 'device_eq', selected: true },
   ]);
 
   // Behavior breadcrumbs
   behaviorBreadcrumb = signal<BreadcrumbItem[]>([
     { id: 'home', label: 'Home', icon: 'home' },
     { id: 'section', label: 'Section', icon: 'folder' },
-    { id: 'page', label: 'Page', icon: 'description' },
+    { id: 'page', label: 'Page', icon: 'document' },
   ]);
 
   // Selectable breadcrumbs
   selectableBreadcrumb = signal<BreadcrumbItem[]>([
     { id: 'home', label: 'Home', icon: 'home' },
     { id: 'products', label: 'Products', icon: 'shopping_bag' },
-    { id: 'electronics', label: 'Electronics', icon: 'devices' },
+    { id: 'electronics', label: 'Electronics', icon: 'device_eq' },
   ]);
 
   // Quick actions breadcrumb
   quickActionsBreadcrumb = signal<BreadcrumbItem[]>([
     { id: 'home', label: 'Home', icon: 'home' },
     { id: 'documents', label: 'Documents', icon: 'folder' },
-    { id: 'project', label: 'Project', icon: 'description' },
+    { id: 'project', label: 'Project', icon: 'document' },
   ]);
 
   // State breadcrumbs
   normalBreadcrumb = signal<BreadcrumbItem[]>([
     { id: 'home', label: 'Home', icon: 'home' },
     { id: 'section', label: 'Section', icon: 'folder' },
-    { id: 'page', label: 'Page', icon: 'description' },
+    { id: 'page', label: 'Page', icon: 'document' },
   ]);
 
   disabledBreadcrumb = signal<BreadcrumbItem[]>([
     { id: 'home', label: 'Home', icon: 'home' },
     { id: 'section', label: 'Section', icon: 'folder', disabled: true },
-    { id: 'page', label: 'Page', icon: 'description' },
+    { id: 'page', label: 'Page', icon: 'document' },
   ]);
 
   selectedItemBreadcrumb = signal<BreadcrumbItem[]>([
     { id: 'home', label: 'Home', icon: 'home' },
     { id: 'section', label: 'Section', icon: 'folder', selected: true },
-    { id: 'page', label: 'Page', icon: 'description' },
+    { id: 'page', label: 'Page', icon: 'document' },
   ]);
 
   // Combined breadcrumbs
   combinedBreadcrumb = signal<BreadcrumbItem[]>([
     { id: 'home', label: 'Home', icon: 'home' },
     { id: 'section', label: 'Section', icon: 'folder' },
-    { id: 'page', label: 'Page', icon: 'description' },
+    { id: 'page', label: 'Page', icon: 'document' },
   ]);
 
   selectedCombinedBreadcrumb = signal<BreadcrumbItem[]>([
     { id: 'home', label: 'Home', icon: 'home' },
     { id: 'products', label: 'Products', icon: 'shopping_bag' },
-    { id: 'electronics', label: 'Electronics', icon: 'devices', selected: true },
+    { id: 'electronics', label: 'Electronics', icon: 'device_eq', selected: true },
   ]);
 
   // Real-world examples
   fileSystemBreadcrumb = signal<BreadcrumbItem[]>([
-    { id: 'root', label: 'My Computer', icon: 'computer' },
+    { id: 'root', label: 'My Computer', icon: 'counter' },
     { id: 'users', label: 'Users', icon: 'people' },
     { id: 'john', label: 'John', icon: 'person' },
     { id: 'documents', label: 'Documents', icon: 'folder' },
-    { id: 'projects', label: 'Projects', icon: 'folder_special' },
+    { id: 'projects', label: 'Projects', icon: 'folder' },
   ]);
 
   ecommerceBreadcrumb = signal<BreadcrumbItem[]>([
     { id: 'home', label: 'Home', icon: 'home' },
-    { id: 'shop', label: 'Shop', icon: 'store' },
-    { id: 'electronics', label: 'Electronics', icon: 'devices' },
-    { id: 'phones', label: 'Phones', icon: 'phone_iphone' },
-    { id: 'smartphones', label: 'Smartphones', icon: 'smartphone' },
+    { id: 'shop', label: 'Shop', icon: 'shopping_bag' },
+    { id: 'electronics', label: 'Electronics', icon: 'device_eq' },
+    { id: 'phones', label: 'Phones', icon: 'phone' },
+    { id: 'smartphones', label: 'Smartphones', icon: 'phone' },
   ]);
 
   settingsBreadcrumb = signal<BreadcrumbItem[]>([
     { id: 'settings', label: 'Settings', icon: 'settings' },
-    { id: 'account', label: 'Account', icon: 'account_circle' },
-    { id: 'security', label: 'Security', icon: 'lock' },
+    { id: 'account', label: 'Account', icon: 'person' },
+    { id: 'security', label: 'Security', icon: 'shield' },
   ]);
 
   // Interactive breadcrumb
   interactiveBreadcrumb = signal<BreadcrumbItem[]>([
     { id: 'home', label: 'Home', icon: 'home' },
     { id: 'products', label: 'Products', icon: 'shopping_bag' },
-    { id: 'electronics', label: 'Electronics', icon: 'devices' },
+    { id: 'electronics', label: 'Electronics', icon: 'device_eq' },
     { id: 'laptops', label: 'Laptops', icon: 'laptop' },
   ]);
 
@@ -446,4 +428,3 @@ export class BreadcrumbShowcaseComponent {
     this.clickCount.update(count => count + 1);
   }
 }
-

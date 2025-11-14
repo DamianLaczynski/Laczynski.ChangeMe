@@ -530,6 +530,146 @@
     }
   }
 
+  // Color system showcase
+  @include element('color-system') {
+    @include element('category') {
+      margin-bottom: $spacing-12;
+
+      @include element('title') {
+        font-size: $font-size-600;
+        font-weight: $font-weight-bold;
+        color: var(--color-neutral-foreground-rest);
+        margin-bottom: $spacing-6;
+        padding-bottom: $spacing-2;
+        border-bottom: 2px solid var(--color-neutral-stroke-rest);
+      }
+
+      @include element('description') {
+        font-size: $font-size-300;
+        color: var(--color-neutral-foreground2-rest);
+        margin-bottom: $spacing-6;
+        line-height: $line-height-400;
+      }
+    }
+
+    @include element('color-group') {
+      margin-bottom: $spacing-8;
+
+      @include element('name') {
+        font-size: $font-size-400;
+        font-weight: $font-weight-semibold;
+        color: var(--color-neutral-foreground-rest);
+        margin-bottom: $spacing-4;
+      }
+
+      @include element('grid') {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: $spacing-4;
+        margin-bottom: $spacing-6;
+      }
+    }
+
+    @include element('color-item') {
+      display: flex;
+      flex-direction: column;
+      border-radius: $border-radius-400;
+      overflow: hidden;
+      border: 1px solid var(--color-neutral-stroke-rest);
+      background: var(--color-neutral-background-rest);
+      transition: all $duration-fast $easing-ease-in-out;
+
+      &:hover {
+        box-shadow: $elevation-4;
+        transform: translateY(-2px);
+      }
+
+      @include element('swatch') {
+        width: 100%;
+        height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        border-bottom: 1px solid var(--color-neutral-stroke-rest);
+      }
+
+      @include element('info') {
+        padding: $spacing-3;
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-1;
+      }
+
+      @include element('name') {
+        font-size: $font-size-300;
+        font-weight: $font-weight-semibold;
+        color: var(--color-neutral-foreground-rest);
+      }
+
+      @include element('value') {
+        font-size: $font-size-200;
+        font-family: $font-family-mono;
+        color: var(--color-neutral-foreground2-rest);
+        word-break: break-all;
+      }
+
+      @include element('variable') {
+        font-size: $font-size-200;
+        font-family: $font-family-mono;
+        color: var(--color-brand-primary);
+        margin-top: $spacing-1;
+      }
+    }
+
+    // Shared colors specific styling
+    @include element('shared-colors') {
+      @include element('color-item') {
+        @include element('swatch') {
+          height: 100px;
+        }
+
+        @include element('variants') {
+          display: flex;
+          flex-direction: column;
+          gap: $spacing-2;
+          padding: $spacing-3;
+        }
+
+        @include element('variant') {
+          display: flex;
+          align-items: center;
+          gap: $spacing-2;
+          padding: $spacing-2;
+          border-radius: $border-radius-200;
+          background: var(--color-neutral-background-hover);
+
+          @include element('swatch') {
+            width: 40px;
+            height: 40px;
+            border-radius: $border-radius-200;
+            border: 1px solid var(--color-neutral-stroke-rest);
+            flex-shrink: 0;
+          }
+
+          @include element('label') {
+            font-size: $font-size-200;
+            font-weight: $font-weight-medium;
+            color: var(--color-neutral-foreground-rest);
+            min-width: 60px;
+          }
+
+          @include element('value') {
+            font-size: $font-size-200;
+            font-family: $font-family-mono;
+            color: var(--color-neutral-foreground2-rest);
+            flex: 1;
+          }
+        }
+      }
+    }
+  }
+
   // Responsive modifiers
   @include modifier('responsive') {
     // Large breakpoint
@@ -554,6 +694,10 @@
       .showcase__grid--large {
         grid-template-columns: 1fr;
       }
+
+      .showcase__color-system__color-group__grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      }
     }
 
     // Small breakpoint
@@ -566,6 +710,10 @@
 
       .showcase__section-title {
         font-size: $font-size-500;
+      }
+
+      .showcase__color-system__color-group__grid {
+        grid-template-columns: 1fr;
       }
     }
   }

@@ -1,7 +1,9 @@
+import { IconName } from '@shared/components/icon';
+
 export interface ToolbarItem {
   id: string;
   label?: string;
-  icon?: string;
+  icon?: IconName;
   iconTheme?: 'regular' | 'filled';
   disabled?: boolean;
   selected?: boolean;
@@ -15,4 +17,3 @@ export interface ToolbarGroup {
   id: string;
   items: ToolbarItem[];
 }
-

@@ -1,3 +1,5 @@
+import { IconName } from '@shared/components/icon';
+
 export type MenuItemType = 'item' | 'split' | 'header' | 'divider';
 export type MenuItemState = 'rest' | 'hover' | 'pressed' | 'selected' | 'disabled';
 
@@ -5,7 +7,7 @@ export interface MenuItem {
   id: string;
   type?: MenuItemType;
   label: string;
-  icon?: string;
+  icon?: IconName;
   iconTheme?: 'regular' | 'filled';
   shortcut?: string;
   disabled?: boolean;
@@ -29,4 +31,3 @@ export interface MenuConfig {
   width?: string;
   maxHeight?: string;
 }
-

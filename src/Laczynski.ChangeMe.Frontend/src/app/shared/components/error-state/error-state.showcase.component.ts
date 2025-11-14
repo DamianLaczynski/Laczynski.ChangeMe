@@ -175,7 +175,7 @@ import { QuickAction } from '../utils';
             <app-error-state
               title="Access denied"
               description="You don't have permission to access this resource. Contact your administrator if you believe this is an error."
-              icon="lock"
+              icon="shield"
             />
           </div>
           <div class="showcase__preview-item">

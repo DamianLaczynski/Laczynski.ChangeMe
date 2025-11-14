@@ -34,6 +34,7 @@ import { ButtonComponent } from '../button/button.component';
 import { QuickAction } from '../utils';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { State } from '@shared/state/models/state.model';
+import { IconName } from '../icon';
 
 @Component({
   selector: 'app-data-grid',
@@ -82,7 +83,7 @@ export class DataGridComponent<T = any> {
   // Empty state configuration
   emptyTitle = input<string>('');
   emptyDescription = input<string>('');
-  emptyIcon = input<string>('database');
+  emptyIcon = input<IconName | undefined>(undefined);
   emptyPrimaryAction = input<QuickAction | null>(null);
   emptySecondaryAction = input<QuickAction | null>(null);
 
@@ -90,7 +91,7 @@ export class DataGridComponent<T = any> {
   error = input<boolean>(false);
   errorTitle = input<string>('');
   errorDescription = input<string>('');
-  errorIcon = input<string>('error_circle');
+  errorIcon = input<IconName>('error_circle');
   errorPrimaryAction = input<QuickAction | null>(null);
   errorSecondaryAction = input<QuickAction | null>(null);
 
@@ -433,7 +434,7 @@ export class DataGridComponent<T = any> {
     });
   }
 
-  getSortIcon(column: DataGridColumn<T>): string | null {
+  getSortIcon(column: DataGridColumn<T>): IconName | null {
     if (!column.sortable || !column.field) {
       return null;
     }
@@ -501,7 +502,7 @@ export class DataGridComponent<T = any> {
     return this.expandedRows().has(row.id) || row.expanded === true;
   }
 
-  getExpandIcon(row: DataGridRow<T>): string {
+  getExpandIcon(row: DataGridRow<T>): IconName {
     return this.isRowExpanded(row) ? 'chevron_down' : 'chevron_right';
   }
 
@@ -910,10 +911,10 @@ export class DataGridComponent<T = any> {
 
   private getOperatorIcon(
     operator: TextFilterOperator | NumberFilterOperator | DateFilterOperator | undefined,
-  ): string {
+  ): IconName {
     if (!operator) return 'filter';
 
-    const iconMap: Record<string, string> = {
+    const iconMap: Record<string, IconName> = {
       // Text operators
       contains: 'search',
       equals: 'checkmark',
@@ -947,7 +948,7 @@ export class DataGridComponent<T = any> {
   }
 
   // Get current operator icon for dropdown
-  getCurrentOperatorIcon(column: DataGridColumn<T>): string {
+  getCurrentOperatorIcon(column: DataGridColumn<T>): IconName {
     // Use computed to track changes in activeFilters
     const filter = this.activeFilters().get(column.id);
     const config = this.getFilterConfig(column);
@@ -960,7 +961,7 @@ export class DataGridComponent<T = any> {
 
   // Computed map of column IDs to operator icons for reactive updates
   operatorIcons = computed(() => {
-    const icons = new Map<string, string>();
+    const icons = new Map<string, IconName>();
     this.columns().forEach(column => {
       if (this.isColumnFilterable(column)) {
         const filter = this.activeFilters().get(column.id);

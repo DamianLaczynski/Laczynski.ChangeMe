@@ -2,6 +2,7 @@ import { Component, signal, viewChild, TemplateRef } from '@angular/core';
 import { TreeNodeComponent, TreeNode } from './tree-node.component';
 import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../button/button.component';
+import { IconName } from '../icon';
 
 @Component({
   selector: 'app-tree-node-showcase',
@@ -404,7 +405,7 @@ export class TreeNodeShowcaseComponent {
   private createTreeNode(
     id: string,
     label: string,
-    icon?: string,
+    icon?: IconName,
     children?: TreeNode[],
     expanded?: boolean,
     selected?: boolean,
@@ -436,7 +437,7 @@ export class TreeNodeShowcaseComponent {
 
   // Basic nodes
   leafNode = signal<TreeNode>(
-    this.createTreeNode('leaf', 'Leaf Node', 'file', undefined, false, false, false, 0),
+    this.createTreeNode('leaf', 'Leaf Node', 'document', undefined, false, false, false, 0),
   );
 
   parentNodeCollapsed = signal<TreeNode>(
@@ -445,8 +446,8 @@ export class TreeNodeShowcaseComponent {
       'Parent Node',
       'folder',
       [
-        this.createTreeNode('child1', 'Child 1', 'file', undefined, false, false, false, 1),
-        this.createTreeNode('child2', 'Child 2', 'file', undefined, false, false, false, 1),
+        this.createTreeNode('child1', 'Child 1', 'document', undefined, false, false, false, 1),
+        this.createTreeNode('child2', 'Child 2', 'document', undefined, false, false, false, 1),
       ],
       false,
       false,
@@ -461,8 +462,8 @@ export class TreeNodeShowcaseComponent {
       'Parent Node',
       'folder',
       [
-        this.createTreeNode('child1', 'Child 1', 'file', undefined, false, false, false, 1),
-        this.createTreeNode('child2', 'Child 2', 'file', undefined, false, false, false, 1),
+        this.createTreeNode('child1', 'Child 1', 'document', undefined, false, false, false, 1),
+        this.createTreeNode('child2', 'Child 2', 'document', undefined, false, false, false, 1),
       ],
       true,
       false,
@@ -478,8 +479,26 @@ export class TreeNodeShowcaseComponent {
       'Size Variant',
       'folder',
       [
-        this.createTreeNode('size-child1', 'Child 1', 'file', undefined, false, false, false, 1),
-        this.createTreeNode('size-child2', 'Child 2', 'file', undefined, false, false, false, 1),
+        this.createTreeNode(
+          'size-child1',
+          'Child 1',
+          'document',
+          undefined,
+          false,
+          false,
+          false,
+          1,
+        ),
+        this.createTreeNode(
+          'size-child2',
+          'Child 2',
+          'document',
+          undefined,
+          false,
+          false,
+          false,
+          1,
+        ),
       ],
       true,
       false,
@@ -494,7 +513,18 @@ export class TreeNodeShowcaseComponent {
       'layout',
       'Layout Variant',
       'folder',
-      [this.createTreeNode('layout-child1', 'Child 1', 'file', undefined, false, false, false, 1)],
+      [
+        this.createTreeNode(
+          'layout-child1',
+          'Child 1',
+          'document',
+          undefined,
+          false,
+          false,
+          false,
+          1,
+        ),
+      ],
       true,
       false,
       false,
@@ -512,7 +542,7 @@ export class TreeNodeShowcaseComponent {
         this.createTreeNode(
           'appearance-child1',
           'Child 1',
-          'file',
+          'document',
           undefined,
           false,
           false,
@@ -552,8 +582,26 @@ export class TreeNodeShowcaseComponent {
       'Chevron Position',
       'folder',
       [
-        this.createTreeNode('chevron-child1', 'Child 1', 'file', undefined, false, false, false, 1),
-        this.createTreeNode('chevron-child2', 'Child 2', 'file', undefined, false, false, false, 1),
+        this.createTreeNode(
+          'chevron-child1',
+          'Child 1',
+          'document',
+          undefined,
+          false,
+          false,
+          false,
+          1,
+        ),
+        this.createTreeNode(
+          'chevron-child2',
+          'Child 2',
+          'document',
+          undefined,
+          false,
+          false,
+          false,
+          1,
+        ),
       ],
       true,
       false,
@@ -603,7 +651,18 @@ export class TreeNodeShowcaseComponent {
       'expand-on-click',
       'Expand On Click (false)',
       'folder',
-      [this.createTreeNode('expand-child1', 'Child 1', 'file', undefined, false, false, false, 1)],
+      [
+        this.createTreeNode(
+          'expand-child1',
+          'Child 1',
+          'document',
+          undefined,
+          false,
+          false,
+          false,
+          1,
+        ),
+      ],
       false,
       false,
       false,
@@ -620,7 +679,7 @@ export class TreeNodeShowcaseComponent {
         this.createTreeNode(
           'expand-true-child1',
           'Child 1',
-          'file',
+          'document',
           undefined,
           false,
           false,
@@ -668,7 +727,18 @@ export class TreeNodeShowcaseComponent {
       'quick-actions',
       'Node with Quick Actions',
       'folder',
-      [this.createTreeNode('quick-child1', 'Child 1', 'file', undefined, false, false, false, 1)],
+      [
+        this.createTreeNode(
+          'quick-child1',
+          'Child 1',
+          'document',
+          undefined,
+          false,
+          false,
+          false,
+          1,
+        ),
+      ],
       true,
       false,
       false,
@@ -686,7 +756,7 @@ export class TreeNodeShowcaseComponent {
         this.createTreeNode(
           'two-level-1',
           'Level 2 - 1',
-          'file',
+          'document',
           undefined,
           false,
           false,
@@ -696,7 +766,7 @@ export class TreeNodeShowcaseComponent {
         this.createTreeNode(
           'two-level-2',
           'Level 2 - 2',
-          'file',
+          'document',
           undefined,
           false,
           false,
@@ -725,7 +795,7 @@ export class TreeNodeShowcaseComponent {
             this.createTreeNode(
               'three-level-1-1',
               'Level 3 - 1',
-              'file',
+              'document',
               undefined,
               false,
               false,
@@ -735,7 +805,7 @@ export class TreeNodeShowcaseComponent {
             this.createTreeNode(
               'three-level-1-2',
               'Level 3 - 2',
-              'file',
+              'document',
               undefined,
               false,
               false,
@@ -751,7 +821,7 @@ export class TreeNodeShowcaseComponent {
         this.createTreeNode(
           'three-level-2',
           'Level 2 - 2',
-          'file',
+          'document',
           undefined,
           false,
           false,
@@ -772,11 +842,11 @@ export class TreeNodeShowcaseComponent {
       'Parent with Many Children',
       'folder',
       [
-        this.createTreeNode('child1', 'Child 1', 'file', undefined, false, false, false, 1),
-        this.createTreeNode('child2', 'Child 2', 'file', undefined, false, false, false, 1),
-        this.createTreeNode('child3', 'Child 3', 'file', undefined, false, false, false, 1),
-        this.createTreeNode('child4', 'Child 4', 'file', undefined, false, false, false, 1),
-        this.createTreeNode('child5', 'Child 5', 'file', undefined, false, false, false, 1),
+        this.createTreeNode('child1', 'Child 1', 'document', undefined, false, false, false, 1),
+        this.createTreeNode('child2', 'Child 2', 'document', undefined, false, false, false, 1),
+        this.createTreeNode('child3', 'Child 3', 'document', undefined, false, false, false, 1),
+        this.createTreeNode('child4', 'Child 4', 'document', undefined, false, false, false, 1),
+        this.createTreeNode('child5', 'Child 5', 'document', undefined, false, false, false, 1),
       ],
       true,
       false,
@@ -826,7 +896,7 @@ export class TreeNodeShowcaseComponent {
         this.createTreeNode(
           'combined-child1',
           'Child 1',
-          'file',
+          'document',
           undefined,
           false,
           false,
@@ -859,7 +929,18 @@ export class TreeNodeShowcaseComponent {
       'selected-text-only',
       'Selected Text Only',
       'folder',
-      [this.createTreeNode('text-child1', 'Child 1', 'file', undefined, false, false, false, 1)],
+      [
+        this.createTreeNode(
+          'text-child1',
+          'Child 1',
+          'document',
+          undefined,
+          false,
+          false,
+          false,
+          1,
+        ),
+      ],
       true,
       true,
       false,

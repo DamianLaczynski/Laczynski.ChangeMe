@@ -1,6 +1,7 @@
 import { Component, input, output, model } from '@angular/core';
 import { ButtonStyle, Size } from '../utils';
 import { IconComponent } from '../icon/icon.component';
+import { IconName } from '../icon';
 
 export type ButtonType = 'button' | 'submit' | 'reset';
 
@@ -18,8 +19,8 @@ export class ButtonComponent {
     transform: (value: Size | undefined) => value ?? 'medium',
   });
   iconOnly = input<boolean>(false);
-  icon = input<string, string | undefined>('', {
-    transform: (value: string | undefined) => value ?? '',
+  icon = input<IconName, IconName | undefined>(undefined, {
+    transform: (value: IconName | undefined) => value ?? undefined,
   });
   selected = input<boolean>(false);
 

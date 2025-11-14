@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../button/button.component';
 import { CardStyle, QuickAction } from '../utils';
 import { IconComponent } from '../icon/icon.component';
+import { IconName } from '../icon';
 
 @Component({
   selector: 'app-card',
@@ -22,7 +23,7 @@ export class CardComponent {
 
   // Header
   showHeader = input<boolean>(true);
-  headerIcon = input<string>('');
+  headerIcon = input<IconName | undefined>(undefined);
   showQuickAction = input<boolean>(false);
 
   // Footer

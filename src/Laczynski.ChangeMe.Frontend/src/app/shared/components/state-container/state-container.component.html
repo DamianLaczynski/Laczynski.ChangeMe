@@ -42,7 +42,7 @@
   <app-error-state
     [title]="errorTitle()"
     [description]="errorDescription() || state().error || ''"
-    [icon]="errorIcon()"
+    [icon]="errorIcon() || 'error_circle'"
     [size]="size()"
     [primaryAction]="errorPrimaryAction()"
     [secondaryAction]="errorSecondaryAction()"

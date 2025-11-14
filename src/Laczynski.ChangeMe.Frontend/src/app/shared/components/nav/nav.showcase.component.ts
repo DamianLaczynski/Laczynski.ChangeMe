@@ -176,7 +176,7 @@ import { ButtonComponent } from '../button/button.component';
               [items]="nestedNavItems()"
               [chevronPosition]="'after'"
               [chevronIconCollapsed]="'star'"
-              [chevronIconExpanded]="'star_filled'"
+              [chevronIconExpanded]="'star_off'"
             />
           </div>
         </div>
@@ -504,17 +504,17 @@ export class NavShowcaseComponent {
   // Basic navigation items
   basicNavItems = signal<NavNode[]>([
     { id: '1', label: 'Home', icon: 'home' },
-    { id: '2', label: 'Dashboard', icon: 'dashboard' },
+    { id: '2', label: 'Dashboard', icon: 'home' },
     { id: '3', label: 'Settings', icon: 'settings' },
   ]);
 
   // Navigation with icons
   navWithIcons = signal<NavNode[]>([
     { id: '1', label: 'Home', icon: 'home' },
-    { id: '2', label: 'Dashboard', icon: 'dashboard' },
-    { id: '3', label: 'Reports', icon: 'chart' },
+    { id: '2', label: 'Dashboard', icon: 'home' },
+    { id: '3', label: 'Reports', icon: 'info' },
     { id: '4', label: 'Messages', icon: 'mail' },
-    { id: '5', label: 'Notifications', icon: 'bell' },
+    { id: '5', label: 'Notifications', icon: 'service_bell' },
   ]);
 
   // Nested navigation items
@@ -522,7 +522,7 @@ export class NavShowcaseComponent {
     {
       id: '1',
       label: 'Dashboard',
-      icon: 'dashboard',
+      icon: 'home',
       hasChildren: true,
       children: [
         { id: '1-1', label: 'Overview' },
@@ -556,16 +556,16 @@ export class NavShowcaseComponent {
   navWithSectionHeaders = signal<NavNode[]>([
     { id: 'header1', label: 'Main', isSectionHeader: true },
     { id: '1', label: 'Home', icon: 'home' },
-    { id: '2', label: 'Dashboard', icon: 'dashboard' },
+    { id: '2', label: 'Dashboard', icon: 'home' },
     { id: 'header2', label: 'Settings', isSectionHeader: true },
     { id: '3', label: 'General', icon: 'settings' },
-    { id: '4', label: 'Security', icon: 'lock' },
+    { id: '4', label: 'Security', icon: 'lock_closed' },
   ]);
 
   // Navigation with dividers
   navWithDividers = signal<NavNode[]>([
     { id: '1', label: 'Home', icon: 'home' },
-    { id: '2', label: 'Dashboard', icon: 'dashboard' },
+    { id: '2', label: 'Dashboard', icon: 'home' },
     { id: 'divider1', label: 'Divider', isDivider: true },
     { id: '3', label: 'Settings', icon: 'settings' },
     { id: '4', label: 'Profile', icon: 'person' },
@@ -575,7 +575,7 @@ export class NavShowcaseComponent {
   navWithSectionsAndDividers = signal<NavNode[]>([
     { id: 'header1', label: 'Navigation', isSectionHeader: true },
     { id: '1', label: 'Home', icon: 'home' },
-    { id: '2', label: 'Dashboard', icon: 'dashboard' },
+    { id: '2', label: 'Dashboard', icon: 'home' },
     { id: 'divider1', label: 'Divider', isDivider: true },
     { id: 'header2', label: 'Account', isSectionHeader: true },
     { id: '3', label: 'Profile', icon: 'person' },
@@ -585,14 +585,14 @@ export class NavShowcaseComponent {
   // Size navigation items
   sizeNavItems = (size: 'small' | 'medium' | 'large'): NavNode[] => [
     { id: '1', label: 'Home', icon: 'home', size },
-    { id: '2', label: 'Dashboard', icon: 'dashboard', size },
+    { id: '2', label: 'Dashboard', icon: 'home', size },
     { id: '3', label: 'Settings', icon: 'settings', size },
   ];
 
   // Selection navigation items
   selectionNavItems = signal<NavNode[]>([
     { id: '1', label: 'Home', icon: 'home', selected: true },
-    { id: '2', label: 'Dashboard', icon: 'dashboard' },
+    { id: '2', label: 'Dashboard', icon: 'home' },
     { id: '3', label: 'Settings', icon: 'settings' },
     { id: '4', label: 'Profile', icon: 'person' },
   ]);
@@ -609,7 +609,7 @@ export class NavShowcaseComponent {
         { id: '1-2', label: 'Child 2' },
       ],
     },
-    { id: '2', label: 'Selectable Item', icon: 'file' },
+    { id: '2', label: 'Selectable Item', icon: 'document' },
     {
       id: '3',
       label: 'Another Expandable',
@@ -622,14 +622,14 @@ export class NavShowcaseComponent {
   // Quick actions navigation items
   quickActionsNavItems = signal<NavNode[]>([
     { id: '1', label: 'Home', icon: 'home' },
-    { id: '2', label: 'Dashboard', icon: 'dashboard' },
+    { id: '2', label: 'Dashboard', icon: 'home' },
     { id: '3', label: 'Settings', icon: 'settings' },
   ]);
 
   // Disabled navigation items
   disabledNavItems = signal<NavNode[]>([
     { id: '1', label: 'Home', icon: 'home' },
-    { id: '2', label: 'Dashboard', icon: 'dashboard', disabled: true },
+    { id: '2', label: 'Dashboard', icon: 'home', disabled: true },
     { id: '3', label: 'Settings', icon: 'settings' },
     {
       id: '4',
@@ -650,13 +650,13 @@ export class NavShowcaseComponent {
     {
       id: '1',
       label: 'Dashboard',
-      icon: 'dashboard',
+      icon: 'home',
       selected: true,
       hasChildren: true,
       children: [
-        { id: '1-1', label: 'Overview', icon: 'chart' },
-        { id: '1-2', label: 'Analytics', icon: 'bar_chart' },
-        { id: '1-3', label: 'Reports', icon: 'description' },
+        { id: '1-1', label: 'Overview', icon: 'info' },
+        { id: '1-2', label: 'Analytics', icon: 'info' },
+        { id: '1-3', label: 'Reports', icon: 'info' },
       ],
     },
     { id: '2', label: 'Projects', icon: 'folder', hasChildren: true, children: [] },
@@ -665,8 +665,8 @@ export class NavShowcaseComponent {
     { id: '3', label: 'Profile', icon: 'person' },
     { id: '4', label: 'Settings', icon: 'settings', hasChildren: true, children: [] },
     { id: 'divider2', label: 'Divider', isDivider: true },
-    { id: '5', label: 'Help', icon: 'help' },
-    { id: '6', label: 'Logout', icon: 'logout', disabled: false },
+    { id: '5', label: 'Help', icon: 'info' },
+    { id: '6', label: 'Logout', icon: 'arrow_exit', disabled: false },
   ]);
 
   // Tracked navigation items
@@ -680,7 +680,7 @@ export class NavShowcaseComponent {
     {
       id: '2',
       label: 'Dashboard',
-      icon: 'dashboard',
+      icon: 'home',
       onClick: () => this.onNavItemClick('Dashboard'),
     },
     {

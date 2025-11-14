@@ -1,6 +1,7 @@
 import { Component, input, output } from '@angular/core';
 import { IconComponent } from '../icon/icon.component';
 import { Size } from '../utils';
+import { IconName } from '../icon';
 
 @Component({
   selector: 'app-action-button',
@@ -26,7 +27,7 @@ import { Size } from '../utils';
 export class ActionButtonComponent {
   size = input<Size>('medium');
   show = input<boolean>(true);
-  icon = input<string>('dismiss');
+  icon = input<IconName>('dismiss');
   variant = input<'regular' | 'filled'>('regular');
   click = output<void>();
 

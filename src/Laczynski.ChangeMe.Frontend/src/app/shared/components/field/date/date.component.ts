@@ -16,6 +16,7 @@ import { ActionButtonComponent } from '../action-button.component';
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { CalendarComponent, CalendarDay, CalendarView } from '@shared/components/calendar';
 import { TimeComponent } from '@shared/components/time';
+import { IconName } from '@shared/components/icon';
 
 export type DateFieldType = 'date' | 'datetime-local' | 'time' | 'month' | 'week';
 
@@ -35,7 +36,14 @@ interface CalendarYear {
 @Component({
   selector: 'app-date',
 
-  imports: [CommonModule, FieldComponent, ActionButtonComponent, IconComponent, CalendarComponent, TimeComponent],
+  imports: [
+    CommonModule,
+    FieldComponent,
+    ActionButtonComponent,
+    IconComponent,
+    CalendarComponent,
+    TimeComponent,
+  ],
   templateUrl: './date.component.html',
   host: {
     '[style.position]': '"relative"',
@@ -326,7 +334,6 @@ export class DateComponent extends FieldComponent {
     return years;
   }
 
-
   private formatDate(date: Date): string {
     return date.toLocaleDateString('en-US', {
       year: 'numeric',
@@ -439,8 +446,7 @@ export class DateComponent extends FieldComponent {
     return classes.join(' ');
   }
 
-
-  getIcon(): string {
+  getIcon(): IconName {
     if (this.dateType() === 'date') {
       return 'calendar';
     } else if (this.dateType() === 'month') {

@@ -12,11 +12,12 @@ import {
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
 import { Size, Appearance, Orientation } from '../utils';
+import { IconName } from '../icon';
 
 export type Node<T = any> = {
   id: string | number;
   label: string;
-  icon?: string;
+  icon?: IconName;
   disabled?: boolean;
   selected?: boolean;
   data?: T;

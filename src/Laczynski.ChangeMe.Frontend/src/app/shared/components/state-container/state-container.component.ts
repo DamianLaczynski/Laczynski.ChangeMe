@@ -5,6 +5,7 @@ import { ErrorStateComponent } from '../error-state/error-state.component';
 import { EmptyStateComponent } from '../empty-state/empty-state.component';
 import { QuickAction, Size, SpinnerSize } from '../utils';
 import { State } from '@shared/state/models/state.model';
+import { IconName } from '../icon';
 
 @Component({
   selector: 'app-state-container',
@@ -30,14 +31,14 @@ export class StateContainerComponent<T> {
   // Error state inputs
   errorTitle = input<string>('');
   errorDescription = input<string>('');
-  errorIcon = input<string>('error_circle');
+  errorIcon = input<IconName | undefined>(undefined);
   errorPrimaryAction = input<QuickAction | null>(null);
   errorSecondaryAction = input<QuickAction | null>(null);
 
   // Empty state inputs
   emptyTitle = input<string>('');
   emptyDescription = input<string>('');
-  emptyIcon = input<string>('');
+  emptyIcon = input<IconName | undefined>(undefined);
   emptyPrimaryAction = input<QuickAction | null>(null);
   emptySecondaryAction = input<QuickAction | null>(null);
 

@@ -1,6 +1,7 @@
 import { Component, input } from '@angular/core';
 import { BadgeColor, BadgeAppearance, Size } from '../utils';
 import { IconComponent } from '../icon/icon.component';
+import { IconName } from '../icon';
 
 @Component({
   selector: 'app-badge',
@@ -13,7 +14,7 @@ export class BadgeComponent {
   size = input<Size>('medium');
   appearance = input<BadgeAppearance>('filled');
   text = input.required<string>();
-  icon = input<string>('');
+  icon = input<IconName | undefined>(undefined);
   ariaLabel = input<string>('');
 
   get badgeClasses(): string {

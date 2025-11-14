@@ -17,6 +17,7 @@ import { IconComponent } from '@shared/components/icon/icon.component';
 import { NodeComponent, Node } from '../../node/node.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { ActionButtonComponent } from '../action-button.component';
+import { IconName } from '@shared/components/icon';
 
 export interface FileInfo {
   file: File;
@@ -328,10 +329,10 @@ export class FileComponent extends FieldComponent implements ControlValueAccesso
     return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
   }
 
-  getFileIcon(fileType: string): string {
+  getFileIcon(fileType: string): IconName {
     if (fileType.startsWith('image/')) return 'image';
     if (fileType.startsWith('video/')) return 'video';
-    if (fileType.startsWith('audio/')) return 'audio';
+    if (fileType.startsWith('audio/')) return 'music_note_1';
     if (
       fileType.includes('pdf') ||
       fileType.includes('document') ||
@@ -342,7 +343,7 @@ export class FileComponent extends FieldComponent implements ControlValueAccesso
       return 'document';
     }
     if (fileType.includes('zip') || fileType.includes('archive')) return 'archive';
-    return 'file';
+    return 'document';
   }
 
   override ngOnDestroy(): void {
@@ -401,4 +402,3 @@ export class FileComponent extends FieldComponent implements ControlValueAccesso
     this.blur.emit(event);
   }
 }
-

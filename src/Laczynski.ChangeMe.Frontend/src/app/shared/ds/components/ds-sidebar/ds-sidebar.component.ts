@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { NavComponent, NavNode } from '@shared/components/nav';
 import { filter } from 'rxjs/operators';
@@ -6,11 +6,10 @@ import { LayoutService } from '@core/layout/services/layout.service';
 import { NodeComponent, Node } from '@shared/components/node';
 import { SearchComponent } from '@shared/components/field/search';
 import { FormsModule } from '@angular/forms';
-import { DividerComponent } from '@shared/components/divider';
 
 @Component({
   selector: 'app-ds-sidebar',
-  imports: [NavComponent, NodeComponent, SearchComponent, FormsModule, DividerComponent],
+  imports: [NavComponent, NodeComponent, SearchComponent, FormsModule],
   templateUrl: './ds-sidebar.component.html',
 })
 export class DsSidebarComponent {
@@ -40,6 +39,9 @@ export class DsSidebarComponent {
   }));
 
   private readonly allNavItems: NavNode[] = [
+    // Design System Section
+    { id: 'design-system', isSectionHeader: true, label: 'Design System' },
+    { id: 'colors', label: 'Colors', icon: 'color' },
     // Form Components Section
     { id: 'form-components', isSectionHeader: true, label: 'Form Components' },
     { id: 'checkbox', label: 'Checkbox', icon: 'checkbox_checked' },
@@ -58,7 +60,7 @@ export class DsSidebarComponent {
     { id: 'search', label: 'Search', icon: 'search' },
     { id: 'tel', label: 'Tel', icon: 'call' },
     { id: 'textarea', label: 'Textarea', icon: 'text_field' },
-    { id: 'totp', label: 'TOTP', icon: 'lock' },
+    { id: 'totp', label: 'TOTP', icon: 'lock_closed' },
     { id: 'url', label: 'URL', icon: 'link' },
     // Layout Components Section
     { id: 'layout-components', isSectionHeader: true, label: 'Layout Components' },
@@ -87,8 +89,8 @@ export class DsSidebarComponent {
     // Data Display Section
     { id: 'data-display', isSectionHeader: true, label: 'Data Display' },
     { id: 'data-grid', label: 'Data Grid', icon: 'table' },
-    { id: 'pagination', label: 'Pagination', icon: 'arrow_paging' },
-    { id: 'toolbar', label: 'Toolbar', icon: 'toolbar' },
+    { id: 'pagination', label: 'Pagination', icon: 'page_fit' },
+    { id: 'toolbar', label: 'Toolbar', icon: 'navigation' },
     { id: 'tree', label: 'Tree', icon: 'text_bullet_list_tree' },
     { id: 'tree-node', label: 'Tree Node', icon: 'rectangle_landscape' },
     { id: 'node', label: 'Node', icon: 'circle' },
@@ -105,7 +107,7 @@ export class DsSidebarComponent {
     { id: 'stepper', label: 'Stepper', icon: 'timeline' },
     // Calendar Section
     { id: 'calendar-components', isSectionHeader: true, label: 'Calendar Components' },
-    { id: 'calendar', label: 'Calendar', icon: 'calendar_view_month' },
+    { id: 'calendar', label: 'Calendar', icon: 'calendar_month' },
     { id: 'time', label: 'Time', icon: 'clock' },
   ];
 

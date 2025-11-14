@@ -14,7 +14,7 @@
             [variant]="getButtonVariant(item)"
             [size]="getButtonSize()"
             [iconOnly]="isIconOnly(item)"
-            [icon]="item.icon || ''"
+            [icon]="item.icon || undefined"
             [selected]="item.selected || false"
             [disabled]="item.disabled || false"
             [ariaLabel]="item.ariaLabel || item.label || item.tooltip || ''"
