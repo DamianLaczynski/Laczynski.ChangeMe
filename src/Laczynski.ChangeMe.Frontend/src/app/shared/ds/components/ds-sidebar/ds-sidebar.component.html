@@ -1,4 +1,13 @@
 <div class="ds-sidebar">
+  <div class="ds-sidebar__search">
+    <app-search
+      placeholder="Search components..."
+      [size]="'medium'"
+      [(ngModel)]="searchQuery"
+      [ngModelOptions]="{ standalone: true }"
+    ></app-search>
+  </div>
+  <app-nav [items]="navItems()"></app-nav>
   <div class="ds-sidebar__theme-toggle">
     <app-node
       [node]="themeNode()"
@@ -8,5 +17,4 @@
       (nodeClick)="onDarkModeToggle()"
     ></app-node>
   </div>
-  <app-nav [items]="navItems"></app-nav>
 </div>

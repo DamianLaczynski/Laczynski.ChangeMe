@@ -4,16 +4,28 @@ import { NavComponent, NavNode } from '@shared/components/nav';
 import { filter } from 'rxjs/operators';
 import { LayoutService } from '@core/layout/services/layout.service';
 import { NodeComponent, Node } from '@shared/components/node';
+import { SearchComponent } from '@shared/components/field/search';
+import { FormsModule } from '@angular/forms';
+import { DividerComponent } from '@shared/components/divider';
 
 @Component({
   selector: 'app-ds-sidebar',
-  imports: [NavComponent, NodeComponent],
+  imports: [NavComponent, NodeComponent, SearchComponent, FormsModule, DividerComponent],
   templateUrl: './ds-sidebar.component.html',
 })
 export class DsSidebarComponent {
   private readonly router = inject(Router);
   private readonly layoutService = inject(LayoutService);
   selectedItemId = signal<string | null>(null);
+  private _searchQuery = signal<string>('');
+
+  get searchQuery(): string {
+    return this._searchQuery();
+  }
+
+  set searchQuery(value: string) {
+    this._searchQuery.set(value);
+  }
 
   // Dark mode state - computed from layout service
   isDarkMode = computed(() => this.layoutService.$themeMode() === 'dark');
@@ -27,7 +39,7 @@ export class DsSidebarComponent {
     icon: this.themeIcon(),
   }));
 
-  navItems: NavNode[] = [
+  private readonly allNavItems: NavNode[] = [
     // Form Components Section
     { id: 'form-components', isSectionHeader: true, label: 'Form Components' },
     { id: 'checkbox', label: 'Checkbox', icon: 'checkbox_checked' },
@@ -96,36 +108,62 @@ export class DsSidebarComponent {
     { id: 'time', label: 'Time', icon: 'clock' },
   ];
 
+  // Filtered nav items based on search query
+  filteredNavItems = computed<NavNode[]>(() => {
+    const query = this._searchQuery().toLowerCase().trim();
+    if (!query) {
+      return this.allNavItems;
+    }
+
+    return this.allNavItems.filter(item => {
+      // Always show section headers if any item in section matches
+      if (item.isSectionHeader) {
+        // Check if any item after this header matches
+        const headerIndex = this.allNavItems.indexOf(item);
+        const nextHeaderIndex = this.allNavItems.findIndex(
+          (navItem, idx) => idx > headerIndex && navItem.isSectionHeader,
+        );
+        const sectionItems = this.allNavItems.slice(
+          headerIndex + 1,
+          nextHeaderIndex === -1 ? undefined : nextHeaderIndex,
+        );
+        return sectionItems.some(sectionItem => sectionItem.label.toLowerCase().includes(query));
+      }
+      // Filter regular items by label
+      return item.label.toLowerCase().includes(query);
+    });
+  });
+
+  // Nav items with handlers applied
+  navItems = computed<NavNode[]>(() => {
+    return this.filteredNavItems().map(item => ({
+      ...item,
+      onClick: item.children
+        ? undefined
+        : () => {
+            this.selectedItemId.set(item.id as string);
+            this.router.navigate(['ds', item.id]);
+          },
+      selected: this.selectedItemId() === item.id,
+      children: item.children?.map(child => ({
+        ...child,
+        onClick: () => {
+          this.selectedItemId.set(child.id as string);
+          this.router.navigate(['ds', child.id]);
+        },
+        selected: this.selectedItemId() === child.id,
+      })),
+    }));
+  });
+
   constructor() {
     this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(event => {
       const url = event.url;
-      const item = this.navItems.find(item => item.id === url.split('/').pop());
+      const item = this.navItems().find(item => item.id === url.split('/').pop());
       if (item) {
         this.selectedItemId.set(item.id as string);
       }
     });
-    // Set onClick handlers for all items
-    effect(() => {
-      this.navItems = this.navItems.map(item => ({
-        ...item,
-        onClick: item.children
-          ? undefined
-          : () => {
-              this.selectedItemId.set(item.id as string);
-              this.router.navigate(['ds', item.id]);
-            },
-        selected: this.selectedItemId() === item.id,
-        children: item.children?.map(child => ({
-          ...child,
-          onClick: () => {
-            this.selectedItemId.set(child.id as string);
-            this.router.navigate(['ds', child.id]);
-          },
-          selected: this.selectedItemId() === child.id,
-        })),
-      }));
-    });
-    // Set onClick handlers for all items
   }
 
   onDarkModeToggle(): void {
