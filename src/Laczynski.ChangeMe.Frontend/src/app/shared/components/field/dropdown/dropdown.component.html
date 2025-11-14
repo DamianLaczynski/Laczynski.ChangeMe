@@ -1,6 +1,7 @@
 @if (compact()) {
   <!-- Compact mode: Button trigger -->
   <app-button
+    #triggerElement
     [variant]="'subtle'"
     [size]="size()"
     [iconOnly]="true"
@@ -8,134 +9,149 @@
     [disabled]="disabled()"
     [ariaLabel]="ariaLabel() || label() || 'Filter'"
     [attr.aria-expanded]="isExpanded()"
-    [attr.aria-haspopup]="true"
+    [attr.aria-haspopup]="'listbox'"
+    [attr.aria-controls]="getListboxId()"
+    [attr.aria-activedescendant]="activeDescendant()"
     [selected]="isExpanded() || selectedValues().size > 0"
     (click)="toggleDropdown(); $event.stopPropagation()"
     class="dropdown-trigger--compact"
   />
 } @else {
   <!-- Standard mode: Input trigger -->
-<app-field
-  [fieldType]="'select'"
-  [label]="label()"
-  [placeholder]="placeholder()"
-  [helpText]="helpText()"
-  [errorText]="errorText()"
-  [warningText]="warningText()"
-  [successText]="successText()"
-  [required]="required()"
-  [disabled]="disabled()"
-  [readonly]="readonly()"
-  [autocomplete]="autocomplete()"
-  [id]="id()"
-  [name]="name()"
-  [state]="state()"
-  [size]="size()"
-  [variant]="variant()"
->
-  <div class="input-wrapper" [class]="wrapperClasses">
-    <!-- Dropdown Trigger (styled as input with chevron inside) -->
-    <div
-      class="input dropdown-trigger"
-      [attr.tabindex]="disabled() ? -1 : 0"
-      [attr.aria-expanded]="isExpanded()"
-      [attr.aria-haspopup]="true"
-      [attr.aria-label]="ariaLabel() || label()"
-      (click)="toggleDropdown(); $event.stopPropagation()"
-      (keydown.enter)="toggleDropdown(); $event.preventDefault(); $event.stopPropagation()"
-      (keydown.space)="toggleDropdown(); $event.preventDefault(); $event.stopPropagation()"
-      (keydown.escape)="closeDropdown(); $event.stopPropagation()"
-      (focus)="onFocus($event)"
-    >
-      <!-- Display text -->
-      <span
-        class="dropdown-display-text"
-        [class.dropdown-placeholder]="selectedValues().size === 0"
+  <app-field
+    [fieldType]="'select'"
+    [label]="label()"
+    [placeholder]="placeholder()"
+    [helpText]="helpText()"
+    [errorText]="errorText()"
+    [warningText]="warningText()"
+    [successText]="successText()"
+    [required]="required()"
+    [disabled]="disabled()"
+    [readonly]="readonly()"
+    [autocomplete]="autocomplete()"
+    [id]="id()"
+    [name]="name()"
+    [state]="state()"
+    [size]="size()"
+    [variant]="variant()"
+  >
+    <div class="input-wrapper" [class]="wrapperClasses">
+      <!-- Dropdown Trigger (styled as input with chevron inside) -->
+      <div
+        #triggerElement
+        class="input dropdown-trigger"
+        role="combobox"
+        [attr.tabindex]="disabled() ? -1 : 0"
+        [attr.aria-expanded]="isExpanded()"
+        [attr.aria-haspopup]="'listbox'"
+        [attr.aria-controls]="getListboxId()"
+        [attr.aria-activedescendant]="activeDescendant()"
+        [attr.aria-label]="ariaLabel() || label()"
+        [attr.aria-labelledby]="id() ? id() + '-label' : null"
+        (click)="toggleDropdown(); $event.stopPropagation()"
+        (focus)="onFocus($event)"
+        (keydown)="onKeyDown($event)"
       >
-        {{ displayText() }}
-      </span>
+        <!-- Display text -->
+        <span
+          class="dropdown-display-text"
+          [class.dropdown-placeholder]="selectedValues().size === 0"
+        >
+          {{ displayText() }}
+        </span>
 
-      <!-- Clear button (inside input) -->
+        <!-- Clear button (inside input) -->
 
-      @if (clearable() && selectedValues().size > 0 && !disabled()) {
+        @if (clearable() && selectedValues().size > 0 && !disabled()) {
+          <app-action-button
+            [show]="true"
+            [icon]="'dismiss'"
+            [size]="size()"
+            (click)="clearSelection()"
+          />
+        }
+
         <app-action-button
           [show]="true"
-          [icon]="'dismiss'"
+          [icon]="'chevron_down'"
           [size]="size()"
-          (click)="clearSelection()"
+          (click)="toggleDropdown()"
         />
-      }
-
-      <app-action-button
-        [show]="true"
-        [icon]="'chevron_down'"
-        [size]="size()"
-        (click)="toggleDropdown()"
-      />
-      <!-- Chevron icon (inside input, always visible) -->
+        <!-- Chevron icon (inside input, always visible) -->
+      </div>
     </div>
-  </div>
-</app-field>
+  </app-field>
 }
 
 <!-- Dropdown Panel (positioned relative to host component) -->
-<div
-  *ngIf="isExpanded()"
-  #dropdownPanel
-  class="dropdown-panel"
-  [class.dropdown-panel--small]="size() === 'small'"
-  [class.dropdown-panel--medium]="size() === 'medium'"
-  [class.dropdown-panel--large]="size() === 'large'"
-  [style.max-height]="maxHeight()"
->
-  <!-- Search input -->
-  <div *ngIf="searchable()" class="dropdown-panel__search">
-    <app-text
-      [size]="size()"
-      placeholder="Search..."
-      (input)="onSearchInput($event)"
-      (click)="$event.stopPropagation()"
-    />
-  </div>
-
-  <!-- Items list -->
-  <div class="dropdown-panel__list">
-    @for (item of filteredItems(); track item.value) {
-      @if (item.type === 'header') {
-        <!-- Header item -->
-        <div class="dropdown-panel__item-header">
-          {{ item.label }}
-        </div>
-      } @else if (item.type === 'divider') {
-        <!-- Divider -->
-        <div class="dropdown-panel__divider"></div>
-      } @else {
-        <!-- Regular item using NodeComponent -->
-        <app-node
-          [node]="itemToNode(item)"
+@if (isExpanded()) {
+  <div
+    #dropdownPanel
+    [id]="getListboxId()"
+    role="listbox"
+    class="dropdown-panel"
+    [class.dropdown-panel--small]="size() === 'small'"
+    [class.dropdown-panel--medium]="size() === 'medium'"
+    [class.dropdown-panel--large]="size() === 'large'"
+    [style.max-height]="maxHeight()"
+  >
+    <!-- Search input -->
+    @if (searchable()) {
+      <div class="dropdown-panel__search">
+        <app-search
           [size]="size()"
-          [asButton]="true"
-          [selectOnClick]="false"
-          [showSelectionIndicator]="false"
-          (nodeClick)="selectItem(item)"
-        >
-          <!-- Before template for checkbox/checkmark -->
-          <ng-template #before>
-            @if (shouldShowCheckmark(item)) {
-              <app-icon [icon]="'checkmark'" [size]="size()" />
-            } @else if (shouldShowCheckbox(item)) {
-              <app-checkbox
-                size="medium"
-                [ngModel]="isItemSelected(item)"
-                (ngModelChange)="selectItem(item, $event)"
-                (click)="$event.stopPropagation()"
-              />
-            }
-          </ng-template>
-        </app-node>
-      }
-    } @empty {
-      <div class="dropdown-panel__empty">No items found</div>
+          variant="filled-gray"
+          placeholder="Search..."
+          (input)="onSearchInput($event)"
+          (click)="$event.stopPropagation()"
+        />
+      </div>
     }
+    <!-- Items list -->
+    <div class="dropdown-panel__list">
+      @for (item of filteredItems(); track item.value) {
+        @if (item.type === 'header') {
+          <!-- Header item -->
+          <div class="dropdown-panel__item-header">
+            {{ item.label }}
+          </div>
+        } @else if (item.type === 'divider') {
+          <!-- Divider -->
+          <div class="dropdown-panel__divider"></div>
+        } @else {
+          <!-- Regular item using NodeComponent -->
+          <app-node
+            [id]="getItemId(item)"
+            role="option"
+            [attr.aria-selected]="isItemSelected(item)"
+            [attr.aria-disabled]="item.disabled ? 'true' : null"
+            [class.dropdown-panel__item--active]="isItemActive(item)"
+            [node]="itemToNode(item)"
+            [size]="size()"
+            [asButton]="true"
+            [selectOnClick]="false"
+            [showSelectionIndicator]="false"
+            (nodeClick)="selectItem(item)"
+          >
+            <!-- Before template for checkbox/checkmark -->
+            <ng-template #before>
+              @if (shouldShowCheckmark(item)) {
+                <app-icon [icon]="'checkmark'" [size]="size()" />
+              } @else if (shouldShowCheckbox(item)) {
+                <app-checkbox
+                  size="medium"
+                  [ngModel]="isItemSelected(item)"
+                  (ngModelChange)="selectItem(item, $event)"
+                  (click)="$event.stopPropagation()"
+                />
+              }
+            </ng-template>
+          </app-node>
+        }
+      } @empty {
+        <div class="dropdown-panel__empty">No items found</div>
+      }
+    </div>
   </div>
-</div>
+}

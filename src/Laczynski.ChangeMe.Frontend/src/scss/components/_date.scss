@@ -62,7 +62,7 @@
 // Date Panel Container
 .date-panel {
   position: absolute;
-  top: calc(100% + $spacing-1);
+  top: calc(100% + 4px); // 4px gap below trigger (like native select)
   left: 0;
   z-index: 1000;
   background: var(--color-neutral-background-rest);
@@ -72,6 +72,12 @@
   padding: $spacing-3;
   min-width: 280px;
   animation: fadeInScale 0.15s $easing-decelerate-mid;
+
+  // Flip to top when not enough space below (like native select)
+  &--top {
+    top: auto;
+    bottom: calc(100% + 4px); // 4px gap above trigger
+  }
 
   &[data-size='small'] {
     padding: $spacing-2;

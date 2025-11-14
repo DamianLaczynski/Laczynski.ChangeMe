@@ -23,7 +23,7 @@
   &:focus {
     outline: none;
   }
-  
+
   &:focus-visible {
     outline: none; // Focus jest obsługiwany przez input-wrapper
   }
@@ -48,10 +48,10 @@
 
 .dropdown-panel {
   position: absolute;
-  top: calc(100% + $spacing-1);
+  top: calc(100% + 4px); // 4px gap below trigger (like native select)
   left: 0;
   right: 0;
-  z-index: 1000;
+  z-index: $z-index-dropdown;
   background: var(--color-neutral-background-rest);
   border-radius: $border-radius-400;
   box-shadow:
@@ -59,6 +59,13 @@
     0px 8px 16px rgba(0, 0, 0, 0.14);
   overflow: hidden;
   @include slide-down($duration-normal, $easing-decelerate-min);
+
+  // Flip to top when not enough space below (like native select)
+  &--top {
+    top: auto;
+    bottom: calc(100% + 4px); // 4px gap above trigger
+    animation: slideUpFromBottom $duration-normal $easing-decelerate-min;
+  }
 
   &--small {
     min-width: 200px;
@@ -132,12 +139,31 @@
     font-size: $font-size-300;
     line-height: $line-height-300;
   }
+
+  // Active item styling
+  &__item--active {
+    background: var(--color-neutral-background-hover);
+    outline: 2px solid var(--color-brand-stroke-rest);
+    outline-offset: -2px;
+    border-radius: $border-radius-400;
+  }
 }
 
 // =============================================================================
 // Animations
 // =============================================================================
 // Note: Using slide-down mixin from _mixins.scss instead of custom keyframes
+
+@keyframes slideUpFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 // =============================================================================
 // Responsive Design

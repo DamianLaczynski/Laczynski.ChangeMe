@@ -10,6 +10,10 @@ import {
   effect,
   output,
   untracked,
+  Renderer2,
+  AfterViewInit,
+  OnDestroy,
+  inject,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -48,7 +52,11 @@ type RangeSelection = 'start' | 'end' | null;
     `,
   ],
 })
-export class DateRangeComponent extends FieldComponent {
+export class DateRangeComponent extends FieldComponent implements AfterViewInit, OnDestroy {
+  private readonly renderer = inject(Renderer2);
+  private resizeObserver?: ResizeObserver;
+  private scrollListener?: () => void;
+
   min = input<string>('');
   max = input<string>('');
   separator = input<string>(' - ');
@@ -65,6 +73,7 @@ export class DateRangeComponent extends FieldComponent {
   calendarView = signal<CalendarView>('days');
 
   @ViewChild('datePanel') datePanel?: ElementRef;
+  @ViewChild('triggerElement') triggerElement?: ElementRef;
 
   private isWritingValue = false;
 
@@ -128,6 +137,72 @@ export class DateRangeComponent extends FieldComponent {
         this.rangeChange.emit(rangeValue);
       }
     });
+
+    // Effect to check if panel should flip to top when expanded
+    effect(() => {
+      if (this.isExpanded()) {
+        setTimeout(() => this.checkAndFlipPanel(), 0);
+      }
+    });
+  }
+
+  ngAfterViewInit(): void {
+    // Setup resize observer for trigger element
+    if (this.triggerElement?.nativeElement) {
+      this.resizeObserver = new ResizeObserver(() => {
+        if (this.isExpanded()) {
+          this.checkAndFlipPanel();
+        }
+      });
+      this.resizeObserver.observe(this.triggerElement.nativeElement);
+    }
+
+    // Setup scroll listener
+    this.scrollListener = this.renderer.listen('window', 'scroll', () => {
+      if (this.isExpanded()) {
+        this.checkAndFlipPanel();
+      }
+    });
+  }
+
+  override ngOnDestroy(): void {
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
+    if (this.scrollListener) {
+      this.scrollListener();
+    }
+  }
+
+  /**
+   * Check if panel should flip to top (like native select does automatically)
+   */
+  private checkAndFlipPanel(): void {
+    if (!this.triggerElement?.nativeElement || !this.datePanel?.nativeElement) {
+      return;
+    }
+
+    const trigger = this.triggerElement.nativeElement;
+    const panel = this.datePanel.nativeElement;
+    const triggerRect = trigger.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+
+    // Estimate panel height
+    const panelHeight = panel.scrollHeight || 400;
+
+    // Check available space (like native select does)
+    const spaceBelow = viewportHeight - triggerRect.bottom;
+    const spaceAbove = triggerRect.top;
+
+    // Flip to top if not enough space below (native select behavior)
+    const shouldFlip = spaceBelow < panelHeight && spaceAbove > spaceBelow;
+
+    // Toggle CSS class for flip (CSS handles the positioning)
+    if (shouldFlip) {
+      this.renderer.addClass(panel, 'date-range-panel--top');
+    } else {
+      this.renderer.removeClass(panel, 'date-range-panel--top');
+    }
   }
 
   onPanelClick(event: Event): void {
