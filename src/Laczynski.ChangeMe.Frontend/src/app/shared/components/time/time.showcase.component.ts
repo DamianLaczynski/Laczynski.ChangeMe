@@ -2,13 +2,22 @@ import { Component, signal } from '@angular/core';
 import { TimeComponent } from './time.component';
 import { CommonModule } from '@angular/common';
 import { JsonPipe } from '@angular/common';
+import { TableOfContentComponent } from '@shared/components/table-of-content';
 
 @Component({
   selector: 'app-time-showcase',
-  imports: [TimeComponent, CommonModule, JsonPipe],
+  imports: [TimeComponent, CommonModule, JsonPipe, TableOfContentComponent],
   template: `
-    <div class="showcase showcase--responsive">
-      <h1 class="showcase__title">Time Component Showcase</h1>
+    <div class="showcase showcase--responsive showcase__with-toc">
+      <app-table-of-content
+        [sticky]="true"
+        [offsetTop]="20"
+        containerSelector=".showcase-content"
+        [minLevel]="1"
+        [maxLevel]="2"
+      />
+      <div class="showcase-content">
+        <h1 class="showcase__title">Time Component Showcase</h1>
       <p class="showcase__description">
         Standalone time picker component built with Fluent 2 Design System. Provides intuitive time
         selection with hour and minute spinners, supporting both 12-hour and 24-hour formats.
@@ -227,6 +236,7 @@ import { JsonPipe } from '@angular/common';
         <div class="showcase__form-output">
           <pre>{{ timeValues | json }}</pre>
         </div>
+      </div>
       </div>
     </div>
   `,

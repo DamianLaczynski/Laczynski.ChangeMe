@@ -2,14 +2,23 @@ import { Component, signal } from '@angular/core';
 import { FileComponent } from './file.component';
 import { FormControl, FormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule, JsonPipe } from '@angular/common';
+import { TableOfContentComponent } from '@shared/components/table-of-content';
 
 @Component({
   selector: 'app-file-showcase',
 
-  imports: [FileComponent, ReactiveFormsModule, FormsModule, JsonPipe, CommonModule],
+  imports: [FileComponent, ReactiveFormsModule, FormsModule, JsonPipe, CommonModule, TableOfContentComponent],
   template: `
-    <div class="showcase showcase--responsive">
-      <h1 class="showcase__title">File Input Component - Fluent 2 Design</h1>
+    <div class="showcase showcase--responsive showcase__with-toc">
+      <app-table-of-content
+        [sticky]="true"
+        [offsetTop]="20"
+        containerSelector=".showcase-content"
+        [minLevel]="1"
+        [maxLevel]="2"
+      />
+      <div class="showcase-content">
+        <h1 class="showcase__title">File Input Component - Fluent 2 Design</h1>
 
       <section class="showcase__section">
         <h2 class="showcase__section__title">Basic Usage</h2>
@@ -255,6 +264,7 @@ import { CommonModule, JsonPipe } from '@angular/common';
           </div>
         </div>
       </section>
+      </div>
     </div>
   `,
 })

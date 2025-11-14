@@ -2,13 +2,22 @@ import { Component } from '@angular/core';
 import { EmailComponent } from './email.component';
 import { FormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
+import { TableOfContentComponent } from '@shared/components/table-of-content';
 
 @Component({
   selector: 'app-email-showcase',
-  imports: [EmailComponent, FormsModule, JsonPipe],
+  imports: [EmailComponent, FormsModule, JsonPipe, TableOfContentComponent],
   template: `
-    <div class="showcase showcase--responsive">
-      <h1 class="showcase__title">Email Component Showcase</h1>
+    <div class="showcase showcase--responsive showcase__with-toc">
+      <app-table-of-content
+        [sticky]="true"
+        [offsetTop]="20"
+        containerSelector=".showcase-content"
+        [minLevel]="1"
+        [maxLevel]="2"
+      />
+      <div class="showcase-content">
+        <h1 class="showcase__title">Email Component Showcase</h1>
       <p class="showcase__description">
         Comprehensive showcase of the Email component built with Fluent 2 Design System. All variants
         are responsive and accessible.
@@ -240,6 +249,7 @@ import { JsonPipe } from '@angular/common';
             ></app-email>
           </div>
         </div>
+      </div>
       </div>
     </div>
   `,

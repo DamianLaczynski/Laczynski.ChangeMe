@@ -1,0 +1,87 @@
+// ==========================================================================
+// Table of Content Component - Fluent 2 Design System (BEM Block)
+// ==========================================================================
+
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use '../utils/functions' as *;
+
+@include block('table-of-content') {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 240px;
+  max-width: 320px;
+  padding: $spacing-2;
+  border-radius: $border-radius-400;
+  background: var(--color-neutral-background-rest);
+  border: 1px solid var(--color-neutral-stroke-rest);
+  box-sizing: border-box;
+
+  @include modifier('sticky') {
+    position: sticky;
+    align-self: flex-start;
+  }
+
+  @include element('content') {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-05;
+    width: 100%;
+  }
+
+  // Nested tree nodes indentation
+  ::ng-deep .tree-node {
+    &--nested {
+      margin-left: $spacing-4;
+    }
+
+    &--nested-2 {
+      margin-left: $spacing-8;
+    }
+
+    &--nested-3 {
+      margin-left: $spacing-12;
+    }
+
+    &--nested-4 {
+      margin-left: $spacing-16;
+    }
+
+    &--nested-5 {
+      margin-left: $spacing-20;
+    }
+  }
+
+  // Active item styling
+  ::ng-deep .tree-node--selected {
+    .tree-node__content {
+      background-color: var(--color-neutral-background-brand-selected);
+    }
+
+    .tree-node__label {
+      color: var(--color-brand-primary);
+      font-weight: $font-weight-semibold;
+    }
+  }
+
+  // Hover state
+  ::ng-deep .tree-node__content:hover:not(:disabled) {
+    background-color: var(--color-neutral-background-hover);
+  }
+
+  // Size modifiers
+  @include modifier('small') {
+    min-width: 200px;
+    max-width: 260px;
+    padding: $spacing-1;
+  }
+
+  @include modifier('large') {
+    min-width: 280px;
+    max-width: 360px;
+    padding: $spacing-3;
+  }
+}
+

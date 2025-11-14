@@ -2,14 +2,23 @@ import { Component } from '@angular/core';
 import { DateRangeComponent, DateRange } from './date-range.component';
 import { FormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
+import { TableOfContentComponent } from '@shared/components/table-of-content';
 
 @Component({
   selector: 'app-date-range-showcase',
 
-  imports: [DateRangeComponent, FormsModule, JsonPipe],
+  imports: [DateRangeComponent, FormsModule, JsonPipe, TableOfContentComponent],
   template: `
-    <div class="showcase showcase--responsive">
-      <h1 class="showcase__title">Date Range Component Showcase</h1>
+    <div class="showcase showcase--responsive showcase__with-toc">
+      <app-table-of-content
+        [sticky]="true"
+        [offsetTop]="20"
+        containerSelector=".showcase-content"
+        [minLevel]="1"
+        [maxLevel]="2"
+      />
+      <div class="showcase-content">
+        <h1 class="showcase__title">Date Range Component Showcase</h1>
       <p class="showcase__description">
         Comprehensive showcase of the Date Range component built with Fluent 2 Design System. Select
         start and end dates with visual range preview, quick presets, and full accessibility.
@@ -376,6 +385,7 @@ import { JsonPipe } from '@angular/common';
           <strong>Advanced Examples Values:</strong>
           <pre>{{ advancedExamples | json }}</pre>
         </div>
+      </div>
       </div>
     </div>
   `,

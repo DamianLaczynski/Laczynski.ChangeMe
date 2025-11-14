@@ -49,6 +49,7 @@ import { PaginationShowcaseComponent } from '@shared/components/pagination/pagin
 import { ToolbarShowcaseComponent } from '@shared/components/toolbar/toolbar.showcase.component';
 import { IconShowcaseComponent } from '@shared/components/icon/icon.showcase.component';
 import { ColorsShowcaseComponent } from '@shared/components/colors/colors.showcase.component';
+import { TableOfContentShowcaseComponent } from '@shared/components/table-of-content/table-of-content.showcase.component';
 
 export const dsRoutes: Routes = [
   {
@@ -255,5 +256,9 @@ export const dsRoutes: Routes = [
   {
     path: 'colors',
     component: ColorsShowcaseComponent,
+  },
+  {
+    path: 'table-of-content',
+    component: TableOfContentShowcaseComponent,
   },
 ];

@@ -2,14 +2,23 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MenuComponent } from './menu.component';
 import { MenuItem, MenuSection } from './models/menu-item.model';
+import { TableOfContentComponent } from '@shared/components/table-of-content';
 
 @Component({
   selector: 'app-menu-showcase',
 
-  imports: [CommonModule, MenuComponent],
+  imports: [CommonModule, MenuComponent, TableOfContentComponent],
   template: `
-    <div class="showcase showcase--responsive">
-      <h1 class="showcase__title">Menu Component</h1>
+    <div class="showcase showcase--responsive showcase__with-toc">
+      <app-table-of-content
+        [sticky]="true"
+        [offsetTop]="20"
+        containerSelector=".showcase-content"
+        [minLevel]="1"
+        [maxLevel]="2"
+      />
+      <div class="showcase-content">
+        <h1 class="showcase__title">Menu Component</h1>
       <p class="showcase__description">
         Menu component zgodny z Fluent 2 Design System. Obsługuje różne warianty elementów menu,
         stany interakcji oraz hierarchiczne sekcje.
@@ -132,6 +141,7 @@ import { MenuItem, MenuSection } from './models/menu-item.model';
           </div>
         }
       </section>
+      </div>
     </div>
   `,
 })

@@ -5,6 +5,7 @@ import { ButtonComponent } from '../button/button.component';
 import { SpinnerComponent } from '../spinner/spinner.component';
 import { IconComponent } from '../icon/icon.component';
 import { QuickAction, Size } from '../utils';
+import { TableOfContentComponent } from '@shared/components/table-of-content';
 import {
   State,
   errorState,
@@ -27,10 +28,19 @@ interface User {
     ButtonComponent,
     SpinnerComponent,
     IconComponent,
+    TableOfContentComponent,
   ],
   template: `
-    <div class="showcase showcase--responsive">
-      <h1 class="showcase__title">State Container Component</h1>
+    <div class="showcase showcase--responsive showcase__with-toc">
+      <app-table-of-content
+        [sticky]="true"
+        [offsetTop]="20"
+        containerSelector=".showcase-content"
+        [minLevel]="1"
+        [maxLevel]="2"
+      />
+      <div class="showcase-content">
+        <h1 class="showcase__title">State Container Component</h1>
       <p class="showcase__description">
         A composable container that orchestrates loading, empty, error, and data states using the
         shared Fluent 2 status components. Bind it to your asynchronous data model and provide
@@ -153,6 +163,7 @@ interface User {
         <div class="showcase__code">
           <pre><code>{{ usageExample }}</code></pre>
         </div>
+      </div>
       </div>
     </div>
   `,

@@ -2,14 +2,23 @@ import { Component, signal, model } from '@angular/core';
 import { DialogComponent } from './dialog.component';
 import { ButtonComponent } from '../button/button.component';
 import { QuickAction } from '../utils';
+import { TableOfContentComponent } from '@shared/components/table-of-content';
 
 @Component({
   selector: 'app-dialog-showcase',
 
-  imports: [DialogComponent, ButtonComponent],
+  imports: [DialogComponent, ButtonComponent, TableOfContentComponent],
   template: `
-    <div class="showcase showcase--responsive">
-      <h1 class="showcase__title">Dialog Component</h1>
+    <div class="showcase showcase--responsive showcase__with-toc">
+      <app-table-of-content
+        [sticky]="true"
+        [offsetTop]="20"
+        containerSelector=".showcase-content"
+        [minLevel]="1"
+        [maxLevel]="2"
+      />
+      <div class="showcase-content">
+        <h1 class="showcase__title">Dialog Component</h1>
       <p class="showcase__description">
         Dialog component based on Fluent 2 Design System - displays modal dialogs with customizable
         content and actions.
@@ -172,6 +181,7 @@ import { QuickAction } from '../utils';
           />
         </div>
       </section>
+      </div>
     </div>
   `,
 })

@@ -2,14 +2,23 @@ import { Component } from '@angular/core';
 import { TotpComponent } from './totp.component';
 import { FormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
+import { TableOfContentComponent } from '@shared/components/table-of-content';
 
 @Component({
   selector: 'app-totp-showcase',
   standalone: true,
-  imports: [TotpComponent, FormsModule, JsonPipe],
+  imports: [TotpComponent, FormsModule, JsonPipe, TableOfContentComponent],
   template: `
-    <div class="showcase showcase--responsive">
-      <h1 class="showcase__title">TOTP Component Showcase</h1>
+    <div class="showcase showcase--responsive showcase__with-toc">
+      <app-table-of-content
+        [sticky]="true"
+        [offsetTop]="20"
+        containerSelector=".showcase-content"
+        [minLevel]="1"
+        [maxLevel]="2"
+      />
+      <div class="showcase-content">
+        <h1 class="showcase__title">TOTP Component Showcase</h1>
       <p class="showcase__description">
         Comprehensive showcase of the TOTP (Time-based One-Time Password) component built with
         Fluent 2 Design System. Features automatic focus management, paste support, and keyboard
@@ -328,6 +337,7 @@ import { JsonPipe } from '@angular/common';
             ></app-totp>
           </div>
         </div>
+      </div>
       </div>
     </div>
   `,

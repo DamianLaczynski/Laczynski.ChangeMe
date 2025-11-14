@@ -4,13 +4,22 @@ import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../button/button.component';
 import { TextComponent } from '../field/text/text.component';
 import { EmailComponent } from '../field/email/email.component';
+import { TableOfContentComponent } from '@shared/components/table-of-content';
 
 @Component({
   selector: 'app-accordion-showcase',
-  imports: [AccordionComponent, CommonModule, ButtonComponent, TextComponent, EmailComponent],
+  imports: [AccordionComponent, CommonModule, ButtonComponent, TextComponent, EmailComponent, TableOfContentComponent],
   template: `
-    <div class="showcase showcase--responsive">
-      <h1 class="showcase__title">Accordion Component Showcase</h1>
+    <div class="showcase showcase--responsive showcase__with-toc">
+      <app-table-of-content
+        [sticky]="true"
+        [offsetTop]="20"
+        containerSelector=".showcase-content"
+        [minLevel]="1"
+        [maxLevel]="2"
+      />
+      <div class="showcase-content">
+        <h1 class="showcase__title">Accordion Component Showcase</h1>
       <p class="showcase__description">
         Comprehensive showcase of the Accordion component built with Fluent 2 Design System.
         Accordions support expand/collapse functionality, multiple sizes, appearance variants,
@@ -365,6 +374,7 @@ import { EmailComponent } from '../field/email/email.component';
           </app-button>
         </div>
       </ng-template>
+      </div>
     </div>
   `,
 })

@@ -3,14 +3,23 @@ import { CommonModule } from '@angular/common';
 import { ScrollPanelComponent } from './scroll-panel.component';
 import { ButtonComponent } from '../button/button.component';
 import { CardComponent } from '../card/card.component';
+import { TableOfContentComponent } from '@shared/components/table-of-content';
 
 @Component({
   selector: 'app-scroll-panel-showcase',
 
-  imports: [CommonModule, ScrollPanelComponent, ButtonComponent, CardComponent],
+  imports: [CommonModule, ScrollPanelComponent, ButtonComponent, CardComponent, TableOfContentComponent],
   template: `
-    <div class="showcase showcase--responsive">
-      <h1 class="showcase__title">ScrollPanel</h1>
+    <div class="showcase showcase--responsive showcase__with-toc">
+      <app-table-of-content
+        [sticky]="true"
+        [offsetTop]="20"
+        containerSelector=".showcase-content"
+        [minLevel]="1"
+        [maxLevel]="2"
+      />
+      <div class="showcase-content">
+        <h1 class="showcase__title">ScrollPanel</h1>
       <p class="showcase__description">
         ScrollPanel provides a scrollable container with customizable scrollbars following the
         Fluent 2 Design System. It supports vertical, horizontal, and bidirectional scrolling with
@@ -237,6 +246,7 @@ import { CardComponent } from '../card/card.component';
           </app-scroll-panel>
         </div>
       </section>
+      </div>
     </div>
   `,
 })

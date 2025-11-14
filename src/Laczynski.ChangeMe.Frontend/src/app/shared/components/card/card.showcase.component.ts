@@ -6,14 +6,23 @@ import { FormsModule } from '@angular/forms';
 import { CheckboxComponent } from '../field/checkbox';
 import { DropdownComponent } from '../field/dropdown';
 import { IconName } from '../icon';
+import { TableOfContentComponent } from '@shared/components/table-of-content';
 
 @Component({
   selector: 'app-card-showcase',
 
-  imports: [CommonModule, CardComponent, FormsModule, CheckboxComponent, DropdownComponent],
+  imports: [CommonModule, CardComponent, FormsModule, CheckboxComponent, DropdownComponent, TableOfContentComponent],
   template: `
-    <div class="showcase showcase--responsive">
-      <h1 class="showcase__title">Card Component - Fluent 2 Design System</h1>
+    <div class="showcase showcase--responsive showcase__with-toc">
+      <app-table-of-content
+        [sticky]="true"
+        [offsetTop]="20"
+        containerSelector=".showcase-content"
+        [minLevel]="1"
+        [maxLevel]="2"
+      />
+      <div class="showcase-content">
+        <h1 class="showcase__title">Card Component - Fluent 2 Design System</h1>
 
       <section class="showcase__section">
         <h2 class="showcase__section__title">Basic Cards</h2>
@@ -280,6 +289,7 @@ import { IconName } from '../icon';
           }
         </div>
       </section>
+      </div>
     </div>
   `,
 })

@@ -1,227 +1,260 @@
 import { Component, signal } from '@angular/core';
 import { CalendarComponent, CalendarView, CalendarDay } from './calendar.component';
 import { CommonModule } from '@angular/common';
+import { TableOfContentComponent } from '@shared/components/table-of-content';
 
 @Component({
   selector: 'app-calendar-showcase',
-  imports: [CalendarComponent, CommonModule],
+  imports: [CalendarComponent, CommonModule, TableOfContentComponent],
   template: `
-    <div class="showcase showcase--responsive">
-      <h1 class="showcase__title">Calendar Component Showcase</h1>
-      <p class="showcase__description">
-        Standalone calendar component built with Fluent 2 Design System. Provides date selection
-        capabilities with multiple views (days, months, years) and flexible configuration options.
-      </p>
+    <div class="showcase showcase--responsive showcase__with-toc">
+      <app-table-of-content
+        [sticky]="true"
+        [offsetTop]="20"
+        containerSelector=".showcase-content"
+        [minLevel]="1"
+        [maxLevel]="2"
+      />
+      <div class="showcase-content">
+        <h1 class="showcase__title">Calendar Component Showcase</h1>
+        <p class="showcase__description">
+          Standalone calendar component built with Fluent 2 Design System. Provides date selection
+          capabilities with multiple views (days, months, years) and flexible configuration options.
+        </p>
 
-      <!-- Basic Examples -->
-      <div class="showcase__section">
-        <h2 class="showcase__section__title">Basic Examples</h2>
-        <div class="showcase__grid">
-          <div class="showcase__item">
-            <h3>Days View (Default)</h3>
-            <app-calendar
-              [currentMonth]="currentMonth()"
-              [selectedDate]="selectedDate()"
-              [calendarView]="'days'"
-              (dateSelect)="onDateSelect($event)"
-              (previousMonth)="onPreviousMonth()"
-              (nextMonth)="onNextMonth()"
-              (switchToMonthsView)="onSwitchToMonthsView()"
-            ></app-calendar>
+        <!-- Basic Examples -->
+        <div class="showcase__section">
+          <h2 class="showcase__section__title">Basic Examples</h2>
+          <div class="showcase__grid">
+            <div class="showcase__item">
+              <h3>Days View (Default)</h3>
+              <app-calendar
+                [currentMonth]="currentMonth()"
+                [selectedDate]="selectedDate()"
+                [calendarView]="'days'"
+                (dateSelect)="onDateSelect($event)"
+                (previousMonth)="onPreviousMonth()"
+                (nextMonth)="onNextMonth()"
+                (switchToMonthsView)="onSwitchToMonthsView()"
+              ></app-calendar>
+            </div>
+            <div class="showcase__item">
+              <h3>Months View</h3>
+              <app-calendar
+                [currentMonth]="currentMonth()"
+                [selectedDate]="selectedDate()"
+                [calendarView]="'months'"
+                (monthSelect)="onMonthSelect($event)"
+                (previousYear)="onPreviousYear()"
+                (nextYear)="onNextYear()"
+                (switchToYearsView)="onSwitchToYearsView()"
+                (switchToDaysView)="onSwitchToDaysView()"
+              ></app-calendar>
+            </div>
+            <div class="showcase__item">
+              <h3>Years View</h3>
+              <app-calendar
+                [currentMonth]="currentMonth()"
+                [selectedDate]="selectedDate()"
+                [calendarView]="'years'"
+                (yearSelect)="onYearSelect($event)"
+                (previousYearRange)="onPreviousYearRange()"
+                (nextYearRange)="onNextYearRange()"
+                (switchToMonthsView)="onSwitchToMonthsView()"
+              ></app-calendar>
+            </div>
           </div>
-          <div class="showcase__item">
-            <h3>Months View</h3>
-            <app-calendar
-              [currentMonth]="currentMonth()"
-              [selectedDate]="selectedDate()"
-              [calendarView]="'months'"
-              (monthSelect)="onMonthSelect($event)"
-              (previousYear)="onPreviousYear()"
-              (nextYear)="onNextYear()"
-              (switchToYearsView)="onSwitchToYearsView()"
-              (switchToDaysView)="onSwitchToDaysView()"
-            ></app-calendar>
-          </div>
-          <div class="showcase__item">
-            <h3>Years View</h3>
-            <app-calendar
-              [currentMonth]="currentMonth()"
-              [selectedDate]="selectedDate()"
-              [calendarView]="'years'"
-              (yearSelect)="onYearSelect($event)"
-              (previousYearRange)="onPreviousYearRange()"
-              (nextYearRange)="onNextYearRange()"
-              (switchToMonthsView)="onSwitchToMonthsView()"
-            ></app-calendar>
+          <div class="showcase__form-output">
+            <strong>Selected Date:</strong>
+            <pre>{{ selectedDate() ? selectedDate()!.toLocaleDateString() : 'None' }}</pre>
+            <strong>Current Month:</strong>
+            <pre>{{
+              currentMonth().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+            }}</pre>
           </div>
         </div>
-        <div class="showcase__form-output">
-          <strong>Selected Date:</strong>
-          <pre>{{ selectedDate() ? selectedDate()!.toLocaleDateString() : 'None' }}</pre>
-          <strong>Current Month:</strong>
-          <pre>{{ currentMonth().toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) }}</pre>
-        </div>
-      </div>
 
-      <!-- Size Variants -->
-      <div class="showcase__section">
-        <h2 class="showcase__section__title">Size Variants</h2>
-        <div class="showcase__grid">
-          <div class="showcase__item">
-            <h3>Small</h3>
-            <app-calendar
-              [currentMonth]="currentMonth()"
-              [selectedDate]="selectedDate()"
-              [calendarView]="'days'"
-              [size]="'small'"
-              (dateSelect)="onDateSelect($event)"
-              (previousMonth)="onPreviousMonth()"
-              (nextMonth)="onNextMonth()"
-              (switchToMonthsView)="onSwitchToMonthsView()"
-            ></app-calendar>
-          </div>
-          <div class="showcase__item">
-            <h3>Medium (Default)</h3>
-            <app-calendar
-              [currentMonth]="currentMonth()"
-              [selectedDate]="selectedDate()"
-              [calendarView]="'days'"
-              [size]="'medium'"
-              (dateSelect)="onDateSelect($event)"
-              (previousMonth)="onPreviousMonth()"
-              (nextMonth)="onNextMonth()"
-              (switchToMonthsView)="onSwitchToMonthsView()"
-            ></app-calendar>
-          </div>
-          <div class="showcase__item">
-            <h3>Large</h3>
-            <app-calendar
-              [currentMonth]="currentMonth()"
-              [selectedDate]="selectedDate()"
-              [calendarView]="'days'"
-              [size]="'large'"
-              (dateSelect)="onDateSelect($event)"
-              (previousMonth)="onPreviousMonth()"
-              (nextMonth)="onNextMonth()"
-              (switchToMonthsView)="onSwitchToMonthsView()"
-            ></app-calendar>
-          </div>
-        </div>
-      </div>
-
-      <!-- Min/Max Constraints -->
-      <div class="showcase__section">
-        <h2 class="showcase__section__title">Min/Max Constraints</h2>
-        <div class="showcase__grid">
-          <div class="showcase__item">
-            <h3>With Date Range</h3>
-            <app-calendar
-              [currentMonth]="currentMonth()"
-              [selectedDate]="selectedDate()"
-              [calendarView]="'days'"
-              [min]="minDate"
-              [max]="maxDate"
-              (dateSelect)="onDateSelect($event)"
-              (previousMonth)="onPreviousMonth()"
-              (nextMonth)="onNextMonth()"
-              (switchToMonthsView)="onSwitchToMonthsView()"
-            ></app-calendar>
-            <div class="showcase__form-output">
-              <p><strong>Min Date:</strong> {{ minDate }}</p>
-              <p><strong>Max Date:</strong> {{ maxDate }}</p>
+        <!-- Size Variants -->
+        <div class="showcase__section">
+          <h2 class="showcase__section__title">Size Variants</h2>
+          <div class="showcase__grid">
+            <div class="showcase__item">
+              <h3>Small</h3>
+              <app-calendar
+                [currentMonth]="currentMonth()"
+                [selectedDate]="selectedDate()"
+                [calendarView]="'days'"
+                [size]="'small'"
+                (dateSelect)="onDateSelect($event)"
+                (previousMonth)="onPreviousMonth()"
+                (nextMonth)="onNextMonth()"
+                (switchToMonthsView)="onSwitchToMonthsView()"
+              ></app-calendar>
+            </div>
+            <div class="showcase__item">
+              <h3>Medium (Default)</h3>
+              <app-calendar
+                [currentMonth]="currentMonth()"
+                [selectedDate]="selectedDate()"
+                [calendarView]="'days'"
+                [size]="'medium'"
+                (dateSelect)="onDateSelect($event)"
+                (previousMonth)="onPreviousMonth()"
+                (nextMonth)="onNextMonth()"
+                (switchToMonthsView)="onSwitchToMonthsView()"
+              ></app-calendar>
+            </div>
+            <div class="showcase__item">
+              <h3>Large</h3>
+              <app-calendar
+                [currentMonth]="currentMonth()"
+                [selectedDate]="selectedDate()"
+                [calendarView]="'days'"
+                [size]="'large'"
+                (dateSelect)="onDateSelect($event)"
+                (previousMonth)="onPreviousMonth()"
+                (nextMonth)="onNextMonth()"
+                (switchToMonthsView)="onSwitchToMonthsView()"
+              ></app-calendar>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Date Range Selection -->
-      <div class="showcase__section">
-        <h2 class="showcase__section__title">Date Range Selection</h2>
-        <div class="showcase__grid">
-          <div class="showcase__item">
-            <h3>Range Selection</h3>
-            <app-calendar
-              [currentMonth]="currentMonth()"
-              [selectedDate]="null"
-              [startDate]="rangeStartDate()"
-              [endDate]="rangeEndDate()"
-              [hoveredDate]="hoveredDate()"
-              [calendarView]="'days'"
-              [isDayInHoverRangeFn]="isDayInHoverRange.bind(this)"
-              (dateSelect)="onRangeDateSelect($event)"
-              (dateHover)="onRangeDateHover($event)"
-              (dateLeave)="onRangeDateLeave()"
-              (previousMonth)="onPreviousMonth()"
-              (nextMonth)="onNextMonth()"
-              (switchToMonthsView)="onSwitchToMonthsView()"
-            ></app-calendar>
-            <div class="showcase__form-output">
-              <p><strong>Start Date:</strong> {{ rangeStartDate() ? rangeStartDate()!.toLocaleDateString() : 'None' }}</p>
-              <p><strong>End Date:</strong> {{ rangeEndDate() ? rangeEndDate()!.toLocaleDateString() : 'None' }}</p>
+        <!-- Min/Max Constraints -->
+        <div class="showcase__section">
+          <h2 class="showcase__section__title">Min/Max Constraints</h2>
+          <div class="showcase__grid">
+            <div class="showcase__item">
+              <h3>With Date Range</h3>
+              <app-calendar
+                [currentMonth]="currentMonth()"
+                [selectedDate]="selectedDate()"
+                [calendarView]="'days'"
+                [min]="minDate"
+                [max]="maxDate"
+                (dateSelect)="onDateSelect($event)"
+                (previousMonth)="onPreviousMonth()"
+                (nextMonth)="onNextMonth()"
+                (switchToMonthsView)="onSwitchToMonthsView()"
+              ></app-calendar>
+              <div class="showcase__form-output">
+                <p><strong>Min Date:</strong> {{ minDate }}</p>
+                <p><strong>Max Date:</strong> {{ maxDate }}</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Month/Year Picker Control -->
-      <div class="showcase__section">
-        <h2 class="showcase__section__title">Month/Year Picker Control</h2>
-        <div class="showcase__grid">
-          <div class="showcase__item">
-            <h3>With Month/Year Picker</h3>
-            <app-calendar
-              [currentMonth]="currentMonth()"
-              [selectedDate]="selectedDate()"
-              [calendarView]="'days'"
-              [showMonthYearPicker]="true"
-              (dateSelect)="onDateSelect($event)"
-              (previousMonth)="onPreviousMonth()"
-              (nextMonth)="onNextMonth()"
-              (switchToMonthsView)="onSwitchToMonthsView()"
-            ></app-calendar>
-          </div>
-          <div class="showcase__item">
-            <h3>Without Month/Year Picker</h3>
-            <app-calendar
-              [currentMonth]="currentMonth()"
-              [selectedDate]="selectedDate()"
-              [calendarView]="'days'"
-              [showMonthYearPicker]="false"
-              (dateSelect)="onDateSelect($event)"
-              (previousMonth)="onPreviousMonth()"
-              (nextMonth)="onNextMonth()"
-            ></app-calendar>
+        <!-- Date Range Selection -->
+        <div class="showcase__section">
+          <h2 class="showcase__section__title">Date Range Selection</h2>
+          <div class="showcase__grid">
+            <div class="showcase__item">
+              <h3>Range Selection</h3>
+              <app-calendar
+                [currentMonth]="currentMonth()"
+                [selectedDate]="null"
+                [startDate]="rangeStartDate()"
+                [endDate]="rangeEndDate()"
+                [hoveredDate]="hoveredDate()"
+                [calendarView]="'days'"
+                [isDayInHoverRangeFn]="isDayInHoverRange.bind(this)"
+                (dateSelect)="onRangeDateSelect($event)"
+                (dateHover)="onRangeDateHover($event)"
+                (dateLeave)="onRangeDateLeave()"
+                (previousMonth)="onPreviousMonth()"
+                (nextMonth)="onNextMonth()"
+                (switchToMonthsView)="onSwitchToMonthsView()"
+              ></app-calendar>
+              <div class="showcase__form-output">
+                <p>
+                  <strong>Start Date:</strong>
+                  {{ rangeStartDate() ? rangeStartDate()!.toLocaleDateString() : 'None' }}
+                </p>
+                <p>
+                  <strong>End Date:</strong>
+                  {{ rangeEndDate() ? rangeEndDate()!.toLocaleDateString() : 'None' }}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Interactive Example -->
-      <div class="showcase__section">
-        <h2 class="showcase__section__title">Interactive Example</h2>
-        <div class="showcase__grid">
-          <div class="showcase__item">
-            <h3>Navigate Through Views</h3>
-            <app-calendar
-              [currentMonth]="interactiveCurrentMonth()"
-              [selectedDate]="interactiveSelectedDate()"
-              [calendarView]="interactiveCalendarView()"
-              (dateSelect)="onInteractiveDateSelect($event)"
-              (monthSelect)="onInteractiveMonthSelect($event)"
-              (yearSelect)="onInteractiveYearSelect($event)"
-              (previousMonth)="onInteractivePreviousMonth()"
-              (nextMonth)="onInteractiveNextMonth()"
-              (previousYear)="onInteractivePreviousYear()"
-              (nextYear)="onInteractiveNextYear()"
-              (previousYearRange)="onInteractivePreviousYearRange()"
-              (nextYearRange)="onInteractiveNextYearRange()"
-              (switchToMonthsView)="onInteractiveSwitchToMonthsView()"
-              (switchToYearsView)="onInteractiveSwitchToYearsView()"
-              (switchToDaysView)="onInteractiveSwitchToDaysView()"
-            ></app-calendar>
-            <div class="showcase__form-output">
-              <p><strong>View:</strong> {{ interactiveCalendarView() }}</p>
-              <p><strong>Selected:</strong> {{ interactiveSelectedDate() ? interactiveSelectedDate()!.toLocaleDateString() : 'None' }}</p>
-              <p><strong>Month:</strong> {{ interactiveCurrentMonth().toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) }}</p>
+        <!-- Month/Year Picker Control -->
+        <div class="showcase__section">
+          <h2 class="showcase__section__title">Month/Year Picker Control</h2>
+          <div class="showcase__grid">
+            <div class="showcase__item">
+              <h3>With Month/Year Picker</h3>
+              <app-calendar
+                [currentMonth]="currentMonth()"
+                [selectedDate]="selectedDate()"
+                [calendarView]="'days'"
+                [showMonthYearPicker]="true"
+                (dateSelect)="onDateSelect($event)"
+                (previousMonth)="onPreviousMonth()"
+                (nextMonth)="onNextMonth()"
+                (switchToMonthsView)="onSwitchToMonthsView()"
+              ></app-calendar>
+            </div>
+            <div class="showcase__item">
+              <h3>Without Month/Year Picker</h3>
+              <app-calendar
+                [currentMonth]="currentMonth()"
+                [selectedDate]="selectedDate()"
+                [calendarView]="'days'"
+                [showMonthYearPicker]="false"
+                (dateSelect)="onDateSelect($event)"
+                (previousMonth)="onPreviousMonth()"
+                (nextMonth)="onNextMonth()"
+              ></app-calendar>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Example -->
+        <div class="showcase__section">
+          <h2 class="showcase__section__title">Interactive Example</h2>
+          <div class="showcase__grid">
+            <div class="showcase__item">
+              <h3>Navigate Through Views</h3>
+              <app-calendar
+                [currentMonth]="interactiveCurrentMonth()"
+                [selectedDate]="interactiveSelectedDate()"
+                [calendarView]="interactiveCalendarView()"
+                (dateSelect)="onInteractiveDateSelect($event)"
+                (monthSelect)="onInteractiveMonthSelect($event)"
+                (yearSelect)="onInteractiveYearSelect($event)"
+                (previousMonth)="onInteractivePreviousMonth()"
+                (nextMonth)="onInteractiveNextMonth()"
+                (previousYear)="onInteractivePreviousYear()"
+                (nextYear)="onInteractiveNextYear()"
+                (previousYearRange)="onInteractivePreviousYearRange()"
+                (nextYearRange)="onInteractiveNextYearRange()"
+                (switchToMonthsView)="onInteractiveSwitchToMonthsView()"
+                (switchToYearsView)="onInteractiveSwitchToYearsView()"
+                (switchToDaysView)="onInteractiveSwitchToDaysView()"
+              ></app-calendar>
+              <div class="showcase__form-output">
+                <p><strong>View:</strong> {{ interactiveCalendarView() }}</p>
+                <p>
+                  <strong>Selected:</strong>
+                  {{
+                    interactiveSelectedDate()
+                      ? interactiveSelectedDate()!.toLocaleDateString()
+                      : 'None'
+                  }}
+                </p>
+                <p>
+                  <strong>Month:</strong>
+                  {{
+                    interactiveCurrentMonth().toLocaleDateString('en-US', {
+                      month: 'long',
+                      year: 'numeric',
+                    })
+                  }}
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -431,4 +464,3 @@ export class CalendarShowcaseComponent {
     this.interactiveCalendarView.set('days');
   }
 }
-

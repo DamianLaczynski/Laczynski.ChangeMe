@@ -2,13 +2,22 @@ import { Component, signal } from '@angular/core';
 import { TabsComponent } from './tabs.component';
 import { CommonModule } from '@angular/common';
 import { Node } from '../node/node.component';
+import { TableOfContentComponent } from '@shared/components/table-of-content';
 
 @Component({
   selector: 'app-tabs-showcase',
-  imports: [TabsComponent, CommonModule],
+  imports: [TabsComponent, CommonModule, TableOfContentComponent],
   template: `
-    <div class="showcase showcase--responsive">
-      <h1 class="showcase__title">Tabs Component Showcase</h1>
+    <div class="showcase showcase--responsive showcase__with-toc">
+      <app-table-of-content
+        [sticky]="true"
+        [offsetTop]="20"
+        containerSelector=".showcase-content"
+        [minLevel]="1"
+        [maxLevel]="2"
+      />
+      <div class="showcase-content">
+        <h1 class="showcase__title">Tabs Component Showcase</h1>
       <p class="showcase__description">
         Comprehensive showcase of the Tabs component built with Fluent 2 Design System. Supports
         both horizontal and vertical orientations with various layouts, sizes, and interaction
@@ -200,6 +209,7 @@ import { Node } from '../node/node.component';
             <p><strong>Selected Tab:</strong> {{ lastSelectedTab() }}</p>
           </div>
         </div>
+      </div>
       </div>
     </div>
   `,

@@ -2,14 +2,23 @@ import { Component } from '@angular/core';
 import { RadioGroupComponent, RadioItem } from './radio-group.component';
 import { CommonModule, JsonPipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
+import { TableOfContentComponent } from '@shared/components/table-of-content';
 
 @Component({
   selector: 'app-radio-showcase',
 
-  imports: [RadioGroupComponent, CommonModule, FormsModule, ReactiveFormsModule, JsonPipe],
+  imports: [RadioGroupComponent, CommonModule, FormsModule, ReactiveFormsModule, JsonPipe, TableOfContentComponent],
   template: `
-    <div class="showcase showcase--responsive">
-      <h1 class="showcase__title">Radio Component Showcase</h1>
+    <div class="showcase showcase--responsive showcase__with-toc">
+      <app-table-of-content
+        [sticky]="true"
+        [offsetTop]="20"
+        containerSelector=".showcase-content"
+        [minLevel]="1"
+        [maxLevel]="2"
+      />
+      <div class="showcase-content">
+        <h1 class="showcase__title">Radio Component Showcase</h1>
       <p class="showcase__description">
         Comprehensive showcase of the Radio component built with Fluent 2 Design System. All
         variants are responsive and accessible.
@@ -285,6 +294,7 @@ import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angul
             ></app-radio-group>
           </div>
         </div>
+      </div>
       </div>
     </div>
   `,

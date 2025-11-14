@@ -1,13 +1,22 @@
 import { Component } from '@angular/core';
 import { SkeletonComponent } from './skeleton.component';
 import { CommonModule } from '@angular/common';
+import { TableOfContentComponent } from '@shared/components/table-of-content';
 
 @Component({
   selector: 'app-skeleton-showcase',
-  imports: [SkeletonComponent, CommonModule],
+  imports: [SkeletonComponent, CommonModule, TableOfContentComponent],
   template: `
-    <div class="showcase showcase--responsive">
-      <h1 class="showcase__title">Skeleton Component Showcase</h1>
+    <div class="showcase showcase--responsive showcase__with-toc">
+      <app-table-of-content
+        [sticky]="true"
+        [offsetTop]="20"
+        containerSelector=".showcase-content"
+        [minLevel]="1"
+        [maxLevel]="2"
+      />
+      <div class="showcase-content">
+        <h1 class="showcase__title">Skeleton Component Showcase</h1>
       <p class="showcase__description">
         Comprehensive showcase of the Skeleton component built with Fluent 2 Design System. 
         Used for loading states and placeholder content. All variants support animation and accessibility.
@@ -374,6 +383,7 @@ import { CommonModule } from '@angular/common';
             <app-skeleton shape="circle" width="120px" height="120px" [animated]="false"></app-skeleton>
           </div>
         </div>
+      </div>
       </div>
     </div>
   `,

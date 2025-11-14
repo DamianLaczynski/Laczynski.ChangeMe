@@ -1,13 +1,22 @@
 import { Component } from '@angular/core';
 import { DividerComponent } from './divider.component';
+import { TableOfContentComponent } from '@shared/components/table-of-content';
 
 @Component({
   selector: 'app-divider-showcase',
 
-  imports: [DividerComponent],
+  imports: [DividerComponent, TableOfContentComponent],
   template: `
-    <div class="showcase showcase--responsive">
-      <h1 class="showcase__title">Divider Component Showcase</h1>
+    <div class="showcase showcase--responsive showcase__with-toc">
+      <app-table-of-content
+        [sticky]="true"
+        [offsetTop]="20"
+        containerSelector=".showcase-content"
+        [minLevel]="1"
+        [maxLevel]="2"
+      />
+      <div class="showcase-content">
+        <h1 class="showcase__title">Divider Component Showcase</h1>
       <p class="showcase__description">
         Comprehensive showcase of the Divider component built with Fluent 2 Design System. All
         variants are responsive and accessible.
@@ -113,6 +122,7 @@ import { DividerComponent } from './divider.component';
             </div>
           </div>
         </div>
+      </div>
       </div>
     </div>
   `,

@@ -7,13 +7,22 @@ import {
   SplitterResizeEvent,
 } from './splitter.component';
 import { CardComponent } from '../card/card.component';
+import { TableOfContentComponent } from '@shared/components/table-of-content';
 
 @Component({
   selector: 'app-splitter-showcase',
 
-  imports: [CommonModule, SplitterComponent, SplitterPanelDirective, CardComponent],
+  imports: [CommonModule, SplitterComponent, SplitterPanelDirective, CardComponent, TableOfContentComponent],
   template: `
-    <div class="showcase showcase--responsive">
+    <div class="showcase showcase--responsive showcase__with-toc">
+      <app-table-of-content
+        [sticky]="true"
+        [offsetTop]="20"
+        containerSelector=".showcase-content"
+        [minLevel]="1"
+        [maxLevel]="2"
+      />
+      <div class="showcase-content">
       <h1 class="showcase__title">Splitter Component Showcase</h1>
       <p class="showcase__description">
         Comprehensive showcase of the Splitter component built with Fluent 2 Design System. All
@@ -259,6 +268,7 @@ import { CardComponent } from '../card/card.component';
             </div>
           </div>
         </div>
+      </div>
       </div>
     </div>
   `,

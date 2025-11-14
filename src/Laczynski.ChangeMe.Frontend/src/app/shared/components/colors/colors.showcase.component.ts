@@ -1,5 +1,6 @@
 import { Component, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TableOfContentComponent } from '@shared/components/table-of-content';
 
 interface ColorItem {
   name: string;
@@ -24,10 +25,18 @@ interface SharedColor {
 
 @Component({
   selector: 'app-colors-showcase',
-  imports: [CommonModule],
+  imports: [CommonModule, TableOfContentComponent],
   template: `
-    <div class="showcase showcase--responsive">
-      <h1 class="showcase__title">Color System - Fluent 2 Design System</h1>
+    <div class="showcase showcase--responsive showcase__with-toc">
+      <app-table-of-content
+        [sticky]="true"
+        [offsetTop]="20"
+        containerSelector=".showcase-content"
+        [minLevel]="1"
+        [maxLevel]="2"
+      />
+      <div class="showcase-content">
+        <h1 class="showcase__title">Color System - Fluent 2 Design System</h1>
       <p class="showcase__description">
         Complete color palette used throughout the application. All colors are defined as CSS custom
         properties and support both light and dark themes.
@@ -224,6 +233,7 @@ interface SharedColor {
             }
           </div>
         </div>
+      </div>
       </div>
     </div>
   `,

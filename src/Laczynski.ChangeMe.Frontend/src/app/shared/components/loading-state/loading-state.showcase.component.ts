@@ -4,13 +4,22 @@ import { LoadingStateComponent } from './loading-state.component';
 import { CardComponent } from '../card/card.component';
 import { ButtonComponent } from '../button/button.component';
 import { QuickAction } from '../utils';
+import { TableOfContentComponent } from '@shared/components/table-of-content';
 
 @Component({
   selector: 'app-loading-state-showcase',
-  imports: [CommonModule, LoadingStateComponent, CardComponent, ButtonComponent],
+  imports: [CommonModule, LoadingStateComponent, CardComponent, ButtonComponent, TableOfContentComponent],
   template: `
-    <div class="showcase showcase--responsive">
-      <h1 class="showcase__title">Loading State Component</h1>
+    <div class="showcase showcase--responsive showcase__with-toc">
+      <app-table-of-content
+        [sticky]="true"
+        [offsetTop]="20"
+        containerSelector=".showcase-content"
+        [minLevel]="1"
+        [maxLevel]="2"
+      />
+      <div class="showcase-content">
+        <h1 class="showcase__title">Loading State Component</h1>
       <p class="showcase__description">
         Comprehensive showcase of the Loading State component built with Fluent 2 Design System. The
         Loading State component is used to indicate that content is being loaded, providing visual
@@ -340,6 +349,7 @@ import { QuickAction } from '../utils';
         <div class="showcase__code">
           <pre><code>{{ usageExample }}</code></pre>
         </div>
+      </div>
       </div>
     </div>
   `,

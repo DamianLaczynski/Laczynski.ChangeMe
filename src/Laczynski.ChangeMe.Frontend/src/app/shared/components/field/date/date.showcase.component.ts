@@ -2,14 +2,23 @@ import { Component } from '@angular/core';
 import { DateComponent } from './date.component';
 import { FormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
+import { TableOfContentComponent } from '@shared/components/table-of-content';
 
 @Component({
   selector: 'app-date-showcase',
 
-  imports: [DateComponent, FormsModule, JsonPipe],
+  imports: [DateComponent, FormsModule, JsonPipe, TableOfContentComponent],
   template: `
-    <div class="showcase showcase--responsive">
-      <h1 class="showcase__title">Date Component Showcase</h1>
+    <div class="showcase showcase--responsive showcase__with-toc">
+      <app-table-of-content
+        [sticky]="true"
+        [offsetTop]="20"
+        containerSelector=".showcase-content"
+        [minLevel]="1"
+        [maxLevel]="2"
+      />
+      <div class="showcase-content">
+        <h1 class="showcase__title">Date Component Showcase</h1>
       <p class="showcase__description">
         Comprehensive showcase of the Date component built with Fluent 2 Design System. Supports
         various date/time input types with all variants, responsive and accessible.
@@ -435,6 +444,7 @@ import { JsonPipe } from '@angular/common';
             ></app-date>
           </div>
         </div>
+      </div>
       </div>
     </div>
   `,

@@ -2,13 +2,22 @@ import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ErrorStateComponent } from './error-state.component';
 import { QuickAction } from '../utils';
+import { TableOfContentComponent } from '@shared/components/table-of-content';
 
 @Component({
   selector: 'app-error-state-showcase',
-  imports: [CommonModule, ErrorStateComponent],
+  imports: [CommonModule, ErrorStateComponent, TableOfContentComponent],
   template: `
-    <div class="showcase showcase--responsive">
-      <h1 class="showcase__title">Error State Component</h1>
+    <div class="showcase showcase--responsive showcase__with-toc">
+      <app-table-of-content
+        [sticky]="true"
+        [offsetTop]="20"
+        containerSelector=".showcase-content"
+        [minLevel]="1"
+        [maxLevel]="2"
+      />
+      <div class="showcase-content">
+        <h1 class="showcase__title">Error State Component</h1>
       <p class="showcase__description">
         Comprehensive showcase of the Error State component built with Fluent 2 Design System. The
         Error State component is used to display error messages when something goes wrong, helping
@@ -200,6 +209,7 @@ import { QuickAction } from '../utils';
         <div class="showcase__code">
           <pre><code>{{ usageExample }}</code></pre>
         </div>
+      </div>
       </div>
     </div>
   `,

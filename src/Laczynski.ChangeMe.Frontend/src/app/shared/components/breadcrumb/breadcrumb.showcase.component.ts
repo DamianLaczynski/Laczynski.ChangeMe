@@ -2,13 +2,22 @@ import { Component, signal, viewChild, TemplateRef } from '@angular/core';
 import { BreadcrumbComponent, BreadcrumbItem } from './breadcrumb.component';
 import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../button/button.component';
+import { TableOfContentComponent } from '@shared/components/table-of-content';
 
 @Component({
   selector: 'app-breadcrumb-showcase',
-  imports: [BreadcrumbComponent, CommonModule, ButtonComponent],
+  imports: [BreadcrumbComponent, CommonModule, ButtonComponent, TableOfContentComponent],
   template: `
-    <div class="showcase showcase--responsive">
-      <h1 class="showcase__title">Breadcrumb Component Showcase</h1>
+    <div class="showcase showcase--responsive showcase__with-toc">
+      <app-table-of-content
+        [sticky]="true"
+        [offsetTop]="20"
+        containerSelector=".showcase-content"
+        [minLevel]="1"
+        [maxLevel]="2"
+      />
+      <div class="showcase-content">
+        <h1 class="showcase__title">Breadcrumb Component Showcase</h1>
       <p class="showcase__description">
         Comprehensive showcase of the Breadcrumb component built with Fluent 2 Design System.
         Breadcrumbs support multiple sizes, appearances, selection indicators, quick actions, and
@@ -288,6 +297,7 @@ import { ButtonComponent } from '../button/button.component';
           (click)="onQuickActionClick(item, 'delete'); $event.stopPropagation()"
         ></app-button>
       </ng-template>
+      </div>
     </div>
   `,
 })

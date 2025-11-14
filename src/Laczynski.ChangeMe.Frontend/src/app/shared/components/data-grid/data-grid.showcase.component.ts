@@ -4,6 +4,7 @@ import { DataGridComponent } from './data-grid.component';
 import { DataGridColumn, DataGridRow } from './models/data-grid-column.model';
 import { DataGridActiveFilter } from './models/data-grid-filter.model';
 import { DataGridApiService } from './services/data-grid-api.service';
+import { TableOfContentComponent } from '@shared/components/table-of-content';
 
 interface SampleData {
   id: string;
@@ -18,474 +19,485 @@ interface SampleData {
 @Component({
   selector: 'app-data-grid-showcase',
 
-  imports: [CommonModule, DataGridComponent],
+  imports: [CommonModule, DataGridComponent, TableOfContentComponent],
   template: `
-    <div class="showcase showcase--responsive">
-      <h1 class="showcase__title">DataGrid Component</h1>
-      <p class="showcase__description">
-        A flexible and feature-rich data grid component following Fluent 2 Design System principles.
-        Supports selection, custom cell rendering, and more.
-      </p>
-
-      <!-- Basic Example -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Basic DataGrid</h2>
-        <p class="showcase__section__description">Simple data grid with text columns.</p>
-        <div class="showcase__example">
-          <app-data-grid [columns]="basicColumns" [rows]="basicRows" [hoverable]="true" />
-        </div>
-      </section>
-
-      <!-- Selectable Example -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Selectable DataGrid</h2>
-        <p class="showcase__section__description">Data grid with row selection (multi-select).</p>
-        <div class="showcase__example">
-          <app-data-grid
-            [columns]="basicColumns"
-            [rows]="basicRows"
-            [selectable]="true"
-            [multiSelect]="true"
-            [hoverable]="true"
-            (selectionChange)="onSelectionChange($event)"
-          />
-        </div>
-        @if (selectedCount > 0) {
-          <p class="showcase__info">Selected rows: {{ selectedCount }}</p>
-        }
-      </section>
-
-      <!-- Size Variants -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Size Variants</h2>
-        <p class="showcase__section__description">
-          Data grid supports three size variants: small, medium (default), and large.
+    <div class="showcase showcase--responsive showcase__with-toc">
+      <app-table-of-content
+        [sticky]="true"
+        [offsetTop]="20"
+        containerSelector=".showcase-content"
+        [minLevel]="1"
+        [maxLevel]="2"
+      />
+      <div class="showcase-content">
+        <h1 class="showcase__title">DataGrid Component</h1>
+        <p class="showcase__description">
+          A flexible and feature-rich data grid component following Fluent 2 Design System
+          principles. Supports selection, custom cell rendering, and more.
         </p>
-        <div class="showcase__example">
-          <app-data-grid
-            [columns]="basicColumns"
-            [rows]="basicRows.slice(0, 3)"
-            [size]="'medium'"
-            [hoverable]="true"
-          />
-        </div>
-      </section>
 
-      <!-- Style Variants -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Style Variants</h2>
-        <p class="showcase__section__description">
-          Data grid supports striped and bordered styles.
-        </p>
-        <div class="showcase__example">
-          <app-data-grid
-            [columns]="basicColumns"
-            [rows]="basicRows"
-            [striped]="true"
-            [bordered]="true"
-            [hoverable]="true"
-          />
-        </div>
-      </section>
+        <!-- Basic Example -->
+        <section class="showcase__section">
+          <h2 class="showcase__section__title">Basic DataGrid</h2>
+          <p class="showcase__section__description">Simple data grid with text columns.</p>
+          <div class="showcase__example">
+            <app-data-grid [columns]="basicColumns" [rows]="basicRows" [hoverable]="true" />
+          </div>
+        </section>
 
-      <!-- Loading State -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Loading State</h2>
-        <p class="showcase__section__description">Data grid with loading state component.</p>
-        <div class="showcase__example">
-          <app-data-grid
-            [columns]="basicColumns"
-            [rows]="[]"
-            [loading]="true"
-            [loadingTitle]="'Loading data...'"
-            [loadingDescription]="'Please wait while we fetch your data.'"
-          />
-        </div>
-      </section>
+        <!-- Selectable Example -->
+        <section class="showcase__section">
+          <h2 class="showcase__section__title">Selectable DataGrid</h2>
+          <p class="showcase__section__description">Data grid with row selection (multi-select).</p>
+          <div class="showcase__example">
+            <app-data-grid
+              [columns]="basicColumns"
+              [rows]="basicRows"
+              [selectable]="true"
+              [multiSelect]="true"
+              [hoverable]="true"
+              (selectionChange)="onSelectionChange($event)"
+            />
+          </div>
+          @if (selectedCount > 0) {
+            <p class="showcase__info">Selected rows: {{ selectedCount }}</p>
+          }
+        </section>
 
-      <!-- Empty State -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Empty State</h2>
-        <p class="showcase__section__description">Data grid with empty state component.</p>
-        <div class="showcase__example">
-          <app-data-grid
-            [columns]="basicColumns"
-            [rows]="[]"
-            [emptyTitle]="'No files found'"
-            [emptyDescription]="'Upload your first file to get started.'"
-            [emptyIcon]="'folder_open'"
-            [emptyPrimaryAction]="emptyPrimaryAction"
-            [emptySecondaryAction]="emptySecondaryAction"
-            (emptyActionClick)="onEmptyActionClick($event)"
-          />
-        </div>
-      </section>
-
-      <!-- Error State -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Error State</h2>
-        <p class="showcase__section__description">Data grid with error state component.</p>
-        <div class="showcase__example">
-          <app-data-grid
-            [columns]="basicColumns"
-            [rows]="[]"
-            [error]="true"
-            [errorTitle]="'Connection Error'"
-            [errorDescription]="
-              'Unable to connect to the server. Please check your connection and try again.'
-            "
-            [errorPrimaryAction]="errorPrimaryAction"
-            [errorSecondaryAction]="errorSecondaryAction"
-            (errorActionClick)="onErrorActionClick($event)"
-          />
-        </div>
-      </section>
-
-      <!-- Sticky Headers -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Sticky Headers</h2>
-        <p class="showcase__section__description">
-          Data grid with sticky headers that remain visible when scrolling. Scroll down to see the
-          headers stay fixed at the top.
-        </p>
-        <div class="showcase__example showcase__example--scrollable">
-          <app-data-grid
-            [columns]="sortableColumns"
-            [rows]="stickyHeadersRows"
-            [stickyHeaders]="true"
-            [hoverable]="true"
-            (sortChange)="onSortChange($event)"
-          />
-        </div>
-        @if (currentSort()) {
-          <p class="showcase__info">
-            Current sort: {{ currentSort()?.field }} ({{ currentSort()?.direction }})
+        <!-- Size Variants -->
+        <section class="showcase__section">
+          <h2 class="showcase__section__title">Size Variants</h2>
+          <p class="showcase__section__description">
+            Data grid supports three size variants: small, medium (default), and large.
           </p>
-        }
-      </section>
+          <div class="showcase__example">
+            <app-data-grid
+              [columns]="basicColumns"
+              [rows]="basicRows.slice(0, 3)"
+              [size]="'medium'"
+              [hoverable]="true"
+            />
+          </div>
+        </section>
 
-      <!-- Sortable Columns -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Sortable Columns</h2>
-        <p class="showcase__section__description">
-          Data grid with sortable column headers. Click on column headers to sort.
-        </p>
-        <div class="showcase__example">
-          <app-data-grid
-            [columns]="sortableColumns"
-            [rows]="basicRows"
-            [hoverable]="true"
-            (sortChange)="onSortChange($event)"
-          />
-        </div>
-        @if (currentSort()) {
-          <p class="showcase__info">
-            Current sort: {{ currentSort()?.field }} ({{ currentSort()?.direction }})
+        <!-- Style Variants -->
+        <section class="showcase__section">
+          <h2 class="showcase__section__title">Style Variants</h2>
+          <p class="showcase__section__description">
+            Data grid supports striped and bordered styles.
           </p>
-        }
-      </section>
+          <div class="showcase__example">
+            <app-data-grid
+              [columns]="basicColumns"
+              [rows]="basicRows"
+              [striped]="true"
+              [bordered]="true"
+              [hoverable]="true"
+            />
+          </div>
+        </section>
 
-      <!-- Filtering -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Filtering</h2>
-        <p class="showcase__section__description">
-          Data grid with filtering enabled. Each column can have different filter types: text,
-          number, date, select, multi-select, and boolean. Filters are applied in real-time with
-          debouncing for text inputs.
-        </p>
-        <div class="showcase__example">
-          <app-data-grid
-            [columns]="filterableColumns"
-            [rows]="filterableRows"
-            [hoverable]="true"
-            (filterChange)="onFilterChange($event)"
-          />
-        </div>
-        @if (activeFilters().length > 0) {
-          <p class="showcase__info">
-            Active filters: {{ activeFilters().length }}
-            <br />
-            @for (filter of activeFilters(); track filter.columnId) {
-              <span
-                style="display: inline-block; margin-right: 8px; margin-top: 4px; padding: 4px 8px; background: #e1e1e1; border-radius: 4px; font-size: 0.875rem;"
-              >
-                {{ filter.displayText }}
-              </span>
-            }
+        <!-- Loading State -->
+        <section class="showcase__section">
+          <h2 class="showcase__section__title">Loading State</h2>
+          <p class="showcase__section__description">Data grid with loading state component.</p>
+          <div class="showcase__example">
+            <app-data-grid
+              [columns]="basicColumns"
+              [rows]="[]"
+              [loading]="true"
+              [loadingTitle]="'Loading data...'"
+              [loadingDescription]="'Please wait while we fetch your data.'"
+            />
+          </div>
+        </section>
+
+        <!-- Empty State -->
+        <section class="showcase__section">
+          <h2 class="showcase__section__title">Empty State</h2>
+          <p class="showcase__section__description">Data grid with empty state component.</p>
+          <div class="showcase__example">
+            <app-data-grid
+              [columns]="basicColumns"
+              [rows]="[]"
+              [emptyTitle]="'No files found'"
+              [emptyDescription]="'Upload your first file to get started.'"
+              [emptyIcon]="'folder_open'"
+              [emptyPrimaryAction]="emptyPrimaryAction"
+              [emptySecondaryAction]="emptySecondaryAction"
+              (emptyActionClick)="onEmptyActionClick($event)"
+            />
+          </div>
+        </section>
+
+        <!-- Error State -->
+        <section class="showcase__section">
+          <h2 class="showcase__section__title">Error State</h2>
+          <p class="showcase__section__description">Data grid with error state component.</p>
+          <div class="showcase__example">
+            <app-data-grid
+              [columns]="basicColumns"
+              [rows]="[]"
+              [error]="true"
+              [errorTitle]="'Connection Error'"
+              [errorDescription]="
+                'Unable to connect to the server. Please check your connection and try again.'
+              "
+              [errorPrimaryAction]="errorPrimaryAction"
+              [errorSecondaryAction]="errorSecondaryAction"
+              (errorActionClick)="onErrorActionClick($event)"
+            />
+          </div>
+        </section>
+
+        <!-- Sticky Headers -->
+        <section class="showcase__section">
+          <h2 class="showcase__section__title">Sticky Headers</h2>
+          <p class="showcase__section__description">
+            Data grid with sticky headers that remain visible when scrolling. Scroll down to see the
+            headers stay fixed at the top.
           </p>
-        }
-      </section>
-
-      <!-- Expandable Rows -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Expandable Rows (Master-Details)</h2>
-        <p class="showcase__section__description">
-          Data grid with expandable rows showing additional details when expanded.
-        </p>
-        <div class="showcase__example">
-          <app-data-grid
-            [columns]="basicColumns"
-            [rows]="expandableRows"
-            [expandable]="true"
-            [hoverable]="true"
-            (rowExpand)="onRowExpand($event)"
-            (rowCollapse)="onRowCollapse($event)"
-          >
-            <ng-template #rowDetailsTemplate let-row>
-              <div style="display: flex; flex-direction: column; gap: 12px;">
-                <div style="display: grid; grid-template-columns: 150px 1fr; gap: 8px;">
-                  <strong>Modified By:</strong>
-                  <span>{{ row.data.modifiedBy }}</span>
-                </div>
-                <div style="display: grid; grid-template-columns: 150px 1fr; gap: 8px;">
-                  <strong>Status:</strong>
-                  <span>{{ row.data.status }}</span>
-                </div>
-                <div style="display: grid; grid-template-columns: 150px 1fr; gap: 8px;">
-                  <strong>File Size:</strong>
-                  <span>{{ row.data.size }}</span>
-                </div>
-                <div style="margin-top: 8px; padding-top: 12px; border-top: 1px solid #d1d1d1;">
-                  <p style="margin: 0; color: #424242;">
-                    This is additional information about <strong>{{ row.data.name }}</strong
-                    >. You can display any custom content here, such as metadata, actions, or nested
-                    data.
-                  </p>
-                </div>
-              </div>
-            </ng-template>
-          </app-data-grid>
-        </div>
-        @if (expandedRowInfo()) {
-          <p class="showcase__info">{{ expandedRowInfo() }}</p>
-        }
-      </section>
-
-      <!-- Pagination -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Pagination</h2>
-        <p class="showcase__section__description">
-          Data grid with pagination controls. Navigate through pages and change page size.
-        </p>
-        <div class="showcase__example">
-          <app-data-grid
-            [columns]="basicColumns"
-            [rows]="paginatedRows()"
-            [enablePagination]="true"
-            [totalCount]="paginatedTotalCount"
-            [currentPage]="currentPage()"
-            [pageSize]="pageSize()"
-            [pageSizeOptions]="[5, 10, 20, 50]"
-            [hoverable]="true"
-            (pageChange)="onPageChange($event)"
-            (pageSizeChange)="onPageSizeChange($event)"
-          />
-        </div>
-        @if (currentPage() || pageSize()) {
-          <p class="showcase__info">
-            Current page: {{ currentPage() }}, Page size: {{ pageSize() }}, Total items:
-            {{ paginatedTotalCount }}
-            Current page: {{ currentPage() }}, Page size: {{ pageSize() }}, Total items:
-            {{ paginatedTotalCount }}
-          </p>
-        }
-      </section>
-
-      <!-- Virtualization -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Virtualization (Large Datasets)</h2>
-        <p class="showcase__section__description">
-          Data grid with virtualization enabled. Only visible rows are rendered, providing better
-          performance for large datasets. This example shows 1000 rows with smooth scrolling.
-        </p>
-        <div class="showcase__example showcase__example--virtualized">
-          <app-data-grid
-            [columns]="sortableColumns"
-            [rows]="virtualizedRows"
-            [virtualizationItemHeight]="48"
-            [hoverable]="true"
-            [striped]="true"
-            [stickyHeaders]="true"
-            (sortChange)="onSortChange($event)"
-          />
-        </div>
-        <p class="showcase__info">
-          Virtualization enabled: {{ virtualizedRows.length }} rows rendered efficiently. Only
-          visible rows are in the DOM, improving performance for large datasets.
-        </p>
-      </section>
-
-      <!-- Virtualization with Selection -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Virtualization with Selection</h2>
-        <p class="showcase__section__description">
-          Virtualized data grid with row selection enabled. Selection works seamlessly with
-          virtualization.
-        </p>
-        <div class="showcase__example showcase__example--virtualized">
-          <app-data-grid
-            [columns]="sortableColumns"
-            [rows]="virtualizedRows.slice(0, 500)"
-            [virtualizationItemHeight]="48"
-            [selectable]="true"
-            [multiSelect]="true"
-            [hoverable]="true"
-            [striped]="true"
-            [stickyHeaders]="true"
-            (selectionChange)="onVirtualizedSelectionChange($event)"
-            (sortChange)="onSortChange($event)"
-          />
-        </div>
-        @if (virtualizedSelectedCount > 0) {
-          <p class="showcase__info">
-            Selected rows: {{ virtualizedSelectedCount }} (out of 500 rows)
-          </p>
-        }
-      </section>
-
-      <!-- Virtualization Comparison -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Virtualization vs Standard Rendering</h2>
-        <p class="showcase__section__description">
-          Compare the performance difference. The virtualized version only renders visible rows,
-          while the standard version renders all rows.
-        </p>
-        <div class="showcase__grid showcase__grid--two-columns">
-          <div class="showcase__item">
-            <h3>With Virtualization (Recommended for 100+ rows)</h3>
-            <div class="showcase__example showcase__example--virtualized">
-              <app-data-grid
-                [columns]="basicColumns"
-                [rows]="comparisonRows"
-                [virtualizationItemHeight]="48"
-                [hoverable]="true"
-                [striped]="true"
-              />
-            </div>
+          <div class="showcase__example showcase__example--scrollable">
+            <app-data-grid
+              [columns]="sortableColumns"
+              [rows]="stickyHeadersRows"
+              [stickyHeaders]="true"
+              [hoverable]="true"
+              (sortChange)="onSortChange($event)"
+            />
+          </div>
+          @if (currentSort()) {
             <p class="showcase__info">
-              {{ comparisonRows.length }} rows - Only visible rows rendered (better performance)
+              Current sort: {{ currentSort()?.field }} ({{ currentSort()?.direction }})
             </p>
-          </div>
-          <div class="showcase__item">
-            <h3>Without Virtualization (Standard)</h3>
-            <div class="showcase__example showcase__example--scrollable">
-              <app-data-grid
-                [columns]="basicColumns"
-                [rows]="comparisonRows.slice(0, 50)"
-                [hoverable]="true"
-                [striped]="true"
-              />
-            </div>
-            <p class="showcase__info">50 rows - All rows rendered (may be slower with 100+ rows)</p>
-          </div>
-        </div>
-      </section>
+          }
+        </section>
 
-      <!-- Full Featured Example -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">Full Featured DataGrid</h2>
-        <p class="showcase__section__description">
-          Complete data grid with all features enabled: selection, sorting, sticky headers,
-          expandable rows, and pagination.
-        </p>
-        <div class="showcase__example showcase__example">
-          <app-data-grid
-            [columns]="sortableColumns"
-            [rows]="fullFeaturedRows()"
-            [selectable]="true"
-            [multiSelect]="true"
-            [stickyHeaders]="true"
-            [expandable]="true"
-            [enablePagination]="true"
-            [totalCount]="fullFeaturedTotalCount"
-            [currentPage]="fullFeaturedCurrentPage()"
-            [pageSize]="fullFeaturedPageSize()"
-            [pageSizeOptions]="[5, 10, 20, 50]"
-            [striped]="true"
-            [bordered]="true"
-            [hoverable]="true"
-            (selectionChange)="onSelectionChange($event)"
-            (sortChange)="onSortChange($event)"
-            (rowExpand)="onRowExpand($event)"
-            (rowCollapse)="onRowCollapse($event)"
-            (pageChange)="onFullFeaturedPageChange($event)"
-            (pageSizeChange)="onFullFeaturedPageSizeChange($event)"
-          >
-            <ng-template #rowDetailsTemplate let-row>
-              <div style="display: flex; flex-direction: column; gap: 12px;">
-                <div style="display: grid; grid-template-columns: 150px 1fr; gap: 8px;">
-                  <strong>Modified By:</strong>
-                  <span>{{ row.data.modifiedBy }}</span>
-                </div>
-                <div style="display: grid; grid-template-columns: 150px 1fr; gap: 8px;">
-                  <strong>Status:</strong>
-                  <span>{{ row.data.status }}</span>
-                </div>
-                <div style="display: grid; grid-template-columns: 150px 1fr; gap: 8px;">
-                  <strong>File Size:</strong>
-                  <span>{{ row.data.size }}</span>
-                </div>
-              </div>
-            </ng-template>
-          </app-data-grid>
-        </div>
-      </section>
-
-      <!-- API Integration Example -->
-      <section class="showcase__section">
-        <h2 class="showcase__section__title">API Integration (Server-Side Processing)</h2>
-        <p class="showcase__section__description">
-          Data grid connected to a simulated API service. Sorting, filtering, and pagination are
-          handled server-side. The API service simulates network delay (500-1000ms) and processes
-          requests on the server.
-        </p>
-        <div class="showcase__example">
-          <app-data-grid
-            [columns]="apiColumns"
-            [rows]="apiRows()"
-            [loading]="apiLoading()"
-            [loadingTitle]="'Loading data...'"
-            [loadingDescription]="'Fetching data from server...'"
-            [loadingSpinnerSize]="'medium'"
-            [enablePagination]="true"
-            [totalCount]="apiTotalCount()"
-            [currentPage]="apiCurrentPage()"
-            [pageSize]="apiPageSize()"
-            [pageSizeOptions]="[5, 10, 20, 50]"
-            [striped]="true"
-            [bordered]="true"
-            [hoverable]="true"
-            (sortChange)="onApiSortChange($event)"
-            (filterChange)="onApiFilterChange($event)"
-            (pageChange)="onApiPageChange($event)"
-            (pageSizeChange)="onApiPageSizeChange($event)"
-          />
-        </div>
-        @if (apiActiveFilters().length > 0 || apiCurrentSort()) {
-          <p class="showcase__info">
-            @if (apiCurrentSort()) {
-              <span
-                style="display: inline-block; margin-right: 8px; margin-top: 4px; padding: 4px 8px; background: #e1e1e1; border-radius: 4px; font-size: 0.875rem;"
-              >
-                Sort: {{ apiCurrentSort()?.field }} ({{ apiCurrentSort()?.direction }})
-              </span>
-            }
-            @if (apiActiveFilters().length > 0) {
-              <span
-                style="display: inline-block; margin-right: 8px; margin-top: 4px; padding: 4px 8px; background: #e1e1e1; border-radius: 4px; font-size: 0.875rem;"
-              >
-                Filters: {{ apiActiveFilters().length }}
-              </span>
-            }
-            <span
-              style="display: inline-block; margin-right: 8px; margin-top: 4px; padding: 4px 8px; background: #e1e1e1; border-radius: 4px; font-size: 0.875rem;"
-            >
-              Page: {{ apiCurrentPage() }} / {{ Math.ceil(apiTotalCount() / apiPageSize()) }},
-              Total: {{ apiTotalCount() }}
-            </span>
+        <!-- Sortable Columns -->
+        <section class="showcase__section">
+          <h2 class="showcase__section__title">Sortable Columns</h2>
+          <p class="showcase__section__description">
+            Data grid with sortable column headers. Click on column headers to sort.
           </p>
-        }
-      </section>
+          <div class="showcase__example">
+            <app-data-grid
+              [columns]="sortableColumns"
+              [rows]="basicRows"
+              [hoverable]="true"
+              (sortChange)="onSortChange($event)"
+            />
+          </div>
+          @if (currentSort()) {
+            <p class="showcase__info">
+              Current sort: {{ currentSort()?.field }} ({{ currentSort()?.direction }})
+            </p>
+          }
+        </section>
+
+        <!-- Filtering -->
+        <section class="showcase__section">
+          <h2 class="showcase__section__title">Filtering</h2>
+          <p class="showcase__section__description">
+            Data grid with filtering enabled. Each column can have different filter types: text,
+            number, date, select, multi-select, and boolean. Filters are applied in real-time with
+            debouncing for text inputs.
+          </p>
+          <div class="showcase__example">
+            <app-data-grid
+              [columns]="filterableColumns"
+              [rows]="filterableRows"
+              [hoverable]="true"
+              (filterChange)="onFilterChange($event)"
+            />
+          </div>
+          @if (activeFilters().length > 0) {
+            <p class="showcase__info">
+              Active filters: {{ activeFilters().length }}
+              <br />
+              @for (filter of activeFilters(); track filter.columnId) {
+                <span
+                  style="display: inline-block; margin-right: 8px; margin-top: 4px; padding: 4px 8px; background: #e1e1e1; border-radius: 4px; font-size: 0.875rem;"
+                >
+                  {{ filter.displayText }}
+                </span>
+              }
+            </p>
+          }
+        </section>
+
+        <!-- Expandable Rows -->
+        <section class="showcase__section">
+          <h2 class="showcase__section__title">Expandable Rows (Master-Details)</h2>
+          <p class="showcase__section__description">
+            Data grid with expandable rows showing additional details when expanded.
+          </p>
+          <div class="showcase__example">
+            <app-data-grid
+              [columns]="basicColumns"
+              [rows]="expandableRows"
+              [expandable]="true"
+              [hoverable]="true"
+              (rowExpand)="onRowExpand($event)"
+              (rowCollapse)="onRowCollapse($event)"
+            >
+              <ng-template #rowDetailsTemplate let-row>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                  <div style="display: grid; grid-template-columns: 150px 1fr; gap: 8px;">
+                    <strong>Modified By:</strong>
+                    <span>{{ row.data.modifiedBy }}</span>
+                  </div>
+                  <div style="display: grid; grid-template-columns: 150px 1fr; gap: 8px;">
+                    <strong>Status:</strong>
+                    <span>{{ row.data.status }}</span>
+                  </div>
+                  <div style="display: grid; grid-template-columns: 150px 1fr; gap: 8px;">
+                    <strong>File Size:</strong>
+                    <span>{{ row.data.size }}</span>
+                  </div>
+                  <div style="margin-top: 8px; padding-top: 12px; border-top: 1px solid #d1d1d1;">
+                    <p style="margin: 0; color: #424242;">
+                      This is additional information about <strong>{{ row.data.name }}</strong
+                      >. You can display any custom content here, such as metadata, actions, or
+                      nested data.
+                    </p>
+                  </div>
+                </div>
+              </ng-template>
+            </app-data-grid>
+          </div>
+          @if (expandedRowInfo()) {
+            <p class="showcase__info">{{ expandedRowInfo() }}</p>
+          }
+        </section>
+
+        <!-- Pagination -->
+        <section class="showcase__section">
+          <h2 class="showcase__section__title">Pagination</h2>
+          <p class="showcase__section__description">
+            Data grid with pagination controls. Navigate through pages and change page size.
+          </p>
+          <div class="showcase__example">
+            <app-data-grid
+              [columns]="basicColumns"
+              [rows]="paginatedRows()"
+              [enablePagination]="true"
+              [totalCount]="paginatedTotalCount"
+              [currentPage]="currentPage()"
+              [pageSize]="pageSize()"
+              [pageSizeOptions]="[5, 10, 20, 50]"
+              [hoverable]="true"
+              (pageChange)="onPageChange($event)"
+              (pageSizeChange)="onPageSizeChange($event)"
+            />
+          </div>
+          @if (currentPage() || pageSize()) {
+            <p class="showcase__info">
+              Current page: {{ currentPage() }}, Page size: {{ pageSize() }}, Total items:
+              {{ paginatedTotalCount }}
+              Current page: {{ currentPage() }}, Page size: {{ pageSize() }}, Total items:
+              {{ paginatedTotalCount }}
+            </p>
+          }
+        </section>
+
+        <!-- Virtualization -->
+        <section class="showcase__section">
+          <h2 class="showcase__section__title">Virtualization (Large Datasets)</h2>
+          <p class="showcase__section__description">
+            Data grid with virtualization enabled. Only visible rows are rendered, providing better
+            performance for large datasets. This example shows 1000 rows with smooth scrolling.
+          </p>
+          <div class="showcase__example showcase__example--virtualized">
+            <app-data-grid
+              [columns]="sortableColumns"
+              [rows]="virtualizedRows"
+              [virtualizationItemHeight]="48"
+              [hoverable]="true"
+              [striped]="true"
+              [stickyHeaders]="true"
+              (sortChange)="onSortChange($event)"
+            />
+          </div>
+          <p class="showcase__info">
+            Virtualization enabled: {{ virtualizedRows.length }} rows rendered efficiently. Only
+            visible rows are in the DOM, improving performance for large datasets.
+          </p>
+        </section>
+
+        <!-- Virtualization with Selection -->
+        <section class="showcase__section">
+          <h2 class="showcase__section__title">Virtualization with Selection</h2>
+          <p class="showcase__section__description">
+            Virtualized data grid with row selection enabled. Selection works seamlessly with
+            virtualization.
+          </p>
+          <div class="showcase__example showcase__example--virtualized">
+            <app-data-grid
+              [columns]="sortableColumns"
+              [rows]="virtualizedRows.slice(0, 500)"
+              [virtualizationItemHeight]="48"
+              [selectable]="true"
+              [multiSelect]="true"
+              [hoverable]="true"
+              [striped]="true"
+              [stickyHeaders]="true"
+              (selectionChange)="onVirtualizedSelectionChange($event)"
+              (sortChange)="onSortChange($event)"
+            />
+          </div>
+          @if (virtualizedSelectedCount > 0) {
+            <p class="showcase__info">
+              Selected rows: {{ virtualizedSelectedCount }} (out of 500 rows)
+            </p>
+          }
+        </section>
+
+        <!-- Virtualization Comparison -->
+        <section class="showcase__section">
+          <h2 class="showcase__section__title">Virtualization vs Standard Rendering</h2>
+          <p class="showcase__section__description">
+            Compare the performance difference. The virtualized version only renders visible rows,
+            while the standard version renders all rows.
+          </p>
+          <div class="showcase__grid showcase__grid--two-columns">
+            <div class="showcase__item">
+              <h3>With Virtualization (Recommended for 100+ rows)</h3>
+              <div class="showcase__example showcase__example--virtualized">
+                <app-data-grid
+                  [columns]="basicColumns"
+                  [rows]="comparisonRows"
+                  [virtualizationItemHeight]="48"
+                  [hoverable]="true"
+                  [striped]="true"
+                />
+              </div>
+              <p class="showcase__info">
+                {{ comparisonRows.length }} rows - Only visible rows rendered (better performance)
+              </p>
+            </div>
+            <div class="showcase__item">
+              <h3>Without Virtualization (Standard)</h3>
+              <div class="showcase__example showcase__example--scrollable">
+                <app-data-grid
+                  [columns]="basicColumns"
+                  [rows]="comparisonRows.slice(0, 50)"
+                  [hoverable]="true"
+                  [striped]="true"
+                />
+              </div>
+              <p class="showcase__info">
+                50 rows - All rows rendered (may be slower with 100+ rows)
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Full Featured Example -->
+        <section class="showcase__section">
+          <h2 class="showcase__section__title">Full Featured DataGrid</h2>
+          <p class="showcase__section__description">
+            Complete data grid with all features enabled: selection, sorting, sticky headers,
+            expandable rows, and pagination.
+          </p>
+          <div class="showcase__example showcase__example">
+            <app-data-grid
+              [columns]="sortableColumns"
+              [rows]="fullFeaturedRows()"
+              [selectable]="true"
+              [multiSelect]="true"
+              [stickyHeaders]="true"
+              [expandable]="true"
+              [enablePagination]="true"
+              [totalCount]="fullFeaturedTotalCount"
+              [currentPage]="fullFeaturedCurrentPage()"
+              [pageSize]="fullFeaturedPageSize()"
+              [pageSizeOptions]="[5, 10, 20, 50]"
+              [striped]="true"
+              [bordered]="true"
+              [hoverable]="true"
+              (selectionChange)="onSelectionChange($event)"
+              (sortChange)="onSortChange($event)"
+              (rowExpand)="onRowExpand($event)"
+              (rowCollapse)="onRowCollapse($event)"
+              (pageChange)="onFullFeaturedPageChange($event)"
+              (pageSizeChange)="onFullFeaturedPageSizeChange($event)"
+            >
+              <ng-template #rowDetailsTemplate let-row>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                  <div style="display: grid; grid-template-columns: 150px 1fr; gap: 8px;">
+                    <strong>Modified By:</strong>
+                    <span>{{ row.data.modifiedBy }}</span>
+                  </div>
+                  <div style="display: grid; grid-template-columns: 150px 1fr; gap: 8px;">
+                    <strong>Status:</strong>
+                    <span>{{ row.data.status }}</span>
+                  </div>
+                  <div style="display: grid; grid-template-columns: 150px 1fr; gap: 8px;">
+                    <strong>File Size:</strong>
+                    <span>{{ row.data.size }}</span>
+                  </div>
+                </div>
+              </ng-template>
+            </app-data-grid>
+          </div>
+        </section>
+
+        <!-- API Integration Example -->
+        <section class="showcase__section">
+          <h2 class="showcase__section__title">API Integration (Server-Side Processing)</h2>
+          <p class="showcase__section__description">
+            Data grid connected to a simulated API service. Sorting, filtering, and pagination are
+            handled server-side. The API service simulates network delay (500-1000ms) and processes
+            requests on the server.
+          </p>
+          <div class="showcase__example">
+            <app-data-grid
+              [columns]="apiColumns"
+              [rows]="apiRows()"
+              [loading]="apiLoading()"
+              [loadingTitle]="'Loading data...'"
+              [loadingDescription]="'Fetching data from server...'"
+              [loadingSpinnerSize]="'medium'"
+              [enablePagination]="true"
+              [totalCount]="apiTotalCount()"
+              [currentPage]="apiCurrentPage()"
+              [pageSize]="apiPageSize()"
+              [pageSizeOptions]="[5, 10, 20, 50]"
+              [striped]="true"
+              [bordered]="true"
+              [hoverable]="true"
+              (sortChange)="onApiSortChange($event)"
+              (filterChange)="onApiFilterChange($event)"
+              (pageChange)="onApiPageChange($event)"
+              (pageSizeChange)="onApiPageSizeChange($event)"
+            />
+          </div>
+          @if (apiActiveFilters().length > 0 || apiCurrentSort()) {
+            <p class="showcase__info">
+              @if (apiCurrentSort()) {
+                <span
+                  style="display: inline-block; margin-right: 8px; margin-top: 4px; padding: 4px 8px; background: #e1e1e1; border-radius: 4px; font-size: 0.875rem;"
+                >
+                  Sort: {{ apiCurrentSort()?.field }} ({{ apiCurrentSort()?.direction }})
+                </span>
+              }
+              @if (apiActiveFilters().length > 0) {
+                <span
+                  style="display: inline-block; margin-right: 8px; margin-top: 4px; padding: 4px 8px; background: #e1e1e1; border-radius: 4px; font-size: 0.875rem;"
+                >
+                  Filters: {{ apiActiveFilters().length }}
+                </span>
+              }
+              <span
+                style="display: inline-block; margin-right: 8px; margin-top: 4px; padding: 4px 8px; background: #e1e1e1; border-radius: 4px; font-size: 0.875rem;"
+              >
+                Page: {{ apiCurrentPage() }} / {{ Math.ceil(apiTotalCount() / apiPageSize()) }},
+                Total: {{ apiTotalCount() }}
+              </span>
+            </p>
+          }
+        </section>
+      </div>
     </div>
   `,
 })

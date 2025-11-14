@@ -2,14 +2,23 @@ import { Component } from '@angular/core';
 import { ButtonComponent } from './button.component';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
+import { TableOfContentComponent } from '@shared/components/table-of-content';
 
 @Component({
   selector: 'app-button-showcase',
 
-  imports: [ButtonComponent, CommonModule, IconComponent],
+  imports: [ButtonComponent, CommonModule, IconComponent, TableOfContentComponent],
   template: `
-    <div class="showcase showcase--responsive">
-      <h1 class="showcase__title">Button Component Showcase</h1>
+    <div class="showcase showcase--responsive showcase__with-toc">
+      <app-table-of-content
+        [sticky]="true"
+        [offsetTop]="20"
+        containerSelector=".showcase-content"
+        [minLevel]="1"
+        [maxLevel]="2"
+      />
+      <div class="showcase-content">
+        <h1 class="showcase__title">Button Component Showcase</h1>
       <p class="showcase__description">
         Comprehensive showcase of the Button component built with Fluent 2 Design System. All
         variants are responsive and accessible.
@@ -233,6 +242,7 @@ import { IconComponent } from '../icon/icon.component';
             </app-button>
           </div>
         </div>
+      </div>
       </div>
     </div>
   `,

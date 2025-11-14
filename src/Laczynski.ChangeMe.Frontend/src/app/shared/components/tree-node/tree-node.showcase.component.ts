@@ -3,13 +3,22 @@ import { TreeNodeComponent, TreeNode } from './tree-node.component';
 import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../button/button.component';
 import { IconName } from '../icon';
+import { TableOfContentComponent } from '@shared/components/table-of-content';
 
 @Component({
   selector: 'app-tree-node-showcase',
-  imports: [TreeNodeComponent, CommonModule, ButtonComponent],
+  imports: [TreeNodeComponent, CommonModule, ButtonComponent, TableOfContentComponent],
   template: `
-    <div class="showcase showcase--responsive">
-      <h1 class="showcase__title">Tree Node Component Showcase</h1>
+    <div class="showcase showcase--responsive showcase__with-toc">
+      <app-table-of-content
+        [sticky]="true"
+        [offsetTop]="20"
+        containerSelector=".showcase-content"
+        [minLevel]="1"
+        [maxLevel]="2"
+      />
+      <div class="showcase-content">
+        <h1 class="showcase__title">Tree Node Component Showcase</h1>
       <p class="showcase__description">
         Comprehensive showcase of the TreeNode component built with Fluent 2 Design System. Tree
         nodes support hierarchical structures, expand/collapse functionality, selection indicators,
@@ -388,6 +397,7 @@ import { IconName } from '../icon';
           (click)="onQuickActionClick(node, 'delete'); $event.stopPropagation()"
         ></app-button>
       </ng-template>
+      </div>
     </div>
   `,
 })

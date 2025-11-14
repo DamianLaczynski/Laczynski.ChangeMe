@@ -9,7 +9,7 @@
 @include block('showcase') {
   // Base showcase container
   padding: $spacing-8;
-  max-width: 1200px;
+  max-width: 1600px;
   margin: 0 auto;
   font-family: $font-family-base;
 
@@ -665,6 +665,46 @@
             color: var(--color-neutral-foreground2-rest);
             flex: 1;
           }
+        }
+      }
+    }
+  }
+
+  // Table of Content integration
+  @include element('with-toc') {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: $spacing-8;
+    align-items: start;
+
+    app-table-of-content {
+      order: 2; // TOC appears second (on the right)
+
+      ::ng-deep .table-of-content {
+        position: sticky;
+        top: $spacing-8;
+        max-height: calc(100vh - #{$spacing-16});
+        overflow-y: auto;
+      }
+    }
+
+    .showcase-content {
+      order: 1; // Content appears first (on the left)
+      min-width: 0; // Prevents grid overflow
+      overflow-x: hidden; // Prevents content from breaking grid horizontally
+    }
+
+    @include respond-to(medium) {
+      grid-template-columns: 1fr;
+
+      app-table-of-content {
+        order: 1; // Reset order for mobile
+
+        ::ng-deep .table-of-content {
+          position: relative;
+          top: 0;
+          max-height: none;
+          margin-bottom: $spacing-8;
         }
       }
     }

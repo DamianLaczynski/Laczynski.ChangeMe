@@ -3,13 +3,22 @@ import { CommonModule } from '@angular/common';
 import { EmptyStateComponent } from './empty-state.component';
 import { QuickAction } from '../utils';
 import { ButtonComponent } from '../button/button.component';
+import { TableOfContentComponent } from '@shared/components/table-of-content';
 
 @Component({
   selector: 'app-empty-state-showcase',
-  imports: [CommonModule, EmptyStateComponent, ButtonComponent],
+  imports: [CommonModule, EmptyStateComponent, ButtonComponent, TableOfContentComponent],
   template: `
-    <div class="showcase showcase--responsive">
-      <h1 class="showcase__title">Empty State Component</h1>
+    <div class="showcase showcase--responsive showcase__with-toc">
+      <app-table-of-content
+        [sticky]="true"
+        [offsetTop]="20"
+        containerSelector=".showcase-content"
+        [minLevel]="1"
+        [maxLevel]="2"
+      />
+      <div class="showcase-content">
+        <h1 class="showcase__title">Empty State Component</h1>
       <p class="showcase__description">
         Comprehensive showcase of the Empty State component built with Fluent 2 Design System. The
         Empty State component is used to display a message when there is no data to show, guiding
@@ -183,6 +192,7 @@ import { ButtonComponent } from '../button/button.component';
         <div class="showcase__code">
           <pre><code>{{ usageExample }}</code></pre>
         </div>
+      </div>
       </div>
     </div>
   `,

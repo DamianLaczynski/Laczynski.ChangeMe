@@ -1,0 +1,19 @@
+<nav class="table-of-content" [class.table-of-content--sticky]="sticky()">
+  <div class="table-of-content__content" role="navigation" aria-label="Table of contents">
+    @for (item of treeNodes(); track item.id) {
+      <app-tree-node
+        [node]="item"
+        [size]="size()"
+        [asButton]="true"
+        [showSelectionIndicator]="showSelectionIndicator()"
+        [indicatorPosition]="indicatorPosition()"
+        [variant]="variant()"
+        [chevronPosition]="'after'"
+        [expandOnClick]="true"
+        [selectOnClick]="false"
+        (nodeClick)="onTreeNodeClick($event)"
+      />
+    }
+  </div>
+</nav>
+

@@ -5,13 +5,22 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { ToastService } from './services/toast.service';
+import { TableOfContentComponent } from '@shared/components/table-of-content';
 
 @Component({
   selector: 'app-toast-showcase',
-  imports: [ToastComponent, ToastContainerComponent, CommonModule, FormsModule, ButtonComponent],
+  imports: [ToastComponent, ToastContainerComponent, CommonModule, FormsModule, ButtonComponent, TableOfContentComponent],
   template: `
-    <div class="showcase showcase--responsive">
-      <h1 class="showcase__title">Toast Component</h1>
+    <div class="showcase showcase--responsive showcase__with-toc">
+      <app-table-of-content
+        [sticky]="true"
+        [offsetTop]="20"
+        containerSelector=".showcase-content"
+        [minLevel]="1"
+        [maxLevel]="2"
+      />
+      <div class="showcase-content">
+        <h1 class="showcase__title">Toast Component</h1>
       <p class="showcase__description">
         Toast notifications built with Fluent 2 Design System. Toasts provide brief messages about
         app processes at the bottom or top of the screen. They're meant to be noticed without being
@@ -293,6 +302,7 @@ import { ToastService } from './services/toast.service';
             ></app-toast>
           </div>
         </div>
+      </div>
       </div>
     </div>
   `,

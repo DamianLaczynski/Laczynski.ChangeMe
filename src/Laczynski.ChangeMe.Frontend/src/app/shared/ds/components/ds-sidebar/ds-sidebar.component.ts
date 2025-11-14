@@ -79,6 +79,7 @@ export class DsSidebarComponent {
     { id: 'breadcrumb', label: 'Breadcrumb', icon: 'arrow_routing' },
     { id: 'menu', label: 'Menu', icon: 'group_list' },
     { id: 'nav', label: 'Nav', icon: 'navigation' },
+    { id: 'table-of-content', label: 'Table of Content', icon: 'list' },
     { id: 'tabs', label: 'Tabs', icon: 'tabs' },
     // Feedback Section
     { id: 'feedback', isSectionHeader: true, label: 'Feedback' },
