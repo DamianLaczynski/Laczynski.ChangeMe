@@ -131,11 +131,15 @@
 // @param $offset - offset outline (domyślnie 2px zgodnie z Fluent 2)
 // @param $border-radius - opcjonalny border-radius dla zaokrąglonych elementów
 @mixin focus-ring($color: var(--color-focus-border), $offset: 2px, $border-radius: null) {
-  outline: 2px solid transparent;
-  outline-offset: $offset;
+  & {
+    outline: 2px solid transparent;
+    outline-offset: $offset;
+  }
 
   @if $border-radius {
-    border-radius: $border-radius;
+    & {
+      border-radius: $border-radius;
+    }
   }
 
   &:focus-visible {
