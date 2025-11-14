@@ -21,8 +21,6 @@ export type BadgeColor =
   | 'warning';
 export type BadgeAppearance = 'filled' | 'tint' | 'outline' | 'subtle';
 export type CardStyle = 'plain' | 'filled' | 'outline' | 'subtle';
-export type CardState = 'rest' | 'hover' | 'pressed' | 'selected' | 'disabled';
-export type SplitterOrientation = 'horizontal' | 'vertical';
 export type SpinnerSize =
   | 'extra-tiny'
   | 'tiny'
@@ -34,12 +32,8 @@ export type SpinnerSize =
   | 'huge';
 export type SpinnerLabelPosition = 'after' | 'before' | 'above' | 'below' | 'none';
 export type ChevronPosition = 'before' | 'after';
-export type InputSize = 'small' | 'medium' | 'large';
 export type InputVariant = 'filled' | 'filled-gray' | 'filled-lighter' | 'underlined';
-export type InputType = 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search';
-export type LabelSize = 'small' | 'small-bold' | 'medium' | 'medium-bold' | 'large';
 export type TreeStyle = 'subtle' | 'flat';
-export type Layout = 'icon-before' | 'text-only' | 'icon-only';
 export type Appearance = 'transparent' | 'subtle' | 'subtle-circular' | 'filled-circular';
 export type Orientation = 'horizontal' | 'vertical';
 

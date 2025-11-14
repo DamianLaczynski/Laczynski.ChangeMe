@@ -3,13 +3,13 @@ import { NavigationEnd, Router } from '@angular/router';
 import { NavComponent, NavNode } from '@shared/components/nav';
 import { filter } from 'rxjs/operators';
 import { LayoutService } from '@core/layout/services/layout.service';
-import { NodeComponent, Node } from '@shared/components/node';
 import { SearchComponent } from '@shared/components/field/search';
 import { FormsModule } from '@angular/forms';
+import { ButtonComponent } from '@shared/components/button';
 
 @Component({
   selector: 'app-ds-sidebar',
-  imports: [NavComponent, NodeComponent, SearchComponent, FormsModule],
+  imports: [NavComponent, SearchComponent, FormsModule, ButtonComponent],
   templateUrl: './ds-sidebar.component.html',
 })
 export class DsSidebarComponent {
@@ -30,13 +30,6 @@ export class DsSidebarComponent {
   isDarkMode = computed(() => this.layoutService.$themeMode() === 'dark');
   themeLabel = computed(() => (this.isDarkMode() ? 'Light mode' : 'Dark mode'));
   themeIcon = computed(() => (this.isDarkMode() ? 'weather_sunny' : 'weather_moon'));
-
-  // Theme toggle node
-  themeNode = computed<Node>(() => ({
-    id: 'theme-toggle',
-    label: this.themeLabel(),
-    icon: this.themeIcon(),
-  }));
 
   private readonly allNavItems: NavNode[] = [
     // Design System Section

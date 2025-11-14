@@ -1,6 +1,7 @@
 <div class="ds-sidebar">
   <div class="ds-sidebar__search">
     <app-search
+      variant="filled-gray"
       placeholder="Search components..."
       [size]="'medium'"
       [(ngModel)]="searchQuery"
@@ -9,12 +10,14 @@
   </div>
   <app-nav [items]="navItems()"></app-nav>
   <div class="ds-sidebar__theme-toggle">
-    <app-node
-      [node]="themeNode()"
-      [asButton]="true"
-      [size]="'medium'"
-      [selectOnClick]="false"
-      (nodeClick)="onDarkModeToggle()"
-    ></app-node>
+    <app-button
+      [fullWidth]="true"
+      variant="primary"
+      [icon]="themeIcon()"
+      size="medium"
+      (click)="onDarkModeToggle()"
+    >
+      {{ themeLabel() }}
+    </app-button>
   </div>
 </div>

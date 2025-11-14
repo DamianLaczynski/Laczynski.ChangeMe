@@ -13,7 +13,7 @@ import {
   Input,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SplitterOrientation } from '../utils';
+import { Orientation } from '../utils';
 
 @Directive({
   selector: '[appSplitterPanel]',
@@ -46,7 +46,7 @@ export interface SplitterResizeEvent {
   templateUrl: './splitter.component.html',
 })
 export class SplitterComponent {
-  orientation = input<SplitterOrientation>('horizontal');
+  orientation = input<Orientation>('horizontal');
   panels = input.required<SplitterPanel[]>();
   gutterSize = input<number>(6);
   ariaLabel = input<string>('Resizable splitter');

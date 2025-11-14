@@ -1,10 +1,13 @@
 import { Component, input, output, model } from '@angular/core';
 import { Intent, Size, Variant } from '../utils';
 import { ToastPosition } from './models/toast.model';
+import { IconComponent } from '../icon/icon.component';
+import { IconName } from '../icon/icon-name.type';
 
 @Component({
   selector: 'app-toast',
   templateUrl: './toast.component.html',
+  imports: [IconComponent],
 })
 export class ToastComponent {
   title = input<string>('');
@@ -36,33 +39,17 @@ export class ToastComponent {
     return classes.join(' ');
   }
 
-  iconClasses(): string {
-    const classes = ['toast__icon'];
-
-    classes.push(`toast__icon--${this.intent()}`);
-
-    return classes.join(' ');
-  }
-
-  progressClasses(): string {
-    const classes = ['toast__progress'];
-
-    classes.push(`toast__progress--${this.intent()}`);
-
-    return classes.join(' ');
-  }
-
-  getIconName(): string {
+  getIconName(): IconName {
     switch (this.intent()) {
       case 'success':
-        return 'check-circle';
+        return 'checkmark_circle';
       case 'warning':
-        return 'exclamation-triangle';
+        return 'warning';
       case 'danger':
-        return 'x-circle';
+        return 'error_circle';
       case 'info':
       default:
-        return 'info-circle';
+        return 'info';
     }
   }
 
