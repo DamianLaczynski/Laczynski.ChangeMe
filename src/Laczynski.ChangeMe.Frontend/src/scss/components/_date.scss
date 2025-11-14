@@ -64,7 +64,7 @@
   position: absolute;
   top: calc(100% + 4px); // 4px gap below trigger (like native select)
   left: 0;
-  z-index: 1000;
+  z-index: $z-index-dropdown;
   background: var(--color-neutral-background-rest);
   border: 1px solid var(--color-neutral-stroke-rest);
   border-radius: $border-radius-600;
