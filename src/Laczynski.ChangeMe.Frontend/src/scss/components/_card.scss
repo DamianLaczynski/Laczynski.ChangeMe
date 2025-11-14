@@ -101,6 +101,7 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    @include smooth-hover;
 
     &:hover:not(:disabled) {
       background: var(--color-neutral-background-hover);
@@ -209,6 +210,7 @@
   @include modifier('filled') {
     background: var(--color-neutral-background-rest);
     outline-color: transparent;
+    @include smooth-hover;
 
     &:hover:not(.card--disabled):not(.card--selected) {
       background: var(--color-neutral-background-hover);
@@ -226,6 +228,7 @@
   @include modifier('outline') {
     background: var(--color-neutral-background-rest);
     outline-color: var(--color-neutral-stroke-rest);
+    @include transition(background-color outline-color, $duration-faster, $easing-decelerate-min);
 
     &:hover:not(.card--disabled):not(.card--selected) {
       background: var(--color-neutral-background-hover);
@@ -246,6 +249,7 @@
     background: transparent;
     box-shadow: none;
     outline-color: transparent;
+    @include smooth-hover;
 
     &:hover:not(.card--disabled):not(.card--selected) {
       background: var(--color-neutral-background-hover);
@@ -306,6 +310,7 @@
     cursor: pointer;
 
     @include focus-ring(var(--color-brand-primary));
+    @include transition(transform box-shadow, $duration-faster, $easing-decelerate-min);
 
     &:not(.card--disabled) {
       &:hover {

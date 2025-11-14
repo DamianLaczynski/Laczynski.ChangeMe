@@ -22,6 +22,7 @@
   overflow: visible; // Changed from hidden to allow submenu to be visible
   border-radius: $border-radius-400; // 4px
   min-width: 120px;
+  @include slide-down($duration-normal, $easing-decelerate-min);
 
   // =============================================================================
   // Section

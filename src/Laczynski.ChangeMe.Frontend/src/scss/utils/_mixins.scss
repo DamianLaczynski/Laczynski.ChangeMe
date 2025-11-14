@@ -173,3 +173,65 @@
   white-space: nowrap !important;
   border: 0 !important;
 }
+
+// ==========================================================================
+// Animation Mixins - Fluent 2 Design System
+// ==========================================================================
+
+// Transition mixin for smooth state changes
+// @param $properties - properties to animate (default: all)
+// @param $duration - animation duration (default: $duration-fast)
+// @param $easing - easing function (default: $easing-decelerate-min)
+@mixin transition($properties: all, $duration: $duration-fast, $easing: $easing-decelerate-min) {
+  transition-property: $properties;
+  transition-duration: $duration;
+  transition-timing-function: $easing;
+}
+
+// Fade in animation
+// @param $duration - animation duration (default: $duration-fast)
+// @param $easing - easing function (default: $easing-decelerate-min)
+@mixin fade-in($duration: $duration-fast, $easing: $easing-decelerate-min) {
+  animation: fadeIn $duration $easing;
+}
+
+// Fade out animation
+// @param $duration - animation duration (default: $duration-fast)
+// @param $easing - easing function (default: $easing-accelerate-min)
+@mixin fade-out($duration: $duration-fast, $easing: $easing-accelerate-min) {
+  animation: fadeOut $duration $easing;
+}
+
+// Slide down animation (for expanding panels)
+// @param $duration - animation duration (default: $duration-normal)
+// @param $easing - easing function (default: $easing-decelerate-min)
+@mixin slide-down($duration: $duration-normal, $easing: $easing-decelerate-min) {
+  animation: slideDown $duration $easing;
+}
+
+// Slide up animation (for collapsing panels)
+// @param $duration - animation duration (default: $duration-normal)
+// @param $easing - easing function (default: $easing-accelerate-min)
+@mixin slide-up($duration: $duration-normal, $easing: $easing-accelerate-min) {
+  animation: slideUp $duration $easing;
+}
+
+// Scale press effect (for buttons)
+// @param $scale - scale value (default: 0.98)
+@mixin scale-press($scale: 0.98) {
+  transform: scale($scale);
+}
+
+// Smooth hover transition (for interactive elements)
+@mixin smooth-hover {
+  @include transition(background-color, $duration-faster, $easing-decelerate-min);
+}
+
+// Smooth press transition (for buttons and clickable elements)
+@mixin smooth-press {
+  @include transition(
+    transform background-color border-color,
+    $duration-ultra-fast,
+    $easing-accelerate-min
+  );
+}

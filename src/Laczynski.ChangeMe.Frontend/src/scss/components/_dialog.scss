@@ -19,7 +19,7 @@
     background-color: rgba(0, 0, 0, 0.4);
     z-index: $z-index-modal-backdrop;
     opacity: 1;
-    transition: opacity $duration-normal $easing-ease-in-out;
+    @include transition(opacity, $duration-normal, $easing-decelerate-min);
     padding: $spacing-6;
     overflow-y: auto;
 
@@ -46,7 +46,7 @@
     border-radius: $border-radius-800;
     overflow: hidden;
     transform: scale(1);
-    transition: transform $duration-normal $easing-ease-in-out;
+    @include transition(transform, $duration-normal, $easing-decelerate-min);
     width: 100%;
     max-height: calc(100vh - #{$spacing-12});
 
@@ -181,14 +181,15 @@
 
   // Animations
   .dialog__backdrop:not(.dialog__backdrop--hidden) {
-    animation: dialog-fade-in $duration-normal $easing-ease-in-out;
+    @include fade-in($duration-normal, $easing-decelerate-min);
   }
 
   .dialog__content {
-    animation: dialog-scale-in $duration-normal $easing-ease-in-out;
+    @include fade-in($duration-normal, $easing-decelerate-min);
+    animation: dialog-scale-in $duration-normal $easing-decelerate-min;
 
     &.dialog__content--fullscreen {
-      animation: dialog-fade-in $duration-fast $easing-ease-in-out;
+      @include fade-in($duration-fast, $easing-decelerate-min);
     }
   }
 }

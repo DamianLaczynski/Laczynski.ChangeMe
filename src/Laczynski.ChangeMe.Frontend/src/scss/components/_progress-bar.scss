@@ -86,15 +86,15 @@
     }
   }
 
-  &.progress-bar--determinate.progress-bar--success .progress-bar__track[style*="100%"] {
+  &.progress-bar--determinate.progress-bar--success .progress-bar__track[style*='100%'] {
     background: var(--color-shared-green-foreground);
   }
 
-  &.progress-bar--determinate.progress-bar--error .progress-bar__track[style*="100%"] {
+  &.progress-bar--determinate.progress-bar--error .progress-bar__track[style*='100%'] {
     background: var(--color-shared-red-foreground);
   }
 
-  &.progress-bar--determinate.progress-bar--warning .progress-bar__track[style*="100%"] {
+  &.progress-bar--determinate.progress-bar--warning .progress-bar__track[style*='100%'] {
     background: var(--color-shared-orange-foreground);
   }
 }
@@ -104,17 +104,17 @@
     left: -33.33%;
     opacity: 0;
   }
-  
+
   10% {
     left: -33.33%;
     opacity: 1;
   }
-  
+
   90% {
     left: 100%;
     opacity: 1;
   }
-  
+
   100% {
     left: 100%;
     opacity: 0;
@@ -125,9 +125,8 @@
   0% {
     transform: translateX(-100%);
   }
-  
+
   100% {
     transform: translateX(400%);
   }
 }
-

@@ -11,11 +11,11 @@
   --color-brand-primary-hover: #{$color-brand-primary-hover};
   --color-brand-primary-pressed: #{$color-brand-primary-pressed};
   --color-brand-primary-selected: #{$color-brand-primary-selected};
-  
+
   --color-brand-foreground: #{$color-brand-foreground};
   --color-brand-foreground-hover: #{$color-brand-foreground-hover};
   --color-brand-foreground-pressed: #{$color-brand-foreground-pressed};
-  
+
   --color-compound-brand-background: #{$color-compound-brand-background};
   --color-compound-brand-background-hover: #{$color-compound-brand-background-hover};
   --color-compound-brand-background-pressed: #{$color-compound-brand-background-pressed};
@@ -47,7 +47,7 @@
   --color-neutral-foreground2-brand-hover: #{$color-neutral-foreground2-brand-hover};
   --color-neutral-foreground2-brand-pressed: #{$color-neutral-foreground2-brand-pressed};
   --color-neutral-foreground2-brand-selected: #{$color-neutral-foreground2-brand-selected};
-  
+
   --color-neutral-foreground3-rest: #{$color-neutral-foreground3-rest};
   --color-neutral-foreground3-hover: #{$color-neutral-foreground3-hover};
   --color-neutral-foreground3-pressed: #{$color-neutral-foreground3-pressed};
@@ -55,7 +55,7 @@
   --color-neutral-foreground3-brand-hover: #{$color-neutral-foreground3-brand-hover};
   --color-neutral-foreground3-brand-pressed: #{$color-neutral-foreground3-brand-pressed};
   --color-neutral-foreground3-brand-selected: #{$color-neutral-foreground3-brand-selected};
-  
+
   --color-neutral-foreground4-rest: #{$color-neutral-foreground4-rest};
 
   // Neutral Colors - Background
@@ -67,12 +67,12 @@
   --color-neutral-background-brand-selected: #{$color-neutral-background-brand-selected};
   --color-neutral-background-brand-hover: #{$color-neutral-background-brand-hover};
   --color-neutral-background-brand-pressed: #{$color-neutral-background-brand-pressed};
-  
+
   --color-neutral-background2-rest: #{$color-neutral-background2-rest};
   --color-neutral-background2-hover: #{$color-neutral-background2-hover};
   --color-neutral-background2-pressed: #{$color-neutral-background2-pressed};
   --color-neutral-background2-selected: #{$color-neutral-background2-selected};
-  
+
   --color-neutral-background3-rest: #{$color-neutral-background3-rest};
   --color-neutral-background3-hover: #{$color-neutral-background3-hover};
   --color-neutral-background3-pressed: #{$color-neutral-background3-pressed};
@@ -247,5 +247,49 @@ select:focus:not(:focus-visible) {
   h2,
   h3 {
     page-break-after: avoid;
+  }
+}
+
+// ==========================================================================
+// Keyframe Animations - Fluent 2 Design System
+// ==========================================================================
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
   }
 }

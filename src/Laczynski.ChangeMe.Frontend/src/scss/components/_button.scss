@@ -25,6 +25,7 @@
   box-sizing: border-box;
   
   @include focus-ring(var(--color-brand-primary));
+  @include smooth-press;
 
   // Button Elements (BEM Elements)
   @include element('icon') {
@@ -115,6 +116,7 @@
     color: var(--color-neutral-foreground-on-brand);
     background-color: var(--color-brand-primary);
     border-color: var(--color-brand-primary);
+    @include smooth-hover;
 
     &:hover:not(.button--disabled) {
       background-color: var(--color-brand-primary-hover);
@@ -125,6 +127,7 @@
     &.button--pressed:not(.button--disabled) {
       background-color: var(--color-brand-primary-pressed);
       border-color: var(--color-brand-primary-pressed);
+      @include scale-press(0.98);
     }
 
     &.button--selected:not(.button--disabled) {
@@ -149,6 +152,7 @@
     color: var(--color-neutral-foreground-rest);
     background-color: var(--color-neutral-background-rest);
     border-color: var(--color-neutral-foreground-rest);
+    @include smooth-hover;
 
     &:hover:not(.button--disabled) {
       color: var(--color-neutral-foreground-hover);
@@ -161,6 +165,7 @@
       color: var(--color-neutral-foreground-pressed);
       background-color: var(--color-neutral-background-pressed);
       border-color: var(--color-neutral-foreground-pressed);
+      @include scale-press(0.98);
     }
 
     &.button--selected:not(.button--disabled) {
@@ -186,6 +191,7 @@
     color: var(--color-neutral-foreground-rest);
     background-color: var(--color-neutral-background-rest);
     border-color: var(--color-neutral-foreground-rest);
+    @include smooth-hover;
 
     &:hover:not(.button--disabled) {
       color: var(--color-neutral-foreground-hover);
@@ -198,6 +204,7 @@
       color: var(--color-neutral-foreground-pressed);
       background-color: var(--color-neutral-background-pressed);
       border-color: var(--color-neutral-foreground-pressed);
+      @include scale-press(0.98);
     }
 
     &.button--selected:not(.button--disabled) {
@@ -223,6 +230,7 @@
     color: var(--color-neutral-foreground2-rest);
     background-color: transparent;
     border-color: transparent;
+    @include smooth-hover;
 
     &:hover:not(.button--disabled) {
       color: var(--color-neutral-foreground-hover);
@@ -230,6 +238,7 @@
       
       .button__icon {
         fill: var(--color-brand-primary);
+        @include transition(fill, $duration-faster, $easing-decelerate-min);
       }
     }
 
@@ -237,6 +246,7 @@
     &.button--pressed:not(.button--disabled) {
       color: var(--color-neutral-foreground-pressed);
       background-color: var(--color-subtle-background-pressed);
+      @include scale-press(0.98);
       
       .button__icon {
         fill: var(--color-brand-primary-pressed);
@@ -269,18 +279,21 @@
     color: var(--color-neutral-foreground2-rest);
     background-color: transparent;
     border-color: transparent;
+    @include transition(color, $duration-faster, $easing-decelerate-min);
 
     &:hover:not(.button--disabled) {
       color: var(--color-neutral-foreground2-brand-hover);
       
       .button__icon {
         fill: var(--color-brand-primary);
+        @include transition(fill, $duration-faster, $easing-decelerate-min);
       }
     }
 
     &:active:not(.button--disabled), 
     &.button--pressed:not(.button--disabled) {
       color: var(--color-neutral-foreground2-brand-pressed);
+      @include scale-press(0.98);
       
       .button__icon {
         fill: var(--color-brand-primary-pressed);

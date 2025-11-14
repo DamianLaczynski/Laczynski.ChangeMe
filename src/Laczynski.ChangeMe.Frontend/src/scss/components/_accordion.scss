@@ -22,6 +22,7 @@
     max-height: 0;
     overflow: hidden;
     opacity: 0;
+    @include transition(max-height opacity padding, $duration-normal, $easing-decelerate-min);
   }
 
   // Panel content wrapper
@@ -59,6 +60,10 @@
       max-height: 2000px; // Large enough for most content
       opacity: 1;
       padding-bottom: $spacing-3;
+    }
+
+    .accordion__panel-content {
+      @include fade-in($duration-normal, $easing-decelerate-min);
     }
   }
 
