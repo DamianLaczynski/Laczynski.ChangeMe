@@ -42,7 +42,7 @@
   }
 
   // Focus state - Fluent 2 Design System
-  @include focus-ring(var(--color-brand-primary), 2px, $border-radius-200);
+  @include focus-ring(var(--color-focus-border), 2px, $border-radius-200);
 
   // Disabled state
   .input-wrapper--disabled & {
@@ -133,7 +133,7 @@
     }
 
     // Focus state - Fluent 2 Design System
-    @include focus-ring(var(--color-brand-primary), 2px, $border-radius-400);
+    @include focus-ring(var(--color-focus-border), 2px, $border-radius-400);
   }
 }
 
@@ -166,7 +166,7 @@
   }
 
   // Focus state - Fluent 2 Design System
-  @include focus-ring(var(--color-brand-primary), 2px, $border-radius-400);
+  @include focus-ring(var(--color-focus-border), 2px, $border-radius-400);
 }
 
 // Week Days Header
@@ -221,7 +221,7 @@
   }
 
   // Focus state - Fluent 2 Design System
-  @include focus-ring(var(--color-brand-primary), 2px, $border-radius-400);
+  @include focus-ring(var(--color-focus-border), 2px, $border-radius-400);
 
   // Other month days
   &--other-month {
@@ -303,7 +303,7 @@
   }
 
   // Focus state - Fluent 2 Design System
-  @include focus-ring(var(--color-brand-primary), 2px, $border-radius-400);
+  @include focus-ring(var(--color-focus-border), 2px, $border-radius-400);
 }
 
 // Month Picker
@@ -340,7 +340,7 @@
   }
 
   // Focus state - Fluent 2 Design System
-  @include focus-ring(var(--color-brand-primary), 2px, $border-radius-400);
+  @include focus-ring(var(--color-focus-border), 2px, $border-radius-400);
 
   &--selected {
     background-color: var(--color-brand-primary);
@@ -388,7 +388,7 @@
   }
 
   // Focus state - Fluent 2 Design System
-  @include focus-ring(var(--color-brand-primary), 2px, $border-radius-400);
+  @include focus-ring(var(--color-focus-border), 2px, $border-radius-400);
 
   &--selected {
     background-color: var(--color-brand-primary);
@@ -459,7 +459,7 @@
   }
 
   // Focus state - Fluent 2 Design System
-  @include focus-ring(var(--color-brand-primary), 2px, $border-radius-400);
+  @include focus-ring(var(--color-focus-border), 2px, $border-radius-400);
 
   &--selected {
     background-color: var(--color-brand-primary);
@@ -548,7 +548,7 @@
   }
 
   // Focus state - Fluent 2 Design System
-  @include focus-ring(var(--color-brand-primary), 2px, $border-radius-400);
+  @include focus-ring(var(--color-focus-border), 2px, $border-radius-400);
 
   &:disabled {
     opacity: 0.4;
@@ -572,7 +572,7 @@
 
   // Remove spinner arrows from number input
   -moz-appearance: textfield;
-  
+
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -585,8 +585,8 @@
 
   &:focus {
     outline: none;
-    border-color: var(--color-brand-primary);
-    box-shadow: 0 0 0 1px var(--color-brand-primary);
+    border-color: var(--color-focus-border);
+    box-shadow: 0 0 0 1px var(--color-focus-border);
   }
 
   &:disabled {
@@ -675,4 +675,3 @@
     max-width: 320px;
   }
 }
-

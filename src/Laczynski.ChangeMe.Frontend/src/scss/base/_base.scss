@@ -100,6 +100,9 @@
   // Border radius
   --border-radius-400: #{$border-radius-400};
 
+  // Focus border color (light mode - black)
+  --color-focus-border: #000000;
+
   // Shared Colors
   --color-shared-red-foreground: #{$color-shared-red-foreground};
   --color-shared-red-background: #{$color-shared-red-background};
@@ -145,7 +148,7 @@ body {
 }
 
 *:focus-visible {
-  outline: 2px solid var(--color-brand-primary);
+  outline: 2px solid var(--color-focus-border);
   outline-offset: 2px;
 }
 

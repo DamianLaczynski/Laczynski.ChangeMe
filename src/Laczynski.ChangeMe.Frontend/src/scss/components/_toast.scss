@@ -88,7 +88,7 @@
   }
 
   // Focus state - Fluent 2 Design System
-  @include focus-ring(var(--color-brand-primary), 2px, $border-radius-400);
+  @include focus-ring(var(--color-focus-border), 2px, $border-radius-400);
 
   // Intent indicator - bottom border with progress animation (similar to input component)
   &::after {
@@ -183,7 +183,7 @@
     }
 
     // Focus state - Fluent 2 Design System
-    @include focus-ring(var(--color-brand-primary), 2px, $border-radius-200);
+    @include focus-ring(var(--color-focus-border), 2px, $border-radius-200);
   }
 
   @include element('dismiss-icon') {

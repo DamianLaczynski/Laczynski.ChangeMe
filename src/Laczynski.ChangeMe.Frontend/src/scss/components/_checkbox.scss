@@ -1,6 +1,9 @@
 // Checkbox Component Styles based on Fluent 2 Design System
 // Implements Standard (square) and Circular (round) variants
 
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+
 .checkbox-wrapper {
   display: inline-flex;
   flex-direction: column;
@@ -17,6 +20,12 @@
 
   &:has(.checkbox-input:disabled) {
     cursor: default;
+  }
+
+  &:has(.checkbox-input:focus-visible) {
+    outline: 2px solid var(--color-focus-border);
+    outline-offset: 2px;
+    border-radius: $border-radius-400;
   }
 }
 
@@ -75,5 +84,31 @@
     line-height: 24px;
     padding-top: 8px;
     padding-bottom: 8px;
+  }
+}
+
+// ==============================================================
+// CHECKED STATE
+// ==============================================================
+
+.checkbox-container:has(.checkbox-input:checked) {
+  .checkbox-visual {
+    color: var(--color-brand-primary);
+  }
+}
+
+.checkbox-container:has(.checkbox-input:indeterminate) {
+  .checkbox-visual {
+    color: var(--color-brand-primary);
+  }
+}
+
+// ==============================================================
+// DISABLED STATE
+// ==============================================================
+
+.checkbox-container:has(.checkbox-input:disabled) {
+  .checkbox-visual {
+    color: var(--color-neutral-foreground-disabled);
   }
 }

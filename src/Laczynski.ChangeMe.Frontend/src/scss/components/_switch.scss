@@ -220,7 +220,7 @@
 // ===== ACCESSIBILITY =====
 .switch-input:focus-visible ~ .switch-visual {
   .switch-svg {
-    outline: 2px solid var(--color-brand-primary);
+    outline: 2px solid var(--color-focus-border);
     border-radius: 8px;
   }
 }

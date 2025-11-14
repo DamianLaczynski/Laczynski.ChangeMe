@@ -24,7 +24,7 @@
   }
 
   &:has(.radio-input:focus-visible) {
-    outline: 2px solid var(--color-brand-primary);
+    outline: 2px solid var(--color-focus-border);
     outline-offset: 2px;
     border-radius: $border-radius-400;
   }
@@ -137,10 +137,6 @@
   }
 }
 
-.radio--medium {
-  // Default size (already defined above)
-}
-
 .radio--large {
   .radio-svg {
     width: 40px;
@@ -161,6 +157,17 @@
 }
 
 // ==============================================================
+// CHECKED STATE
+// ==============================================================
+
+.radio-container:has(.radio-input:checked) {
+  app-icon,
+  svg {
+    color: var(--color-brand-primary);
+  }
+}
+
+// ==============================================================
 // DISABLED STATE (applies to all variants)
 // ==============================================================
 
@@ -169,6 +176,18 @@
 
   .radio-container {
     cursor: not-allowed;
+
+    app-icon,
+    svg {
+      color: var(--color-neutral-foreground-disabled);
+    }
+  }
+}
+
+.radio-container:has(.radio-input:disabled) {
+  app-icon,
+  svg {
+    color: var(--color-neutral-foreground-disabled);
   }
 }
 

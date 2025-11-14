@@ -309,7 +309,7 @@
   @include modifier('clickable') {
     cursor: pointer;
 
-    @include focus-ring(var(--color-brand-primary));
+    @include focus-ring(var(--color-focus-border));
     @include transition(transform box-shadow, $duration-faster, $easing-decelerate-min);
 
     &:not(.card--disabled) {

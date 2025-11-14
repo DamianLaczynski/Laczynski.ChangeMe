@@ -15,7 +15,7 @@
   overflow: hidden;
   box-sizing: border-box;
   
-  @include focus-ring(var(--color-brand-primary));
+  @include focus-ring(var(--color-focus-border));
 
   // ========================================================================
   // Elements

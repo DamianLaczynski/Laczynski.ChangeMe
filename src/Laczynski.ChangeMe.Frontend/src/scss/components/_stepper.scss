@@ -104,7 +104,7 @@
   // Focus jest aplikowany na stepper-indicator, nie na samym step
   &:focus-visible {
     .stepper-indicator {
-      outline: 2px solid var(--color-brand-primary);
+      outline: 2px solid var(--color-focus-border);
       outline-offset: 2px;
     }
   }

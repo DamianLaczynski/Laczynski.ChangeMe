@@ -24,7 +24,7 @@
   border: 1px solid transparent;
   box-sizing: border-box;
   
-  @include focus-ring(var(--color-brand-primary));
+  @include focus-ring(var(--color-focus-border));
   @include smooth-press;
 
   // Button Elements (BEM Elements)

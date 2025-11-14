@@ -161,7 +161,7 @@
     text-align: left;
     font-family: $font-family-base;
 
-    @include focus-ring(var(--color-brand-primary));
+    @include focus-ring(var(--color-focus-border));
 
     &:hover:not(:disabled) {
       background-color: var(--color-subtle-background-hover);

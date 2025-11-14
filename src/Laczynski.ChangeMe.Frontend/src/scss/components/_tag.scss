@@ -19,7 +19,7 @@
   box-sizing: border-box;
 
   // Focus state - Fluent 2 Design System
-  @include focus-ring(var(--color-brand-primary), 2px, $border-radius-400);
+  @include focus-ring(var(--color-focus-border), 2px, $border-radius-400);
 
   // Content wrapper
   &__content {
@@ -75,7 +75,7 @@
     }
 
     // Focus state - Fluent 2 Design System
-    @include focus-ring(var(--color-brand-primary), 2px, $border-radius-200);
+    @include focus-ring(var(--color-focus-border), 2px, $border-radius-200);
   }
 
   &__dismiss-icon {
