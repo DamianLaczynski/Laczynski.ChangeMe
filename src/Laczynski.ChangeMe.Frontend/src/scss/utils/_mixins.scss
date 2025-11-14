@@ -6,22 +6,34 @@
 // Media queries
 @mixin respond-to($breakpoint) {
   @if $breakpoint == xs {
-    @media (max-width: $breakpoint-xs) { @content; }
+    @media (max-width: $breakpoint-xs) {
+      @content;
+    }
   }
   @if $breakpoint == small {
-    @media (max-width: $breakpoint-small) { @content; }
+    @media (max-width: $breakpoint-small) {
+      @content;
+    }
   }
   @if $breakpoint == medium {
-    @media (max-width: $breakpoint-medium) { @content; }
+    @media (max-width: $breakpoint-medium) {
+      @content;
+    }
   }
   @if $breakpoint == large {
-    @media (max-width: $breakpoint-large) { @content; }
+    @media (max-width: $breakpoint-large) {
+      @content;
+    }
   }
   @if $breakpoint == xl {
-    @media (max-width: $breakpoint-xl) { @content; }
+    @media (max-width: $breakpoint-xl) {
+      @content;
+    }
   }
   @if $breakpoint == 2xl {
-    @media (max-width: $breakpoint-2xl) { @content; }
+    @media (max-width: $breakpoint-2xl) {
+      @content;
+    }
   }
 }
 
@@ -113,14 +125,31 @@
   text-decoration: none;
 }
 
-// Focus styles
-@mixin focus-ring($color: $color-brand-primary) {
+// Focus styles - Fluent 2 Design System
+// Standardowy focus ring zgodny z Fluent 2
+// @param $color - kolor outline (domyślnie brand-primary)
+// @param $offset - offset outline (domyślnie 2px zgodnie z Fluent 2)
+// @param $border-radius - opcjonalny border-radius dla zaokrąglonych elementów
+@mixin focus-ring($color: var(--color-brand-primary), $offset: 2px, $border-radius: null) {
   outline: 2px solid transparent;
-  outline-offset: 2px;
-  
+  outline-offset: $offset;
+
+  @if $border-radius {
+    border-radius: $border-radius;
+  }
+
   &:focus-visible {
     outline: 2px solid $color;
-    outline-offset: 2px;
+    outline-offset: $offset;
+
+    @if $border-radius {
+      border-radius: $border-radius;
+    }
+  }
+
+  // Reset dla :focus (nie pokazujemy przy kliknięciu myszką)
+  &:focus:not(:focus-visible) {
+    outline: none;
   }
 }
 

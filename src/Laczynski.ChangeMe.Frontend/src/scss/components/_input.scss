@@ -3,6 +3,7 @@
 // ==========================================================================
 
 @use '../utils/variables' as *;
+@use '../utils/mixins' as *;
 
 // Label styles
 .input-label {
@@ -357,10 +358,12 @@
   cursor: pointer;
   padding: 0;
   margin: 0;
-  outline: none;
   transition: all $duration-ultra-fast $easing-ease-in-out;
   color: var(--color-neutral-foreground2-rest);
   border-radius: $border-radius-200;
+
+  // Focus state - Fluent 2 Design System
+  @include focus-ring(var(--color-brand-primary), 2px, $border-radius-200);
 
   &:active {
     color: var(--color-neutral-foreground-rest);

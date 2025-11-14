@@ -3,6 +3,7 @@
 // ==========================================================================
 
 @use '../utils/variables' as *;
+@use '../utils/mixins' as *;
 
 // Date Range Panel Container
 .date-range-panel {
@@ -135,10 +136,8 @@
       background-color: var(--color-subtle-background-pressed);
     }
 
-    &:focus-visible {
-      outline: 2px solid var(--color-brand-primary);
-      outline-offset: 2px;
-    }
+    // Focus state - Fluent 2 Design System
+    @include focus-ring(var(--color-brand-primary), 2px, $border-radius-400);
   }
 }
 

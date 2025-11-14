@@ -3,6 +3,7 @@
 // ==========================================================================
 
 @use '../utils/variables' as *;
+@use '../utils/mixins' as *;
 
 // Calendar Icon Button
 .field__action--calendar {
@@ -40,10 +41,8 @@
     background-color: var(--color-subtle-background-pressed);
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--color-brand-primary);
-    outline-offset: 2px;
-  }
+  // Focus state - Fluent 2 Design System
+  @include focus-ring(var(--color-brand-primary), 2px, $border-radius-200);
 
   // Disabled state
   .input-wrapper--disabled & {
@@ -127,10 +126,8 @@
       background-color: var(--color-subtle-background-pressed);
     }
 
-    &:focus-visible {
-      outline: 2px solid var(--color-brand-primary);
-      outline-offset: 2px;
-    }
+    // Focus state - Fluent 2 Design System
+    @include focus-ring(var(--color-brand-primary), 2px, $border-radius-400);
   }
 }
 
@@ -162,10 +159,8 @@
     background-color: var(--color-subtle-background-pressed);
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--color-brand-primary);
-    outline-offset: 2px;
-  }
+  // Focus state - Fluent 2 Design System
+  @include focus-ring(var(--color-brand-primary), 2px, $border-radius-400);
 }
 
 // Week Days Header
@@ -219,10 +214,8 @@
     background-color: var(--color-subtle-background-pressed);
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--color-brand-primary);
-    outline-offset: 2px;
-  }
+  // Focus state - Fluent 2 Design System
+  @include focus-ring(var(--color-brand-primary), 2px, $border-radius-400);
 
   // Other month days
   &--other-month {
@@ -303,10 +296,8 @@
     background-color: var(--color-subtle-background-pressed);
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--color-brand-primary);
-    outline-offset: 2px;
-  }
+  // Focus state - Fluent 2 Design System
+  @include focus-ring(var(--color-brand-primary), 2px, $border-radius-400);
 }
 
 // Month Picker
@@ -342,10 +333,8 @@
     background-color: var(--color-subtle-background-pressed);
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--color-brand-primary);
-    outline-offset: 2px;
-  }
+  // Focus state - Fluent 2 Design System
+  @include focus-ring(var(--color-brand-primary), 2px, $border-radius-400);
 
   &--selected {
     background-color: var(--color-brand-primary);
@@ -392,10 +381,8 @@
     background-color: var(--color-subtle-background-pressed);
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--color-brand-primary);
-    outline-offset: 2px;
-  }
+  // Focus state - Fluent 2 Design System
+  @include focus-ring(var(--color-brand-primary), 2px, $border-radius-400);
 
   &--selected {
     background-color: var(--color-brand-primary);
@@ -465,10 +452,8 @@
     background-color: var(--color-subtle-background-pressed);
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--color-brand-primary);
-    outline-offset: 2px;
-  }
+  // Focus state - Fluent 2 Design System
+  @include focus-ring(var(--color-brand-primary), 2px, $border-radius-400);
 
   &--selected {
     background-color: var(--color-brand-primary);
@@ -556,10 +541,8 @@
     background-color: var(--color-subtle-background-pressed);
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--color-brand-primary);
-    outline-offset: 2px;
-  }
+  // Focus state - Fluent 2 Design System
+  @include focus-ring(var(--color-brand-primary), 2px, $border-radius-400);
 
   &:disabled {
     opacity: 0.4;

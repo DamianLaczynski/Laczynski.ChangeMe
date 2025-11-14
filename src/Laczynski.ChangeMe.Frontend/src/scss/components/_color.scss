@@ -3,6 +3,7 @@
 // ==========================================================================
 
 @use '../utils/variables' as *;
+@use '../utils/mixins' as *;
 
 .color-preview {
   margin: auto $spacing-2;
@@ -207,10 +208,8 @@
       border-radius: $border-radius-400;
     }
 
-    &:focus-visible {
-      outline: 2px solid var(--color-brand-primary);
-      outline-offset: 2px;
-    }
+    // Focus state - Fluent 2 Design System
+    @include focus-ring(var(--color-brand-primary), 2px, $border-radius-400);
 
     &:disabled {
       opacity: 0.5;

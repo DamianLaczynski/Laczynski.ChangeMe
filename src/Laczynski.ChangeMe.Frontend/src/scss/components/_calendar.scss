@@ -3,6 +3,7 @@
 // ==========================================================================
 
 @use '../utils/variables' as *;
+@use '../utils/mixins' as *;
 
 // Calendar Container
 .calendar {
@@ -51,10 +52,8 @@
     background-color: var(--color-subtle-background-pressed);
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--color-brand-primary);
-    outline-offset: 2px;
-  }
+  // Focus state - Fluent 2 Design System
+  @include focus-ring(var(--color-brand-primary), 2px, $border-radius-400);
 }
 
 // Week Days Header
@@ -108,10 +107,11 @@
     background-color: var(--color-subtle-background-pressed);
   }
 
+  // Focus state - Fluent 2 Design System
+  @include focus-ring(var(--color-brand-primary), 2px, $border-radius-400);
+  
   &:focus-visible {
-    outline: 2px solid var(--color-brand-primary);
-    outline-offset: 2px;
-    z-index: 1;
+    z-index: 1; // Z-index dla overlay focus
   }
 
   // Other month days
@@ -254,10 +254,8 @@
     background-color: var(--color-subtle-background-pressed);
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--color-brand-primary);
-    outline-offset: 2px;
-  }
+  // Focus state - Fluent 2 Design System
+  @include focus-ring(var(--color-brand-primary), 2px, $border-radius-400);
 
   &--selected {
     background-color: var(--color-brand-primary);
@@ -304,10 +302,8 @@
     background-color: var(--color-subtle-background-pressed);
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--color-brand-primary);
-    outline-offset: 2px;
-  }
+  // Focus state - Fluent 2 Design System
+  @include focus-ring(var(--color-brand-primary), 2px, $border-radius-400);
 
   &--selected {
     background-color: var(--color-brand-primary);

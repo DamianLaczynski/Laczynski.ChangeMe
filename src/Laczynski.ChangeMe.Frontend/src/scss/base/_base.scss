@@ -98,7 +98,9 @@ body {
   color: var(--color-neutral-foreground-rest);
 }
 
-// Focus styles
+// Focus styles - Fluent 2 Design System
+// Globalne style focus dla wszystkich interaktywnych elementów
+// Zgodne z WCAG 2.1 i Fluent 2 Design System
 *:focus {
   outline: 2px solid transparent;
   outline-offset: 2px;
@@ -107,6 +109,16 @@ body {
 *:focus-visible {
   outline: 2px solid var(--color-brand-primary);
   outline-offset: 2px;
+}
+
+// Reset focus dla elementów, które mają własne style focus
+// (komponenty powinny używać mixin focus-ring)
+button:focus:not(:focus-visible),
+a:focus:not(:focus-visible),
+input:focus:not(:focus-visible),
+textarea:focus:not(:focus-visible),
+select:focus:not(:focus-visible) {
+  outline: none;
 }
 
 // Selection

@@ -1,6 +1,9 @@
 // Slider Component Styles based on Fluent 2 Design System
 // Implements range slider with track, rail, and thumb
 
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+
 .slider-container {
   display: flex;
   flex-direction: column;
@@ -326,8 +329,18 @@
 }
 
 // ===== ACCESSIBILITY =====
-.slider-input:focus {
-  outline: none;
+.slider-input {
+  &:focus {
+    outline: none;
+  }
+
+  // Focus state - Fluent 2 Design System
+  // Focus jest aplikowany na thumbie gdy input ma focus
+  &:focus-visible ~ .slider-visual .slider-thumb {
+    outline: 2px solid var(--color-brand-primary);
+    outline-offset: 2px;
+    border-radius: 15px; // Match thumb border-radius
+  }
 }
 
 // ===== ANIMATIONS =====

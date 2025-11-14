@@ -100,7 +100,8 @@
     }
   }
 
-  // Focus state
+  // Focus state - Fluent 2 Design System
+  // Focus jest aplikowany na stepper-indicator, nie na samym step
   &:focus-visible {
     .stepper-indicator {
       outline: 2px solid var(--color-brand-primary);

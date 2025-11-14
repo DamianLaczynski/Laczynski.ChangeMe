@@ -1,5 +1,8 @@
 // Radio Component Styles based on Fluent 2 Design System
 
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+
 // ==============================================================
 // RADIO BUTTON
 // ==============================================================
@@ -18,6 +21,12 @@
 
   &:has(.radio-input:disabled) {
     cursor: not-allowed;
+  }
+
+  &:has(.radio-input:focus-visible) {
+    outline: 2px solid var(--color-brand-primary);
+    outline-offset: 2px;
+    border-radius: $border-radius-400;
   }
 }
 

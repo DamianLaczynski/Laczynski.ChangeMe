@@ -3,6 +3,7 @@
 // ==========================================================================
 
 @use '../utils/variables' as *;
+@use '../utils/mixins' as *;
 
 // ==========================================================================
 // Toast Container
@@ -84,11 +85,8 @@
     transform: translateY(-1px);
   }
 
-  // Focus state
-  &:focus-visible {
-    outline: 2px solid var(--color-brand-primary);
-    outline-offset: 2px;
-  }
+  // Focus state - Fluent 2 Design System
+  @include focus-ring(var(--color-brand-primary), 2px, $border-radius-400);
 }
 
 // ==========================================================================
@@ -158,10 +156,8 @@
     background-color: var(--color-neutral-background-hover);
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--color-brand-primary);
-    outline-offset: 2px;
-  }
+  // Focus state - Fluent 2 Design System
+  @include focus-ring(var(--color-brand-primary), 2px, $border-radius-200);
 }
 
 .toast__dismiss-icon {

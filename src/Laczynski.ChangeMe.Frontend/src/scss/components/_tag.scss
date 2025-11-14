@@ -2,28 +2,24 @@
 // Tag Component - Fluent 2 Design System
 // ==========================================================================
 
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+
 .tag {
   display: inline-flex;
   align-items: center;
   justify-content: flex-start;
-  border-radius: 4px;
-  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
-  font-weight: 400;
+  border-radius: $border-radius-400;
+  font-family: $font-family-base;
+  font-weight: $font-weight-regular;
   word-wrap: break-word;
   cursor: pointer;
   user-select: none;
-  transition: all 0.2s ease-in-out;
+  transition: all $duration-fast $easing-ease-in-out;
   box-sizing: border-box;
 
-  // Focus state
-  &:focus {
-    outline: none;
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--color-brand-primary);
-    outline-offset: 2px;
-  }
+  // Focus state - Fluent 2 Design System
+  @include focus-ring(var(--color-brand-primary), 2px, $border-radius-400);
 
   // Content wrapper
   &__content {
@@ -67,8 +63,8 @@
     border: none;
     padding: 0;
     cursor: pointer;
-    transition: opacity 0.2s ease-in-out;
-    border-radius: 2px;
+    transition: opacity $duration-fast $easing-ease-in-out;
+    border-radius: $border-radius-200;
 
     &:hover {
       opacity: 0.8;
@@ -78,14 +74,8 @@
       opacity: 1;
     }
 
-    &:focus {
-      outline: none;
-    }
-
-    &:focus-visible {
-      outline: 2px solid var(--color-brand-primary);
-      outline-offset: 2px;
-    }
+    // Focus state - Fluent 2 Design System
+    @include focus-ring(var(--color-brand-primary), 2px, $border-radius-200);
   }
 
   &__dismiss-icon {
@@ -273,7 +263,7 @@
       background: var(--color-neutral-background-disabled);
       cursor: not-allowed;
 
-      .tag__primary{
+      .tag__primary {
         color: var(--color-neutral-foreground-disabled);
       }
 
@@ -352,9 +342,9 @@
     cursor: not-allowed;
     pointer-events: none;
 
+    // Disabled elements nie powinny mieć focus
     &:focus-visible {
       outline: none;
     }
   }
 }
-

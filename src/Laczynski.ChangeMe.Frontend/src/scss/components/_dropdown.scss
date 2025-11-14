@@ -18,8 +18,14 @@
   user-select: none;
   padding-right: $spacing-2 !important; // Override input padding for chevron space
 
+  // Focus state - Fluent 2 Design System
+  // Dropdown trigger używa input-wrapper, który ma własny focus indicator
   &:focus {
     outline: none;
+  }
+  
+  &:focus-visible {
+    outline: none; // Focus jest obsługiwany przez input-wrapper
   }
 }
 

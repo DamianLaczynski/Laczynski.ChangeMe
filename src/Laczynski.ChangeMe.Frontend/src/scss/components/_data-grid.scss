@@ -178,6 +178,8 @@
       background-color: var(--color-subtle-background-pressed);
     }
 
+    // Focus state - Fluent 2 Design System
+    // Data grid używa specjalnego koloru i ujemnego offsetu dla nagłówków
     &:focus-visible {
       outline: 2px solid var(--color-neutral-stroke-brand-rest);
       outline-offset: -2px;
