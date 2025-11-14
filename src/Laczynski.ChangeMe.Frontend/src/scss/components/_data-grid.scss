@@ -15,6 +15,29 @@
   flex-direction: column;
   width: 100%;
   background: var(--color-neutral-background-rest);
+  overflow-x: auto; // Enable horizontal scrolling on main container
+  overflow-y: visible; // Allow dropdown panels to be visible
+
+  // Ensure smooth scrolling
+  scroll-behavior: smooth;
+
+  // Custom scrollbar styling
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--color-neutral-background-rest);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--color-neutral-stroke-rest);
+    border-radius: 4px;
+
+    &:hover {
+      background: var(--color-neutral-stroke-hover);
+    }
+  }
 
   // Size variants
   &--small {
@@ -93,6 +116,21 @@
 }
 
 // =============================================================================
+// Scroll Container
+// =============================================================================
+
+.data-grid__scroll-container {
+  display: flex;
+  flex-direction: column;
+  min-width: 100%;
+  width: max-content; // Allow horizontal expansion
+  // Scroll is handled by parent .data-grid container to allow panels to overflow
+  overflow: visible; // Allow dropdown panels to be visible
+
+  // Custom scrollbar styling moved to parent .data-grid
+}
+
+// =============================================================================
 // Header
 // =============================================================================
 
@@ -101,6 +139,7 @@
   background: var(--color-neutral-background-rest);
   overflow: visible; // Allow dropdown panels to be visible
   position: relative; // Create positioning context
+  flex-shrink: 0; // Prevent header from shrinking
 
   &--sticky {
     position: sticky;
@@ -112,6 +151,7 @@
 .data-grid__header-row {
   display: flex;
   width: 100%;
+  min-width: max-content; // Ensure row expands to fit all columns
   border-bottom: 1px solid var(--color-neutral-stroke-rest);
 }
 
@@ -121,6 +161,7 @@
   background: transparent;
   overflow: visible;
   flex-shrink: 0;
+  box-sizing: border-box; // Include padding in width calculation
 
   &--selection {
     padding: 8px 16px 9px 16px;
@@ -237,21 +278,24 @@
 .data-grid__filter-row {
   display: flex;
   width: 100%;
+  min-width: max-content; // Ensure row expands to fit all columns
   background: var(--color-neutral-background-hover);
   border-bottom: 1px solid var(--color-neutral-stroke-rest);
   padding: $spacing-1 0;
   overflow: visible; // Allow dropdown panels to be visible
   position: relative; // Create positioning context
+  flex-shrink: 0; // Prevent filter row from shrinking
 }
 
 .data-grid__filter-cell {
   display: flex;
   align-items: center;
   padding: $spacing-1 $spacing-2;
-  overflow: visible; // Allow dropdown panels to be visible
+  overflow: visible; // Allow dropdown/date picker panels to be visible - inputs are controlled by max-width
   flex-shrink: 0;
   min-width: 0; // Allow flex items to shrink below their minimum content size
   position: relative; // Create positioning context for dropdown panels
+  max-width: 100%; // Ensure cell doesn't exceed column width
 
   &--selection {
     padding: $spacing-1 $spacing-4;
@@ -281,6 +325,7 @@
   min-width: 0; // Allow shrinking
   position: relative;
   overflow: visible; // Allow dropdown panels to be visible
+  box-sizing: border-box; // Include padding in width calculation
 
   &--boolean {
     min-width: 100px;
@@ -294,6 +339,7 @@
   }
 
   // For number and date filters with multiple inputs
+  // Note: Components already have position: relative in their host attributes
   app-number,
   app-date,
   app-date-range,
@@ -301,9 +347,11 @@
     min-width: 0;
     flex: 1 1 auto;
     max-width: 100%;
+    width: 0; // Force flex item to respect max-width
   }
 
   // Ensure dropdowns don't overflow
+  // Note: Components already have position: relative in their host attributes
   app-dropdown {
     flex: 1 1 auto;
     max-width: 100%;
@@ -386,6 +434,25 @@
 .data-grid__rows-container {
   position: relative;
   width: 100%;
+  min-width: max-content; // Ensure container expands to fit all columns
+  flex-shrink: 0; // Prevent rows container from shrinking
+  overflow-y: visible; // Allow dropdown panels to be visible (if any filters in rows)
+}
+
+// =============================================================================
+// Virtual Scroll Viewport
+// =============================================================================
+
+.data-grid__viewport {
+  width: 100%;
+  min-width: max-content; // Ensure viewport expands to fit all columns
+  overflow-y: visible; // Allow dropdown panels to be visible
+
+  // Disable horizontal scroll on viewport - use parent container scroll instead
+  ::ng-deep .cdk-virtual-scroll-content-wrapper {
+    overflow-x: visible !important;
+    overflow-y: visible !important; // Allow panels to be visible
+  }
 }
 
 // =============================================================================
@@ -399,6 +466,8 @@
   transition: background $duration-fast $easing-ease-in-out;
   cursor: default;
   outline: none;
+  min-width: max-content; // Ensure row expands to fit all columns
+  width: 100%;
 
   // Only show pointer cursor when row is clickable
   .data-grid--hoverable &:not(&--disabled) {
@@ -451,6 +520,7 @@
   padding: $spacing-2 $spacing-2;
   overflow: hidden;
   flex-shrink: 0;
+  box-sizing: border-box; // Include padding in width calculation
 
   &--selection {
     padding: $spacing-3 $spacing-4;

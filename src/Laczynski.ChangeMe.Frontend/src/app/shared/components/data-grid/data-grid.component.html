@@ -1,4 +1,6 @@
 <div [class]="getDataGridClasses()">
+  <!-- Scrollable Container -->
+  <div class="data-grid__scroll-container">
   <!-- Column Headers -->
   <div [class]="getHeaderClasses()">
     <!-- Header Label Row -->
@@ -362,6 +364,7 @@
       </div>
     </ng-template>
   </app-state-container>
+  </div>
 
   <!-- Pagination - only show when enabled and not loading or error -->
   @if (enablePagination() && !gridState().isError) {
