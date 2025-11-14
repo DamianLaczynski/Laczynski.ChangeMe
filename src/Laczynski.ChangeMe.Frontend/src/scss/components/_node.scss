@@ -344,18 +344,18 @@
 
     &.node--selected {
       .node__content {
-        background-color: #ebf3fc; // Brand-Background-2-Rest
+        background-color: var(--color-neutral-background-brand-selected);
         outline: 1px solid var(--color-brand-primary);
         outline-offset: -1px;
 
         &:hover {
-          background-color: #cfe4fa; // Brand-Background-2-Hover
-          outline-color: #115ea3; // Brand-Stroke-Compound-Hover
+          background-color: var(--color-neutral-background-brand-hover);
+          outline-color: var(--color-brand-primary-hover);
         }
 
         &:active {
-          background-color: #96c6fa; // Brand-Background-2-Pressed
-          outline-color: #0f548c; // Brand-Stroke-Compound-Pressed
+          background-color: var(--color-neutral-background-brand-pressed);
+          outline-color: var(--color-brand-primary-pressed);
         }
 
         .node__icon {
@@ -363,14 +363,14 @@
         }
 
         .node__label {
-          color: #115ea3; // Brand-Foreground-2-Rest
+          color: var(--color-brand-primary-hover);
         }
       }
 
       &.node--disabled {
         .node__content {
-          background-color: #f0f0f0; // Neutral-Background-Disabled
-          outline: 1px solid #e0e0e0; // Neutral-Stroke-Disabled
+          background-color: var(--color-neutral-background-disabled);
+          outline: 1px solid var(--color-neutral-stroke-disabled);
           outline-offset: -1px;
         }
       }
@@ -389,14 +389,14 @@
 
     &.node--selected {
       .node__content {
-        background-color: var(--color-brand-primary); // Brand-Background-1-Rest
+        background-color: var(--color-brand-primary);
 
         &:hover {
-          background-color: #115ea3; // Brand-Background-1-Hover
+          background-color: var(--color-brand-primary-hover);
         }
 
         &:active {
-          background-color: #0c3b5e; // Brand-Background-1-Pressed
+          background-color: var(--color-brand-primary-pressed);
         }
 
         .node__icon {
@@ -410,9 +410,8 @@
 
       &.node--disabled {
         .node__content {
-          background-color: #f0f0f0; // Neutral-Background-Disabled
-
-          outline: 1px solid #e0e0e0; // Neutral-Stroke-Disabled
+          background-color: var(--color-neutral-background-disabled);
+          outline: 1px solid var(--color-neutral-stroke-disabled);
           outline-offset: -1px;
         }
       }
