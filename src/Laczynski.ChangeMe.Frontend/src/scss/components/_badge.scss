@@ -217,7 +217,7 @@
 
   &--brand.badge--tint {
     background: var(--color-neutral-background-brand-selected);
-    outline: 1px var(--color-neutral-stroke-brand-rest) solid;
+    outline: 1px var(--color-brand-stroke-rest) solid;
     outline-offset: -1px;
 
     .badge__text {

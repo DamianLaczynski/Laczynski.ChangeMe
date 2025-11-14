@@ -11,6 +11,20 @@
   --color-brand-primary-hover: #{$color-brand-primary-hover};
   --color-brand-primary-pressed: #{$color-brand-primary-pressed};
   --color-brand-primary-selected: #{$color-brand-primary-selected};
+  
+  --color-brand-foreground: #{$color-brand-foreground};
+  --color-brand-foreground-hover: #{$color-brand-foreground-hover};
+  --color-brand-foreground-pressed: #{$color-brand-foreground-pressed};
+  
+  --color-compound-brand-background: #{$color-compound-brand-background};
+  --color-compound-brand-background-hover: #{$color-compound-brand-background-hover};
+  --color-compound-brand-background-pressed: #{$color-compound-brand-background-pressed};
+  --color-compound-brand-foreground: #{$color-compound-brand-foreground};
+  --color-compound-brand-foreground-hover: #{$color-compound-brand-foreground-hover};
+  --color-compound-brand-foreground-pressed: #{$color-compound-brand-foreground-pressed};
+  --color-compound-brand-stroke: #{$color-compound-brand-stroke};
+  --color-compound-brand-stroke-hover: #{$color-compound-brand-stroke-hover};
+  --color-compound-brand-stroke-pressed: #{$color-compound-brand-stroke-pressed};
 
   // Accent Colors
   --color-accent-primary: #{$color-accent-primary};
@@ -33,6 +47,16 @@
   --color-neutral-foreground2-brand-hover: #{$color-neutral-foreground2-brand-hover};
   --color-neutral-foreground2-brand-pressed: #{$color-neutral-foreground2-brand-pressed};
   --color-neutral-foreground2-brand-selected: #{$color-neutral-foreground2-brand-selected};
+  
+  --color-neutral-foreground3-rest: #{$color-neutral-foreground3-rest};
+  --color-neutral-foreground3-hover: #{$color-neutral-foreground3-hover};
+  --color-neutral-foreground3-pressed: #{$color-neutral-foreground3-pressed};
+  --color-neutral-foreground3-selected: #{$color-neutral-foreground3-selected};
+  --color-neutral-foreground3-brand-hover: #{$color-neutral-foreground3-brand-hover};
+  --color-neutral-foreground3-brand-pressed: #{$color-neutral-foreground3-brand-pressed};
+  --color-neutral-foreground3-brand-selected: #{$color-neutral-foreground3-brand-selected};
+  
+  --color-neutral-foreground4-rest: #{$color-neutral-foreground4-rest};
 
   // Neutral Colors - Background
   --color-neutral-background-rest: #{$color-neutral-background-rest};
@@ -43,6 +67,16 @@
   --color-neutral-background-brand-selected: #{$color-neutral-background-brand-selected};
   --color-neutral-background-brand-hover: #{$color-neutral-background-brand-hover};
   --color-neutral-background-brand-pressed: #{$color-neutral-background-brand-pressed};
+  
+  --color-neutral-background2-rest: #{$color-neutral-background2-rest};
+  --color-neutral-background2-hover: #{$color-neutral-background2-hover};
+  --color-neutral-background2-pressed: #{$color-neutral-background2-pressed};
+  --color-neutral-background2-selected: #{$color-neutral-background2-selected};
+  
+  --color-neutral-background3-rest: #{$color-neutral-background3-rest};
+  --color-neutral-background3-hover: #{$color-neutral-background3-hover};
+  --color-neutral-background3-pressed: #{$color-neutral-background3-pressed};
+  --color-neutral-background3-selected: #{$color-neutral-background3-selected};
 
   --color-subtle-background-hover: #{$color-subtle-background-hover};
   --color-subtle-background-pressed: #{$color-subtle-background-pressed};
@@ -54,10 +88,14 @@
   --color-neutral-stroke-pressed: #{$color-neutral-stroke-pressed};
   --color-neutral-stroke-selected: #{$color-neutral-stroke-selected};
   --color-neutral-stroke-disabled: #{$color-neutral-stroke-disabled};
-  --color-neutral-stroke-brand-rest: #{$color-neutral-stroke-brand-rest};
-  --color-neutral-stroke-brand-hover: #{$color-neutral-stroke-brand-hover};
-  --color-neutral-stroke-brand-pressed: #{$color-neutral-stroke-brand-pressed};
-  --color-neutral-stroke-brand-selected: #{$color-neutral-stroke-brand-selected};
+  --color-neutral-stroke-accessible: #{$color-neutral-stroke-accessible};
+  --color-neutral-stroke-accessible-hover: #{$color-neutral-stroke-accessible-hover};
+  --color-neutral-stroke-accessible-pressed: #{$color-neutral-stroke-accessible-pressed};
+  --color-neutral-stroke-accessible-selected: #{$color-neutral-stroke-accessible-selected};
+  --color-brand-stroke-rest: #{$color-brand-stroke-rest};
+  --color-brand-stroke-hover: #{$color-brand-stroke-hover};
+  --color-brand-stroke-pressed: #{$color-brand-stroke-pressed};
+  --color-brand-stroke-selected: #{$color-brand-stroke-selected};
 
   // Border radius
   --border-radius-400: #{$border-radius-400};

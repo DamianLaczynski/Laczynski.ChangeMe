@@ -181,7 +181,7 @@
     // Focus state - Fluent 2 Design System
     // Data grid używa specjalnego koloru i ujemnego offsetu dla nagłówków
     &:focus-visible {
-      outline: 2px solid var(--color-neutral-stroke-brand-rest);
+      outline: 2px solid var(--color-brand-stroke-rest);
       outline-offset: -2px;
     }
   }
@@ -431,7 +431,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      border: 2px solid var(--color-neutral-stroke-brand-rest);
+      border: 2px solid var(--color-brand-stroke-rest);
       pointer-events: none;
     }
   }

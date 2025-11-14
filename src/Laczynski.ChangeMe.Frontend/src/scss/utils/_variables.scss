@@ -3,88 +3,152 @@
 // ==========================================================================
 
 // Colors - Fluent 2 Design System
-// Brand Colors
-$color-brand-primary: #0078D4;
-$color-brand-primary-hover: #106EBE;
-$color-brand-primary-pressed: #005A9E;
-$color-brand-primary-selected: #106EBE;
+// Based on colors.md design tokens
 
-// Accent Colors
-$color-accent-primary: #0078D4;
-$color-accent-primary-hover: #106EBE;
-$color-accent-primary-pressed: #005A9E;
-$color-accent-primary-selected: #106EBE;
+// Brand Colors - Light theme
+$color-brand-primary: #0f6cbd; // colorBrandBackground
+$color-brand-primary-hover: #115ea3; // colorBrandBackgroundHover
+$color-brand-primary-pressed: #0c3b5e; // colorBrandBackgroundPressed
+$color-brand-primary-selected: #0f548c; // colorBrandBackgroundSelected
 
-// Neutral Colors - Foreground
-$color-neutral-foreground-rest: #242424;
-$color-neutral-foreground-hover: #242424;
-$color-neutral-foreground-pressed: #242424;
-$color-neutral-foreground-disabled: #BDBDBD;
-$color-neutral-foreground-on-brand: #FFFFFF;
-$color-neutral-foreground-selected: #242424;
+// Brand Foreground
+$color-brand-foreground: #0f6cbd; // colorBrandForeground1
+$color-brand-foreground-hover: #115ea3; // colorBrandForeground1Hover
+$color-brand-foreground-pressed: #0f548c; // colorBrandForeground1Pressed
 
-$color-neutral-foreground2-rest: #424242;
-$color-neutral-foreground2-hover: #0078D4;
-$color-neutral-foreground2-pressed: #005A9E;
-$color-neutral-foreground2-selected: #0078D4;
-$color-neutral-foreground2-brand-hover: #FFFFFF;
-$color-neutral-foreground2-brand-pressed: #FFFFFF;
-$color-neutral-foreground2-brand-selected: #FFFFFF;
+// Compound Brand
+$color-compound-brand-background: #0f6cbd; // colorCompoundBrandBackground
+$color-compound-brand-background-hover: #115ea3; // colorCompoundBrandBackgroundHover
+$color-compound-brand-background-pressed: #0f548c; // colorCompoundBrandBackgroundPressed
+$color-compound-brand-foreground: #0f6cbd; // colorCompoundBrandForeground1
+$color-compound-brand-foreground-hover: #115ea3; // colorCompoundBrandForeground1Hover
+$color-compound-brand-foreground-pressed: #0f548c; // colorCompoundBrandForeground1Pressed
+$color-compound-brand-stroke: #0f6cbd; // colorCompoundBrandStroke
+$color-compound-brand-stroke-hover: #115ea3; // colorCompoundBrandStrokeHover
+$color-compound-brand-stroke-pressed: #0f548c; // colorCompoundBrandStrokePressed
 
-// Neutral Colors - Background
-$color-neutral-background-rest: #FFFFFF;
-$color-neutral-background-selected: #F3F2F1;
-$color-neutral-background-hover: #F3F2F1;
-$color-neutral-background-pressed: #EDEBE9;
-$color-neutral-background-disabled: #F3F2F1;
-$color-neutral-background-brand-selected: #D0E7FF;
-$color-neutral-background-brand-hover: #E1F0FF;
-$color-neutral-background-brand-pressed: #C7E0FF;
+// Accent Colors (alias for brand)
+$color-accent-primary: #{$color-brand-primary};
+$color-accent-primary-hover: #{$color-brand-primary-hover};
+$color-accent-primary-pressed: #{$color-brand-primary-pressed};
+$color-accent-primary-selected: #{$color-brand-primary-selected};
 
-$color-subtle-background-hover: #F3F2F1;
-$color-subtle-background-pressed: #EDEBE9;
-$color-subtle-background-selected: #F3F2F1;
+// Neutral Colors - Foreground - Light theme
+$color-neutral-foreground-rest: #242424; // colorNeutralForeground1
+$color-neutral-foreground-hover: #242424; // colorNeutralForeground1Hover
+$color-neutral-foreground-pressed: #242424; // colorNeutralForeground1Pressed
+$color-neutral-foreground-selected: #242424; // colorNeutralForeground1Selected
+$color-neutral-foreground-disabled: #bdbdbd; // colorNeutralForegroundDisabled
+$color-neutral-foreground-on-brand: #ffffff; // colorNeutralForegroundOnBrand
 
-// Stroke Colors
-$color-neutral-stroke-rest: #D1D1D1;
-$color-neutral-stroke-hover: #C7C7C7;
-$color-neutral-stroke-pressed: #B3B3B3;
-$color-neutral-stroke-selected: #0078D4;
-$color-neutral-stroke-disabled: #E0E0E0;
-$color-neutral-stroke-brand-rest: #0078D4;
-$color-neutral-stroke-brand-hover: #106EBE;
-$color-neutral-stroke-brand-pressed: #005A9E;
-$color-neutral-stroke-brand-selected: #0078D4;
+$color-neutral-foreground2-rest: #424242; // colorNeutralForeground2
+$color-neutral-foreground2-hover: #242424; // colorNeutralForeground2Hover
+$color-neutral-foreground2-pressed: #242424; // colorNeutralForeground2Pressed
+$color-neutral-foreground2-selected: #242424; // colorNeutralForeground2Selected
+$color-neutral-foreground2-brand-hover: #0f6cbd; // colorNeutralForeground2BrandHover
+$color-neutral-foreground2-brand-pressed: #115ea3; // colorNeutralForeground2BrandPressed
+$color-neutral-foreground2-brand-selected: #0f6cbd; // colorNeutralForeground2BrandSelected
 
-// Shared Colors
-$color-shared-red-foreground: #D13438;
-$color-shared-red-background: #F8DADB;
-$color-shared-red-border: #F1BBBC;
-$color-shared-orange-foreground: #CA5010;
-$color-shared-orange-background: #FDF6F3;
-$color-shared-orange-border: #F4C19B;
-$color-shared-yellow-foreground: #FF8C00;
-$color-shared-yellow-background: #FFEDD6;
-$color-shared-yellow-border: #FFDDB3;
-$color-shared-green-foreground: #107C10;
-$color-shared-green-background: #C9EAC9;
-$color-shared-green-border: #9FD89F;
-$color-shared-cyan-foreground: #038387;
-$color-shared-cyan-background: #F0FDFD;
-$color-shared-cyan-border: #7BDBDA;
-$color-shared-blue-foreground: #0078D4;
-$color-shared-blue-background: #F0F8FF;
-$color-shared-blue-border: #7BB3F0;
-$color-shared-purple-foreground: #5C2E91;
-$color-shared-purple-background: #E0D3ED;
-$color-shared-purple-border: #F7F4FB;
-$color-shared-pink-foreground: #E3008C;
-$color-shared-pink-background: #FDF2F8;
-$color-shared-pink-border: #F1A8D0;
+$color-neutral-foreground3-rest: #616161; // colorNeutralForeground3
+$color-neutral-foreground3-hover: #424242; // colorNeutralForeground3Hover
+$color-neutral-foreground3-pressed: #424242; // colorNeutralForeground3Pressed
+$color-neutral-foreground3-selected: #424242; // colorNeutralForeground3Selected
+$color-neutral-foreground3-brand-hover: #0f6cbd; // colorNeutralForeground3BrandHover
+$color-neutral-foreground3-brand-pressed: #115ea3; // colorNeutralForeground3BrandPressed
+$color-neutral-foreground3-brand-selected: #0f6cbd; // colorNeutralForeground3BrandSelected
 
+$color-neutral-foreground4-rest: #707070; // colorNeutralForeground4
+
+// Neutral Colors - Background - Light theme
+$color-neutral-background-rest: #ffffff; // colorNeutralBackground1
+$color-neutral-background-hover: #f5f5f5; // colorNeutralBackground1Hover
+$color-neutral-background-pressed: #e0e0e0; // colorNeutralBackground1Pressed
+$color-neutral-background-selected: #ebebeb; // colorNeutralBackground1Selected
+$color-neutral-background-disabled: #f0f0f0; // colorNeutralBackgroundDisabled
+
+$color-neutral-background2-rest: #fafafa; // colorNeutralBackground2
+$color-neutral-background2-hover: #f0f0f0; // colorNeutralBackground2Hover
+$color-neutral-background2-pressed: #dbdbdb; // colorNeutralBackground2Pressed
+$color-neutral-background2-selected: #e6e6e6; // colorNeutralBackground2Selected
+
+$color-neutral-background3-rest: #f5f5f5; // colorNeutralBackground3
+$color-neutral-background3-hover: #ebebeb; // colorNeutralBackground3Hover
+$color-neutral-background3-pressed: #d6d6d6; // colorNeutralBackground3Pressed
+$color-neutral-background3-selected: #e0e0e0; // colorNeutralBackground3Selected
+
+$color-neutral-background-brand-selected: #ebf3fc; // colorBrandBackground2
+$color-neutral-background-brand-hover: #cfe4fa; // colorBrandBackground2Hover
+$color-neutral-background-brand-pressed: #96c6fa; // colorBrandBackground2Pressed
+
+$color-subtle-background-hover: #f5f5f5; // colorSubtleBackgroundHover
+$color-subtle-background-pressed: #e0e0e0; // colorSubtleBackgroundPressed
+$color-subtle-background-selected: #ebebeb; // colorSubtleBackgroundSelected
+
+// Stroke Colors - Light theme
+$color-neutral-stroke-rest: #d1d1d1; // colorNeutralStroke1
+$color-neutral-stroke-hover: #c7c7c7; // colorNeutralStroke1Hover
+$color-neutral-stroke-pressed: #b3b3b3; // colorNeutralStroke1Pressed
+$color-neutral-stroke-selected: #bdbdbd; // colorNeutralStroke1Selected
+$color-neutral-stroke-disabled: #e0e0e0; // colorNeutralStrokeDisabled
+$color-neutral-stroke-accessible: #616161; // colorNeutralStrokeAccessible
+$color-neutral-stroke-accessible-hover: #575757; // colorNeutralStrokeAccessibleHover
+$color-neutral-stroke-accessible-pressed: #4d4d4d; // colorNeutralStrokeAccessiblePressed
+$color-neutral-stroke-accessible-selected: #0f6cbd; // colorNeutralStrokeAccessibleSelected
+
+$color-brand-stroke-rest: #0f6cbd; // colorBrandStroke1
+$color-brand-stroke-hover: #115ea3; // colorBrandStroke1Hover
+$color-brand-stroke-pressed: #0f548c; // colorBrandStroke1Pressed
+$color-brand-stroke-selected: #0f6cbd; // colorBrandStroke1Selected
+
+// Shared Colors - Based on colorPalette from colors.md
+// Red Palette
+$color-shared-red-foreground: #d13438; // colorPaletteRedForeground3
+$color-shared-red-background: #fdf6f6; // colorPaletteRedBackground1
+$color-shared-red-border: #f1bbbc; // colorPaletteRedBorder1
+
+// Dark Orange Palette
+$color-shared-orange-foreground: #da3b01; // colorPaletteDarkOrangeForeground3
+$color-shared-orange-background: #fdf6f3; // colorPaletteDarkOrangeBackground1
+$color-shared-orange-border: #f4bfab; // colorPaletteDarkOrangeBorder1
+
+// Yellow Palette
+$color-shared-yellow-foreground: #fde300; // colorPaletteYellowForeground3
+$color-shared-yellow-background: #fffef5; // colorPaletteYellowBackground1
+$color-shared-yellow-border: #fef7b2; // colorPaletteYellowBorder1
+
+// Green Palette
+$color-shared-green-foreground: #107c10; // colorPaletteGreenForeground3
+$color-shared-green-background: #f1faf1; // colorPaletteGreenBackground1
+$color-shared-green-border: #9fd89f; // colorPaletteGreenBorder1
+
+// Teal Palette
+$color-shared-cyan-foreground: #038387; // colorPaletteTealForeground2
+$color-shared-cyan-background: #f0fdfd; // Approximate, not in colors.md
+$color-shared-cyan-border: #9bd9db; // colorPaletteTealBorder1
+
+// Blue Palette
+$color-shared-blue-foreground: #0078d4; // colorPaletteBlueBorderActive
+$color-shared-blue-background: #f0f8ff; // Approximate, not in colors.md
+$color-shared-blue-border: #a9d3f2; // colorPaletteBlueBackground2
+
+// Purple Palette
+$color-shared-purple-foreground: #5c2e91; // colorPalettePurpleBorderActive
+$color-shared-purple-background: #e0d3ed; // Approximate, not in colors.md
+$color-shared-purple-border: #c6b1de; // colorPalettePurpleBackground2
+
+// Pink Palette
+$color-shared-pink-foreground: #e43ba6; // colorPalettePinkBorderActive
+$color-shared-pink-background: #fdf2f8; // Approximate, not in colors.md
+$color-shared-pink-border: #f7c0e3; // colorPalettePinkBackground2
 
 // Typography - Fluent 2 Design System
-$font-family-base: 'Segoe UI', -apple-system, 'San Francisco Pro Display', Roboto, Helvetica, sans-serif;
+$font-family-base:
+  'Segoe UI',
+  -apple-system,
+  'San Francisco Pro Display',
+  Roboto,
+  Helvetica,
+  sans-serif;
 $font-family-secondary: 'Georgia', serif;
 $font-family-mono: 'Fira Code', 'Monaco', 'Consolas', monospace;
 
@@ -100,77 +164,76 @@ $letter-spacing-normal: 0;
 $letter-spacing-wide: 0.025em;
 
 // Fluent 2 Typography Scale
-$font-size-100: 0.625rem;  // 10px
-$font-size-200: 0.75rem;   // 12px
-$font-size-300: 0.875rem;  // 14px
-$font-size-400: 1rem;      // 16px
-$font-size-500: 1.25rem;    // 20px
-$font-size-600: 1.5rem;     // 24px
-$font-size-700: 1.75rem;  // 28px
-$font-size-800: 2rem;   // 32px
-$font-size-900: 2.5rem;      // 40px
+$font-size-100: 0.625rem; // 10px
+$font-size-200: 0.75rem; // 12px
+$font-size-300: 0.875rem; // 14px
+$font-size-400: 1rem; // 16px
+$font-size-500: 1.25rem; // 20px
+$font-size-600: 1.5rem; // 24px
+$font-size-700: 1.75rem; // 28px
+$font-size-800: 2rem; // 32px
+$font-size-900: 2.5rem; // 40px
 $font-size-1000: 4rem; // 68px
 
 // Fluent 2 Line Heights
-$line-height-100: 0.875rem;    // 14px
+$line-height-100: 0.875rem; // 14px
 $line-height-200: 1rem; // 16px
-$line-height-300: 1.25rem;// 20px
-$line-height-400: 1.375rem;  // 22px
+$line-height-300: 1.25rem; // 20px
+$line-height-400: 1.375rem; // 22px
 $line-height-500: 1.75rem; // 28px
-$line-height-600: 2rem;    // 32px
-$line-height-700: 2.25rem;  // 36px
-$line-height-800: 2.5rem;    // 40px
-$line-height-900: 3.5rem;    // 56px
-$line-height-1000: 5.75rem;   // 92px
+$line-height-600: 2rem; // 32px
+$line-height-700: 2.25rem; // 36px
+$line-height-800: 2.5rem; // 40px
+$line-height-900: 3.5rem; // 56px
+$line-height-1000: 5.75rem; // 92px
 
 // Spacing - Fluent 2 Design System
 // Base spacing scale
 $spacing-0: 0;
 $spacing-05: 0.125rem; // 2px
-$spacing-1: 0.25rem;   // 4px
-$spacing-2: 0.5rem;    // 8px
-$spacing-3: 0.75rem;   // 12px
-$spacing-4: 1rem;      // 16px
-$spacing-5: 1.25rem;   // 20px
-$spacing-6: 1.5rem;    // 24px
-$spacing-7: 1.75rem;   // 28px
-$spacing-8: 2rem;      // 32px
-$spacing-9: 2.25rem;   // 36px
-$spacing-10: 2.5rem;   // 40px
-$spacing-11: 2.75rem;  // 44px
-$spacing-12: 3rem;     // 48px
-$spacing-13: 3.25rem;  // 52px
-$spacing-14: 3.5rem;   // 56px
-$spacing-15: 3.75rem;  // 60px
-$spacing-16: 4rem;     // 64px
-$spacing-17: 4.25rem;  // 68px
-$spacing-18: 4.5rem;   // 72px
-$spacing-19: 4.75rem;  // 76px
-$spacing-20: 5rem;     // 80px
+$spacing-1: 0.25rem; // 4px
+$spacing-2: 0.5rem; // 8px
+$spacing-3: 0.75rem; // 12px
+$spacing-4: 1rem; // 16px
+$spacing-5: 1.25rem; // 20px
+$spacing-6: 1.5rem; // 24px
+$spacing-7: 1.75rem; // 28px
+$spacing-8: 2rem; // 32px
+$spacing-9: 2.25rem; // 36px
+$spacing-10: 2.5rem; // 40px
+$spacing-11: 2.75rem; // 44px
+$spacing-12: 3rem; // 48px
+$spacing-13: 3.25rem; // 52px
+$spacing-14: 3.5rem; // 56px
+$spacing-15: 3.75rem; // 60px
+$spacing-16: 4rem; // 64px
+$spacing-17: 4.25rem; // 68px
+$spacing-18: 4.5rem; // 72px
+$spacing-19: 4.75rem; // 76px
+$spacing-20: 5rem; // 80px
 
 // Horizontal spacing
 $spacing-horizontal-xxs: 0.125rem; // 2px
-$spacing-horizontal-xs: 0.25rem;   // 4px
-$spacing-horizontal-s: 0.5rem;     // 8px
-$spacing-horizontal-m: 0.75rem;    // 12px
-$spacing-horizontal-l: 1rem;       // 16px
+$spacing-horizontal-xs: 0.25rem; // 4px
+$spacing-horizontal-s: 0.5rem; // 8px
+$spacing-horizontal-m: 0.75rem; // 12px
+$spacing-horizontal-l: 1rem; // 16px
 
 // Vertical spacing
-$spacing-vertical-xxs: 0.0625rem;  // 1px
-$spacing-vertical-xs: 0.125rem;    // 2px
-$spacing-vertical-s: 0.25rem;      // 4px
-$spacing-vertical-m: 0.5rem;       // 8px
-$spacing-vertical-l: 0.75rem;      // 12px
+$spacing-vertical-xxs: 0.0625rem; // 1px
+$spacing-vertical-xs: 0.125rem; // 2px
+$spacing-vertical-s: 0.25rem; // 4px
+$spacing-vertical-m: 0.5rem; // 8px
+$spacing-vertical-l: 0.75rem; // 12px
 
 // Button specific spacing
-$button-padding-small: 0.1875rem 0.5rem;      // 3px 8px
-$button-padding-medium: 0.3125rem 0.75rem;    // 5px 12px
-$button-padding-large: 0.375rem 1rem;         // 6px 16px
+$button-padding-small: 0.1875rem 0.5rem; // 3px 8px
+$button-padding-medium: 0.3125rem 0.75rem; // 5px 12px
+$button-padding-large: 0.375rem 1rem; // 6px 16px
 
-$button-padding-icon-small: 0.1875rem;        // 3px
-$button-padding-icon-medium: 0.3125rem;       // 5px
-$button-padding-icon-large: 0.5rem;           // 8px
-
+$button-padding-icon-small: 0.1875rem; // 3px
+$button-padding-icon-medium: 0.3125rem; // 5px
+$button-padding-icon-large: 0.5rem; // 8px
 
 // Breakpoints
 $breakpoint-xs: 0;
@@ -192,7 +255,7 @@ $z-index-tooltip: 1070;
 // Border radius - Fluent 2 Design System
 $border-radius-none: 0;
 $border-radius-200: 0.125rem;
-$border-radius-400: 0.25rem; 
+$border-radius-400: 0.25rem;
 $border-radius-600: 0.375rem;
 $border-radius-800: 0.5rem;
 $border-radius-1200: 0.75rem;
@@ -202,15 +265,25 @@ $border-radius-3200: 2rem;
 $border-radius-4000: 2.5rem;
 $border-radius-circular: 9999px;
 
-
 // Elevation - Fluent 2 Design System
-$elevation-2: 0 1px 2px 0 rgba(0, 0, 0, 0.14), 0 0 2px 0 rgba(0, 0, 0, 0.12);
-$elevation-4: 0 2px 4px 0 rgba(0, 0, 0, 0.14), 0 0 2px 0 rgba(0, 0, 0, 0.12);
-$elevation-8: 0 4px 8px 0 rgba(0, 0, 0, 0.14), 0 0 2px 0 rgba(0, 0, 0, 0.12);
-$elevation-16: 0 8px 16px 0 rgba(0, 0, 0, 0.14), 0 0 2px 0 rgba(0, 0, 0, 0.12);
-$elevation-28: 0 14px 28px 0 rgba(0, 0, 0, 0.14), 0 0 2px 0 rgba(0, 0, 0, 0.12);
-$elevation-64: 0 32px 64px 0 rgba(0, 0, 0, 0.14), 0 0 2px 0 rgba(0, 0, 0, 0.12);
-
+$elevation-2:
+  0 1px 2px 0 rgba(0, 0, 0, 0.14),
+  0 0 2px 0 rgba(0, 0, 0, 0.12);
+$elevation-4:
+  0 2px 4px 0 rgba(0, 0, 0, 0.14),
+  0 0 2px 0 rgba(0, 0, 0, 0.12);
+$elevation-8:
+  0 4px 8px 0 rgba(0, 0, 0, 0.14),
+  0 0 2px 0 rgba(0, 0, 0, 0.12);
+$elevation-16:
+  0 8px 16px 0 rgba(0, 0, 0, 0.14),
+  0 0 2px 0 rgba(0, 0, 0, 0.12);
+$elevation-28:
+  0 14px 28px 0 rgba(0, 0, 0, 0.14),
+  0 0 2px 0 rgba(0, 0, 0, 0.12);
+$elevation-64:
+  0 32px 64px 0 rgba(0, 0, 0, 0.14),
+  0 0 2px 0 rgba(0, 0, 0, 0.12);
 
 // Motion - Fluent 2 Design System
 // Duration
@@ -232,4 +305,3 @@ $easing-decelerate-mid: cubic-bezier(0.1, 0.9, 0.2, 1);
 $easing-decelerate-min: cubic-bezier(0.33, 0, 0.1, 1);
 $easing-ease-in-out: cubic-bezier(1, 0, 1, 1);
 $easing-linear: linear;
-
