@@ -20,8 +20,8 @@ interface SampleData {
 
   imports: [CommonModule, DataGridComponent],
   template: `
-    <div class="showcase">
-      <h1>DataGrid Component</h1>
+    <div class="showcase showcase--responsive">
+      <h1 class="showcase__title">DataGrid Component</h1>
       <p class="showcase__description">
         A flexible and feature-rich data grid component following Fluent 2 Design System principles.
         Supports selection, custom cell rendering, and more.
@@ -29,8 +29,8 @@ interface SampleData {
 
       <!-- Basic Example -->
       <section class="showcase__section">
-        <h2>Basic DataGrid</h2>
-        <p>Simple data grid with text columns.</p>
+        <h2 class="showcase__section__title">Basic DataGrid</h2>
+        <p class="showcase__section__description">Simple data grid with text columns.</p>
         <div class="showcase__example">
           <app-data-grid [columns]="basicColumns" [rows]="basicRows" [hoverable]="true" />
         </div>
@@ -38,8 +38,8 @@ interface SampleData {
 
       <!-- Selectable Example -->
       <section class="showcase__section">
-        <h2>Selectable DataGrid</h2>
-        <p>Data grid with row selection (multi-select).</p>
+        <h2 class="showcase__section__title">Selectable DataGrid</h2>
+        <p class="showcase__section__description">Data grid with row selection (multi-select).</p>
         <div class="showcase__example">
           <app-data-grid
             [columns]="basicColumns"
@@ -57,8 +57,10 @@ interface SampleData {
 
       <!-- Size Variants -->
       <section class="showcase__section">
-        <h2>Size Variants</h2>
-        <p>Data grid supports three size variants: small, medium (default), and large.</p>
+        <h2 class="showcase__section__title">Size Variants</h2>
+        <p class="showcase__section__description">
+          Data grid supports three size variants: small, medium (default), and large.
+        </p>
         <div class="showcase__example">
           <app-data-grid
             [columns]="basicColumns"
@@ -71,8 +73,10 @@ interface SampleData {
 
       <!-- Style Variants -->
       <section class="showcase__section">
-        <h2>Style Variants</h2>
-        <p>Data grid supports striped and bordered styles.</p>
+        <h2 class="showcase__section__title">Style Variants</h2>
+        <p class="showcase__section__description">
+          Data grid supports striped and bordered styles.
+        </p>
         <div class="showcase__example">
           <app-data-grid
             [columns]="basicColumns"
@@ -86,8 +90,8 @@ interface SampleData {
 
       <!-- Loading State -->
       <section class="showcase__section">
-        <h2>Loading State</h2>
-        <p>Data grid with loading state component.</p>
+        <h2 class="showcase__section__title">Loading State</h2>
+        <p class="showcase__section__description">Data grid with loading state component.</p>
         <div class="showcase__example">
           <app-data-grid
             [columns]="basicColumns"
@@ -101,8 +105,8 @@ interface SampleData {
 
       <!-- Empty State -->
       <section class="showcase__section">
-        <h2>Empty State</h2>
-        <p>Data grid with empty state component.</p>
+        <h2 class="showcase__section__title">Empty State</h2>
+        <p class="showcase__section__description">Data grid with empty state component.</p>
         <div class="showcase__example">
           <app-data-grid
             [columns]="basicColumns"
@@ -119,8 +123,8 @@ interface SampleData {
 
       <!-- Error State -->
       <section class="showcase__section">
-        <h2>Error State</h2>
-        <p>Data grid with error state component.</p>
+        <h2 class="showcase__section__title">Error State</h2>
+        <p class="showcase__section__description">Data grid with error state component.</p>
         <div class="showcase__example">
           <app-data-grid
             [columns]="basicColumns"
@@ -139,8 +143,8 @@ interface SampleData {
 
       <!-- Sticky Headers -->
       <section class="showcase__section">
-        <h2>Sticky Headers</h2>
-        <p>
+        <h2 class="showcase__section__title">Sticky Headers</h2>
+        <p class="showcase__section__description">
           Data grid with sticky headers that remain visible when scrolling. Scroll down to see the
           headers stay fixed at the top.
         </p>
@@ -162,8 +166,10 @@ interface SampleData {
 
       <!-- Sortable Columns -->
       <section class="showcase__section">
-        <h2>Sortable Columns</h2>
-        <p>Data grid with sortable column headers. Click on column headers to sort.</p>
+        <h2 class="showcase__section__title">Sortable Columns</h2>
+        <p class="showcase__section__description">
+          Data grid with sortable column headers. Click on column headers to sort.
+        </p>
         <div class="showcase__example">
           <app-data-grid
             [columns]="sortableColumns"
@@ -181,8 +187,8 @@ interface SampleData {
 
       <!-- Filtering -->
       <section class="showcase__section">
-        <h2>Filtering</h2>
-        <p>
+        <h2 class="showcase__section__title">Filtering</h2>
+        <p class="showcase__section__description">
           Data grid with filtering enabled. Each column can have different filter types: text,
           number, date, select, multi-select, and boolean. Filters are applied in real-time with
           debouncing for text inputs.
@@ -212,8 +218,10 @@ interface SampleData {
 
       <!-- Expandable Rows -->
       <section class="showcase__section">
-        <h2>Expandable Rows (Master-Details)</h2>
-        <p>Data grid with expandable rows showing additional details when expanded.</p>
+        <h2 class="showcase__section__title">Expandable Rows (Master-Details)</h2>
+        <p class="showcase__section__description">
+          Data grid with expandable rows showing additional details when expanded.
+        </p>
         <div class="showcase__example">
           <app-data-grid
             [columns]="basicColumns"
@@ -255,8 +263,10 @@ interface SampleData {
 
       <!-- Pagination -->
       <section class="showcase__section">
-        <h2>Pagination</h2>
-        <p>Data grid with pagination controls. Navigate through pages and change page size.</p>
+        <h2 class="showcase__section__title">Pagination</h2>
+        <p class="showcase__section__description">
+          Data grid with pagination controls. Navigate through pages and change page size.
+        </p>
         <div class="showcase__example">
           <app-data-grid
             [columns]="basicColumns"
@@ -283,8 +293,8 @@ interface SampleData {
 
       <!-- Virtualization -->
       <section class="showcase__section">
-        <h2>Virtualization (Large Datasets)</h2>
-        <p>
+        <h2 class="showcase__section__title">Virtualization (Large Datasets)</h2>
+        <p class="showcase__section__description">
           Data grid with virtualization enabled. Only visible rows are rendered, providing better
           performance for large datasets. This example shows 1000 rows with smooth scrolling.
         </p>
@@ -307,8 +317,8 @@ interface SampleData {
 
       <!-- Virtualization with Selection -->
       <section class="showcase__section">
-        <h2>Virtualization with Selection</h2>
-        <p>
+        <h2 class="showcase__section__title">Virtualization with Selection</h2>
+        <p class="showcase__section__description">
           Virtualized data grid with row selection enabled. Selection works seamlessly with
           virtualization.
         </p>
@@ -335,8 +345,8 @@ interface SampleData {
 
       <!-- Virtualization Comparison -->
       <section class="showcase__section">
-        <h2>Virtualization vs Standard Rendering</h2>
-        <p>
+        <h2 class="showcase__section__title">Virtualization vs Standard Rendering</h2>
+        <p class="showcase__section__description">
           Compare the performance difference. The virtualized version only renders visible rows,
           while the standard version renders all rows.
         </p>
@@ -373,8 +383,8 @@ interface SampleData {
 
       <!-- Full Featured Example -->
       <section class="showcase__section">
-        <h2>Full Featured DataGrid</h2>
-        <p>
+        <h2 class="showcase__section__title">Full Featured DataGrid</h2>
+        <p class="showcase__section__description">
           Complete data grid with all features enabled: selection, sorting, sticky headers,
           expandable rows, and pagination.
         </p>
@@ -423,8 +433,8 @@ interface SampleData {
 
       <!-- API Integration Example -->
       <section class="showcase__section">
-        <h2>API Integration (Server-Side Processing)</h2>
-        <p>
+        <h2 class="showcase__section__title">API Integration (Server-Side Processing)</h2>
+        <p class="showcase__section__description">
           Data grid connected to a simulated API service. Sorting, filtering, and pagination are
           handled server-side. The API service simulates network delay (500-1000ms) and processes
           requests on the server.
@@ -478,93 +488,6 @@ interface SampleData {
       </section>
     </div>
   `,
-  styles: [
-    `
-      .showcase {
-        padding: 2rem;
-        max-width: 1400px;
-        margin: 0 auto;
-      }
-
-      .showcase__description {
-        color: var(--Neutral-Foreground-2-Rest, #424242);
-        margin-bottom: 2rem;
-      }
-
-      .showcase__section {
-        margin-bottom: 3rem;
-      }
-
-      .showcase__section h2 {
-        margin-bottom: 0.5rem;
-        color: var(--Neutral-Foreground-Rest, #242424);
-      }
-
-      .showcase__section h3 {
-        margin-top: 1.5rem;
-        margin-bottom: 0.5rem;
-        color: var(--Neutral-Foreground-Rest, #242424);
-        font-size: 1.125rem;
-      }
-
-      .showcase__section p {
-        color: var(--Neutral-Foreground-2-Rest, #424242);
-        margin-bottom: 1rem;
-      }
-
-      .showcase__example {
-        background: white;
-        border: 1px solid var(--Neutral-Stroke-Rest, #d1d1d1);
-        border-radius: 8px;
-        padding: 1rem;
-      }
-
-      .showcase__info {
-        margin-top: 0.5rem;
-        padding: 0.5rem 1rem;
-        background: var(--Neutral-Background-Brand-Selected, #d0e7ff);
-        border-radius: 4px;
-        color: var(--Neutral-Foreground-Rest, #242424);
-        font-size: 0.875rem;
-      }
-
-      .showcase__example--scrollable {
-        max-height: 400px;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-
-        ::ng-deep .data-grid {
-          max-height: 400px;
-          overflow: auto;
-        }
-      }
-
-      .showcase__example--virtualized {
-        max-height: 480px;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-
-        ::ng-deep .data-grid__viewport {
-          height: 480px;
-          overflow: auto;
-        }
-      }
-
-      .showcase__grid--two-columns {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 2rem;
-      }
-
-      @media (max-width: 1024px) {
-        .showcase__grid--two-columns {
-          grid-template-columns: 1fr;
-        }
-      }
-    `,
-  ],
 })
 export class DataGridShowcaseComponent implements OnInit {
   private apiService = inject(DataGridApiService<SampleData>);

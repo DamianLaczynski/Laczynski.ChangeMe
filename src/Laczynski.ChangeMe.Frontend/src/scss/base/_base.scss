@@ -4,11 +4,98 @@
 
 @use '../utils/variables' as *;
 
+// Light theme CSS variables (default)
+:root {
+  // Brand Colors
+  --color-brand-primary: #{$color-brand-primary};
+  --color-brand-primary-hover: #{$color-brand-primary-hover};
+  --color-brand-primary-pressed: #{$color-brand-primary-pressed};
+  --color-brand-primary-selected: #{$color-brand-primary-selected};
+
+  // Accent Colors
+  --color-accent-primary: #{$color-accent-primary};
+  --color-accent-primary-hover: #{$color-accent-primary-hover};
+  --color-accent-primary-pressed: #{$color-accent-primary-pressed};
+  --color-accent-primary-selected: #{$color-accent-primary-selected};
+
+  // Neutral Colors - Foreground
+  --color-neutral-foreground-rest: #{$color-neutral-foreground-rest};
+  --color-neutral-foreground-hover: #{$color-neutral-foreground-hover};
+  --color-neutral-foreground-pressed: #{$color-neutral-foreground-pressed};
+  --color-neutral-foreground-disabled: #{$color-neutral-foreground-disabled};
+  --color-neutral-foreground-on-brand: #{$color-neutral-foreground-on-brand};
+  --color-neutral-foreground-selected: #{$color-neutral-foreground-selected};
+
+  --color-neutral-foreground2-rest: #{$color-neutral-foreground2-rest};
+  --color-neutral-foreground2-hover: #{$color-neutral-foreground2-hover};
+  --color-neutral-foreground2-pressed: #{$color-neutral-foreground2-pressed};
+  --color-neutral-foreground2-selected: #{$color-neutral-foreground2-selected};
+  --color-neutral-foreground2-brand-hover: #{$color-neutral-foreground2-brand-hover};
+  --color-neutral-foreground2-brand-pressed: #{$color-neutral-foreground2-brand-pressed};
+  --color-neutral-foreground2-brand-selected: #{$color-neutral-foreground2-brand-selected};
+
+  // Neutral Colors - Background
+  --color-neutral-background-rest: #{$color-neutral-background-rest};
+  --color-neutral-background-selected: #{$color-neutral-background-selected};
+  --color-neutral-background-hover: #{$color-neutral-background-hover};
+  --color-neutral-background-pressed: #{$color-neutral-background-pressed};
+  --color-neutral-background-disabled: #{$color-neutral-background-disabled};
+  --color-neutral-background-brand-selected: #{$color-neutral-background-brand-selected};
+  --color-neutral-background-brand-hover: #{$color-neutral-background-brand-hover};
+  --color-neutral-background-brand-pressed: #{$color-neutral-background-brand-pressed};
+
+  --color-subtle-background-hover: #{$color-subtle-background-hover};
+  --color-subtle-background-pressed: #{$color-subtle-background-pressed};
+  --color-subtle-background-selected: #{$color-subtle-background-selected};
+
+  // Stroke Colors
+  --color-neutral-stroke-rest: #{$color-neutral-stroke-rest};
+  --color-neutral-stroke-hover: #{$color-neutral-stroke-hover};
+  --color-neutral-stroke-pressed: #{$color-neutral-stroke-pressed};
+  --color-neutral-stroke-selected: #{$color-neutral-stroke-selected};
+  --color-neutral-stroke-disabled: #{$color-neutral-stroke-disabled};
+  --color-neutral-stroke-brand-rest: #{$color-neutral-stroke-brand-rest};
+  --color-neutral-stroke-brand-hover: #{$color-neutral-stroke-brand-hover};
+  --color-neutral-stroke-brand-pressed: #{$color-neutral-stroke-brand-pressed};
+  --color-neutral-stroke-brand-selected: #{$color-neutral-stroke-brand-selected};
+
+  // Border radius
+  --border-radius-400: #{$border-radius-400};
+
+  // Shared Colors
+  --color-shared-red-foreground: #{$color-shared-red-foreground};
+  --color-shared-red-background: #{$color-shared-red-background};
+  --color-shared-red-border: #{$color-shared-red-border};
+  --color-shared-orange-foreground: #{$color-shared-orange-foreground};
+  --color-shared-orange-background: #{$color-shared-orange-background};
+  --color-shared-orange-border: #{$color-shared-orange-border};
+  --color-shared-yellow-foreground: #{$color-shared-yellow-foreground};
+  --color-shared-yellow-background: #{$color-shared-yellow-background};
+  --color-shared-yellow-border: #{$color-shared-yellow-border};
+  --color-shared-green-foreground: #{$color-shared-green-foreground};
+  --color-shared-green-background: #{$color-shared-green-background};
+  --color-shared-green-border: #{$color-shared-green-border};
+  --color-shared-cyan-foreground: #{$color-shared-cyan-foreground};
+  --color-shared-cyan-background: #{$color-shared-cyan-background};
+  --color-shared-cyan-border: #{$color-shared-cyan-border};
+  --color-shared-blue-foreground: #{$color-shared-blue-foreground};
+  --color-shared-blue-background: #{$color-shared-blue-background};
+  --color-shared-blue-border: #{$color-shared-blue-border};
+  --color-shared-purple-foreground: #{$color-shared-purple-foreground};
+  --color-shared-purple-background: #{$color-shared-purple-background};
+  --color-shared-purple-border: #{$color-shared-purple-border};
+  --color-shared-pink-foreground: #{$color-shared-pink-foreground};
+  --color-shared-pink-background: #{$color-shared-pink-background};
+  --color-shared-pink-border: #{$color-shared-pink-border};
+}
+
 // Body
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  background-color: var(--color-neutral-background-rest);
+  color: var(--color-neutral-foreground-rest);
 }
 
 // Focus styles
@@ -24,6 +111,8 @@ body {
 
 // Selection
 ::selection {
+  background-color: var(--color-brand-primary);
+  color: var(--color-neutral-foreground-on-brand);
 }
 
 ::-moz-selection {
@@ -60,51 +149,51 @@ body {
     box-shadow: none !important;
     text-shadow: none !important;
   }
-  
+
   a,
   a:visited {
     text-decoration: underline;
   }
-  
+
   a[href]::after {
-    content: " (" attr(href) ")";
+    content: ' (' attr(href) ')';
   }
-  
+
   abbr[title]::after {
-    content: " (" attr(title) ")";
+    content: ' (' attr(title) ')';
   }
-  
-  a[href^="#"]::after,
-  a[href^="javascript:"]::after {
-    content: "";
+
+  a[href^='#']::after,
+  a[href^='javascript:']::after {
+    content: '';
   }
-  
+
   pre {
     white-space: pre-wrap !important;
   }
-  
+
   pre,
   blockquote {
     border: 1px solid #999;
     page-break-inside: avoid;
   }
-  
+
   thead {
     display: table-header-group;
   }
-  
+
   tr,
   img {
     page-break-inside: avoid;
   }
-  
+
   p,
   h2,
   h3 {
     orphans: 3;
     widows: 3;
   }
-  
+
   h2,
   h3 {
     page-break-after: avoid;

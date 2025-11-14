@@ -50,7 +50,7 @@
       top: 50%;
       transform: translateY(-50%);
       height: 4px;
-      background-color: $color-brand-primary;
+      background-color: var(--color-brand-primary);
       opacity: 0;
       transition: opacity $duration-fast $easing-decelerate-mid;
     }
@@ -85,7 +85,7 @@
     // Drop zone styles
     &.node__drop-zone {
       &.node__drop-zone--inside {
-        border: 2px solid $color-brand-primary;
+        border: 2px solid var(--color-brand-primary);
       }
     }
   }
@@ -101,7 +101,7 @@
     width: 4px;
     height: 20px;
     border-radius: $border-radius-200; // 2px
-    background-color: $color-brand-primary;
+    background-color: var(--color-brand-primary);
     opacity: 0;
     transition: opacity $duration-fast $easing-decelerate-mid;
     flex-shrink: 0;
@@ -125,7 +125,7 @@
     left: 50%;
     transform: translateX(-50%);
     height: 3px;
-    background: $color-brand-primary;
+    background: var(--color-brand-primary);
     border-radius: $border-radius-circular;
     transition:
       width $duration-normal $easing-decelerate-mid,
@@ -154,21 +154,21 @@
     box-sizing: border-box;
     border-radius: $border-radius-400; // 4px
     background-color: transparent;
-    color: $color-neutral-foreground2-rest;
+    color: var(--color-neutral-foreground2-rest);
     transition: background-color $duration-fast $easing-decelerate-mid;
     border: none;
     width: 100%;
     text-align: left;
     font-family: $font-family-base;
 
-    @include focus-ring($color-brand-primary);
+    @include focus-ring(var(--color-brand-primary));
 
     &:hover:not(:disabled) {
-      background-color: $color-subtle-background-hover;
+      background-color: var(--color-subtle-background-hover);
     }
 
     &:active:not(:disabled) {
-      background-color: $color-subtle-background-pressed;
+      background-color: var(--color-subtle-background-pressed);
     }
 
     &:disabled {
@@ -227,20 +227,20 @@
 
   @include modifier('selected') {
     .node__content {
-      background-color: $color-subtle-background-selected;
+      background-color: var(--color-subtle-background-selected);
 
       &:hover {
-        background-color: $color-subtle-background-hover;
+        background-color: var(--color-subtle-background-hover);
       }
     }
 
     .node__label {
       font-weight: $font-weight-semibold; // 600
-      color: $color-neutral-foreground-rest;
+      color: var(--color-neutral-foreground-rest);
     }
 
     .node__icon {
-      color: $color-brand-primary;
+      color: var(--color-brand-primary);
     }
   }
 
@@ -254,11 +254,11 @@
     }
 
     .node__icon {
-      color: $color-neutral-foreground-disabled;
+      color: var(--color-neutral-foreground-disabled);
     }
 
     .node__label {
-      color: $color-neutral-foreground-disabled;
+      color: var(--color-neutral-foreground-disabled);
     }
   }
 
@@ -304,11 +304,11 @@
       background: transparent;
 
       &:hover:not(:disabled) {
-        background-color: rgba($color-neutral-foreground-rest, 0.03);
+        background-color: color-mix(in srgb, var(--color-neutral-foreground-rest) 3%, transparent);
       }
 
       &:active:not(:disabled) {
-        background-color: rgba($color-neutral-foreground-rest, 0.06);
+        background-color: rgba(var(--color-neutral-foreground-rest-rgb, 36, 36, 36), 0.06);
       }
     }
   }
@@ -316,11 +316,11 @@
   @include modifier('subtle') {
     .node__content {
       &:hover:not(:disabled) {
-        background-color: $color-subtle-background-hover;
+        background-color: var(--color-subtle-background-hover);
       }
 
       &:active:not(:disabled) {
-        background-color: $color-subtle-background-pressed;
+        background-color: var(--color-subtle-background-pressed);
       }
     }
   }
@@ -330,14 +330,14 @@
       border-radius: $border-radius-circular;
 
       &:hover:not(:disabled):not(.node--selected &) {
-        background-color: $color-subtle-background-hover;
-        outline: 1px solid $color-neutral-stroke-hover;
+        background-color: var(--color-subtle-background-hover);
+        outline: 1px solid var(--color-neutral-stroke-hover);
         outline-offset: -1px;
       }
 
       &:active:not(:disabled):not(.node--selected &) {
-        background-color: $color-subtle-background-pressed;
-        outline: 1px solid $color-neutral-stroke-pressed;
+        background-color: var(--color-subtle-background-pressed);
+        outline: 1px solid var(--color-neutral-stroke-pressed);
         outline-offset: -1px;
       }
     }
@@ -345,7 +345,7 @@
     &.node--selected {
       .node__content {
         background-color: #ebf3fc; // Brand-Background-2-Rest
-        outline: 1px solid $color-brand-primary;
+        outline: 1px solid var(--color-brand-primary);
         outline-offset: -1px;
 
         &:hover {
@@ -359,7 +359,7 @@
         }
 
         .node__icon {
-          color: $color-brand-primary;
+          color: var(--color-brand-primary);
         }
 
         .node__label {
@@ -389,7 +389,7 @@
 
     &.node--selected {
       .node__content {
-        background-color: $color-brand-primary; // Brand-Background-1-Rest
+        background-color: var(--color-brand-primary); // Brand-Background-1-Rest
 
         &:hover {
           background-color: #115ea3; // Brand-Background-1-Hover
@@ -400,11 +400,11 @@
         }
 
         .node__icon {
-          color: $color-neutral-foreground-on-brand;
+          color: var(--color-neutral-foreground-on-brand);
         }
 
         .node__label {
-          color: $color-neutral-foreground-on-brand;
+          color: var(--color-neutral-foreground-on-brand);
         }
       }
 

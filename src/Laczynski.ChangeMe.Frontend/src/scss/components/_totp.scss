@@ -16,7 +16,7 @@
     align-items: flex-end;
     gap: $spacing-1;
     font-family: $font-family-base;
-    color: $color-neutral-foreground-rest;
+    color: var(--color-neutral-foreground-rest);
     word-wrap: break-word;
     margin-bottom: $spacing-1;
 
@@ -41,13 +41,13 @@
 
     // Disabled state
     &--disabled {
-      color: $color-neutral-foreground-disabled;
+      color: var(--color-neutral-foreground-disabled);
     }
 
     // Required indicator
     &--required::after {
       content: ' *';
-      color: $color-shared-red-foreground;
+      color: var(--color-shared-red-foreground);
     }
   }
 }
@@ -86,7 +86,7 @@
   border: none;
   outline: none;
   background: transparent;
-  color: $color-neutral-foreground-rest;
+  color: var(--color-neutral-foreground-rest);
   font-family: $font-family-base;
   font-weight: $font-weight-semibold;
   letter-spacing: $letter-spacing-normal;
@@ -103,18 +103,18 @@
 
   // Placeholder styles
   &::placeholder {
-    color: $color-neutral-foreground2-rest;
+    color: var(--color-neutral-foreground2-rest);
     opacity: 1;
   }
 
   // Focus styles
   &:focus {
-    color: $color-neutral-foreground-rest;
+    color: var(--color-neutral-foreground-rest);
   }
 
   // Disabled styles
   &:disabled {
-    color: $color-neutral-foreground-disabled;
+    color: var(--color-neutral-foreground-disabled);
     cursor: not-allowed;
   }
 

@@ -21,7 +21,7 @@
   }
 
   &:focus-visible {
-    outline: 2px solid var(--Brand-Background-1-Rest, #0F6CBD);
+    outline: 2px solid var(--color-brand-primary);
     outline-offset: 2px;
   }
 
@@ -83,7 +83,7 @@
     }
 
     &:focus-visible {
-      outline: 2px solid var(--Brand-Background-1-Rest, #0F6CBD);
+      outline: 2px solid var(--color-brand-primary);
       outline-offset: 2px;
     }
   }
@@ -170,56 +170,56 @@
   // ========================================================================
 
   &--filled {
-    background: var(--Neutral-Background-3-Rest, #F5F5F5);
-    outline: 1px var(--Neutral-Stroke-Transparent-Rest, rgba(255, 255, 255, 0)) solid;
+    background: var(--color-neutral-background-hover);
+    outline: 1px transparent solid;
     outline-offset: -1px;
 
     .tag__primary {
-      color: var(--Neutral-Foreground-2-Rest, #424242);
+      color: var(--color-neutral-foreground2-rest);
     }
 
     .tag__dismiss-icon path {
-      fill: var(--Neutral-Foreground-2-Rest, #424242);
+      fill: var(--color-neutral-foreground2-rest);
     }
 
     // Hover state
     &:hover:not(.tag--disabled):not(.tag--selected) {
       .tag__dismiss-icon path {
-        fill: var(--Neutral-Foreground-2-Brand-Hover, #0F6CBD);
+        fill: var(--color-neutral-foreground2-brand-hover);
       }
     }
 
     // Pressed state
     &:active:not(.tag--disabled):not(.tag--selected) {
       .tag__dismiss-icon path {
-        fill: var(--Neutral-Foreground-2-Brand-Pressed, #115EA3);
+        fill: var(--color-neutral-foreground2-brand-pressed);
       }
     }
 
     // Selected state
     &.tag--selected {
-      background: var(--Brand-Background-1-Rest, #0F6CBD);
+      background: var(--color-brand-primary);
 
       .tag__primary {
-        color: var(--Neutral-Foreground-On-Brand-Rest, white);
+        color: var(--color-neutral-foreground-on-brand);
       }
 
       .tag__dismiss-icon path {
-        fill: var(--Neutral-Foreground-On-Brand-Rest, white);
+        fill: var(--color-neutral-foreground-on-brand);
       }
     }
 
     // Disabled state
     &.tag--disabled {
-      background: var(--Neutral-Background-Disabled-Rest, #F0F0F0);
+      background: var(--color-neutral-background-disabled);
       cursor: not-allowed;
 
       .tag__primary {
-        color: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+        color: var(--color-neutral-foreground-disabled);
       }
 
       .tag__dismiss-icon path {
-        fill: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+        fill: var(--color-neutral-foreground-disabled);
       }
     }
   }
@@ -229,56 +229,56 @@
   // ========================================================================
 
   &--brand {
-    background: var(--Brand-Background-2-Rest, #EBF3FC);
-    outline: 1px var(--Neutral-Stroke-Transparent-Rest, rgba(255, 255, 255, 0)) solid;
+    background: var(--color-neutral-background-brand-selected);
+    outline: 1px transparent solid;
     outline-offset: -1px;
 
     .tag__primary {
-      color: var(--Brand-Foreground-2-Rest, #115EA3);
+      color: var(--color-brand-primary-hover);
     }
 
     .tag__dismiss-icon path {
-      fill: var(--Brand-Foreground-2-Rest, #115EA3);
+      fill: var(--color-brand-primary-hover);
     }
 
     // Hover state
     &:hover:not(.tag--disabled):not(.tag--selected) {
       .tag__dismiss-icon path {
-        fill: var(--Brand-Foreground-2-Hover, #0F548C);
+        fill: var(--color-brand-primary-pressed);
       }
     }
 
     // Pressed state
     &:active:not(.tag--disabled):not(.tag--selected) {
       .tag__dismiss-icon path {
-        fill: var(--Brand-Foreground-2-Pressed, #0A2E4A);
+        fill: var(--color-brand-primary-pressed);
       }
     }
 
     // Selected state
     &.tag--selected {
-      background: var(--Brand-Background-1-Rest, #0F6CBD);
+      background: var(--color-brand-primary);
 
       .tag__primary {
-        color: var(--Neutral-Foreground-On-Brand-Rest, white);
+        color: var(--color-neutral-foreground-on-brand);
       }
 
       .tag__dismiss-icon path {
-        fill: var(--Neutral-Foreground-On-Brand-Rest, white);
+        fill: var(--color-neutral-foreground-on-brand);
       }
     }
 
     // Disabled state
     &.tag--disabled {
-      background: var(--Neutral-Background-Disabled-Rest, #F0F0F0);
+      background: var(--color-neutral-background-disabled);
       cursor: not-allowed;
 
       .tag__primary{
-        color: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+        color: var(--color-neutral-foreground-disabled);
       }
 
       .tag__dismiss-icon path {
-        fill: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+        fill: var(--color-neutral-foreground-disabled);
       }
     }
   }
@@ -290,56 +290,56 @@
   &--outline {
     background: transparent;
     border-radius: 4px;
-    outline: 1px var(--Neutral-Stroke-1-Rest, #D1D1D1) solid;
+    outline: 1px var(--color-neutral-stroke-rest) solid;
     outline-offset: -1px;
 
     .tag__primary {
-      color: var(--Neutral-Foreground-2-Rest, #424242);
+      color: var(--color-neutral-foreground2-rest);
     }
 
     .tag__dismiss-icon path {
-      fill: var(--Neutral-Foreground-2-Rest, #424242);
+      fill: var(--color-neutral-foreground2-rest);
     }
 
     // Hover state
     &:hover:not(.tag--disabled):not(.tag--selected) {
       .tag__dismiss-icon path {
-        fill: var(--Neutral-Foreground-2-Brand-Hover, #0F6CBD);
+        fill: var(--color-neutral-foreground2-brand-hover);
       }
     }
 
     // Pressed state
     &:active:not(.tag--disabled):not(.tag--selected) {
       .tag__dismiss-icon path {
-        fill: var(--Neutral-Foreground-2-Brand-Pressed, #115EA3);
+        fill: var(--color-neutral-foreground2-brand-pressed);
       }
     }
 
     // Selected state
     &.tag--selected {
-      background: var(--Brand-Background-1-Rest, #0F6CBD);
-      outline: 1px var(--Neutral-Stroke-Transparent-Rest, rgba(255, 255, 255, 0)) solid;
+      background: var(--color-brand-primary);
+      outline: 1px transparent solid;
 
       .tag__primary {
-        color: var(--Neutral-Foreground-On-Brand-Rest, white);
+        color: var(--color-neutral-foreground-on-brand);
       }
 
       .tag__dismiss-icon path {
-        fill: var(--Neutral-Foreground-On-Brand-Rest, white);
+        fill: var(--color-neutral-foreground-on-brand);
       }
     }
 
     // Disabled state
     &.tag--disabled {
-      outline: 1px var(--Neutral-Stroke-Disabled-Rest, #E0E0E0) solid;
+      outline: 1px var(--color-neutral-stroke-disabled) solid;
       cursor: not-allowed;
 
       .tag__primary {
-        color: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+        color: var(--color-neutral-foreground-disabled);
       }
 
       .tag__dismiss-icon path {
-        fill: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+        fill: var(--color-neutral-foreground-disabled);
       }
     }
   }

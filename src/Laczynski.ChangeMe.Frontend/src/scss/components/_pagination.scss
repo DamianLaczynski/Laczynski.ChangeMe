@@ -52,13 +52,13 @@
   @include element('info') {
     display: flex;
     align-items: center;
-    color: $color-neutral-foreground2-rest;
+    color: var(--color-neutral-foreground2-rest);
     flex-shrink: 0;
   }
 
   @include element('info-text') {
     font-weight: $font-weight-regular;
-    color: $color-neutral-foreground2-rest;
+    color: var(--color-neutral-foreground2-rest);
   }
 
   @include element('controls') {
@@ -99,7 +99,7 @@
     justify-content: center;
     min-width: 32px;
     height: 32px;
-    color: $color-neutral-foreground2-rest;
+    color: var(--color-neutral-foreground2-rest);
     font-weight: $font-weight-medium;
     user-select: none;
     pointer-events: none;

@@ -1,1 +1,12 @@
-<app-nav [items]="navItems"></app-nav>
+<div class="ds-sidebar">
+  <div class="ds-sidebar__theme-toggle">
+    <app-node
+      [node]="themeNode()"
+      [asButton]="true"
+      [size]="'medium'"
+      [selectOnClick]="false"
+      (nodeClick)="onDarkModeToggle()"
+    ></app-node>
+  </div>
+  <app-nav [items]="navItems"></app-nav>
+</div>

@@ -379,25 +379,6 @@ import { JsonPipe } from '@angular/common';
       </div>
     </div>
   `,
-  styles: [
-    `
-      .showcase__form-output {
-        margin-top: 16px;
-        padding: 16px;
-        background-color: var(--color-neutral-background-hover, #f5f5f5);
-        border-radius: 8px;
-      }
-
-      .showcase__form-output pre {
-        margin: 8px 0 0 0;
-        font-size: 12px;
-      }
-
-      .showcase__form > * + * {
-        margin-top: 16px;
-      }
-    `,
-  ],
 })
 export class DateRangeShowcaseComponent {
   defaultRange: DateRange = {

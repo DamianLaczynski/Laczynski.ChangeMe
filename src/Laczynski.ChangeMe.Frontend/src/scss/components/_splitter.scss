@@ -17,7 +17,7 @@
     flex-shrink: 0;
     flex-grow: 0;
     transition: none;
-    background-color: $color-neutral-background-rest;
+    background-color: var(--color-neutral-background-rest);
 
     @include modifier('collapsed') {
       flex-basis: 0 !important;
@@ -34,8 +34,8 @@
     position: relative;
     flex-shrink: 0;
     flex-grow: 0;
-    background-color: $color-neutral-background-rest;
-    border: 1px solid $color-neutral-stroke-rest;
+    background-color: var(--color-neutral-background-rest);
+    border: 1px solid var(--color-neutral-stroke-rest);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -44,25 +44,25 @@
     z-index: 1;
 
     &:hover:not(.splitter__gutter--disabled) {
-      background-color: $color-neutral-background-hover;
-      border-color: $color-neutral-stroke-hover;
+      background-color: var(--color-neutral-background-hover);
+      border-color: var(--color-neutral-stroke-hover);
     }
 
     &:focus-visible:not(.splitter__gutter--disabled) {
-      outline: 2px solid $color-brand-primary;
+      outline: 2px solid var(--color-brand-primary);
       outline-offset: -2px;
-      background-color: $color-neutral-background-hover;
+      background-color: var(--color-neutral-background-hover);
     }
 
     @include modifier('dragging') {
-      background-color: $color-neutral-background-brand-hover;
-      border-color: $color-brand-primary;
+      background-color: var(--color-neutral-background-brand-hover);
+      border-color: var(--color-brand-primary);
     }
 
     @include modifier('disabled') {
       cursor: default;
-      background-color: $color-neutral-background-disabled;
-      border-color: $color-neutral-stroke-disabled;
+      background-color: var(--color-neutral-background-disabled);
+      border-color: var(--color-neutral-stroke-disabled);
       pointer-events: none;
 
       .splitter__gutter-handle {
@@ -73,20 +73,20 @@
 
   @include element('gutter-handle') {
     position: absolute;
-    background-color: $color-neutral-stroke-rest;
+    background-color: var(--color-neutral-stroke-rest);
     border-radius: $border-radius-400;
     transition: background-color $duration-faster $easing-ease-in-out;
 
     .splitter__gutter:hover:not(.splitter__gutter--disabled) & {
-      background-color: $color-brand-primary;
+      background-color: var(--color-brand-primary);
     }
 
     .splitter__gutter:focus-visible:not(.splitter__gutter--disabled) & {
-      background-color: $color-brand-primary;
+      background-color: var(--color-brand-primary);
     }
 
     .splitter__gutter--dragging & {
-      background-color: $color-brand-primary-hover;
+      background-color: var(--color-brand-primary-hover);
     }
   }
 

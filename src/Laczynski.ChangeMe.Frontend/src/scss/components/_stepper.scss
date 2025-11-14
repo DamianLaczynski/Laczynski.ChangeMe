@@ -55,47 +55,47 @@
 
     &:hover:not(.stepper-step--disabled):not(.stepper-step--active) {
       .stepper-indicator {
-        background-color: $color-neutral-background-hover;
-        border-color: $color-neutral-stroke-hover;
+        background-color: var(--color-neutral-background-hover);
+        border-color: var(--color-neutral-stroke-hover);
       }
 
       .stepper-label {
-        color: $color-neutral-foreground2-hover;
+        color: var(--color-neutral-foreground2-hover);
       }
     }
 
     // Hover effect for completed steps
     &.stepper-step--completed:hover:not(.stepper-step--disabled):not(.stepper-step--active) {
       .stepper-indicator {
-        background-color: $color-brand-primary-hover;
-        border-color: $color-brand-primary-hover;
+        background-color: var(--color-brand-primary-hover);
+        border-color: var(--color-brand-primary-hover);
       }
 
       .stepper-label {
-        color: $color-brand-primary-hover;
+        color: var(--color-brand-primary-hover);
       }
     }
 
     // Hover effect for visited steps
     &.stepper-step--visited:hover:not(.stepper-step--disabled):not(.stepper-step--active):not(.stepper-step--completed) {
       .stepper-indicator {
-        background-color: $color-neutral-background-brand-hover;
-        border-color: $color-brand-primary-hover;
+        background-color: var(--color-neutral-background-brand-hover);
+        border-color: var(--color-brand-primary-hover);
       }
     }
 
     &:active:not(.stepper-step--disabled) {
       .stepper-indicator {
-        background-color: $color-neutral-background-pressed;
-        border-color: $color-neutral-stroke-pressed;
+        background-color: var(--color-neutral-background-pressed);
+        border-color: var(--color-neutral-stroke-pressed);
       }
     }
 
     // Active state for completed steps
     &.stepper-step--completed:active:not(.stepper-step--disabled):not(.stepper-step--active) {
       .stepper-indicator {
-        background-color: $color-brand-primary-pressed;
-        border-color: $color-brand-primary-pressed;
+        background-color: var(--color-brand-primary-pressed);
+        border-color: var(--color-brand-primary-pressed);
       }
     }
   }
@@ -103,7 +103,7 @@
   // Focus state
   &:focus-visible {
     .stepper-indicator {
-      outline: 2px solid $color-brand-primary;
+      outline: 2px solid var(--color-brand-primary);
       outline-offset: 2px;
     }
   }
@@ -111,26 +111,26 @@
   // Active step
   &--active {
     .stepper-indicator {
-      background-color: $color-brand-primary;
-      border-color: $color-brand-primary;
-      color: $color-neutral-foreground-on-brand;
+      background-color: var(--color-brand-primary);
+      border-color: var(--color-brand-primary);
+      color: var(--color-neutral-foreground-on-brand);
 
       .stepper-number {
-        color: $color-neutral-foreground-on-brand;
+        color: var(--color-neutral-foreground-on-brand);
         font-weight: $font-weight-semibold;
       }
     }
 
     .stepper-label {
-      color: $color-neutral-foreground-rest;
+      color: var(--color-neutral-foreground-rest);
       font-weight: $font-weight-semibold;
     }
 
     // Subtle hover effect for active step
     &.stepper-step--clickable:hover:not(.stepper-step--disabled) {
       .stepper-indicator {
-        background-color: $color-brand-primary-hover;
-        border-color: $color-brand-primary-hover;
+        background-color: var(--color-brand-primary-hover);
+        border-color: var(--color-brand-primary-hover);
         box-shadow: 0 2px 4px rgba(0, 120, 212, 0.15);
       }
     }
@@ -139,13 +139,13 @@
   // Completed step
   &--completed {
     .stepper-indicator {
-      background-color: $color-brand-primary;
-      border-color: $color-brand-primary;
-      color: $color-neutral-foreground-on-brand;
+      background-color: var(--color-brand-primary);
+      border-color: var(--color-brand-primary);
+      color: var(--color-neutral-foreground-on-brand);
     }
 
     .stepper-label {
-      color: $color-neutral-foreground-rest;
+      color: var(--color-neutral-foreground-rest);
     }
   }
 
@@ -153,16 +153,16 @@
   &--visited:not(.stepper-step--completed) {
     .stepper-indicator {
       background-color: transparent;
-      border-color: $color-brand-primary;
-      color: $color-brand-primary;
+      border-color: var(--color-brand-primary);
+      color: var(--color-brand-primary);
 
       .stepper-number {
-        color: $color-brand-primary;
+        color: var(--color-brand-primary);
       }
     }
 
     .stepper-label {
-      color: $color-neutral-foreground2-rest;
+      color: var(--color-neutral-foreground2-rest);
     }
   }
 
@@ -172,43 +172,43 @@
     opacity: 0.5;
 
     .stepper-indicator {
-      background-color: $color-neutral-background-disabled;
-      border-color: $color-neutral-stroke-disabled;
-      color: $color-neutral-foreground-disabled;
+      background-color: var(--color-neutral-background-disabled);
+      border-color: var(--color-neutral-stroke-disabled);
+      color: var(--color-neutral-foreground-disabled);
     }
 
     .stepper-label {
-      color: $color-neutral-foreground-disabled;
+      color: var(--color-neutral-foreground-disabled);
     }
 
     .stepper-description {
-      color: $color-neutral-foreground-disabled;
+      color: var(--color-neutral-foreground-disabled);
     }
   }
 
   // Error state
   &--error {
     .stepper-indicator {
-      background-color: $color-shared-red-foreground;
-      border-color: $color-shared-red-foreground;
-      color: $color-neutral-foreground-on-brand;
+      background-color: var(--color-shared-red-foreground);
+      border-color: var(--color-shared-red-foreground);
+      color: var(--color-neutral-foreground-on-brand);
     }
 
     .stepper-label {
-      color: $color-shared-red-foreground;
+      color: var(--color-shared-red-foreground);
     }
   }
 
   // Warning state
   &--warning {
     .stepper-indicator {
-      background-color: $color-shared-yellow-foreground;
-      border-color: $color-shared-yellow-foreground;
-      color: $color-neutral-foreground-on-brand;
+      background-color: var(--color-shared-yellow-foreground);
+      border-color: var(--color-shared-yellow-foreground);
+      color: var(--color-neutral-foreground-on-brand);
     }
 
     .stepper-label {
-      color: $color-shared-yellow-foreground;
+      color: var(--color-shared-yellow-foreground);
     }
   }
 }
@@ -222,8 +222,8 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  background-color: $color-neutral-background-rest;
-  border: 2px solid $color-neutral-stroke-rest;
+  background-color: var(--color-neutral-background-rest);
+  border: 2px solid var(--color-neutral-stroke-rest);
   border-radius: $border-radius-circular;
   transition: all $duration-faster $easing-ease-in-out;
   position: relative;
@@ -254,7 +254,7 @@
 .stepper-number {
   font-family: $font-family-base;
   font-weight: $font-weight-regular;
-  color: $color-neutral-foreground-rest;
+  color: var(--color-neutral-foreground-rest);
   transition: all $duration-faster $easing-ease-in-out;
 
   // Default/Medium size
@@ -316,7 +316,7 @@
 .stepper-label {
   font-family: $font-family-base;
   font-weight: $font-weight-regular;
-  color: $color-neutral-foreground2-rest;
+  color: var(--color-neutral-foreground2-rest);
   transition: all $duration-faster $easing-ease-in-out;
   word-wrap: break-word;
 
@@ -340,7 +340,7 @@
 .stepper-description {
   font-family: $font-family-base;
   font-weight: $font-weight-regular;
-  color: $color-neutral-foreground2-rest;
+  color: var(--color-neutral-foreground2-rest);
   transition: all $duration-faster $easing-ease-in-out;
   word-wrap: break-word;
 
@@ -386,7 +386,7 @@
 .stepper-connector-line {
   width: 100%;
   height: 2px;
-  background-color: $color-neutral-stroke-rest;
+  background-color: var(--color-neutral-stroke-rest);
   transition: all $duration-faster $easing-ease-in-out;
   border-radius: $border-radius-200;
 
@@ -403,7 +403,7 @@
   // Active/Completed connector
   .stepper-connector--completed &,
   .stepper-connector--active & {
-    background-color: $color-brand-primary;
+    background-color: var(--color-brand-primary);
   }
 
   // Vertical orientation

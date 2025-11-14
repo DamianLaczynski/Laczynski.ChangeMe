@@ -63,9 +63,9 @@
   margin-bottom: $spacing-2;
   border-radius: $border-radius-400;
   box-shadow: $elevation-8;
-  background-color: $color-neutral-background-rest;
-  border: 1px solid $color-neutral-stroke-rest;
-  color: $color-neutral-foreground-rest;
+  background-color: var(--color-neutral-background-rest);
+  border: 1px solid var(--color-neutral-stroke-rest);
+  color: var(--color-neutral-foreground-rest);
   font-family: $font-family-base;
   font-size: $font-size-300;
   font-weight: $font-weight-regular;
@@ -86,7 +86,7 @@
 
   // Focus state
   &:focus-visible {
-    outline: 2px solid $color-brand-primary;
+    outline: 2px solid var(--color-brand-primary);
     outline-offset: 2px;
   }
 }
@@ -129,7 +129,7 @@
   font-size: $font-size-300;
   font-weight: $font-weight-regular;
   line-height: $line-height-300;
-  color: $color-neutral-foreground2-rest;
+  color: var(--color-neutral-foreground2-rest);
 }
 
 // Actions
@@ -149,17 +149,17 @@
   border: none;
   border-radius: $border-radius-200;
   background: transparent;
-  color: $color-neutral-foreground2-rest;
+  color: var(--color-neutral-foreground2-rest);
   cursor: pointer;
   transition: all $duration-ultra-fast $easing-ease-in-out;
 
   &:hover {
-    color: $color-neutral-foreground-rest;
-    background-color: $color-neutral-background-hover;
+    color: var(--color-neutral-foreground-rest);
+    background-color: var(--color-neutral-background-hover);
   }
 
   &:focus-visible {
-    outline: 2px solid $color-brand-primary;
+    outline: 2px solid var(--color-brand-primary);
     outline-offset: 2px;
   }
 }
@@ -246,71 +246,71 @@
 .toast {
   // Info state
   &--info {
-    border-left: $spacing-1 solid $color-shared-blue-foreground;
-    background-color: $color-shared-blue-background;
+    border-left: $spacing-1 solid var(--color-shared-blue-foreground);
+    background-color: var(--color-shared-blue-background);
 
     .toast__icon {
-      color: $color-shared-blue-foreground;
+      color: var(--color-shared-blue-foreground);
     }
 
     .toast__progress {
-      background-color: $color-shared-blue-foreground;
+      background-color: var(--color-shared-blue-foreground);
     }
   }
 
   // Success state
   &--success {
-    border-left: $spacing-1 solid $color-shared-green-foreground;
-    background-color: $color-shared-green-background;
+    border-left: $spacing-1 solid var(--color-shared-green-foreground);
+    background-color: var(--color-shared-green-background);
 
     .toast__icon {
-      color: $color-shared-green-foreground;
+      color: var(--color-shared-green-foreground);
     }
 
     .toast__progress {
-      background-color: $color-shared-green-foreground;
+      background-color: var(--color-shared-green-foreground);
     }
   }
 
   // Warning state
   &--warning {
-    border-left: $spacing-1 solid $color-shared-yellow-foreground;
-    background-color: $color-shared-yellow-background;
+    border-left: $spacing-1 solid var(--color-shared-yellow-foreground);
+    background-color: var(--color-shared-yellow-background);
 
     .toast__icon {
-      color: $color-shared-yellow-foreground;
+      color: var(--color-shared-yellow-foreground);
     }
 
     .toast__progress {
-      background-color: $color-shared-yellow-foreground;
+      background-color: var(--color-shared-yellow-foreground);
     }
   }
 
   // Error state
   &--error {
-    border-left: $spacing-1 solid $color-shared-red-foreground;
-    background-color: $color-shared-red-background;
+    border-left: $spacing-1 solid var(--color-shared-red-foreground);
+    background-color: var(--color-shared-red-background);
 
     .toast__icon {
-      color: $color-shared-red-foreground;
+      color: var(--color-shared-red-foreground);
     }
 
     .toast__progress {
-      background-color: $color-shared-red-foreground;
+      background-color: var(--color-shared-red-foreground);
     }
   }
 
   // Legacy support for 'danger' (maps to error)
   &--danger {
-    border-left: $spacing-1 solid $color-shared-red-foreground;
-    background-color: $color-shared-red-background;
+    border-left: $spacing-1 solid var(--color-shared-red-foreground);
+    background-color: var(--color-shared-red-background);
 
     .toast__icon {
-      color: $color-shared-red-foreground;
+      color: var(--color-shared-red-foreground);
     }
 
     .toast__progress {
-      background-color: $color-shared-red-foreground;
+      background-color: var(--color-shared-red-foreground);
     }
   }
 }
@@ -322,53 +322,53 @@
 .toast {
   // Outline variant
   &--outline {
-    background-color: $color-neutral-background-rest;
+    background-color: var(--color-neutral-background-rest);
     border-width: 2px;
     border-style: solid;
     border-left-width: 2px;
 
     &.toast--info {
-      border-color: $color-shared-blue-foreground;
-      color: $color-shared-blue-foreground;
+      border-color: var(--color-shared-blue-foreground);
+      color: var(--color-shared-blue-foreground);
 
       .toast__title {
-        color: $color-shared-blue-foreground;
+        color: var(--color-shared-blue-foreground);
       }
     }
 
     &.toast--success {
-      border-color: $color-shared-green-foreground;
-      color: $color-shared-green-foreground;
+      border-color: var(--color-shared-green-foreground);
+      color: var(--color-shared-green-foreground);
 
       .toast__title {
-        color: $color-shared-green-foreground;
+        color: var(--color-shared-green-foreground);
       }
     }
 
     &.toast--warning {
-      border-color: $color-shared-yellow-foreground;
-      color: $color-shared-yellow-foreground;
+      border-color: var(--color-shared-yellow-foreground);
+      color: var(--color-shared-yellow-foreground);
 
       .toast__title {
-        color: $color-shared-yellow-foreground;
+        color: var(--color-shared-yellow-foreground);
       }
     }
 
     &.toast--error {
-      border-color: $color-shared-red-foreground;
-      color: $color-shared-red-foreground;
+      border-color: var(--color-shared-red-foreground);
+      color: var(--color-shared-red-foreground);
 
       .toast__title {
-        color: $color-shared-red-foreground;
+        color: var(--color-shared-red-foreground);
       }
     }
 
     &.toast--danger {
-      border-color: $color-shared-red-foreground;
-      color: $color-shared-red-foreground;
+      border-color: var(--color-shared-red-foreground);
+      color: var(--color-shared-red-foreground);
 
       .toast__title {
-        color: $color-shared-red-foreground;
+        color: var(--color-shared-red-foreground);
       }
     }
   }
@@ -380,42 +380,42 @@
     box-shadow: none;
 
     &.toast--info {
-      color: $color-shared-blue-foreground;
+      color: var(--color-shared-blue-foreground);
 
       .toast__title {
-        color: $color-shared-blue-foreground;
+        color: var(--color-shared-blue-foreground);
       }
     }
 
     &.toast--success {
-      color: $color-shared-green-foreground;
+      color: var(--color-shared-green-foreground);
 
       .toast__title {
-        color: $color-shared-green-foreground;
+        color: var(--color-shared-green-foreground);
       }
     }
 
     &.toast--warning {
-      color: $color-shared-yellow-foreground;
+      color: var(--color-shared-yellow-foreground);
 
       .toast__title {
-        color: $color-shared-yellow-foreground;
+        color: var(--color-shared-yellow-foreground);
       }
     }
 
     &.toast--error {
-      color: $color-shared-red-foreground;
+      color: var(--color-shared-red-foreground);
 
       .toast__title {
-        color: $color-shared-red-foreground;
+        color: var(--color-shared-red-foreground);
       }
     }
 
     &.toast--danger {
-      color: $color-shared-red-foreground;
+      color: var(--color-shared-red-foreground);
 
       .toast__title {
-        color: $color-shared-red-foreground;
+        color: var(--color-shared-red-foreground);
       }
     }
   }

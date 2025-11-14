@@ -32,7 +32,7 @@
 }
 
 .dropdown-placeholder {
-  color: $color-neutral-foreground2-rest;
+  color: var(--color-neutral-foreground2-rest);
   opacity: 0.8;
 }
 
@@ -46,7 +46,7 @@
   left: 0;
   right: 0;
   z-index: 1000;
-  background: $color-neutral-background-rest;
+  background: var(--color-neutral-background-rest);
   border-radius: $border-radius-400;
   box-shadow:
     0px 0px 2px rgba(0, 0, 0, 0.12),
@@ -72,7 +72,7 @@
 
   &__search {
     padding: $spacing-2;
-    border-bottom: 1px solid $color-neutral-stroke-rest;
+    border-bottom: 1px solid var(--color-neutral-stroke-rest);
   }
 
   // =============================================================================
@@ -96,7 +96,7 @@
   &__item-header {
     flex: 1 1 0;
     padding: $spacing-2 6px;
-    color: $color-neutral-foreground2-rest;
+    color: var(--color-neutral-foreground2-rest);
     font-size: $font-size-200;
     font-weight: $font-weight-semibold;
     line-height: $line-height-200;
@@ -112,7 +112,7 @@
   &__divider {
     height: 1px;
     margin: $spacing-1 0;
-    background: $color-neutral-stroke-rest;
+    background: var(--color-neutral-stroke-rest);
   }
 
   // =============================================================================
@@ -122,7 +122,7 @@
   &__empty {
     padding: $spacing-4;
     text-align: center;
-    color: $color-neutral-foreground2-rest;
+    color: var(--color-neutral-foreground2-rest);
     font-size: $font-size-300;
     line-height: $line-height-300;
   }

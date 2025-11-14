@@ -34,11 +34,11 @@
     transition: background-color $duration-faster $easing-ease-in-out;
 
     &:hover:not(:disabled) {
-      background-color: $color-subtle-background-hover;
+      background-color: var(--color-subtle-background-hover);
     }
 
     &:active:not(:disabled) {
-      background-color: $color-subtle-background-pressed;
+      background-color: var(--color-subtle-background-pressed);
     }
   }
 

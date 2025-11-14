@@ -15,7 +15,7 @@
   overflow: hidden;
   box-sizing: border-box;
   
-  @include focus-ring($color-brand-primary);
+  @include focus-ring(var(--color-brand-primary));
 
   // ========================================================================
   // Elements
@@ -42,19 +42,19 @@
     }
     
     &::-webkit-scrollbar-thumb {
-      background: var(--Neutral-Stroke-1-Rest, #D1D1D1);
+      background: var(--color-neutral-stroke-rest);
       border-radius: 6px;
       border: 3px solid transparent;
       background-clip: content-box;
       transition: background $duration-faster $easing-ease-in-out;
       
       &:hover {
-        background: var(--Neutral-Stroke-1-Hover, #C7C7C7);
+        background: var(--color-neutral-stroke-hover);
         background-clip: content-box;
       }
       
       &:active {
-        background: var(--Neutral-Stroke-1-Pressed, #B3B3B3);
+        background: var(--color-neutral-stroke-pressed);
         background-clip: content-box;
       }
     }
@@ -65,7 +65,7 @@
     
     // Firefox scrollbar styling
     scrollbar-width: thin;
-    scrollbar-color: var(--Neutral-Stroke-1-Rest, #D1D1D1) transparent;
+    scrollbar-color: var(--color-neutral-stroke-rest) transparent;
   }
   
   @include element('inner') {
@@ -120,13 +120,13 @@
         background: transparent;
         
         &:hover {
-          background: var(--Neutral-Stroke-1-Hover, #C7C7C7);
+          background: var(--color-neutral-stroke-hover);
           background-clip: content-box;
         }
       }
       
       &:hover::-webkit-scrollbar-thumb {
-        background: var(--Neutral-Stroke-1-Rest, #D1D1D1);
+        background: var(--color-neutral-stroke-rest);
         background-clip: content-box;
       }
       
@@ -134,7 +134,7 @@
       scrollbar-color: transparent transparent;
       
       &:hover {
-        scrollbar-color: var(--Neutral-Stroke-1-Rest, #D1D1D1) transparent;
+        scrollbar-color: var(--color-neutral-stroke-rest) transparent;
       }
     }
   }
@@ -142,12 +142,12 @@
   @include modifier('always') {
     .scroll-panel__content {
       &::-webkit-scrollbar-thumb {
-        background: var(--Neutral-Stroke-1-Rest, #D1D1D1);
+        background: var(--color-neutral-stroke-rest);
         background-clip: content-box;
       }
       
       // Firefox
-      scrollbar-color: var(--Neutral-Stroke-1-Rest, #D1D1D1) transparent;
+      scrollbar-color: var(--color-neutral-stroke-rest) transparent;
     }
   }
   

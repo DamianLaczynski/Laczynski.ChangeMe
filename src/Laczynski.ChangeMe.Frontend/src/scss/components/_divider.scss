@@ -13,7 +13,7 @@
   position: relative;
 
   @include element('line') {
-    background-color: $color-neutral-stroke-disabled;
+    background-color: var(--color-neutral-stroke-disabled);
     
     @include modifier('full') {
       flex: 1 1 0;
@@ -37,7 +37,7 @@
   }
 
   @include element('text') {
-    color: $color-neutral-foreground2-rest;
+    color: var(--color-neutral-foreground2-rest);
     font-size: $font-size-200; // 12px
     font-family: $font-family-base;
     font-weight: $font-weight-regular;

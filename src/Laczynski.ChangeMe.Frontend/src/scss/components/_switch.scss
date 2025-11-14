@@ -69,7 +69,7 @@
 
 // Label text styles
 .switch-label {
-  color: var(--Neutral-Foreground-1-Rest, #242424);
+  color: var(--color-neutral-foreground-rest);
   font-size: 14px;
   font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
   font-weight: 400;
@@ -77,12 +77,12 @@
   word-wrap: break-word;
 
   &--disabled {
-    color: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+    color: var(--color-neutral-foreground-disabled);
   }
 
   &--required::after {
     content: ' *';
-    color: var(--Shared-Red-Foreground, #D13438);
+    color: var(--color-shared-red-foreground);
   }
 }
 
@@ -90,38 +90,38 @@
 // ===== UNCHECKED STATE =====
 .switch--unchecked {
   .switch-stroke {
-    fill: var(--Neutral-Stroke-Accessible-Rest, #616161);
+    fill: var(--color-neutral-stroke-rest);
     transition: fill $duration-ultra-slow $easing-ease-in-out;
   }
 
   .switch-thumb {
-    fill: var(--Neutral-Stroke-Accessible-Rest, #616161);
+    fill: var(--color-neutral-stroke-rest);
     transition: all $duration-ultra-slow $easing-ease-in-out;
   }
 
   // Hover state
   .switch-container:hover:not(:has(.switch-input:disabled)) & {
     .switch-stroke {
-      fill: var(--Neutral-Stroke-Accessible-Hover, #575757);
+      fill: var(--color-neutral-stroke-hover);
     }
     .switch-thumb {
-      fill: var(--Neutral-Stroke-Accessible-Hover, #575757);
+      fill: var(--color-neutral-stroke-hover);
     }
   }
 
   // Pressed state
   .switch-container:active:not(:has(.switch-input:disabled)) & {
     .switch-stroke {
-      fill: var(--Neutral-Stroke-Accessible-Pressed, #4D4D4D);
+      fill: var(--color-neutral-stroke-pressed);
     }
     .switch-thumb {
-      fill: var(--Neutral-Stroke-Accessible-Pressed, #4D4D4D);
+      fill: var(--color-neutral-stroke-pressed);
     }
   }
 
   // Focus state
   .switch-input:focus-visible ~ .switch-visual & {
-    outline: 2px solid var(--Stroke-Focus-2, #000000);
+    outline: 2px solid var(--color-brand-primary);
     outline-offset: 2px;
     border-radius: 20px;
   }
@@ -130,32 +130,32 @@
 // ===== CHECKED STATE =====
 .switch--checked {
   .switch-background {
-    fill: var(--Brand-Background-Compound-Rest, #0F6CBD);
+    fill: var(--color-brand-primary);
     transition: fill $duration-ultra-slow $easing-ease-in-out;
   }
 
   .switch-thumb-checked {
-    fill: var(--Colors-Neutral-White, #FFFFFF);
+    fill: var(--color-neutral-foreground-on-brand);
     transition: all $duration-ultra-slow $easing-ease-in-out;
   }
 
   // Hover state
   .switch-container:hover:not(:has(.switch-input:disabled)) & {
     .switch-background {
-      fill: var(--Brand-Background-Compound-Hover, #115EA3);
+      fill: var(--color-brand-primary-hover);
     }
   }
 
   // Pressed state
   .switch-container:active:not(:has(.switch-input:disabled)) & {
     .switch-background {
-      fill: var(--Brand-Background-Compound-Pressed, #0F548C);
+      fill: var(--color-brand-primary-pressed);
     }
   }
 
   // Focus state
   .switch-input:focus-visible ~ .switch-visual & {
-    outline: 2px solid var(--Stroke-Focus-2, #000000);
+    outline: 2px solid var(--color-brand-primary);
     outline-offset: 2px;
     border-radius: 20px;
   }
@@ -166,24 +166,24 @@
   opacity: 1;
 
   .switch-label {
-    color: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+    color: var(--color-neutral-foreground-disabled);
   }
 
   &.switch--unchecked {
     .switch-stroke {
-      fill: var(--Neutral-Stroke-Disabled-Rest, #E0E0E0);
+      fill: var(--color-neutral-stroke-disabled);
     }
     .switch-thumb {
-      fill: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+      fill: var(--color-neutral-foreground-disabled);
     }
   }
 
   &.switch--checked {
     .switch-background {
-      fill: var(--Neutral-Background-Disabled-Rest, #F0F0F0);
+      fill: var(--color-neutral-background-disabled);
     }
     .switch-thumb-checked {
-      fill: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+      fill: var(--color-neutral-foreground-disabled);
     }
   }
 }
@@ -230,7 +230,7 @@
 // ===== ACCESSIBILITY =====
 .switch-input:focus-visible ~ .switch-visual {
   .switch-svg {
-    outline: 2px solid var(--Stroke-Focus-2, #000000);
+    outline: 2px solid var(--color-brand-primary);
     outline-offset: 2px;
     border-radius: 20px;
   }

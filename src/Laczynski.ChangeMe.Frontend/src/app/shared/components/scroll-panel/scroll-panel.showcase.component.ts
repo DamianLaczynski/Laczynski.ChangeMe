@@ -9,7 +9,7 @@ import { CardComponent } from '../card/card.component';
 
   imports: [CommonModule, ScrollPanelComponent, ButtonComponent, CardComponent],
   template: `
-    <div class="showcase">
+    <div class="showcase showcase--responsive">
       <h1 class="showcase__title">ScrollPanel</h1>
       <p class="showcase__description">
         ScrollPanel provides a scrollable container with customizable scrollbars following the
@@ -19,8 +19,8 @@ import { CardComponent } from '../card/card.component';
 
       <!-- Vertical Scrolling -->
       <section class="showcase__section">
-        <h2 class="showcase__section-title">Vertical Scrolling</h2>
-        <p class="showcase__section-description">
+        <h2 class="showcase__section__title">Vertical Scrolling</h2>
+        <p class="showcase__section__description">
           Default vertical scrolling with auto-hide scrollbars.
         </p>
         <div class="showcase__example">
@@ -41,8 +41,8 @@ import { CardComponent } from '../card/card.component';
 
       <!-- Horizontal Scrolling -->
       <section class="showcase__section">
-        <h2 class="showcase__section-title">Horizontal Scrolling</h2>
-        <p class="showcase__section-description">Horizontal scrolling for wide content.</p>
+        <h2 class="showcase__section__title">Horizontal Scrolling</h2>
+        <p class="showcase__section__description">Horizontal scrolling for wide content.</p>
         <div class="showcase__example">
           <app-scroll-panel orientation="horizontal" maxHeight="400px">
             <div style="display: flex; gap: 12px; padding: 16px;">
@@ -60,8 +60,8 @@ import { CardComponent } from '../card/card.component';
 
       <!-- Both Directions -->
       <section class="showcase__section">
-        <h2 class="showcase__section-title">Bidirectional Scrolling</h2>
-        <p class="showcase__section-description">
+        <h2 class="showcase__section__title">Bidirectional Scrolling</h2>
+        <p class="showcase__section__description">
           Scrolling in both vertical and horizontal directions.
         </p>
         <div class="showcase__example">
@@ -82,7 +82,7 @@ import { CardComponent } from '../card/card.component';
 
       <!-- Scrollbar Behavior -->
       <section class="showcase__section">
-        <h2 class="showcase__section-title">Scrollbar Behavior</h2>
+        <h2 class="showcase__section__title">Scrollbar Behavior</h2>
 
         <h3 class="showcase__subsection-title">Auto (default) - Shows on hover</h3>
         <div class="showcase__example">
@@ -126,7 +126,7 @@ import { CardComponent } from '../card/card.component';
 
       <!-- Sizes -->
       <section class="showcase__section">
-        <h2 class="showcase__section-title">Sizes</h2>
+        <h2 class="showcase__section__title">Sizes</h2>
 
         <h3 class="showcase__subsection-title">Small (200px max height)</h3>
         <div class="showcase__example">
@@ -174,8 +174,8 @@ import { CardComponent } from '../card/card.component';
 
       <!-- Custom Max Height -->
       <section class="showcase__section">
-        <h2 class="showcase__section-title">Custom Dimensions</h2>
-        <p class="showcase__section-description">
+        <h2 class="showcase__section__title">Custom Dimensions</h2>
+        <p class="showcase__section__description">
           You can override max-height and max-width with custom values.
         </p>
         <div class="showcase__example">
@@ -193,8 +193,8 @@ import { CardComponent } from '../card/card.component';
 
       <!-- Programmatic Scrolling -->
       <section class="showcase__section">
-        <h2 class="showcase__section-title">Programmatic Scrolling</h2>
-        <p class="showcase__section-description">
+        <h2 class="showcase__section__title">Programmatic Scrolling</h2>
+        <p class="showcase__section__description">
           Control scrolling programmatically using component methods.
         </p>
         <div class="showcase__example">
@@ -216,8 +216,8 @@ import { CardComponent } from '../card/card.component';
 
       <!-- Scroll Events -->
       <section class="showcase__section">
-        <h2 class="showcase__section-title">Scroll Events</h2>
-        <p class="showcase__section-description">Listen to scroll and scrollEnd events.</p>
+        <h2 class="showcase__section__title">Scroll Events</h2>
+        <p class="showcase__section__description">Listen to scroll and scrollEnd events.</p>
         <div class="showcase__example">
           <p style="margin-bottom: 12px; padding: 12px; background: #ebf3fc; border-radius: 4px;">
             Scroll position: {{ scrollPosition }}px | Last scroll ended: {{ scrollEndCount }} times

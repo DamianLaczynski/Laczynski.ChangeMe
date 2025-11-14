@@ -49,19 +49,19 @@
 .radio-label {
   padding-top: 6px;
   padding-bottom: 6px;
-  color: var(--Neutral-Foreground-1-Rest, #242424);
+  color: var(--color-neutral-foreground-rest);
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
   word-wrap: break-word;
 
   &--disabled {
-    color: var(--Neutral-Foreground-Disabled-Rest, #bdbdbd);
+    color: var(--color-neutral-foreground-disabled);
   }
 
   &--required::after {
     content: ' *';
-    color: var(--Shared-Red-Foreground, #d13438);
+    color: var(--color-shared-red-foreground);
   }
 }
 
@@ -175,13 +175,13 @@
 
 .radio-group-label {
   display: block;
-  color: var(--Neutral-Foreground-2-Rest, #424242);
+  color: var(--color-neutral-foreground2-rest);
   font-size: 14px;
   font-weight: 600;
   line-height: 20px;
 
   &--disabled {
-    color: var(--Neutral-Foreground-Disabled-Rest, #bdbdbd);
+    color: var(--color-neutral-foreground-disabled);
   }
 
   &--small {
@@ -214,6 +214,6 @@
 
 .radio-group--disabled {
   .radio-group-label {
-    color: var(--Neutral-Foreground-Disabled-Rest, #bdbdbd);
+    color: var(--color-neutral-foreground-disabled);
   }
 }

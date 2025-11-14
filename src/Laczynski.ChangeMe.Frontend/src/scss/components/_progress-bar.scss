@@ -9,7 +9,7 @@
 @include block('progress-bar') {
   position: relative;
   width: 100%;
-  background: $color-neutral-stroke-rest;
+  background: var(--color-neutral-stroke-rest);
   border-radius: $border-radius-circular;
   overflow: hidden;
   outline: 1px solid transparent;
@@ -20,7 +20,7 @@
 
   @include element('track') {
     height: 100%;
-    background: $color-brand-primary;
+    background: var(--color-brand-primary);
     border-radius: $border-radius-circular;
     transition: width $duration-normal $easing-ease-in-out;
     position: relative;
@@ -64,38 +64,38 @@
 
   @include modifier('default') {
     .progress-bar__track {
-      background: $color-brand-primary;
+      background: var(--color-brand-primary);
     }
   }
 
   @include modifier('success') {
     .progress-bar__track {
-      background: $color-shared-green-foreground;
+      background: var(--color-shared-green-foreground);
     }
   }
 
   @include modifier('error') {
     .progress-bar__track {
-      background: $color-shared-red-foreground;
+      background: var(--color-shared-red-foreground);
     }
   }
 
   @include modifier('warning') {
     .progress-bar__track {
-      background: $color-shared-orange-foreground;
+      background: var(--color-shared-orange-foreground);
     }
   }
 
   &.progress-bar--determinate.progress-bar--success .progress-bar__track[style*="100%"] {
-    background: $color-shared-green-foreground;
+    background: var(--color-shared-green-foreground);
   }
 
   &.progress-bar--determinate.progress-bar--error .progress-bar__track[style*="100%"] {
-    background: $color-shared-red-foreground;
+    background: var(--color-shared-red-foreground);
   }
 
   &.progress-bar--determinate.progress-bar--warning .progress-bar__track[style*="100%"] {
-    background: $color-shared-orange-foreground;
+    background: var(--color-shared-orange-foreground);
   }
 }
 

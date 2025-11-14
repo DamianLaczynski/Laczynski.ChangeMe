@@ -8,11 +8,11 @@ import { CommonModule, JsonPipe } from '@angular/common';
 
   imports: [ColorComponent, ReactiveFormsModule, FormsModule, JsonPipe, CommonModule],
   template: `
-    <div class="showcase">
-      <h2>Color Picker Component - Fluent 2 Design</h2>
+    <div class="showcase showcase--responsive">
+      <h1 class="showcase__title">Color Picker Component - Fluent 2 Design</h1>
 
       <section class="showcase__section">
-        <h3>Basic Usage</h3>
+        <h2 class="showcase__section__title">Basic Usage</h2>
         <div class="showcase__grid">
           <div class="showcase__item">
             <app-color
@@ -26,7 +26,7 @@ import { CommonModule, JsonPipe } from '@angular/common';
       </section>
 
       <section class="showcase__section">
-        <h3>Color Formats</h3>
+        <h2 class="showcase__section__title">Color Formats</h2>
         <div class="showcase__grid">
           <div class="showcase__item">
             <app-color label="HEX Format" [format]="'hex'" [formControl]="hexColorControl" />
@@ -41,7 +41,7 @@ import { CommonModule, JsonPipe } from '@angular/common';
       </section>
 
       <section class="showcase__section">
-        <h3>With Alpha Channel</h3>
+        <h2 class="showcase__section__title">With Alpha Channel</h2>
         <div class="showcase__grid">
           <div class="showcase__item">
             <app-color
@@ -63,7 +63,7 @@ import { CommonModule, JsonPipe } from '@angular/common';
       </section>
 
       <section class="showcase__section">
-        <h3>Without Presets or Eye Dropper</h3>
+        <h2 class="showcase__section__title">Without Presets or Eye Dropper</h2>
         <div class="showcase__grid">
           <div class="showcase__item">
             <app-color label="No presets" [formControl]="noPresetsControl" />
@@ -79,7 +79,7 @@ import { CommonModule, JsonPipe } from '@angular/common';
       </section>
 
       <section class="showcase__section">
-        <h3>Sizes</h3>
+        <h2 class="showcase__section__title">Sizes</h2>
         <div class="showcase__grid">
           <div class="showcase__item">
             <app-color label="Small" size="small" [formControl]="smallSizeControl" />
@@ -94,7 +94,7 @@ import { CommonModule, JsonPipe } from '@angular/common';
       </section>
 
       <section class="showcase__section">
-        <h3>Variants</h3>
+        <h2 class="showcase__section__title">Variants</h2>
         <div class="showcase__grid">
           <div class="showcase__item">
             <app-color label="Filled" variant="filled" [formControl]="filledControl" />
@@ -113,7 +113,7 @@ import { CommonModule, JsonPipe } from '@angular/common';
       </section>
 
       <section class="showcase__section">
-        <h3>States</h3>
+        <h2 class="showcase__section__title">States</h2>
         <div class="showcase__grid">
           <div class="showcase__item">
             <app-color label="Default" [formControl]="defaultStateControl" />
@@ -146,7 +146,7 @@ import { CommonModule, JsonPipe } from '@angular/common';
       </section>
 
       <section class="showcase__section">
-        <h3>Disabled & Read-only</h3>
+        <h2 class="showcase__section__title">Disabled & Read-only</h2>
         <div class="showcase__grid">
           <div class="showcase__item">
             <app-color label="Disabled" [disabled]="true" [formControl]="disabledControl" />
@@ -158,7 +158,7 @@ import { CommonModule, JsonPipe } from '@angular/common';
       </section>
 
       <section class="showcase__section">
-        <h3>Required Field</h3>
+        <h2 class="showcase__section__title">Required Field</h2>
         <div class="showcase__grid">
           <div class="showcase__item">
             <app-color
@@ -171,7 +171,7 @@ import { CommonModule, JsonPipe } from '@angular/common';
       </section>
 
       <section class="showcase__section">
-        <h3>Form Integration</h3>
+        <h2 class="showcase__section__title">Form Integration</h2>
         <form [formGroup]="colorForm" class="showcase__form">
           <app-color
             label="Brand Primary"
@@ -201,7 +201,7 @@ import { CommonModule, JsonPipe } from '@angular/common';
       </section>
 
       <section class="showcase__section">
-        <h3>Interactive Controls</h3>
+        <h2 class="showcase__section__title">Interactive Controls</h2>
         <div class="showcase__controls">
           <label>
             <input type="checkbox" [(ngModel)]="disabled" [ngModelOptions]="{ standalone: true }" />
@@ -215,79 +215,6 @@ import { CommonModule, JsonPipe } from '@angular/common';
       </section>
     </div>
   `,
-  styles: [
-    `
-      .showcase {
-        padding: 2rem;
-        max-width: 1200px;
-        margin: 0 auto;
-      }
-
-      .showcase h2 {
-        margin-bottom: 2rem;
-        color: var(--color-neutral-foreground-rest);
-      }
-
-      .showcase__section {
-        margin-bottom: 3rem;
-      }
-
-      .showcase__section h3 {
-        margin-bottom: 1.5rem;
-        color: var(--color-neutral-foreground2-rest);
-        font-weight: 600;
-      }
-
-      .showcase__grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 2rem;
-      }
-
-      .showcase__item {
-        display: flex;
-        flex-direction: column;
-      }
-
-      .showcase__form {
-        max-width: 500px;
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-      }
-
-      .showcase__form-output {
-        margin-top: 1rem;
-        padding: 1rem;
-        background: var(--color-neutral-background-hover);
-        border-radius: 8px;
-      }
-
-      .showcase__form-output h4 {
-        margin-bottom: 0.5rem;
-      }
-
-      .showcase__form-output pre {
-        margin: 0;
-        font-family: 'Courier New', monospace;
-        font-size: 0.875rem;
-        white-space: pre-wrap;
-      }
-
-      .showcase__controls {
-        display: flex;
-        gap: 1rem;
-        flex-wrap: wrap;
-      }
-
-      .showcase__controls label {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        cursor: pointer;
-      }
-    `,
-  ],
 })
 export class ColorShowcaseComponent {
   disabled = signal(false);

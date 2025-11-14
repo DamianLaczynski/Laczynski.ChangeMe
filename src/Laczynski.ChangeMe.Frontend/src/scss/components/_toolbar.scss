@@ -11,7 +11,7 @@
   align-items: center;
   gap: $spacing-05; // 2px
   padding: $spacing-1; // 4px
-  background: $color-neutral-background-rest;
+  background: var(--color-neutral-background-rest);
   border-radius: $border-radius-400; // 4px
   width: fit-content;
 

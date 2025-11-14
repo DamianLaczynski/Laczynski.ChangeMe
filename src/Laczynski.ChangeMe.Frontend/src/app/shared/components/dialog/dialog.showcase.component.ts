@@ -8,7 +8,7 @@ import { QuickAction } from '../utils';
 
   imports: [DialogComponent, ButtonComponent],
   template: `
-    <div class="showcase">
+    <div class="showcase showcase--responsive">
       <h1 class="showcase__title">Dialog Component</h1>
       <p class="showcase__description">
         Dialog component based on Fluent 2 Design System - displays modal dialogs with customizable
@@ -17,8 +17,8 @@ import { QuickAction } from '../utils';
 
       <!-- Basic Dialog -->
       <section class="showcase__section">
-        <h2 class="showcase__section-title">Basic Dialog</h2>
-        <p class="showcase__section-description">
+        <h2 class="showcase__section__title">Basic Dialog</h2>
+        <p class="showcase__section__description">
           Simple dialog with title, body text and action buttons.
         </p>
 
@@ -37,8 +37,8 @@ import { QuickAction } from '../utils';
 
       <!-- Dialog with Custom Content -->
       <section class="showcase__section">
-        <h2 class="showcase__section-title">Dialog with Custom Content</h2>
-        <p class="showcase__section-description">
+        <h2 class="showcase__section__title">Dialog with Custom Content</h2>
+        <p class="showcase__section__description">
           Dialog with projected content instead of simple body text.
         </p>
 
@@ -66,8 +66,8 @@ import { QuickAction } from '../utils';
 
       <!-- Dialog Sizes -->
       <section class="showcase__section">
-        <h2 class="showcase__section-title">Dialog Sizes</h2>
-        <p class="showcase__section-description">
+        <h2 class="showcase__section__title">Dialog Sizes</h2>
+        <p class="showcase__section__description">
           Different dialog sizes: small (320px), medium (600px), large (800px).
         </p>
 
@@ -109,8 +109,8 @@ import { QuickAction } from '../utils';
 
       <!-- Non-Closable Dialog -->
       <section class="showcase__section">
-        <h2 class="showcase__section-title">Non-Closable Dialog</h2>
-        <p class="showcase__section-description">
+        <h2 class="showcase__section__title">Non-Closable Dialog</h2>
+        <p class="showcase__section__description">
           Dialog that can only be closed via action buttons (no close button, no ESC key, no
           backdrop click).
         </p>
@@ -134,8 +134,8 @@ import { QuickAction } from '../utils';
 
       <!-- Multiple Actions -->
       <section class="showcase__section">
-        <h2 class="showcase__section-title">Multiple Actions</h2>
-        <p class="showcase__section-description">
+        <h2 class="showcase__section__title">Multiple Actions</h2>
+        <p class="showcase__section__description">
           Dialog with additional action buttons beyond primary and secondary.
         </p>
 
@@ -157,8 +157,8 @@ import { QuickAction } from '../utils';
 
       <!-- No Actions Dialog -->
       <section class="showcase__section">
-        <h2 class="showcase__section-title">Information Only Dialog</h2>
-        <p class="showcase__section-description">
+        <h2 class="showcase__section__title">Information Only Dialog</h2>
+        <p class="showcase__section__description">
           Dialog without action buttons - informational only.
         </p>
 

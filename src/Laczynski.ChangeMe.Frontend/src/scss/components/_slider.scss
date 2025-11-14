@@ -1,7 +1,6 @@
 // Slider Component Styles based on Fluent 2 Design System
 // Implements range slider with track, rail, and thumb
 
-
 .slider-container {
   display: flex;
   flex-direction: column;
@@ -69,7 +68,7 @@
 .slider-rail-fill {
   width: 100%;
   height: 4px;
-  background: var(--Neutral-Stroke-Accessible-Rest, #616161);
+  background: var(--color-neutral-stroke-rest);
   border-radius: 2px;
   transition: background 0.2s ease;
 }
@@ -93,7 +92,7 @@
 .slider-track-fill {
   width: 100%;
   height: 4px;
-  background: var(--Brand-Background-Compound-Rest, #0F6CBD);
+  background: var(--color-brand-primary);
   border-radius: 2px 0 0 2px;
   transition: background 0.2s ease;
 }
@@ -111,9 +110,9 @@
   width: 18px;
   height: 18px;
   padding: 3px;
-  background: var(--Neutral-Background-1-Rest, white);
+  background: var(--color-neutral-background-rest);
   border-radius: 15px;
-  outline: 1px solid var(--Neutral-Stroke-1-Rest, #D1D1D1);
+  outline: 1px solid var(--color-neutral-stroke-rest);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -123,21 +122,20 @@
 .slider-thumb-inner {
   width: 12px;
   height: 12px;
-  background: var(--Brand-Background-Compound-Rest, #0F6CBD);
+  background: var(--color-brand-primary);
   border-radius: 6px;
   transition: background 0.2s ease;
 }
-
 
 // ===== STATE: HOVER =====
 .slider:not(.slider--disabled):not(.slider--readonly) {
   .slider-input:hover ~ .slider-visual {
     .slider-track-fill {
-      background: var(--Brand-Background-Compound-Hover, #115EA3);
+      background: var(--color-brand-primary-hover);
     }
 
     .slider-thumb-inner {
-      background: var(--Brand-Background-Compound-Hover, #115EA3);
+      background: var(--color-brand-primary-hover);
     }
   }
 }
@@ -146,11 +144,11 @@
 .slider--dragging:not(.slider--disabled):not(.slider--readonly),
 .slider:not(.slider--disabled):not(.slider--readonly) .slider-input:active ~ .slider-visual {
   .slider-track-fill {
-    background: var(--Brand-Background-Compound-Pressed, #0F548C);
+    background: var(--color-brand-primary-pressed);
   }
 
   .slider-thumb-inner {
-    background: var(--Brand-Background-Compound-Pressed, #0F548C);
+    background: var(--color-brand-primary-pressed);
   }
 }
 
@@ -159,29 +157,28 @@
   opacity: 1;
 
   .slider-label {
-    color: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+    color: var(--color-neutral-foreground-disabled);
   }
 
   .slider-value {
-    color: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+    color: var(--color-neutral-foreground-disabled);
   }
 
   .slider-rail-fill {
-    background: var(--Neutral-Stroke-Transparent-Disabled-Rest, rgba(255, 255, 255, 0));
+    background: transparent;
   }
 
   .slider-track-fill {
-    background: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+    background: var(--color-neutral-foreground-disabled);
   }
 
   .slider-thumb {
-    outline: 1px solid var(--Neutral-Stroke-Disabled-Rest, #E0E0E0);
+    outline: 1px solid var(--color-neutral-stroke-disabled);
   }
 
   .slider-thumb-inner {
-    background: var(--Neutral-Foreground-Disabled-Rest, #BDBDBD);
+    background: var(--color-neutral-foreground-disabled);
   }
-
 }
 
 // ===== SIZE VARIANTS =====
@@ -221,10 +218,6 @@
     font-size: 12px;
     line-height: 16px;
   }
-}
-
-.slider--medium {
-  // Default size - already defined above
 }
 
 .slider--large {
@@ -268,21 +261,21 @@
 // ===== STATE TYPE VARIANTS =====
 .slider--error {
   .slider-track-fill {
-    background: var(--Shared-Red-Background-2-Rest, #D13438);
+    background: var(--color-shared-red-foreground);
   }
 
   .slider-thumb-inner {
-    background: var(--Shared-Red-Background-2-Rest, #D13438);
+    background: var(--color-shared-red-foreground);
   }
 
   &:not(.slider--disabled):not(.slider--readonly) {
     .slider-input:hover ~ .slider-visual {
       .slider-track-fill {
-        background: var(--Shared-Red-Background-2-Hover, #B92E32);
+        background: var(--color-shared-red-foreground);
       }
 
       .slider-thumb-inner {
-        background: var(--Shared-Red-Background-2-Hover, #B92E32);
+        background: var(--color-shared-red-foreground);
       }
     }
   }
@@ -290,21 +283,21 @@
 
 .slider--warning {
   .slider-track-fill {
-    background: var(--Shared-Orange-Foreground, #F7630C);
+    background: var(--color-shared-orange-foreground);
   }
 
   .slider-thumb-inner {
-    background: var(--Shared-Orange-Foreground, #F7630C);
+    background: var(--color-shared-orange-foreground);
   }
 
   &:not(.slider--disabled):not(.slider--readonly) {
     .slider-input:hover ~ .slider-visual {
       .slider-track-fill {
-        background: var(--Shared-Orange-Foreground-Hover, #DC570B);
+        background: var(--color-shared-orange-foreground);
       }
 
       .slider-thumb-inner {
-        background: var(--Shared-Orange-Foreground-Hover, #DC570B);
+        background: var(--color-shared-orange-foreground);
       }
     }
   }
@@ -312,21 +305,21 @@
 
 .slider--success {
   .slider-track-fill {
-    background: var(--Shared-Green-Foreground, #0E700E);
+    background: var(--color-shared-green-foreground);
   }
 
   .slider-thumb-inner {
-    background: var(--Shared-Green-Foreground, #0E700E);
+    background: var(--color-shared-green-foreground);
   }
 
   &:not(.slider--disabled):not(.slider--readonly) {
     .slider-input:hover ~ .slider-visual {
       .slider-track-fill {
-        background: var(--Shared-Green-Foreground-Hover, #0C600C);
+        background: var(--color-shared-green-foreground);
       }
 
       .slider-thumb-inner {
-        background: var(--Shared-Green-Foreground-Hover, #0C600C);
+        background: var(--color-shared-green-foreground);
       }
     }
   }
@@ -392,10 +385,8 @@
 }
 
 // ===== RTL SUPPORT =====
-[dir="rtl"] {
+[dir='rtl'] {
   .slider-track-fill {
     border-radius: 0 2px 2px 0;
   }
 }
-
-

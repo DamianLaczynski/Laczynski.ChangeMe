@@ -126,88 +126,88 @@
   // ========================================================================
 
   &--brand.badge--filled {
-    background: var(--Brand-Background-1-Rest, #0f6cbd);
-    outline: 1px var(--Brand-Stroke-1-Rest, #0f6cbd) solid;
+    background: var(--color-brand-primary);
+    outline: 1px var(--color-brand-primary) solid;
     outline-offset: -1px;
 
     .badge__text {
-      color: var(--Neutral-Foreground-On-Brand-Rest, white);
+      color: var(--color-neutral-foreground-on-brand);
     }
 
     .badge__icon {
-      color: var(--Neutral-Foreground-On-Brand-Rest, white);
+      color: var(--color-neutral-foreground-on-brand);
     }
   }
 
   &--danger.badge--filled {
-    background: var(--Status-Danger-Background-3-Rest, #c50f1f);
+    background: var(--color-shared-red-foreground);
 
     .badge__text {
-      color: var(--Neutral-Foreground-On-Brand-Rest, white);
+      color: var(--color-neutral-foreground-on-brand);
     }
 
     .badge__icon {
-      color: var(--Neutral-Foreground-On-Brand-Rest, white);
+      color: var(--color-neutral-foreground-on-brand);
     }
   }
 
   &--success.badge--filled {
-    background: var(--Status-Success-Background-3-Rest, #107c10);
+    background: var(--color-shared-green-foreground);
 
     .badge__text {
-      color: var(--Neutral-Foreground-On-Brand-Rest, white);
+      color: var(--color-neutral-foreground-on-brand);
     }
 
     .badge__icon {
-      color: var(--Neutral-Foreground-On-Brand-Rest, white);
+      color: var(--color-neutral-foreground-on-brand);
     }
   }
 
   &--important.badge--filled {
-    background: var(--Neutral-Foreground-1-Rest, #242424);
+    background: var(--color-neutral-foreground-rest);
 
     .badge__text {
-      color: var(--Neutral-Background-1-Rest, white);
+      color: var(--color-neutral-background-rest);
     }
 
     .badge__icon {
-      color: var(--Neutral-Background-1-Rest, white);
+      color: var(--color-neutral-background-rest);
     }
   }
 
   &--informative.badge--filled {
-    background: var(--Neutral-Background-5-Rest, #ebebeb);
+    background: var(--color-neutral-background-selected);
 
     .badge__text {
-      color: var(--Neutral-Foreground-3-Rest, #616161);
+      color: var(--color-neutral-foreground2-rest);
     }
 
     .badge__icon {
-      color: var(--Neutral-Foreground-3-Rest, #616161);
+      color: var(--color-neutral-foreground2-rest);
     }
   }
 
   &--subtle.badge--filled {
-    background: var(--Neutral-Background-5-Rest, #ebebeb);
+    background: var(--color-neutral-background-selected);
 
     .badge__text {
-      color: var(--Neutral-Foreground-1-Rest, #242424);
+      color: var(--color-neutral-foreground-rest);
     }
 
     .badge__icon {
-      color: var(--Neutral-Foreground-1-Rest, #242424);
+      color: var(--color-neutral-foreground-rest);
     }
   }
 
   &--warning.badge--filled {
-    background: var(--Status-Warning-Background-3-Rest, #f7630c);
+    background: var(--color-shared-orange-foreground);
 
     .badge__text {
-      color: var(--Neutral-Foreground-Static-Rest, #242424);
+      color: var(--color-neutral-foreground-rest);
     }
 
     .badge__icon {
-      color: var(--Neutral-Foreground-Static-Rest, #242424);
+      color: var(--color-neutral-foreground-rest);
     }
   }
 
@@ -216,100 +216,100 @@
   // ========================================================================
 
   &--brand.badge--tint {
-    background: var(--Brand-Background-2-Rest, #ebf3fc);
-    outline: 1px var(--Brand-Stroke-2-Rest, #b4d6fa) solid;
+    background: var(--color-neutral-background-brand-selected);
+    outline: 1px var(--color-neutral-stroke-brand-rest) solid;
     outline-offset: -1px;
 
     .badge__text {
-      color: var(--Brand-Foreground-2-Rest, #115ea3);
+      color: var(--color-brand-primary-hover);
     }
 
     .badge__icon {
-      color: var(--Brand-Foreground-2-Rest, #115ea3);
+      color: var(--color-brand-primary-hover);
     }
   }
 
   &--danger.badge--tint {
-    background: var(--Status-Danger-Background-1-Rest, #fdf3f4);
-    outline: 1px var(--Status-Danger-Stroke-1-Rest, #eeacb2) solid;
+    background: var(--color-shared-red-background);
+    outline: 1px var(--color-shared-red-border) solid;
     outline-offset: -1px;
 
     .badge__text {
-      color: var(--Status-Danger-Foreground-1-Rest, #b10e1c);
+      color: var(--color-shared-red-foreground);
     }
 
     .badge__icon {
-      color: var(--Status-Danger-Foreground-1-Rest, #b10e1c);
+      color: var(--color-shared-red-foreground);
     }
   }
 
   &--success.badge--tint {
-    background: var(--Status-Success-Background-1-Rest, #f1faf1);
-    outline: 1px var(--Status-Success-Stroke-1-Rest, #9fd89f) solid;
+    background: var(--color-shared-green-background);
+    outline: 1px var(--color-shared-green-border) solid;
     outline-offset: -1px;
 
     .badge__text {
-      color: var(--Status-Success-Foreground-1-Rest, #0e700e);
+      color: var(--color-shared-green-foreground);
     }
 
     .badge__icon {
-      color: var(--Status-Success-Foreground-1-Rest, #0e700e);
+      color: var(--color-shared-green-foreground);
     }
   }
 
   &--important.badge--tint {
-    background: var(--Neutral-Foreground-3-Rest, #616161);
-    outline: 1px var(--Neutral-Stroke-Accessible-Rest, #616161) solid;
+    background: var(--color-neutral-foreground2-rest);
+    outline: 1px var(--color-neutral-stroke-rest) solid;
     outline-offset: -1px;
 
     .badge__text {
-      color: var(--Neutral-Background-1-Rest, white);
+      color: var(--color-neutral-background-rest);
     }
 
     .badge__icon {
-      color: var(--Neutral-Background-1-Rest, white);
+      color: var(--color-neutral-background-rest);
     }
   }
 
   &--informative.badge--tint {
-    background: var(--Neutral-Background-4-Rest, #f0f0f0);
-    outline: 1px var(--Neutral-Stroke-2-Rest, #e0e0e0) solid;
+    background: var(--color-neutral-background-hover);
+    outline: 1px var(--color-neutral-stroke-rest) solid;
     outline-offset: -1px;
 
     .badge__text {
-      color: var(--Neutral-Foreground-3-Rest, #616161);
+      color: var(--color-neutral-foreground2-rest);
     }
 
     .badge__icon {
-      color: var(--Neutral-Foreground-3-Rest, #616161);
+      color: var(--color-neutral-foreground2-rest);
     }
   }
 
   &--subtle.badge--tint {
-    background: var(--Neutral-Background-1-Rest, white);
-    outline: 1px var(--Neutral-Stroke-2-Rest, #e0e0e0) solid;
+    background: var(--color-neutral-background-rest);
+    outline: 1px var(--color-neutral-stroke-rest) solid;
     outline-offset: -1px;
 
     .badge__text {
-      color: var(--Neutral-Foreground-3-Rest, #616161);
+      color: var(--color-neutral-foreground2-rest);
     }
 
     .badge__icon {
-      color: var(--Neutral-Foreground-3-Rest, #616161);
+      color: var(--color-neutral-foreground2-rest);
     }
   }
 
   &--warning.badge--tint {
-    background: var(--Status-Warning-Background-1-Rest, #fff9f5);
-    outline: 1px var(--Status-Warning-Stroke-1-Rest, #fdcfb4) solid;
+    background: var(--color-shared-orange-background);
+    outline: 1px var(--color-shared-orange-border) solid;
     outline-offset: -1px;
 
     .badge__text {
-      color: var(--Status-Warning-Foreground-2-Rest, #8a3707);
+      color: var(--color-shared-orange-foreground);
     }
 
     .badge__icon {
-      color: var(--Status-Warning-Foreground-2-Rest, #8a3707);
+      color: var(--color-shared-orange-foreground);
     }
   }
 
@@ -319,99 +319,99 @@
 
   &--brand.badge--outline {
     background: transparent;
-    outline: 1px var(--Brand-Stroke-1-Rest, #0f6cbd) solid;
+    outline: 1px var(--color-brand-primary) solid;
     outline-offset: -1px;
 
     .badge__text {
-      color: var(--Brand-Foreground-1-Rest, #0f6cbd);
+      color: var(--color-brand-primary);
     }
 
     .badge__icon {
-      color: var(--Brand-Foreground-1-Rest, #0f6cbd);
+      color: var(--color-brand-primary);
     }
   }
 
   &--danger.badge--outline {
     background: transparent;
-    outline: 1px var(--Status-Danger-Stroke-2-Rest, #c50f1f) solid;
+    outline: 1px var(--color-shared-red-foreground) solid;
     outline-offset: -1px;
 
     .badge__text {
-      color: var(--Status-Danger-Foreground-3-Rest, #c50f1f);
+      color: var(--color-shared-red-foreground);
     }
 
     .badge__icon {
-      color: var(--Status-Danger-Foreground-3-Rest, #c50f1f);
+      color: var(--color-shared-red-foreground);
     }
   }
 
   &--success.badge--outline {
     background: transparent;
-    outline: 1px var(--Status-Success-Stroke-2-Rest, #107c10) solid;
+    outline: 1px var(--color-shared-green-foreground) solid;
     outline-offset: -1px;
 
     .badge__text {
-      color: var(--Status-Success-Foreground-3-Rest, #107c10);
+      color: var(--color-shared-green-foreground);
     }
 
     .badge__icon {
-      color: var(--Status-Success-Foreground-3-Rest, #107c10);
+      color: var(--color-shared-green-foreground);
     }
   }
 
   &--important.badge--outline {
     background: transparent;
-    outline: 1px var(--Neutral-Stroke-Accessible-Rest, #616161) solid;
+    outline: 1px var(--color-neutral-stroke-rest) solid;
     outline-offset: -1px;
 
     .badge__text {
-      color: var(--Neutral-Foreground-3-Rest, #616161);
+      color: var(--color-neutral-foreground2-rest);
     }
 
     .badge__icon {
-      color: var(--Neutral-Foreground-3-Rest, #616161);
+      color: var(--color-neutral-foreground2-rest);
     }
   }
 
   &--informative.badge--outline {
     background: transparent;
-    outline: 1px var(--Neutral-Stroke-2-Rest, #e0e0e0) solid;
+    outline: 1px var(--color-neutral-stroke-rest) solid;
     outline-offset: -1px;
 
     .badge__text {
-      color: var(--Neutral-Foreground-3-Rest, #616161);
+      color: var(--color-neutral-foreground2-rest);
     }
 
     .badge__icon {
-      color: var(--Neutral-Foreground-3-Rest, #616161);
+      color: var(--color-neutral-foreground2-rest);
     }
   }
 
   &--subtle.badge--outline {
     background: transparent;
-    outline: 1px var(--Neutral-Foreground-On-Brand-Rest, white) solid;
+    outline: 1px var(--color-neutral-foreground-on-brand) solid;
     outline-offset: -1px;
 
     .badge__text {
-      color: var(--Neutral-Foreground-On-Brand-Rest, white);
+      color: var(--color-neutral-foreground-on-brand);
     }
 
     .badge__icon {
-      color: var(--Neutral-Foreground-On-Brand-Rest, white);
+      color: var(--color-neutral-foreground-on-brand);
     }
   }
 
   &--warning.badge--outline {
     background: transparent;
-    outline: 1px var(--Status-Warning-Foreground-2-Rest, #8a3707) solid;
+    outline: 1px var(--color-shared-orange-foreground) solid;
     outline-offset: -1px;
 
     .badge__text {
-      color: var(--Status-Warning-Foreground-2-Rest, #8a3707);
+      color: var(--color-shared-orange-foreground);
     }
 
     .badge__icon {
-      color: var(--Status-Warning-Foreground-2-Rest, #8a3707);
+      color: var(--color-shared-orange-foreground);
     }
   }
 
@@ -423,11 +423,11 @@
     background: transparent;
 
     .badge__text {
-      color: var(--Brand-Foreground-1-Rest, #0f6cbd);
+      color: var(--color-brand-primary);
     }
 
     .badge__icon {
-      color: var(--Brand-Foreground-1-Rest, #0f6cbd);
+      color: var(--color-brand-primary);
     }
   }
 
@@ -435,11 +435,11 @@
     background: transparent;
 
     .badge__text {
-      color: var(--Status-Danger-Foreground-3-Rest, #c50f1f);
+      color: var(--color-shared-red-foreground);
     }
 
     .badge__icon {
-      color: var(--Status-Danger-Foreground-3-Rest, #c50f1f);
+      color: var(--color-shared-red-foreground);
     }
   }
 
@@ -447,11 +447,11 @@
     background: transparent;
 
     .badge__text {
-      color: var(--Status-Success-Foreground-3-Rest, #107c10);
+      color: var(--color-shared-green-foreground);
     }
 
     .badge__icon {
-      color: var(--Status-Success-Foreground-3-Rest, #107c10);
+      color: var(--color-shared-green-foreground);
     }
   }
 
@@ -459,11 +459,11 @@
     background: transparent;
 
     .badge__text {
-      color: var(--Neutral-Foreground-3-Rest, #616161);
+      color: var(--color-neutral-foreground2-rest);
     }
 
     .badge__icon {
-      color: var(--Neutral-Foreground-3-Rest, #616161);
+      color: var(--color-neutral-foreground2-rest);
     }
   }
 
@@ -471,11 +471,11 @@
     background: transparent;
 
     .badge__text {
-      color: var(--Neutral-Foreground-3-Rest, #616161);
+      color: var(--color-neutral-foreground2-rest);
     }
 
     .badge__icon {
-      color: var(--Neutral-Foreground-3-Rest, #616161);
+      color: var(--color-neutral-foreground2-rest);
     }
   }
 
@@ -483,11 +483,11 @@
     background: transparent;
 
     .badge__text {
-      color: var(--Neutral-Foreground-On-Brand-Rest, white);
+      color: var(--color-neutral-foreground-on-brand);
     }
 
     .badge__icon {
-      color: var(--Neutral-Foreground-On-Brand-Rest, white);
+      color: var(--color-neutral-foreground-on-brand);
     }
   }
 
@@ -495,11 +495,11 @@
     background: transparent;
 
     .badge__text {
-      color: var(--Status-Warning-Foreground-2-Rest, #8a3707);
+      color: var(--color-shared-orange-foreground);
     }
 
     .badge__icon {
-      color: var(--Status-Warning-Foreground-2-Rest, #8a3707);
+      color: var(--color-shared-orange-foreground);
     }
   }
 }

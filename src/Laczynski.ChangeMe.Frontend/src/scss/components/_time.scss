@@ -13,7 +13,7 @@
 
   &--inline {
     padding-top: $spacing-2;
-    border-top: 1px solid $color-neutral-stroke-rest;
+    border-top: 1px solid var(--color-neutral-stroke-rest);
     margin-top: $spacing-2;
   }
 }
@@ -21,7 +21,7 @@
 .time-picker__label {
   font-size: $font-size-300;
   font-weight: $font-weight-semibold;
-  color: $color-neutral-foreground-rest;
+  color: var(--color-neutral-foreground-rest);
   margin-bottom: $spacing-1;
 }
 
@@ -47,12 +47,12 @@
 .time-picker__input {
   width: $spacing-10;
   padding: $spacing-2;
-  background: $color-neutral-background-rest;
-  border: 1px solid $color-neutral-stroke-rest;
+  background: var(--color-neutral-background-rest);
+  border: 1px solid var(--color-neutral-stroke-rest);
   border-radius: $border-radius-400;
   font-size: $font-size-400;
   font-weight: $font-weight-semibold;
-  color: $color-neutral-foreground-rest;
+  color: var(--color-neutral-foreground-rest);
   font-family: $font-family-base;
   text-align: center;
   transition: all $duration-ultra-fast $easing-ease-in-out;
@@ -67,18 +67,18 @@
   }
 
   &:hover:not(:disabled) {
-    border-color: $color-neutral-stroke-hover;
+    border-color: var(--color-neutral-stroke-hover);
   }
 
   &:focus:not(:disabled) {
     outline: none;
-    border-color: $color-brand-primary;
-    box-shadow: 0 0 0 1px $color-brand-primary;
+    border-color: var(--color-brand-primary);
+    box-shadow: 0 0 0 1px var(--color-brand-primary);
   }
 
   &:disabled {
-    background-color: $color-neutral-background-disabled;
-    color: $color-neutral-foreground-disabled;
+    background-color: var(--color-neutral-background-disabled);
+    color: var(--color-neutral-foreground-disabled);
     cursor: not-allowed;
   }
 }
@@ -86,7 +86,7 @@
 .time-picker__separator {
   font-size: $font-size-500;
   font-weight: $font-weight-semibold;
-  color: $color-neutral-foreground-rest;
+  color: var(--color-neutral-foreground-rest);
   line-height: 1;
   padding-top: $spacing-1;
 }

@@ -11,7 +11,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  background: var(--Neutral-Background-1-Rest, white);
+  background: var(--color-neutral-background-rest);
   border-radius: $border-radius-400;
   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.12);
   overflow: hidden;
@@ -59,7 +59,7 @@
       height: 32px;
 
       path {
-        fill: var(--Neutral-Foreground-1-Rest, #242424);
+        fill: var(--color-neutral-foreground-rest);
       }
     }
   }
@@ -74,7 +74,7 @@
 
   @include element('title') {
     align-self: stretch;
-    color: var(--Neutral-Foreground-1-Rest, #242424);
+    color: var(--color-neutral-foreground-rest);
     font-size: $font-size-300;
     font-family: $font-family-base;
     font-weight: $font-weight-semibold;
@@ -84,7 +84,7 @@
 
   @include element('subtitle') {
     align-self: stretch;
-    color: var(--Neutral-Foreground-3-Rest, #616161);
+    color: var(--color-neutral-foreground2-rest);
     font-size: $font-size-200;
     font-family: $font-family-base;
     font-weight: $font-weight-regular;
@@ -94,7 +94,7 @@
 
   @include element('quick-action') {
     padding: 6px;
-    background: var(--Neutral-Background-Transparent-Rest, rgba(255, 255, 255, 0));
+    background: transparent;
     border: none;
     border-radius: $border-radius-400;
     display: flex;
@@ -103,19 +103,19 @@
     cursor: pointer;
 
     &:hover:not(:disabled) {
-      background: var(--Neutral-Background-1-Hover, #f5f5f5);
+      background: var(--color-neutral-background-hover);
     }
 
     &:active:not(:disabled) {
-      background: var(--Neutral-Background-1-Pressed, #e0e0e0);
+      background: var(--color-neutral-background-pressed);
     }
 
     &:disabled {
-      background: var(--Neutral-Background-Inverted-Disabled-Rest, rgba(255, 255, 255, 0.1));
+      background: color-mix(in srgb, var(--color-neutral-background-rest) 10%, transparent);
       cursor: not-allowed;
 
       svg path {
-        fill: var(--Neutral-Foreground-Disabled-Rest, #bdbdbd);
+        fill: var(--color-neutral-foreground-disabled);
       }
     }
 
@@ -124,7 +124,7 @@
       height: 20px;
 
       path {
-        fill: var(--Neutral-Foreground-2-Rest, #424242);
+        fill: var(--color-neutral-foreground2-rest);
       }
     }
   }
@@ -160,7 +160,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    color: var(--Neutral-Foreground-2-Rest, #424242);
+    color: var(--color-neutral-foreground2-rest);
     font-size: $font-size-200;
     font-family: $font-family-base;
     font-weight: $font-weight-regular;
@@ -198,8 +198,8 @@
   // Style Modifiers - Plain (Default - No hover/focus effects)
   // ========================================================================
   @include modifier('plain') {
-    background: var(--Neutral-Background-1-Rest, white);
-    outline-color: var(--Neutral-Stroke-Transparent-Interactive-Rest, rgba(255, 255, 255, 0));
+    background: var(--color-neutral-background-rest);
+    outline-color: transparent;
     // No hover, focus, or active effects
   }
 
@@ -207,16 +207,16 @@
   // Style Modifiers - Filled
   // ========================================================================
   @include modifier('filled') {
-    background: var(--Neutral-Background-1-Rest, white);
-    outline-color: var(--Neutral-Stroke-Transparent-Interactive-Rest, rgba(255, 255, 255, 0));
+    background: var(--color-neutral-background-rest);
+    outline-color: transparent;
 
     &:hover:not(.card--disabled):not(.card--selected) {
-      background: var(--Neutral-Background-1-Hover, #f5f5f5);
+      background: var(--color-neutral-background-hover);
     }
 
     &:active:not(.card--disabled):not(.card--selected),
     &.card--pressed:not(.card--disabled):not(.card--selected) {
-      background: var(--Neutral-Background-1-Pressed, #e0e0e0);
+      background: var(--color-neutral-background-pressed);
     }
   }
 
@@ -224,18 +224,18 @@
   // Style Modifiers - Outline
   // ========================================================================
   @include modifier('outline') {
-    background: var(--Neutral-Background-1-Rest, white);
-    outline-color: var(--Neutral-Stroke-1-Rest, #d1d1d1);
+    background: var(--color-neutral-background-rest);
+    outline-color: var(--color-neutral-stroke-rest);
 
     &:hover:not(.card--disabled):not(.card--selected) {
-      background: var(--Neutral-Background-1-Hover, #f5f5f5);
-      outline-color: var(--Neutral-Stroke-1-Hover, #c7c7c7);
+      background: var(--color-neutral-background-hover);
+      outline-color: var(--color-neutral-stroke-hover);
     }
 
     &:active:not(.card--disabled):not(.card--selected),
     &.card--pressed:not(.card--disabled):not(.card--selected) {
-      background: var(--Neutral-Background-1-Pressed, #e0e0e0);
-      outline-color: var(--Neutral-Stroke-1-Pressed, #b3b3b3);
+      background: var(--color-neutral-background-pressed);
+      outline-color: var(--color-neutral-stroke-pressed);
     }
   }
 
@@ -248,12 +248,12 @@
     outline-color: transparent;
 
     &:hover:not(.card--disabled):not(.card--selected) {
-      background: var(--Neutral-Background-1-Hover, #f5f5f5);
+      background: var(--color-neutral-background-hover);
     }
 
     &:active:not(.card--disabled):not(.card--selected),
     &.card--pressed:not(.card--disabled):not(.card--selected) {
-      background: var(--Neutral-Background-1-Pressed, #e0e0e0);
+      background: var(--color-neutral-background-pressed);
     }
   }
 
@@ -261,43 +261,43 @@
   // State Modifiers
   // ========================================================================
   @include modifier('selected') {
-    background: var(--Neutral-Background-1-Selected, #ebebeb);
-    outline-color: var(--Neutral-Stroke-1-Selected, #bdbdbd);
+    background: var(--color-neutral-background-selected);
+    outline-color: var(--color-neutral-stroke-selected);
 
     &:hover {
-      background: var(--Neutral-Background-1-Hover, #f5f5f5);
+      background: var(--color-neutral-background-hover);
     }
   }
 
   @include modifier('disabled') {
-    background: var(--Neutral-Background-Disabled-Rest, #f0f0f0);
-    outline-color: var(--Neutral-Stroke-Transparent-Disabled-Rest, rgba(255, 255, 255, 0));
+    background: var(--color-neutral-background-disabled);
+    outline-color: transparent;
     cursor: not-allowed;
     pointer-events: none;
 
     .card__title {
-      color: var(--Neutral-Foreground-Disabled-Rest, #bdbdbd);
+      color: var(--color-neutral-foreground-disabled);
     }
 
     .card__subtitle {
-      color: var(--Neutral-Foreground-Disabled-Rest, #bdbdbd);
+      color: var(--color-neutral-foreground-disabled);
     }
 
     .card__body-text {
-      color: var(--Neutral-Foreground-Disabled-Rest, #bdbdbd);
+      color: var(--color-neutral-foreground-disabled);
     }
 
     .card__header-icon svg path {
-      fill: var(--Neutral-Foreground-Disabled-Rest, #bdbdbd);
+      fill: var(--color-neutral-foreground-disabled);
       opacity: 0.8;
     }
 
     .card__quick-action {
-      background: var(--Neutral-Background-Inverted-Disabled-Rest, rgba(255, 255, 255, 0.1));
+      background: color-mix(in srgb, var(--color-neutral-background-rest) 10%, transparent);
       cursor: not-allowed;
 
       svg path {
-        fill: var(--Neutral-Foreground-2-Rest, #424242);
+        fill: var(--color-neutral-foreground2-rest);
       }
     }
   }
@@ -305,7 +305,7 @@
   @include modifier('clickable') {
     cursor: pointer;
 
-    @include focus-ring($color-brand-primary);
+    @include focus-ring(var(--color-brand-primary));
 
     &:not(.card--disabled) {
       &:hover {
@@ -335,7 +335,7 @@
     }
 
     .card__header-container {
-      border-right: 1px solid var(--Neutral-Stroke-2-Rest, #e0e0e0);
+      border-right: 1px solid var(--color-neutral-stroke-rest);
     }
   }
 

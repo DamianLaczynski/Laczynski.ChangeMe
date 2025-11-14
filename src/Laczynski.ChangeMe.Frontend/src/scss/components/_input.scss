@@ -10,7 +10,7 @@
   align-items: flex-end;
   gap: $spacing-1;
   font-family: $font-family-base;
-  color: $color-neutral-foreground-rest;
+  color: var(--color-neutral-foreground-rest);
   word-wrap: break-word;
   margin-bottom: $spacing-1;
 
@@ -47,33 +47,33 @@
 
   // Disabled state
   &--disabled {
-    color: $color-neutral-foreground-disabled;
+    color: var(--color-neutral-foreground-disabled);
   }
 
   // Required indicator
   &--required::after {
     content: ' *';
-    color: $color-shared-red-foreground;
+    color: var(--color-shared-red-foreground);
   }
 
   // Help state
   &--help {
-    color: $color-neutral-foreground2-rest;
+    color: var(--color-neutral-foreground2-rest);
   }
 
   // Error state
   &--error {
-    color: $color-shared-red-foreground;
+    color: var(--color-shared-red-foreground);
   }
 
   // Warning state
   &--warning {
-    color: $color-shared-yellow-foreground;
+    color: var(--color-shared-yellow-foreground);
   }
 
   // Success state
   &--success {
-    color: $color-shared-green-foreground;
+    color: var(--color-shared-green-foreground);
   }
 }
 
@@ -107,27 +107,27 @@
 
   // Filled variant (default)
   &--filled {
-    background-color: $color-neutral-background-rest;
-    border: 1px solid $color-neutral-stroke-rest;
-    border-bottom-color: $color-neutral-foreground-rest;
+    background-color: var(--color-neutral-background-rest);
+    border: 1px solid var(--color-neutral-stroke-rest);
+    border-bottom-color: var(--color-neutral-foreground-rest);
 
     &:hover {
-      border-color: $color-neutral-stroke-hover;
-      border-bottom-color: $color-neutral-foreground-rest;
+      border-color: var(--color-neutral-stroke-hover);
+      border-bottom-color: var(--color-neutral-foreground-rest);
     }
 
     &:focus-within {
-      border-color: $color-neutral-stroke-pressed;
+      border-color: var(--color-neutral-stroke-pressed);
     }
   }
 
   // Filled with gray background
   &--filled-gray {
-    background-color: $color-neutral-background-hover;
+    background-color: var(--color-neutral-background-hover);
     border: 1px solid transparent;
 
     &:hover {
-      background-color: $color-neutral-background-hover;
+      background-color: var(--color-neutral-background-hover);
     }
   }
 
@@ -135,65 +135,65 @@
   &--underlined {
     background-color: transparent;
     border: none;
-    border-bottom: 1px solid $color-neutral-foreground-rest;
+    border-bottom: 1px solid var(--color-neutral-foreground-rest);
     border-radius: 0;
 
     &:hover {
-      border-bottom-color: $color-neutral-foreground-rest;
+      border-bottom-color: var(--color-neutral-foreground-rest);
     }
   }
 
   // Error state
   &--error {
-    border-color: $color-shared-red-foreground !important;
-    border: 1px solid $color-shared-red-foreground !important;
+    border-color: var(--color-shared-red-foreground) !important;
+    border: 1px solid var(--color-shared-red-foreground) !important;
 
     &.input-wrapper--underlined {
-      border-bottom-color: $color-shared-red-foreground !important;
+      border-bottom-color: var(--color-shared-red-foreground) !important;
     }
   }
 
   // Warning state
   &--warning {
-    border-color: $color-shared-yellow-foreground !important;
-    border: 1px solid $color-shared-yellow-foreground !important;
+    border-color: var(--color-shared-yellow-foreground) !important;
+    border: 1px solid var(--color-shared-yellow-foreground) !important;
 
     &.input-wrapper--underlined {
-      border-bottom-color: $color-shared-yellow-foreground !important;
+      border-bottom-color: var(--color-shared-yellow-foreground) !important;
     }
   }
 
   // Success state
   &--success {
-    border-color: $color-shared-green-foreground !important;
-    border: 1px solid $color-shared-green-foreground !important;
+    border-color: var(--color-shared-green-foreground) !important;
+    border: 1px solid var(--color-shared-green-foreground) !important;
 
     &.input-wrapper--underlined {
-      border-bottom-color: $color-shared-green-foreground !important;
+      border-bottom-color: var(--color-shared-green-foreground) !important;
     }
   }
 
   // Disabled state
   &--disabled {
     background-color: transparent;
-    border-color: $color-neutral-stroke-disabled;
+    border-color: var(--color-neutral-stroke-disabled);
 
     .input {
-      color: $color-neutral-foreground-disabled;
+      color: var(--color-neutral-foreground-disabled);
       cursor: not-allowed;
     }
 
     &:hover {
-      border-color: $color-neutral-stroke-disabled;
+      border-color: var(--color-neutral-stroke-disabled);
     }
   }
 
   &--read-only {
     background-color: transparent;
-    border-color: $color-neutral-stroke-disabled;
+    border-color: var(--color-neutral-stroke-disabled);
 
     &:hover {
-      border-color: $color-neutral-stroke-disabled;
+      border-color: var(--color-neutral-stroke-disabled);
     }
   }
 }
@@ -204,48 +204,48 @@
   border: none;
   outline: none;
   background: transparent;
-  color: $color-neutral-foreground-rest;
+  color: var(--color-neutral-foreground-rest);
   font-family: $font-family-base;
   font-weight: $font-weight-regular;
   letter-spacing: $letter-spacing-normal;
 
   // Placeholder styles
   &::placeholder {
-    color: $color-neutral-foreground2-rest;
+    color: var(--color-neutral-foreground2-rest);
     opacity: 1;
   }
 
   // Focus styles
   &:focus {
-    color: $color-neutral-foreground-rest;
+    color: var(--color-neutral-foreground-rest);
   }
 
   // Disabled styles
   &:disabled {
-    color: $color-neutral-foreground-disabled;
-    border-color: $color-neutral-stroke-disabled;
+    color: var(--color-neutral-foreground-disabled);
+    border-color: var(--color-neutral-stroke-disabled);
     cursor: not-allowed;
   }
 
   // Read only styles
   &:read-only {
-    border-color: $color-neutral-stroke-disabled;
+    border-color: var(--color-neutral-stroke-disabled);
     cursor: default;
   }
 
   // Error state
   .input-wrapper--error & {
-    color: $color-neutral-foreground-rest;
+    color: var(--color-neutral-foreground-rest);
   }
 
   // Warning state
   .input-wrapper--warning & {
-    color: $color-neutral-foreground-rest;
+    color: var(--color-neutral-foreground-rest);
   }
 
   // Success state
   .input-wrapper--success & {
-    color: $color-neutral-foreground-rest;
+    color: var(--color-neutral-foreground-rest);
   }
 }
 
@@ -305,11 +305,11 @@
     bottom: -1px;
     left: -1px;
     right: -1px;
-    background-color: $color-brand-primary;
+    background-color: var(--color-brand-primary);
     transform: scaleX(0);
     border-bottom-left-radius: $border-radius-400;
     border-bottom-right-radius: $border-radius-400;
-    border-bottom: 2px solid $color-brand-primary;
+    border-bottom: 2px solid var(--color-brand-primary);
     clip-path: inset(calc(100% - 2px) 0px 0px);
     transition: transform $duration-fast $easing-decelerate-max;
   }
@@ -320,18 +320,18 @@
 
   // Error state
   &--error::after {
-    background-color: $color-shared-red-foreground;
-    border-bottom-color: $color-shared-red-foreground;
+    background-color: var(--color-shared-red-foreground);
+    border-bottom-color: var(--color-shared-red-foreground);
   }
 
   &--warning::after {
-    background-color: $color-shared-yellow-foreground;
-    border-bottom-color: $color-shared-yellow-foreground;
+    background-color: var(--color-shared-yellow-foreground);
+    border-bottom-color: var(--color-shared-yellow-foreground);
   }
 
   &--success::after {
-    background-color: $color-shared-green-foreground;
-    border-bottom-color: $color-shared-green-foreground;
+    background-color: var(--color-shared-green-foreground);
+    border-bottom-color: var(--color-shared-green-foreground);
   }
 }
 
@@ -359,15 +359,15 @@
   margin: 0;
   outline: none;
   transition: all $duration-ultra-fast $easing-ease-in-out;
-  color: $color-neutral-foreground2-rest;
+  color: var(--color-neutral-foreground2-rest);
   border-radius: $border-radius-200;
 
   &:active {
-    color: $color-neutral-foreground-rest;
+    color: var(--color-neutral-foreground-rest);
   }
 
   svg:hover {
-    color: $color-neutral-foreground2-hover;
+    color: var(--color-neutral-foreground2-hover);
   }
 }
 

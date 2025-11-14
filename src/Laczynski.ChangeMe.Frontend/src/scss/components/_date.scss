@@ -16,7 +16,7 @@
   margin: 0;
   outline: none;
   transition: all $duration-ultra-fast $easing-ease-in-out;
-  color: $color-neutral-foreground2-rest;
+  color: var(--color-neutral-foreground2-rest);
   width: $spacing-5;
   height: $spacing-5;
   min-width: $spacing-5;
@@ -31,30 +31,30 @@
   }
 
   &:hover {
-    color: $color-neutral-foreground-rest;
-    background-color: $color-subtle-background-hover;
+    color: var(--color-neutral-foreground-rest);
+    background-color: var(--color-subtle-background-hover);
   }
 
   &:active {
-    color: $color-neutral-foreground-rest;
-    background-color: $color-subtle-background-pressed;
+    color: var(--color-neutral-foreground-rest);
+    background-color: var(--color-subtle-background-pressed);
   }
 
   &:focus-visible {
-    outline: 2px solid $color-brand-primary;
+    outline: 2px solid var(--color-brand-primary);
     outline-offset: 2px;
   }
 
   // Disabled state
   .input-wrapper--disabled & {
-    color: $color-neutral-foreground-disabled;
+    color: var(--color-neutral-foreground-disabled);
     cursor: not-allowed;
     pointer-events: none;
   }
 
   // Read-only state
   .input-wrapper--read-only & {
-    color: $color-neutral-foreground-disabled;
+    color: var(--color-neutral-foreground-disabled);
     cursor: not-allowed;
     pointer-events: none;
   }
@@ -66,8 +66,8 @@
   top: calc(100% + $spacing-1);
   left: 0;
   z-index: 1000;
-  background: $color-neutral-background-rest;
-  border: 1px solid $color-neutral-stroke-rest;
+  background: var(--color-neutral-background-rest);
+  border: 1px solid var(--color-neutral-stroke-rest);
   border-radius: $border-radius-600;
   box-shadow: $elevation-16;
   padding: $spacing-3;
@@ -105,7 +105,7 @@
 .date-calendar__title {
   font-size: $font-size-300;
   font-weight: $font-weight-semibold;
-  color: $color-neutral-foreground-rest;
+  color: var(--color-neutral-foreground-rest);
   flex: 1;
   text-align: center;
   background: transparent;
@@ -119,16 +119,16 @@
     transition: all $duration-ultra-fast $easing-ease-in-out;
 
     &:hover {
-      background-color: $color-subtle-background-hover;
-      color: $color-brand-primary;
+      background-color: var(--color-subtle-background-hover);
+      color: var(--color-brand-primary);
     }
 
     &:active {
-      background-color: $color-subtle-background-pressed;
+      background-color: var(--color-subtle-background-pressed);
     }
 
     &:focus-visible {
-      outline: 2px solid $color-brand-primary;
+      outline: 2px solid var(--color-brand-primary);
       outline-offset: 2px;
     }
   }
@@ -144,7 +144,7 @@
   border: none;
   border-radius: $border-radius-400;
   cursor: pointer;
-  color: $color-neutral-foreground2-rest;
+  color: var(--color-neutral-foreground2-rest);
   transition: all $duration-ultra-fast $easing-ease-in-out;
 
   svg,
@@ -154,16 +154,16 @@
   }
 
   &:hover {
-    background-color: $color-subtle-background-hover;
-    color: $color-neutral-foreground-rest;
+    background-color: var(--color-subtle-background-hover);
+    color: var(--color-neutral-foreground-rest);
   }
 
   &:active {
-    background-color: $color-subtle-background-pressed;
+    background-color: var(--color-subtle-background-pressed);
   }
 
   &:focus-visible {
-    outline: 2px solid $color-brand-primary;
+    outline: 2px solid var(--color-brand-primary);
     outline-offset: 2px;
   }
 }
@@ -180,7 +180,7 @@
   text-align: center;
   font-size: $font-size-200;
   font-weight: $font-weight-semibold;
-  color: $color-neutral-foreground2-rest;
+  color: var(--color-neutral-foreground2-rest);
   padding: $spacing-1;
 }
 
@@ -203,7 +203,7 @@
   cursor: pointer;
   font-size: $font-size-300;
   font-weight: $font-weight-regular;
-  color: $color-neutral-foreground-rest;
+  color: var(--color-neutral-foreground-rest);
   transition: all $duration-ultra-fast $easing-ease-in-out;
   position: relative;
   padding: 0;
@@ -211,50 +211,50 @@
   min-height: $spacing-7;
 
   &:hover:not(&--disabled) {
-    background-color: $color-subtle-background-hover;
-    color: $color-neutral-foreground-rest;
+    background-color: var(--color-subtle-background-hover);
+    color: var(--color-neutral-foreground-rest);
   }
 
   &:active:not(&--disabled) {
-    background-color: $color-subtle-background-pressed;
+    background-color: var(--color-subtle-background-pressed);
   }
 
   &:focus-visible {
-    outline: 2px solid $color-brand-primary;
+    outline: 2px solid var(--color-brand-primary);
     outline-offset: 2px;
   }
 
   // Other month days
   &--other-month {
-    color: $color-neutral-foreground-disabled;
+    color: var(--color-neutral-foreground-disabled);
     opacity: 0.6;
   }
 
   // Today
   &--today {
-    border-color: $color-brand-primary;
+    border-color: var(--color-brand-primary);
     font-weight: $font-weight-semibold;
   }
 
   // Selected day
   &--selected {
-    background-color: $color-brand-primary;
-    color: $color-neutral-background-rest;
+    background-color: var(--color-brand-primary);
+    color: var(--color-neutral-background-rest);
     font-weight: $font-weight-semibold;
 
     &:hover {
-      background-color: $color-brand-primary-hover;
-      color: $color-neutral-background-rest;
+      background-color: var(--color-brand-primary-hover);
+      color: var(--color-neutral-background-rest);
     }
 
     &:active {
-      background-color: $color-brand-primary-pressed;
+      background-color: var(--color-brand-primary-pressed);
     }
   }
 
   // Disabled day
   &--disabled {
-    color: $color-neutral-foreground-disabled;
+    color: var(--color-neutral-foreground-disabled);
     cursor: not-allowed;
     pointer-events: none;
     opacity: 0.4;
@@ -279,32 +279,32 @@
   display: flex;
   justify-content: center;
   padding-top: $spacing-2;
-  border-top: 1px solid $color-neutral-stroke-rest;
+  border-top: 1px solid var(--color-neutral-stroke-rest);
   margin-top: $spacing-1;
 }
 
 .date-calendar__today-btn {
   padding: $spacing-1 $spacing-3;
   background: transparent;
-  border: 1px solid $color-neutral-stroke-rest;
+  border: 1px solid var(--color-neutral-stroke-rest);
   border-radius: $border-radius-400;
   cursor: pointer;
   font-size: $font-size-300;
   font-weight: $font-weight-semibold;
-  color: $color-brand-primary;
+  color: var(--color-brand-primary);
   transition: all $duration-ultra-fast $easing-ease-in-out;
 
   &:hover {
-    background-color: $color-subtle-background-hover;
-    border-color: $color-brand-primary;
+    background-color: var(--color-subtle-background-hover);
+    border-color: var(--color-brand-primary);
   }
 
   &:active {
-    background-color: $color-subtle-background-pressed;
+    background-color: var(--color-subtle-background-pressed);
   }
 
   &:focus-visible {
-    outline: 2px solid $color-brand-primary;
+    outline: 2px solid var(--color-brand-primary);
     outline-offset: 2px;
   }
 }
@@ -325,36 +325,36 @@
 .date-panel__month {
   padding: $spacing-2;
   background: transparent;
-  border: 1px solid $color-neutral-stroke-rest;
+  border: 1px solid var(--color-neutral-stroke-rest);
   border-radius: $border-radius-400;
   cursor: pointer;
   font-size: $font-size-300;
   font-weight: $font-weight-regular;
-  color: $color-neutral-foreground-rest;
+  color: var(--color-neutral-foreground-rest);
   transition: all $duration-ultra-fast $easing-ease-in-out;
 
   &:hover {
-    background-color: $color-subtle-background-hover;
-    border-color: $color-brand-primary;
+    background-color: var(--color-subtle-background-hover);
+    border-color: var(--color-brand-primary);
   }
 
   &:active {
-    background-color: $color-subtle-background-pressed;
+    background-color: var(--color-subtle-background-pressed);
   }
 
   &:focus-visible {
-    outline: 2px solid $color-brand-primary;
+    outline: 2px solid var(--color-brand-primary);
     outline-offset: 2px;
   }
 
   &--selected {
-    background-color: $color-brand-primary;
-    color: $color-neutral-background-rest;
-    border-color: $color-brand-primary;
+    background-color: var(--color-brand-primary);
+    color: var(--color-neutral-background-rest);
+    border-color: var(--color-brand-primary);
     font-weight: $font-weight-semibold;
 
     &:hover {
-      background-color: $color-brand-primary-hover;
+      background-color: var(--color-brand-primary-hover);
     }
   }
 }
@@ -375,41 +375,41 @@
 .date-calendar__year {
   padding: $spacing-2;
   background: transparent;
-  border: 1px solid $color-neutral-stroke-rest;
+  border: 1px solid var(--color-neutral-stroke-rest);
   border-radius: $border-radius-400;
   cursor: pointer;
   font-size: $font-size-300;
   font-weight: $font-weight-regular;
-  color: $color-neutral-foreground-rest;
+  color: var(--color-neutral-foreground-rest);
   transition: all $duration-ultra-fast $easing-ease-in-out;
 
   &:hover {
-    background-color: $color-subtle-background-hover;
-    border-color: $color-brand-primary;
+    background-color: var(--color-subtle-background-hover);
+    border-color: var(--color-brand-primary);
   }
 
   &:active {
-    background-color: $color-subtle-background-pressed;
+    background-color: var(--color-subtle-background-pressed);
   }
 
   &:focus-visible {
-    outline: 2px solid $color-brand-primary;
+    outline: 2px solid var(--color-brand-primary);
     outline-offset: 2px;
   }
 
   &--selected {
-    background-color: $color-brand-primary;
-    color: $color-neutral-background-rest;
-    border-color: $color-brand-primary;
+    background-color: var(--color-brand-primary);
+    color: var(--color-neutral-background-rest);
+    border-color: var(--color-brand-primary);
     font-weight: $font-weight-semibold;
 
     &:hover {
-      background-color: $color-brand-primary-hover;
+      background-color: var(--color-brand-primary-hover);
     }
   }
 
   &--current {
-    border-color: $color-brand-primary;
+    border-color: var(--color-brand-primary);
     font-weight: $font-weight-semibold;
   }
 }
@@ -429,16 +429,16 @@
   }
 
   &::-webkit-scrollbar-track {
-    background: $color-neutral-background-hover;
+    background: var(--color-neutral-background-hover);
     border-radius: $border-radius-400;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: $color-neutral-stroke-rest;
+    background: var(--color-neutral-stroke-rest);
     border-radius: $border-radius-400;
 
     &:hover {
-      background: $color-neutral-stroke-hover;
+      background: var(--color-neutral-stroke-hover);
     }
   }
 }
@@ -449,35 +449,35 @@
   justify-content: space-between;
   padding: $spacing-2 $spacing-3;
   background: transparent;
-  border: 1px solid $color-neutral-stroke-rest;
+  border: 1px solid var(--color-neutral-stroke-rest);
   border-radius: $border-radius-400;
   cursor: pointer;
   font-size: $font-size-300;
-  color: $color-neutral-foreground-rest;
+  color: var(--color-neutral-foreground-rest);
   transition: all $duration-ultra-fast $easing-ease-in-out;
 
   &:hover {
-    background-color: $color-subtle-background-hover;
-    border-color: $color-brand-primary;
+    background-color: var(--color-subtle-background-hover);
+    border-color: var(--color-brand-primary);
   }
 
   &:active {
-    background-color: $color-subtle-background-pressed;
+    background-color: var(--color-subtle-background-pressed);
   }
 
   &:focus-visible {
-    outline: 2px solid $color-brand-primary;
+    outline: 2px solid var(--color-brand-primary);
     outline-offset: 2px;
   }
 
   &--selected {
-    background-color: $color-brand-primary;
-    color: $color-neutral-background-rest;
-    border-color: $color-brand-primary;
+    background-color: var(--color-brand-primary);
+    color: var(--color-neutral-background-rest);
+    border-color: var(--color-brand-primary);
     font-weight: $font-weight-semibold;
 
     &:hover {
-      background-color: $color-brand-primary-hover;
+      background-color: var(--color-brand-primary-hover);
     }
   }
 }
@@ -501,7 +501,7 @@
 
   &--inline {
     padding-top: $spacing-2;
-    border-top: 1px solid $color-neutral-stroke-rest;
+    border-top: 1px solid var(--color-neutral-stroke-rest);
     margin-top: $spacing-2;
   }
 }
@@ -509,7 +509,7 @@
 .time-picker__label {
   font-size: $font-size-300;
   font-weight: $font-weight-semibold;
-  color: $color-neutral-foreground-rest;
+  color: var(--color-neutral-foreground-rest);
   margin-bottom: $spacing-1;
 }
 
@@ -534,10 +534,10 @@
   width: $spacing-7;
   height: $spacing-6;
   background: transparent;
-  border: 1px solid $color-neutral-stroke-rest;
+  border: 1px solid var(--color-neutral-stroke-rest);
   border-radius: $border-radius-400;
   cursor: pointer;
-  color: $color-neutral-foreground2-rest;
+  color: var(--color-neutral-foreground2-rest);
   transition: all $duration-ultra-fast $easing-ease-in-out;
 
   svg,
@@ -547,17 +547,17 @@
   }
 
   &:hover {
-    background-color: $color-subtle-background-hover;
-    border-color: $color-brand-primary;
-    color: $color-neutral-foreground-rest;
+    background-color: var(--color-subtle-background-hover);
+    border-color: var(--color-brand-primary);
+    color: var(--color-neutral-foreground-rest);
   }
 
   &:active {
-    background-color: $color-subtle-background-pressed;
+    background-color: var(--color-subtle-background-pressed);
   }
 
   &:focus-visible {
-    outline: 2px solid $color-brand-primary;
+    outline: 2px solid var(--color-brand-primary);
     outline-offset: 2px;
   }
 
@@ -571,12 +571,12 @@
 .time-picker__input {
   width: $spacing-10;
   padding: $spacing-2;
-  background: $color-neutral-background-rest;
-  border: 1px solid $color-neutral-stroke-rest;
+  background: var(--color-neutral-background-rest);
+  border: 1px solid var(--color-neutral-stroke-rest);
   border-radius: $border-radius-400;
   font-size: $font-size-400;
   font-weight: $font-weight-semibold;
-  color: $color-neutral-foreground-rest;
+  color: var(--color-neutral-foreground-rest);
   font-family: $font-family-base;
   text-align: center;
   transition: all $duration-ultra-fast $easing-ease-in-out;
@@ -591,18 +591,18 @@
   }
 
   &:hover {
-    border-color: $color-neutral-stroke-hover;
+    border-color: var(--color-neutral-stroke-hover);
   }
 
   &:focus {
     outline: none;
-    border-color: $color-brand-primary;
-    box-shadow: 0 0 0 1px $color-brand-primary;
+    border-color: var(--color-brand-primary);
+    box-shadow: 0 0 0 1px var(--color-brand-primary);
   }
 
   &:disabled {
-    background-color: $color-neutral-background-disabled;
-    color: $color-neutral-foreground-disabled;
+    background-color: var(--color-neutral-background-disabled);
+    color: var(--color-neutral-foreground-disabled);
     cursor: not-allowed;
   }
 }
@@ -610,7 +610,7 @@
 .time-picker__separator {
   font-size: $font-size-500;
   font-weight: $font-weight-semibold;
-  color: $color-neutral-foreground-rest;
+  color: var(--color-neutral-foreground-rest);
   line-height: 1;
   padding-top: $spacing-1;
 }
@@ -633,9 +633,9 @@
     border: 1px solid currentColor;
 
     &--selected {
-      background-color: $color-neutral-foreground-rest;
-      color: $color-neutral-background-rest;
-      border-color: $color-neutral-foreground-rest;
+      background-color: var(--color-neutral-foreground-rest);
+      color: var(--color-neutral-background-rest);
+      border-color: var(--color-neutral-foreground-rest);
     }
 
     &--today {
@@ -671,8 +671,8 @@
 // Dark mode support (if needed)
 @media (prefers-color-scheme: dark) {
   .date-panel {
-    background: $color-neutral-background-rest;
-    border-color: $color-neutral-stroke-rest;
+    background: var(--color-neutral-background-rest);
+    border-color: var(--color-neutral-stroke-rest);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
   }
 }

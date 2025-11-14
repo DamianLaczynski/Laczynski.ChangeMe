@@ -40,19 +40,19 @@
   padding-top: 6px;
   padding-bottom: 6px;
   padding-right: 8px;
-  color: var(--Neutral-Foreground-1-Rest, #242424);
+  color: var(--color-neutral-foreground-rest);
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
   word-wrap: break-word;
 
   &--disabled {
-    color: var(--Neutral-Foreground-Disabled-Rest, #bdbdbd);
+    color: var(--color-neutral-foreground-disabled);
   }
 
   &--required::after {
     content: ' *';
-    color: var(--Shared-Red-Foreground, #d13438);
+    color: var(--color-shared-red-foreground);
   }
 }
 

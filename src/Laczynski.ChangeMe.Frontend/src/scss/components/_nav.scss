@@ -49,7 +49,7 @@
   }
 
   @include element('text') {
-    color: #424242; // Neutral Foreground 2 Link Rest
+    color: var(--color-neutral-foreground2-rest);
     font-size: $font-size-200; // 12px
     font-family: $font-family-base;
     font-weight: $font-weight-semibold; // 600

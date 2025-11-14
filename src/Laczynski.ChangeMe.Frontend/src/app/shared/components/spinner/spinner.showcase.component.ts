@@ -6,7 +6,7 @@ import { SpinnerComponent } from './spinner.component';
   selector: 'app-spinner-showcase',
   imports: [SpinnerComponent, CommonModule],
   template: `
-    <div class="showcase">
+    <div class="showcase showcase--responsive">
       <h1 class="showcase__title">Spinner Component</h1>
       <p class="showcase__description">
         Spinner component based on Fluent 2 Design System - displays loading states with
@@ -15,8 +15,8 @@ import { SpinnerComponent } from './spinner.component';
 
       <!-- Size Variants - Default State -->
       <section class="showcase__section">
-        <h2 class="showcase__section-title">Size Variants - Default State</h2>
-        <p class="showcase__section-description">
+        <h2 class="showcase__section__title">Size Variants - Default State</h2>
+        <p class="showcase__section__description">
           All available spinner sizes with default (brand) colors.
         </p>
 
@@ -68,8 +68,8 @@ import { SpinnerComponent } from './spinner.component';
 
       <!-- State Variants (Colors) -->
       <section class="showcase__section">
-        <h2 class="showcase__section-title">State Variants (Colors)</h2>
-        <p class="showcase__section-description">Different color states for various use cases.</p>
+        <h2 class="showcase__section__title">State Variants (Colors)</h2>
+        <p class="showcase__section__description">Different color states for various use cases.</p>
 
         <div
           class="showcase__demo"
@@ -104,8 +104,8 @@ import { SpinnerComponent } from './spinner.component';
 
       <!-- Inverted State -->
       <section class="showcase__section">
-        <h2 class="showcase__section-title">Inverted State</h2>
-        <p class="showcase__section-description">Inverted colors for dark backgrounds.</p>
+        <h2 class="showcase__section__title">Inverted State</h2>
+        <p class="showcase__section__description">Inverted colors for dark backgrounds.</p>
 
         <div
           class="showcase__demo"
@@ -155,8 +155,8 @@ import { SpinnerComponent } from './spinner.component';
 
       <!-- Label Position - After -->
       <section class="showcase__section">
-        <h2 class="showcase__section-title">Label Position - After</h2>
-        <p class="showcase__section-description">
+        <h2 class="showcase__section__title">Label Position - After</h2>
+        <p class="showcase__section__description">
           Spinner with label positioned after (to the right of) the spinner.
         </p>
 
@@ -173,8 +173,8 @@ import { SpinnerComponent } from './spinner.component';
 
       <!-- Label Position - Before -->
       <section class="showcase__section">
-        <h2 class="showcase__section-title">Label Position - Before</h2>
-        <p class="showcase__section-description">
+        <h2 class="showcase__section__title">Label Position - Before</h2>
+        <p class="showcase__section__description">
           Spinner with label positioned before (to the left of) the spinner.
         </p>
 
@@ -191,8 +191,8 @@ import { SpinnerComponent } from './spinner.component';
 
       <!-- Label Position - Above -->
       <section class="showcase__section">
-        <h2 class="showcase__section-title">Label Position - Above</h2>
-        <p class="showcase__section-description">
+        <h2 class="showcase__section__title">Label Position - Above</h2>
+        <p class="showcase__section__description">
           Spinner with label positioned above the spinner.
         </p>
 
@@ -208,8 +208,8 @@ import { SpinnerComponent } from './spinner.component';
 
       <!-- Label Position - Below -->
       <section class="showcase__section">
-        <h2 class="showcase__section-title">Label Position - Below</h2>
-        <p class="showcase__section-description">
+        <h2 class="showcase__section__title">Label Position - Below</h2>
+        <p class="showcase__section__description">
           Spinner with label positioned below the spinner.
         </p>
 
@@ -225,8 +225,8 @@ import { SpinnerComponent } from './spinner.component';
 
       <!-- Usage Examples -->
       <section class="showcase__section">
-        <h2 class="showcase__section-title">Usage Examples</h2>
-        <p class="showcase__section-description">
+        <h2 class="showcase__section__title">Usage Examples</h2>
+        <p class="showcase__section__description">
           Real-world usage examples of the spinner component.
         </p>
 

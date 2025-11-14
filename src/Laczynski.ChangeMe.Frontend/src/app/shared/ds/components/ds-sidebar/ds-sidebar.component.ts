@@ -1,16 +1,31 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { NavComponent, NavNode } from '@shared/components/nav';
 import { filter } from 'rxjs/operators';
+import { LayoutService } from '@core/layout/services/layout.service';
+import { NodeComponent, Node } from '@shared/components/node';
 
 @Component({
   selector: 'app-ds-sidebar',
-  imports: [NavComponent],
+  imports: [NavComponent, NodeComponent],
   templateUrl: './ds-sidebar.component.html',
 })
 export class DsSidebarComponent {
   private readonly router = inject(Router);
+  private readonly layoutService = inject(LayoutService);
   selectedItemId = signal<string | null>(null);
+
+  // Dark mode state - computed from layout service
+  isDarkMode = computed(() => this.layoutService.$themeMode() === 'dark');
+  themeLabel = computed(() => (this.isDarkMode() ? 'Light mode' : 'Dark mode'));
+  themeIcon = computed(() => (this.isDarkMode() ? 'weather_sunny' : 'weather_moon'));
+
+  // Theme toggle node
+  themeNode = computed<Node>(() => ({
+    id: 'theme-toggle',
+    label: this.themeLabel(),
+    icon: this.themeIcon(),
+  }));
 
   navItems: NavNode[] = [
     // Form Components Section
@@ -111,5 +126,9 @@ export class DsSidebarComponent {
       }));
     });
     // Set onClick handlers for all items
+  }
+
+  onDarkModeToggle(): void {
+    this.layoutService.toggleTheme();
   }
 }

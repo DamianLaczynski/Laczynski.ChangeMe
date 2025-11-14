@@ -5,54 +5,49 @@
 @use '../utils/variables' as *;
 
 // Headings
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: $font-family-base;
   font-weight: $font-weight-bold;
   line-height: $line-height-300;
   margin-bottom: $spacing-3;
-  color: $color-neutral-foreground-rest;
+  color: var(--color-neutral-foreground-rest);
 }
 
 h1 {
   font-size: $font-size-800;
   margin-bottom: $spacing-4;
-  
-
 }
 
 h2 {
   font-size: $font-size-700;
-  
-
 }
 
 h3 {
   font-size: $font-size-600;
-
 }
 
 h4 {
   font-size: $font-size-500;
-  
-
 }
 
 h5 {
   font-size: $font-size-400;
-  
-
 }
 
 h6 {
   font-size: $font-size-300;
-
 }
 
 // Paragraphs
 p {
   margin-bottom: $spacing-3;
   line-height: $line-height-400;
-  
+
   &:last-child {
     margin-bottom: 0;
   }
@@ -60,23 +55,22 @@ p {
 
 // Links
 a {
-  color: $color-brand-primary;
+  color: var(--color-brand-primary);
   text-decoration: none;
   transition: color $duration-fast $easing-ease-in-out;
-  
+
   &:hover {
-    color: $color-brand-primary-hover;
+    color: var(--color-brand-primary-hover);
     text-decoration: underline;
   }
-  
-
 }
 
 // Lists
-ul, ol {
+ul,
+ol {
   margin-bottom: $spacing-3;
   padding-left: $spacing-4;
-  
+
   &:last-child {
     margin-bottom: 0;
   }
@@ -92,7 +86,7 @@ ol {
 
 li {
   margin-bottom: $spacing-1;
-  
+
   &:last-child {
     margin-bottom: 0;
   }
@@ -101,7 +95,7 @@ li {
 // Definition lists
 dl {
   margin-bottom: $spacing-3;
-  
+
   &:last-child {
     margin-bottom: 0;
   }
@@ -115,7 +109,7 @@ dt {
 dd {
   margin-bottom: $spacing-2;
   margin-left: $spacing-3;
-  
+
   &:last-child {
     margin-bottom: 0;
   }
@@ -125,25 +119,25 @@ dd {
 blockquote {
   margin: $spacing-4 0;
   padding: $spacing-3 $spacing-4;
-  border-left: 4px solid $color-brand-primary;
-  background-color: $color-neutral-background-selected;
+  border-left: 4px solid var(--color-brand-primary);
+  background-color: var(--color-neutral-background-selected);
   font-style: italic;
-  
+
   p {
     margin-bottom: $spacing-2;
-    
+
     &:last-child {
       margin-bottom: 0;
     }
   }
-  
+
   cite {
     display: block;
     margin-top: $spacing-2;
     font-size: $font-size-200;
-    color: $color-neutral-foreground2-rest;
+    color: var(--color-neutral-foreground2-rest);
     font-style: normal;
-    
+
     &::before {
       content: '— ';
     }
@@ -154,26 +148,26 @@ blockquote {
 code {
   font-family: $font-family-mono;
   font-size: 0.875em;
-  background-color: $color-neutral-background-selected;
+  background-color: var(--color-neutral-background-selected);
   padding: 0.125em 0.25em;
   border-radius: $border-radius-200;
-  color: $color-shared-red-foreground;
+  color: var(--color-shared-red-foreground);
 }
 
 pre {
   font-family: $font-family-mono;
   font-size: $font-size-200;
   line-height: $line-height-400;
-  background-color: $color-neutral-background-selected;
+  background-color: var(--color-neutral-background-selected);
   padding: $spacing-3;
   border-radius: $border-radius-400;
   overflow-x: auto;
   margin-bottom: $spacing-3;
-  
+
   &:last-child {
     margin-bottom: 0;
   }
-  
+
   code {
     background: none;
     padding: 0;
@@ -184,20 +178,20 @@ pre {
 // Small text
 small {
   font-size: $font-size-200;
-  color: $color-neutral-foreground2-rest;
+  color: var(--color-neutral-foreground2-rest);
 }
 
 // Mark/highlight
 mark {
-  background-color: $color-shared-yellow-background;
-  color: $color-neutral-foreground-rest;
+  background-color: var(--color-shared-yellow-background);
+  color: var(--color-neutral-foreground-rest);
   padding: 0.125em 0.25em;
   border-radius: $border-radius-200;
 }
 
 // Abbreviations
 abbr[title] {
-  border-bottom: 1px dotted $color-neutral-stroke-rest;
+  border-bottom: 1px dotted var(--color-neutral-stroke-rest);
   cursor: help;
 }
 
@@ -206,7 +200,7 @@ address {
   font-style: normal;
   line-height: $line-height-400;
   margin-bottom: $spacing-3;
-  
+
   &:last-child {
     margin-bottom: 0;
   }
@@ -216,17 +210,17 @@ address {
 hr {
   border: none;
   height: 1px;
-  background-color: $color-neutral-stroke-rest;
+  background-color: var(--color-neutral-stroke-rest);
   margin: $spacing-4 0;
 }
 
 // Selection
 ::selection {
-  background-color: $color-brand-primary;
-  color: $color-neutral-foreground-on-brand;
+  background-color: var(--color-brand-primary);
+  color: var(--color-neutral-foreground-on-brand);
 }
 
 ::-moz-selection {
-  background-color: $color-brand-primary;
-  color: $color-neutral-foreground-on-brand;
+  background-color: var(--color-brand-primary);
+  color: var(--color-neutral-foreground-on-brand);
 }

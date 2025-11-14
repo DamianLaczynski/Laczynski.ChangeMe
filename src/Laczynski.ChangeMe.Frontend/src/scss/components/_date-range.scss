@@ -10,8 +10,8 @@
   top: calc(100% + $spacing-1);
   left: 0;
   z-index: 1000;
-  background: $color-neutral-background-rest;
-  border: 1px solid $color-neutral-stroke-rest;
+  background: var(--color-neutral-background-rest);
+  border: 1px solid var(--color-neutral-stroke-rest);
   border-radius: $border-radius-600;
   box-shadow: $elevation-16;
   display: flex;
@@ -113,7 +113,7 @@
 .date-range-calendar__title {
   font-size: $font-size-300;
   font-weight: $font-weight-semibold;
-  color: $color-neutral-foreground-rest;
+  color: var(--color-neutral-foreground-rest);
   flex: 1;
   text-align: center;
   background: transparent;
@@ -127,16 +127,16 @@
     transition: all $duration-ultra-fast $easing-ease-in-out;
 
     &:hover {
-      background-color: $color-subtle-background-hover;
-      color: $color-brand-primary;
+      background-color: var(--color-subtle-background-hover);
+      color: var(--color-brand-primary);
     }
 
     &:active {
-      background-color: $color-subtle-background-pressed;
+      background-color: var(--color-subtle-background-pressed);
     }
 
     &:focus-visible {
-      outline: 2px solid $color-brand-primary;
+      outline: 2px solid var(--color-brand-primary);
       outline-offset: 2px;
     }
   }
@@ -152,7 +152,7 @@
   border: none;
   border-radius: $border-radius-400;
   cursor: pointer;
-  color: $color-neutral-foreground2-rest;
+  color: var(--color-neutral-foreground2-rest);
   transition: all $duration-ultra-fast $easing-ease-in-out;
 
   svg {
@@ -161,16 +161,16 @@
   }
 
   &:hover {
-    background-color: $color-subtle-background-hover;
-    color: $color-neutral-foreground-rest;
+    background-color: var(--color-subtle-background-hover);
+    color: var(--color-neutral-foreground-rest);
   }
 
   &:active {
-    background-color: $color-subtle-background-pressed;
+    background-color: var(--color-subtle-background-pressed);
   }
 
   &:focus-visible {
-    outline: 2px solid $color-brand-primary;
+    outline: 2px solid var(--color-brand-primary);
     outline-offset: 2px;
   }
 }
@@ -187,7 +187,7 @@
   text-align: center;
   font-size: $font-size-200;
   font-weight: $font-weight-semibold;
-  color: $color-neutral-foreground2-rest;
+  color: var(--color-neutral-foreground2-rest);
   padding: $spacing-1;
 }
 
@@ -210,7 +210,7 @@
   cursor: pointer;
   font-size: $font-size-300;
   font-weight: $font-weight-regular;
-  color: $color-neutral-foreground-rest;
+  color: var(--color-neutral-foreground-rest);
   transition: all $duration-ultra-fast $easing-ease-in-out;
   position: relative;
   padding: 0;
@@ -218,46 +218,46 @@
   min-height: $spacing-7;
 
   &:hover:not(&--disabled) {
-    background-color: $color-subtle-background-hover;
-    color: $color-neutral-foreground-rest;
+    background-color: var(--color-subtle-background-hover);
+    color: var(--color-neutral-foreground-rest);
   }
 
   &:active:not(&--disabled) {
-    background-color: $color-subtle-background-pressed;
+    background-color: var(--color-subtle-background-pressed);
   }
 
   &:focus-visible {
-    outline: 2px solid $color-brand-primary;
+    outline: 2px solid var(--color-brand-primary);
     outline-offset: 2px;
     z-index: 1;
   }
 
   // Other month days
   &--other-month {
-    color: $color-neutral-foreground-disabled;
+    color: var(--color-neutral-foreground-disabled);
     opacity: 0.6;
   }
 
   // Today
   &--today {
-    border-color: $color-brand-primary;
+    border-color: var(--color-brand-primary);
     font-weight: $font-weight-semibold;
   }
 
   // In range (between start and end)
   &--in-range {
-    background-color: $color-neutral-background-brand-hover;
+    background-color: var(--color-neutral-background-brand-hover);
     border-radius: 0;
     
     &:hover {
-      background-color: $color-neutral-background-brand-selected;
+      background-color: var(--color-neutral-background-brand-selected);
     }
   }
 
   // Range start
   &--range-start {
-    background-color: $color-brand-primary;
-    color: $color-neutral-background-rest;
+    background-color: var(--color-brand-primary);
+    color: var(--color-neutral-background-rest);
     font-weight: $font-weight-semibold;
     border-top-left-radius: $border-radius-400;
     border-bottom-left-radius: $border-radius-400;
@@ -265,12 +265,12 @@
     border-bottom-right-radius: 0;
 
     &:hover {
-      background-color: $color-brand-primary-hover;
-      color: $color-neutral-background-rest;
+      background-color: var(--color-brand-primary-hover);
+      color: var(--color-neutral-background-rest);
     }
 
     &:active {
-      background-color: $color-brand-primary-pressed;
+      background-color: var(--color-brand-primary-pressed);
     }
 
     // If also range end (single day selection)
@@ -281,8 +281,8 @@
 
   // Range end
   &--range-end {
-    background-color: $color-brand-primary;
-    color: $color-neutral-background-rest;
+    background-color: var(--color-brand-primary);
+    color: var(--color-neutral-background-rest);
     font-weight: $font-weight-semibold;
     border-top-right-radius: $border-radius-400;
     border-bottom-right-radius: $border-radius-400;
@@ -290,36 +290,36 @@
     border-bottom-left-radius: 0;
 
     &:hover {
-      background-color: $color-brand-primary-hover;
-      color: $color-neutral-background-rest;
+      background-color: var(--color-brand-primary-hover);
+      color: var(--color-neutral-background-rest);
     }
 
     &:active {
-      background-color: $color-brand-primary-pressed;
+      background-color: var(--color-brand-primary-pressed);
     }
   }
 
   // Selected (legacy - for compatibility)
   &--selected {
     &:not(&--range-start):not(&--range-end) {
-      background-color: $color-brand-primary;
-      color: $color-neutral-background-rest;
+      background-color: var(--color-brand-primary);
+      color: var(--color-neutral-background-rest);
       font-weight: $font-weight-semibold;
 
       &:hover {
-        background-color: $color-brand-primary-hover;
-        color: $color-neutral-background-rest;
+        background-color: var(--color-brand-primary-hover);
+        color: var(--color-neutral-background-rest);
       }
 
       &:active {
-        background-color: $color-brand-primary-pressed;
+        background-color: var(--color-brand-primary-pressed);
       }
     }
   }
 
   // Disabled day
   &--disabled {
-    color: $color-neutral-foreground-disabled;
+    color: var(--color-neutral-foreground-disabled);
     cursor: not-allowed;
     pointer-events: none;
     opacity: 0.4;
@@ -355,36 +355,36 @@
 .date-range-panel__month {
   padding: $spacing-2;
   background: transparent;
-  border: 1px solid $color-neutral-stroke-rest;
+  border: 1px solid var(--color-neutral-stroke-rest);
   border-radius: $border-radius-400;
   cursor: pointer;
   font-size: $font-size-300;
   font-weight: $font-weight-regular;
-  color: $color-neutral-foreground-rest;
+  color: var(--color-neutral-foreground-rest);
   transition: all $duration-ultra-fast $easing-ease-in-out;
 
   &:hover {
-    background-color: $color-subtle-background-hover;
-    border-color: $color-brand-primary;
+    background-color: var(--color-subtle-background-hover);
+    border-color: var(--color-brand-primary);
   }
 
   &:active {
-    background-color: $color-subtle-background-pressed;
+    background-color: var(--color-subtle-background-pressed);
   }
 
   &:focus-visible {
-    outline: 2px solid $color-brand-primary;
+    outline: 2px solid var(--color-brand-primary);
     outline-offset: 2px;
   }
 
   &--selected {
-    background-color: $color-brand-primary;
-    color: $color-neutral-background-rest;
-    border-color: $color-brand-primary;
+    background-color: var(--color-brand-primary);
+    color: var(--color-neutral-background-rest);
+    border-color: var(--color-brand-primary);
     font-weight: $font-weight-semibold;
 
     &:hover {
-      background-color: $color-brand-primary-hover;
+      background-color: var(--color-brand-primary-hover);
     }
   }
 }
@@ -405,41 +405,41 @@
 .date-range-calendar__year {
   padding: $spacing-2;
   background: transparent;
-  border: 1px solid $color-neutral-stroke-rest;
+  border: 1px solid var(--color-neutral-stroke-rest);
   border-radius: $border-radius-400;
   cursor: pointer;
   font-size: $font-size-300;
   font-weight: $font-weight-regular;
-  color: $color-neutral-foreground-rest;
+  color: var(--color-neutral-foreground-rest);
   transition: all $duration-ultra-fast $easing-ease-in-out;
 
   &:hover {
-    background-color: $color-subtle-background-hover;
-    border-color: $color-brand-primary;
+    background-color: var(--color-subtle-background-hover);
+    border-color: var(--color-brand-primary);
   }
 
   &:active {
-    background-color: $color-subtle-background-pressed;
+    background-color: var(--color-subtle-background-pressed);
   }
 
   &:focus-visible {
-    outline: 2px solid $color-brand-primary;
+    outline: 2px solid var(--color-brand-primary);
     outline-offset: 2px;
   }
 
   &--selected {
-    background-color: $color-brand-primary;
-    color: $color-neutral-background-rest;
-    border-color: $color-brand-primary;
+    background-color: var(--color-brand-primary);
+    color: var(--color-neutral-background-rest);
+    border-color: var(--color-brand-primary);
     font-weight: $font-weight-semibold;
 
     &:hover {
-      background-color: $color-brand-primary-hover;
+      background-color: var(--color-brand-primary-hover);
     }
   }
 
   &--current {
-    border-color: $color-brand-primary;
+    border-color: var(--color-brand-primary);
     font-weight: $font-weight-semibold;
   }
 }
@@ -464,9 +464,9 @@
     &--range-start,
     &--range-end,
     &--selected {
-      background-color: $color-neutral-foreground-rest;
-      color: $color-neutral-background-rest;
-      border-color: $color-neutral-foreground-rest;
+      background-color: var(--color-neutral-foreground-rest);
+      color: var(--color-neutral-background-rest);
+      border-color: var(--color-neutral-foreground-rest);
     }
 
     &--in-range {
@@ -499,8 +499,8 @@
 // Dark mode support
 @media (prefers-color-scheme: dark) {
   .date-range-panel {
-    background: $color-neutral-background-rest;
-    border-color: $color-neutral-stroke-rest;
+    background: var(--color-neutral-background-rest);
+    border-color: var(--color-neutral-stroke-rest);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
   }
 }

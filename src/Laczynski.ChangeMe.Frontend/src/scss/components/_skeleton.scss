@@ -2,17 +2,14 @@
 @use '../utils/mixins' as *;
 @use '../utils/functions' as *;
 
-$skeleton-background: #E6E6E6;
-$skeleton-shimmer-color: #FAFAFA;
-
 .skeleton {
   position: relative;
-  background: $skeleton-background;
+  background: var(--color-neutral-background-hover, #e6e6e6);
   overflow: hidden;
-  
+
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  
+
   user-select: none;
 }
 
@@ -37,14 +34,13 @@ $skeleton-shimmer-color: #FAFAFA;
   height: 100%;
   background: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0) 0%,
-    white 34%,
-    white 50%,
-    white 65%,
-    rgba(255, 255, 255, 0) 100%
+    transparent 0%,
+    rgba(255, 255, 255, 0.4) 34%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 255, 255, 0.4) 65%,
+    transparent 100%
   );
   mix-blend-mode: normal;
-  opacity: 0.5;
 }
 
 .skeleton__shimmer-color {
@@ -53,7 +49,7 @@ $skeleton-shimmer-color: #FAFAFA;
   left: 0;
   width: 100%;
   height: 100%;
-  background: $skeleton-shimmer-color;
+  background: color-mix(in srgb, var(--color-neutral-background-hover, #e6e6e6) 85%, white 15%);
 }
 
 .skeleton--animated {
@@ -71,12 +67,6 @@ $skeleton-shimmer-color: #FAFAFA;
   }
 }
 
-.skeleton--rectangle {
-}
-
-.skeleton--circle {
-}
-
 @media (prefers-reduced-motion: reduce) {
   .skeleton--animated {
     .skeleton__shimmer {
@@ -84,4 +74,3 @@ $skeleton-shimmer-color: #FAFAFA;
     }
   }
 }
-

@@ -32,6 +32,7 @@
 @use 'components/dialog';
 @use 'components/divider';
 @use 'components/dropdown';
+@use 'components/ds-sidebar';
 @use 'components/empty-state';
 @use 'components/error-state';
 @use 'components/loading-state';
@@ -65,3 +66,4 @@
 @use 'pages/showcase';
 
 // 7. Themes - Theme-related styles
+@use 'themes/dark';

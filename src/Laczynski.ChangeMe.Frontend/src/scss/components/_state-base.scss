@@ -39,7 +39,7 @@
   @include element('description') {
     margin: 0;
     font-weight: $font-weight-regular;
-    color: $color-neutral-foreground2-rest;
+    color: var(--color-neutral-foreground2-rest);
     line-height: $line-height-400;
     max-width: 500px;
   }
@@ -118,7 +118,7 @@
     align-items: center;
     justify-content: center;
     margin-bottom: $spacing-4;
-    color: $icon-color;
+    color: var(--color-neutral-foreground2-rest, #{$icon-color});
   }
 
   // Size modifiers for icon
@@ -160,7 +160,7 @@
     align-items: center;
     justify-content: center;
     margin-bottom: $spacing-4;
-    color: $color-neutral-foreground2-rest;
+    color: var(--color-neutral-foreground2-rest);
   }
 
   // Size modifiers for spinner

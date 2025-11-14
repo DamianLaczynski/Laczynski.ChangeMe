@@ -41,7 +41,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    background: $color-neutral-background-rest;
+    background: var(--color-neutral-background-rest);
     box-shadow: $elevation-16;
     border-radius: $border-radius-800;
     overflow: hidden;
@@ -73,7 +73,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    color: $color-neutral-foreground-rest;
+    color: var(--color-neutral-foreground-rest);
     font-size: $font-size-500;
     font-family: $font-family-base;
     font-weight: $font-weight-semibold;
@@ -102,7 +102,7 @@
   @include element('close-icon') {
     width: 20px;
     height: 20px;
-    fill: $color-neutral-foreground2-rest;
+    fill: var(--color-neutral-foreground2-rest);
   }
 
   @include element('body') {
@@ -121,7 +121,7 @@
 
   @include element('text') {
     align-self: stretch;
-    color: $color-neutral-foreground-rest;
+    color: var(--color-neutral-foreground-rest);
     font-size: $font-size-300;
     font-family: $font-family-base;
     font-weight: $font-weight-regular;

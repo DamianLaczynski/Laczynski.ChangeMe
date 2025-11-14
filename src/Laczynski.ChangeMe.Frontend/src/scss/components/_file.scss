@@ -24,7 +24,7 @@
   box-sizing: border-box;
 
   &--drag-over {
-    background-color: $color-neutral-background-brand-hover;
+    background-color: var(--color-neutral-background-brand-hover);
   }
 }
 
@@ -40,14 +40,14 @@
 
 // File Elements
 .file__icon {
-  color: $color-neutral-foreground-rest;
+  color: var(--color-neutral-foreground-rest);
 
   .file--drag-over & {
-    color: $color-brand-primary;
+    color: var(--color-brand-primary);
   }
 
   .file--disabled & {
-    color: $color-neutral-foreground-disabled;
+    color: var(--color-neutral-foreground-disabled);
   }
 }
 
@@ -56,16 +56,16 @@
   font-size: $font-size-300;
   font-weight: $font-weight-regular;
   line-height: $line-height-300;
-  color: $color-neutral-foreground-rest;
+  color: var(--color-neutral-foreground-rest);
   margin: 0;
   letter-spacing: $letter-spacing-normal;
 
   .file--drag-over & {
-    color: $color-brand-primary;
+    color: var(--color-brand-primary);
   }
 
   .file--disabled & {
-    color: $color-neutral-foreground-disabled;
+    color: var(--color-neutral-foreground-disabled);
   }
 }
 
@@ -78,7 +78,7 @@
   letter-spacing: $letter-spacing-normal;
 
   .file--disabled & {
-    color: $color-neutral-foreground-disabled;
+    color: var(--color-neutral-foreground-disabled);
   }
 }
 
@@ -92,7 +92,7 @@
 }
 
 .file-list__item {
-  border: 1px solid $color-neutral-stroke-rest;
+  border: 1px solid var(--color-neutral-stroke-rest);
   border-radius: $border-radius-400;
 }
 
@@ -107,7 +107,7 @@
     cursor: pointer;
 
     &:hover:not(:disabled) {
-      color: $color-neutral-foreground-rest;
+      color: var(--color-neutral-foreground-rest);
     }
 
     &:focus {

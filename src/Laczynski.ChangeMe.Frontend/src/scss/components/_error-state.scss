@@ -12,13 +12,13 @@
   @include state-base();
 
   // Icon styles with error color
-  @include state-icon($color-shared-red-foreground);
+  @include state-icon(var(--color-shared-red-foreground));
 
   // Actions styles
   @include state-actions();
 
   // Error-state specific title color
   @include element('title') {
-    color: $color-shared-red-foreground;
+    color: var(--color-shared-red-foreground);
   }
 }

@@ -29,11 +29,11 @@
   }
 
   &__circle-bg {
-    fill: var(--Brand-Stroke-2-Contrast-Rest, #B4D6FA);
+    fill: var(--color-shared-blue-background);
   }
 
   &__circle-arc {
-    fill: var(--Brand-Stroke-1-Rest, #0F6CBD);
+    fill: var(--color-brand-primary);
     transform-origin: center;
   }
 
@@ -44,7 +44,7 @@
     text-align: center;
     word-wrap: break-word;
     font-family: $font-family-base;
-    color: $color-neutral-foreground-rest;
+    color: var(--color-neutral-foreground-rest);
     
     &--small {
       font-size: $font-size-300;
@@ -140,81 +140,81 @@
   // Default - Brand blue colors
   &--default {
     .spinner__circle-bg {
-      fill: $color-shared-blue-background; // #F0F8FF -> #B4D6FA (lighter)
+      fill: var(--color-shared-blue-background); // #F0F8FF -> #B4D6FA (lighter)
       fill: #B4D6FA;
     }
 
     .spinner__circle-arc {
-      fill: $color-brand-primary; // #0078D4 -> #0F6CBD
+      fill: var(--color-brand-primary); // #0078D4 -> #0F6CBD
       fill: #0F6CBD;
     }
 
     .spinner__label {
-      color: $color-neutral-foreground-rest;
+      color: var(--color-neutral-foreground-rest);
     }
   }
 
   // Info - Cyan/Blue colors
   &--info {
     .spinner__circle-bg {
-      fill: $color-shared-cyan-background;
+      fill: var(--color-shared-cyan-background);
       fill: rgba(3, 131, 135, 0.2);
     }
 
     .spinner__circle-arc {
-      fill: $color-shared-cyan-foreground;
+      fill: var(--color-shared-cyan-foreground);
     }
 
     .spinner__label {
-      color: $color-neutral-foreground-rest;
+      color: var(--color-neutral-foreground-rest);
     }
   }
 
   // Success - Green colors
   &--success {
     .spinner__circle-bg {
-      fill: $color-shared-green-background;
+      fill: var(--color-shared-green-background);
       fill: rgba(16, 124, 16, 0.2);
     }
 
     .spinner__circle-arc {
-      fill: $color-shared-green-foreground;
+      fill: var(--color-shared-green-foreground);
     }
 
     .spinner__label {
-      color: $color-neutral-foreground-rest;
+      color: var(--color-neutral-foreground-rest);
     }
   }
 
   // Warning - Yellow/Orange colors
   &--warning {
     .spinner__circle-bg {
-      fill: $color-shared-yellow-background;
+      fill: var(--color-shared-yellow-background);
       fill: rgba(255, 140, 0, 0.2);
     }
 
     .spinner__circle-arc {
-      fill: $color-shared-yellow-foreground;
+      fill: var(--color-shared-yellow-foreground);
     }
 
     .spinner__label {
-      color: $color-neutral-foreground-rest;
+      color: var(--color-neutral-foreground-rest);
     }
   }
 
   // Error - Red colors
   &--error {
     .spinner__circle-bg {
-      fill: $color-shared-red-background;
+      fill: var(--color-shared-red-background);
       fill: rgba(209, 52, 56, 0.2);
     }
 
     .spinner__circle-arc {
-      fill: $color-shared-red-foreground;
+      fill: var(--color-shared-red-foreground);
     }
 
     .spinner__label {
-      color: $color-neutral-foreground-rest;
+      color: var(--color-neutral-foreground-rest);
     }
   }
 

@@ -11,14 +11,14 @@ import { DropdownComponent } from '../field/dropdown';
 
   imports: [CommonModule, CardComponent, FormsModule, CheckboxComponent, DropdownComponent],
   template: `
-    <div class="showcase">
-      <h1>Card Component - Fluent 2 Design System</h1>
+    <div class="showcase showcase--responsive">
+      <h1 class="showcase__title">Card Component - Fluent 2 Design System</h1>
 
-      <section class="showcase-section">
-        <h2>Basic Cards</h2>
+      <section class="showcase__section">
+        <h2 class="showcase__section__title">Basic Cards</h2>
 
-        <div class="showcase-grid">
-          <div class="showcase-item">
+        <div class="showcase__grid">
+          <div class="showcase__item">
             <h3>Default Card - Filled Style</h3>
             <app-card
               title="Card Title"
@@ -33,7 +33,7 @@ import { DropdownComponent } from '../field/dropdown';
             </app-card>
           </div>
 
-          <div class="showcase-item">
+          <div class="showcase__item">
             <h3>Outline Style Card</h3>
             <app-card
               title="Card Title"
@@ -48,7 +48,7 @@ import { DropdownComponent } from '../field/dropdown';
             </app-card>
           </div>
 
-          <div class="showcase-item">
+          <div class="showcase__item">
             <h3>Subtle Style Card</h3>
             <app-card
               title="Card Title"
@@ -65,11 +65,11 @@ import { DropdownComponent } from '../field/dropdown';
         </div>
       </section>
 
-      <section class="showcase-section">
-        <h2>Card States</h2>
+      <section class="showcase__section">
+        <h2 class="showcase__section__title">Card States</h2>
 
-        <div class="showcase-grid">
-          <div class="showcase-item">
+        <div class="showcase__grid">
+          <div class="showcase__item">
             <h3>Disabled Card</h3>
             <app-card
               title="Disabled Card"
@@ -84,7 +84,7 @@ import { DropdownComponent } from '../field/dropdown';
             </app-card>
           </div>
 
-          <div class="showcase-item">
+          <div class="showcase__item">
             <h3>Clickable Card</h3>
             <app-card
               title="Clickable Card"
@@ -102,11 +102,11 @@ import { DropdownComponent } from '../field/dropdown';
         </div>
       </section>
 
-      <section class="showcase-section">
-        <h2>Cards without Footer</h2>
+      <section class="showcase__section">
+        <h2 class="showcase__section__title">Cards without Footer</h2>
 
-        <div class="showcase-grid">
-          <div class="showcase-item">
+        <div class="showcase__grid">
+          <div class="showcase__item">
             <h3>Card without Footer</h3>
             <app-card
               title="Simple Card"
@@ -119,7 +119,7 @@ import { DropdownComponent } from '../field/dropdown';
             </app-card>
           </div>
 
-          <div class="showcase-item">
+          <div class="showcase__item">
             <h3>Card with Primary Action Only</h3>
             <app-card
               title="Single Action Card"
@@ -132,7 +132,7 @@ import { DropdownComponent } from '../field/dropdown';
             </app-card>
           </div>
 
-          <div class="showcase-item">
+          <div class="showcase__item">
             <h3>Minimal Card</h3>
             <app-card
               title="Minimal Card"
@@ -145,11 +145,11 @@ import { DropdownComponent } from '../field/dropdown';
         </div>
       </section>
 
-      <section class="showcase-section">
-        <h2>Custom Content Cards</h2>
+      <section class="showcase__section">
+        <h2 class="showcase__section__title">Custom Content Cards</h2>
 
-        <div class="showcase-grid">
-          <div class="showcase-item">
+        <div class="showcase__grid">
+          <div class="showcase__item">
             <h3>Card with Custom Body</h3>
             <app-card
               title="Custom Content"
@@ -176,7 +176,7 @@ import { DropdownComponent } from '../field/dropdown';
             </app-card>
           </div>
 
-          <div class="showcase-item">
+          <div class="showcase__item">
             <h3>Card with Projected Content</h3>
             <app-card
               title="Projected Content"
@@ -200,11 +200,11 @@ import { DropdownComponent } from '../field/dropdown';
         </div>
       </section>
 
-      <section class="showcase-section">
-        <h2>Card Grid Layout</h2>
-        <p>Multiple cards in a responsive grid</p>
+      <section class="showcase__section">
+        <h2 class="showcase__section__title">Card Grid Layout</h2>
+        <p class="showcase__section__description">Multiple cards in a responsive grid</p>
 
-        <div class="showcase-card-grid">
+        <div class="showcase__card-grid">
           @for (card of gridCards; track card.id) {
             <app-card
               [title]="card.title"
@@ -221,10 +221,10 @@ import { DropdownComponent } from '../field/dropdown';
         </div>
       </section>
 
-      <section class="showcase-section">
-        <h2>Interactive Example</h2>
+      <section class="showcase__section">
+        <h2 class="showcase__section__title">Interactive Example</h2>
 
-        <div class="showcase-controls">
+        <div class="showcase__controls">
           <app-checkbox label="Disabled" [(ngModel)]="interactiveCard.disabled" />
           <app-checkbox label="Clickable" [(ngModel)]="interactiveCard.clickable" />
           <app-checkbox label="Show Quick Action" [(ngModel)]="interactiveCard.showQuickAction" />
@@ -248,7 +248,7 @@ import { DropdownComponent } from '../field/dropdown';
           />
         </div>
 
-        <div class="showcase-item" style="margin-top: 20px;">
+        <div class="showcase__item" style="margin-top: 20px;">
           <app-card
             [title]="interactiveCard.title"
             [subtitle]="interactiveCard.subtitle"
@@ -268,8 +268,8 @@ import { DropdownComponent } from '../field/dropdown';
         </div>
       </section>
 
-      <section class="showcase-section">
-        <h2>Event Logging</h2>
+      <section class="showcase__section">
+        <h2 class="showcase__section__title">Event Logging</h2>
         <div class="event-log">
           @for (event of eventLog; track $index) {
             <div class="event-log-item">{{ event }}</div>
@@ -281,105 +281,6 @@ import { DropdownComponent } from '../field/dropdown';
       </section>
     </div>
   `,
-  styles: [
-    `
-      .showcase {
-        padding: 40px;
-        max-width: 1400px;
-        margin: 0 auto;
-      }
-
-      .showcase h1 {
-        font-size: 32px;
-        font-weight: 600;
-        margin-bottom: 40px;
-        color: var(--Neutral-Foreground-1-Rest, #242424);
-      }
-
-      .showcase-section {
-        margin-bottom: 60px;
-      }
-
-      .showcase-section h2 {
-        font-size: 24px;
-        font-weight: 600;
-        margin-bottom: 20px;
-        color: var(--Neutral-Foreground-1-Rest, #242424);
-      }
-
-      .showcase-section h3 {
-        font-size: 14px;
-        font-weight: 600;
-        margin-bottom: 12px;
-        color: var(--Neutral-Foreground-2-Rest, #424242);
-      }
-
-      .showcase-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 24px;
-        margin-top: 20px;
-      }
-
-      .showcase-card-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 20px;
-        margin-top: 20px;
-      }
-
-      .showcase-item {
-        display: flex;
-        flex-direction: column;
-      }
-
-      .showcase-controls {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 16px;
-        padding: 16px;
-        background: #f5f5f5;
-        border-radius: 4px;
-      }
-
-      .showcase-controls label {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 14px;
-        color: var(--Neutral-Foreground-1-Rest, #242424);
-      }
-
-      .showcase-controls input[type='checkbox'],
-      .showcase-controls select {
-        cursor: pointer;
-      }
-
-      .event-log {
-        max-height: 300px;
-        overflow-y: auto;
-        padding: 16px;
-        background: #f5f5f5;
-        border-radius: 4px;
-        font-family: 'Fira Code', monospace;
-        font-size: 12px;
-      }
-
-      .event-log-item {
-        padding: 8px;
-        margin-bottom: 4px;
-        background: white;
-        border-radius: 2px;
-        color: var(--Neutral-Foreground-1-Rest, #242424);
-      }
-
-      .event-log-empty {
-        color: var(--Neutral-Foreground-3-Rest, #616161);
-        text-align: center;
-        padding: 20px;
-      }
-    `,
-  ],
 })
 export class CardShowcaseComponent {
   @ViewChild('imageIcon', { static: true }) imageIcon!: TemplateRef<any>;

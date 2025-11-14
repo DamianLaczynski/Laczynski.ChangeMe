@@ -24,7 +24,7 @@
   border: 1px solid transparent;
   box-sizing: border-box;
   
-  @include focus-ring($color-brand-primary);
+  @include focus-ring(var(--color-brand-primary));
 
   // Button Elements (BEM Elements)
   @include element('icon') {
@@ -112,197 +112,197 @@
 
   // Style Modifiers - Primary
   @include modifier('primary') {
-    color: $color-neutral-foreground-on-brand;
-    background-color: $color-brand-primary;
-    border-color: $color-brand-primary;
+    color: var(--color-neutral-foreground-on-brand);
+    background-color: var(--color-brand-primary);
+    border-color: var(--color-brand-primary);
 
     &:hover:not(.button--disabled) {
-      background-color: $color-brand-primary-hover;
-      border-color: $color-brand-primary-hover;
+      background-color: var(--color-brand-primary-hover);
+      border-color: var(--color-brand-primary-hover);
     }
 
     &:active:not(.button--disabled), 
     &.button--pressed:not(.button--disabled) {
-      background-color: $color-brand-primary-pressed;
-      border-color: $color-brand-primary-pressed;
+      background-color: var(--color-brand-primary-pressed);
+      border-color: var(--color-brand-primary-pressed);
     }
 
     &.button--selected:not(.button--disabled) {
-      background-color: $color-brand-primary-pressed;
-      border-color: $color-brand-primary-pressed;
+      background-color: var(--color-brand-primary-pressed);
+      border-color: var(--color-brand-primary-pressed);
     }
 
     &.button--disabled {
-      color: $color-neutral-foreground-disabled;
-      background-color: $color-neutral-background-disabled;
-      border-color: $color-neutral-background-disabled;
+      color: var(--color-neutral-foreground-disabled);
+      background-color: var(--color-neutral-background-disabled);
+      border-color: var(--color-neutral-background-disabled);
       cursor: not-allowed;
       
       .button__icon {
-        fill: $color-neutral-foreground-disabled;
+        fill: var(--color-neutral-foreground-disabled);
       }
     }
   }
 
   // Style Modifiers - Secondary (Default)
   @include modifier('secondary') {
-    color: $color-neutral-foreground-rest;
-    background-color: $color-neutral-background-rest;
-    border-color: $color-neutral-foreground-rest;
+    color: var(--color-neutral-foreground-rest);
+    background-color: var(--color-neutral-background-rest);
+    border-color: var(--color-neutral-foreground-rest);
 
     &:hover:not(.button--disabled) {
-      color: $color-neutral-foreground-hover;
-      background-color: $color-neutral-background-hover;
-      border-color: $color-neutral-foreground-hover;
+      color: var(--color-neutral-foreground-hover);
+      background-color: var(--color-neutral-background-hover);
+      border-color: var(--color-neutral-foreground-hover);
     }
 
     &:active:not(.button--disabled), 
     &.button--pressed:not(.button--disabled) {
-      color: $color-neutral-foreground-pressed;
-      background-color: $color-neutral-background-pressed;
-      border-color: $color-neutral-foreground-pressed;
+      color: var(--color-neutral-foreground-pressed);
+      background-color: var(--color-neutral-background-pressed);
+      border-color: var(--color-neutral-foreground-pressed);
     }
 
     &.button--selected:not(.button--disabled) {
-      color: $color-neutral-foreground-pressed;
-      background-color: $color-neutral-background-selected;
-      border-color: $color-neutral-foreground-pressed;
+      color: var(--color-neutral-foreground-pressed);
+      background-color: var(--color-neutral-background-selected);
+      border-color: var(--color-neutral-foreground-pressed);
     }
 
     &.button--disabled {
-      color: $color-neutral-foreground-disabled;
-      background-color: $color-neutral-background-rest;
-      border-color: $color-neutral-foreground-disabled;
+      color: var(--color-neutral-foreground-disabled);
+      background-color: var(--color-neutral-background-rest);
+      border-color: var(--color-neutral-foreground-disabled);
       cursor: not-allowed;
       
       .button__icon {
-        fill: $color-neutral-foreground-disabled;
+        fill: var(--color-neutral-foreground-disabled);
       }
     }
   }
 
   // Style Modifiers - Outline
   @include modifier('outline') {
-    color: $color-neutral-foreground-rest;
-    background-color: $color-neutral-background-rest;
-    border-color: $color-neutral-foreground-rest;
+    color: var(--color-neutral-foreground-rest);
+    background-color: var(--color-neutral-background-rest);
+    border-color: var(--color-neutral-foreground-rest);
 
     &:hover:not(.button--disabled) {
-      color: $color-neutral-foreground-hover;
-      background-color: $color-neutral-background-hover;
-      border-color: $color-neutral-foreground-hover;
+      color: var(--color-neutral-foreground-hover);
+      background-color: var(--color-neutral-background-hover);
+      border-color: var(--color-neutral-foreground-hover);
     }
 
     &:active:not(.button--disabled), 
     &.button--pressed:not(.button--disabled) {
-      color: $color-neutral-foreground-pressed;
-      background-color: $color-neutral-background-pressed;
-      border-color: $color-neutral-foreground-pressed;
+      color: var(--color-neutral-foreground-pressed);
+      background-color: var(--color-neutral-background-pressed);
+      border-color: var(--color-neutral-foreground-pressed);
     }
 
     &.button--selected:not(.button--disabled) {
-      color: $color-neutral-foreground-pressed;
-      background-color: $color-neutral-background-selected;
-      border-color: $color-neutral-foreground-pressed;
+      color: var(--color-neutral-foreground-pressed);
+      background-color: var(--color-neutral-background-selected);
+      border-color: var(--color-neutral-foreground-pressed);
     }
 
     &.button--disabled {
-      color: $color-neutral-foreground-disabled;
-      background-color: $color-neutral-background-rest;
-      border-color: $color-neutral-foreground-disabled;
+      color: var(--color-neutral-foreground-disabled);
+      background-color: var(--color-neutral-background-rest);
+      border-color: var(--color-neutral-foreground-disabled);
       cursor: not-allowed;
       
       .button__icon {
-        fill: $color-neutral-foreground-disabled;
+        fill: var(--color-neutral-foreground-disabled);
       }
     }
   }
 
   // Style Modifiers - Subtle
   @include modifier('subtle') {
-    color: $color-neutral-foreground2-rest;
+    color: var(--color-neutral-foreground2-rest);
     background-color: transparent;
     border-color: transparent;
 
     &:hover:not(.button--disabled) {
-      color: $color-neutral-foreground-hover;
-      background-color: $color-subtle-background-hover;
+      color: var(--color-neutral-foreground-hover);
+      background-color: var(--color-subtle-background-hover);
       
       .button__icon {
-        fill: $color-brand-primary;
+        fill: var(--color-brand-primary);
       }
     }
 
     &:active:not(.button--disabled), 
     &.button--pressed:not(.button--disabled) {
-      color: $color-neutral-foreground-pressed;
-      background-color: $color-subtle-background-pressed;
+      color: var(--color-neutral-foreground-pressed);
+      background-color: var(--color-subtle-background-pressed);
       
       .button__icon {
-        fill: $color-brand-primary-pressed;
+        fill: var(--color-brand-primary-pressed);
       }
     }
 
     &.button--selected:not(.button--disabled) {
-      color: $color-neutral-foreground-pressed;
-      background-color: $color-subtle-background-selected;
+      color: var(--color-neutral-foreground-pressed);
+      background-color: var(--color-subtle-background-selected);
       
       .button__icon {
-        fill: $color-brand-primary;
+        fill: var(--color-brand-primary);
       }
     }
 
     &.button--disabled {
-      color: $color-neutral-foreground-disabled;
+      color: var(--color-neutral-foreground-disabled);
       background-color: transparent;
       border-color: transparent;
       cursor: not-allowed;
       
       .button__icon {
-        fill: $color-neutral-foreground-disabled;
+        fill: var(--color-neutral-foreground-disabled);
       }
     }
   }
 
   // Style Modifiers - Transparent
   @include modifier('transparent') {
-    color: $color-neutral-foreground2-rest;
+    color: var(--color-neutral-foreground2-rest);
     background-color: transparent;
     border-color: transparent;
 
     &:hover:not(.button--disabled) {
-      color: $color-neutral-foreground2-brand-hover;
+      color: var(--color-neutral-foreground2-brand-hover);
       
       .button__icon {
-        fill: $color-brand-primary;
+        fill: var(--color-brand-primary);
       }
     }
 
     &:active:not(.button--disabled), 
     &.button--pressed:not(.button--disabled) {
-      color: $color-neutral-foreground2-brand-pressed;
+      color: var(--color-neutral-foreground2-brand-pressed);
       
       .button__icon {
-        fill: $color-brand-primary-pressed;
+        fill: var(--color-brand-primary-pressed);
       }
     }
 
     &.button--selected:not(.button--disabled) {
-      color: $color-neutral-foreground2-brand-selected;
+      color: var(--color-neutral-foreground2-brand-selected);
       
       .button__icon {
-        fill: $color-brand-primary;
+        fill: var(--color-brand-primary);
       }
     }
 
     &.button--disabled {
-      color: $color-neutral-foreground-disabled;
+      color: var(--color-neutral-foreground-disabled);
       background-color: transparent;
       border-color: transparent;
       cursor: not-allowed;
       
       .button__icon {
-        fill: $color-neutral-foreground-disabled;
+        fill: var(--color-neutral-foreground-disabled);
       }
     }
   }

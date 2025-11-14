@@ -8,7 +8,7 @@
   margin: auto $spacing-2;
 
   border-radius: $border-radius-400;
-  border: 1px solid $color-neutral-stroke-rest;
+  border: 1px solid var(--color-neutral-stroke-rest);
 }
 
 // Color Panel Container
@@ -17,8 +17,8 @@
   top: calc(100% + $spacing-1);
   left: 0;
   z-index: 1000;
-  background: $color-neutral-background-rest;
-  border: 1px solid $color-neutral-stroke-rest;
+  background: var(--color-neutral-background-rest);
+  border: 1px solid var(--color-neutral-stroke-rest);
   border-radius: $border-radius-600;
   box-shadow: $elevation-16;
   padding: $spacing-4;
@@ -44,7 +44,7 @@
   cursor: crosshair;
   overflow: hidden;
   margin-bottom: $spacing-3;
-  border: 1px solid $color-neutral-stroke-rest;
+  border: 1px solid var(--color-neutral-stroke-rest);
 
   &__overlay {
     position: absolute;
@@ -91,7 +91,7 @@
     display: block;
     font-size: $font-size-200;
     font-weight: $font-weight-semibold;
-    color: $color-neutral-foreground-rest;
+    color: var(--color-neutral-foreground-rest);
     margin-bottom: $spacing-1;
   }
 
@@ -101,7 +101,7 @@
     height: $spacing-5;
     border-radius: $border-radius-400;
     overflow: hidden;
-    border: 1px solid $color-neutral-stroke-rest;
+    border: 1px solid var(--color-neutral-stroke-rest);
   }
 
   &__alpha-checkered {
@@ -131,7 +131,7 @@
     cursor: pointer;
     position: relative;
     background: transparent;
-    border: 1px solid $color-neutral-stroke-rest;
+    border: 1px solid var(--color-neutral-stroke-rest);
 
     // Hue gradient
     &--hue {
@@ -162,7 +162,7 @@
       height: $spacing-4;
       border-radius: 50%;
       background: #fff;
-      border: 2px solid $color-brand-primary;
+      border: 2px solid var(--color-brand-primary);
       cursor: pointer;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
       transition: all $duration-ultra-fast $easing-ease-in-out;
@@ -182,7 +182,7 @@
       height: $spacing-4;
       border-radius: 50%;
       background: #fff;
-      border: 2px solid $color-brand-primary;
+      border: 2px solid var(--color-brand-primary);
       cursor: pointer;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
       transition: all $duration-ultra-fast $easing-ease-in-out;
@@ -208,7 +208,7 @@
     }
 
     &:focus-visible {
-      outline: 2px solid $color-brand-primary;
+      outline: 2px solid var(--color-brand-primary);
       outline-offset: 2px;
     }
 
@@ -234,7 +234,7 @@
   &__label {
     font-size: $font-size-200;
     font-weight: $font-weight-semibold;
-    color: $color-neutral-foreground-rest;
+    color: var(--color-neutral-foreground-rest);
     margin-bottom: $spacing-2;
   }
 

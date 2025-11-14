@@ -1,0 +1,136 @@
+// ==========================================================================
+// Dark Theme Styles
+// ==========================================================================
+// Based on Fluent 2 Design System Dark Theme
+
+@use '../utils/variables' as *;
+
+// Dark theme variables
+:root[data-theme='dark'],
+:root.dark,
+body.dark-theme {
+  // Brand Colors (same for dark theme)
+  --color-brand-primary: #{$color-brand-primary};
+  --color-brand-primary-hover: #{$color-brand-primary-hover};
+  --color-brand-primary-pressed: #{$color-brand-primary-pressed};
+  --color-brand-primary-selected: #{$color-brand-primary-selected};
+
+  // Accent Colors
+  --color-accent-primary: #{$color-accent-primary};
+  --color-accent-primary-hover: #{$color-accent-primary-hover};
+  --color-accent-primary-pressed: #{$color-accent-primary-pressed};
+  --color-accent-primary-selected: #{$color-accent-primary-selected};
+
+  // Neutral Colors - Foreground (inverted for dark)
+  --color-neutral-foreground-rest: #F5F5F5;
+  --color-neutral-foreground-hover: #FFFFFF;
+  --color-neutral-foreground-pressed: #E0E0E0;
+  --color-neutral-foreground-disabled: #6B6B6B;
+  --color-neutral-foreground-on-brand: #FFFFFF;
+  --color-neutral-foreground-selected: #F5F5F5;
+
+  --color-neutral-foreground2-rest: #E0E0E0;
+  --color-neutral-foreground2-hover: #60CDFF;
+  --color-neutral-foreground2-pressed: #40B8FF;
+  --color-neutral-foreground2-selected: #60CDFF;
+  --color-neutral-foreground2-brand-hover: #FFFFFF;
+  --color-neutral-foreground2-brand-pressed: #FFFFFF;
+  --color-neutral-foreground2-brand-selected: #FFFFFF;
+
+  // Neutral Colors - Background (dark backgrounds)
+  --color-neutral-background-rest: #1C1C1C;
+  --color-neutral-background-selected: #2D2D2D;
+  --color-neutral-background-hover: #2D2D2D;
+  --color-neutral-background-pressed: #383838;
+  --color-neutral-background-disabled: #2D2D2D;
+  --color-neutral-background-brand-selected: #004578;
+  --color-neutral-background-brand-hover: #005A9E;
+  --color-neutral-background-brand-pressed: #004578;
+
+  --color-subtle-background-hover: #2D2D2D;
+  --color-subtle-background-pressed: #383838;
+  --color-subtle-background-selected: #2D2D2D;
+
+  // Stroke Colors (lighter for dark theme)
+  --color-neutral-stroke-rest: #616161;
+  --color-neutral-stroke-hover: #6B6B6B;
+  --color-neutral-stroke-pressed: #757575;
+  --color-neutral-stroke-selected: #60CDFF;
+  --color-neutral-stroke-disabled: #424242;
+  --color-neutral-stroke-brand-rest: #60CDFF;
+  --color-neutral-stroke-brand-hover: #7AD5FF;
+  --color-neutral-stroke-brand-pressed: #40B8FF;
+  --color-neutral-stroke-brand-selected: #60CDFF;
+
+  // Shared Colors (adjusted for dark theme)
+  --color-shared-red-foreground: #FF5F5F;
+  --color-shared-red-background: #4A1F1F;
+  --color-shared-red-border: #5A2F2F;
+  --color-shared-orange-foreground: #FF8C42;
+  --color-shared-orange-background: #4A2F1F;
+  --color-shared-orange-border: #5A3F2F;
+  --color-shared-yellow-foreground: #FFB84D;
+  --color-shared-yellow-background: #4A3F1F;
+  --color-shared-yellow-border: #5A4F2F;
+  --color-shared-green-foreground: #6FCF97;
+  --color-shared-green-background: #1F4A2F;
+  --color-shared-green-border: #2F5A3F;
+  --color-shared-cyan-foreground: #4DD0E1;
+  --color-shared-cyan-background: #1F3A4A;
+  --color-shared-cyan-border: #2F4A5A;
+  --color-shared-blue-foreground: #60CDFF;
+  --color-shared-blue-background: #1F3A4A;
+  --color-shared-blue-border: #2F4A5A;
+  --color-shared-purple-foreground: #B794F6;
+  --color-shared-purple-background: #3A2F4A;
+  --color-shared-purple-border: #4A3F5A;
+  --color-shared-pink-foreground: #FF6BB5;
+  --color-shared-pink-background: #4A1F3A;
+  --color-shared-pink-border: #5A2F4A;
+
+  // Additional shared colors for dark theme
+  --color-shared-yellow-foreground: #FFB84D;
+  --color-shared-green-foreground: #6FCF97;
+
+  // Fluent 2 CSS Variables (for compatibility)
+  --Neutral-Foreground-1-Rest: #F5F5F5;
+  --Neutral-Foreground-Disabled-Rest: #6B6B6B;
+  --Neutral-Background-1-Rest: #1C1C1C;
+  --Neutral-Background-Selected-Rest: #2D2D2D;
+  --Neutral-Stroke-Accessible-Rest: #616161;
+  --Neutral-Stroke-Accessible-Hover: #6B6B6B;
+  --Neutral-Stroke-Accessible-Pressed: #757575;
+  --Neutral-Stroke-Disabled-Rest: #424242;
+  --Brand-Background-Compound-Rest: #0F6CBD;
+  --Brand-Background-Compound-Hover: #115EA3;
+  --Brand-Background-Compound-Pressed: #0F548C;
+  --Colors-Neutral-White: #FFFFFF;
+  --Stroke-Focus-2: #60CDFF;
+  --Shared-Red-Foreground: #FF5F5F;
+}
+
+// Body background for dark theme
+body.dark-theme {
+  background-color: var(--color-neutral-background-rest);
+  color: var(--color-neutral-foreground-rest);
+}
+
+// Scrollbar styles for dark theme
+:root[data-theme='dark'] ::-webkit-scrollbar-track,
+:root.dark ::-webkit-scrollbar-track,
+body.dark-theme ::-webkit-scrollbar-track {
+  background: var(--color-neutral-background-selected);
+}
+
+:root[data-theme='dark'] ::-webkit-scrollbar-thumb,
+:root.dark ::-webkit-scrollbar-thumb,
+body.dark-theme ::-webkit-scrollbar-thumb {
+  background: var(--color-neutral-stroke-rest);
+}
+
+:root[data-theme='dark'] ::-webkit-scrollbar-thumb:hover,
+:root.dark ::-webkit-scrollbar-thumb:hover,
+body.dark-theme ::-webkit-scrollbar-thumb:hover {
+  background: var(--color-neutral-stroke-hover);
+}
+

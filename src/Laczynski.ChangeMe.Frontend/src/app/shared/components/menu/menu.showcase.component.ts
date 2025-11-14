@@ -8,8 +8,8 @@ import { MenuItem, MenuSection } from './models/menu-item.model';
 
   imports: [CommonModule, MenuComponent],
   template: `
-    <div class="showcase">
-      <h1>Menu Component</h1>
+    <div class="showcase showcase--responsive">
+      <h1 class="showcase__title">Menu Component</h1>
       <p class="showcase__description">
         Menu component zgodny z Fluent 2 Design System. Obsługuje różne warianty elementów menu,
         stany interakcji oraz hierarchiczne sekcje.
@@ -17,8 +17,8 @@ import { MenuItem, MenuSection } from './models/menu-item.model';
 
       <!-- Basic Menu -->
       <section class="showcase__section">
-        <h2>Basic Menu</h2>
-        <p>Podstawowe menu z kilkoma elementami</p>
+        <h2 class="showcase__section__title">Basic Menu</h2>
+        <p class="showcase__section__description">Podstawowe menu z kilkoma elementami</p>
         <div class="showcase__preview">
           <app-menu [items]="basicMenuItems" />
         </div>
@@ -26,8 +26,8 @@ import { MenuItem, MenuSection } from './models/menu-item.model';
 
       <!-- Menu with Sections -->
       <section class="showcase__section">
-        <h2>Menu with Sections</h2>
-        <p>Menu z nagłówkami sekcji i separatorami</p>
+        <h2 class="showcase__section__title">Menu with Sections</h2>
+        <p class="showcase__section__description">Menu z nagłówkami sekcji i separatorami</p>
         <div class="showcase__preview">
           <app-menu [sections]="menuSections" />
         </div>
@@ -35,8 +35,8 @@ import { MenuItem, MenuSection } from './models/menu-item.model';
 
       <!-- Menu with Icons -->
       <section class="showcase__section">
-        <h2>Menu with Icons</h2>
-        <p>Menu z ikonami i skrótami klawiszowymi</p>
+        <h2 class="showcase__section__title">Menu with Icons</h2>
+        <p class="showcase__section__description">Menu z ikonami i skrótami klawiszowymi</p>
         <div class="showcase__preview">
           <app-menu [items]="iconMenuItems" />
         </div>
@@ -44,8 +44,10 @@ import { MenuItem, MenuSection } from './models/menu-item.model';
 
       <!-- Menu with Split Items -->
       <section class="showcase__section">
-        <h2>Menu with Split Items</h2>
-        <p>Menu z elementami split (z dodatkowym przyciskiem submenu)</p>
+        <h2 class="showcase__section__title">Menu with Split Items</h2>
+        <p class="showcase__section__description">
+          Menu z elementami split (z dodatkowym przyciskiem submenu)
+        </p>
         <div class="showcase__preview">
           <app-menu [sections]="splitMenuSections" />
         </div>
@@ -53,8 +55,10 @@ import { MenuItem, MenuSection } from './models/menu-item.model';
 
       <!-- Menu with Submenu Indicators (chevron only) -->
       <section class="showcase__section">
-        <h2>Menu with Submenu Indicators (Chevron Only)</h2>
-        <p>Menu z wskaźnikami submenu (tylko ikona, bez działającego podmenu)</p>
+        <h2 class="showcase__section__title">Menu with Submenu Indicators (Chevron Only)</h2>
+        <p class="showcase__section__description">
+          Menu z wskaźnikami submenu (tylko ikona, bez działającego podmenu)
+        </p>
         <p style="color: #616161; font-size: 12px;">
           <strong>Note:</strong> To pokazuje tylko chevron indicator. Dla działającego submenu
           zobacz sekcje "Nested Submenu" i "Multi-level Submenu" poniżej.
@@ -66,8 +70,8 @@ import { MenuItem, MenuSection } from './models/menu-item.model';
 
       <!-- Menu States -->
       <section class="showcase__section">
-        <h2>Menu States</h2>
-        <p>Demonstracja różnych stanów elementów menu</p>
+        <h2 class="showcase__section__title">Menu States</h2>
+        <p class="showcase__section__description">Demonstracja różnych stanów elementów menu</p>
         <div class="showcase__preview" style="display: flex; gap: 16px; flex-wrap: wrap;">
           <div>
             <h3 style="font-size: 12px; margin-bottom: 8px;">Normal</h3>
@@ -90,8 +94,8 @@ import { MenuItem, MenuSection } from './models/menu-item.model';
 
       <!-- Nested Submenu -->
       <section class="showcase__section">
-        <h2>Nested Submenu</h2>
-        <p>Menu z zagnieżdżonymi podmenu (hover to open)</p>
+        <h2 class="showcase__section__title">Nested Submenu</h2>
+        <p class="showcase__section__description">Menu z zagnieżdżonymi podmenu (hover to open)</p>
         <div style="margin-bottom: 12px; padding: 12px; background: #f0f0f0; border-radius: 4px;">
           <strong>Debug info:</strong><br />
           Total items: {{ nestedSubmenuItems.length }}<br />
@@ -104,8 +108,8 @@ import { MenuItem, MenuSection } from './models/menu-item.model';
 
       <!-- Multi-level Submenu -->
       <section class="showcase__section">
-        <h2>Multi-level Submenu</h2>
-        <p>Menu z wielopoziomowymi podmenu</p>
+        <h2 class="showcase__section__title">Multi-level Submenu</h2>
+        <p class="showcase__section__description">Menu z wielopoziomowymi podmenu</p>
         <div class="showcase__preview">
           <app-menu [sections]="multiLevelSections" (itemClick)="onItemClick($event)" />
         </div>
@@ -113,8 +117,8 @@ import { MenuItem, MenuSection } from './models/menu-item.model';
 
       <!-- Complete Example -->
       <section class="showcase__section">
-        <h2>Complete Example</h2>
-        <p>Pełny przykład menu z wszystkimi funkcjami</p>
+        <h2 class="showcase__section__title">Complete Example</h2>
+        <p class="showcase__section__description">Pełny przykład menu z wszystkimi funkcjami</p>
         <div class="showcase__preview">
           <app-menu
             [sections]="completeMenuSections"
@@ -123,7 +127,7 @@ import { MenuItem, MenuSection } from './models/menu-item.model';
           />
         </div>
         @if (lastAction) {
-          <div style="margin-top: 16px; padding: 12px; background: #f0f0f0; border-radius: 4px;">
+          <div style="margin-top: 16px; padding: 12px; border-radius: 4px;">
             <strong>Last action:</strong> {{ lastAction }}
           </div>
         }

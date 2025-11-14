@@ -1,0 +1,28 @@
+// ==========================================================================
+// DS Sidebar Component Styles
+// ==========================================================================
+
+@use '../utils/variables' as *;
+
+.ds-sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+
+  &__theme-toggle {
+    padding: $spacing-4;
+    border-top: 1px solid var(--color-neutral-stroke-rest, #{$color-neutral-stroke-rest});
+    margin-top: auto;
+    background-color: var(--color-neutral-background-rest, #{$color-neutral-background-rest});
+    
+    // Dark theme adjustments
+    :root[data-theme='dark'] &,
+    :root.dark &,
+    body.dark-theme & {
+      border-top-color: var(--color-neutral-stroke-rest);
+      background-color: var(--color-neutral-background-rest);
+    }
+  }
+}
+

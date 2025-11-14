@@ -13,17 +13,32 @@
   margin: 0 auto;
   font-family: $font-family-base;
 
+  // Direct child headings (for backward compatibility)
+  h2 {
+    font-size: $font-size-700;
+    font-weight: $font-weight-bold;
+    color: var(--color-neutral-foreground-rest);
+    margin-bottom: $spacing-4;
+  }
+
+  h3 {
+    font-size: $font-size-600;
+    font-weight: $font-weight-semibold;
+    color: var(--color-neutral-foreground-rest);
+    margin-bottom: $spacing-4;
+  }
+
   // Elements
   @include element('title') {
     font-size: $font-size-800;
     font-weight: $font-weight-bold;
-    color: $color-neutral-foreground-rest;
+    color: var(--color-neutral-foreground-rest);
     margin-bottom: $spacing-4;
   }
 
   @include element('description') {
     font-size: $font-size-400;
-    color: $color-neutral-foreground2-rest;
+    color: var(--color-neutral-foreground2-rest);
     margin-bottom: $spacing-12;
     line-height: $line-height-400;
   }
@@ -35,10 +50,18 @@
     @include element('title') {
       font-size: $font-size-600;
       font-weight: $font-weight-semibold;
-      color: $color-neutral-foreground-rest;
+      color: var(--color-neutral-foreground-rest);
       margin-bottom: $spacing-6;
-      border-bottom: 2px solid $color-neutral-stroke-rest;
+      border-bottom: 2px solid var(--color-neutral-stroke-rest);
       padding-bottom: $spacing-2;
+    }
+
+    // Section description
+    @include element('description') {
+      font-size: $font-size-300;
+      color: var(--color-neutral-foreground2-rest);
+      margin-bottom: $spacing-4;
+      line-height: $line-height-400;
     }
   }
 
@@ -51,6 +74,16 @@
     @include modifier('large') {
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     }
+
+    // Two columns variant
+    @include modifier('two-columns') {
+      grid-template-columns: 1fr 1fr;
+      gap: $spacing-8;
+
+      @include respond-to(medium) {
+        grid-template-columns: 1fr;
+      }
+    }
   }
 
   @include element('item') {
@@ -61,8 +94,23 @@
     // Item label
     label {
       font-weight: $font-weight-medium;
-      color: $color-neutral-foreground2-rest;
+      color: var(--color-neutral-foreground2-rest);
       font-size: $font-size-300;
+    }
+
+    // Headings inside items
+    h3 {
+      margin-bottom: $spacing-4;
+      font-size: $font-size-400;
+      font-weight: $font-weight-semibold;
+      color: var(--color-neutral-foreground-rest);
+    }
+
+    h4 {
+      margin-bottom: $spacing-2;
+      font-size: $font-size-300;
+      font-weight: $font-weight-semibold;
+      color: var(--color-neutral-foreground2-rest);
     }
   }
 
@@ -72,18 +120,156 @@
     gap: $spacing-4;
   }
 
+  @include element('form-output') {
+    margin-top: $spacing-4;
+    padding: $spacing-4;
+    background-color: var(--color-neutral-background-hover, #f5f5f5);
+    border-radius: $border-radius-400;
+
+    h4 {
+      margin-bottom: $spacing-2;
+      font-size: $font-size-400;
+      font-weight: $font-weight-semibold;
+      color: var(--color-neutral-foreground-rest);
+    }
+
+    pre {
+      margin: $spacing-2 0 0 0;
+      font-family: 'Courier New', monospace;
+      font-size: $font-size-300;
+      white-space: pre-wrap;
+      color: var(--color-neutral-foreground-rest);
+    }
+
+    strong {
+      font-weight: $font-weight-semibold;
+      color: var(--color-neutral-foreground-rest);
+    }
+  }
+
+  @include element('event-log') {
+    margin-top: $spacing-4;
+    padding: $spacing-4;
+    background-color: var(--color-neutral-background-hover, #f5f5f5);
+    border-radius: $border-radius-400;
+
+    h4 {
+      margin-bottom: $spacing-2;
+      font-size: $font-size-400;
+      font-weight: $font-weight-semibold;
+      color: var(--color-neutral-foreground-rest);
+    }
+
+    ul {
+      margin: 0;
+      padding-left: $spacing-6;
+    }
+
+    li {
+      margin-bottom: $spacing-1;
+      font-family: 'Courier New', monospace;
+      font-size: $font-size-300;
+      color: var(--color-neutral-foreground-rest);
+    }
+  }
+
   @include element('example') {
+    margin-top: $spacing-4;
     margin-bottom: $spacing-4;
+    background: var(--color-neutral-background-rest);
+    border: 1px solid var(--color-neutral-stroke-rest);
+    border-radius: $border-radius-400;
+    padding: $spacing-4;
+
+    // Scrollable modifier
+    @include modifier('scrollable') {
+      max-height: 400px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+
+      ::ng-deep .data-grid {
+        max-height: 400px;
+        overflow: auto;
+      }
+    }
+
+    // Virtualized modifier
+    @include modifier('virtualized') {
+      max-height: 480px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+
+      ::ng-deep .data-grid__viewport {
+        height: 480px;
+        overflow: auto;
+      }
+    }
   }
 
   @include element('info') {
-    margin-top: $spacing-4;
-    padding: $spacing-3;
-    background: rgba($color-neutral-background-rest, 0.5);
-    border-left: 3px solid $color-brand-primary;
-    border-radius: $border-radius-400;
+    margin-top: $spacing-2;
+    padding: $spacing-2 $spacing-4;
+    background: var(--color-neutral-background-brand-selected, #d0e7ff);
+    border-radius: $border-radius-200;
+    color: var(--color-neutral-foreground-rest);
     font-size: $font-size-300;
-    color: $color-neutral-foreground2-rest;
+  }
+
+  @include element('preview') {
+    margin-top: $spacing-4;
+    padding: $spacing-4;
+    background: var(--color-neutral-background-rest);
+    border: 1px solid var(--color-neutral-stroke-rest);
+    border-radius: $border-radius-400;
+  }
+
+  @include element('subsection-title') {
+    margin-top: $spacing-6;
+    margin-bottom: $spacing-2;
+    font-size: $font-size-400;
+    font-weight: $font-weight-semibold;
+    color: var(--color-neutral-foreground-rest);
+  }
+
+  // Password strength bar (used in password showcase)
+  @include element('password-strength-bar') {
+    width: 100%;
+    height: 4px;
+    background-color: var(--color-neutral-stroke-rest, #e0e0e0);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: $spacing-2;
+
+    @include element('fill') {
+      height: 100%;
+      transition:
+        width 0.3s ease,
+        background-color 0.3s ease;
+      width: 0%;
+
+      &[data-strength='weak'] {
+        width: 33%;
+        background-color: var(--color-shared-red-foreground, #d13438);
+      }
+
+      &[data-strength='medium'] {
+        width: 66%;
+        background-color: var(--color-shared-yellow-foreground, #faa819);
+      }
+
+      &[data-strength='strong'] {
+        width: 100%;
+        background-color: var(--color-shared-green-foreground, #0e7c0e);
+      }
+    }
+  }
+
+  // Drag over state (used in drag and drop showcases)
+  .drag-over {
+    border-color: var(--color-brand-primary, #0f6cbd) !important;
+    background: var(--color-neutral-background-brand-hover, #ebf3fc) !important;
   }
 
   @include element('info-grid') {
@@ -92,7 +278,7 @@
     grid-template-columns: 1fr;
     gap: $spacing-2;
     padding: $spacing-3;
-    background: rgba($color-neutral-background-rest, 0.3);
+    background: color-mix(in srgb, var(--color-neutral-background-rest) 30%, transparent);
     border-radius: $border-radius-400;
     font-size: $font-size-200;
 
@@ -102,7 +288,7 @@
       gap: $spacing-1;
 
       strong {
-        color: $color-neutral-foreground-rest;
+        color: var(--color-neutral-foreground-rest);
         font-weight: $font-weight-semibold;
         min-width: 110px;
       }
@@ -112,22 +298,22 @@
   @include element('status') {
     margin-top: $spacing-4;
     padding: $spacing-3;
-    background: rgba($color-brand-primary, 0.05);
+    background: color-mix(in srgb, var(--color-brand-primary) 5%, transparent);
     border-radius: $border-radius-400;
-    border: 1px solid rgba($color-brand-primary, 0.2);
+    border: 1px solid color-mix(in srgb, var(--color-brand-primary) 20%, transparent);
 
     p {
       margin: 0;
       margin-bottom: $spacing-2;
       font-size: $font-size-300;
-      color: $color-neutral-foreground-rest;
+      color: var(--color-neutral-foreground-rest);
 
       &:last-child {
         margin-bottom: 0;
       }
 
       strong {
-        color: $color-brand-primary;
+        color: var(--color-brand-primary);
         font-weight: $font-weight-semibold;
         margin-right: $spacing-2;
       }
@@ -139,12 +325,74 @@
     padding: 2px 8px;
     margin-right: $spacing-2;
     margin-bottom: $spacing-1;
-    background: $color-brand-primary;
-    color: $color-neutral-background-rest;
+    background: var(--color-brand-primary);
+    color: var(--color-neutral-background-rest);
     border-radius: $border-radius-400;
     font-size: $font-size-200;
     font-weight: $font-weight-medium;
     white-space: nowrap;
+  }
+
+  @include element('demo') {
+    margin-top: $spacing-4;
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-2;
+  }
+
+  @include element('controls') {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-4;
+    padding: $spacing-4;
+    background-color: var(--color-neutral-background-hover, #f5f5f5);
+    border-radius: $border-radius-400;
+
+    label {
+      display: flex;
+      align-items: center;
+      gap: $spacing-2;
+      cursor: pointer;
+      font-size: $font-size-300;
+      color: var(--color-neutral-foreground-rest);
+    }
+
+    input[type='checkbox'],
+    select {
+      cursor: pointer;
+    }
+  }
+
+  @include element('card-grid') {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: $spacing-5;
+    margin-top: $spacing-5;
+  }
+
+  // Event log items (nested inside event-log)
+  .event-log {
+    max-height: 300px;
+    overflow-y: auto;
+    padding: $spacing-4;
+    background-color: var(--color-neutral-background-hover, #f5f5f5);
+    border-radius: $border-radius-400;
+    font-family: 'Courier New', monospace;
+    font-size: $font-size-300;
+
+    &-item {
+      padding: $spacing-2;
+      margin-bottom: $spacing-1;
+      background: var(--color-neutral-background-rest);
+      border-radius: $border-radius-200;
+      color: var(--color-neutral-foreground-rest);
+    }
+
+    &-empty {
+      color: var(--color-neutral-foreground3-rest, #616161);
+      text-align: center;
+      padding: $spacing-5;
+    }
   }
 
   // Responsive modifiers

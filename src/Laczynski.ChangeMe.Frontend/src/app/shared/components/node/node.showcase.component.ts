@@ -6,14 +6,6 @@ import { ButtonComponent } from '../button/button.component';
 @Component({
   selector: 'app-node-showcase',
   imports: [NodeComponent, CommonModule, ButtonComponent],
-  styles: [
-    `
-      .drag-over {
-        border-color: #0f6cbd !important;
-        background: #ebf3fc !important;
-      }
-    `,
-  ],
   template: `
     <div class="showcase showcase--responsive">
       <h1 class="showcase__title">Node Component Showcase</h1>

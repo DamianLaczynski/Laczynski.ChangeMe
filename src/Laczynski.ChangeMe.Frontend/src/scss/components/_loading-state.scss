@@ -16,7 +16,7 @@
 
   // Loading-state specific title color
   @include element('title') {
-    color: $color-neutral-foreground-rest;
+    color: var(--color-neutral-foreground-rest);
   }
 
   // Overlay Modifier

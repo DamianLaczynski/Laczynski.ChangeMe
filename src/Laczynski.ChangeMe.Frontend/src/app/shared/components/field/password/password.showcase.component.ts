@@ -187,9 +187,9 @@ import { JsonPipe } from '@angular/common';
               [warningText]="passwordStrengthState === 'warning' ? passwordStrengthMessage : ''"
               [successText]="passwordStrengthState === 'success' ? passwordStrengthMessage : ''"
             ></app-password>
-            <div class="password-strength-bar">
+            <div class="showcase__password-strength-bar">
               <div
-                class="password-strength-bar__fill"
+                class="showcase__password-strength-bar__fill"
                 [attr.data-strength]="passwordStrength"
               ></div>
             </div>
@@ -327,41 +327,6 @@ import { JsonPipe } from '@angular/common';
       </div>
     </div>
   `,
-  styles: [
-    `
-      .password-strength-bar {
-        width: 100%;
-        height: 4px;
-        background-color: var(--color-neutral-stroke-rest, #e0e0e0);
-        border-radius: 2px;
-        overflow: hidden;
-        margin-top: 8px;
-      }
-
-      .password-strength-bar__fill {
-        height: 100%;
-        transition:
-          width 0.3s ease,
-          background-color 0.3s ease;
-        width: 0%;
-      }
-
-      .password-strength-bar__fill[data-strength='weak'] {
-        width: 33%;
-        background-color: var(--color-shared-red-foreground, #d13438);
-      }
-
-      .password-strength-bar__fill[data-strength='medium'] {
-        width: 66%;
-        background-color: var(--color-shared-yellow-foreground, #faa819);
-      }
-
-      .password-strength-bar__fill[data-strength='strong'] {
-        width: 100%;
-        background-color: var(--color-shared-green-foreground, #0e7c0e);
-      }
-    `,
-  ],
 })
 export class PasswordShowcaseComponent {
   defaultPassword = 'SecurePass123';
