@@ -1,5 +1,6 @@
 import { Component, input, output, model, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { A11yModule } from '@angular/cdk/a11y';
 import { QuickAction } from '../utils';
 import { ButtonComponent } from '../button/button.component';
 import { IconComponent } from '../icon/icon.component';
@@ -10,7 +11,7 @@ export type DialogBackdrop = 'static' | 'dynamic';
   selector: 'app-dialog',
   templateUrl: './dialog.component.html',
 
-  imports: [CommonModule, ButtonComponent, IconComponent],
+  imports: [CommonModule, A11yModule, ButtonComponent, IconComponent],
 })
 export class DialogComponent {
   title = input<string>('');

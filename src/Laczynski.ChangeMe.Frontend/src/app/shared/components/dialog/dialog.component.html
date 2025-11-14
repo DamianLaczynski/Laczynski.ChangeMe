@@ -8,7 +8,7 @@
     [attr.aria-labelledby]="title() ? 'dialog-title' : null"
   >
     <div [class]="dialogClasses()" role="document">
-      <div [class]="contentClasses()" [ngStyle]="contentStyles()">
+      <div [class]="contentClasses()" [ngStyle]="contentStyles()" cdkTrapFocus cdkTrapFocusAutoCapture>
         <!-- Header -->
         <div [class]="headerClasses()">
           <h2 id="dialog-title" class="dialog__title">
