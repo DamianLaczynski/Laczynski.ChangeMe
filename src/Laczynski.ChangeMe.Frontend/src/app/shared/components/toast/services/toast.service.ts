@@ -73,7 +73,6 @@ export class ToastService {
     };
 
     this.toasts.set([...this.toasts(), toastWithId]);
-    console.log(this.toasts());
     // Auto-remove toast after specified life time
     if (toast.duration && !toast.sticky) {
       setTimeout(() => {
@@ -89,7 +88,6 @@ export class ToastService {
    */
   remove(id: string): void {
     this.toasts.set(this.toasts().filter(t => t.id !== id));
-    console.log('remove', this.toasts());
   }
 
   /**
