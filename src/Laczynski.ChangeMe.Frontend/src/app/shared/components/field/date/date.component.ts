@@ -69,6 +69,28 @@ interface CalendarYear {
   ],
 })
 export class DateComponent extends FieldComponent implements AfterViewInit, OnDestroy {
+  /**
+   * Override getDisplayValue to use computed displayText.
+   */
+  override getDisplayValue(): string {
+    return this.displayText();
+  }
+
+  /**
+   * Hook called after entering edit mode to open panel automatically.
+   * Uses requestAnimationFrame + setTimeout to ensure DOM is updated and panel is ready before opening.
+   */
+  protected override afterEnterEditMode(): void {
+    // Open panel automatically when entering edit mode
+    if (!this.disabled() && !this.readonly()) {
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          this.openPanel();
+        }, 0);
+      });
+    }
+  }
+
   private readonly renderer = inject(Renderer2);
   private resizeObserver?: ResizeObserver;
   private scrollListener?: () => void;
@@ -248,6 +270,97 @@ export class DateComponent extends FieldComponent implements AfterViewInit, OnDe
     this.isExpanded.set(false);
   }
 
+  /**
+   * Handle input value change from manual typing.
+   */
+  onDateInputChange(event: Event): void {
+    if (this.disabled() || this.readonly()) {
+      return;
+    }
+    const target = event.target as HTMLInputElement;
+    const inputValue = target.value.trim();
+    
+    // Try to parse the date from input
+    if (inputValue) {
+      const parsedDate = this.parseDateFromInput(inputValue);
+      if (parsedDate) {
+        const type = this.dateType();
+        if (type === 'time') {
+          this.selectedTime.set(inputValue);
+        } else if (type === 'datetime-local') {
+          // Try to parse datetime
+          const parts = inputValue.split(' ');
+          if (parts.length === 2) {
+            const datePart = this.parseDateFromInput(parts[0]);
+            if (datePart) {
+              this.selectedDate.set(datePart);
+              this.selectedTime.set(parts[1]);
+            }
+          }
+        } else {
+          this.selectedDate.set(parsedDate);
+        }
+      }
+      // If parsing fails, don't update - let user continue typing
+    }
+    
+    // In inline edit mode, close panel if open
+    if (this.inlineEdit() && this.isEditMode() && this.isExpanded()) {
+      this.closePanel();
+    }
+  }
+
+  /**
+   * Parse date from input string.
+   */
+  private parseDateFromInput(inputValue: string): Date | null {
+    if (!inputValue) return null;
+    
+    // Try ISO format first
+    const isoDate = new Date(inputValue);
+    if (!isNaN(isoDate.getTime())) {
+      return isoDate;
+    }
+    
+    // Try common date formats
+    const datePatterns = [
+      /(\d{1,2})\/(\d{1,2})\/(\d{4})/, // MM/DD/YYYY
+      /(\d{4})-(\d{1,2})-(\d{1,2})/,   // YYYY-MM-DD
+      /(\d{1,2})-(\d{1,2})-(\d{4})/,   // MM-DD-YYYY
+    ];
+    
+    for (const pattern of datePatterns) {
+      const match = inputValue.match(pattern);
+      if (match) {
+        if (pattern === datePatterns[0] || pattern === datePatterns[2]) {
+          // MM/DD/YYYY or MM-DD-YYYY
+          const month = parseInt(match[1], 10) - 1;
+          const day = parseInt(match[2], 10);
+          const year = parseInt(match[3], 10);
+          return new Date(year, month, day);
+        } else {
+          // YYYY-MM-DD
+          const year = parseInt(match[1], 10);
+          const month = parseInt(match[2], 10) - 1;
+          const day = parseInt(match[3], 10);
+          return new Date(year, month, day);
+        }
+      }
+    }
+    
+    return null;
+  }
+
+  /**
+   * Override cancelChanges to close panel before canceling.
+   */
+  override cancelChanges(): void {
+    if (this.isExpanded()) {
+      this.closePanel();
+    }
+    super.cancelChanges();
+  }
+
   onCalendarDateSelect(day: CalendarDay): void {
     if (day.isDisabled) {
       return;
@@ -258,6 +371,12 @@ export class DateComponent extends FieldComponent implements AfterViewInit, OnDe
     const type = this.dateType();
     if (type === 'date') {
       this.closePanel();
+      // If in inline edit mode, save changes and exit edit mode
+      if (this.inlineEdit() && this.isEditMode()) {
+        setTimeout(() => {
+          this.saveChanges();
+        }, 0);
+      }
     }
     // For datetime-local, keep panel open to select time
   }
@@ -269,6 +388,12 @@ export class DateComponent extends FieldComponent implements AfterViewInit, OnDe
     if (this.dateType() === 'month') {
       this.selectedDate.set(newDate);
       this.closePanel();
+      // If in inline edit mode, save changes and exit edit mode
+      if (this.inlineEdit() && this.isEditMode()) {
+        setTimeout(() => {
+          this.saveChanges();
+        }, 0);
+      }
     } else {
       // Switch to days view with selected month
       this.currentMonth.set(newDate);
@@ -288,6 +413,12 @@ export class DateComponent extends FieldComponent implements AfterViewInit, OnDe
     this.selectedYear.set(week.year);
     this.selectedDate.set(week.startDate);
     this.closePanel();
+    // If in inline edit mode, save changes and exit edit mode
+    if (this.inlineEdit() && this.isEditMode()) {
+      setTimeout(() => {
+        this.saveChanges();
+      }, 0);
+    }
   }
 
   onCalendarSwitchToMonthsView(): void {
@@ -349,6 +480,14 @@ export class DateComponent extends FieldComponent implements AfterViewInit, OnDe
 
   onTimeChange(timeStr: string): void {
     this.selectedTime.set(timeStr);
+    // For datetime-local, if in inline edit mode, save and exit after time is selected
+    if (this.dateType() === 'datetime-local' && this.inlineEdit() && this.isEditMode()) {
+      // Wait a bit to ensure time is processed, then save and close
+      setTimeout(() => {
+        this.closePanel();
+        this.saveChanges();
+      }, 100);
+    }
   }
 
   private generateCalendarWeeks(): CalendarWeek[] {

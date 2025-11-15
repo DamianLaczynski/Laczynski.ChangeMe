@@ -312,6 +312,65 @@ import { TableOfContentComponent } from '@shared/components/table-of-content';
           </div>
         </div>
       </div>
+
+      <!-- Inline Edit Examples -->
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Inline Edit</h2>
+        <p class="showcase__section__description">
+          Inline edit allows users to edit dropdown selection directly by clicking on it. Changes are
+          saved on blur or Enter, and can be cancelled with Escape.
+        </p>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>Basic Inline Edit</h3>
+            <app-dropdown
+              label="Country"
+              [items]="basicItems"
+              mode="single"
+              [inlineEdit]="true"
+              [(ngModel)]="inlineEditValue1"
+              [ngModelOptions]="{ standalone: true }"
+              placeholder="Click to edit..."
+              helpText="Click on the text to edit. Press Enter to save or Esc to cancel."
+            />
+            <p style="font-size: 12px; color: #666; margin-top: 8px;">
+              Current value: <strong>{{ inlineEditValue1 || '(empty)' }}</strong>
+            </p>
+          </div>
+          <div class="showcase__item">
+            <h3>Inline Edit with Default Value</h3>
+            <app-dropdown
+              label="Language"
+              [items]="languageList"
+              mode="single"
+              [inlineEdit]="true"
+              [(ngModel)]="inlineEditValue2"
+              [ngModelOptions]="{ standalone: true }"
+              placeholder="Enter language..."
+              helpText="Field with pre-filled value"
+            />
+            <p style="font-size: 12px; color: #666; margin-top: 8px;">
+              Current value: <strong>{{ inlineEditValue2 || '(empty)' }}</strong>
+            </p>
+          </div>
+          <div class="showcase__item">
+            <h3>Multi-Select Inline Edit</h3>
+            <app-dropdown
+              label="Preferred Languages"
+              [items]="languageList"
+              mode="multi"
+              [inlineEdit]="true"
+              [(ngModel)]="inlineEditValue3"
+              [ngModelOptions]="{ standalone: true }"
+              placeholder="Click to select languages..."
+              helpText="Select multiple languages. Click to edit. Press Enter to save or Esc to cancel."
+            />
+            <p style="font-size: 12px; color: #666; margin-top: 8px;">
+              Current value: <strong>{{ inlineEditValue3?.length ? inlineEditValue3.join(', ') : '(empty)' }}</strong>
+            </p>
+          </div>
+        </div>
+      </div>
       </div>
     </div>
   `,
@@ -466,4 +525,9 @@ export class DropdownShowcaseComponent {
     { value: 'zh', label: 'Chinese' },
     { value: 'ja', label: 'Japanese' },
   ];
+
+  // Inline edit showcase values
+  inlineEditValue1 = '';
+  inlineEditValue2 = 'en';
+  inlineEditValue3: string[] = [];
 }

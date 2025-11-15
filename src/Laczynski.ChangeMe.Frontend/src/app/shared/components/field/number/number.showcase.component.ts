@@ -410,6 +410,46 @@ import { TableOfContentComponent } from '@shared/components/table-of-content';
           </div>
         </div>
       </div>
+
+      <!-- Inline Edit Examples -->
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Inline Edit</h2>
+        <p class="showcase__section__description">
+          Inline edit allows users to edit numbers directly by clicking on them. Changes are saved on
+          blur or Enter, and can be cancelled with Escape.
+        </p>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>Basic Inline Edit</h3>
+            <app-number
+              label="Quantity"
+              placeholder="Click to edit..."
+              [inlineEdit]="true"
+              [(ngModel)]="inlineEditValue1"
+              [ngModelOptions]="{ standalone: true }"
+              helpText="Click on the text to edit. Press Enter to save or Esc to cancel."
+            ></app-number>
+            <p style="font-size: 12px; color: #666; margin-top: 8px;">
+              Current value: <strong>{{ inlineEditValue1 || '(empty)' }}</strong>
+            </p>
+          </div>
+          <div class="showcase__item">
+            <h3>Inline Edit with Default Value</h3>
+            <app-number
+              label="Price"
+              placeholder="Enter price..."
+              [inlineEdit]="true"
+              [(ngModel)]="inlineEditValue2"
+              [ngModelOptions]="{ standalone: true }"
+              [step]="0.01"
+              helpText="Field with pre-filled value"
+            ></app-number>
+            <p style="font-size: 12px; color: #666; margin-top: 8px;">
+              Current value: <strong>{{ inlineEditValue2 || '(empty)' }}</strong>
+            </p>
+          </div>
+        </div>
+      </div>
       </div>
     </div>
   `,
@@ -437,4 +477,8 @@ export class NumberShowcaseComponent {
     salary: null as number | null,
     experience: null as number | null,
   };
+
+  // Inline edit showcase values
+  inlineEditValue1 = '';
+  inlineEditValue2 = 99.99;
 }

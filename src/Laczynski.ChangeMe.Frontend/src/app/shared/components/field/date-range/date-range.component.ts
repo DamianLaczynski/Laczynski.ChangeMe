@@ -53,6 +53,28 @@ type RangeSelection = 'start' | 'end' | null;
   ],
 })
 export class DateRangeComponent extends FieldComponent implements AfterViewInit, OnDestroy {
+  /**
+   * Override getDisplayValue to use computed displayText.
+   */
+  override getDisplayValue(): string {
+    return this.displayText();
+  }
+
+  /**
+   * Hook called after entering edit mode to open panel automatically.
+   * Uses requestAnimationFrame + setTimeout to ensure DOM is updated and panel is ready before opening.
+   */
+  protected override afterEnterEditMode(): void {
+    // Open panel automatically when entering edit mode
+    if (!this.disabled() && !this.readonly()) {
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          this.openPanel();
+        }, 0);
+      });
+    }
+  }
+
   private readonly renderer = inject(Renderer2);
   private resizeObserver?: ResizeObserver;
   private scrollListener?: () => void;
@@ -265,6 +287,104 @@ export class DateRangeComponent extends FieldComponent implements AfterViewInit,
     this.activeSelection.set(null);
   }
 
+  /**
+   * Handle input value change from manual typing.
+   */
+  onDateRangeInputChange(event: Event): void {
+    if (this.disabled() || this.readonly()) {
+      return;
+    }
+    const target = event.target as HTMLInputElement;
+    const inputValue = target.value.trim();
+    
+    // Try to parse date range from input
+    if (inputValue) {
+      const separator = this.separator();
+      const parts = inputValue.split(separator);
+      
+      if (parts.length === 2) {
+        const startStr = parts[0].trim();
+        const endStr = parts[1].trim();
+        
+        const startDate = this.parseDateFromInput(startStr);
+        const endDate = this.parseDateFromInput(endStr);
+        
+        if (startDate) {
+          this.startDate.set(startDate);
+        }
+        if (endDate) {
+          this.endDate.set(endDate);
+        }
+      } else if (parts.length === 1) {
+        // Single date - treat as start date
+        const date = this.parseDateFromInput(parts[0].trim());
+        if (date) {
+          this.startDate.set(date);
+          this.endDate.set(null);
+        }
+      }
+    } else {
+      this.startDate.set(null);
+      this.endDate.set(null);
+    }
+    
+    // In inline edit mode, close panel if open
+    if (this.inlineEdit() && this.isEditMode() && this.isExpanded()) {
+      this.closePanel();
+    }
+  }
+
+  /**
+   * Parse date from input string.
+   */
+  private parseDateFromInput(inputValue: string): Date | null {
+    if (!inputValue || inputValue === '...') return null;
+    
+    // Try ISO format first
+    const isoDate = new Date(inputValue);
+    if (!isNaN(isoDate.getTime())) {
+      return isoDate;
+    }
+    
+    // Try common date formats
+    const datePatterns = [
+      /(\d{1,2})\/(\d{1,2})\/(\d{4})/, // MM/DD/YYYY
+      /(\d{4})-(\d{1,2})-(\d{1,2})/,   // YYYY-MM-DD
+      /(\d{1,2})-(\d{1,2})-(\d{4})/,   // MM-DD-YYYY
+    ];
+    
+    for (const pattern of datePatterns) {
+      const match = inputValue.match(pattern);
+      if (match) {
+        if (pattern === datePatterns[0] || pattern === datePatterns[2]) {
+          // MM/DD/YYYY or MM-DD-YYYY
+          const month = parseInt(match[1], 10) - 1;
+          const day = parseInt(match[2], 10);
+          const year = parseInt(match[3], 10);
+          return new Date(year, month, day);
+        } else {
+          // YYYY-MM-DD
+          const year = parseInt(match[1], 10);
+          const month = parseInt(match[2], 10) - 1;
+          const day = parseInt(match[3], 10);
+          return new Date(year, month, day);
+        }
+      }
+    }
+    
+    return null;
+  }
+
+  /**
+   * Override cancelChanges to close panel before canceling.
+   */
+  override cancelChanges(): void {
+    if (this.isExpanded()) {
+      this.closePanel();
+    }
+    super.cancelChanges();
+  }
+
   onCalendarDateSelect(day: CalendarDay): void {
     if (day.isDisabled) {
       return;
@@ -300,7 +420,13 @@ export class DateRangeComponent extends FieldComponent implements AfterViewInit,
 
       this.activeSelection.set(null);
       // Close panel after selecting end date
-      setTimeout(() => this.closePanel(), 150);
+      setTimeout(() => {
+        this.closePanel();
+        // If in inline edit mode, save changes and exit edit mode
+        if (this.inlineEdit() && this.isEditMode()) {
+          this.saveChanges();
+        }
+      }, 150);
       return;
     }
 

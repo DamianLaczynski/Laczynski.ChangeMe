@@ -445,6 +445,45 @@ import { TableOfContentComponent } from '@shared/components/table-of-content';
           </div>
         </div>
       </div>
+
+      <!-- Inline Edit Examples -->
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Inline Edit</h2>
+        <p class="showcase__section__description">
+          Inline edit allows users to edit date directly by clicking on it. Changes are saved on blur
+          or Enter, and can be cancelled with Escape.
+        </p>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>Basic Inline Edit</h3>
+            <app-date
+              label="Event Date"
+              placeholder="Click to edit..."
+              [inlineEdit]="true"
+              [(ngModel)]="inlineEditValue1"
+              [ngModelOptions]="{ standalone: true }"
+              helpText="Click on the text to edit. Press Enter to save or Esc to cancel."
+            ></app-date>
+            <p style="font-size: 12px; color: #666; margin-top: 8px;">
+              Current value: <strong>{{ inlineEditValue1 || '(empty)' }}</strong>
+            </p>
+          </div>
+          <div class="showcase__item">
+            <h3>Inline Edit with Default Value</h3>
+            <app-date
+              label="Birth Date"
+              placeholder="Enter date..."
+              [inlineEdit]="true"
+              [(ngModel)]="inlineEditValue2"
+              [ngModelOptions]="{ standalone: true }"
+              helpText="Field with pre-filled value"
+            ></app-date>
+            <p style="font-size: 12px; color: #666; margin-top: 8px;">
+              Current value: <strong>{{ inlineEditValue2 || '(empty)' }}</strong>
+            </p>
+          </div>
+        </div>
+      </div>
       </div>
     </div>
   `,
@@ -453,6 +492,10 @@ export class DateShowcaseComponent {
   defaultDate = '2024-03-15';
   readonlyDate = '2024-12-31';
   today = new Date().toISOString().split('T')[0];
+
+  // Inline edit showcase values
+  inlineEditValue1 = '';
+  inlineEditValue2 = '2024-06-15';
   currentDateTime = new Date().toISOString().slice(0, 16);
 
   minDate = '2024-01-01';

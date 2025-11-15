@@ -53,6 +53,28 @@ interface ColorValue {
   ],
 })
 export class ColorComponent extends FieldComponent implements AfterViewInit, OnDestroy {
+  /**
+   * Override getDisplayValue to use computed colorDisplayValue.
+   */
+  override getDisplayValue(): string {
+    return this.colorDisplayValue();
+  }
+
+  /**
+   * Hook called after entering edit mode to open panel automatically.
+   * Uses requestAnimationFrame + setTimeout to ensure DOM is updated and panel is ready before opening.
+   */
+  protected override afterEnterEditMode(): void {
+    // Open panel automatically when entering edit mode
+    if (!this.disabled() && !this.readonly()) {
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          this.openPanel();
+        }, 0);
+      });
+    }
+  }
+
   private readonly renderer = inject(Renderer2);
   private resizeObserver?: ResizeObserver;
   private scrollListener?: () => void;
@@ -84,7 +106,7 @@ export class ColorComponent extends FieldComponent implements AfterViewInit, OnD
   @ViewChild('triggerElement') triggerElement?: ElementRef;
 
   // Computed display value based on format
-  displayValue = computed(() => {
+  colorDisplayValue = computed(() => {
     const color = this.currentColor();
     const format = this.format();
     const showAlpha = this.showAlpha();
@@ -116,7 +138,7 @@ export class ColorComponent extends FieldComponent implements AfterViewInit, OnD
 
     // Effect to update field value when color changes
     effect(() => {
-      const displayVal = this.displayValue();
+      const displayVal = this.colorDisplayValue();
       // Only update if we have a valid color (not the default empty state)
       if (this.value !== '' || this.currentColor().hex !== '#000000') {
         this.value = displayVal;
@@ -225,6 +247,16 @@ export class ColorComponent extends FieldComponent implements AfterViewInit, OnD
     this.isExpanded.set(false);
   }
 
+  /**
+   * Override cancelChanges to close panel before canceling.
+   */
+  override cancelChanges(): void {
+    if (this.isExpanded()) {
+      this.closePanel();
+    }
+    super.cancelChanges();
+  }
+
   // Handle saturation/lightness picker movement
   onSaturationPickerMouseDown(event: MouseEvent): void {
     event.preventDefault();
@@ -300,6 +332,13 @@ export class ColorComponent extends FieldComponent implements AfterViewInit, OnD
   // Select preset color
   selectPresetColor(colorHex: string): void {
     this.parseAndSetColor(colorHex);
+    // Close panel and save if in inline edit mode
+    this.closePanel();
+    if (this.inlineEdit() && this.isEditMode()) {
+      setTimeout(() => {
+        this.saveChanges();
+      }, 0);
+    }
   }
 
   // Parse and set color from string
@@ -467,6 +506,12 @@ export class ColorComponent extends FieldComponent implements AfterViewInit, OnD
     }
     const target = event.target as HTMLInputElement;
     this.parseAndSetColor(target.value);
+    
+    // In inline edit mode, close panel if open and value is valid
+    if (this.inlineEdit() && this.isEditMode() && this.isExpanded()) {
+      // Close panel when user types manually
+      this.closePanel();
+    }
   }
 
   // Override ControlValueAccessor methods

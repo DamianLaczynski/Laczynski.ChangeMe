@@ -35,52 +35,73 @@
     [state]="state()"
     [size]="size()"
     [variant]="variant()"
+    [inlineEdit]="inlineEdit()"
+    [displayValue]="getDisplayValue()"
+    [isEditModeValue]="isEditMode()"
+    (enterEdit)="enterEditMode()"
   >
-    <div class="input-wrapper" [class]="wrapperClasses">
-      <!-- Dropdown Trigger (styled as input with chevron inside) -->
-      <div
-        #triggerElement
-        class="input dropdown-trigger"
-        role="combobox"
-        [attr.tabindex]="disabled() ? -1 : 0"
-        [attr.aria-expanded]="isExpanded()"
-        [attr.aria-haspopup]="'listbox'"
-        [attr.aria-controls]="getListboxId()"
-        [attr.aria-activedescendant]="activeDescendant()"
-        [attr.aria-label]="ariaLabel() || label()"
-        [attr.aria-labelledby]="id() ? id() + '-label' : null"
-        (click)="toggleDropdown(); $event.stopPropagation()"
-        (focus)="onFocus($event)"
-        (keydown)="onKeyDown($event)"
-      >
-        <!-- Display text -->
-        <span
-          class="dropdown-display-text"
-          [class.dropdown-placeholder]="selectedValues().size === 0"
+    <!-- Dropdown Trigger (for both inline edit mode and normal mode) -->
+    @if (!inlineEdit() || isEditMode()) {
+      <div class="input-wrapper" [class]="wrapperClasses">
+        <!-- Dropdown Trigger (styled as input with chevron inside) -->
+        <div
+          #triggerElement
+          class="input dropdown-trigger"
+          role="combobox"
+          [attr.tabindex]="disabled() && !isEditMode() ? -1 : 0"
+          [attr.aria-expanded]="isExpanded()"
+          [attr.aria-haspopup]="'listbox'"
+          [attr.aria-controls]="getListboxId()"
+          [attr.aria-activedescendant]="activeDescendant()"
+          [attr.aria-label]="ariaLabel() || label()"
+          [attr.aria-labelledby]="id() ? id() + '-label' : null"
+          (click)="!disabled() && !readonly() ? toggleDropdown() : null; $event.stopPropagation()"
+          (focus)="onFocus($event)"
+          (keydown)="onKeyDown($event)"
         >
-          {{ displayText() }}
-        </span>
+          <!-- Display text -->
+          <span
+            class="dropdown-display-text"
+            [class.dropdown-placeholder]="selectedValues().size === 0"
+          >
+            {{ displayText() }}
+          </span>
 
-        <!-- Clear button (inside input) -->
+          <!-- Clear button (inside input) -->
 
-        @if (clearable() && selectedValues().size > 0 && !disabled()) {
-          <app-action-button
-            [show]="true"
-            [icon]="'dismiss'"
-            [size]="size()"
-            (click)="clearSelection()"
-          />
-        }
+          @if (clearable() && selectedValues().size > 0 && !disabled()) {
+            <app-action-button
+              [show]="true"
+              [icon]="'dismiss'"
+              [size]="size()"
+              (click)="clearSelection()"
+            />
+          }
 
-        <app-action-button
-          [show]="true"
-          [icon]="'chevron_down'"
-          [size]="size()"
-          (click)="toggleDropdown()"
-        />
-        <!-- Chevron icon (inside input, always visible) -->
+          <!-- Actions: Cancel button for inline edit mode -->
+          @if (inlineEdit() && isEditMode()) {
+            <app-action-button
+              [show]="true"
+              [icon]="'dismiss'"
+              [size]="size()"
+              [attr.aria-label]="'Cancel editing'"
+              (click)="cancelChanges()"
+              (mousedown)="onCancelButtonMouseDown($event)"
+            />
+          }
+          <!-- Actions: Chevron button (always visible when not in inline edit cancel mode) -->
+          @if (!(inlineEdit() && isEditMode())) {
+            <app-action-button
+              [show]="true"
+              [icon]="'chevron_down'"
+              [size]="size()"
+              (click)="toggleDropdown()"
+            />
+          }
+          <!-- Chevron icon (inside input, always visible) -->
+        </div>
       </div>
-    </div>
+    }
   </app-field>
 }
 

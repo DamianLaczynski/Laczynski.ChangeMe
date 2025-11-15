@@ -445,6 +445,153 @@ import { TableOfContentComponent } from '@shared/components/table-of-content';
           </div>
         </div>
 
+        <!-- Inline Edit Examples -->
+        <div class="showcase__section">
+          <h2 class="showcase__section__title">Inline Edit</h2>
+          <p class="showcase__section__description">
+            Inline edit allows users to edit text directly by clicking on it. The field displays as
+            plain text and switches to an input when clicked. Changes are saved on blur or Enter, and
+            can be cancelled with Escape.
+          </p>
+          <div class="showcase__grid">
+            <div class="showcase__item">
+              <h3>Basic Inline Edit</h3>
+              <app-text
+                label="Task Name"
+                placeholder="Click to edit..."
+                [inlineEdit]="true"
+                [(ngModel)]="inlineEditValue1"
+                [ngModelOptions]="{ standalone: true }"
+                helpText="Click on the text to edit. Press Enter to save or Esc to cancel."
+              ></app-text>
+              <p style="font-size: 12px; color: #666; margin-top: 8px;">
+                Current value: <strong>{{ inlineEditValue1 || '(empty)' }}</strong>
+              </p>
+            </div>
+            <div class="showcase__item">
+              <h3>Inline Edit with Default Value</h3>
+              <app-text
+                label="Project Name"
+                placeholder="Enter project name..."
+                [inlineEdit]="true"
+                [(ngModel)]="inlineEditValue2"
+                [ngModelOptions]="{ standalone: true }"
+                helpText="Field with pre-filled value"
+              ></app-text>
+              <p style="font-size: 12px; color: #666; margin-top: 8px;">
+                Current value: <strong>{{ inlineEditValue2 || '(empty)' }}</strong>
+              </p>
+            </div>
+            <div class="showcase__item">
+              <h3>Inline Edit - Different Sizes</h3>
+              <app-text
+                label="Small"
+                placeholder="Small inline edit"
+                [inlineEdit]="true"
+                size="small"
+                [(ngModel)]="inlineEditSmall"
+                [ngModelOptions]="{ standalone: true }"
+                helpText="Small size inline edit"
+              ></app-text>
+              <app-text
+                label="Medium"
+                placeholder="Medium inline edit"
+                [inlineEdit]="true"
+                size="medium"
+                [(ngModel)]="inlineEditMedium"
+                [ngModelOptions]="{ standalone: true }"
+                helpText="Medium size inline edit (default)"
+                style="margin-top: 12px;"
+              ></app-text>
+              <app-text
+                label="Large"
+                placeholder="Large inline edit"
+                [inlineEdit]="true"
+                size="large"
+                [(ngModel)]="inlineEditLarge"
+                [ngModelOptions]="{ standalone: true }"
+                helpText="Large size inline edit"
+                style="margin-top: 12px;"
+              ></app-text>
+            </div>
+            <div class="showcase__item">
+              <h3>Inline Edit - Disabled & Readonly</h3>
+              <app-text
+                label="Disabled Inline Edit"
+                placeholder="Cannot edit"
+                [inlineEdit]="true"
+                [disabled]="true"
+                [(ngModel)]="inlineEditDisabled"
+                [ngModelOptions]="{ standalone: true }"
+                helpText="Disabled inline edit field"
+              ></app-text>
+              <app-text
+                label="Readonly Inline Edit"
+                placeholder="Read only"
+                [inlineEdit]="true"
+                [readonly]="true"
+                [(ngModel)]="inlineEditReadonly"
+                [ngModelOptions]="{ standalone: true }"
+                helpText="Readonly inline edit field"
+                style="margin-top: 12px;"
+              ></app-text>
+            </div>
+            <div class="showcase__item">
+              <h3>Inline Edit with Save/Cancel Events</h3>
+              <app-text
+                label="Editable Field"
+                placeholder="Edit and see events..."
+                [inlineEdit]="true"
+                [(ngModel)]="inlineEditWithEvents"
+                [ngModelOptions]="{ standalone: true }"
+                (save)="onInlineEditSave($event)"
+                (cancel)="onInlineEditCancel()"
+                helpText="Check console for save/cancel events"
+              ></app-text>
+              <p style="font-size: 12px; color: #666; margin-top: 8px;">
+                Last action: <strong>{{ lastInlineEditAction || 'None' }}</strong>
+              </p>
+            </div>
+            <div class="showcase__item">
+              <h3>Multiple Inline Edit Fields</h3>
+              <p class="showcase__section__description" style="margin-bottom: 16px;">
+                Example of multiple inline edit fields in a form-like layout (like Jira, Confluence):
+              </p>
+              <app-text
+                label="Task Title"
+                placeholder="Enter task title..."
+                [inlineEdit]="true"
+                [(ngModel)]="taskForm.title"
+                [ngModelOptions]="{ standalone: true }"
+                [required]="true"
+                helpText="Click to edit task title"
+              ></app-text>
+              <app-text
+                label="Description"
+                placeholder="Enter description..."
+                [inlineEdit]="true"
+                [(ngModel)]="taskForm.description"
+                [ngModelOptions]="{ standalone: true }"
+                helpText="Click to edit description"
+                style="margin-top: 12px;"
+              ></app-text>
+              <app-text
+                label="Assignee"
+                placeholder="Enter assignee name..."
+                [inlineEdit]="true"
+                [(ngModel)]="taskForm.assignee"
+                [ngModelOptions]="{ standalone: true }"
+                helpText="Click to edit assignee"
+                style="margin-top: 12px;"
+              ></app-text>
+              <div class="showcase__form-output" style="margin-top: 16px;">
+                <strong>Form Values:</strong>
+                <pre>{{ taskForm | json }}</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Integration Examples -->
         <div class="showcase__section">
           <h2 class="showcase__section__title">Integration Examples</h2>
@@ -489,4 +636,31 @@ export class TextShowcaseComponent {
     email: '',
     comments: '',
   };
+
+  // Inline edit showcase values
+  inlineEditValue1 = '';
+  inlineEditValue2 = 'My Awesome Project';
+  inlineEditSmall = 'Small value';
+  inlineEditMedium = 'Medium value';
+  inlineEditLarge = 'Large value';
+  inlineEditDisabled = 'Disabled value';
+  inlineEditReadonly = 'Readonly value';
+  inlineEditWithEvents = 'Edit me!';
+  lastInlineEditAction = '';
+
+  taskForm = {
+    title: 'Implement inline edit feature',
+    description: 'Add inline edit functionality to text component',
+    assignee: 'John Doe',
+  };
+
+  onInlineEditSave(value: any): void {
+    this.lastInlineEditAction = `Saved: ${value}`;
+    console.log('Inline edit saved:', value);
+  }
+
+  onInlineEditCancel(): void {
+    this.lastInlineEditAction = 'Cancelled';
+    console.log('Inline edit cancelled');
+  }
 }

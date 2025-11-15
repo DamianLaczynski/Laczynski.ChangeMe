@@ -4,6 +4,32 @@
       {{ label() }}
     </label>
   }
+
+  <!-- Inline Edit: Read Mode -->
+  @if (inlineEdit() && !isEditModeValue()) {
+    <div
+      class="inline-edit-read"
+      [class.inline-edit-read--small]="size() === 'small'"
+      [class.inline-edit-read--medium]="size() === 'medium'"
+      [class.inline-edit-read--large]="size() === 'large'"
+      [class.inline-edit-read--disabled]="disabled()"
+      [class.inline-edit-read--readonly]="readonly()"
+      (click)="enterEdit.emit()"
+      [attr.aria-label]="ariaLabel() || label()"
+      [attr.tabindex]="disabled() || readonly() ? -1 : 0"
+      role="button"
+    >
+      <span class="inline-edit-read__text" [class.inline-edit-read__text--empty]="!displayValue()">
+        {{ displayValue() || placeholder() }}
+      </span>
+      @if (!disabled() && !readonly()) {
+        <span class="inline-edit-read__icon">
+          <app-icon icon="edit" [size]="size()" variant="regular" />
+        </span>
+      }
+    </div>
+  }
+
   <ng-content></ng-content>
 
   <!-- Help Text -->

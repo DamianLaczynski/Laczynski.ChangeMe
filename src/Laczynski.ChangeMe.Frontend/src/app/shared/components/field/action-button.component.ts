@@ -8,7 +8,12 @@ import { IconName } from '../icon';
   template: `
     <!-- Action button -->
     @if (show()) {
-      <button type="button" class="field__action" (click)="onClick($event)">
+      <button
+        type="button"
+        class="field__action"
+        (click)="onClick($event)"
+        (mousedown)="onMouseDown($event)"
+      >
         <app-icon [icon]="icon()" [size]="size()" [variant]="variant()" />
       </button>
     }
@@ -30,10 +35,16 @@ export class ActionButtonComponent {
   icon = input<IconName>('dismiss');
   variant = input<'regular' | 'filled'>('regular');
   click = output<void>();
+  mousedown = output<MouseEvent>();
 
   onClick(event: any): void {
     event.stopPropagation();
     event.preventDefault();
     this.click.emit(event);
+  }
+
+  onMouseDown(event: MouseEvent): void {
+    event.stopPropagation();
+    this.mousedown.emit(event);
   }
 }

@@ -15,37 +15,59 @@
   [state]="state()"
   [size]="size()"
   [variant]="variant()"
+  [inlineEdit]="inlineEdit()"
+  [displayValue]="getDisplayValue()"
+  [isEditModeValue]="isEditMode()"
+  (enterEdit)="enterEditMode()"
 >
-  <div class="input-wrapper" [class]="wrapperClasses">
-    <input
-      class="input"
-      type="text"
-      [id]="id()"
-      [name]="name()"
-      [placeholder]="placeholder()"
-      [required]="required()"
-      [disabled]="disabled()"
-      [readonly]="readonly()"
-      [autocomplete]="autocomplete()"
-      [value]="value"
-      [attr.aria-label]="ariaLabel() || label()"
-      [attr.aria-describedby]="ariaDescribedBy()"
-      [attr.aria-invalid]="state() === 'error'"
-      (input)="onInputChange($event)"
-      (blur)="onBlur($event)"
-      (focus)="onFocus($event)"
-      (keyup)="onKeyUp($event)"
-      (keydown)="onKeyDown($event)"
-    />
-    @if (value && !disabled() && !readonly()) {
-      <div class="field__actions">
-        <app-action-button
-          [show]="true"
-          [icon]="'dismiss'"
-          [size]="size()"
-          (click)="clear()"
-        ></app-action-button>
-      </div>
-    }
-  </div>
+  <!-- Input (for both inline edit mode and normal mode) -->
+  @if (!inlineEdit() || isEditMode()) {
+    <div class="input-wrapper" [class]="wrapperClasses">
+      <input
+        #inputElement
+        class="input"
+        type="text"
+        [id]="id()"
+        [name]="name()"
+        [placeholder]="placeholder()"
+        [required]="required()"
+        [disabled]="disabled() && !isEditMode()"
+        [readonly]="readonly() && !isEditMode()"
+        [autocomplete]="autocomplete()"
+        [value]="value"
+        [attr.aria-label]="ariaLabel() || label()"
+        [attr.aria-describedby]="ariaDescribedBy()"
+        [attr.aria-invalid]="state() === 'error'"
+        (input)="onInputChange($event)"
+        (blur)="onBlur($event)"
+        (focus)="onFocus($event)"
+        (keyup)="onKeyUp($event)"
+        (keydown)="onKeyDown($event)"
+      />
+      <!-- Actions: Cancel button for inline edit mode -->
+      @if (inlineEdit() && isEditMode()) {
+        <div class="field__actions">
+          <app-action-button
+            [show]="true"
+            [icon]="'dismiss'"
+            [size]="size()"
+            [attr.aria-label]="'Cancel editing'"
+            (click)="cancelChanges()"
+            (mousedown)="onCancelButtonMouseDown($event)"
+          ></app-action-button>
+        </div>
+      }
+      <!-- Actions: Clear button for normal mode -->
+      @if (!inlineEdit() && value && !disabled() && !readonly() && showClearButton()) {
+        <div class="field__actions">
+          <app-action-button
+            [show]="true"
+            [icon]="'dismiss'"
+            [size]="size()"
+            (click)="clear()"
+          ></app-action-button>
+        </div>
+      }
+    </div>
+  }
 </app-field>

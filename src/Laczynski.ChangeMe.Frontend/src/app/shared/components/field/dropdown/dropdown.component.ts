@@ -69,6 +69,28 @@ export type DropdownMode = 'single' | 'multi';
   ],
 })
 export class DropdownComponent extends FieldComponent implements AfterViewInit, OnDestroy {
+  /**
+   * Override getDisplayValue to use computed displayText.
+   */
+  override getDisplayValue(): string {
+    return this.displayText();
+  }
+
+  /**
+   * Hook called after entering edit mode to open dropdown automatically.
+   * Uses requestAnimationFrame + setTimeout to ensure DOM is updated and dropdown is ready before opening.
+   */
+  protected override afterEnterEditMode(): void {
+    // Open dropdown automatically when entering edit mode
+    if (!this.disabled() && !this.readonly()) {
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          this.openDropdown();
+        }, 0);
+      });
+    }
+  }
+
   private readonly document = inject(DOCUMENT);
   private readonly renderer = inject(Renderer2);
   private panelElement: HTMLElement | null = null;
@@ -310,9 +332,19 @@ export class DropdownComponent extends FieldComponent implements AfterViewInit, 
       newSelected.clear();
       newSelected.add(item.value);
       this.selectedValues.set(newSelected);
+      // Update value immediately for inline edit mode
+      const newValue = item.value;
+      this.value = newValue;
+      this.onChange(newValue);
       this.selectionChange.emit(Array.from(newSelected));
       // Close dropdown after a small delay to ensure the click is processed
-      setTimeout(() => this.closeDropdown(), 0);
+      setTimeout(() => {
+        this.closeDropdown();
+        // If in inline edit mode, save changes and exit edit mode
+        if (this.inlineEdit() && this.isEditMode()) {
+          this.saveChanges();
+        }
+      }, 0);
     } else {
       if (newSelected.has(item.value)) {
         newSelected.delete(item.value);

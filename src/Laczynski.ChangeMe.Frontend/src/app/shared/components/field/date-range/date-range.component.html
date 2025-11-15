@@ -14,51 +14,72 @@
   [state]="state()"
   [size]="size()"
   [variant]="variant()"
+  [inlineEdit]="inlineEdit()"
+  [displayValue]="getDisplayValue()"
+  [isEditModeValue]="isEditMode()"
+  (enterEdit)="enterEditMode()"
 >
-  <div class="input-wrapper" [class]="wrapperClasses">
-    <input
-      #triggerElement
-      class="input"
-      type="text"
-      [id]="id()"
-      [name]="name()"
-      [placeholder]="placeholder()"
-      [required]="required()"
-      [disabled]="disabled()"
-      [readonly]="true"
-      [value]="displayText()"
-      [attr.aria-label]="ariaLabel() || label()"
-      [attr.aria-describedby]="ariaDescribedBy()"
-      [attr.aria-invalid]="state() === 'error'"
-      [attr.aria-expanded]="isExpanded()"
-      [attr.aria-haspopup]="'dialog'"
-      (click)="togglePanel()"
-      (blur)="onBlur($event)"
-      (focus)="onFocus($event)"
-      (keydown)="onKeyDown($event)"
-    />
-    @if (!disabled() && !readonly()) {
-      <div class="field__actions">
-        <!-- Calendar Icon Button -->
-
-        <app-action-button
-          [show]="true"
-          [size]="size()"
-          [icon]="'calendar'"
-          (click)="togglePanel()"
-        ></app-action-button>
-        <!-- Clear Button -->
-        @if (value && (value.startDate || value.endDate)) {
+  <!-- Date Range Input (for both inline edit mode and normal mode) -->
+  @if (!inlineEdit() || isEditMode()) {
+    <div class="input-wrapper" [class]="wrapperClasses">
+      <input
+        #triggerElement
+        class="input"
+        type="text"
+        [id]="id()"
+        [name]="name()"
+        [placeholder]="placeholder()"
+        [required]="required()"
+        [disabled]="disabled() && !isEditMode()"
+        [readonly]="readonly() && !isEditMode()"
+        [value]="displayText()"
+        [attr.aria-label]="ariaLabel() || label()"
+        [attr.aria-describedby]="ariaDescribedBy()"
+        [attr.aria-invalid]="state() === 'error'"
+        [attr.aria-expanded]="isExpanded()"
+        [attr.aria-haspopup]="'dialog'"
+        (click)="!isEditMode() ? togglePanel() : null"
+        (input)="onDateRangeInputChange($event)"
+        (blur)="onBlur($event)"
+        (focus)="onFocus($event)"
+        (keydown)="onKeyDown($event)"
+      />
+      <!-- Actions: Cancel button for inline edit mode -->
+      @if (inlineEdit() && isEditMode()) {
+        <div class="field__actions">
           <app-action-button
             [show]="true"
             [icon]="'dismiss'"
             [size]="size()"
-            (click)="clear()"
+            [attr.aria-label]="'Cancel editing'"
+            (click)="cancelChanges()"
+            (mousedown)="onCancelButtonMouseDown($event)"
           ></app-action-button>
-        }
-      </div>
-    }
-  </div>
+        </div>
+      }
+      <!-- Actions: Calendar icon and clear button for normal mode -->
+      @if (!inlineEdit() && !disabled() && !readonly()) {
+        <div class="field__actions">
+          <!-- Calendar Icon Button -->
+          <app-action-button
+            [show]="true"
+            [size]="size()"
+            [icon]="'calendar'"
+            (click)="togglePanel()"
+          ></app-action-button>
+          <!-- Clear Button -->
+          @if (value && (value.startDate || value.endDate)) {
+            <app-action-button
+              [show]="true"
+              [icon]="'dismiss'"
+              [size]="size()"
+              (click)="clear()"
+            ></app-action-button>
+          }
+        </div>
+      }
+    </div>
+  }
 
   <!-- Date Range Picker Panel -->
   @if (isExpanded()) {

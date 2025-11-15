@@ -250,6 +250,45 @@ import { TableOfContentComponent } from '@shared/components/table-of-content';
           </div>
         </div>
       </div>
+
+      <!-- Inline Edit Examples -->
+      <div class="showcase__section">
+        <h2 class="showcase__section__title">Inline Edit</h2>
+        <p class="showcase__section__description">
+          Inline edit allows users to edit phone number directly by clicking on it. Changes are saved
+          on blur or Enter, and can be cancelled with Escape.
+        </p>
+        <div class="showcase__grid">
+          <div class="showcase__item">
+            <h3>Basic Inline Edit</h3>
+            <app-tel
+              label="Phone Number"
+              placeholder="Click to edit..."
+              [inlineEdit]="true"
+              [(ngModel)]="inlineEditValue1"
+              [ngModelOptions]="{ standalone: true }"
+              helpText="Click on the text to edit. Press Enter to save or Esc to cancel."
+            ></app-tel>
+            <p style="font-size: 12px; color: #666; margin-top: 8px;">
+              Current value: <strong>{{ inlineEditValue1 || '(empty)' }}</strong>
+            </p>
+          </div>
+          <div class="showcase__item">
+            <h3>Inline Edit with Default Value</h3>
+            <app-tel
+              label="Contact Phone"
+              placeholder="Enter phone..."
+              [inlineEdit]="true"
+              [(ngModel)]="inlineEditValue2"
+              [ngModelOptions]="{ standalone: true }"
+              helpText="Field with pre-filled value"
+            ></app-tel>
+            <p style="font-size: 12px; color: #666; margin-top: 8px;">
+              Current value: <strong>{{ inlineEditValue2 || '(empty)' }}</strong>
+            </p>
+          </div>
+        </div>
+      </div>
       </div>
     </div>
   `,
@@ -263,5 +302,9 @@ export class TelShowcaseComponent {
     home: '',
     work: '',
   };
+
+  // Inline edit showcase values
+  inlineEditValue1 = '';
+  inlineEditValue2 = '+1 (555) 123-4567';
 }
 
