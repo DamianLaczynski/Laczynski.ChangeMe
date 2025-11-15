@@ -7,6 +7,8 @@ import {
   TemplateRef,
   contentChild,
   ChangeDetectionStrategy,
+  inject,
+  DestroyRef,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -24,7 +26,8 @@ import { CheckboxComponent } from '../field/checkbox/checkbox.component';
 import { TextComponent } from '../field/text/text.component';
 import { NumberComponent } from '../field/number/number.component';
 import { DateComponent } from '../field/date/date.component';
-import { DateRangeComponent, DateRange } from '../field/date-range/date-range.component';
+import { DateRangeComponent } from '../field/date-range/date-range.component';
+import type { DateRange } from '../field/date-range/date-range.component';
 import { DropdownComponent, DropdownItem } from '../field/dropdown/dropdown.component';
 import { LoadingStateComponent } from '../loading-state/loading-state.component';
 import { StateContainerComponent } from '../state-container/state-container.component';
@@ -35,6 +38,11 @@ import { QuickAction } from '../utils';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { State } from '@shared/state/models/state.model';
 import { IconName } from '../icon';
+import { DataGridFilterService } from './services/data-grid-filter.service';
+import { DataGridSelectionService } from './services/data-grid-selection.service';
+import { DataGridSortService } from './services/data-grid-sort.service';
+import { DataGridHeaderComponent } from './components/data-grid-header.component';
+import { DataGridFilterRowComponent } from './components/data-grid-filter-row.component';
 
 @Component({
   selector: 'app-data-grid',
@@ -44,17 +52,14 @@ import { IconName } from '../icon';
     FormsModule,
     ScrollingModule,
     CheckboxComponent,
-    TextComponent,
-    NumberComponent,
-    DateComponent,
-    DateRangeComponent,
-    DropdownComponent,
     LoadingStateComponent,
     StateContainerComponent,
-    IconComponent,
     PaginationComponent,
     ButtonComponent,
+    DataGridHeaderComponent,
+    DataGridFilterRowComponent,
   ],
+  providers: [DataGridFilterService, DataGridSelectionService, DataGridSortService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataGridComponent<T = any> {
@@ -131,29 +136,21 @@ export class DataGridComponent<T = any> {
   filterChange = output<DataGridActiveFilter[]>();
 
   // Internal state
-  selectedRows = signal<Set<string>>(new Set());
   hoveredRowId = signal<string | null>(null);
-  sortField = signal<string | null>(null);
-  sortDirection = signal<'asc' | 'desc'>('asc');
   expandedRows = signal<Set<string>>(new Set());
 
-  // Filter state
-  activeFilters = signal<Map<string, DataGridFilterValue>>(new Map());
-  filterDebounceTimers = new Map<string, ReturnType<typeof setTimeout>>();
-
-  // Cache for date range values to prevent creating new objects unnecessarily
-  private dateRangeCache = new Map<string, DateRange | null>();
+  // Services
+  private filterService = inject(DataGridFilterService<T>);
+  private selectionService = inject(DataGridSelectionService<T>);
+  private sortService = inject(DataGridSortService<T>);
 
   // Computed properties
   allRowsSelected = computed(() => {
-    const rows = this.rows();
-    if (rows.length === 0) return false;
-    const selectableRows = rows.filter(row => !row.disabled);
-    return selectableRows.every(row => this.selectedRows().has(row.id));
+    return this.selectionService.allRowsSelected(this.rows());
   });
 
   someRowsSelected = computed(() => {
-    return this.selectedRows().size > 0 && !this.allRowsSelected();
+    return this.selectionService.someRowsSelected(this.rows());
   });
 
   hasData = computed(() => {
@@ -213,7 +210,117 @@ export class DataGridComponent<T = any> {
   });
 
   hasFilterableColumns = computed(() => {
-    return this.columns().some(col => this.isColumnFilterable(col));
+    return this.columns().some(col => this.filterService.isColumnFilterable(col));
+  });
+
+  // Computed properties for filter row component
+  filterConfigsMap = computed(() => {
+    const map = new Map<string, DataGridFilterConfig>();
+    this.columns().forEach(column => {
+      const config = this.filterService.getFilterConfig(column);
+      if (config) {
+        map.set(column.id, config);
+      }
+    });
+    return map;
+  });
+
+  filterValuesMap = computed(() => {
+    return this.filterService.activeFilters();
+  });
+
+  filterableColumnIdsSet = computed(() => {
+    const set = new Set<string>();
+    this.columns().forEach(column => {
+      if (this.filterService.isColumnFilterable(column)) {
+        set.add(column.id);
+      }
+    });
+    return set;
+  });
+
+  columnMinWidthsMap = computed(() => {
+    const map = new Map<string, string | null>();
+    this.columns().forEach(column => {
+      map.set(column.id, this.getColumnMinWidth(column));
+    });
+    return map;
+  });
+
+  filterPlaceholdersMap = computed(() => {
+    const map = new Map<string, string>();
+    this.columns().forEach(column => {
+      map.set(column.id, this.filterService.getFilterPlaceholder(column));
+    });
+    return map;
+  });
+
+  needsOperatorSelectorMap = computed(() => {
+    const map = new Map<string, boolean>();
+    this.columns().forEach(column => {
+      map.set(column.id, this.filterService.needsOperatorSelector(column));
+    });
+    return map;
+  });
+
+  needsSecondValueMap = computed(() => {
+    const map = new Map<string, boolean>();
+    this.columns().forEach(column => {
+      map.set(column.id, this.filterService.needsSecondValue(column));
+    });
+    return map;
+  });
+
+  filterOperatorsMap = computed(() => {
+    const map = new Map<string, DropdownItem[]>();
+    this.columns().forEach(column => {
+      const config = this.filterService.getFilterConfig(column);
+      if (config && config.operators) {
+        map.set(
+          column.id,
+          config.operators.map(op => ({
+            value: op,
+            label: this.getOperatorText(op, config.type),
+            icon: this.getOperatorIcon(op),
+          })),
+        );
+      }
+    });
+    return map;
+  });
+
+  currentOperatorIconsMap = computed(() => {
+    const map = new Map<string, IconName>();
+    this.columns().forEach(column => {
+      map.set(column.id, this.getCurrentOperatorIcon(column));
+    });
+    return map;
+  });
+
+  dropdownItemsMap = computed(() => {
+    const map = new Map<string, DropdownItem[]>();
+    this.columns().forEach(column => {
+      const config = this.filterService.getFilterConfig(column);
+      if (config && config.options) {
+        map.set(
+          column.id,
+          config.options.map(opt => ({
+            value: opt.value,
+            label: opt.label,
+            disabled: opt.disabled || false,
+          })),
+        );
+      }
+    });
+    return map;
+  });
+
+  booleanFilterValuesMap = computed(() => {
+    const map = new Map<string, string | null>();
+    this.columns().forEach(column => {
+      map.set(column.id, this.getBooleanFilterValue(column.id));
+    });
+    return map;
   });
 
   // Methods
@@ -266,8 +373,9 @@ export class DataGridComponent<T = any> {
       classes.push('data-grid__header-cell--sortable');
     }
 
-    if (column?.sortable && this.sortField() === column.field?.toString()) {
-      classes.push(`data-grid__header-cell--sorted-${this.sortDirection()}`);
+    if (column?.sortable && this.sortService.isColumnSorted(column)) {
+      const sortState = this.sortService.getSortState();
+      classes.push(`data-grid__header-cell--sorted-${sortState.direction}`);
     }
 
     return classes.join(' ');
@@ -280,7 +388,7 @@ export class DataGridComponent<T = any> {
   getRowClasses(row: DataGridRow<T>): string {
     const classes = ['data-grid__row'];
 
-    if (row.selected || this.selectedRows().has(row.id)) {
+    if (row.selected || this.selectionService.isRowSelected(row)) {
       classes.push('data-grid__row--selected');
     }
 
@@ -322,42 +430,22 @@ export class DataGridComponent<T = any> {
 
   // Selection methods
   toggleAllRows(): void {
-    if (this.allRowsSelected()) {
-      this.selectedRows.set(new Set());
-    } else {
-      const selectableRowIds = this.rows()
-        .filter(row => !row.disabled)
-        .map(row => row.id);
-      this.selectedRows.set(new Set(selectableRowIds));
-    }
+    this.selectionService.toggleAllRows(this.rows());
     this.emitSelectionChange();
   }
 
   toggleRow(row: DataGridRow<T>): void {
-    if (row.disabled) return;
-
-    const selected = new Set(this.selectedRows());
-
-    if (selected.has(row.id)) {
-      selected.delete(row.id);
-    } else {
-      if (!this.multiSelect()) {
-        selected.clear();
-      }
-      selected.add(row.id);
-    }
-
-    this.selectedRows.set(selected);
+    this.selectionService.toggleRow(row, this.multiSelect());
     this.rowSelect.emit(row);
     this.emitSelectionChange();
   }
 
   isRowSelected(row: DataGridRow<T>): boolean {
-    return this.selectedRows().has(row.id);
+    return this.selectionService.isRowSelected(row);
   }
 
   private emitSelectionChange(): void {
-    const selected = this.rows().filter(row => this.selectedRows().has(row.id));
+    const selected = this.selectionService.getSelectedRows(this.rows());
     this.selectionChange.emit(selected);
   }
 
@@ -410,50 +498,31 @@ export class DataGridComponent<T = any> {
 
   // Sorting methods
   onHeaderClick(column: DataGridColumn<T>, event: Event): void {
-    if (!column.sortable || !column.field) {
-      return;
-    }
-
     event.stopPropagation();
-    const field = column.field.toString();
-    const isCurrentField = this.sortField() === field;
-
-    if (isCurrentField) {
-      // Toggle sort direction if same field
-      const newDirection = this.sortDirection() === 'asc' ? 'desc' : 'asc';
-      this.sortDirection.set(newDirection);
-    } else {
-      // Set new field and default to ascending
-      this.sortField.set(field);
-      this.sortDirection.set('asc');
+    const sortState = this.sortService.handleHeaderClick(column);
+    if (sortState) {
+      this.sortChange.emit({
+        field: sortState.field!,
+        direction: sortState.direction,
+      });
     }
-
-    this.sortChange.emit({
-      field: field,
-      direction: this.sortDirection(),
-    });
   }
 
   getSortIcon(column: DataGridColumn<T>): IconName | null {
-    if (!column.sortable || !column.field) {
-      return null;
-    }
-
-    const field = column.field.toString();
-    if (this.sortField() !== field) {
-      // Neutral/unsorted state - show both arrows or sort icon
-      return 'arrow_sort';
-    }
-
-    // Show direction-specific icon
-    return this.sortDirection() === 'asc' ? 'arrow_up' : 'arrow_down';
+    return this.sortService.getSortIcon(column);
   }
 
   isColumnSorted(column: DataGridColumn<T>): boolean {
-    if (!column.sortable || !column.field) {
-      return false;
-    }
-    return this.sortField() === column.field.toString();
+    return this.sortService.isColumnSorted(column);
+  }
+
+  // Expose sort state for template
+  sortField(): string | null {
+    return this.sortService.getSortState().field;
+  }
+
+  sortDirection(): 'asc' | 'desc' {
+    return this.sortService.getSortState().direction;
   }
 
   // State component helpers
@@ -507,101 +576,41 @@ export class DataGridComponent<T = any> {
   }
 
   hasRowDetails(row: DataGridRow<T>): boolean {
-    return this.expandable() && this.rowDetailsTemplate() !== null;
+    return this.expandable() && this.rowDetailsTemplate() != null;
   }
 
-  // Filter methods
+  // Filter methods - delegate to filterService
   isColumnFilterable(column: DataGridColumn<T>): boolean {
-    return (
-      column.filterable === true ||
-      (typeof column.filterable === 'object' && column.filterable !== null)
-    );
+    return this.filterService.isColumnFilterable(column);
   }
 
   getFilterConfig(column: DataGridColumn<T>): DataGridFilterConfig | null {
-    if (column.filterable === true) {
-      // Default text filter
-      return {
-        type: 'text',
-        placeholder: `Filter ${column.header}...`,
-        debounceMs: 300,
-      };
-    }
-    if (typeof column.filterable === 'object' && column.filterable !== null) {
-      return column.filterable;
-    }
-    return null;
+    return this.filterService.getFilterConfig(column);
   }
 
   getFilterValue(columnId: string): DataGridFilterValue | null {
-    return this.activeFilters().get(columnId) || null;
+    return this.filterService.getFilterValue(columnId);
   }
 
   hasActiveFilter(columnId: string): boolean {
-    const filter = this.activeFilters().get(columnId);
-    if (!filter) return false;
-
-    // Check if filter has any meaningful value
-    if (filter.value !== null && filter.value !== undefined && filter.value !== '') {
-      return true;
-    }
-    if (filter.valueTo !== null && filter.valueTo !== undefined && filter.valueTo !== '') {
-      return true;
-    }
-    if (filter.values && filter.values.length > 0) {
-      return true;
-    }
-
-    return false;
+    return this.filterService.hasActiveFilter(columnId);
   }
 
   getFilterPlaceholder(column: DataGridColumn<T>): string {
-    const config = this.getFilterConfig(column);
-    return config?.placeholder || `Filter ${column.header}...`;
+    return this.filterService.getFilterPlaceholder(column);
   }
 
   // Text filter methods
   onTextFilterChange(column: DataGridColumn<T>, value: string): void {
-    const columnId = column.id;
-    const config = this.getFilterConfig(column);
-    if (!config) return;
-
-    const debounceMs = config.debounceMs || 300;
-
-    // Clear existing timer
-    const existingTimer = this.filterDebounceTimers.get(columnId);
-    if (existingTimer) {
-      clearTimeout(existingTimer);
-    }
-
-    // Set new timer
-    const timer = setTimeout(() => {
-      const currentFilter = this.activeFilters().get(columnId) || {};
-      const operator = currentFilter.operator || config.defaultOperator || 'contains';
-
-      const newFilter: DataGridFilterValue = {
-        ...currentFilter,
-        operator: operator as TextFilterOperator,
-        value: value,
-      };
-
-      this.updateFilter(columnId, column, newFilter);
-      this.filterDebounceTimers.delete(columnId);
-    }, debounceMs);
-
-    this.filterDebounceTimers.set(columnId, timer);
+    this.filterService.handleFilterChange(column, value, filter => {
+      this.filterService.updateFilter(column.id, column, filter);
+      this.emitFilterChange();
+    });
   }
 
   onTextFilterOperatorChange(column: DataGridColumn<T>, operator: TextFilterOperator): void {
-    const columnId = column.id;
-    const currentFilter = this.activeFilters().get(columnId) || {};
-
-    const newFilter: DataGridFilterValue = {
-      ...currentFilter,
-      operator: operator,
-    };
-
-    this.updateFilter(columnId, column, newFilter);
+    this.filterService.handleFilterOperatorChange(column, operator);
+    this.emitFilterChange();
   }
 
   // Number filter methods
@@ -610,44 +619,23 @@ export class DataGridComponent<T = any> {
     value: string,
     operator?: NumberFilterOperator,
   ): void {
-    const columnId = column.id;
-    const config = this.getFilterConfig(column);
-    if (!config) return;
-
-    const currentFilter = this.activeFilters().get(columnId) || {};
-    const filterOperator = operator || currentFilter.operator || config.defaultOperator || 'equals';
-
-    const newFilter: DataGridFilterValue = {
-      ...currentFilter,
-      operator: filterOperator as NumberFilterOperator,
-      value: value ? parseFloat(value) : null,
-    };
-
-    this.updateFilter(columnId, column, newFilter);
+    if (operator) {
+      this.filterService.handleFilterOperatorChange(column, operator);
+    }
+    this.filterService.handleFilterChange(column, value, filter => {
+      this.filterService.updateFilter(column.id, column, filter);
+      this.emitFilterChange();
+    });
   }
 
   onNumberFilterOperatorChange(column: DataGridColumn<T>, operator: NumberFilterOperator): void {
-    const columnId = column.id;
-    const currentFilter = this.activeFilters().get(columnId) || {};
-
-    const newFilter: DataGridFilterValue = {
-      ...currentFilter,
-      operator: operator,
-    };
-
-    this.updateFilter(columnId, column, newFilter);
+    this.filterService.handleFilterOperatorChange(column, operator);
+    this.emitFilterChange();
   }
 
   onNumberFilterValueToChange(column: DataGridColumn<T>, value: string): void {
-    const columnId = column.id;
-    const currentFilter = this.activeFilters().get(columnId) || {};
-
-    const newFilter: DataGridFilterValue = {
-      ...currentFilter,
-      valueTo: value ? parseFloat(value) : null,
-    };
-
-    this.updateFilter(columnId, column, newFilter);
+    this.filterService.handleFilterValueToChange(column, value);
+    this.emitFilterChange();
   }
 
   // Date filter methods
@@ -656,257 +644,70 @@ export class DataGridComponent<T = any> {
     value: string,
     operator?: DateFilterOperator,
   ): void {
-    const columnId = column.id;
-    const config = this.getFilterConfig(column);
-    if (!config) return;
-
-    const currentFilter = this.activeFilters().get(columnId) || {};
-    const filterOperator = operator || currentFilter.operator || config.defaultOperator || 'equals';
-
-    const newFilter: DataGridFilterValue = {
-      ...currentFilter,
-      operator: filterOperator as DateFilterOperator,
-      value: value || null,
-    };
-
-    this.updateFilter(columnId, column, newFilter);
+    if (operator) {
+      this.filterService.handleFilterOperatorChange(column, operator);
+    }
+    this.filterService.handleFilterChange(column, value, filter => {
+      this.filterService.updateFilter(column.id, column, filter);
+      this.emitFilterChange();
+    });
   }
 
   onDateFilterOperatorChange(column: DataGridColumn<T>, operator: DateFilterOperator): void {
-    const columnId = column.id;
-    const currentFilter = this.activeFilters().get(columnId) || {};
-
-    const newFilter: DataGridFilterValue = {
-      ...currentFilter,
-      operator: operator,
-    };
-
-    this.updateFilter(columnId, column, newFilter);
+    this.filterService.handleFilterOperatorChange(column, operator);
+    this.emitFilterChange();
   }
 
   onDateFilterValueToChange(column: DataGridColumn<T>, value: string): void {
-    const columnId = column.id;
-    const currentFilter = this.activeFilters().get(columnId) || {};
-
-    const newFilter: DataGridFilterValue = {
-      ...currentFilter,
-      valueTo: value || null,
-    };
-
-    this.updateFilter(columnId, column, newFilter);
+    this.filterService.handleFilterValueToChange(column, value);
+    this.emitFilterChange();
   }
 
   // Date range filter method (for 'between' operator)
   onDateRangeFilterChange(column: DataGridColumn<T>, range: DateRange | null): void {
-    const columnId = column.id;
-    const currentFilter = this.activeFilters().get(columnId) || {};
-
-    // Check if values actually changed to prevent infinite loops
-    const currentStartDate = currentFilter.value || null;
-    const currentEndDate = currentFilter.valueTo || null;
-    const newStartDate = range?.startDate || null;
-    const newEndDate = range?.endDate || null;
-
-    if (currentStartDate === newStartDate && currentEndDate === newEndDate) {
-      // Values haven't changed, skip update
-      return;
-    }
-
-    const newFilter: DataGridFilterValue = {
-      ...currentFilter,
-      value: newStartDate,
-      valueTo: newEndDate,
-    };
-
-    this.updateFilter(columnId, column, newFilter);
+    this.filterService.handleDateRangeChange(column, range);
+    this.emitFilterChange();
   }
 
   // Get date range value for binding (uses computed signal to prevent infinite loops)
   getDateRangeValue(columnId: string): DateRange | null {
-    return this.dateRangeValues().get(columnId) || null;
+    return this.dateRangeValues().get(columnId) ?? null;
   }
 
   // Select filter methods
   onSelectFilterChange(column: DataGridColumn<T>, value: any): void {
-    const columnId = column.id;
-
-    const newFilter: DataGridFilterValue = {
-      value: value || null,
-    };
-
-    this.updateFilter(columnId, column, newFilter);
+    this.filterService.handleFilterChange(column, value, filter => {
+      this.filterService.updateFilter(column.id, column, filter);
+      this.emitFilterChange();
+    });
   }
 
   // Multi-select filter methods
   onMultiSelectFilterChange(column: DataGridColumn<T>, value: any): void {
-    const columnId = column.id;
-    // Dropdown in multi mode returns array
-    const values = Array.isArray(value) ? value : value ? [value] : [];
-
-    const newFilter: DataGridFilterValue = {
-      values: values,
-    };
-
-    this.updateFilter(columnId, column, newFilter);
+    this.filterService.handleFilterChange(column, value, filter => {
+      this.filterService.updateFilter(column.id, column, filter);
+      this.emitFilterChange();
+    });
   }
 
   // Boolean filter methods
   onBooleanFilterChange(column: DataGridColumn<T>, value: any): void {
-    const columnId = column.id;
-    // Handle null/undefined from clearable dropdown
-    let boolValue: boolean | null = null;
-    if (value === 'true' || value === true) {
-      boolValue = true;
-    } else if (value === 'false' || value === false) {
-      boolValue = false;
-    }
-
-    const newFilter: DataGridFilterValue = {
-      value: boolValue,
-    };
-
-    this.updateFilter(columnId, column, newFilter);
+    this.filterService.handleFilterChange(column, value, filter => {
+      this.filterService.updateFilter(column.id, column, filter);
+      this.emitFilterChange();
+    });
   }
 
   // Clear filter
   clearFilter(column: DataGridColumn<T>): void {
-    const columnId = column.id;
-
-    // Clear debounce timer if exists
-    const timer = this.filterDebounceTimers.get(columnId);
-    if (timer) {
-      clearTimeout(timer);
-      this.filterDebounceTimers.delete(columnId);
-    }
-
-    const filters = new Map(this.activeFilters());
-    filters.delete(columnId);
-    this.activeFilters.set(filters);
-
-    this.emitFilterChange();
-  }
-
-  // Update filter helper
-  private updateFilter(
-    columnId: string,
-    column: DataGridColumn<T>,
-    filter: DataGridFilterValue,
-  ): void {
-    const filters = new Map(this.activeFilters());
-
-    // Check if filter is empty (no values)
-    const isEmpty =
-      !filter.value && !filter.valueTo && (!filter.values || filter.values.length === 0);
-
-    // Remove filter if empty AND has no operator
-    // Keep filter if it has operator (even without values yet) - user might be selecting values
-    if (isEmpty && !filter.operator) {
-      filters.delete(columnId);
-    } else {
-      // Keep filter if it has operator or values
-      filters.set(columnId, filter);
-    }
-
-    this.activeFilters.set(filters);
+    this.filterService.clearFilter(column);
     this.emitFilterChange();
   }
 
   // Emit filter change
   private emitFilterChange(): void {
-    const activeFiltersArray: DataGridActiveFilter[] = [];
-
-    this.activeFilters().forEach((filter, columnId) => {
-      const column = this.columns().find(col => col.id === columnId);
-      if (!column) return;
-
-      const config = this.getFilterConfig(column);
-      if (!config) return;
-
-      activeFiltersArray.push({
-        columnId,
-        type: config.type,
-        filter,
-        displayText: this.getFilterDisplayText(column, filter),
-      });
-    });
-
+    const activeFiltersArray = this.filterService.getActiveFiltersArray(this.columns());
     this.filterChange.emit(activeFiltersArray);
-  }
-
-  // Get filter display text
-  private getFilterDisplayText(column: DataGridColumn<T>, filter: DataGridFilterValue): string {
-    const config = this.getFilterConfig(column);
-    if (!config) return '';
-
-    const operatorText = this.getOperatorText(filter.operator, config.type);
-
-    if (config.type === 'text') {
-      return `${column.header} ${operatorText} "${filter.value}"`;
-    }
-
-    if (config.type === 'number') {
-      if (filter.operator === 'between') {
-        return `${column.header} between ${filter.value} and ${filter.valueTo}`;
-      }
-      return `${column.header} ${operatorText} ${filter.value}`;
-    }
-
-    if (config.type === 'date') {
-      if (filter.operator === 'between') {
-        return `${column.header} between ${filter.value} and ${filter.valueTo}`;
-      }
-      return `${column.header} ${operatorText} ${filter.value}`;
-    }
-
-    if (config.type === 'select') {
-      const option = config.options?.find(opt => opt.value === filter.value);
-      return `${column.header} = ${option?.label || filter.value}`;
-    }
-
-    if (config.type === 'multi-select') {
-      if (!filter.values || filter.values.length === 0) return '';
-      const selectedOptions = config.options
-        ?.filter(opt => filter.values?.includes(opt.value))
-        .map(opt => opt.label)
-        .join(', ');
-      return `${column.header} in (${selectedOptions || filter.values.join(', ')})`;
-    }
-
-    if (config.type === 'boolean') {
-      if (filter.value === true) return `${column.header} = Yes`;
-      if (filter.value === false) return `${column.header} = No`;
-      return '';
-    }
-
-    return '';
-  }
-
-  // Get operator text
-  private getOperatorText(
-    operator: TextFilterOperator | NumberFilterOperator | DateFilterOperator | undefined,
-    filterType: DataGridFilterType,
-  ): string {
-    if (!operator) return '';
-
-    const operatorMap: Record<string, string> = {
-      // Text operators
-      contains: 'contains',
-      equals: '=',
-      startsWith: 'starts with',
-      endsWith: 'ends with',
-      // Number operators
-      notEquals: '!=',
-      greaterThan: '>',
-      lessThan: '<',
-      greaterOrEqual: '>=',
-      lessOrEqual: '<=',
-      between: 'between',
-      // Date operators
-      before: 'before',
-      after: 'after',
-    };
-
-    return operatorMap[operator] || operator;
   }
 
   private getOperatorIcon(
@@ -947,10 +748,35 @@ export class DataGridComponent<T = any> {
     }));
   }
 
+  // Get operator text for display
+  private getOperatorText(
+    operator: TextFilterOperator | NumberFilterOperator | DateFilterOperator,
+    filterType: DataGridFilterType,
+  ): string {
+    const operatorMap: Record<string, string> = {
+      // Text operators
+      contains: 'contains',
+      equals: '=',
+      startsWith: 'starts with',
+      endsWith: 'ends with',
+      // Number operators
+      notEquals: '!=',
+      greaterThan: '>',
+      lessThan: '<',
+      greaterOrEqual: '>=',
+      lessOrEqual: '<=',
+      between: 'between',
+      // Date operators
+      before: 'before',
+      after: 'after',
+    };
+
+    return operatorMap[operator] || operator;
+  }
+
   // Get current operator icon for dropdown
   getCurrentOperatorIcon(column: DataGridColumn<T>): IconName {
-    // Use computed to track changes in activeFilters
-    const filter = this.activeFilters().get(column.id);
+    const filter = this.filterService.getFilterValue(column.id);
     const config = this.getFilterConfig(column);
     const operator =
       filter?.operator ||
@@ -964,7 +790,7 @@ export class DataGridComponent<T = any> {
     const icons = new Map<string, IconName>();
     this.columns().forEach(column => {
       if (this.isColumnFilterable(column)) {
-        const filter = this.activeFilters().get(column.id);
+        const filter = this.filterService.getFilterValue(column.id);
         const config = this.getFilterConfig(column);
         const operator =
           filter?.operator ||
@@ -979,84 +805,22 @@ export class DataGridComponent<T = any> {
   // Computed map of column IDs to date range values (for 'between' operator)
   // This prevents creating new objects on every call, which causes infinite loops
   dateRangeValues = computed(() => {
-    const ranges = new Map<string, DateRange | null>();
-    const filters = this.activeFilters();
-
-    this.columns().forEach(column => {
-      if (this.isColumnFilterable(column)) {
-        const filter = filters.get(column.id);
-        if (filter && filter.operator === 'between') {
-          const startDate = filter.value || null;
-          const endDate = filter.valueTo || null;
-
-          // Check cache first to avoid creating new objects
-          const cached = this.dateRangeCache.get(column.id);
-          if (cached && cached.startDate === startDate && cached.endDate === endDate) {
-            ranges.set(column.id, cached);
-          } else {
-            // Create new object only if values changed
-            const newRange: DateRange | null =
-              startDate || endDate
-                ? {
-                    startDate: startDate,
-                    endDate: endDate,
-                  }
-                : null;
-            ranges.set(column.id, newRange);
-            this.dateRangeCache.set(column.id, newRange);
-          }
-        } else {
-          ranges.set(column.id, null);
-          this.dateRangeCache.delete(column.id);
-        }
-      }
-    });
-    return ranges;
+    return this.filterService.getDateRangeValues(this.columns());
   });
 
   // Get operator icon for a column (reactive version)
   getOperatorIconForColumn(columnId: string): string {
-    return this.operatorIcons().get(columnId) || 'filter';
+    return this.operatorIcons().get(columnId) ?? 'filter';
   }
 
   // Check if filter needs operator selector
   needsOperatorSelector(column: DataGridColumn<T>): boolean {
-    const config = this.getFilterConfig(column);
-    if (!config) return false;
-
-    if (config.showOperator !== undefined) {
-      return config.showOperator;
-    }
-
-    // Default: show for number, date, and text (if operators are defined)
-    if (config.type === 'number' || config.type === 'date') {
-      return true;
-    }
-
-    if (config.type === 'text') {
-      // Show operator selector if operators are defined
-      return config.operators !== undefined && config.operators.length > 0;
-    }
-
-    return false;
+    return this.filterService.needsOperatorSelector(column);
   }
 
   // Check if filter needs second value (for 'between' operator)
   needsSecondValue(column: DataGridColumn<T>): boolean {
-    const filter = this.getFilterValue(column.id);
-    const config = this.getFilterConfig(column);
-
-    // Check operator from filter first
-    if (filter?.operator === 'between') {
-      return true;
-    }
-
-    // If no filter yet, check if default operator is 'between'
-    if (!filter && config?.defaultOperator === 'between') {
-      return true;
-    }
-
-    return false;
+    return this.filterService.needsSecondValue(column);
   }
 
   // Get dropdown items from filter options

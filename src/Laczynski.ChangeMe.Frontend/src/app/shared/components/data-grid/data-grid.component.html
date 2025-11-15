@@ -1,369 +1,182 @@
 <div [class]="getDataGridClasses()">
   <!-- Scrollable Container -->
   <div class="data-grid__scroll-container">
-  <!-- Column Headers -->
-  <div [class]="getHeaderClasses()">
-    <!-- Header Label Row -->
-    <div class="data-grid__header-row">
-      <!-- Expand Column Header -->
-      @if (expandable()) {
-        <div
-          [class]="getHeaderCellClasses(null, false)"
-          class="data-grid__header-cell--expand"
-        ></div>
-      }
-
-      <!-- Selection Column Header -->
-      @if (selectable() && multiSelect()) {
-        <div [class]="getSelectionHeaderClasses()">
-          <app-checkbox
-            [ngModel]="allRowsSelected()"
-            [indeterminate]="someRowsSelected()"
-            (ngModelChange)="toggleAllRows()"
-          />
-        </div>
-      }
-
-      <!-- Column Headers -->
-      @for (column of columns(); track trackByColumnId($index, column)) {
-        <div
-          [class]="getHeaderCellClasses(column)"
-          [style.width]="column.width || 'auto'"
-          [style.min-width]="getColumnMinWidth(column) || column.width || null"
-          [style.flex]="column.width ? 'none' : '1'"
-          (click)="onHeaderClick(column, $event)"
-          [attr.role]="column.sortable ? 'button' : null"
-          [attr.tabindex]="column.sortable ? '0' : null"
-          [attr.aria-sort]="
-            column.sortable && isColumnSorted(column)
-              ? sortDirection() === 'asc'
-                ? 'ascending'
-                : 'descending'
-              : column.sortable
-                ? 'none'
-                : null
-          "
-          [attr.aria-label]="
-            column.sortable
-              ? column.header +
-                (isColumnSorted(column) ? ' sorted ' + sortDirection() : ' sortable')
-              : null
-          "
-          (keydown.enter)="column.sortable && onHeaderClick(column, $event)"
-          (keydown.space)="
-            column.sortable && onHeaderClick(column, $event); $event.preventDefault()
-          "
-        >
-          <div class="data-grid__header-label-content">
-            @if (column.headerTemplate) {
-              <div [innerHTML]="column.headerTemplate()"></div>
-            } @else {
-              <div class="data-grid__header-text">{{ column.header }}</div>
-            }
-            @if (column.sortable) {
-              <div class="data-grid__header-sort-indicator">
-                @if (getSortIcon(column)) {
-                  <app-icon
-                    [icon]="getSortIcon(column)!"
-                    [size]="size() === 'small' ? 'small' : 'medium'"
-                  />
-                }
-              </div>
-            }
-          </div>
-        </div>
-      }
-    </div>
+    <!-- Column Headers -->
+    <app-data-grid-header
+      [columns]="columns()"
+      [size]="size()"
+      [stickyHeaders]="stickyHeaders()"
+      [selectable]="selectable()"
+      [multiSelect]="multiSelect()"
+      [expandable]="expandable()"
+      [allRowsSelected]="allRowsSelected()"
+      [someRowsSelected]="someRowsSelected()"
+      [sortField]="sortField()"
+      [sortDirection]="sortDirection()"
+      [getColumnMinWidth]="getColumnMinWidth.bind(this)"
+      [getSortIcon]="getSortIcon.bind(this)"
+      (headerClick)="onHeaderClick($event.column, $event.event)"
+      (toggleAllRows)="toggleAllRows()"
+    />
 
     <!-- Filter Row -->
     @if (hasFilterableColumns()) {
-      <div class="data-grid__filter-row">
-        <!-- Selection Column Filter (empty) -->
-        @if (selectable() && multiSelect()) {
-          <div [class]="getFilterCellClasses(null, true)"></div>
-        }
-
-        <!-- Column Filters -->
-        @for (column of columns(); track trackByColumnId($index, column)) {
-          <div
-            [class]="getFilterCellClasses(column)"
-            [style.width]="column.width || 'auto'"
-            [style.min-width]="getColumnMinWidth(column) || column.width || null"
-            [style.flex]="column.width ? 'none' : '1'"
-          >
-            @if (isColumnFilterable(column)) {
-              @switch (getFilterConfig(column)?.type) {
-                @case ('text') {
-                  <div class="data-grid__filter-wrapper">
-                    @if (needsOperatorSelector(column)) {
-                      <app-dropdown
-                        [items]="getFilterOperators(column)"
-                        [size]="size()"
-                        [ngModel]="
-                          getFilterValue(column.id)?.operator ||
-                          getFilterConfig(column)?.defaultOperator ||
-                          'contains'
-                        "
-                        (ngModelChange)="onTextFilterOperatorChange(column, $event)"
-                        [clearable]="false"
-                        [compact]="true"
-                        [compactIcon]="
-                          operatorIcons().get(column.id) || getCurrentOperatorIcon(column)
-                        "
-                        class="data-grid__filter-operator"
-                      />
-                    }
-                    <app-text
-                      [placeholder]="getFilterPlaceholder(column)"
-                      [size]="size()"
-                      [variant]="'filled-gray'"
-                      [ngModel]="getFilterValue(column.id)?.value || ''"
-                      (ngModelChange)="onTextFilterChange(column, $event)"
-                    />
-                  </div>
-                }
-                @case ('number') {
-                  <div class="data-grid__filter-wrapper">
-                    @if (needsOperatorSelector(column)) {
-                      <app-dropdown
-                        [items]="getFilterOperators(column)"
-                        [size]="size()"
-                        [ngModel]="
-                          getFilterValue(column.id)?.operator ||
-                          getFilterConfig(column)?.defaultOperator ||
-                          'equals'
-                        "
-                        (ngModelChange)="onNumberFilterOperatorChange(column, $event)"
-                        [clearable]="false"
-                        [compact]="true"
-                        [compactIcon]="
-                          operatorIcons().get(column.id) || getCurrentOperatorIcon(column)
-                        "
-                        class="data-grid__filter-operator"
-                      />
-                    }
-                    <app-number
-                      [placeholder]="getFilterPlaceholder(column)"
-                      [size]="size()"
-                      [variant]="'filled-gray'"
-                      [ngModel]="getFilterValue(column.id)?.value?.toString() || ''"
-                      (ngModelChange)="onNumberFilterChange(column, $event)"
-                    />
-                    @if (needsSecondValue(column)) {
-                      <span class="data-grid__filter-separator">and</span>
-                      <app-number
-                        [placeholder]="'To'"
-                        [size]="size()"
-                        [variant]="'filled-gray'"
-                        [ngModel]="getFilterValue(column.id)?.valueTo?.toString() || ''"
-                        (ngModelChange)="onNumberFilterValueToChange(column, $event)"
-                      />
-                    }
-                  </div>
-                }
-                @case ('date') {
-                  <div class="data-grid__filter-wrapper">
-                    @if (needsOperatorSelector(column)) {
-                      <app-dropdown
-                        [items]="getFilterOperators(column)"
-                        [size]="size()"
-                        [ngModel]="
-                          getFilterValue(column.id)?.operator ||
-                          getFilterConfig(column)?.defaultOperator ||
-                          'equals'
-                        "
-                        (ngModelChange)="onDateFilterOperatorChange(column, $event)"
-                        [clearable]="false"
-                        [compact]="true"
-                        [compactIcon]="
-                          operatorIcons().get(column.id) || getCurrentOperatorIcon(column)
-                        "
-                        class="data-grid__filter-operator"
-                      />
-                    }
-                    @if (needsSecondValue(column)) {
-                      <app-date-range
-                        [placeholder]="getFilterPlaceholder(column)"
-                        [size]="size()"
-                        [variant]="'filled-gray'"
-                        [ngModel]="getDateRangeValue(column.id)"
-                        (ngModelChange)="onDateRangeFilterChange(column, $event)"
-                      />
-                    } @else {
-                      <app-date
-                        [dateType]="'date'"
-                        [placeholder]="getFilterPlaceholder(column)"
-                        [size]="size()"
-                        [variant]="'filled-gray'"
-                        [ngModel]="getFilterValue(column.id)?.value || ''"
-                        (ngModelChange)="onDateFilterChange(column, $event)"
-                      />
-                    }
-                  </div>
-                }
-                @case ('select') {
-                  <div class="data-grid__filter-wrapper">
-                    <app-dropdown
-                      variant="filled-gray"
-                      [items]="getDropdownItems(column)"
-                      [size]="size()"
-                      [ngModel]="getFilterValue(column.id)?.value"
-                      (ngModelChange)="onSelectFilterChange(column, $event)"
-                      [clearable]="true"
-                      [placeholder]="getFilterPlaceholder(column)"
-                    />
-                  </div>
-                }
-                @case ('multi-select') {
-                  <div class="data-grid__filter-wrapper">
-                    <app-dropdown
-                      variant="filled-gray"
-                      [items]="getDropdownItems(column)"
-                      [mode]="'multi'"
-                      [size]="size()"
-                      [ngModel]="getFilterValue(column.id)?.values || []"
-                      (ngModelChange)="onMultiSelectFilterChange(column, $event)"
-                      [clearable]="true"
-                      [placeholder]="getFilterPlaceholder(column)"
-                    />
-                  </div>
-                }
-                @case ('boolean') {
-                  <div class="data-grid__filter-wrapper data-grid__filter-wrapper--boolean">
-                    <app-dropdown
-                      [items]="getBooleanFilterOptions()"
-                      [size]="size()"
-                      [ngModel]="getBooleanFilterValue(column.id)"
-                      (ngModelChange)="onBooleanFilterChange(column, $event)"
-                      [clearable]="true"
-                      [placeholder]="getFilterPlaceholder(column)"
-                    />
-                  </div>
-                }
-              }
-            }
-          </div>
-        }
-      </div>
+      <app-data-grid-filter-row
+        [columns]="columns()"
+        [size]="size()"
+        [selectable]="selectable()"
+        [multiSelect]="multiSelect()"
+        [hasFilterableColumns]="hasFilterableColumns()"
+        [filterConfigs]="filterConfigsMap()"
+        [filterValues]="filterValuesMap()"
+        [filterableColumnIds]="filterableColumnIdsSet()"
+        [operatorIcons]="operatorIcons()"
+        [dateRangeValues]="dateRangeValues()"
+        [columnMinWidths]="columnMinWidthsMap()"
+        [filterPlaceholders]="filterPlaceholdersMap()"
+        [needsOperatorSelectorMap]="needsOperatorSelectorMap()"
+        [needsSecondValueMap]="needsSecondValueMap()"
+        [filterOperatorsMap]="filterOperatorsMap()"
+        [currentOperatorIcons]="currentOperatorIconsMap()"
+        [dropdownItemsMap]="dropdownItemsMap()"
+        [booleanFilterOptions]="getBooleanFilterOptions()"
+        [booleanFilterValues]="booleanFilterValuesMap()"
+        (onTextFilterChange)="onTextFilterChange($event.column, $event.value)"
+        (onTextFilterOperatorChange)="onTextFilterOperatorChange($event.column, $event.operator)"
+        (onNumberFilterChange)="onNumberFilterChange($event.column, $event.value)"
+        (onNumberFilterOperatorChange)="
+          onNumberFilterOperatorChange($event.column, $event.operator)
+        "
+        (onNumberFilterValueToChange)="onNumberFilterValueToChange($event.column, $event.value)"
+        (onDateFilterChange)="onDateFilterChange($event.column, $event.value)"
+        (onDateFilterOperatorChange)="onDateFilterOperatorChange($event.column, $event.operator)"
+        (onDateFilterValueToChange)="onDateFilterValueToChange($event.column, $event.value)"
+        (onDateRangeFilterChange)="onDateRangeFilterChange($event.column, $event.range)"
+        (onSelectFilterChange)="onSelectFilterChange($event.column, $event.value)"
+        (onMultiSelectFilterChange)="onMultiSelectFilterChange($event.column, $event.value)"
+        (onBooleanFilterChange)="onBooleanFilterChange($event.column, $event.value)"
+      />
     }
-  </div>
 
-  <!-- Data Rows -->
-  <app-state-container
-    [state]="gridState()"
-    [size]="size()"
-    [showEmptyOnInitial]="true"
-    [loadingTitle]="loadingTitle()"
-    [loadingDescription]="loadingDescription()"
-    [loadingOverlay]="hasData() && loading()"
-    [loadingBlurContent]="true"
-    [errorTitle]="errorTitle() || 'Error loading data'"
-    [errorDescription]="errorDescription() || 'An error occurred while loading the data grid.'"
-    [errorIcon]="errorIcon()"
-    [errorPrimaryAction]="errorPrimaryAction()"
-    [errorSecondaryAction]="errorSecondaryAction()"
-    [emptyTitle]="emptyTitle() || 'No data available'"
-    [emptyDescription]="emptyDescription() || 'There is no data to display.'"
-    [emptyIcon]="emptyIcon()"
-    [emptyPrimaryAction]="emptyPrimaryAction()"
-    [emptySecondaryAction]="emptySecondaryAction()"
-    (errorActionClick)="onErrorActionClick($event)"
-    (emptyActionClick)="onEmptyActionClick($event)"
-  >
-    <ng-template #dataState let-data>
-      <!-- Virtualized rows with loading overlay -->
-      <div class="data-grid__rows-container">
-        <app-loading-state
-          [title]="loadingTitle()"
-          [description]="loadingDescription()"
-          [size]="size()"
-          [overlay]="true"
-          [blurContent]="true"
-          [isLoading]="loading()"
-        >
-          <cdk-virtual-scroll-viewport
-            [itemSize]="virtualizationItemHeight()"
-            class="data-grid__viewport"
-            [style.height.px]="virtualizationViewportHeight()"
+    <!-- Data Rows -->
+    <app-state-container
+      [state]="gridState()"
+      [size]="size()"
+      [showEmptyOnInitial]="true"
+      [loadingTitle]="loadingTitle()"
+      [loadingDescription]="loadingDescription()"
+      [loadingOverlay]="hasData() && loading()"
+      [loadingBlurContent]="true"
+      [errorTitle]="errorTitle() || 'Error loading data'"
+      [errorDescription]="errorDescription() || 'An error occurred while loading the data grid.'"
+      [errorIcon]="errorIcon()"
+      [errorPrimaryAction]="errorPrimaryAction()"
+      [errorSecondaryAction]="errorSecondaryAction()"
+      [emptyTitle]="emptyTitle() || 'No data available'"
+      [emptyDescription]="emptyDescription() || 'There is no data to display.'"
+      [emptyIcon]="emptyIcon()"
+      [emptyPrimaryAction]="emptyPrimaryAction()"
+      [emptySecondaryAction]="emptySecondaryAction()"
+      (errorActionClick)="onErrorActionClick($event)"
+      (emptyActionClick)="onEmptyActionClick($event)"
+    >
+      <ng-template #dataState let-data>
+        <!-- Virtualized rows with loading overlay -->
+        <div class="data-grid__rows-container">
+          <app-loading-state
+            [title]="loadingTitle()"
+            [description]="loadingDescription()"
+            [size]="size()"
+            [overlay]="true"
+            [blurContent]="true"
+            [isLoading]="loading()"
           >
-            @for (row of data || []; track trackByRowId($index, row)) {
-              <div
-                [class]="getRowClasses(row)"
-                (mouseenter)="onRowMouseEnter(row)"
-                (mouseleave)="onRowMouseLeave(row)"
-                (click)="onRowClick(row)"
-                (keydown.space)="onRowClick(row); $event.preventDefault()"
-                (keydown.enter)="onRowClick(row); $event.preventDefault()"
-                role="row"
-                [attr.tabindex]="row.disabled ? '-1' : '0'"
-                [attr.aria-selected]="isRowSelected(row)"
-                [attr.aria-disabled]="row.disabled"
-                [attr.aria-expanded]="expandable() ? isRowExpanded(row) : null"
-                [style.height.px]="virtualizationItemHeight()"
-                [style.min-height.px]="virtualizationItemHeight()"
-              >
-                <!-- Expand Cell -->
-                @if (expandable()) {
-                  <div [class]="getCellClasses(null, false)" class="data-grid__cell--expand">
-                    @if (hasRowDetails(row)) {
-                      <app-button
-                        [variant]="'subtle'"
-                        [size]="size()"
-                        [iconOnly]="true"
-                        [icon]="getExpandIcon(row)"
+            <cdk-virtual-scroll-viewport
+              [itemSize]="virtualizationItemHeight()"
+              class="data-grid__viewport"
+              [style.height.px]="virtualizationViewportHeight()"
+            >
+              @for (row of data || []; track trackByRowId($index, row)) {
+                <div
+                  [class]="getRowClasses(row)"
+                  (mouseenter)="onRowMouseEnter(row)"
+                  (mouseleave)="onRowMouseLeave(row)"
+                  (click)="onRowClick(row)"
+                  (keydown.space)="onRowClick(row); $event.preventDefault()"
+                  (keydown.enter)="onRowClick(row); $event.preventDefault()"
+                  role="row"
+                  [attr.tabindex]="row.disabled ? '-1' : '0'"
+                  [attr.aria-selected]="isRowSelected(row)"
+                  [attr.aria-disabled]="row.disabled"
+                  [attr.aria-expanded]="expandable() ? isRowExpanded(row) : null"
+                  [style.height.px]="virtualizationItemHeight()"
+                  [style.min-height.px]="virtualizationItemHeight()"
+                >
+                  <!-- Expand Cell -->
+                  @if (expandable()) {
+                    <div [class]="getCellClasses(null, false)" class="data-grid__cell--expand">
+                      @if (hasRowDetails(row)) {
+                        <app-button
+                          [variant]="'subtle'"
+                          [size]="size()"
+                          [iconOnly]="true"
+                          [icon]="getExpandIcon(row)"
+                          [disabled]="row.disabled || false"
+                          [ariaLabel]="isRowExpanded(row) ? 'Collapse row' : 'Expand row'"
+                          (click)="toggleRowExpansion(row, $event)"
+                        />
+                      }
+                    </div>
+                  }
+
+                  <!-- Selection Cell -->
+                  @if (selectable()) {
+                    <div [class]="getSelectionCellClasses()">
+                      <app-checkbox
+                        [ngModel]="isRowSelected(row)"
+                        (ngModelChange)="toggleRow(row)"
                         [disabled]="row.disabled || false"
-                        [ariaLabel]="isRowExpanded(row) ? 'Collapse row' : 'Expand row'"
-                        (click)="toggleRowExpansion(row, $event)"
                       />
-                    }
-                  </div>
-                }
+                    </div>
+                  }
 
-                <!-- Selection Cell -->
-                @if (selectable()) {
-                  <div [class]="getSelectionCellClasses()">
-                    <app-checkbox
-                      [ngModel]="isRowSelected(row)"
-                      (ngModelChange)="toggleRow(row)"
-                      [disabled]="row.disabled || false"
-                    />
-                  </div>
-                }
-
-                <!-- Data Cells -->
-                @for (column of columns(); track trackByColumnId($index, column)) {
-                  <div
-                    [class]="getCellClasses(column)"
-                    [style.width]="column.width || 'auto'"
-                    [style.min-width]="getColumnMinWidth(column) || column.width || null"
-                    [style.flex]="column.width ? 'none' : '1'"
-                    (click)="onCellClick(row, column, $event)"
-                  >
-                    <div class="data-grid__cell-content">
-                      <div class="data-grid__cell-text">
-                        {{ getCellValue(row, column) }}
+                  <!-- Data Cells -->
+                  @for (column of columns(); track trackByColumnId($index, column)) {
+                    <div
+                      [class]="getCellClasses(column)"
+                      [style.width]="column.width || 'auto'"
+                      [style.min-width]="getColumnMinWidth(column) || column.width || null"
+                      [style.flex]="column.width ? 'none' : '1'"
+                      (click)="onCellClick(row, column, $event)"
+                    >
+                      <div class="data-grid__cell-content">
+                        <div class="data-grid__cell-text">
+                          {{ getCellValue(row, column) }}
+                        </div>
                       </div>
+                    </div>
+                  }
+                </div>
+
+                <!-- Row Details (Expanded Content) -->
+                @if (expandable() && isRowExpanded(row) && rowDetailsTemplate()) {
+                  <div
+                    class="data-grid__row-details"
+                    [attr.aria-label]="'Details for row ' + row.id"
+                  >
+                    <div class="data-grid__row-details-content">
+                      <ng-container
+                        *ngTemplateOutlet="rowDetailsTemplate()!; context: { $implicit: row }"
+                      ></ng-container>
                     </div>
                   </div>
                 }
-              </div>
-
-              <!-- Row Details (Expanded Content) -->
-              @if (expandable() && isRowExpanded(row) && rowDetailsTemplate()) {
-                <div class="data-grid__row-details" [attr.aria-label]="'Details for row ' + row.id">
-                  <div class="data-grid__row-details-content">
-                    <ng-container
-                      *ngTemplateOutlet="rowDetailsTemplate()!; context: { $implicit: row }"
-                    ></ng-container>
-                  </div>
-                </div>
               }
-            }
-          </cdk-virtual-scroll-viewport>
-        </app-loading-state>
-      </div>
-    </ng-template>
-  </app-state-container>
+            </cdk-virtual-scroll-viewport>
+          </app-loading-state>
+        </div>
+      </ng-template>
+    </app-state-container>
   </div>
 
   <!-- Pagination - only show when enabled and not loading or error -->
