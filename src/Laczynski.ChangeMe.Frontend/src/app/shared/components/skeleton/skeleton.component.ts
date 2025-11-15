@@ -1,4 +1,4 @@
-import { Component, input, computed } from '@angular/core';
+import { Component, input, computed, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 export type SkeletonShape = 'rectangle' | 'circle';
@@ -6,8 +6,8 @@ export type SkeletonShape = 'rectangle' | 'circle';
 @Component({
   selector: 'app-skeleton',
   templateUrl: './skeleton.component.html',
-
   imports: [CommonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SkeletonComponent {
   shape = input<SkeletonShape>('rectangle');

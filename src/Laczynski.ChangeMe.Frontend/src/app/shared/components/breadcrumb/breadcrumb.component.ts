@@ -1,4 +1,4 @@
-import { Component, input, output, TemplateRef } from '@angular/core';
+import { Component, input, output, TemplateRef, ChangeDetectionStrategy } from '@angular/core';
 import { Size, Appearance, Orientation } from '../utils';
 import { Node } from '../node/node.component';
 import { NodeComponent } from '../node/node.component';
@@ -12,6 +12,7 @@ export interface BreadcrumbItem<T = any> extends Node<T> {
   selector: 'app-breadcrumb',
   imports: [NodeComponent, IconComponent],
   templateUrl: './breadcrumb.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BreadcrumbComponent<T extends BreadcrumbItem> {
   items = input.required<T[]>();

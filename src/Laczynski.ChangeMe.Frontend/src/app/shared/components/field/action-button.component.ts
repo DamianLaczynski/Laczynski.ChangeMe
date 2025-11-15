@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { IconComponent } from '../icon/icon.component';
 import { Size } from '../utils';
 import { IconName } from '../icon';
@@ -28,6 +28,7 @@ import { IconName } from '../icon';
       }
     `,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ActionButtonComponent {
   size = input<Size>('medium');

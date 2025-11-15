@@ -1,12 +1,12 @@
-import { Component, input, output, model } from '@angular/core';
+import { Component, input, output, model, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TagStyle, TagSize } from '../utils';
 
 @Component({
   selector: 'app-tag',
   templateUrl: './tag.component.html',
-
   imports: [CommonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TagComponent {
   // Component inputs

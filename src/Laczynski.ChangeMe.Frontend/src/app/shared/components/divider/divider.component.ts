@@ -1,9 +1,10 @@
-import { Component, input } from '@angular/core';
+import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 import { DividerAlignment, Orientation } from '../utils';
 
 @Component({
   selector: 'app-divider',
   templateUrl: './divider.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DividerComponent {
   orientation = input<Orientation>('horizontal');

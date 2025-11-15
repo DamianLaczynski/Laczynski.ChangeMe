@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 import { BadgeColor, BadgeAppearance, Size } from '../utils';
 import { IconComponent } from '../icon/icon.component';
 import { IconName } from '../icon';
@@ -6,8 +6,8 @@ import { IconName } from '../icon';
 @Component({
   selector: 'app-badge',
   templateUrl: './badge.component.html',
-
   imports: [IconComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BadgeComponent {
   color = input<BadgeColor>('brand');

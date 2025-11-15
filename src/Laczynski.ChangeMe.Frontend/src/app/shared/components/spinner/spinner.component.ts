@@ -1,4 +1,4 @@
-import { Component, input, computed } from '@angular/core';
+import { Component, input, computed, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SpinnerSize, SpinnerLabelPosition, StateType } from '../utils';
 
@@ -13,6 +13,7 @@ import { SpinnerSize, SpinnerLabelPosition, StateType } from '../utils';
     `,
   ],
   imports: [CommonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SpinnerComponent {
   size = input<SpinnerSize>('medium');

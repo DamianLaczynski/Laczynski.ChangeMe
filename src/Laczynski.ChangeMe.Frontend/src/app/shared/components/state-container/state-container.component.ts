@@ -1,4 +1,4 @@
-import { Component, TemplateRef, computed, contentChild, input, output } from '@angular/core';
+import { Component, TemplateRef, computed, contentChild, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoadingStateComponent } from '../loading-state/loading-state.component';
 import { ErrorStateComponent } from '../error-state/error-state.component';
@@ -11,6 +11,7 @@ import { IconName } from '../icon';
   selector: 'app-state-container',
   templateUrl: './state-container.component.html',
   imports: [CommonModule, LoadingStateComponent, ErrorStateComponent, EmptyStateComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StateContainerComponent<T> {
   state = input.required<State<T>>();

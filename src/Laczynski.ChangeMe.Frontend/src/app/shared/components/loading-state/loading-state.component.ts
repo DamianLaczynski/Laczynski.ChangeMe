@@ -1,4 +1,4 @@
-import { Component, input, contentChild, TemplateRef, computed } from '@angular/core';
+import { Component, input, contentChild, TemplateRef, computed, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SpinnerComponent } from '../spinner/spinner.component';
 import { Size, SpinnerSize } from '../utils';
@@ -7,6 +7,7 @@ import { Size, SpinnerSize } from '../utils';
   selector: 'app-loading-state',
   templateUrl: './loading-state.component.html',
   imports: [CommonModule, SpinnerComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoadingStateComponent {
   // Inputs

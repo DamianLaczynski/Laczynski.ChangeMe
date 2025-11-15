@@ -1,4 +1,4 @@
-import { Component, computed, input, output } from '@angular/core';
+import { Component, computed, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonComponent } from '../button/button.component';
@@ -23,6 +23,7 @@ export interface PaginationConfig {
   selector: 'app-pagination',
   templateUrl: './pagination.component.html',
   imports: [CommonModule, FormsModule, ButtonComponent, IconComponent, DropdownComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaginationComponent {
   // Inputs

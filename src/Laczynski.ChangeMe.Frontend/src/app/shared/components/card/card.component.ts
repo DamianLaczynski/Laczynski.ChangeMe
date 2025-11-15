@@ -1,4 +1,4 @@
-import { Component, input, output, model, contentChild, TemplateRef } from '@angular/core';
+import { Component, input, output, model, contentChild, TemplateRef, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../button/button.component';
 import { CardStyle, QuickAction } from '../utils';
@@ -8,8 +8,8 @@ import { IconName } from '../icon';
 @Component({
   selector: 'app-card',
   templateUrl: './card.component.html',
-
   imports: [CommonModule, ButtonComponent, IconComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardComponent {
   // Inputs

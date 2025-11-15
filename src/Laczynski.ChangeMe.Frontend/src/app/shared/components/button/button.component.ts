@@ -1,4 +1,4 @@
-import { Component, input, output, model } from '@angular/core';
+import { Component, input, output, model, ChangeDetectionStrategy } from '@angular/core';
 import { ButtonStyle, Size } from '../utils';
 import { IconComponent } from '../icon/icon.component';
 import { IconName } from '../icon';
@@ -8,8 +8,8 @@ export type ButtonType = 'button' | 'submit' | 'reset';
 @Component({
   selector: 'app-button',
   templateUrl: './button.component.html',
-
   imports: [IconComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ButtonComponent {
   variant = input<ButtonStyle, ButtonStyle | undefined>('secondary', {

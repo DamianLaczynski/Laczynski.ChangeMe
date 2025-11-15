@@ -8,6 +8,7 @@ import {
   input,
   model,
   output,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PaginatedTableConfig } from './models/paginated-table-config.model';
@@ -24,9 +25,9 @@ import {
 
 @Component({
   selector: 'app-paginated-table',
-
   imports: [CommonModule, ButtonComponent, FormsModule, SpinnerComponent, DropdownComponent],
   templateUrl: './paginated-table.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaginatedTableComponent<T, P extends PaginationParameters = PaginationParameters>
   implements OnInit

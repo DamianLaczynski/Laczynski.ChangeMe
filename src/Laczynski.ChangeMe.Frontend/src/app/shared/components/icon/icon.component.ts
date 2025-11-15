@@ -1,4 +1,4 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, ChangeDetectionStrategy } from '@angular/core';
 import { Size } from '../utils';
 import { IconName } from './icon-name.type';
 
@@ -26,6 +26,7 @@ import { IconName } from './icon-name.type';
       }
     `,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IconComponent {
   icon = input<IconName, IconName | undefined>('' as IconName, {

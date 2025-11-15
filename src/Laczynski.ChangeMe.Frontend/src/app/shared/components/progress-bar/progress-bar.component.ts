@@ -1,4 +1,4 @@
-import { Component, input, computed } from '@angular/core';
+import { Component, input, computed, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Size, StateType } from '../utils';
 
@@ -7,8 +7,8 @@ export type ProgressBarType = 'determinate' | 'indeterminate';
 @Component({
   selector: 'app-progress-bar',
   templateUrl: './progress-bar.component.html',
-
   imports: [CommonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProgressBarComponent {
   type = input<ProgressBarType>('determinate');
