@@ -1,5 +1,7 @@
 ﻿using System.Net;
 using Laczynski.ChangeMe.Backend.Core.Interfaces;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Laczynski.ChangeMe.Backend.Infrastructure.Email;
 

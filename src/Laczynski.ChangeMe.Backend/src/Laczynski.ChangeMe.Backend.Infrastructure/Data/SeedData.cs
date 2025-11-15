@@ -1,5 +1,6 @@
 ﻿
 using Laczynski.ChangeMe.Backend.Core.ItemsAggregate;
+using Microsoft.EntityFrameworkCore;
 
 namespace Laczynski.ChangeMe.Backend.Infrastructure.Data;
 

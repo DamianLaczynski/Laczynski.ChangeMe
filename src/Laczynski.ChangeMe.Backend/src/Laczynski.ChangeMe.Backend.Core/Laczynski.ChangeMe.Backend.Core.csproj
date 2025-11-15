@@ -3,6 +3,7 @@
 
   <ItemGroup>
     <PackageReference Include="Ardalis.Result" />
+    <PackageReference Include="Ardalis.GuardClauses" />
     <PackageReference Include="Ardalis.SmartEnum" />
     <PackageReference Include="MediatR" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />

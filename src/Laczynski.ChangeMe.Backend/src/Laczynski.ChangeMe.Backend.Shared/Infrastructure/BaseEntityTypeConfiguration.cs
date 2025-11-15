@@ -2,7 +2,7 @@ using Laczynski.ChangeMe.Backend.Shared.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Laczynski.Analyze.Backend.Shared.Infrastructure;
+namespace Laczynski.ChangeMe.Backend.Shared.Infrastructure;
 
 public abstract class BaseEntityTypeConfiguration<TEntity> : IEntityTypeConfiguration<TEntity>
     where TEntity : EntityBase<Guid>

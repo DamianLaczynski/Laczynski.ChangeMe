@@ -1,6 +1,11 @@
-﻿using Laczynski.ChangeMe.Backend.Infrastructure.Data;
+﻿using Ardalis.GuardClauses;
+using Laczynski.ChangeMe.Backend.Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace Laczynski.ChangeMe.Backend.Infrastructure;
 public static class InfrastructureServiceExtensions
@@ -29,7 +34,7 @@ public static class InfrastructureServiceExtensions
     services.AddDbContext<ApplicationDbContext>(options =>
     {
       options.UseNpgsql(postgresConnection,
-        npgsqlOptions => npgsqlOptions.MigrationsAssembly("Laczynski.Analyze.Backend.Infrastructure")
+        npgsqlOptions => npgsqlOptions.MigrationsAssembly("Laczynski.ChangeMe.Backend.Infrastructure")
           .SetPostgresVersion(16, 0));
 
       if (builder.Environment.IsDevelopment())
