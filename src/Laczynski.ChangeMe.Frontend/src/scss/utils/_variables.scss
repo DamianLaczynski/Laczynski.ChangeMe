@@ -6,26 +6,26 @@
 // Based on colors.md design tokens
 
 // Brand Colors - Light theme
-$color-brand-primary: #0f6cbd; // colorBrandBackground
-$color-brand-primary-hover: #115ea3; // colorBrandBackgroundHover
-$color-brand-primary-pressed: #0c3b5e; // colorBrandBackgroundPressed
-$color-brand-primary-selected: #0f548c; // colorBrandBackgroundSelected
+$color-brand-primary: #44BBA4; // colorBrandBackground
+$color-brand-primary-hover: #3ba892; // colorBrandBackgroundHover
+$color-brand-primary-pressed: #2d8573; // colorBrandBackgroundPressed
+$color-brand-primary-selected: #3ba892; // colorBrandBackgroundSelected
 
 // Brand Foreground
-$color-brand-foreground: #0f6cbd; // colorBrandForeground1
-$color-brand-foreground-hover: #115ea3; // colorBrandForeground1Hover
-$color-brand-foreground-pressed: #0f548c; // colorBrandForeground1Pressed
+$color-brand-foreground: #44BBA4; // colorBrandForeground1
+$color-brand-foreground-hover: #3ba892; // colorBrandForeground1Hover
+$color-brand-foreground-pressed: #2d8573; // colorBrandForeground1Pressed
 
 // Compound Brand
-$color-compound-brand-background: #0f6cbd; // colorCompoundBrandBackground
-$color-compound-brand-background-hover: #115ea3; // colorCompoundBrandBackgroundHover
-$color-compound-brand-background-pressed: #0f548c; // colorCompoundBrandBackgroundPressed
-$color-compound-brand-foreground: #0f6cbd; // colorCompoundBrandForeground1
-$color-compound-brand-foreground-hover: #115ea3; // colorCompoundBrandForeground1Hover
-$color-compound-brand-foreground-pressed: #0f548c; // colorCompoundBrandForeground1Pressed
-$color-compound-brand-stroke: #0f6cbd; // colorCompoundBrandStroke
-$color-compound-brand-stroke-hover: #115ea3; // colorCompoundBrandStrokeHover
-$color-compound-brand-stroke-pressed: #0f548c; // colorCompoundBrandStrokePressed
+$color-compound-brand-background: #44BBA4; // colorCompoundBrandBackground
+$color-compound-brand-background-hover: #3ba892; // colorCompoundBrandBackgroundHover
+$color-compound-brand-background-pressed: #2d8573; // colorCompoundBrandBackgroundPressed
+$color-compound-brand-foreground: #44BBA4; // colorCompoundBrandForeground1
+$color-compound-brand-foreground-hover: #3ba892; // colorCompoundBrandForeground1Hover
+$color-compound-brand-foreground-pressed: #2d8573; // colorCompoundBrandForeground1Pressed
+$color-compound-brand-stroke: #44BBA4; // colorCompoundBrandStroke
+$color-compound-brand-stroke-hover: #3ba892; // colorCompoundBrandStrokeHover
+$color-compound-brand-stroke-pressed: #2d8573; // colorCompoundBrandStrokePressed
 
 // Accent Colors (alias for brand)
 $color-accent-primary: #{$color-brand-primary};
@@ -34,30 +34,30 @@ $color-accent-primary-pressed: #{$color-brand-primary-pressed};
 $color-accent-primary-selected: #{$color-brand-primary-selected};
 
 // Neutral Colors - Foreground - Light theme
-$color-neutral-foreground-rest: #242424; // colorNeutralForeground1
-$color-neutral-foreground-hover: #242424; // colorNeutralForeground1Hover
-$color-neutral-foreground-pressed: #242424; // colorNeutralForeground1Pressed
-$color-neutral-foreground-selected: #242424; // colorNeutralForeground1Selected
+$color-neutral-foreground-rest: #393E41; // colorNeutralForeground1
+$color-neutral-foreground-hover: #393E41; // colorNeutralForeground1Hover
+$color-neutral-foreground-pressed: #393E41; // colorNeutralForeground1Pressed
+$color-neutral-foreground-selected: #393E41; // colorNeutralForeground1Selected
 $color-neutral-foreground-disabled: #bdbdbd; // colorNeutralForegroundDisabled
 $color-neutral-foreground-on-brand: #ffffff; // colorNeutralForegroundOnBrand
 
-$color-neutral-foreground2-rest: #424242; // colorNeutralForeground2
-$color-neutral-foreground2-hover: #242424; // colorNeutralForeground2Hover
-$color-neutral-foreground2-pressed: #242424; // colorNeutralForeground2Pressed
-$color-neutral-foreground2-selected: #242424; // colorNeutralForeground2Selected
-$color-neutral-foreground2-brand-hover: #0f6cbd; // colorNeutralForeground2BrandHover
-$color-neutral-foreground2-brand-pressed: #115ea3; // colorNeutralForeground2BrandPressed
-$color-neutral-foreground2-brand-selected: #0f6cbd; // colorNeutralForeground2BrandSelected
+$color-neutral-foreground2-rest: #4a4f53; // colorNeutralForeground2
+$color-neutral-foreground2-hover: #393E41; // colorNeutralForeground2Hover
+$color-neutral-foreground2-pressed: #393E41; // colorNeutralForeground2Pressed
+$color-neutral-foreground2-selected: #393E41; // colorNeutralForeground2Selected
+$color-neutral-foreground2-brand-hover: #44BBA4; // colorNeutralForeground2BrandHover
+$color-neutral-foreground2-brand-pressed: #3ba892; // colorNeutralForeground2BrandPressed
+$color-neutral-foreground2-brand-selected: #44BBA4; // colorNeutralForeground2BrandSelected
 
-$color-neutral-foreground3-rest: #616161; // colorNeutralForeground3
-$color-neutral-foreground3-hover: #424242; // colorNeutralForeground3Hover
-$color-neutral-foreground3-pressed: #424242; // colorNeutralForeground3Pressed
-$color-neutral-foreground3-selected: #424242; // colorNeutralForeground3Selected
-$color-neutral-foreground3-brand-hover: #0f6cbd; // colorNeutralForeground3BrandHover
-$color-neutral-foreground3-brand-pressed: #115ea3; // colorNeutralForeground3BrandPressed
-$color-neutral-foreground3-brand-selected: #0f6cbd; // colorNeutralForeground3BrandSelected
+$color-neutral-foreground3-rest: #5a5f63; // colorNeutralForeground3
+$color-neutral-foreground3-hover: #4a4f53; // colorNeutralForeground3Hover
+$color-neutral-foreground3-pressed: #4a4f53; // colorNeutralForeground3Pressed
+$color-neutral-foreground3-selected: #4a4f53; // colorNeutralForeground3Selected
+$color-neutral-foreground3-brand-hover: #44BBA4; // colorNeutralForeground3BrandHover
+$color-neutral-foreground3-brand-pressed: #3ba892; // colorNeutralForeground3BrandPressed
+$color-neutral-foreground3-brand-selected: #44BBA4; // colorNeutralForeground3BrandSelected
 
-$color-neutral-foreground4-rest: #707070; // colorNeutralForeground4
+$color-neutral-foreground4-rest: #6a6f73; // colorNeutralForeground4
 
 // Neutral Colors - Background - Light theme
 $color-neutral-background-rest: #ffffff; // colorNeutralBackground1
@@ -76,9 +76,9 @@ $color-neutral-background3-hover: #ebebeb; // colorNeutralBackground3Hover
 $color-neutral-background3-pressed: #d6d6d6; // colorNeutralBackground3Pressed
 $color-neutral-background3-selected: #e0e0e0; // colorNeutralBackground3Selected
 
-$color-neutral-background-brand-selected: #ebf3fc; // colorBrandBackground2
-$color-neutral-background-brand-hover: #cfe4fa; // colorBrandBackground2Hover
-$color-neutral-background-brand-pressed: #96c6fa; // colorBrandBackground2Pressed
+$color-neutral-background-brand-selected: #e6f5f2; // colorBrandBackground2
+$color-neutral-background-brand-hover: #cce8e0; // colorBrandBackground2Hover
+$color-neutral-background-brand-pressed: #99d1c4; // colorBrandBackground2Pressed
 
 $color-subtle-background-hover: #f5f5f5; // colorSubtleBackgroundHover
 $color-subtle-background-pressed: #e0e0e0; // colorSubtleBackgroundPressed
@@ -90,15 +90,15 @@ $color-neutral-stroke-hover: #c7c7c7; // colorNeutralStroke1Hover
 $color-neutral-stroke-pressed: #b3b3b3; // colorNeutralStroke1Pressed
 $color-neutral-stroke-selected: #bdbdbd; // colorNeutralStroke1Selected
 $color-neutral-stroke-disabled: #e0e0e0; // colorNeutralStrokeDisabled
-$color-neutral-stroke-accessible: #616161; // colorNeutralStrokeAccessible
-$color-neutral-stroke-accessible-hover: #575757; // colorNeutralStrokeAccessibleHover
-$color-neutral-stroke-accessible-pressed: #4d4d4d; // colorNeutralStrokeAccessiblePressed
-$color-neutral-stroke-accessible-selected: #0f6cbd; // colorNeutralStrokeAccessibleSelected
+$color-neutral-stroke-accessible: #5a5f63; // colorNeutralStrokeAccessible
+$color-neutral-stroke-accessible-hover: #4a4f53; // colorNeutralStrokeAccessibleHover
+$color-neutral-stroke-accessible-pressed: #393E41; // colorNeutralStrokeAccessiblePressed
+$color-neutral-stroke-accessible-selected: #44BBA4; // colorNeutralStrokeAccessibleSelected
 
-$color-brand-stroke-rest: #0f6cbd; // colorBrandStroke1
-$color-brand-stroke-hover: #115ea3; // colorBrandStroke1Hover
-$color-brand-stroke-pressed: #0f548c; // colorBrandStroke1Pressed
-$color-brand-stroke-selected: #0f6cbd; // colorBrandStroke1Selected
+$color-brand-stroke-rest: #44BBA4; // colorBrandStroke1
+$color-brand-stroke-hover: #3ba892; // colorBrandStroke1Hover
+$color-brand-stroke-pressed: #2d8573; // colorBrandStroke1Pressed
+$color-brand-stroke-selected: #44BBA4; // colorBrandStroke1Selected
 
 // Shared Colors - Based on colorPalette from colors.md
 // Red Palette
