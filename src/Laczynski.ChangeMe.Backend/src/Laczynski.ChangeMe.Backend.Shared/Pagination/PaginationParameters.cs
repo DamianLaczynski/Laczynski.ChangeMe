@@ -1,4 +1,6 @@
-﻿namespace Laczynski.ChangeMe.Backend.Shared.Pagination;
+﻿using System.Text.Json;
+
+namespace Laczynski.ChangeMe.Backend.Shared.Pagination;
 
 /// <summary>
 /// Pagination parameters
@@ -12,6 +14,8 @@ public class PaginationParameters<T>
   public const bool DefaultAscending = true;
 
   private int _pageSize = DefaultPageSize;
+  private List<DataGridActiveFilter>? _filters;
+  private string? _filtersJsonString;
 
   /// <summary>
   /// Page number
@@ -36,6 +40,45 @@ public class PaginationParameters<T>
   /// Whether to sort ascending.
   /// </summary>
   public bool Ascending { get; set; } = DefaultAscending;
+
+  /// <summary>
+  /// Filters as JSON string (for FastEndpoints query parameter binding).
+  /// FastEndpoints binds "PaginationParameters.Filters" query parameter to this property.
+  /// When set, automatically deserializes to the Filters property.
+  /// </summary>
+  public string? Filters
+  {
+    get => _filtersJsonString;
+    set
+    {
+      _filtersJsonString = value;
+      // Deserialize when set
+      if (!string.IsNullOrWhiteSpace(value))
+      {
+        try
+        {
+          _filters = JsonSerializer.Deserialize<List<DataGridActiveFilter>>(value, new JsonSerializerOptions
+          {
+            PropertyNameCaseInsensitive = true
+          });
+        }
+        catch
+        {
+          _filters = null;
+        }
+      }
+      else
+      {
+        _filters = null;
+      }
+    }
+  }
+
+  /// <summary>
+  /// Active filters from DataGrid component (deserialized from Filters JSON string).
+  /// This is a read-only property computed from the Filters JSON string.
+  /// </summary>
+  public List<DataGridActiveFilter>? FiltersList => _filters;
 
   /// <summary>
   /// Validates and normalizes pagination parameters

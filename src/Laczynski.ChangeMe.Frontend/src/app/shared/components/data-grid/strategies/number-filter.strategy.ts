@@ -24,7 +24,7 @@ export class NumberFilterStrategy<T = any> implements FilterStrategy<T> {
     return {
       ...currentFilter,
       operator: operator as NumberFilterOperator,
-      value: value ? parseFloat(value) : null,
+      value: this.parseNumber(value),
     };
   }
 
@@ -44,8 +44,20 @@ export class NumberFilterStrategy<T = any> implements FilterStrategy<T> {
   ): DataGridFilterValue {
     return {
       ...currentFilter,
-      valueTo: value ? parseFloat(value) : null,
+      valueTo: this.parseNumber(value),
     };
+  }
+
+  /**
+   * Safely parses a string to a number, returning null for invalid values
+   */
+  private parseNumber(value: string | null | undefined): number | null {
+    if (!value || value.trim() === '') {
+      return null;
+    }
+
+    const parsed = parseFloat(value);
+    return isNaN(parsed) ? null : parsed;
   }
 
   getDisplayText(

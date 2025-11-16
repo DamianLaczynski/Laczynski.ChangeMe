@@ -27,7 +27,10 @@ public static class PagedQueryableExtensions
       PaginationParameters<TDestination> parameters,
       CancellationToken cancellationToken = default)
   {
-    IQueryable<TDestination> destinationQueryable = queryable.Select(selector);
+    // Apply filters to source queryable before projection
+    var filteredQueryable = queryable.ApplyFilters(parameters.FiltersList);
+
+    IQueryable<TDestination> destinationQueryable = filteredQueryable.Select(selector);
 
     int totalCount;
     List<TDestination> items;

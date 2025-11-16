@@ -28,7 +28,6 @@ public class GetAllItems(IMediator _mediator) : BaseEndpoint<GetAllItemsRequest,
       PaginationParameters = req.PaginationParameters
     };
 
-    var result = await _mediator.Send(query, cancellationToken);
-    return Result<PaginationResult<ItemDto>>.Success(result);
+    return await _mediator.Send(query, cancellationToken);
   }
 }

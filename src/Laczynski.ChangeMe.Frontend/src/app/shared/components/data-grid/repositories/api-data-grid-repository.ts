@@ -84,7 +84,8 @@ export class ApiDataGridRepository<T> implements DataGridRepository<T> {
   /**
    * Builds query parameters object from DataGrid query parameters
    *
-   * Uses flat parameter structure for query string (e.g., ?PageNumber=1&PageSize=10)
+   * Uses nested parameter structure for FastEndpoints binding (e.g., ?PaginationParameters.PageNumber=1&PaginationParameters.PageSize=10)
+   * FastEndpoints automatically binds nested properties using dot notation
    */
   private buildQueryParams(params: DataGridRepositoryQueryParams): any {
     const queryParams: any = {};
