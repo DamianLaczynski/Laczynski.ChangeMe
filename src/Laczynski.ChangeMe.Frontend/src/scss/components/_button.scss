@@ -131,8 +131,8 @@
     }
 
     &.button--selected:not(.button--disabled) {
-      background-color: var(--color-brand-primary-pressed);
-      border-color: var(--color-brand-primary-pressed);
+      background-color: var(--color-brand-primary-selected);
+      border-color: var(--color-brand-primary-selected);
     }
 
     &.button--disabled {
@@ -169,9 +169,9 @@
     }
 
     &.button--selected:not(.button--disabled) {
-      color: var(--color-neutral-foreground-pressed);
+      color: var(--color-neutral-foreground-selected);
       background-color: var(--color-neutral-background-selected);
-      border-color: var(--color-neutral-foreground-pressed);
+      border-color: var(--color-neutral-foreground-selected);
     }
 
     &.button--disabled {
@@ -208,9 +208,9 @@
     }
 
     &.button--selected:not(.button--disabled) {
-      color: var(--color-neutral-foreground-pressed);
+      color: var(--color-neutral-foreground-selected);
       background-color: var(--color-neutral-background-selected);
-      border-color: var(--color-neutral-foreground-pressed);
+      border-color: var(--color-neutral-foreground-selected);
     }
 
     &.button--disabled {
@@ -254,7 +254,7 @@
     }
 
     &.button--selected:not(.button--disabled) {
-      color: var(--color-neutral-foreground-pressed);
+      color: var(--color-neutral-foreground-selected);
       background-color: var(--color-subtle-background-selected);
       
       .button__icon {
