@@ -29,7 +29,7 @@
   }
 
   &__circle-bg {
-    fill: var(--color-shared-blue-background);
+    fill: var(--color-neutral-background-brand-selected);
   }
 
   &__circle-arc {
@@ -45,7 +45,7 @@
     word-wrap: break-word;
     font-family: $font-family-base;
     color: var(--color-neutral-foreground-rest);
-    
+
     &--small {
       font-size: $font-size-300;
       font-weight: $font-weight-regular;
@@ -137,16 +137,14 @@
   // STATE VARIANTS (COLORS)
   // ========================================================================
 
-  // Default - Brand blue colors
+  // Default - Brand colors
   &--default {
     .spinner__circle-bg {
-      fill: var(--color-shared-blue-background); // #F0F8FF -> #B4D6FA (lighter)
-      fill: #B4D6FA;
+      fill: var(--color-neutral-background-brand-selected);
     }
 
     .spinner__circle-arc {
-      fill: var(--color-brand-primary); // #0078D4 -> #0F6CBD
-      fill: #0F6CBD;
+      fill: var(--color-brand-primary);
     }
 
     .spinner__label {
@@ -158,7 +156,6 @@
   &--info {
     .spinner__circle-bg {
       fill: var(--color-shared-cyan-background);
-      fill: rgba(3, 131, 135, 0.2);
     }
 
     .spinner__circle-arc {
@@ -174,7 +171,6 @@
   &--success {
     .spinner__circle-bg {
       fill: var(--color-shared-green-background);
-      fill: rgba(16, 124, 16, 0.2);
     }
 
     .spinner__circle-arc {
@@ -190,7 +186,6 @@
   &--warning {
     .spinner__circle-bg {
       fill: var(--color-shared-yellow-background);
-      fill: rgba(255, 140, 0, 0.2);
     }
 
     .spinner__circle-arc {
@@ -206,7 +201,6 @@
   &--error {
     .spinner__circle-bg {
       fill: var(--color-shared-red-background);
-      fill: rgba(209, 52, 56, 0.2);
     }
 
     .spinner__circle-arc {
@@ -225,11 +219,11 @@
     }
 
     .spinner__circle-arc {
-      fill: #FFFFFF;
+      fill: #ffffff;
     }
 
     .spinner__label {
-      color: #FFFFFF;
+      color: #ffffff;
     }
   }
 
@@ -274,4 +268,3 @@
     transform: rotate(360deg);
   }
 }
-
