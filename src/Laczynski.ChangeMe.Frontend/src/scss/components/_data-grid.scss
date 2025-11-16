@@ -18,41 +18,17 @@
   overflow-x: auto; // Enable horizontal scrolling on main container
   overflow-y: visible; // Allow dropdown panels to be visible
 
-  // Ensure smooth scrolling
-  scroll-behavior: smooth;
-
-  // Custom scrollbar styling
-  &::-webkit-scrollbar {
-    height: 8px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: var(--color-neutral-background-rest);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: var(--color-neutral-stroke-rest);
-    border-radius: 4px;
-
-    &:hover {
-      background: var(--color-neutral-stroke-hover);
-    }
-  }
-
   // Size variants
   &--small {
     font-size: $font-size-200;
 
     .data-grid__header-cell {
-      height: 33px;
-
       &--selection {
         padding: 8px 8px 9px 8px;
       }
     }
 
     .data-grid__cell {
-      height: 28px;
       padding: $spacing-1 $spacing-2;
     }
   }
@@ -61,15 +37,12 @@
     font-size: $font-size-300;
 
     .data-grid__header-cell {
-      height: 33px;
-
       &--selection {
         padding: 8px 16px 9px 16px;
       }
     }
 
     .data-grid__cell {
-      height: 45px;
     }
   }
 
@@ -77,15 +50,12 @@
     font-size: $font-size-300;
 
     .data-grid__header-cell {
-      height: 33px;
-
       &--selection {
         padding: 8px 16px 9px 16px;
       }
     }
 
     .data-grid__cell {
-      height: 56px;
       padding: $spacing-3 $spacing-4;
     }
   }
@@ -281,7 +251,7 @@
   min-width: max-content; // Ensure row expands to fit all columns
   background: var(--color-neutral-background-hover);
   border-bottom: 1px solid var(--color-neutral-stroke-rest);
-  padding: $spacing-1 0;
+  padding: 0 0;
   overflow: visible; // Allow dropdown panels to be visible
   position: relative; // Create positioning context
   flex-shrink: 0; // Prevent filter row from shrinking
@@ -301,6 +271,19 @@
     padding: $spacing-1 $spacing-4;
     width: auto;
     flex-shrink: 0;
+
+    &::after {
+      content: '';
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  &--expand {
+    padding: $spacing-1 $spacing-2;
+    width: 40px;
+    flex-shrink: 0;
+    min-width: 40px;
   }
 
   &--left {
@@ -372,7 +355,7 @@
 .data-grid {
   &--small {
     .data-grid__filter-row {
-      padding: $spacing-05 0;
+      padding: 0 0;
     }
 
     .data-grid__filter-cell {
@@ -381,13 +364,14 @@
 
       &--selection {
         padding: $spacing-05 $spacing-2;
+        min-width: 37px;
       }
     }
   }
 
   &--medium {
     .data-grid__filter-row {
-      padding: $spacing-1 0;
+      padding: 0 0;
     }
 
     .data-grid__filter-cell {
@@ -402,7 +386,7 @@
 
   &--large {
     .data-grid__filter-row {
-      padding: $spacing-2 0;
+      padding: 0 0;
     }
 
     .data-grid__filter-cell {

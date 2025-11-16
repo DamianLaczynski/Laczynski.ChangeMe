@@ -38,6 +38,11 @@ import { IconName } from '../../icon';
   template: `
     @if (hasFilterableColumns()) {
       <div class="data-grid__filter-row">
+        <!-- Expand Column Filter (empty) -->
+        @if (expandable()) {
+          <div [class]="getFilterCellClasses(null, false, true)"></div>
+        }
+
         <!-- Selection Column Filter (empty) -->
         @if (selectable() && multiSelect()) {
           <div [class]="getFilterCellClasses(null, true)"></div>
@@ -229,6 +234,7 @@ export class DataGridFilterRowComponent<T = any> {
   size = input<'small' | 'medium' | 'large'>('medium');
   selectable = input<boolean>(false);
   multiSelect = input<boolean>(false);
+  expandable = input<boolean>(false);
   hasFilterableColumns = input<boolean>(false);
 
   // Filter data - computed values passed as inputs
@@ -273,11 +279,15 @@ export class DataGridFilterRowComponent<T = any> {
   onBooleanFilterChange = output<{ column: DataGridColumn<T>; value: any }>();
 
   // Methods
-  getFilterCellClasses(column: DataGridColumn<T> | null, isSelection: boolean = false): string {
+  getFilterCellClasses(column: DataGridColumn<T> | null, isSelection: boolean = false, isExpand: boolean = false): string {
     const classes = ['data-grid__filter-cell'];
 
     if (isSelection) {
       classes.push('data-grid__filter-cell--selection');
+    }
+
+    if (isExpand) {
+      classes.push('data-grid__filter-cell--expand');
     }
 
     if (column?.alignment) {

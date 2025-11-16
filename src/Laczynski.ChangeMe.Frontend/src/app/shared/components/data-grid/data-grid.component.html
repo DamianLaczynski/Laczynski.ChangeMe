@@ -6,8 +6,8 @@
       [columns]="columns()"
       [size]="size()"
       [stickyHeaders]="stickyHeaders()"
-      [selectable]="selectable()"
-      [multiSelect]="multiSelect()"
+      [selectable]="isSelectable()"
+      [multiSelect]="isMultiSelect()"
       [expandable]="expandable()"
       [allRowsSelected]="allRowsSelected()"
       [someRowsSelected]="someRowsSelected()"
@@ -24,8 +24,9 @@
       <app-data-grid-filter-row
         [columns]="columns()"
         [size]="size()"
-        [selectable]="selectable()"
-        [multiSelect]="multiSelect()"
+        [selectable]="isSelectable()"
+        [multiSelect]="isMultiSelect()"
+        [expandable]="expandable()"
         [hasFilterableColumns]="hasFilterableColumns()"
         [filterConfigs]="filterConfigsMap()"
         [filterValues]="filterValuesMap()"
@@ -91,6 +92,8 @@
             [blurContent]="true"
             [isLoading]="loading()"
           >
+            <!-- Always use CDK virtual scroll to avoid code duplication -->
+            <!-- For small lists, viewport adapts to content; for large lists, height is limited -->
             <cdk-virtual-scroll-viewport
               [itemSize]="virtualizationItemHeight()"
               class="data-grid__viewport"
@@ -130,7 +133,7 @@
                   }
 
                   <!-- Selection Cell -->
-                  @if (selectable()) {
+                  @if (isSelectable()) {
                     <div [class]="getSelectionCellClasses()">
                       <app-checkbox
                         [ngModel]="isRowSelected(row)"
@@ -180,9 +183,9 @@
   </div>
 
   <!-- Pagination - only show when enabled and not loading or error -->
-  @if (enablePagination() && !gridState().isError) {
+  @if (paginationConfigComputed() && !gridState().isError) {
     <app-pagination
-      [config]="paginationConfig()"
+      [config]="paginationConfigComputed()!"
       [size]="size()"
       (pageChange)="onPaginationPageChange($event)"
       (pageSizeChange)="onPaginationPageSizeChange($event)"

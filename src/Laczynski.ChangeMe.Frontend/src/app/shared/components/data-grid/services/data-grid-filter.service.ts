@@ -32,11 +32,19 @@ export class DataGridFilterService<T = any> {
   // Cache for date range values to prevent creating new objects unnecessarily
   private dateRangeCache = new Map<string, DateRange | null>();
 
+  /**
+   * Maximum number of date range cache entries
+   * Prevents memory leaks in long-running applications
+   */
+  private readonly MAX_DATE_RANGE_CACHE_SIZE = 50;
+
   constructor() {
     // Cleanup timers on service destruction
     this.destroyRef.onDestroy(() => {
       this.filterDebounceTimers.forEach(timer => clearTimeout(timer));
       this.filterDebounceTimers.clear();
+      // Also clear date range cache on destruction
+      this.dateRangeCache.clear();
     });
   }
 
@@ -288,6 +296,16 @@ export class DataGridFilterService<T = any> {
                   }
                 : null;
             ranges.set(column.id, newRange);
+
+            // Enforce cache size limit - remove oldest entries if limit exceeded
+            if (this.dateRangeCache.size >= this.MAX_DATE_RANGE_CACHE_SIZE) {
+              // Remove the first (oldest) entry
+              const firstKey = this.dateRangeCache.keys().next().value;
+              if (firstKey) {
+                this.dateRangeCache.delete(firstKey);
+              }
+            }
+
             this.dateRangeCache.set(column.id, newRange);
           }
         } else {
@@ -315,6 +333,7 @@ export class DataGridFilterService<T = any> {
 
       activeFiltersArray.push({
         columnId,
+        field: column.field?.toString(), // Add field for proper data access
         type: config.type,
         filter,
         displayText: this.getFilterDisplayText(column, filter),

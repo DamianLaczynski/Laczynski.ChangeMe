@@ -1,3 +1,12 @@
+/**
+ * DataGrid Component
+ *
+ * A flexible and feature-rich data grid component following Fluent 2 Design System principles.
+ * Uses DataSource Pattern for flexible data management and Builder Pattern for easy configuration.
+ *
+ * @template T - The type of data items
+ */
+
 import {
   Component,
   input,
@@ -9,29 +18,27 @@ import {
   ChangeDetectionStrategy,
   inject,
   DestroyRef,
+  effect,
+  OnInit,
+  OnDestroy,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DataGridColumn, DataGridRow } from './models/data-grid-column.model';
 import {
   DataGridFilterConfig,
   DataGridFilterValue,
   DataGridActiveFilter,
-  DataGridFilterType,
   TextFilterOperator,
   NumberFilterOperator,
   DateFilterOperator,
 } from './models/data-grid-filter.model';
 import { CheckboxComponent } from '../field/checkbox/checkbox.component';
-import { TextComponent } from '../field/text/text.component';
-import { NumberComponent } from '../field/number/number.component';
-import { DateComponent } from '../field/date/date.component';
-import { DateRangeComponent } from '../field/date-range/date-range.component';
 import type { DateRange } from '../field/date-range/date-range.component';
-import { DropdownComponent, DropdownItem } from '../field/dropdown/dropdown.component';
+import { DropdownItem } from '../field/dropdown/dropdown.component';
 import { LoadingStateComponent } from '../loading-state/loading-state.component';
 import { StateContainerComponent } from '../state-container/state-container.component';
-import { IconComponent } from '../icon/icon.component';
 import { PaginationComponent, PaginationConfig } from '../pagination/pagination.component';
 import { ButtonComponent } from '../button/button.component';
 import { QuickAction } from '../utils';
@@ -43,6 +50,8 @@ import { DataGridSelectionService } from './services/data-grid-selection.service
 import { DataGridSortService } from './services/data-grid-sort.service';
 import { DataGridHeaderComponent } from './components/data-grid-header.component';
 import { DataGridFilterRowComponent } from './components/data-grid-filter-row.component';
+import { DataGridConfig } from './builders/data-grid-config.interface';
+import { DataGridDataSource } from './data-sources/data-grid-data-source.interface';
 
 @Component({
   selector: 'app-data-grid',
@@ -62,64 +71,13 @@ import { DataGridFilterRowComponent } from './components/data-grid-filter-row.co
   providers: [DataGridFilterService, DataGridSelectionService, DataGridSortService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DataGridComponent<T = any> {
-  // Inputs
-  columns = input<DataGridColumn<T>[]>([]);
-  rows = input<DataGridRow<T>[]>([]);
-  selectable = input<boolean>(false);
-  multiSelect = input<boolean>(false);
-  striped = input<boolean>(false);
-  bordered = input<boolean>(false);
-  hoverable = input<boolean>(true);
-  size = input<'small' | 'medium' | 'large'>('medium');
-  loading = input<boolean>(false);
-  stickyHeaders = input<boolean>(false);
+export class DataGridComponent<T = any> implements OnInit, OnDestroy {
+  // Main configuration input
+  config = input.required<DataGridConfig<T>>();
 
-  // State input (optional - if provided, will override loading/error/rows)
-  state = input<State<DataGridRow<T>[]> | null>(null);
-
-  // Loading state configuration
-  loadingTitle = input<string>('');
-  loadingDescription = input<string>('');
-  loadingSpinnerSize = input<
-    'extra-tiny' | 'tiny' | 'extra-small' | 'small' | 'medium' | 'large' | 'extra-large' | 'huge'
-  >('medium');
-
-  // Empty state configuration
-  emptyTitle = input<string>('');
-  emptyDescription = input<string>('');
-  emptyIcon = input<IconName | undefined>(undefined);
-  emptyPrimaryAction = input<QuickAction | null>(null);
-  emptySecondaryAction = input<QuickAction | null>(null);
-
-  // Error state configuration
-  error = input<boolean>(false);
-  errorTitle = input<string>('');
-  errorDescription = input<string>('');
-  errorIcon = input<IconName>('error_circle');
-  errorPrimaryAction = input<QuickAction | null>(null);
-  errorSecondaryAction = input<QuickAction | null>(null);
-
-  // Pagination configuration
-  enablePagination = input<boolean>(false);
-  totalCount = input<number>(0);
-  pageSize = input<number>(10);
-  currentPage = input<number>(1);
-  pageSizeOptions = input<number[]>([10, 20, 50, 100]);
-  paginationShowPageSizeSelector = input<boolean>(true);
-  paginationShowPageNumbers = input<boolean>(true);
-  paginationMaxVisiblePages = input<number>(7);
-  paginationShowFirstLast = input<boolean>(false);
-  paginationShowInfo = input<boolean>(false);
-
-  // Expandable rows configuration
-  expandable = input<boolean>(false);
+  // Template for expandable rows
   rowDetailsTemplate =
     contentChild<TemplateRef<{ $implicit: DataGridRow<T> }>>('rowDetailsTemplate');
-
-  // Virtualization configuration
-  virtualizationItemHeight = input<number>(48); // Default row height in pixels
-  virtualizationBufferSize = input<number>(3); // Number of items to render outside viewport
 
   // Outputs
   rowClick = output<DataGridRow<T>>();
@@ -136,15 +94,39 @@ export class DataGridComponent<T = any> {
   filterChange = output<DataGridActiveFilter[]>();
 
   // Internal state
+  private destroyRef = inject(DestroyRef);
+
   hoveredRowId = signal<string | null>(null);
   expandedRows = signal<Set<string>>(new Set());
+  currentPage = signal<number>(1);
+  currentPageSize = signal<number>(10);
+  currentSort = signal<{ field: string; direction: 'asc' | 'desc' } | null>(null);
+  rows = signal<DataGridRow<T>[]>([]);
+  loading = signal<boolean>(false);
+  error = signal<string | null>(null);
+  totalCount = signal<number>(0);
 
   // Services
   private filterService = inject(DataGridFilterService<T>);
   private selectionService = inject(DataGridSelectionService<T>);
   private sortService = inject(DataGridSortService<T>);
 
-  // Computed properties
+  // Computed properties from config
+  columns = computed(() => this.config().columns);
+  dataSource = computed(() => this.config().dataSource);
+  selectionMode = computed(() => this.config().selection || 'none');
+  paginationConfig = computed(() => this.config().pagination);
+  sortingConfig = computed(() => this.config().sorting);
+  filteringConfig = computed(() => this.config().filtering);
+  stylingConfig = computed(() => this.config().styling);
+  virtualizationConfig = computed(() => this.config().virtualization);
+  expandable = computed(() => this.config().expandable || false);
+  callbacks = computed(() => this.config().callbacks);
+  loadingConfig = computed(() => this.config().loading);
+  emptyConfig = computed(() => this.config().empty);
+  errorConfig = computed(() => this.config().error);
+
+  // Selection computed
   allRowsSelected = computed(() => {
     return this.selectionService.allRowsSelected(this.rows());
   });
@@ -159,61 +141,72 @@ export class DataGridComponent<T = any> {
 
   // Computed state for state-container integration
   gridState = computed<State<DataGridRow<T>[]>>(() => {
-    const providedState = this.state();
-    if (providedState !== null) {
-      // Ensure data is always an array
-      return {
-        ...providedState,
-        data: providedState.data ?? [],
-      };
-    }
-
-    // Build state from individual inputs for backward compatibility
     const isLoading = this.loading();
-    const isError = this.error();
+    const isError = this.error() != null;
     const rows = this.rows();
-
-    // Don't set isInitial = true, let empty state handle empty arrays
-    // This ensures empty state is shown instead of initial template (which we don't provide)
-    const isInitial = false;
+    const errorMessage = this.error();
 
     return {
-      isInitial,
+      isInitial: false,
       isLoading,
       isError,
       data: rows,
-      error: isError ? this.errorDescription() || 'An error occurred' : undefined,
+      error: errorMessage || undefined,
     };
   });
 
-  paginationConfig = computed<PaginationConfig>(() => {
-    const totalPages = Math.max(1, Math.ceil(this.totalCount() / this.pageSize()));
+  // Pagination computed
+  paginationConfigComputed = computed<PaginationConfig | null>(() => {
+    const pagination = this.paginationConfig();
+    if (!pagination?.enabled) {
+      return null;
+    }
+
+    const pageSize = this.currentPageSize();
+    const totalCount = this.totalCount();
+    const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
+
     return {
       currentPage: this.currentPage(),
       totalPages: totalPages,
-      totalItems: this.totalCount(),
-      pageSize: this.pageSize(),
-      showPageSizeSelector: this.paginationShowPageSizeSelector(),
-      pageSizeOptions: this.pageSizeOptions(),
-      showPageNumbers: this.paginationShowPageNumbers(),
-      maxVisiblePages: this.paginationMaxVisiblePages(),
-      showFirstLast: this.paginationShowFirstLast(),
-      showInfo: this.paginationShowInfo(),
+      totalItems: totalCount,
+      pageSize: pageSize,
+      showPageSizeSelector: pagination.showPageSizeSelector ?? true,
+      pageSizeOptions: pagination.pageSizeOptions ?? [10, 20, 50, 100],
+      showPageNumbers: pagination.showPageNumbers ?? true,
+      maxVisiblePages: 7,
+      showFirstLast: pagination.showFirstLast ?? false,
+      showInfo: pagination.showInfo ?? false,
     };
   });
 
+  // Virtualization computed
   virtualizationViewportHeight = computed(() => {
-    // Use data from state if available, otherwise fall back to rows()
-    const rowCount = this.gridState().data?.length ?? this.rows().length;
-    const maxVisibleRows = 10; // Maximum visible rows before scrolling
-    return this.virtualizationItemHeight() * Math.min(rowCount, maxVisibleRows);
+    const itemHeight = this.virtualizationItemHeight();
+    const rowCount = this.rows().length;
+
+    // If virtualization is explicitly enabled, use limited height
+    const virtualization = this.virtualizationConfig();
+    if (virtualization?.enabled) {
+      const maxVisibleRows = 10;
+      return itemHeight * Math.min(rowCount, maxVisibleRows);
+    }
+
+    return itemHeight * rowCount;
   });
 
+  // Styling computed
+  size = computed(() => this.stylingConfig()?.size || 'medium');
+  striped = computed(() => this.stylingConfig()?.striped || false);
+  bordered = computed(() => this.stylingConfig()?.bordered || false);
+  hoverable = computed(() => this.stylingConfig()?.hoverable ?? true);
+  stickyHeaders = computed(() => this.stylingConfig()?.stickyHeaders || false);
+
+  // Filter computed
   hasFilterableColumns = computed(() => {
     return this.columns().some(col => this.filterService.isColumnFilterable(col));
   });
 
-  // Computed properties for filter row component
   filterConfigsMap = computed(() => {
     const map = new Map<string, DataGridFilterConfig>();
     this.columns().forEach(column => {
@@ -323,10 +316,239 @@ export class DataGridComponent<T = any> {
     return map;
   });
 
+  dateRangeValues = computed(() => {
+    return this.filterService.getDateRangeValues(this.columns());
+  });
+
+  operatorIcons = computed(() => {
+    const icons = new Map<string, IconName>();
+    this.columns().forEach(column => {
+      if (this.isColumnFilterable(column)) {
+        const filter = this.filterService.getFilterValue(column.id);
+        const config = this.getFilterConfig(column);
+        const operator =
+          filter?.operator ||
+          config?.defaultOperator ||
+          (config?.type === 'text' ? 'contains' : 'equals');
+        icons.set(column.id, this.getOperatorIcon(operator));
+      }
+    });
+    return icons;
+  });
+
+  // Loading/Empty/Error state computed
+  loadingTitle = computed(() => this.loadingConfig()?.title || 'Loading...');
+  loadingDescription = computed(() => this.loadingConfig()?.description || '');
+  loadingSpinnerSize = computed(() => this.loadingConfig()?.spinnerSize || 'medium');
+
+  emptyTitle = computed(() => this.emptyConfig()?.title || 'No data available');
+  emptyDescription = computed(
+    () => this.emptyConfig()?.description || 'There is no data to display.',
+  );
+  emptyIcon = computed(() => {
+    const icon = this.emptyConfig()?.icon;
+    return icon ? (icon as IconName) : undefined;
+  });
+  emptyPrimaryAction = computed(() => {
+    const action = this.emptyConfig()?.primaryAction;
+    return action
+      ? {
+          label: action.label,
+          variant: action.variant,
+          action: action.action,
+        }
+      : null;
+  });
+  emptySecondaryAction = computed(() => {
+    const action = this.emptyConfig()?.secondaryAction;
+    return action
+      ? {
+          label: action.label,
+          variant: action.variant,
+          action: action.action,
+        }
+      : null;
+  });
+
+  errorTitle = computed(() => this.errorConfig()?.title || 'Error');
+  errorDescription = computed(() => this.errorConfig()?.description || 'An error occurred');
+  errorIcon = computed(() => {
+    const icon = this.errorConfig()?.icon || 'error_circle';
+    return icon as IconName;
+  });
+  errorPrimaryAction = computed(() => {
+    const action = this.errorConfig()?.primaryAction;
+    return action
+      ? {
+          label: action.label,
+          variant: action.variant,
+          action: action.action,
+        }
+      : null;
+  });
+  errorSecondaryAction = computed(() => {
+    const action = this.errorConfig()?.secondaryAction;
+    return action
+      ? {
+          label: action.label,
+          variant: action.variant,
+          action: action.action,
+        }
+      : null;
+  });
+
+  // Virtualization settings
+  // Always use a consistent item height for CDK virtual scroll
+  // Default to 48px which is standard row height
+  virtualizationItemHeight = computed(() => {
+    const configHeight = this.virtualizationConfig()?.itemHeight;
+    return configHeight || 48;
+  });
+  virtualizationBufferSize = computed(() => this.virtualizationConfig()?.bufferSize || 3);
+
+  // Sort state
+  sortField = computed(() => this.sortService.getSortState().field);
+  sortDirection = computed(() => this.sortService.getSortState().direction);
+
+  constructor() {
+    // Initialize default sort if configured (only once)
+    effect(() => {
+      const sorting = this.sortingConfig();
+      if (sorting?.enabled && sorting.defaultSort && !this.currentSort()) {
+        this.sortService.setSort(sorting.defaultSort.field, sorting.defaultSort.direction);
+        this.currentSort.set(sorting.defaultSort);
+      }
+    });
+
+    // Initialize pagination (only once)
+    effect(() => {
+      const pagination = this.paginationConfig();
+      if (pagination?.enabled && this.currentPageSize() === 10 && this.currentPage() === 1) {
+        this.currentPageSize.set(pagination.pageSize || 10);
+        this.currentPage.set(1);
+      }
+    });
+
+    // Connect to data source when config changes
+    effect(() => {
+      const source = this.dataSource();
+      if (source) {
+        this.connectDataSource(source);
+      }
+    });
+
+    // Update data source query params when filters/sort/pagination change
+    effect(() => {
+      const source = this.dataSource();
+      if (!source) return;
+
+      // Read all reactive values
+      const filters = this.filterService.getActiveFiltersArray(this.columns());
+      const sort = this.currentSort();
+      const page = this.currentPage();
+      const pageSize = this.currentPageSize();
+      const pagination = this.paginationConfig();
+
+      // Update query params
+      source.setQueryParams({
+        filters: filters.length > 0 ? filters : undefined,
+        sort: sort || undefined,
+        page: pagination?.enabled ? page : undefined,
+        pageSize: pagination?.enabled ? pageSize : undefined,
+      });
+    });
+  }
+
+  ngOnInit(): void {
+    // Data source connection is handled by effect in constructor
+  }
+
+  ngOnDestroy(): void {
+    this.disconnectDataSource();
+  }
+
+  private currentDataSource: DataGridDataSource<T> | null = null;
+
+  /**
+   * Connects to the data source
+   */
+  private connectDataSource(source: DataGridDataSource<T>): void {
+    // Validate source
+    if (!source) {
+      console.warn('DataGrid: Attempted to connect null data source');
+      return;
+    }
+
+    if (!source.connect || typeof source.connect !== 'function') {
+      throw new Error('DataGrid: Invalid data source - missing connect() method');
+    }
+
+    // Only disconnect if source changed
+    if (this.currentDataSource && this.currentDataSource !== source) {
+      this.disconnectDataSource();
+    }
+
+    this.currentDataSource = source;
+
+    // Subscribe to data with automatic cleanup
+    source
+      .connect()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: rows => {
+          this.rows.set(rows);
+        },
+        error: error => {
+          console.error('DataGrid data source error:', error);
+          this.error.set(error?.message || 'Failed to load data');
+        },
+      });
+
+    // Subscribe to loading state with automatic cleanup
+    source
+      .isLoading()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: isLoading => {
+          this.loading.set(isLoading);
+        },
+      });
+
+    // Subscribe to error state with automatic cleanup
+    source
+      .getError()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: error => {
+          this.error.set(error);
+        },
+      });
+
+    // Subscribe to total count with automatic cleanup
+    source
+      .getTotalCount()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: count => {
+          this.totalCount.set(count);
+        },
+      });
+  }
+
+  /**
+   * Disconnects from the data source
+   */
+  private disconnectDataSource(): void {
+    // Subscriptions are automatically cleaned up by takeUntilDestroyed
+    // Only reset the current data source reference
+    if (this.currentDataSource) {
+      this.currentDataSource = null;
+    }
+  }
+
   // Methods
   getDataGridClasses(): string {
     const classes = ['data-grid'];
-
     classes.push(`data-grid--${this.size()}`);
 
     if (this.striped()) {
@@ -429,13 +651,22 @@ export class DataGridComponent<T = any> {
   }
 
   // Selection methods
+  isSelectable(): boolean {
+    return this.selectionMode() !== 'none';
+  }
+
+  isMultiSelect(): boolean {
+    return this.selectionMode() === 'multi';
+  }
+
   toggleAllRows(): void {
     this.selectionService.toggleAllRows(this.rows());
     this.emitSelectionChange();
   }
 
   toggleRow(row: DataGridRow<T>): void {
-    this.selectionService.toggleRow(row, this.multiSelect());
+    const multiSelect = this.isMultiSelect();
+    this.selectionService.toggleRow(row, multiSelect);
     this.rowSelect.emit(row);
     this.emitSelectionChange();
   }
@@ -447,6 +678,7 @@ export class DataGridComponent<T = any> {
   private emitSelectionChange(): void {
     const selected = this.selectionService.getSelectedRows(this.rows());
     this.selectionChange.emit(selected);
+    this.callbacks()?.onSelectionChange?.(selected);
   }
 
   // Row interaction methods
@@ -463,7 +695,9 @@ export class DataGridComponent<T = any> {
   onRowClick(row: DataGridRow<T>): void {
     if (!row.disabled) {
       this.rowClick.emit(row);
-      if (this.selectable()) {
+      this.callbacks()?.onRowClick?.(row);
+
+      if (this.isSelectable()) {
         this.toggleRow(row);
       }
     }
@@ -472,6 +706,7 @@ export class DataGridComponent<T = any> {
   onCellClick(row: DataGridRow<T>, column: DataGridColumn<T>, event: MouseEvent): void {
     event.stopPropagation();
     this.cellClick.emit({ row, column });
+    this.callbacks()?.onCellClick?.(row, column);
   }
 
   // Cell value retrieval
@@ -499,9 +734,23 @@ export class DataGridComponent<T = any> {
   // Sorting methods
   onHeaderClick(column: DataGridColumn<T>, event: Event): void {
     event.stopPropagation();
+
+    const sorting = this.sortingConfig();
+    if (!sorting?.enabled || !column.sortable || !column.field) {
+      return;
+    }
+
     const sortState = this.sortService.handleHeaderClick(column);
     if (sortState) {
+      this.currentSort.set({
+        field: sortState.field!,
+        direction: sortState.direction,
+      });
       this.sortChange.emit({
+        field: sortState.field!,
+        direction: sortState.direction,
+      });
+      this.callbacks()?.onSortChange?.({
         field: sortState.field!,
         direction: sortState.direction,
       });
@@ -516,31 +765,29 @@ export class DataGridComponent<T = any> {
     return this.sortService.isColumnSorted(column);
   }
 
-  // Expose sort state for template
-  sortField(): string | null {
-    return this.sortService.getSortState().field;
-  }
-
-  sortDirection(): 'asc' | 'desc' {
-    return this.sortService.getSortState().direction;
-  }
-
   // State component helpers
   onEmptyActionClick(action: QuickAction): void {
     this.emptyActionClick.emit(action);
+    action.action();
   }
 
   onErrorActionClick(action: QuickAction): void {
     this.errorActionClick.emit(action);
+    action.action();
   }
 
   // Pagination event handlers
   onPaginationPageChange(page: number): void {
+    this.currentPage.set(page);
     this.pageChange.emit(page);
+    this.callbacks()?.onPageChange?.(page);
   }
 
   onPaginationPageSizeChange(size: number): void {
+    this.currentPageSize.set(size);
+    this.currentPage.set(1); // Reset to first page
     this.pageSizeChange.emit(size);
+    this.callbacks()?.onPageSizeChange?.(size);
   }
 
   // Expandable rows methods
@@ -559,9 +806,11 @@ export class DataGridComponent<T = any> {
     if (isExpanded) {
       expanded.delete(row.id);
       this.rowCollapse.emit(row);
+      this.callbacks()?.onRowCollapse?.(row);
     } else {
       expanded.add(row.id);
       this.rowExpand.emit(row);
+      this.callbacks()?.onRowExpand?.(row);
     }
 
     this.expandedRows.set(expanded);
@@ -669,7 +918,7 @@ export class DataGridComponent<T = any> {
     this.emitFilterChange();
   }
 
-  // Get date range value for binding (uses computed signal to prevent infinite loops)
+  // Get date range value for binding
   getDateRangeValue(columnId: string): DateRange | null {
     return this.dateRangeValues().get(columnId) ?? null;
   }
@@ -708,6 +957,7 @@ export class DataGridComponent<T = any> {
   private emitFilterChange(): void {
     const activeFiltersArray = this.filterService.getActiveFiltersArray(this.columns());
     this.filterChange.emit(activeFiltersArray);
+    this.callbacks()?.onFilterChange?.(activeFiltersArray);
   }
 
   private getOperatorIcon(
@@ -751,7 +1001,7 @@ export class DataGridComponent<T = any> {
   // Get operator text for display
   private getOperatorText(
     operator: TextFilterOperator | NumberFilterOperator | DateFilterOperator,
-    filterType: DataGridFilterType,
+    filterType: string,
   ): string {
     const operatorMap: Record<string, string> = {
       // Text operators
@@ -784,29 +1034,6 @@ export class DataGridComponent<T = any> {
       (config?.type === 'text' ? 'contains' : 'equals');
     return this.getOperatorIcon(operator);
   }
-
-  // Computed map of column IDs to operator icons for reactive updates
-  operatorIcons = computed(() => {
-    const icons = new Map<string, IconName>();
-    this.columns().forEach(column => {
-      if (this.isColumnFilterable(column)) {
-        const filter = this.filterService.getFilterValue(column.id);
-        const config = this.getFilterConfig(column);
-        const operator =
-          filter?.operator ||
-          config?.defaultOperator ||
-          (config?.type === 'text' ? 'contains' : 'equals');
-        icons.set(column.id, this.getOperatorIcon(operator));
-      }
-    });
-    return icons;
-  });
-
-  // Computed map of column IDs to date range values (for 'between' operator)
-  // This prevents creating new objects on every call, which causes infinite loops
-  dateRangeValues = computed(() => {
-    return this.filterService.getDateRangeValues(this.columns());
-  });
 
   // Get operator icon for a column (reactive version)
   getOperatorIconForColumn(columnId: string): string {

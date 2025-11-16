@@ -23,6 +23,13 @@ export class FilterStrategyFactory {
   private strategyCache = new Map<DataGridFilterType, FilterStrategy>();
 
   /**
+   * Maximum number of cached strategies
+   * Prevents memory leaks in long-running applications
+   * Note: There are only 6 filter types, so this limit is mainly for safety
+   */
+  private readonly MAX_CACHE_SIZE = 10;
+
+  /**
    * Get or create strategy for the given filter type
    */
   getStrategy<T = any>(filterType: DataGridFilterType): FilterStrategy<T> {
@@ -30,6 +37,15 @@ export class FilterStrategyFactory {
     const cached = this.strategyCache.get(filterType);
     if (cached) {
       return cached as FilterStrategy<T>;
+    }
+
+    // Enforce cache size limit - remove oldest entries if limit exceeded
+    if (this.strategyCache.size >= this.MAX_CACHE_SIZE) {
+      // Remove the first (oldest) entry
+      const firstKey = this.strategyCache.keys().next().value;
+      if (firstKey) {
+        this.strategyCache.delete(firstKey);
+      }
     }
 
     // Create new strategy based on type

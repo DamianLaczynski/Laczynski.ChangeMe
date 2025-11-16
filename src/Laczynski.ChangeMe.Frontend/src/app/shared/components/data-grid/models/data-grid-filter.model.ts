@@ -142,6 +142,12 @@ export interface DataGridActiveFilter {
   columnId: string;
 
   /**
+   * Column field name (for accessing data values)
+   * Optional for backward compatibility, but recommended for proper filtering
+   */
+  field?: string;
+
+  /**
    * Filter type
    */
   type: DataGridFilterType;
