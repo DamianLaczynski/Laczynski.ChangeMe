@@ -29,7 +29,7 @@ public static class InfrastructureServiceExtensions
     services.AddDbContext<ApplicationDbContext>(options =>
     {
       options.UseNpgsql(postgresConnection,
-        npgsqlOptions => npgsqlOptions.MigrationsAssembly("Laczynski.Analyze.Backend.Infrastructure")
+        npgsqlOptions => npgsqlOptions.MigrationsAssembly("Laczynski.ChangeMe.Backend.Infrastructure")
           .SetPostgresVersion(16, 0));
 
       if (builder.Environment.IsDevelopment())
