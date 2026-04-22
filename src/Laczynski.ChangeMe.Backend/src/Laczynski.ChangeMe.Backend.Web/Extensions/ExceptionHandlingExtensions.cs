@@ -1,16 +1,11 @@
 ﻿using System.Text.Json;
+using Ardalis.Result;
 using Microsoft.AspNetCore.Diagnostics;
 
 namespace Laczynski.ChangeMe.Backend.Web.ApiBase;
 
-/// <summary>
-/// Extensions for configuring exception handling
-/// </summary>
 public static class ExceptionHandlingExtensions
 {
-  /// <summary>
-  /// Configures API exception handling
-  /// </summary>
   public static void UseApiExceptionHandler(this WebApplication app)
   {
     app.UseExceptionHandler(appError =>
@@ -30,14 +25,14 @@ public static class ExceptionHandlingExtensions
               var (statusCode, message) = exception switch
               {
                 ArgumentException => (StatusCodes.Status400BadRequest, "Bad Request"),
-                KeyNotFoundException => (StatusCodes.Status404NotFound, "Not Found"),
+                global::System.Collections.Generic.KeyNotFoundException => (StatusCodes.Status404NotFound, "Not Found"),
                 UnauthorizedAccessException => (StatusCodes.Status401Unauthorized, "Unauthorized"),
                 _ => (StatusCodes.Status500InternalServerError, "Internal Server Error")
               };
 
               context.Response.StatusCode = statusCode;
 
-              var response = Result<object>.Error(message);
+              var response = Ardalis.Result.Result<object>.Error(message);
 
               await context.Response.WriteAsync(JsonSerializer.Serialize(response));
             }

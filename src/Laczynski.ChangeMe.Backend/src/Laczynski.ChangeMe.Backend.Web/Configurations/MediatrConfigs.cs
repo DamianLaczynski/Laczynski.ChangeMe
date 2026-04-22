@@ -1,7 +1,8 @@
 ﻿using System.Reflection;
-using Laczynski.ChangeMe.Backend.Core.ItemsAggregate;
-using Laczynski.ChangeMe.Backend.Shared.Core;
-using Laczynski.ChangeMe.Backend.UseCases.Items;
+using Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue;
+using Laczynski.ChangeMe.Backend.Domain.Common;
+using Laczynski.ChangeMe.Backend.UseCases.Issues;
+using Laczynski.ChangeMe.Backend.Web.Common;
 
 namespace Laczynski.ChangeMe.Backend.Web.Configurations;
 
@@ -11,8 +12,8 @@ public static class MediatrConfigs
   {
     var mediatRAssemblies = new[]
       {
-        Assembly.GetAssembly(typeof(Item)), // Core
-        Assembly.GetAssembly(typeof(GetAllItemsQuery)) // UseCases
+        Assembly.GetAssembly(typeof(Issue)), // Core
+        Assembly.GetAssembly(typeof(GetIssueByIdQuery)) // UseCases
       };
 
     services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(mediatRAssemblies!))

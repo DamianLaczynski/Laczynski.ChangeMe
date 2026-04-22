@@ -1,0 +1,25 @@
+using Laczynski.ChangeMe.Backend.UseCases.Issues;
+
+namespace Laczynski.ChangeMe.Backend.Web.Issues;
+
+public class DeleteIssue(IMediator _mediator) : BaseEndpoint<DeleteIssueCommand, Guid>(_mediator)
+{
+  protected override void ConfigureEndpoint()
+  {
+    Delete("/issues/{id}");
+    Summary(s =>
+    {
+      s.Summary = "Delete issue";
+      s.Description = "Delete a issue by ID";
+    });
+  }
+}
+
+public sealed class DeleteIssueCommandValidator : Validator<DeleteIssueCommand>
+{
+  public DeleteIssueCommandValidator()
+  {
+    RuleFor(x => x.Id)
+      .NotEmpty();
+  }
+}

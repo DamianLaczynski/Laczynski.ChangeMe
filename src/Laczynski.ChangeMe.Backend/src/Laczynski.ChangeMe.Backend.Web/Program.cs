@@ -1,21 +1,33 @@
-﻿using Laczynski.ChangeMe.Backend.Web.Configurations;
+﻿using System.Text;
+using System.Text.Json.Serialization;
+using Biobank.Presentation.Api.Configurations;
+using Laczynski.ChangeMe.Backend.Domain.Interfaces;
+using Laczynski.ChangeMe.Backend.Infrastructure;
+using Laczynski.ChangeMe.Backend.Infrastructure.Auth;
+using Laczynski.ChangeMe.Backend.UseCases;
+using Laczynski.ChangeMe.Backend.Web.ApiBase;
+using Laczynski.ChangeMe.Backend.Web.Configurations;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var logger = Log.Logger = new LoggerConfiguration()
-  .Enrich.FromLogContext()
-  .WriteTo.Console()
-  .CreateLogger();
+builder.AddSerilogLogging();
+builder.AddOpenTelemetryConfig();
 
-logger.Information("Starting web host");
+var loggerFactory = LoggerFactory.Create(lb => lb.AddSimpleConsole(o => o.SingleLine = true));
+var logger = loggerFactory.CreateLogger(typeof(Program));
 
-builder.AddLoggerConfigs();
+builder.Services.AddOptionsConfig(builder.Configuration, logger, builder);
+builder.Services.AddCorsConfig(builder);
 
-var appLogger = new SerilogLoggerFactory(logger)
-    .CreateLogger<Program>();
 
-builder.Services.AddOptionConfigs(builder.Configuration, appLogger, builder);
-builder.Services.AddServiceConfigs(appLogger, builder);
+builder.Services.AddApplication();
+builder.Services.AddInfrastructure(builder, logger);
+
+builder.Services.AddMediatrConfigs();
+
+
+logger.LogInformation("Starting web host");
 
 builder.Services.AddFastEndpoints()
                 .SwaggerDocument(o =>
@@ -26,9 +38,31 @@ builder.Services.AddFastEndpoints()
 
 var app = builder.Build();
 
-await app.UseAppMiddlewareAndSeedDatabase();
+
+if (app.Environment.IsDevelopment())
+{
+  app.UseDeveloperExceptionPage();
+}
+else
+{
+  app.UseApiExceptionHandler();
+}
+
+app.UseFastEndpoints(cfg =>
+{
+  cfg.Endpoints.RoutePrefix = "api";
+  cfg.Serializer.Options.Converters.Add(new JsonStringEnumConverter());
+})
+.UseSwaggerGen(); // Includes AddFileServer and static files middleware
+
+
+app.UseCors(CorsConfig.CorsPolicyName);
+
+app.MapHealthChecks("/health/live", new HealthCheckOptions { Predicate = _ => false });
+app.MapHealthChecks("/health/ready", new HealthCheckOptions { Predicate = r => r.Tags.Contains("ready") });
+
+await app.ApplyMigrationsIfConfiguredAsync();
 
 app.Run();
 
-// Make the implicit Program.cs class public, so integration tests can reference the correct assembly for host building
-public partial class Program { }
+public partial class Program;
