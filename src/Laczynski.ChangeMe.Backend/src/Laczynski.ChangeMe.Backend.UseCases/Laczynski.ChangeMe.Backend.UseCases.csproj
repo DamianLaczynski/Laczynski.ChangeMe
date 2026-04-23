@@ -15,6 +15,7 @@
     <PackageReference Include="Ardalis.Result" />
     <PackageReference Include="MediatR" />
     <PackageReference Include="Microsoft.Extensions.Options" />
+    <PackageReference Include="FastEndpoints" />
   </ItemGroup>
 
 

@@ -2,13 +2,14 @@ import { Injectable, inject, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from '@shared/api';
 import {
-  Issue,
+  IssueDto,
   CreateIssueRequest,
   UpdateIssueRequest,
   IssueSearchParameters,
   IssuePriority,
+  IssueDetailsDto,
 } from '../models/issue.model';
-import { PaginationResult } from '@shared/data';
+import { PaginationResult } from '@shared/data/models/pagination-result.model';
 
 @Injectable({
   providedIn: 'root',
@@ -18,20 +19,20 @@ export class IssuesService {
 
   private readonly baseEndpoint = 'issues';
 
-  getAllIssues(params: IssueSearchParameters): Observable<PaginationResult<Issue>> {
-    return this.apiService.getPaginated<Issue, IssueSearchParameters>(this.baseEndpoint, params);
+  getAllIssues(params: IssueSearchParameters): Observable<PaginationResult<IssueDto>> {
+    return this.apiService.getPaginated<IssueDto, IssueSearchParameters>(this.baseEndpoint, params);
   }
 
-  getIssue(id: string): Observable<Issue> {
-    return this.apiService.get<Issue>(`${this.baseEndpoint}/${id}`);
+  getIssue(id: string): Observable<IssueDetailsDto> {
+    return this.apiService.get<IssueDetailsDto>(`${this.baseEndpoint}/${id}`);
   }
 
-  createIssue(request: CreateIssueRequest): Observable<string> {
-    return this.apiService.post<string>(this.baseEndpoint, request);
+  createIssue(request: CreateIssueRequest): Observable<IssueDetailsDto> {
+    return this.apiService.post<IssueDetailsDto>(this.baseEndpoint, request);
   }
 
-  updateIssue(request: UpdateIssueRequest): Observable<Issue> {
-    return this.apiService.put<Issue>(`${this.baseEndpoint}/${request.id}`, request);
+  updateIssue(request: UpdateIssueRequest): Observable<IssueDetailsDto> {
+    return this.apiService.put<IssueDetailsDto>(`${this.baseEndpoint}/${request.id}`, request);
   }
 
   deleteIssue(id: string): Observable<boolean> {

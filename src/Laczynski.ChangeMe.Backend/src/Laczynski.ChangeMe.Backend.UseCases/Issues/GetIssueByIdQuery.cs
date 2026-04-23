@@ -1,11 +1,11 @@
 ﻿namespace Laczynski.ChangeMe.Backend.UseCases.Issues;
 
 public record GetIssueByIdQuery(
-    Guid Id) : IQuery<IssueDto>;
+    Guid Id) : IQuery<IssueDetailsDto>;
 
-public class GetIssueByIdHandler(ApplicationDbContext context) : IQueryHandler<GetIssueByIdQuery, IssueDto>
+public class GetIssueByIdHandler(ApplicationDbContext context) : IQueryHandler<GetIssueByIdQuery, IssueDetailsDto>
 {
-  public async Task<Result<IssueDto>> Handle(GetIssueByIdQuery query, CancellationToken cancellationToken)
+  public async Task<Result<IssueDetailsDto>> Handle(GetIssueByIdQuery query, CancellationToken cancellationToken)
   {
     var issue = await context.Issues.AsNoTracking()
       .FirstOrDefaultAsync(c => c.Id == query.Id, cancellationToken);
@@ -13,6 +13,6 @@ public class GetIssueByIdHandler(ApplicationDbContext context) : IQueryHandler<G
     if (issue is null)
       return Result.NotFound();
 
-    return Result.Success(issue.ToDto());
+    return Result.Success(issue.ToDetailsDto());
   }
 }

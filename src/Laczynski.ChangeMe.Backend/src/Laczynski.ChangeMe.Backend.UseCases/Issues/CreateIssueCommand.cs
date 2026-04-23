@@ -8,11 +8,11 @@ public record CreateIssueCommand(
     string Title,
     string Description,
     IssuePriority Priority
-    ) : ICommand<IssueDto>;
+    ) : ICommand<IssueDetailsDto>;
 
-public class CreateIssueHandler(IMediator mediator, ApplicationDbContext context, IEmailService emailService) : ICommandHandler<CreateIssueCommand, IssueDto>
+public class CreateIssueHandler(IMediator mediator, ApplicationDbContext context, IEmailService emailService) : ICommandHandler<CreateIssueCommand, IssueDetailsDto>
 {
-  public async Task<Result<IssueDto>> Handle(CreateIssueCommand command, CancellationToken cancellationToken)
+  public async Task<Result<IssueDetailsDto>> Handle(CreateIssueCommand command, CancellationToken cancellationToken)
   {
     var result = Issue.Create(command.Title, command.Description, command.Priority);
     if (!result.IsSuccess)

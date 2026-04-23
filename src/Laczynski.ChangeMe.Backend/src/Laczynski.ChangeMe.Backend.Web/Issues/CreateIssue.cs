@@ -3,7 +3,7 @@ using Laczynski.ChangeMe.Backend.UseCases.Issues;
 
 namespace Laczynski.ChangeMe.Backend.Web.Issues;
 
-public class CreateIssue(IMediator _mediator) : BaseEndpoint<CreateIssueCommand, IssueDto>(_mediator)
+public class CreateIssue(IMediator _mediator) : BaseEndpoint<CreateIssueCommand, IssueDetailsDto>(_mediator)
 {
   protected override void ConfigureEndpoint()
   {

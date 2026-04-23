@@ -1,18 +1,29 @@
-import { PaginationParameters } from '@shared/data';
+import { PaginationParameters } from '@shared/data/models/pagination-parameters.model';
 
-export interface Issue {
+export interface IssueDto {
   id: string;
   title: string;
   description?: string;
   priority: IssuePriority;
-  comments: IssueComment[];
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
   updatedBy: string;
 }
 
-export interface IssueComment {
+export interface IssueDetailsDto {
+  id: string;
+  title: string;
+  description?: string;
+  priority: IssuePriority;
+  comments: IssueCommentDto[];
+  createdAt: Date;
+  updatedAt: Date;
+  createdBy: string;
+  updatedBy: string;
+}
+
+export interface IssueCommentDto {
   id: string;
   content: string;
   createdAt: Date;

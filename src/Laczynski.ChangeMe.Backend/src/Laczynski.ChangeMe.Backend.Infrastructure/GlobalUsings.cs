@@ -5,5 +5,6 @@ global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Logging;
+global using Laczynski.ChangeMe.Backend.Domain.Common;
 global using Laczynski.ChangeMe.Backend.Infrastructure.Common;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;

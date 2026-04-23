@@ -1,20 +1,16 @@
-﻿namespace Laczynski.ChangeMe.Backend.UseCases.Issues;
+﻿
+namespace Laczynski.ChangeMe.Backend.UseCases.Issues;
 
-public record GetAllIssuesQuery(
-  int Page = 1,
-  int PageSize = 10
-) : IQuery<List<IssueDto>>;
+public class GetAllIssuesQuery : PaginationQuery<IssueDto>;
 
-public class GetAllIssuesHandler(ApplicationDbContext context) : IQueryHandler<GetAllIssuesQuery, List<IssueDto>>
+public class GetAllIssuesHandler(ApplicationDbContext context) : IQueryHandler<GetAllIssuesQuery, PaginationResult<IssueDto>>
 {
-  public async Task<Result<List<IssueDto>>> Handle(GetAllIssuesQuery query, CancellationToken cancellationToken)
+  public async Task<Result<PaginationResult<IssueDto>>> Handle(GetAllIssuesQuery query, CancellationToken cancellationToken)
   {
+    var selector = IssueExtensions.ToIssueDtoExpression();
     var issues = await context.Issues
       .AsNoTracking()
-      .Skip((query.Page - 1) * query.PageSize)
-      .Take(query.PageSize)
-      .Select(IssueExtensions.ToIssueDtoExpression())
-      .ToListAsync(cancellationToken);
+      .ToPaginationResultAsync(selector, query.PaginationParameters, cancellationToken);
 
     return Result.Success(issues);
   }

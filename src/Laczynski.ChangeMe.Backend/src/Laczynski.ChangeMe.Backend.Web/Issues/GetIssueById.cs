@@ -2,7 +2,7 @@ using Laczynski.ChangeMe.Backend.UseCases.Issues;
 
 namespace Laczynski.ChangeMe.Backend.Web.Issues;
 
-public class GetIssueById(IMediator _mediator) : BaseEndpoint<GetIssueByIdQuery, IssueDto>(_mediator)
+public class GetIssueById(IMediator _mediator) : BaseEndpoint<GetIssueByIdQuery, IssueDetailsDto>(_mediator)
 {
   protected override void ConfigureEndpoint()
   {

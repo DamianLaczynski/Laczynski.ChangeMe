@@ -6,11 +6,11 @@ public record UpdateIssueCommand(
     Guid Id,
     string Title,
     string? Description,
-    IssuePriority Priority) : ICommand<IssueDto>;
+    IssuePriority Priority) : ICommand<IssueDetailsDto>;
 
-public class UpdateIssueHandler(IMediator mediator, ApplicationDbContext context) : ICommandHandler<UpdateIssueCommand, IssueDto>
+public class UpdateIssueHandler(IMediator mediator, ApplicationDbContext context) : ICommandHandler<UpdateIssueCommand, IssueDetailsDto>
 {
-  public async Task<Result<IssueDto>> Handle(UpdateIssueCommand command, CancellationToken cancellationToken)
+  public async Task<Result<IssueDetailsDto>> Handle(UpdateIssueCommand command, CancellationToken cancellationToken)
   {
     var issue = await context.Issues.FirstOrDefaultAsync(i => i.Id == command.Id, cancellationToken);
 
