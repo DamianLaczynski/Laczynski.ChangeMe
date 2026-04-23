@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 
 namespace Laczynski.ChangeMe.Backend.Infrastructure.Email;
 
-public class SmtpEmailService(IOptions<EmailOptions> settings, ILogger<SmtpEmailService> logger) : IEmailService
+public class EmailService(IOptions<EmailOptions> settings, ILogger<EmailService> logger) : IEmailService
 {
     private readonly EmailOptions _settings = settings.Value;
 

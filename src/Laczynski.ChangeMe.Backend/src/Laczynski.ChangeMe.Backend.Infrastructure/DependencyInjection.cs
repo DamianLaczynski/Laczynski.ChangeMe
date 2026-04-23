@@ -1,5 +1,6 @@
 ﻿using Laczynski.ChangeMe.Backend.Domain.Interfaces;
 using Laczynski.ChangeMe.Backend.Infrastructure.Auth;
+using Laczynski.ChangeMe.Backend.Infrastructure.Email;
 using Laczynski.ChangeMe.Backend.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
@@ -15,6 +16,8 @@ public static class DependencyInjection
   {
     ConfigureDatabaseConnection(services, builder, logger);
     ConfigureUserAccessor(services, builder, logger);
+
+    services.AddScoped<IEmailService, EmailService>();
 
     logger.LogInformation("{Project} services registered", "Infrastructure");
     return services;

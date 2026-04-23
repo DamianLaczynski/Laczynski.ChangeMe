@@ -6,7 +6,7 @@ public abstract class BaseEndpoint<TRequest, TResponse>(IMediator mediator) : En
   public override void Configure()
   {
     DontThrowIfValidationFails();
-
+    AllowAnonymous();
     ConfigureEndpoint();
   }
 
