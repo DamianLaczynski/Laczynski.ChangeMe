@@ -42,7 +42,7 @@ public static class DependencyInjection
     services.AddDbContext<ApplicationDbContext>(options =>
     {
       options.UseNpgsql(connectionString, npgsql =>
-        npgsql.MigrationsHistoryTable("__EFMigrationsHistory", "laczynski_changeme"));
+        npgsql.MigrationsHistoryTable("__EFMigrationsHistory", DatabaseSchema.Default));
 
       if (builder.Environment.IsDevelopment())
       {

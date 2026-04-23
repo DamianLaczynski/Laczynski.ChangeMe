@@ -1,9 +1,8 @@
 ﻿using System.Text.Json.Serialization;
-using Biobank.Presentation.Api.Configurations;
+using Laczynski.ChangeMe.Backend.Web.Configurations;
 using Laczynski.ChangeMe.Backend.Infrastructure;
 using Laczynski.ChangeMe.Backend.UseCases;
 using Laczynski.ChangeMe.Backend.Web.ApiBase;
-using Laczynski.ChangeMe.Backend.Web.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 

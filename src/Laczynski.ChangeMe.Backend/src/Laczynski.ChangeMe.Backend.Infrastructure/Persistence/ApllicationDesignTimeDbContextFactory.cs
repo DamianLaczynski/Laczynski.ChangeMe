@@ -24,7 +24,7 @@ public sealed class ApplicationDesignTimeDbContextFactory : IDesignTimeDbContext
 
     var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
     optionsBuilder.UseNpgsql(cs, npgsql =>
-        npgsql.MigrationsHistoryTable("__EFMigrationsHistory", "laczynski_changeme"));
+        npgsql.MigrationsHistoryTable("__EFMigrationsHistory", DatabaseSchema.Default));
 
     return new ApplicationDbContext(optionsBuilder.Options);
   }

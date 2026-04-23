@@ -1,4 +1,4 @@
-﻿namespace Biobank.Presentation.Api.Configurations;
+﻿namespace Laczynski.ChangeMe.Backend.Web.Configurations;
 
 public static class SerilogConfig
 {

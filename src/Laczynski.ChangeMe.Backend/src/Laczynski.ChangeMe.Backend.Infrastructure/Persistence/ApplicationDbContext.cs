@@ -9,15 +9,13 @@ public class ApplicationDbContext(
   IDomainEventDispatcher? dispatcher = null,
   IUserAccessor? userAccessor = null) : DbContext(options)
 {
-  private const string DEFAULT_SCHEMA = "laczynski_changeme";
-
   public DbSet<Issue> Issues => Set<Issue>();
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
     base.OnModelCreating(modelBuilder);
 
-    modelBuilder.HasDefaultSchema(DEFAULT_SCHEMA);
+    modelBuilder.HasDefaultSchema(DatabaseSchema.Default);
 
     modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
   }
