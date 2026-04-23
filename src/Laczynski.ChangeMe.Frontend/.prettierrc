@@ -1,22 +1,15 @@
 {
-  "singleQuote": true,
-  "printWidth": 100,
-  "semi": true,
+  "printWidth": 88,
   "tabWidth": 2,
   "useTabs": false,
-  "trailingComma": "all",
+  "semi": true,
+  "singleQuote": true,
+  "trailingComma": "none",
   "bracketSpacing": true,
-  "arrowParens": "avoid",
-  "endOfLine": "lf",
+  "htmlWhitespaceSensitivity": "ignore",
   "overrides": [
     {
       "files": "*.html",
-      "options": {
-        "parser": "html"
-      }
-    },
-    {
-      "files": "*.component.html",
       "options": {
         "parser": "angular"
       }
