@@ -10,18 +10,24 @@ public record CreateIssueCommand(
     IssuePriority Priority
     ) : ICommand<IssueDto>;
 
-public class CreateIssueHandler(ApplicationDbContext context) : ICommandHandler<CreateIssueCommand, IssueDto>
+public class CreateIssueHandler(IMediator mediator, ApplicationDbContext context, IEmailService emailService) : ICommandHandler<CreateIssueCommand, IssueDto>
 {
   public async Task<Result<IssueDto>> Handle(CreateIssueCommand command, CancellationToken cancellationToken)
   {
-    return await Result.Success()
-    .Bind(_ => Issue.Create(command.Title, command.Description, command.Priority))
-    .BindAsync(async issue =>
-    {
-      await context.Issues.AddAsync(issue, cancellationToken);
-      await context.SaveChangesAsync(cancellationToken);
-      return Result.Success(issue.ToDto());
-    });
+    var result = Issue.Create(command.Title, command.Description, command.Priority);
+    if (!result.IsSuccess)
+      return result.Map();
+
+    await context.Issues.AddAsync(result.Value, cancellationToken);
+    await context.SaveChangesAsync(cancellationToken);
+
+    await emailService.SendEmailAsync("test@test.com", "Issue created", $"Issue {result.Value.Title} has been created");
+
+    var issueResult = await mediator.Send(new GetIssueByIdQuery(result.Value.Id), cancellationToken);
+    if (!issueResult.IsSuccess)
+      return issueResult.Map();
+
+    return Result.Created(issueResult.Value, $"/issues/{issueResult.Value.Id}");
   }
 
 }

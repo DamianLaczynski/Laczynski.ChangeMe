@@ -13,12 +13,8 @@ public class DeleteIssueHandler(ApplicationDbContext context) : ICommandHandler<
     if (issue is null)
       return Result.NotFound();
 
-    return await Result.Success(issue)
-    .MapAsync(async issue =>
-    {
-      context.Issues.Remove(issue);
-      await context.SaveChangesAsync(cancellationToken);
-      return issue.Id;
-    });
+    context.Issues.Remove(issue);
+    await context.SaveChangesAsync(cancellationToken);
+    return Result.Created(issue.Id);
   }
 }

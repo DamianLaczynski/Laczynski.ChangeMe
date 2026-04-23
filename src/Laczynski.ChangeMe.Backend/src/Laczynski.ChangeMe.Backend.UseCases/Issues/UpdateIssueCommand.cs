@@ -8,7 +8,7 @@ public record UpdateIssueCommand(
     string? Description,
     IssuePriority Priority) : ICommand<IssueDto>;
 
-public class UpdateIssueHandler(ApplicationDbContext context) : ICommandHandler<UpdateIssueCommand, IssueDto>
+public class UpdateIssueHandler(IMediator mediator, ApplicationDbContext context) : ICommandHandler<UpdateIssueCommand, IssueDto>
 {
   public async Task<Result<IssueDto>> Handle(UpdateIssueCommand command, CancellationToken cancellationToken)
   {
@@ -17,12 +17,16 @@ public class UpdateIssueHandler(ApplicationDbContext context) : ICommandHandler<
     if (issue is null)
       return Result.NotFound();
 
-    return await Result.Success(issue)
-    .Bind(issue => issue.UpdateDetails(command.Title, command.Description, command.Priority))
-    .MapAsync(async issue =>
-    {
-      await context.SaveChangesAsync(cancellationToken);
-      return issue.ToDto();
-    });
+    var result = issue.UpdateDetails(command.Title, command.Description, command.Priority);
+    if (!result.IsSuccess)
+      return result.Map();
+
+    await context.SaveChangesAsync(cancellationToken);
+
+    var issueResult = await mediator.Send(new GetIssueByIdQuery(result.Value.Id), cancellationToken);
+    if (!issueResult.IsSuccess)
+      return issueResult.Map();
+
+    return Result.Success(issueResult.Value);
   }
 }

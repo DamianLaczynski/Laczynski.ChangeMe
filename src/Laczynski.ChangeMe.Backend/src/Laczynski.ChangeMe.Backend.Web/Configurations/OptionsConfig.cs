@@ -1,4 +1,5 @@
 ﻿using Laczynski.ChangeMe.Backend.Infrastructure;
+using Laczynski.ChangeMe.Backend.Infrastructure.Mail;
 
 namespace Laczynski.ChangeMe.Backend.Web.Configurations;
 
@@ -10,7 +11,7 @@ public static class OptionsConfig
                                                     WebApplicationBuilder builder)
   {
     services.Configure<DatabaseOptions>(configuration.GetSection("DatabaseOptions"));
-    services.Configure<SwaggerOptions>(configuration.GetSection("SwaggerOptions"));
+    services.Configure<EmailOptions>(configuration.GetSection("EmailOptions"));
 
     logger.LogInformation("{Project} were configured", "Options");
 
@@ -18,10 +19,3 @@ public static class OptionsConfig
   }
 }
 
-public sealed class SwaggerOptions
-{
-  public string DocumentName { get; set; } = "v1";
-  public string ApiTitle { get; set; } = "Laczynski.ChangeMe API";
-  public string SwaggerJsonRelativePath { get; set; } = "/swagger/v1/swagger.json";
-  public string XmlDocFileName { get; set; } = "Laczynski.ChangeMe.Backend.Web.xml";
-}
