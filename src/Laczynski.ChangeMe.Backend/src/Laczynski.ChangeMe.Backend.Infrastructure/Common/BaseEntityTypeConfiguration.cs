@@ -1,5 +1,4 @@
 ﻿using Laczynski.ChangeMe.Backend.Domain.Common;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Laczynski.ChangeMe.Backend.Infrastructure.Common;
 
@@ -30,7 +29,8 @@ public abstract class BaseEntityTypeConfiguration<TEntity> : IEntityTypeConfigur
         builder.Property(e => e.UpdatedBy)
             .IsRequired();
 
-        // Indexes
         builder.HasIndex(e => e.Id);
+
+        builder.HasQueryFilter(nameof(Entity.IsDeleted), e => !e.IsDeleted);
     }
 }

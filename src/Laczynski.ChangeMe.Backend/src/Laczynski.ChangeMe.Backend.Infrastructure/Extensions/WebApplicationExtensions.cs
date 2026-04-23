@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Builder;
 
 namespace Laczynski.ChangeMe.Backend.Infrastructure;
 
-public static class BiobankWebApplicationExtensions
+public static class WebApplicationExtensions
 {
     public static async Task ApplyMigrationsIfConfiguredAsync(this WebApplication app)
     {

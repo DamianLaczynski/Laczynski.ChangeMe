@@ -3,7 +3,6 @@ using Laczynski.ChangeMe.Backend.Infrastructure.Auth;
 using Laczynski.ChangeMe.Backend.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
-using Npgsql;
 
 namespace Laczynski.ChangeMe.Backend.Infrastructure;
 
@@ -32,7 +31,7 @@ public static class DependencyInjection
       var keys = string.Join(", ",
           builder.Configuration.GetSection("ConnectionStrings").GetChildren().Select(c => c.Key));
       throw new InvalidOperationException(
-          $"Connection string 'ConnectionStrings__DefaultConnection' is not configured. Available connection string keys: {keys}");
+          $"Connection string 'DefaultConnection' is not configured. Available connection string keys: {keys}");
     }
 
     logger.LogInformation("Using PostgreSQL database");
