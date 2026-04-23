@@ -1,40 +1,13 @@
-﻿using Ardalis.Result;
+﻿namespace Laczynski.ChangeMe.Backend.Domain.Common;
 
-namespace Laczynski.ChangeMe.Backend.Domain.Common;
-
-/// <summary>
-/// A base class for DDD Entities. Includes support for domain events dispatched post-persistence.
-/// If you prefer GUID Ids, change it here.
-/// If you need to support both GUID and int IDs, change to EntityBase&lt;TId&gt; and use TId as the type for Id.
-/// </summary>
 public abstract class Entity : HasDomainEventsBase
 {
-  /// <summary>
-  /// The unique identifier for the entity.
-  /// </summary>
-  public Guid Id { get; set; } = Guid.NewGuid();
+  public Guid Id { get; set; } = Guid.CreateVersion7();
 
   public Guid CreatedBy { get; set; }
   public Guid? UpdatedBy { get; set; }
   public DateTime CreatedAt { get; set; }
   public DateTime? UpdatedAt { get; set; }
-
-  public bool IsDeleted { get; set; } = false;
-}
-
-public abstract class EntityBase<TId> : HasDomainEventsBase
-  where TId : struct, IEquatable<TId>
-{
-  /// <summary>
-  /// The unique identifier for the entity.
-  /// </summary>
-  public TId Id { get; set; } = default!;
-
-  public Guid CreatedBy { get; set; }
-  public Guid? ModifiedBy { get; set; }
-
-  public DateTime CreatedAt { get; set; }
-  public DateTime? ModifiedAt { get; set; }
 
   public bool IsDeleted { get; set; } = false;
 }

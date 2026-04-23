@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
-using Laczynski.ChangeMe.Backend.Domain.Interfaces;
 using Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue;
-using Laczynski.ChangeMe.Backend.Domain.Common;
+using Laczynski.ChangeMe.Backend.Domain.Interfaces;
 
 namespace Laczynski.ChangeMe.Backend.Infrastructure.Persistence;
 

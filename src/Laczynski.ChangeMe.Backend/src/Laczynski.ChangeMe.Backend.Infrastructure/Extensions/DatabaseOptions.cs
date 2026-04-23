@@ -1,6 +1,6 @@
-namespace Laczynski.ChangeMe.Backend.Infrastructure;
+﻿namespace Laczynski.ChangeMe.Backend.Infrastructure;
 
 public sealed class DatabaseOptions
 {
-    public bool ApplyMigrationsOnStartup { get; set; }
+  public bool ApplyMigrationsOnStartup { get; set; }
 }

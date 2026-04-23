@@ -1,6 +1,4 @@
-﻿using Serilog;
-
-namespace Biobank.Presentation.Api.Configurations;
+﻿namespace Biobank.Presentation.Api.Configurations;
 
 public static class SerilogConfig
 {

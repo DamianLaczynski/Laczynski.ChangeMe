@@ -1,6 +1,4 @@
-﻿using Laczynski.ChangeMe.Backend.Domain.Common;
-
-namespace Laczynski.ChangeMe.Backend.Web.Common;
+﻿namespace Laczynski.ChangeMe.Backend.Web.Common;
 
 public class MediatRDomainEventDispatcher(IMediator mediator, ILogger<MediatRDomainEventDispatcher> logger) : IDomainEventDispatcher
 {

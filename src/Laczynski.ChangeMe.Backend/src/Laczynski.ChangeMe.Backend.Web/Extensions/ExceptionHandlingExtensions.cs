@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using Ardalis.Result;
 using Microsoft.AspNetCore.Diagnostics;
 
 namespace Laczynski.ChangeMe.Backend.Web.ApiBase;

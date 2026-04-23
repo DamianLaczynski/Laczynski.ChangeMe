@@ -1,5 +1,4 @@
-using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore.Design;
 
 namespace Laczynski.ChangeMe.Backend.Infrastructure.Persistence;
 
@@ -8,50 +7,50 @@ namespace Laczynski.ChangeMe.Backend.Infrastructure.Persistence;
 /// </summary>
 public sealed class ApplicationDesignTimeDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
 {
-    public ApplicationDbContext CreateDbContext(string[] args)
+  public ApplicationDbContext CreateDbContext(string[] args)
+  {
+    var basePath = ResolveWebProjectPath();
+    var configuration = new ConfigurationBuilder()
+        .SetBasePath(basePath)
+        .AddJsonFile("appsettings.json", optional: true)
+        .AddJsonFile("appsettings.Development.json", optional: true)
+        .AddEnvironmentVariables()
+        .Build();
+
+    var cs = configuration.GetConnectionString("DefaultConnection")
+        ?? Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection")
+        ?? throw new InvalidOperationException(
+            "Set ConnectionStrings:DefaultConnection in appsettings or ConnectionStrings__DefaultConnection for EF Core design-time.");
+
+    var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+    optionsBuilder.UseNpgsql(cs, npgsql =>
+        npgsql.MigrationsHistoryTable("__EFMigrationsHistory", "laczynski_changeme"));
+
+    return new ApplicationDbContext(optionsBuilder.Options);
+  }
+
+  private static string ResolveWebProjectPath()
+  {
+    var currentDirectory = new DirectoryInfo(Directory.GetCurrentDirectory());
+
+    while (currentDirectory is not null)
     {
-        var basePath = ResolveWebProjectPath();
-        var configuration = new ConfigurationBuilder()
-            .SetBasePath(basePath)
-            .AddJsonFile("appsettings.json", optional: true)
-            .AddJsonFile("appsettings.Development.json", optional: true)
-            .AddEnvironmentVariables()
-            .Build();
+      var candidate = Path.Combine(
+          currentDirectory.FullName,
+          "src",
+          "Laczynski.ChangeMe.Backend",
+          "src",
+          "Laczynski.ChangeMe.Backend.Web");
 
-        var cs = configuration.GetConnectionString("DefaultConnection")
-            ?? Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection")
-            ?? throw new InvalidOperationException(
-                "Set ConnectionStrings:DefaultConnection in appsettings or ConnectionStrings__DefaultConnection for EF Core design-time.");
+      if (Directory.Exists(candidate))
+      {
+        return candidate;
+      }
 
-        var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-        optionsBuilder.UseNpgsql(cs, npgsql =>
-            npgsql.MigrationsHistoryTable("__EFMigrationsHistory", "laczynski_changeme"));
-
-        return new ApplicationDbContext(optionsBuilder.Options);
+      currentDirectory = currentDirectory.Parent;
     }
 
-    private static string ResolveWebProjectPath()
-    {
-        var currentDirectory = new DirectoryInfo(Directory.GetCurrentDirectory());
-
-        while (currentDirectory is not null)
-        {
-            var candidate = Path.Combine(
-                currentDirectory.FullName,
-                "src",
-                "Laczynski.ChangeMe.Backend",
-                "src",
-                "Laczynski.ChangeMe.Backend.Web");
-
-            if (Directory.Exists(candidate))
-            {
-                return candidate;
-            }
-
-            currentDirectory = currentDirectory.Parent;
-        }
-
-        throw new InvalidOperationException(
-            "Could not locate the Laczynski.ChangeMe.Backend.Web project directory for EF Core design-time.");
-    }
+    throw new InvalidOperationException(
+        "Could not locate the Laczynski.ChangeMe.Backend.Web project directory for EF Core design-time.");
+  }
 }
