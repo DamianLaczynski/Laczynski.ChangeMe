@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -21,7 +21,7 @@ public partial class InitialMigration : Migration
                 Id = table.Column<Guid>(type: "uuid", nullable: false),
                 Title = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                 Description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
-                Priority = table.Column<int>(type: "integer", nullable: false),
+                Priority = table.Column<string>(type: "text", nullable: false),
                 CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                 UpdatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                 CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),

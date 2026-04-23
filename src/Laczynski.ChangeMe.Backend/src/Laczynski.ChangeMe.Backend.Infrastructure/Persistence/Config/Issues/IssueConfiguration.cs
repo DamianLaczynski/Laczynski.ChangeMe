@@ -20,7 +20,8 @@ public class IssueConfiguration : BaseEntityTypeConfiguration<Issue>
       .HasMaxLength(IssueConstraints.DESCRIPTION_MAX_LENGTH);
 
     builder.Property(i => i.Priority)
-      .IsRequired();
+      .IsRequired()
+      .HasConversion<string>();
 
     builder.HasMany(i => i.Comments)
       .WithOne()
