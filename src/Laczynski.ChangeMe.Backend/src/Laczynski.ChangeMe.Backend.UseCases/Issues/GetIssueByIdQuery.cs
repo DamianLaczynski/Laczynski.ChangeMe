@@ -8,6 +8,7 @@ public class GetIssueByIdHandler(ApplicationDbContext context) : IQueryHandler<G
   public async Task<Result<IssueDetailsDto>> Handle(GetIssueByIdQuery query, CancellationToken cancellationToken)
   {
     var issue = await context.Issues.AsNoTracking()
+      .Include(i => i.Comments)
       .FirstOrDefaultAsync(c => c.Id == query.Id, cancellationToken);
 
     if (issue is null)

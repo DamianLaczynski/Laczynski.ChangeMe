@@ -36,6 +36,11 @@ export interface CreateIssueRequest {
   title: string;
   description?: string;
   priority: IssuePriority;
+  comments: CreateIssueCommentPayload[];
+}
+
+export interface CreateIssueCommentPayload {
+  content: string;
 }
 
 export interface UpdateIssueRequest {

@@ -7,8 +7,13 @@ namespace Laczynski.ChangeMe.Backend.UseCases.Issues;
 public record CreateIssueCommand(
     string Title,
     string Description,
-    IssuePriority Priority
+    IssuePriority Priority,
+    List<CreateIssueCommentPayload> Comments
     ) : ICommand<IssueDetailsDto>;
+
+public record CreateIssueCommentPayload(
+  string Content
+);
 
 public class CreateIssueHandler(IMediator mediator, ApplicationDbContext context, IEmailService emailService) : ICommandHandler<CreateIssueCommand, IssueDetailsDto>
 {
@@ -17,6 +22,15 @@ public class CreateIssueHandler(IMediator mediator, ApplicationDbContext context
     var result = Issue.Create(command.Title, command.Description, command.Priority);
     if (!result.IsSuccess)
       return result.Map();
+
+    foreach (var comment in command.Comments)
+    {
+      var commentResult = result.Value.AddComment(comment.Content);
+      if (!commentResult.IsSuccess)
+        return commentResult.Map();
+
+      await context.AddAsync(commentResult.Value, cancellationToken);
+    }
 
     await context.Issues.AddAsync(result.Value, cancellationToken);
     await context.SaveChangesAsync(cancellationToken);

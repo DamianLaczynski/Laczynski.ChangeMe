@@ -73,6 +73,16 @@ public class Issue : Entity, IAggregateRoot
     return Result.Success(this);
   }
 
+  public Result<IssueComment> AddComment(string content)
+  {
+    var comment = IssueComment.Create(Id, content);
+    if (!comment.IsSuccess)
+      return comment.Map();
+
+    comments.Add(comment.Value);
+    return Result.Success(comment.Value);
+  }
+
 }
 
 public static class IssueConstraints
