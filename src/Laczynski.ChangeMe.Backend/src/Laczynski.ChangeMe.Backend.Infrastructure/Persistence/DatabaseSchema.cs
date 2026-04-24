@@ -10,8 +10,9 @@ internal static class DatabaseSchema
       ?? throw new InvalidOperationException("Infrastructure assembly name could not be determined.");
 
     return assemblyName
+      .ToLowerInvariant()
+      .Replace(".infrastructure", "")
       .Replace('.', '_')
-      .Replace('-', '_')
-      .ToLowerInvariant();
+      .Replace('-', '_');
   }
 }

@@ -1,4 +1,4 @@
-﻿using Laczynski.ChangeMe.Backend.Infrastructure;
+﻿using Laczynski.ChangeMe.Backend.Infrastructure.Configurations;
 using Laczynski.ChangeMe.Backend.Infrastructure.Mail;
 
 namespace Laczynski.ChangeMe.Backend.Web.Configurations;
@@ -12,10 +12,10 @@ public static class OptionsConfig
   {
     services.Configure<DatabaseOptions>(configuration.GetSection("DatabaseOptions"));
     services.Configure<EmailOptions>(configuration.GetSection("EmailOptions"));
+    services.Configure<HangfireOptions>(configuration.GetSection("HangfireOptions"));
 
     logger.LogInformation("{Project} were configured", "Options");
 
     return services;
   }
 }
-
