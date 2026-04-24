@@ -1,4 +1,6 @@
-﻿namespace Laczynski.ChangeMe.Backend.Web.Common;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+
+namespace Laczynski.ChangeMe.Backend.Web.Common;
 
 public abstract class BaseEndpoint<TRequest, TResponse>(IMediator mediator) : Endpoint<TRequest, Result<TResponse>>
     where TRequest : notnull
@@ -6,7 +8,7 @@ public abstract class BaseEndpoint<TRequest, TResponse>(IMediator mediator) : En
   public override void Configure()
   {
     DontThrowIfValidationFails();
-    AllowAnonymous();
+    AuthSchemes(JwtBearerDefaults.AuthenticationScheme);
     ConfigureEndpoint();
   }
 

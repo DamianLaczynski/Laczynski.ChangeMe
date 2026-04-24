@@ -7,6 +7,7 @@ public class GetAllIssues(IMediator _mediator) : BaseEndpoint<GetAllIssuesQuery,
   protected override void ConfigureEndpoint()
   {
     Get("/issues");
+    AllowAnonymous();
     Summary(s =>
     {
       s.Summary = "Get all issues";

@@ -2,5 +2,5 @@
 
 public interface IUserAccessor
 {
-  Guid UserId { get; }
+  Guid? UserId { get; }
 }

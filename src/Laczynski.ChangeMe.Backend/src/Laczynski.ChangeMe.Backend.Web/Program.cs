@@ -10,6 +10,7 @@ var logger = loggerFactory.CreateLogger(typeof(Program));
 
 builder.Services.AddOptionsConfig(builder.Configuration, logger, builder);
 builder.Services.AddCors(builder);
+builder.Services.AddJwtAuthentication(builder.Configuration);
 
 builder.Services.AddHttpContextAccessor();
 
@@ -28,12 +29,14 @@ var app = builder.Build();
 
 app.UseExceptionHandler();
 
-app.UseFastEndpointsWithSwagger();
-app.UseHangfireDashboardConfigured();
-
 app.UseHttpsRedirection();
 
 app.UseCors(CorsConfig.CorsPolicyName);
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.UseFastEndpointsWithSwagger();
+app.UseHangfireDashboardConfigured();
 
 app.MapHealthChecks("/health");
 

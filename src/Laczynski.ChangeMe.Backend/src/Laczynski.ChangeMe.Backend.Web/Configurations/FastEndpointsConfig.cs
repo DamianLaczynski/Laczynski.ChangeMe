@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using NSwag;
+
 namespace Laczynski.ChangeMe.Backend.Web.Configurations;
 
 public static class FastEndpointsConfig
@@ -8,6 +11,16 @@ public static class FastEndpointsConfig
                 .SwaggerDocument(o =>
                 {
                     o.ShortSchemaNames = true;
+                    o.EnableJWTBearerAuth = false;
+                    o.DocumentSettings = settings =>
+                    {
+                        settings.AddAuth("Bearer", new OpenApiSecurityScheme
+                        {
+                            Type = OpenApiSecuritySchemeType.Http,
+                            Scheme = JwtBearerDefaults.AuthenticationScheme,
+                            BearerFormat = "JWT",
+                        });
+                    };
                 });
         return services;
     }

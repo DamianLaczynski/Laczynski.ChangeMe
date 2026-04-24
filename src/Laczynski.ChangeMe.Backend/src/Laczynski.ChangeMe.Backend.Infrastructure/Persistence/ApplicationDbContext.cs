@@ -1,5 +1,6 @@
-﻿using System.Reflection;
+using System.Reflection;
 using Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue;
+using Laczynski.ChangeMe.Backend.Domain.Aggregates.Users;
 using Laczynski.ChangeMe.Backend.Domain.Interfaces;
 
 namespace Laczynski.ChangeMe.Backend.Infrastructure.Persistence;
@@ -10,6 +11,7 @@ public class ApplicationDbContext(
   IUserAccessor? userAccessor = null) : DbContext(options)
 {
   public DbSet<Issue> Issues => Set<Issue>();
+  public DbSet<User> Users => Set<User>();
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
@@ -62,7 +64,7 @@ public class ApplicationDbContext(
 
   private void UpdateUserInfo()
   {
-    if (userAccessor is null) return;
+    if (userAccessor?.UserId is not Guid currentUserId) return;
 
     var entries = ChangeTracker.Entries<Entity>()
       .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
@@ -70,9 +72,9 @@ public class ApplicationDbContext(
     foreach (var entry in entries)
     {
       if (entry.State == EntityState.Added)
-        entry.Property(e => e.CreatedBy).CurrentValue = userAccessor.UserId;
+        entry.Property(e => e.CreatedBy).CurrentValue = currentUserId;
 
-      entry.Property(e => e.UpdatedBy).CurrentValue = userAccessor.UserId;
+      entry.Property(e => e.UpdatedBy).CurrentValue = currentUserId;
     }
   }
 
