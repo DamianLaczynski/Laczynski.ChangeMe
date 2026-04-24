@@ -64,3 +64,14 @@ export enum IssuePriority {
   HIGH = 3,
   CRITICAL = 4,
 }
+
+export const IssueConstraints = {
+  TITLE_MIN_LENGTH: 3,
+  TITLE_MAX_LENGTH: 255,
+  DESCRIPTION_MAX_LENGTH: 2000,
+  COMMENT_MAX_LENGTH: 2000,
+}
+
+export const IssueCommentConstraints = {
+  CONTENT_MAX_LENGTH: 2000,
+}

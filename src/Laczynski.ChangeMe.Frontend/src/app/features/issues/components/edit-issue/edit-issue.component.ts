@@ -2,7 +2,7 @@ import { Component, effect, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IssuesService } from '@features/issues/services/issues.service';
-import { IssueDetailsDto, IssuePriority, UpdateIssueRequest } from '@features/issues/models/issue.model';
+import { IssueCommentConstraints, IssueConstraints, IssueDetailsDto, IssuePriority, UpdateIssueRequest } from '@features/issues/models/issue.model';
 import { Router, RouterLink } from '@angular/router';
 
 @Component({
@@ -21,6 +21,8 @@ export class EditIssueComponent {
   private readonly router = inject(Router);
 
   issuePriorities = this.issuesService.issuePriorities;
+  issueConstraints = IssueConstraints;
+  issueCommentConstraints = IssueCommentConstraints;
 
   constructor() {
     effect(() => {
@@ -39,8 +41,8 @@ export class EditIssueComponent {
   }
 
   form = new FormGroup({
-    title: new FormControl('', [Validators.required]),
-    description: new FormControl('', [Validators.required]),
+    title: new FormControl('', [Validators.required, Validators.minLength(IssueConstraints.TITLE_MIN_LENGTH), Validators.maxLength(IssueConstraints.TITLE_MAX_LENGTH)]),
+    description: new FormControl('', [Validators.required, Validators.maxLength(IssueConstraints.DESCRIPTION_MAX_LENGTH)]),
     priority: new FormControl<IssuePriority>(IssuePriority.MEDIUM, [Validators.required]),
     comments: new FormArray<FormGroup<CommentForm>>([]),
   });
@@ -101,7 +103,7 @@ export class EditIssueComponent {
   private createCommentGroup(id = '', content = ''): FormGroup<CommentForm> {
     return new FormGroup({
       id: new FormControl(id, { nonNullable: true }),
-      content: new FormControl(content, { nonNullable: true, validators: [Validators.required] }),
+      content: new FormControl(content, { nonNullable: true, validators: [Validators.required, Validators.maxLength(IssueCommentConstraints.CONTENT_MAX_LENGTH)] }),
     });
   }
 }

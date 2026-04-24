@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IssuesService } from '@features/issues/services/issues.service';
-import { CreateIssueRequest, IssuePriority } from '@features/issues/models/issue.model';
+import { CreateIssueRequest, IssueCommentConstraints, IssueConstraints, IssuePriority } from '@features/issues/models/issue.model';
 import { Router, RouterLink } from '@angular/router';
 
 @Component({
@@ -19,10 +19,12 @@ export class CreateIssueComponent {
   private readonly router = inject(Router);
 
   issuePriorities = this.issuesService.issuePriorities;
+  issueConstraints = IssueConstraints;
+  issueCommentConstraints = IssueCommentConstraints;
 
   form = new FormGroup({
-    title: new FormControl('', [Validators.required]),
-    description: new FormControl('', [Validators.required]),
+    title: new FormControl('', [Validators.required, Validators.minLength(IssueConstraints.TITLE_MIN_LENGTH), Validators.maxLength(IssueConstraints.TITLE_MAX_LENGTH)]),
+    description: new FormControl('', [Validators.required, Validators.maxLength(IssueConstraints.DESCRIPTION_MAX_LENGTH)]),
     priority: new FormControl<IssuePriority>(IssuePriority.MEDIUM, [Validators.required]),
     comments: new FormArray<FormGroup<CommentForm>>([]),
   });
@@ -67,7 +69,7 @@ export class CreateIssueComponent {
 
   private createCommentGroup(): FormGroup<CommentForm> {
     return new FormGroup({
-      content: new FormControl('', { nonNullable: true }),
+      content: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.maxLength(IssueCommentConstraints.CONTENT_MAX_LENGTH)] }),
     });
   }
 }
