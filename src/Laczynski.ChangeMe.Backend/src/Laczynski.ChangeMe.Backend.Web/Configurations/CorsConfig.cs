@@ -15,7 +15,7 @@ public static class CorsConfig
               {
                 if (builder.Environment.IsDevelopment())
                 {
-                  policy.SetIsOriginAllowed(_ => false)
+                  policy.AllowAnyOrigin()
                           .AllowAnyMethod()
                           .AllowAnyHeader();
                 }
@@ -32,4 +32,3 @@ public static class CorsConfig
     return services;
   }
 }
-

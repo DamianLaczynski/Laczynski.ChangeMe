@@ -8,7 +8,7 @@ public record CreateIssueCommand(
     string Title,
     string Description,
     IssuePriority Priority,
-    List<CreateIssueCommentPayload> Comments
+    List<CreateIssueCommentPayload>? Comments = null
     ) : ICommand<IssueDetailsDto>;
 
 public record CreateIssueCommentPayload(
@@ -23,7 +23,7 @@ public class CreateIssueHandler(IMediator mediator, ApplicationDbContext context
     if (!result.IsSuccess)
       return result.Map();
 
-    foreach (var comment in command.Comments)
+    foreach (var comment in command.Comments ?? [])
     {
       var commentResult = result.Value.AddComment(comment.Content);
       if (!commentResult.IsSuccess)

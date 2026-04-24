@@ -1,0 +1,35 @@
+<div>
+  <button [routerLink]="['/issues']">Back</button>
+</div>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="title">Title</label>
+    <input type="text" id="title" name="title" formControlName="title" />
+  </div>
+  <div>
+    <label for="description">Description</label>
+    <textarea id="description" name="description" formControlName="description"></textarea>
+  </div>
+  <div>
+    <label for="priority">Priority</label>
+    <select id="priority" name="priority" formControlName="priority">
+      <option [ngValue]="1">Low</option>
+      <option [ngValue]="2">Medium</option>
+      <option [ngValue]="3">High</option>
+      <option [ngValue]="4">Critical</option>
+    </select>
+  </div>
+  <div>
+    <p>Comments</p>
+    <div formArrayName="comments">
+      @for (comment of comments.controls; track $index) {
+        <div [formGroupName]="$index">
+          <input type="text" formControlName="content" />
+          <button type="button" (click)="removeComment($index)">Remove Comment</button>
+        </div>
+      }
+    </div>
+    <button type="button" (click)="addComment()">Add Comment</button>
+  </div>
+  <button type="submit">Create Issue</button>
+</form>

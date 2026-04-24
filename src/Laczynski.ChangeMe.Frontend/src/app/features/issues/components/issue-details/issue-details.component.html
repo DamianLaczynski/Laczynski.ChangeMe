@@ -1,0 +1,33 @@
+@let issueData = issue();
+<div>
+  <button [routerLink]="['/issues']">Back</button>
+  @if (issueData) {
+    <button [routerLink]="['/issues', issueData.id, 'edit']">Edit</button>
+    <button (click)="deleteIssue()">Delete</button>
+  }
+</div>
+@if (issueData) {
+<main>
+  <h1>Title: {{ issueData.title }}</h1>
+  <p>Description: {{ issueData.description }}</p>
+  <p>Priority: {{ issueData.priority }}</p>
+  <p>Created At: {{ issueData.createdAt | date:'short'}}</p>
+  <p>Updated At: {{ issueData.updatedAt | date:'short'}}</p>
+  <p>Created By: {{ issueData.createdBy }}</p>
+  <p>Updated By: {{ issueData.updatedBy }}</p>
+  <h2>Comments</h2>
+  <ul>
+    @if (issueData.comments.length > 0) {
+      @for (comment of issueData.comments; track comment.id) {
+        <li>{{ comment.content }}</li>
+      }
+    }
+    @else {
+      <p>No comments found</p>
+    }
+  </ul>
+</main>
+}
+@else {
+  <p>Issue not found</p>
+}

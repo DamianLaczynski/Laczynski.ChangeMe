@@ -1,4 +1,5 @@
 using Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue;
+using Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue.Entities;
 using Laczynski.ChangeMe.Backend.UseCases.Issues;
 
 namespace Laczynski.ChangeMe.Backend.Web.Issues;
@@ -33,5 +34,13 @@ public sealed class UpdateIssueCommandValidator : Validator<UpdateIssueCommand>
 
     RuleFor(x => x.Priority)
       .IsInEnum();
+
+    RuleForEach(x => x.Comments)
+      .ChildRules(comment =>
+      {
+        comment.RuleFor(x => x.Content)
+          .NotEmpty()
+          .MaximumLength(IssueCommentConstraints.CONTENT_MAX_LENGTH);
+      });
   }
 }

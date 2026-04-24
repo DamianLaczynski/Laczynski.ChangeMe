@@ -83,6 +83,25 @@ public class Issue : Entity, IAggregateRoot
     return Result.Success(comment.Value);
   }
 
+  public Result<IssueComment> UpdateComment(Guid commentId, string content)
+  {
+    var comment = comments.FirstOrDefault(c => c.Id == commentId);
+    if (comment is null)
+      return Result.NotFound();
+
+    return comment.UpdateContent(content);
+  }
+
+  public Result<IssueComment> RemoveComment(Guid commentId)
+  {
+    var comment = comments.FirstOrDefault(c => c.Id == commentId);
+    if (comment is null)
+      return Result.NotFound();
+
+    comments.Remove(comment);
+    return Result.Success(comment);
+  }
+
 }
 
 public static class IssueConstraints

@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiService } from '@shared/api';
+import { ApiService } from '@shared/api/services/api.service';
 import {
   IssueDto,
   CreateIssueRequest,

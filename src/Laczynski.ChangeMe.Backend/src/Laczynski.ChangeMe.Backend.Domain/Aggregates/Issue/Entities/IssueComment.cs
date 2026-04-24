@@ -27,6 +27,20 @@ public class IssueComment : Entity
     return Result.Success(issueComment);
   }
 
+  public Result<IssueComment> UpdateContent(string content)
+  {
+    var validationErrors = new List<ValidationError>();
+    if (string.IsNullOrWhiteSpace(content))
+      validationErrors.Add(new ValidationError("content", "Content cannot be empty"));
+    if (content.Length > IssueCommentConstraints.CONTENT_MAX_LENGTH)
+      validationErrors.Add(new ValidationError("content", "Content cannot be longer than 2000 characters"));
+    if (validationErrors.Count > 0)
+      return Result.Invalid(validationErrors);
+
+    Content = content.Trim();
+    return Result.Success(this);
+  }
+
 }
 
 

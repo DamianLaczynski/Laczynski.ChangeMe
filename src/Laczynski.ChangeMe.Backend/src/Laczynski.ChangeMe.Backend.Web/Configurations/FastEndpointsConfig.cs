@@ -14,7 +14,10 @@ public static class FastEndpointsConfig
 
     public static WebApplication UseFastEndpointsWithSwagger(this WebApplication app)
     {
-        app.UseFastEndpoints().UseSwaggerGen();
+        app.UseFastEndpoints(config =>
+        {
+            config.Endpoints.RoutePrefix = "api";
+        }).UseSwaggerGen();
         return app;
     }
 }

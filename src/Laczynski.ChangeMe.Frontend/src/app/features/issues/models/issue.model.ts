@@ -48,15 +48,19 @@ export interface UpdateIssueRequest {
   title: string;
   description?: string;
   priority: IssuePriority;
+  comments: UpdateIssueCommentPayload[];
 }
 
-export interface IssueSearchParameters extends PaginationParameters {
-  searchTerm?: string;
+export interface UpdateIssueCommentPayload {
+  id?: string;
+  content: string;
 }
+
+export interface IssueSearchParameters extends PaginationParameters { }
 
 export enum IssuePriority {
-  LOW = 'LOW',
-  MEDIUM = 'MEDIUM',
-  HIGH = 'HIGH',
-  CRITICAL = 'CRITICAL',
+  LOW = 1,
+  MEDIUM = 2,
+  HIGH = 3,
+  CRITICAL = 4,
 }

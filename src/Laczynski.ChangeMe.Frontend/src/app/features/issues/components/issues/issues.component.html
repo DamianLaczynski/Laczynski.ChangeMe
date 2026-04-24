@@ -1,0 +1,23 @@
+@let issuesData = issues();
+<div>
+  <button [routerLink]="['/issues', 'create']">Create Issue</button>
+</div>
+@if (issuesData.length > 0) {
+<main>
+  <ul>
+    @for (issue of issuesData; track issue.id) {
+      <li>
+        <a [routerLink]="['/issues', issue.id]">{{ issue.title }}</a>
+      </li>
+    }
+  </ul>
+</main>
+}
+@else {
+  <p>No issues found</p>
+}
+<div>
+  <button (click)="previousPage()">Previous</button>
+  <p>Page {{ paginationParameters().pageNumber }}</p>
+  <button (click)="nextPage()">Next</button>
+</div>

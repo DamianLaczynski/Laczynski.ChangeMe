@@ -4,7 +4,8 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import { Result, ResultStatus } from '../models/api-response.model';
-import { PaginationParameters, PaginationResult } from '@shared/data';
+import { PaginationResult } from '@shared/data/models/pagination-result.model';
+import { PaginationParameters } from '@shared/data/models/pagination-parameters.model';
 
 @Injectable({
   providedIn: 'root',

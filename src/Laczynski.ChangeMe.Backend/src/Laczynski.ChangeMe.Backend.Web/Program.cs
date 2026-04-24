@@ -31,6 +31,8 @@ app.UseExceptionHandler();
 app.UseFastEndpointsWithSwagger();
 app.UseHangfireDashboardConfigured();
 
+app.UseHttpsRedirection();
+
 app.UseCors(CorsConfig.CorsPolicyName);
 
 app.MapHealthChecks("/health");
