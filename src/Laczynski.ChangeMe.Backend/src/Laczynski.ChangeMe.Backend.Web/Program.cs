@@ -12,6 +12,7 @@ builder.Services.AddOptionsConfig(builder.Configuration, logger, builder);
 builder.Services.AddCors(builder);
 
 builder.Services.AddDatabase(builder, logger);
+builder.Services.AddHangfire(builder, logger);
 builder.Services.AddEmail(logger);
 
 builder.Services.AddHttpContextAccessor();
@@ -28,6 +29,7 @@ var app = builder.Build();
 app.UseExceptionHandler();
 
 app.UseFastEndpointsWithSwagger();
+app.UseHangfireDashboardConfigured();
 
 app.UseCors(CorsConfig.CorsPolicyName);
 
