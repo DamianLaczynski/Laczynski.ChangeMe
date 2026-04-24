@@ -18,6 +18,8 @@ export class CreateIssueComponent {
   private readonly issuesService = inject(IssuesService);
   private readonly router = inject(Router);
 
+  issuePriorities = this.issuesService.issuePriorities;
+
   form = new FormGroup({
     title: new FormControl('', [Validators.required]),
     description: new FormControl('', [Validators.required]),

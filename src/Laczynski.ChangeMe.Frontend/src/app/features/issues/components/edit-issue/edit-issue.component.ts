@@ -20,6 +20,8 @@ export class EditIssueComponent {
   private readonly issuesService = inject(IssuesService);
   private readonly router = inject(Router);
 
+  issuePriorities = this.issuesService.issuePriorities;
+
   constructor() {
     effect(() => {
       const id = this.id();

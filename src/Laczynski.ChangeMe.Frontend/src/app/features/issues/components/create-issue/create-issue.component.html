@@ -13,10 +13,9 @@
   <div>
     <label for="priority">Priority</label>
     <select id="priority" name="priority" formControlName="priority">
-      <option [ngValue]="1">Low</option>
-      <option [ngValue]="2">Medium</option>
-      <option [ngValue]="3">High</option>
-      <option [ngValue]="4">Critical</option>
+      @for (priority of issuePriorities(); track priority.value) {
+        <option [ngValue]="priority.value">{{ priority.label }}</option>
+      }
     </select>
   </div>
   <div>
