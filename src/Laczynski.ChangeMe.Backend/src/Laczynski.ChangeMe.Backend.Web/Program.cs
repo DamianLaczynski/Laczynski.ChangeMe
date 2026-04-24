@@ -11,12 +11,12 @@ var logger = loggerFactory.CreateLogger(typeof(Program));
 builder.Services.AddOptionsConfig(builder.Configuration, logger, builder);
 builder.Services.AddCors(builder);
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddDatabase(builder, logger);
 builder.Services.AddHangfire(builder, logger);
-builder.Services.AddEmail(logger);
 
-builder.Services.AddHttpContextAccessor();
-builder.Services.AddUserAccessor();
+builder.Services.AddInfrastructureServices(logger);
 
 builder.Services.AddMediator();
 

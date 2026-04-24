@@ -1,14 +1,16 @@
 using Laczynski.ChangeMe.Backend.Domain.Interfaces;
+using Laczynski.ChangeMe.Backend.Infrastructure.Auth;
 using Laczynski.ChangeMe.Backend.Infrastructure.Email;
 
 namespace Laczynski.ChangeMe.Backend.Infrastructure.Configurations;
 
-public static class EmailConfig
+public static class ServicesConfig
 {
-    public static IServiceCollection AddEmail(this IServiceCollection services, ILogger logger)
+    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, ILogger logger)
     {
         services.AddScoped<IEmailService, EmailService>();
-        logger.LogInformation("{Project} services configured", "Email");
+        services.AddScoped<IUserAccessor, UserAccessor>();
+        logger.LogInformation("{Project} services configured", "Infrastructure");
         return services;
     }
 }
