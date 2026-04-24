@@ -2,7 +2,7 @@
 
 public static class SerilogConfig
 {
-  public static WebApplicationBuilder AddSerilogLogging(this WebApplicationBuilder builder)
+  public static WebApplicationBuilder AddSerilog(this WebApplicationBuilder builder)
   {
     builder.Logging.ClearProviders();
 

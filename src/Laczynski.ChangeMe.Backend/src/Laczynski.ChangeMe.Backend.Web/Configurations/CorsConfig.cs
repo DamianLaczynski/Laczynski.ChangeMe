@@ -4,7 +4,7 @@ public static class CorsConfig
 {
   public const string CorsPolicyName = "CorsPolicy";
 
-  public static IServiceCollection AddCorsConfig(this IServiceCollection services, WebApplicationBuilder builder)
+  public static IServiceCollection AddCors(this IServiceCollection services, WebApplicationBuilder builder)
   {
     var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];
 

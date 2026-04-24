@@ -4,9 +4,9 @@ using Laczynski.ChangeMe.Backend.UseCases.Issues;
 
 namespace Laczynski.ChangeMe.Backend.Web.Configurations;
 
-public static class MediatrConfigs
+public static class MediatorConfig
 {
-  public static IServiceCollection AddMediatrConfigs(this IServiceCollection services)
+  public static IServiceCollection AddMediator(this IServiceCollection services)
   {
     var mediatRAssemblies = new[]
       {
