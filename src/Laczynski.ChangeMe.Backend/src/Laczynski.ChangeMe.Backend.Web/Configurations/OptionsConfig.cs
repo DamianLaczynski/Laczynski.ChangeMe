@@ -1,5 +1,5 @@
 ﻿using Laczynski.ChangeMe.Backend.Infrastructure.Configurations;
-using Laczynski.ChangeMe.Backend.Infrastructure.Mail;
+using Laczynski.ChangeMe.Backend.Infrastructure.Email;
 
 namespace Laczynski.ChangeMe.Backend.Web.Configurations;
 
