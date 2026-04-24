@@ -1,0 +1,44 @@
+<section>
+  <h1>Login</h1>
+  <p>Sign in to create, edit and delete issues.</p>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="email">Email</label>
+      <input id="email" type="email" formControlName="email" />
+      @if (form.controls.email.touched && form.controls.email.errors?.['required']) {
+        <p>Email is required.</p>
+      }
+      @if (form.controls.email.touched && form.controls.email.errors?.['email']) {
+        <p>Enter a valid email address.</p>
+      }
+      @if (form.controls.email.touched && form.controls.email.errors?.['maxlength']) {
+        <p>Email must be less than {{ authConstraints.EMAIL_MAX_LENGTH }} characters long.</p>
+      }
+    </div>
+
+    <div>
+      <label for="password">Password</label>
+      <input id="password" type="password" formControlName="password" />
+      @if (form.controls.password.touched && form.controls.password.errors?.['required']) {
+        <p>Password is required.</p>
+      }
+      @if (form.controls.password.touched && form.controls.password.errors?.['minlength']) {
+        <p>Password must be at least {{ authConstraints.PASSWORD_MIN_LENGTH }} characters long.</p>
+      }
+    </div>
+
+    @if (errorMessage()) {
+      <p>{{ errorMessage() }}</p>
+    }
+
+    <button type="submit" [disabled]="isSubmitting()">
+      {{ isSubmitting() ? 'Signing in...' : 'Login' }}
+    </button>
+  </form>
+
+  <p>
+    No account yet?
+    <a [routerLink]="['/register']">Create one</a>
+  </p>
+</section>

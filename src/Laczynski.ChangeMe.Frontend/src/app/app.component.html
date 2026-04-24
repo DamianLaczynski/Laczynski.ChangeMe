@@ -1,1 +1,18 @@
-<router-outlet></router-outlet>
+<header>
+  <nav>
+    <a [routerLink]="['/issues']">Issues</a>
+
+    @if (isAuthenticated()) {
+      <span>{{ currentUser()?.email }}</span>
+      <a [routerLink]="['/issues', 'create']">Create Issue</a>
+      <button type="button" (click)="logout()">Logout</button>
+    } @else {
+      <a [routerLink]="['/login']">Login</a>
+      <a [routerLink]="['/register']">Register</a>
+    }
+  </nav>
+</header>
+
+<main>
+  <router-outlet></router-outlet>
+</main>

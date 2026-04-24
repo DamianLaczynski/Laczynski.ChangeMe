@@ -1,7 +1,7 @@
 @let issueData = issue();
 <div>
   <button [routerLink]="['/issues']">Back</button>
-  @if (issueData) {
+  @if (issueData && isAuthenticated()) {
     <button [routerLink]="['/issues', issueData.id, 'edit']">Edit</button>
     <button (click)="deleteIssue()">Delete</button>
   }

@@ -1,6 +1,10 @@
 @let issuesData = issues();
 <div>
-  <button [routerLink]="['/issues', 'create']">Create Issue</button>
+  @if (isAuthenticated()) {
+    <button [routerLink]="['/issues', 'create']">Create Issue</button>
+  } @else {
+    <a [routerLink]="['/login']">Login to create issues</a>
+  }
 </div>
 @if (issuesData.length > 0) {
 <main>

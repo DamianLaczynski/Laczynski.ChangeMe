@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { IssuesService } from '@features/issues/services/issues.service';
 import { IssueDto, IssueSearchParameters } from '@features/issues/models/issue.model';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '@features/auth/services/auth.service';
 
 @Component({
   selector: 'app-issues',
@@ -14,6 +15,7 @@ import { RouterLink } from '@angular/router';
 })
 export class IssuesComponent {
   private readonly issuesService = inject(IssuesService);
+  readonly isAuthenticated = inject(AuthService).isAuthenticated;
 
   issues = signal<IssueDto[]>([]);
   paginationParameters = signal<IssueSearchParameters>({
