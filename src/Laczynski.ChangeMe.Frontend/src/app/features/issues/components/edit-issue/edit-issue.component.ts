@@ -1,18 +1,26 @@
 import { Component, effect, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 import { IssuesService } from '@features/issues/services/issues.service';
-import { IssueCommentConstraints, IssueConstraints, IssueDetailsDto, IssuePriority, UpdateIssueRequest } from '@features/issues/models/issue.model';
+import {
+  IssueCommentConstraints,
+  IssueConstraints,
+  IssueDetailsDto,
+  IssuePriority,
+  UpdateIssueRequest
+} from '@features/issues/models/issue.model';
 import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-edit-issue',
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    RouterLink,
-  ],
-  templateUrl: './edit-issue.component.html',
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  templateUrl: './edit-issue.component.html'
 })
 export class EditIssueComponent {
   id = input<string>();
@@ -32,7 +40,7 @@ export class EditIssueComponent {
           this.form.patchValue({
             title: issue.title,
             description: issue.description ?? '',
-            priority: issue.priority,
+            priority: issue.priority
           });
           this.setComments(issue);
         });
@@ -41,10 +49,19 @@ export class EditIssueComponent {
   }
 
   form = new FormGroup({
-    title: new FormControl('', [Validators.required, Validators.minLength(IssueConstraints.TITLE_MIN_LENGTH), Validators.maxLength(IssueConstraints.TITLE_MAX_LENGTH)]),
-    description: new FormControl('', [Validators.required, Validators.maxLength(IssueConstraints.DESCRIPTION_MAX_LENGTH)]),
-    priority: new FormControl<IssuePriority>(IssuePriority.MEDIUM, [Validators.required]),
-    comments: new FormArray<FormGroup<CommentForm>>([]),
+    title: new FormControl('', [
+      Validators.required,
+      Validators.minLength(IssueConstraints.TITLE_MIN_LENGTH),
+      Validators.maxLength(IssueConstraints.TITLE_MAX_LENGTH)
+    ]),
+    description: new FormControl('', [
+      Validators.required,
+      Validators.maxLength(IssueConstraints.DESCRIPTION_MAX_LENGTH)
+    ]),
+    priority: new FormControl<IssuePriority>(IssuePriority.MEDIUM, [
+      Validators.required
+    ]),
+    comments: new FormArray<FormGroup<CommentForm>>([])
   });
 
   onSubmit() {
@@ -63,11 +80,11 @@ export class EditIssueComponent {
       description: this.form.controls.description.value ?? '',
       priority: this.form.controls.priority.value ?? IssuePriority.MEDIUM,
       comments: this.comments.controls
-        .map(comment => ({
+        .map((comment) => ({
           id: comment.controls.id.value || undefined,
-          content: comment.controls.content.value.trim(),
+          content: comment.controls.content.value.trim()
         }))
-        .filter(comment => comment.content.length > 0),
+        .filter((comment) => comment.content.length > 0)
     };
 
     this.issuesService.updateIssue(request).subscribe({
@@ -76,7 +93,7 @@ export class EditIssueComponent {
       },
       error: (error) => {
         console.error(error);
-      },
+      }
     });
   }
 
@@ -103,7 +120,13 @@ export class EditIssueComponent {
   private createCommentGroup(id = '', content = ''): FormGroup<CommentForm> {
     return new FormGroup({
       id: new FormControl(id, { nonNullable: true }),
-      content: new FormControl(content, { nonNullable: true, validators: [Validators.required, Validators.maxLength(IssueCommentConstraints.CONTENT_MAX_LENGTH)] }),
+      content: new FormControl(content, {
+        nonNullable: true,
+        validators: [
+          Validators.required,
+          Validators.maxLength(IssueCommentConstraints.CONTENT_MAX_LENGTH)
+        ]
+      })
     });
   }
 }

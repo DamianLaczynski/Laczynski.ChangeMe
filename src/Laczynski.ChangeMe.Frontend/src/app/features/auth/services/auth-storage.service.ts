@@ -4,7 +4,7 @@ import { AuthResponse } from '../models/auth.model';
 const AUTH_STORAGE_KEY = 'auth_session';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AuthStorageService {
   getSession(): AuthResponse | null {

@@ -7,12 +7,12 @@ import {
   UpdateIssueRequest,
   IssueSearchParameters,
   IssuePriority,
-  IssueDetailsDto,
+  IssueDetailsDto
 } from '../models/issue.model';
 import { PaginationResult } from '@shared/data/models/pagination-result.model';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class IssuesService {
   private readonly apiService = inject(ApiService);
@@ -20,7 +20,10 @@ export class IssuesService {
   private readonly baseEndpoint = 'issues';
 
   getAllIssues(params: IssueSearchParameters): Observable<PaginationResult<IssueDto>> {
-    return this.apiService.getPaginated<IssueDto, IssueSearchParameters>(this.baseEndpoint, params);
+    return this.apiService.getPaginated<IssueDto, IssueSearchParameters>(
+      this.baseEndpoint,
+      params
+    );
   }
 
   getIssue(id: string): Observable<IssueDetailsDto> {
@@ -32,7 +35,10 @@ export class IssuesService {
   }
 
   updateIssue(request: UpdateIssueRequest): Observable<IssueDetailsDto> {
-    return this.apiService.put<IssueDetailsDto>(`${this.baseEndpoint}/${request.id}`, request);
+    return this.apiService.put<IssueDetailsDto>(
+      `${this.baseEndpoint}/${request.id}`,
+      request
+    );
   }
 
   deleteIssue(id: string): Observable<boolean> {
@@ -43,7 +49,6 @@ export class IssuesService {
     { value: IssuePriority.LOW, label: 'Low' },
     { value: IssuePriority.MEDIUM, label: 'Medium' },
     { value: IssuePriority.HIGH, label: 'High' },
-    { value: IssuePriority.CRITICAL, label: 'Critical' },
+    { value: IssuePriority.CRITICAL, label: 'Critical' }
   ]);
-
 }

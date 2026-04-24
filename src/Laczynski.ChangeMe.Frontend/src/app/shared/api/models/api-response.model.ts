@@ -26,11 +26,11 @@ export enum ResultStatus {
   CriticalError = 7,
   Unavailable = 8,
   Created = 9,
-  NoContent = 10,
+  NoContent = 10
 }
 
 export enum ValidationSeverity {
   Error = 0,
   Warning = 1,
-  Info = 2,
+  Info = 2
 }

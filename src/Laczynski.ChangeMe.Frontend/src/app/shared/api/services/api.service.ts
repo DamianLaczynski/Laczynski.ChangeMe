@@ -8,7 +8,7 @@ import { PaginationResult } from '@shared/data/models/pagination-result.model';
 import { PaginationParameters } from '@shared/data/models/pagination-parameters.model';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ApiService {
   private readonly baseUrl = environment.apiUrl + '/';
@@ -18,38 +18,38 @@ export class ApiService {
   public get<T>(endpoint: string, params?: unknown): Observable<T> {
     const httpParams = this.buildHttpParams(params);
 
-    return this.http.get<Result<T>>(`${this.baseUrl}${endpoint}`, { params: httpParams }).pipe(
-      map(response => this.handleResponse(response)),
-    );
+    return this.http
+      .get<Result<T>>(`${this.baseUrl}${endpoint}`, { params: httpParams })
+      .pipe(map((response) => this.handleResponse(response)));
   }
 
   public getPaginated<T, P extends PaginationParameters = PaginationParameters>(
     endpoint: string,
-    params: P,
+    params: P
   ): Observable<PaginationResult<T>> {
     const httpParams = this.buildHttpParams(params);
 
-    return this.http.get<Result<any>>(`${this.baseUrl}${endpoint}`, { params: httpParams }).pipe(
-      map(response => this.handleResponse(response)),
-    );
+    return this.http
+      .get<Result<any>>(`${this.baseUrl}${endpoint}`, { params: httpParams })
+      .pipe(map((response) => this.handleResponse(response)));
   }
 
   public post<T>(endpoint: string, body: unknown): Observable<T> {
-    return this.http.post<Result<T>>(`${this.baseUrl}${endpoint}`, body).pipe(
-      map(response => this.handleResponse(response)),
-    );
+    return this.http
+      .post<Result<T>>(`${this.baseUrl}${endpoint}`, body)
+      .pipe(map((response) => this.handleResponse(response)));
   }
 
   public put<T>(endpoint: string, body: unknown): Observable<T> {
-    return this.http.put<Result<T>>(`${this.baseUrl}${endpoint}`, body).pipe(
-      map(response => this.handleResponse(response)),
-    );
+    return this.http
+      .put<Result<T>>(`${this.baseUrl}${endpoint}`, body)
+      .pipe(map((response) => this.handleResponse(response)));
   }
 
   public delete<T>(endpoint: string): Observable<T> {
-    return this.http.delete<Result<T>>(`${this.baseUrl}${endpoint}`).pipe(
-      map(response => this.handleResponse(response)),
-    );
+    return this.http
+      .delete<Result<T>>(`${this.baseUrl}${endpoint}`)
+      .pipe(map((response) => this.handleResponse(response)));
   }
 
   private handleResponse<T>(result: Result<T>): T {
@@ -81,7 +81,7 @@ export class ApiService {
     // Add validation errors
     if (result.validationErrors && result.validationErrors.length > 0) {
       const validationMessages = result.validationErrors.map(
-        ve => `${ve.identifier}: ${ve.errorMessage}`,
+        (ve) => `${ve.identifier}: ${ve.errorMessage}`
       );
       messages.push(...validationMessages);
     }
@@ -124,7 +124,7 @@ export class ApiService {
     let httpParams = new HttpParams();
 
     if (params) {
-      Object.keys(params).forEach(key => {
+      Object.keys(params).forEach((key) => {
         if (params[key] !== null && params[key] !== undefined) {
           httpParams = httpParams.set(key, params[key].toString());
         }

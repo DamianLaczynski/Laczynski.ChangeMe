@@ -18,5 +18,5 @@ export interface RegisterRequest {
 export const AuthConstraints = {
   EMAIL_MAX_LENGTH: 320,
   PASSWORD_MIN_LENGTH: 8,
-  PASSWORD_MAX_LENGTH: 128,
+  PASSWORD_MAX_LENGTH: 128
 };

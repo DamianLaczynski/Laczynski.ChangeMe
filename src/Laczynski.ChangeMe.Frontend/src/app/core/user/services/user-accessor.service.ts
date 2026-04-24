@@ -2,7 +2,7 @@ import { Injectable, computed, inject } from '@angular/core';
 import { AuthService } from '@features/auth/services/auth.service';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class UserAccessor {
   private readonly authService = inject(AuthService);

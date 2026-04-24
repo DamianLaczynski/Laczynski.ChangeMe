@@ -5,12 +5,8 @@ import { AuthService } from '@features/auth/services/auth.service';
 
 @Component({
   selector: 'app-root',
-  imports: [
-    CommonModule,
-    RouterOutlet,
-    RouterLink,
-  ],
-  templateUrl: './app.component.html',
+  imports: [CommonModule, RouterOutlet, RouterLink],
+  templateUrl: './app.component.html'
 })
 export class AppComponent {
   private readonly authService = inject(AuthService);

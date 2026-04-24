@@ -12,34 +12,34 @@ export const routes: Routes = [
   {
     path: '',
     redirectTo: 'issues',
-    pathMatch: 'full',
+    pathMatch: 'full'
   },
   {
     path: 'login',
     component: LoginComponent,
-    canActivate: [guestGuard],
+    canActivate: [guestGuard]
   },
   {
     path: 'register',
     component: RegisterComponent,
-    canActivate: [guestGuard],
+    canActivate: [guestGuard]
   },
   {
     path: 'issues',
-    component: IssuesComponent,
+    component: IssuesComponent
   },
   {
     path: 'issues/create',
     component: CreateIssueComponent,
-    canActivate: [authGuard],
+    canActivate: [authGuard]
   },
   {
     path: 'issues/:id',
-    component: IssueDetailsComponent,
+    component: IssueDetailsComponent
   },
   {
     path: 'issues/:id/edit',
     component: EditIssueComponent,
-    canActivate: [authGuard],
-  },
+    canActivate: [authGuard]
+  }
 ];

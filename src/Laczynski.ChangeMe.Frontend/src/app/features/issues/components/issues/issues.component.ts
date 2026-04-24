@@ -7,11 +7,8 @@ import { AuthService } from '@features/auth/services/auth.service';
 
 @Component({
   selector: 'app-issues',
-  imports: [
-    CommonModule,
-    RouterLink,
-  ],
-  templateUrl: './issues.component.html',
+  imports: [CommonModule, RouterLink],
+  templateUrl: './issues.component.html'
 })
 export class IssuesComponent {
   private readonly issuesService = inject(IssuesService);
@@ -20,28 +17,30 @@ export class IssuesComponent {
   issues = signal<IssueDto[]>([]);
   paginationParameters = signal<IssueSearchParameters>({
     pageNumber: 1,
-    pageSize: 10,
+    pageSize: 10
   });
 
   constructor() {
     effect(() => {
-      this.issuesService.getAllIssues(this.paginationParameters()).subscribe((issues) => {
-        this.issues.set(issues.items);
-      });
+      this.issuesService
+        .getAllIssues(this.paginationParameters())
+        .subscribe((issues) => {
+          this.issues.set(issues.items);
+        });
     });
   }
 
   previousPage() {
     this.paginationParameters.set({
       ...this.paginationParameters(),
-      pageNumber: this.paginationParameters().pageNumber - 1,
+      pageNumber: this.paginationParameters().pageNumber - 1
     });
   }
 
   nextPage() {
     this.paginationParameters.set({
       ...this.paginationParameters(),
-      pageNumber: this.paginationParameters().pageNumber + 1,
+      pageNumber: this.paginationParameters().pageNumber + 1
     });
   }
 }

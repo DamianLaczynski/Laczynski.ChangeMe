@@ -7,11 +7,8 @@ import { AuthService } from '@features/auth/services/auth.service';
 
 @Component({
   selector: 'app-issue-details',
-  imports: [
-    CommonModule,
-    RouterLink,
-  ],
-  templateUrl: './issue-details.component.html',
+  imports: [CommonModule, RouterLink],
+  templateUrl: './issue-details.component.html'
 })
 export class IssueDetailsComponent {
   id = input<string>();

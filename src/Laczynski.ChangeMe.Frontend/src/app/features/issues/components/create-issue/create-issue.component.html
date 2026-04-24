@@ -1,61 +1,81 @@
-<div>
-  <button [routerLink]="['/issues']">Back</button>
-</div>
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<section>
+  <h1>Create Issue</h1>
+  <p>Create a new issue.</p>
   <div>
-    <label for="title">Title</label>
-    <input type="text" id="title" name="title" formControlName="title" />
-    @if(form.controls.title.errors) {
-      @if(form.controls.title.errors['required']) {
-        <p>Title is required</p>
-      }
-      @if(form.controls.title.errors['minlength']) {
-        <p>Title must be at least {{ issueConstraints.TITLE_MIN_LENGTH }} characters</p>
-      }
-    }
-    @if(form.controls.title.errors?.['maxlength']) {
-      <p>Title must be less than {{ issueConstraints.TITLE_MAX_LENGTH }} characters</p>
-    }
+    <button [routerLink]="['/issues']">Back</button>
   </div>
-  <div>
-    <label for="description">Description</label>
-    <textarea id="description" name="description" formControlName="description"></textarea>
-    @if(form.controls.description.errors) {
-      @if(form.controls.description.errors['required']) {
-        <p>Description is required</p>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="title">Title</label>
+      <input type="text" id="title" name="title" formControlName="title" />
+      @if (form.controls.title.errors) {
+        @if (form.controls.title.errors['required']) {
+          <p>Title is required</p>
+        }
+        @if (form.controls.title.errors['minlength']) {
+          <p>
+            Title must be at least {{ issueConstraints.TITLE_MIN_LENGTH }} characters
+          </p>
+        }
       }
-      @if(form.controls.description.errors['maxlength']) {
-        <p>Description must be less than {{ issueConstraints.DESCRIPTION_MAX_LENGTH }} characters</p>
-      }
-    }
-  </div>
-  <div>
-    <label for="priority">Priority</label>
-    <select id="priority" name="priority" formControlName="priority">
-      @for (priority of issuePriorities(); track priority.value) {
-        <option [ngValue]="priority.value">{{ priority.label }}</option>
-      }
-    </select>
-  </div>
-  <div>
-    <p>Comments</p>
-    <div formArrayName="comments">
-      @for (comment of comments.controls; track $index) {
-        <div [formGroupName]="$index">
-          <input type="text" formControlName="content" />
-          @if(comment.controls.content.errors) {
-            @if(comment.controls.content.errors['required']) {
-              <p>Comment is required</p>
-            }
-            @if(comment.controls.content.errors['maxlength']) {
-              <p>Comment must be less than {{ issueCommentConstraints.CONTENT_MAX_LENGTH }} characters</p>
-            }
-          }
-          <button type="button" (click)="removeComment($index)">Remove Comment</button>
-        </div>
+      @if (form.controls.title.errors?.['maxlength']) {
+        <p>
+          Title must be less than {{ issueConstraints.TITLE_MAX_LENGTH }} characters
+        </p>
       }
     </div>
-    <button type="button" (click)="addComment()">Add Comment</button>
-  </div>
-  <button type="submit">Create Issue</button>
-</form>
+    <div>
+      <label for="description">Description</label>
+      <textarea
+        id="description"
+        name="description"
+        formControlName="description"
+      ></textarea>
+      @if (form.controls.description.errors) {
+        @if (form.controls.description.errors['required']) {
+          <p>Description is required</p>
+        }
+        @if (form.controls.description.errors['maxlength']) {
+          <p>
+            Description must be less than
+            {{ issueConstraints.DESCRIPTION_MAX_LENGTH }} characters
+          </p>
+        }
+      }
+    </div>
+    <div>
+      <label for="priority">Priority</label>
+      <select id="priority" name="priority" formControlName="priority">
+        @for (priority of issuePriorities(); track priority.value) {
+          <option [ngValue]="priority.value">{{ priority.label }}</option>
+        }
+      </select>
+    </div>
+    <div>
+      <p>Comments</p>
+      <div formArrayName="comments">
+        @for (comment of comments.controls; track $index) {
+          <div [formGroupName]="$index">
+            <input type="text" formControlName="content" />
+            @if (comment.controls.content.errors) {
+              @if (comment.controls.content.errors['required']) {
+                <p>Comment is required</p>
+              }
+              @if (comment.controls.content.errors['maxlength']) {
+                <p>
+                  Comment must be less than
+                  {{ issueCommentConstraints.CONTENT_MAX_LENGTH }} characters
+                </p>
+              }
+            }
+            <button type="button" (click)="removeComment($index)">
+              Remove Comment
+            </button>
+          </div>
+        }
+      </div>
+      <button type="button" (click)="addComment()">Add Comment</button>
+    </div>
+    <button type="submit">Create Issue</button>
+  </form>
+</section>

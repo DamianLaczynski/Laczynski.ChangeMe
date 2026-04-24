@@ -13,18 +13,28 @@
         <p>Enter a valid email address.</p>
       }
       @if (form.controls.email.touched && form.controls.email.errors?.['maxlength']) {
-        <p>Email must be less than {{ authConstraints.EMAIL_MAX_LENGTH }} characters long.</p>
+        <p>
+          Email must be less than {{ authConstraints.EMAIL_MAX_LENGTH }} characters
+          long.
+        </p>
       }
     </div>
 
     <div>
       <label for="password">Password</label>
       <input id="password" type="password" formControlName="password" />
-      @if (form.controls.password.touched && form.controls.password.errors?.['required']) {
+      @if (
+        form.controls.password.touched && form.controls.password.errors?.['required']
+      ) {
         <p>Password is required.</p>
       }
-      @if (form.controls.password.touched && form.controls.password.errors?.['minlength']) {
-        <p>Password must be at least {{ authConstraints.PASSWORD_MIN_LENGTH }} characters long.</p>
+      @if (
+        form.controls.password.touched && form.controls.password.errors?.['minlength']
+      ) {
+        <p>
+          Password must be at least {{ authConstraints.PASSWORD_MIN_LENGTH }} characters
+          long.
+        </p>
       }
     </div>
 

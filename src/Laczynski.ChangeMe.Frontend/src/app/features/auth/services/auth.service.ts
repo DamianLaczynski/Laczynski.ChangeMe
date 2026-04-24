@@ -5,17 +5,23 @@ import { AuthResponse, LoginRequest, RegisterRequest } from '../models/auth.mode
 import { AuthStorageService } from './auth-storage.service';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AuthService {
   private readonly apiService = inject(ApiService);
   private readonly authStorageService = inject(AuthStorageService);
 
-  private readonly session = signal<AuthResponse | null>(this.authStorageService.getSession());
+  private readonly session = signal<AuthResponse | null>(
+    this.authStorageService.getSession()
+  );
 
   readonly currentSession = this.session.asReadonly();
-  readonly isAuthenticated = computed(() => this.session() !== null && !this.isSessionExpired(this.session()));
-  readonly token = computed(() => (this.isAuthenticated() ? this.session()?.token ?? null : null));
+  readonly isAuthenticated = computed(
+    () => this.session() !== null && !this.isSessionExpired(this.session())
+  );
+  readonly token = computed(() =>
+    this.isAuthenticated() ? (this.session()?.token ?? null) : null
+  );
   readonly currentUser = computed(() => {
     const session = this.session();
     if (!session) {
@@ -24,7 +30,7 @@ export class AuthService {
 
     return {
       id: session.userId,
-      email: session.email,
+      email: session.email
     };
   });
 
@@ -35,15 +41,15 @@ export class AuthService {
   }
 
   login(request: LoginRequest) {
-    return this.apiService.post<AuthResponse>('auth/login', request).pipe(
-      tap(session => this.setSession(session)),
-    );
+    return this.apiService
+      .post<AuthResponse>('auth/login', request)
+      .pipe(tap((session) => this.setSession(session)));
   }
 
   register(request: RegisterRequest) {
-    return this.apiService.post<AuthResponse>('auth/register', request).pipe(
-      tap(session => this.setSession(session)),
-    );
+    return this.apiService
+      .post<AuthResponse>('auth/register', request)
+      .pipe(tap((session) => this.setSession(session)));
   }
 
   logout(): void {
