@@ -4,9 +4,7 @@ namespace Laczynski.ChangeMe.Backend.Domain.Aggregates.Users;
 
 public class User : Entity, IAggregateRoot
 {
-  private User()
-  {
-  }
+  private User() { }
 
   public string Email { get; private set; } = string.Empty;
   public string NormalizedEmail { get; private set; } = string.Empty;
@@ -40,12 +38,12 @@ public class User : Entity, IAggregateRoot
 
     if (string.IsNullOrWhiteSpace(email))
     {
-      validationErrors.Add(new ValidationError(nameof(Email), "Email is required."));
+      validationErrors.Add(new ValidationError(nameof(Email), "cannot be null or empty"));
     }
     else
     {
       if (email.Trim().Length > UserConstraints.EMAIL_MAX_LENGTH)
-        validationErrors.Add(new ValidationError(nameof(Email), $"Email cannot be longer than {UserConstraints.EMAIL_MAX_LENGTH} characters."));
+        validationErrors.Add(new ValidationError(nameof(Email), $"cannot be longer than {UserConstraints.EMAIL_MAX_LENGTH} characters"));
 
       try
       {
@@ -53,12 +51,12 @@ public class User : Entity, IAggregateRoot
       }
       catch (FormatException)
       {
-        validationErrors.Add(new ValidationError(nameof(Email), "Email has invalid format."));
+        validationErrors.Add(new ValidationError(nameof(Email), "has invalid format"));
       }
     }
 
     if (string.IsNullOrWhiteSpace(passwordHash))
-      validationErrors.Add(new ValidationError(nameof(PasswordHash), "Password hash is required."));
+      validationErrors.Add(new ValidationError(nameof(PasswordHash), "cannot be null or empty"));
 
     return validationErrors;
   }

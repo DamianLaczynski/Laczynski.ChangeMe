@@ -13,9 +13,9 @@ public class IssueComment : Entity
   {
     var validationErrors = new List<ValidationError>();
     if (string.IsNullOrWhiteSpace(content))
-      validationErrors.Add(new ValidationError("content", "Content cannot be empty"));
+      validationErrors.Add(new ValidationError("content", "cannot be empty"));
     if (content.Length > IssueCommentConstraints.CONTENT_MAX_LENGTH)
-      validationErrors.Add(new ValidationError("content", "Content cannot be longer than 2000 characters"));
+      validationErrors.Add(new ValidationError("content", $"cannot be longer than {IssueCommentConstraints.CONTENT_MAX_LENGTH} characters"));
     if (validationErrors.Count > 0)
       return Result.Invalid(validationErrors);
 
@@ -31,9 +31,9 @@ public class IssueComment : Entity
   {
     var validationErrors = new List<ValidationError>();
     if (string.IsNullOrWhiteSpace(content))
-      validationErrors.Add(new ValidationError("content", "Content cannot be empty"));
+      validationErrors.Add(new ValidationError("content", "cannot be empty"));
     if (content.Length > IssueCommentConstraints.CONTENT_MAX_LENGTH)
-      validationErrors.Add(new ValidationError("content", "Content cannot be longer than 2000 characters"));
+      validationErrors.Add(new ValidationError("content", $"cannot be longer than {IssueCommentConstraints.CONTENT_MAX_LENGTH} characters"));
     if (validationErrors.Count > 0)
       return Result.Invalid(validationErrors);
 
