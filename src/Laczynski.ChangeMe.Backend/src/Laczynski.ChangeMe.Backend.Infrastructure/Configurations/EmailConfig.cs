@@ -6,8 +6,10 @@ namespace Laczynski.ChangeMe.Backend.Infrastructure.Configurations;
 
 public static class ServicesConfig
 {
-  public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, ILogger logger)
+  public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration, ILogger logger)
   {
+    services.Configure<EmailOptions>(configuration.GetSection("Email"));
+
     services.AddScoped<IEmailService, EmailService>();
     services.AddSingleton<IPasswordHasher, PasswordHasherAdapter>();
     services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();

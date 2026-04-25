@@ -8,16 +8,15 @@ builder.AddSerilog();
 var loggerFactory = LoggerFactory.Create(lb => lb.AddSimpleConsole(o => o.SingleLine = true));
 var logger = loggerFactory.CreateLogger(typeof(Program));
 
-builder.Services.AddOptionsConfig(builder.Configuration, logger, builder);
 builder.Services.AddCors(builder);
-builder.Services.AddJwtAuthentication(builder.Configuration);
+builder.Services.AddJwtAuthentication(builder);
 
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddDatabase(builder, logger);
 builder.Services.AddHangfire(builder, logger);
 
-builder.Services.AddInfrastructureServices(logger);
+builder.Services.AddInfrastructureServices(builder.Configuration, logger);
 
 builder.Services.AddMediator();
 

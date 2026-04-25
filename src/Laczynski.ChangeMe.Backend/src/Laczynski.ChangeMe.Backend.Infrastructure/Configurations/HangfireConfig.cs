@@ -1,6 +1,7 @@
 ﻿using Hangfire;
 using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Options;
 
 namespace Laczynski.ChangeMe.Backend.Infrastructure.Configurations;
 
@@ -13,6 +14,8 @@ public static class HangfireConfig
 {
   public static IServiceCollection AddHangfire(this IServiceCollection services, WebApplicationBuilder builder, ILogger logger)
   {
+    services.Configure<HangfireOptions>(builder.Configuration.GetSection("Hangfire"));
+
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
     if (string.IsNullOrWhiteSpace(connectionString))
     {
@@ -32,5 +35,12 @@ public static class HangfireConfig
 
     logger.LogInformation("{Project} services configured", "Hangfire");
     return services;
+  }
+
+  public static WebApplication UseHangfireDashboard(this WebApplication app)
+  {
+    var options = app.Services.GetRequiredService<IOptions<HangfireOptions>>().Value;
+    app.UseHangfireDashboard(options?.DashboardPath ?? "/hangfire");
+    return app;
   }
 }

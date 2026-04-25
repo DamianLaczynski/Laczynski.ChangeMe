@@ -13,6 +13,8 @@ public static class DatabaseConfig
 {
   public static IServiceCollection AddDatabase(this IServiceCollection services, WebApplicationBuilder builder, ILogger logger)
   {
+    services.Configure<DatabaseOptions>(builder.Configuration.GetSection("Database"));
+
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
     if (string.IsNullOrWhiteSpace(connectionString))
     {
