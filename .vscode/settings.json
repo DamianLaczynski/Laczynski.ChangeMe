@@ -8,7 +8,7 @@
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
   "[csharp]": {
-    "editor.defaultFormatter": "ms-dotnettools.csharp"
+    "editor.defaultFormatter": "anysphere.csharp"
   },
   "[html]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
