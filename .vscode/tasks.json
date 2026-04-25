@@ -1,0 +1,193 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "laczynski-changeme-frontend: serve",
+      "type": "process",
+      "command": "npm",
+      "args": ["run", "start", "--", "--host", "0.0.0.0", "--port", "4200"],
+      "options": {
+        "cwd": "${workspaceFolder}/src/Laczynski.ChangeMe.Frontend"
+      },
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": {
+        "owner": "custom",
+        "fileLocation": ["relative", "${workspaceFolder}"],
+        "pattern": {
+          "regexp": "."
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".",
+          "endsPattern": "Application bundle generation complete"
+        }
+      }
+    },
+    {
+      "label": "laczynski-changeme-frontend: build",
+      "type": "process",
+      "command": "npm",
+      "args": ["run", "build"],
+      "options": {
+        "cwd": "${workspaceFolder}/src/Laczynski.ChangeMe.Frontend"
+      },
+      "group": "build",
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "laczynski-changeme-frontend: lint",
+      "type": "process",
+      "command": "npm",
+      "args": ["run", "lint"],
+      "options": {
+        "cwd": "${workspaceFolder}/src/Laczynski.ChangeMe.Frontend"
+      },
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "laczynski-changeme-frontend: format",
+      "type": "process",
+      "command": "npm",
+      "args": ["run", "format"],
+      "options": {
+        "cwd": "${workspaceFolder}/src/Laczynski.ChangeMe.Frontend"
+      },
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "laczynski-changeme-frontend: format check",
+      "type": "process",
+      "command": "npm",
+      "args": ["run", "format:check"],
+      "options": {
+        "cwd": "${workspaceFolder}/src/Laczynski.ChangeMe.Frontend"
+      },
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "laczynski-changeme-backend: build",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/src/Laczynski.ChangeMe.Backend/src/Laczynski.ChangeMe.Backend.Web/Laczynski.ChangeMe.Backend.Web.csproj",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary;ForceNoAlign"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/src/Laczynski.ChangeMe.Backend/src/Laczynski.ChangeMe.Backend.Web"
+      },
+      "group": "build",
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared"
+      },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "laczynski-changeme-backend: build solution",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/src/Laczynski.ChangeMe.Backend/Laczynski.ChangeMe.Backend.sln",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary;ForceNoAlign"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/src/Laczynski.ChangeMe.Backend"
+      },
+      "group": "build",
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared"
+      },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "laczynski-changeme-backend: format",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "format",
+        "${workspaceFolder}/src/Laczynski.ChangeMe.Backend/Laczynski.ChangeMe.Backend.sln"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/src/Laczynski.ChangeMe.Backend"
+      },
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "laczynski-changeme-backend: format check",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "format",
+        "${workspaceFolder}/src/Laczynski.ChangeMe.Backend/Laczynski.ChangeMe.Backend.sln",
+        "--verify-no-changes"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/src/Laczynski.ChangeMe.Backend"
+      },
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "laczynski-changeme: lint all",
+      "dependsOrder": "sequence",
+      "dependsOn": ["laczynski-changeme-frontend: lint"]
+    },
+    {
+      "label": "laczynski-changeme: build all",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "laczynski-changeme-frontend: build",
+        "laczynski-changeme-backend: build solution"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "laczynski-changeme: format all",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "laczynski-changeme-frontend: format",
+        "laczynski-changeme-backend: format"
+      ]
+    },
+    {
+      "label": "laczynski-changeme: verify all",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "laczynski-changeme-frontend: format check",
+        "laczynski-changeme-frontend: lint",
+        "laczynski-changeme-backend: format check",
+        "laczynski-changeme-backend: build solution"
+      ],
+      "group": "test"
+    }
+  ]
+}

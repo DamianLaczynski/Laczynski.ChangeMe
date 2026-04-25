@@ -1,23 +1,11 @@
 ###############################
 # Core EditorConfig Options   #
 ###############################
-root = true
-# All files
-[*]
-indent_style = space
-
-# XML project files
-[*.{csproj,vbproj,vcxproj,vcxproj.filters,proj,projitems,shproj}]
-indent_size = 2
-
-# XML config files
-[*.{props,targets,ruleset,config,nuspec,resx,vsixmanifest,vsct}]
-indent_size = 2
+root = false
 
 # Code files
 [*.{cs,csx,vb,vbx}]
 indent_size = 2
-insert_final_newline = true
 charset = utf-8-bom
 ###############################
 # .NET Coding Conventions     #
@@ -74,7 +62,6 @@ dotnet_naming_symbols.private_fields.applicable_accessibilities = private
 dotnet_naming_style.prefix_underscore.capitalization = camel_case
 dotnet_naming_style.prefix_underscore.required_prefix = _
 dotnet_style_operator_placement_when_wrapping = beginning_of_line
-end_of_line = crlf
 ###############################
 # C# Coding Conventions       #
 ###############################
