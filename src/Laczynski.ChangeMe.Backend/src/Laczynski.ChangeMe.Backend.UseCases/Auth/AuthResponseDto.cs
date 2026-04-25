@@ -1,4 +1,4 @@
-namespace Laczynski.ChangeMe.Backend.UseCases.Auth;
+﻿namespace Laczynski.ChangeMe.Backend.UseCases.Auth;
 
 public sealed record AuthResponseDto(
   Guid UserId,

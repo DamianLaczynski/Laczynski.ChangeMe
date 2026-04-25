@@ -1,4 +1,4 @@
-using Laczynski.ChangeMe.Backend.Domain.Aggregates.Users;
+﻿using Laczynski.ChangeMe.Backend.Domain.Aggregates.Users;
 using Laczynski.ChangeMe.Backend.UseCases.Auth;
 
 namespace Laczynski.ChangeMe.Backend.Web.Auth;

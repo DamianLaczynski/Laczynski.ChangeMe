@@ -1,4 +1,4 @@
-using System.Text;
+﻿using System.Text;
 using Laczynski.ChangeMe.Backend.Infrastructure.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;

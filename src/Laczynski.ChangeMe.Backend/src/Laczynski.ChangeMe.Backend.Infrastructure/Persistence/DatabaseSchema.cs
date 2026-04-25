@@ -1,4 +1,4 @@
-namespace Laczynski.ChangeMe.Backend.Infrastructure.Persistence;
+﻿namespace Laczynski.ChangeMe.Backend.Infrastructure.Persistence;
 
 internal static class DatabaseSchema
 {

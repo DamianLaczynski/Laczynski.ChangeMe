@@ -1,4 +1,4 @@
-namespace Laczynski.ChangeMe.Backend.Infrastructure.Auth;
+﻿namespace Laczynski.ChangeMe.Backend.Infrastructure.Auth;
 
 public sealed class JwtOptions
 {

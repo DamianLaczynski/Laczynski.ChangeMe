@@ -1,4 +1,4 @@
-using System.Net.Mail;
+﻿using System.Net.Mail;
 
 namespace Laczynski.ChangeMe.Backend.Domain.Aggregates.Users;
 

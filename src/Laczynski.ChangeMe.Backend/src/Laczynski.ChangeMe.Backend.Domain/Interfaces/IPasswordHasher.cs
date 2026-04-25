@@ -1,4 +1,4 @@
-namespace Laczynski.ChangeMe.Backend.Domain.Interfaces;
+﻿namespace Laczynski.ChangeMe.Backend.Domain.Interfaces;
 
 public interface IPasswordHasher
 {

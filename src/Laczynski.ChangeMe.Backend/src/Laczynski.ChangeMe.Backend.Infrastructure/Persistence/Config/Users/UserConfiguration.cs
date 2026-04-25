@@ -1,4 +1,4 @@
-using Laczynski.ChangeMe.Backend.Domain.Aggregates.Users;
+﻿using Laczynski.ChangeMe.Backend.Domain.Aggregates.Users;
 
 namespace Laczynski.ChangeMe.Backend.Infrastructure.Persistence.Config.Users;
 
