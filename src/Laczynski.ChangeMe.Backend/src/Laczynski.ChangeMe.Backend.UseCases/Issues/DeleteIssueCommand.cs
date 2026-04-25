@@ -15,6 +15,6 @@ public class DeleteIssueHandler(ApplicationDbContext context) : ICommandHandler<
 
     context.Issues.Remove(issue);
     await context.SaveChangesAsync(cancellationToken);
-    return Result.Created(issue.Id);
+    return Result.Success(issue.Id);
   }
 }

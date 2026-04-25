@@ -1,0 +1,59 @@
+using System.Net;
+using Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue.Enums;
+using Laczynski.ChangeMe.Backend.IntegrationTests.Fixtures;
+using Laczynski.ChangeMe.Backend.IntegrationTests.Support;
+using Microsoft.AspNetCore.Mvc.Testing;
+
+namespace Laczynski.ChangeMe.Backend.IntegrationTests;
+
+[Collection(IntegrationTestCollection.Name)]
+public sealed class GetIssueByIdEndpointTests(BackendWebApplicationFactory factory)
+{
+  [Fact]
+  public async Task GetIssueById_WhenIssueExists_ShouldReturnOk()
+  {
+    var cancellationToken = TestContext.Current.CancellationToken;
+    using var client = await TestAuthHelper.CreateAuthenticatedClientAsync(factory, cancellationToken);
+
+    var issueId = await IssueTestHelper.SeedIssueAsync(
+      factory,
+      "Issue for get by id",
+      "Issue description",
+      IssuePriority.HIGH,
+      ["Comment A"],
+      cancellationToken);
+
+    var response = await client.GetAsync($"/api/issues/{issueId}", cancellationToken);
+    var responseBody = await response.Content.ReadAsStringAsync(cancellationToken);
+
+    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    Assert.Contains("Issue for get by id", responseBody, StringComparison.OrdinalIgnoreCase);
+    Assert.Contains("Comment A", responseBody, StringComparison.OrdinalIgnoreCase);
+  }
+
+  [Fact]
+  public async Task GetIssueById_WhenIssueDoesNotExistAndUserIsAuthenticated_ShouldReturnNotFound()
+  {
+    var cancellationToken = TestContext.Current.CancellationToken;
+    using var client = await TestAuthHelper.CreateAuthenticatedClientAsync(factory, cancellationToken);
+
+    var response = await client.GetAsync($"/api/issues/{Guid.NewGuid()}", cancellationToken);
+
+    Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+  }
+
+  [Fact]
+  public async Task GetIssueById_WhenUserIsAnonymous_ShouldReturnUnauthorized()
+  {
+    var cancellationToken = TestContext.Current.CancellationToken;
+
+    using var client = factory.CreateClient(new WebApplicationFactoryClientOptions
+    {
+      BaseAddress = new Uri("https://localhost")
+    });
+
+    var response = await client.GetAsync($"/api/issues/{Guid.NewGuid()}", cancellationToken);
+
+    Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+  }
+}

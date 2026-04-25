@@ -51,7 +51,7 @@ public static class DatabaseConfig
 
   public static async Task UseDatabase(this WebApplication app)
   {
-    if (!app.Configuration.GetValue("DatabaseOptions:ApplyMigrationsOnStartup", false))
+    if (!app.Configuration.GetValue("Database:ApplyMigrationsOnStartup", false))
       return;
 
     await using var scope = app.Services.CreateAsyncScope();
