@@ -8,7 +8,7 @@ import { AuthService } from '@features/auth/services/auth.service';
 @Component({
   selector: 'app-issues',
   imports: [CommonModule, RouterLink],
-  templateUrl: './issues.component.html'
+  templateUrl: './issues-list.component.html'
 })
 export class IssuesComponent {
   private readonly issuesService = inject(IssuesService);
