@@ -12,7 +12,7 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY src/Laczynski.ChangeMe.Backend/ ./src/Laczynski.ChangeMe.Backend/
-WORKDIR /src/Laczynski.ChangeMe.Backend/
+WORKDIR /src/src/Laczynski.ChangeMe.Backend/
 RUN dotnet restore Laczynski.ChangeMe.Backend.sln
 RUN dotnet build src/Laczynski.ChangeMe.Backend.Web/Laczynski.ChangeMe.Backend.Web.csproj -c "$BUILD_CONFIGURATION" -o /app/build --no-restore
 
