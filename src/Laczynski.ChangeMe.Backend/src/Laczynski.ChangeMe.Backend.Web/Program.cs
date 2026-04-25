@@ -36,7 +36,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseFastEndpointsWithSwagger();
-app.UseHangfireDashboardConfigured();
+app.UseHangfireDashboard();
 
 app.MapHealthChecks("/health");
 

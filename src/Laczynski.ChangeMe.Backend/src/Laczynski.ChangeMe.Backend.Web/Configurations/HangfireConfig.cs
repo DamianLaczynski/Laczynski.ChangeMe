@@ -6,7 +6,7 @@ namespace Laczynski.ChangeMe.Backend.Web.Configurations;
 
 public static class HangfireConfig
 {
-  public static WebApplication UseHangfireDashboardConfigured(this WebApplication app)
+  public static WebApplication UseHangfireDashboard(this WebApplication app)
   {
     var options = app.Services.GetRequiredService<IOptions<HangfireOptions>>().Value;
     app.UseHangfireDashboard(options.DashboardPath);

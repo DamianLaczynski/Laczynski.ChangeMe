@@ -11,9 +11,9 @@ public static class OptionsConfig
                                                     Microsoft.Extensions.Logging.ILogger logger,
                                                     WebApplicationBuilder builder)
   {
-    services.Configure<DatabaseOptions>(configuration.GetSection("DatabaseOptions"));
-    services.Configure<EmailOptions>(configuration.GetSection("EmailOptions"));
-    services.Configure<HangfireOptions>(configuration.GetSection("HangfireOptions"));
+    services.Configure<DatabaseOptions>(configuration.GetSection("Database"));
+    services.Configure<EmailOptions>(configuration.GetSection("Email"));
+    services.Configure<HangfireOptions>(configuration.GetSection("Hangfire"));
     services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
 
     logger.LogInformation("{Project} were configured", "Options");
