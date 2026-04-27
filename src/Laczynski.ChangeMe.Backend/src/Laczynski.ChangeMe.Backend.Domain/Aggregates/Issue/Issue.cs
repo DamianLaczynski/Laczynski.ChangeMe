@@ -12,8 +12,8 @@ public class Issue : Entity, IAggregateRoot
   public IssuePriority Priority { get; private set; } = IssuePriority.MEDIUM;
 
 
-  private readonly List<IssueComment> comments = new();
-  public IReadOnlyCollection<IssueComment> Comments => comments.AsReadOnly();
+  private readonly List<IssueAcceptanceCriterion> acceptanceCriteria = new();
+  public IReadOnlyCollection<IssueAcceptanceCriterion> AcceptanceCriteria => acceptanceCriteria.AsReadOnly();
 
 
   public static Result<Issue> Create(string title, string? description = null, IssuePriority priority = IssuePriority.MEDIUM)
@@ -70,33 +70,33 @@ public class Issue : Entity, IAggregateRoot
     return Result.Success(this);
   }
 
-  public Result<IssueComment> AddComment(string content)
+  public Result<IssueAcceptanceCriterion> AddAcceptanceCriterion(string content)
   {
-    var comment = IssueComment.Create(Id, content);
-    if (!comment.IsSuccess)
-      return comment.Map();
+    var acceptanceCriterion = IssueAcceptanceCriterion.Create(Id, content);
+    if (!acceptanceCriterion.IsSuccess)
+      return acceptanceCriterion.Map();
 
-    comments.Add(comment.Value);
-    return Result.Success(comment.Value);
+    acceptanceCriteria.Add(acceptanceCriterion.Value);
+    return Result.Success(acceptanceCriterion.Value);
   }
 
-  public Result<IssueComment> UpdateComment(Guid commentId, string content)
+  public Result<IssueAcceptanceCriterion> UpdateAcceptanceCriterion(Guid acceptanceCriterionId, string content)
   {
-    var comment = comments.FirstOrDefault(c => c.Id == commentId);
-    if (comment is null)
+    var acceptanceCriterion = acceptanceCriteria.FirstOrDefault(c => c.Id == acceptanceCriterionId);
+    if (acceptanceCriterion is null)
       return Result.NotFound();
 
-    return comment.UpdateContent(content);
+    return acceptanceCriterion.UpdateContent(content);
   }
 
-  public Result<IssueComment> RemoveComment(Guid commentId)
+  public Result<IssueAcceptanceCriterion> RemoveAcceptanceCriterion(Guid acceptanceCriterionId)
   {
-    var comment = comments.FirstOrDefault(c => c.Id == commentId);
-    if (comment is null)
+    var acceptanceCriterion = acceptanceCriteria.FirstOrDefault(c => c.Id == acceptanceCriterionId);
+    if (acceptanceCriterion is null)
       return Result.NotFound();
 
-    comments.Remove(comment);
-    return Result.Success(comment);
+    acceptanceCriteria.Remove(acceptanceCriterion);
+    return Result.Success(acceptanceCriterion);
   }
 
 }

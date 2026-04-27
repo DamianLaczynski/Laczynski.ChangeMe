@@ -20,7 +20,7 @@ public sealed class GetIssueByIdEndpointTests(BackendWebApplicationFactory facto
       "Issue for get by id",
       "Issue description",
       IssuePriority.HIGH,
-      ["Comment A"],
+      ["Acceptance criterion A"],
       cancellationToken);
 
     var response = await client.GetAsync($"/api/issues/{issueId}", cancellationToken);
@@ -28,7 +28,7 @@ public sealed class GetIssueByIdEndpointTests(BackendWebApplicationFactory facto
 
     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     Assert.Contains("Issue for get by id", responseBody, StringComparison.OrdinalIgnoreCase);
-    Assert.Contains("Comment A", responseBody, StringComparison.OrdinalIgnoreCase);
+    Assert.Contains("Acceptance criterion A", responseBody, StringComparison.OrdinalIgnoreCase);
   }
 
   [Fact]

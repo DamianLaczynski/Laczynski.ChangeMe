@@ -21,14 +21,14 @@ public class IssueDetailsDto
   public string Title { get; set; } = string.Empty;
   public string? Description { get; set; }
   public IssuePriority Priority { get; set; }
-  public IReadOnlyCollection<IssueCommentDto> Comments { get; set; } = new List<IssueCommentDto>();
+  public IReadOnlyCollection<AcceptanceCriterionDto> AcceptanceCriteria { get; set; } = new List<AcceptanceCriterionDto>();
   public DateTime CreatedAt { get; set; }
   public DateTime? UpdatedAt { get; set; }
   public Guid CreatedBy { get; set; }
   public Guid? UpdatedBy { get; set; }
 }
 
-public class IssueCommentDto
+public class AcceptanceCriterionDto
 {
   public Guid Id { get; set; }
   public string Content { get; set; } = string.Empty;
@@ -60,7 +60,7 @@ public static class IssueExtensions
       Title = issue.Title,
       Description = issue.Description,
       Priority = issue.Priority,
-      Comments = issue.Comments.Select(c => new IssueCommentDto
+      AcceptanceCriteria = issue.AcceptanceCriteria.Select(c => new AcceptanceCriterionDto
       {
         Id = c.Id,
         Content = c.Content,
@@ -96,7 +96,7 @@ public static class IssueExtensions
       Title = issue.Title,
       Description = issue.Description,
       Priority = issue.Priority,
-      Comments = issue.Comments.Select(c => new IssueCommentDto
+      AcceptanceCriteria = issue.AcceptanceCriteria.Select(c => new AcceptanceCriterionDto
       {
         Id = c.Id,
         Content = c.Content,

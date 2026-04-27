@@ -10,7 +10,7 @@ import {
 import { IssuesService } from '@features/issues/services/issues.service';
 import {
   CreateIssueRequest,
-  IssueCommentConstraints,
+  IssueAcceptanceCriteriaConstraints,
   IssueConstraints,
   IssuePriority
 } from '@features/issues/models/issue.model';
@@ -27,7 +27,7 @@ export class CreateIssueComponent {
 
   issuePriorities = this.issuesService.issuePriorities;
   issueConstraints = IssueConstraints;
-  issueCommentConstraints = IssueCommentConstraints;
+  issueAcceptanceCriteriaConstraints = IssueAcceptanceCriteriaConstraints;
 
   form = new FormGroup({
     title: new FormControl('', [
@@ -42,7 +42,7 @@ export class CreateIssueComponent {
     priority: new FormControl<IssuePriority>(IssuePriority.MEDIUM, [
       Validators.required
     ]),
-    comments: new FormArray<FormGroup<CommentForm>>([])
+    acceptanceCriteria: new FormArray<FormGroup<AcceptanceCriterionForm>>([])
   });
 
   onSubmit() {
@@ -54,11 +54,11 @@ export class CreateIssueComponent {
       title: this.form.controls.title.value ?? '',
       description: this.form.controls.description.value ?? '',
       priority: this.form.controls.priority.value ?? IssuePriority.MEDIUM,
-      comments: this.comments.controls
-        .map((comment) => ({
-          content: comment.controls.content.value?.trim() ?? ''
+      acceptanceCriteria: this.acceptanceCriteria.controls
+        .map((acceptanceCriterion) => ({
+          content: acceptanceCriterion.controls.content.value?.trim() ?? ''
         }))
-        .filter((comment) => comment.content.length > 0)
+        .filter((acceptanceCriterion) => acceptanceCriterion.content.length > 0)
     };
 
     this.issuesService.createIssue(request).subscribe({
@@ -71,31 +71,31 @@ export class CreateIssueComponent {
     });
   }
 
-  addComment() {
-    this.comments.push(this.createCommentGroup());
+  addAcceptanceCriterion() {
+    this.acceptanceCriteria.push(this.createAcceptanceCriterionGroup());
   }
 
-  removeComment(index: number) {
-    this.comments.removeAt(index);
+  removeAcceptanceCriterion(index: number) {
+    this.acceptanceCriteria.removeAt(index);
   }
 
-  get comments() {
-    return this.form.controls.comments;
+  get acceptanceCriteria() {
+    return this.form.controls.acceptanceCriteria;
   }
 
-  private createCommentGroup(): FormGroup<CommentForm> {
+  private createAcceptanceCriterionGroup(): FormGroup<AcceptanceCriterionForm> {
     return new FormGroup({
       content: new FormControl('', {
         nonNullable: true,
         validators: [
           Validators.required,
-          Validators.maxLength(IssueCommentConstraints.CONTENT_MAX_LENGTH)
+          Validators.maxLength(IssueAcceptanceCriteriaConstraints.CONTENT_MAX_LENGTH)
         ]
       })
     });
   }
 }
 
-type CommentForm = {
+type AcceptanceCriterionForm = {
   content: FormControl<string>;
 };

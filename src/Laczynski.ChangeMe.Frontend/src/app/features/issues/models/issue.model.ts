@@ -16,14 +16,14 @@ export interface IssueDetailsDto {
   title: string;
   description?: string;
   priority: IssuePriority;
-  comments: IssueCommentDto[];
+  acceptanceCriteria: AcceptanceCriterionDto[];
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
   updatedBy: string;
 }
 
-export interface IssueCommentDto {
+export interface AcceptanceCriterionDto {
   id: string;
   content: string;
   createdAt: Date;
@@ -36,10 +36,10 @@ export interface CreateIssueRequest {
   title: string;
   description?: string;
   priority: IssuePriority;
-  comments: CreateIssueCommentPayload[];
+  acceptanceCriteria: CreateIssueAcceptanceCriterionPayload[];
 }
 
-export interface CreateIssueCommentPayload {
+export interface CreateIssueAcceptanceCriterionPayload {
   content: string;
 }
 
@@ -48,10 +48,10 @@ export interface UpdateIssueRequest {
   title: string;
   description?: string;
   priority: IssuePriority;
-  comments: UpdateIssueCommentPayload[];
+  acceptanceCriteria: UpdateIssueAcceptanceCriterionPayload[];
 }
 
-export interface UpdateIssueCommentPayload {
+export interface UpdateIssueAcceptanceCriterionPayload {
   id?: string;
   content: string;
 }
@@ -68,10 +68,9 @@ export enum IssuePriority {
 export const IssueConstraints = {
   TITLE_MIN_LENGTH: 3,
   TITLE_MAX_LENGTH: 255,
-  DESCRIPTION_MAX_LENGTH: 2000,
-  COMMENT_MAX_LENGTH: 2000
+  DESCRIPTION_MAX_LENGTH: 2000
 };
 
-export const IssueCommentConstraints = {
+export const IssueAcceptanceCriteriaConstraints = {
   CONTENT_MAX_LENGTH: 2000
 };

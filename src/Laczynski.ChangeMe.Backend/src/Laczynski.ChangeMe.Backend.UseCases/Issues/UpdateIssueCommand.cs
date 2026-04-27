@@ -8,9 +8,9 @@ public record UpdateIssueCommand(
     string Title,
     string? Description,
     IssuePriority Priority,
-    List<UpdateIssueCommentPayload>? Comments = null) : ICommand<IssueDetailsDto>;
+    List<UpdateIssueAcceptanceCriterionPayload>? AcceptanceCriteria = null) : ICommand<IssueDetailsDto>;
 
-public record UpdateIssueCommentPayload(
+public record UpdateIssueAcceptanceCriterionPayload(
     Guid? Id,
     string Content);
 
@@ -19,7 +19,7 @@ public class UpdateIssueHandler(IMediator mediator, ApplicationDbContext context
   public async Task<Result<IssueDetailsDto>> Handle(UpdateIssueCommand command, CancellationToken cancellationToken)
   {
     var issue = await context.Issues
-      .Include(i => i.Comments)
+      .Include(i => i.AcceptanceCriteria)
       .FirstOrDefaultAsync(i => i.Id == command.Id, cancellationToken);
 
     if (issue is null)
@@ -30,9 +30,9 @@ public class UpdateIssueHandler(IMediator mediator, ApplicationDbContext context
       return result.Map();
 
 
-    var commentsResult = UpdateComments(command.Comments, issue);
-    if (!commentsResult.IsSuccess)
-      return commentsResult.Map();
+    var acceptanceCriteriaResult = UpdateAcceptanceCriteria(command.AcceptanceCriteria, issue);
+    if (!acceptanceCriteriaResult.IsSuccess)
+      return acceptanceCriteriaResult.Map();
 
     await context.SaveChangesAsync(cancellationToken);
 
@@ -43,45 +43,45 @@ public class UpdateIssueHandler(IMediator mediator, ApplicationDbContext context
     return Result.Success(issueResult.Value);
   }
 
-  private Result UpdateComments(List<UpdateIssueCommentPayload>? comments, Issue issue)
+  private Result UpdateAcceptanceCriteria(List<UpdateIssueAcceptanceCriterionPayload>? acceptanceCriteria, Issue issue)
   {
-    if (comments is null)
+    if (acceptanceCriteria is null)
       return Result.Success();
 
-    var retainedCommentIds = new HashSet<Guid>();
+    var retainedAcceptanceCriteriaIds = new HashSet<Guid>();
 
-    foreach (var comment in comments)
+    foreach (var acceptanceCriterion in acceptanceCriteria)
     {
-      if (comment.Id.HasValue)
+      if (acceptanceCriterion.Id.HasValue)
       {
-        var updateCommentResult = issue.UpdateComment(comment.Id.Value, comment.Content);
-        if (!updateCommentResult.IsSuccess)
-          return updateCommentResult.Map();
+        var updateAcceptanceCriterionResult = issue.UpdateAcceptanceCriterion(acceptanceCriterion.Id.Value, acceptanceCriterion.Content);
+        if (!updateAcceptanceCriterionResult.IsSuccess)
+          return updateAcceptanceCriterionResult.Map();
 
-        retainedCommentIds.Add(comment.Id.Value);
+        retainedAcceptanceCriteriaIds.Add(acceptanceCriterion.Id.Value);
       }
       else
       {
-        var addCommentResult = issue.AddComment(comment.Content);
-        if (!addCommentResult.IsSuccess)
-          return addCommentResult.Map();
+        var addAcceptanceCriterionResult = issue.AddAcceptanceCriterion(acceptanceCriterion.Content);
+        if (!addAcceptanceCriterionResult.IsSuccess)
+          return addAcceptanceCriterionResult.Map();
 
-        context.Add(addCommentResult.Value);
-        retainedCommentIds.Add(addCommentResult.Value.Id);
+        context.Add(addAcceptanceCriterionResult.Value);
+        retainedAcceptanceCriteriaIds.Add(addAcceptanceCriterionResult.Value.Id);
       }
     }
 
-    var commentsToRemove = issue.Comments
-      .Where(comment => !retainedCommentIds.Contains(comment.Id))
+    var acceptanceCriteriaToRemove = issue.AcceptanceCriteria
+      .Where(criterion => !retainedAcceptanceCriteriaIds.Contains(criterion.Id))
       .ToList();
 
-    foreach (var comment in commentsToRemove)
+    foreach (var acceptanceCriterion in acceptanceCriteriaToRemove)
     {
-      var removeCommentResult = issue.RemoveComment(comment.Id);
-      if (!removeCommentResult.IsSuccess)
-        return removeCommentResult.Map();
+      var removeAcceptanceCriterionResult = issue.RemoveAcceptanceCriterion(acceptanceCriterion.Id);
+      if (!removeAcceptanceCriterionResult.IsSuccess)
+        return removeAcceptanceCriterionResult.Map();
 
-      context.Remove(removeCommentResult.Value);
+      context.Remove(removeAcceptanceCriterionResult.Value);
     }
 
     return Result.Success();

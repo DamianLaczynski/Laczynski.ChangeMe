@@ -23,7 +23,7 @@ public class IssueConfiguration : BaseEntityTypeConfiguration<Issue>
       .IsRequired()
       .HasConversion<string>();
 
-    builder.HasMany(i => i.Comments)
+    builder.HasMany(i => i.AcceptanceCriteria)
       .WithOne()
       .HasForeignKey(ic => ic.IssueId)
       .OnDelete(DeleteBehavior.Cascade);

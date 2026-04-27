@@ -35,12 +35,12 @@ public sealed class UpdateIssueCommandValidator : Validator<UpdateIssueCommand>
     RuleFor(x => x.Priority)
       .IsInEnum();
 
-    RuleForEach(x => x.Comments)
-      .ChildRules(comment =>
+    RuleForEach(x => x.AcceptanceCriteria)
+      .ChildRules(acceptanceCriterion =>
       {
-        comment.RuleFor(x => x.Content)
+        acceptanceCriterion.RuleFor(x => x.Content)
           .NotEmpty()
-          .MaximumLength(IssueCommentConstraints.CONTENT_MAX_LENGTH);
+          .MaximumLength(IssueAcceptanceCriterionConstraints.CONTENT_MAX_LENGTH);
       });
   }
 }

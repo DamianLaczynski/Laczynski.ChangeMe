@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Laczynski.ChangeMe.Backend.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260424203301_AddUsersAndAuth")]
-    partial class AddUsersAndAuth
+    [Migration("20260427191435_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,12 +21,12 @@ namespace Laczynski.ChangeMe.Backend.Infrastructure.Persistence.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("laczynski_changeme_backend")
-                .HasAnnotation("ProductVersion", "10.0.0")
+                .HasAnnotation("ProductVersion", "10.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue.Entities.IssueComment", b =>
+            modelBuilder.Entity("Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue.Entities.IssueAcceptanceCriterion", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -63,7 +63,7 @@ namespace Laczynski.ChangeMe.Backend.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("IssueId");
 
-                    b.ToTable("issue_comments", "laczynski_changeme_backend");
+                    b.ToTable("issue_acceptance_criteria", "laczynski_changeme_backend");
                 });
 
             modelBuilder.Entity("Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue.Issue", b =>
@@ -157,10 +157,10 @@ namespace Laczynski.ChangeMe.Backend.Infrastructure.Persistence.Migrations
                     b.ToTable("users", "laczynski_changeme_backend");
                 });
 
-            modelBuilder.Entity("Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue.Entities.IssueComment", b =>
+            modelBuilder.Entity("Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue.Entities.IssueAcceptanceCriterion", b =>
                 {
                     b.HasOne("Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue.Issue", null)
-                        .WithMany("Comments")
+                        .WithMany("AcceptanceCriteria")
                         .HasForeignKey("IssueId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -168,7 +168,7 @@ namespace Laczynski.ChangeMe.Backend.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue.Issue", b =>
                 {
-                    b.Navigation("Comments");
+                    b.Navigation("AcceptanceCriteria");
                 });
 #pragma warning restore 612, 618
         }

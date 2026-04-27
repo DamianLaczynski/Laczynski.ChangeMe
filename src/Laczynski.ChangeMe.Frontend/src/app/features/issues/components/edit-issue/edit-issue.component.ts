@@ -9,7 +9,7 @@ import {
 } from '@angular/forms';
 import { IssuesService } from '@features/issues/services/issues.service';
 import {
-  IssueCommentConstraints,
+  IssueAcceptanceCriteriaConstraints,
   IssueConstraints,
   IssueDetailsDto,
   IssuePriority,
@@ -30,7 +30,7 @@ export class EditIssueComponent {
 
   issuePriorities = this.issuesService.issuePriorities;
   issueConstraints = IssueConstraints;
-  issueCommentConstraints = IssueCommentConstraints;
+  issueAcceptanceCriteriaConstraints = IssueAcceptanceCriteriaConstraints;
 
   constructor() {
     effect(() => {
@@ -42,7 +42,7 @@ export class EditIssueComponent {
             description: issue.description ?? '',
             priority: issue.priority
           });
-          this.setComments(issue);
+          this.setAcceptanceCriteria(issue);
         });
       }
     });
@@ -61,7 +61,7 @@ export class EditIssueComponent {
     priority: new FormControl<IssuePriority>(IssuePriority.MEDIUM, [
       Validators.required
     ]),
-    comments: new FormArray<FormGroup<CommentForm>>([])
+    acceptanceCriteria: new FormArray<FormGroup<AcceptanceCriterionForm>>([])
   });
 
   onSubmit() {
@@ -79,12 +79,12 @@ export class EditIssueComponent {
       title: this.form.controls.title.value ?? '',
       description: this.form.controls.description.value ?? '',
       priority: this.form.controls.priority.value ?? IssuePriority.MEDIUM,
-      comments: this.comments.controls
-        .map((comment) => ({
-          id: comment.controls.id.value || undefined,
-          content: comment.controls.content.value.trim()
+      acceptanceCriteria: this.acceptanceCriteria.controls
+        .map((acceptanceCriterion) => ({
+          id: acceptanceCriterion.controls.id.value || undefined,
+          content: acceptanceCriterion.controls.content.value.trim()
         }))
-        .filter((comment) => comment.content.length > 0)
+        .filter((acceptanceCriterion) => acceptanceCriterion.content.length > 0)
     };
 
     this.issuesService.updateIssue(request).subscribe({
@@ -97,41 +97,41 @@ export class EditIssueComponent {
     });
   }
 
-  addComment() {
-    this.comments.push(this.createCommentGroup());
+  addAcceptanceCriterion() {
+    this.acceptanceCriteria.push(this.createAcceptanceCriterionGroup());
   }
 
-  removeComment(index: number) {
-    this.comments.removeAt(index);
+  removeAcceptanceCriterion(index: number) {
+    this.acceptanceCriteria.removeAt(index);
   }
 
-  get comments() {
-    return this.form.controls.comments;
+  get acceptanceCriteria() {
+    return this.form.controls.acceptanceCriteria;
   }
 
-  private setComments(issue: IssueDetailsDto) {
-    this.comments.clear();
+  private setAcceptanceCriteria(issue: IssueDetailsDto) {
+    this.acceptanceCriteria.clear();
 
-    for (const comment of issue.comments) {
-      this.comments.push(this.createCommentGroup(comment.id, comment.content));
+    for (const acceptanceCriterion of issue.acceptanceCriteria) {
+      this.acceptanceCriteria.push(this.createAcceptanceCriterionGroup(acceptanceCriterion.id, acceptanceCriterion.content));
     }
   }
 
-  private createCommentGroup(id = '', content = ''): FormGroup<CommentForm> {
+  private createAcceptanceCriterionGroup(id = '', content = ''): FormGroup<AcceptanceCriterionForm> {
     return new FormGroup({
       id: new FormControl(id, { nonNullable: true }),
       content: new FormControl(content, {
         nonNullable: true,
         validators: [
           Validators.required,
-          Validators.maxLength(IssueCommentConstraints.CONTENT_MAX_LENGTH)
+          Validators.maxLength(IssueAcceptanceCriteriaConstraints.CONTENT_MAX_LENGTH)
         ]
       })
     });
   }
 }
 
-type CommentForm = {
+type AcceptanceCriterionForm = {
   id: FormControl<string>;
   content: FormControl<string>;
 };

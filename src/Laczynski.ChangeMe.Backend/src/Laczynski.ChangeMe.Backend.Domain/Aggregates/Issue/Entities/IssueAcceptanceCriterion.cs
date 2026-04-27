@@ -1,39 +1,39 @@
 ﻿namespace Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue.Entities;
 
-public class IssueComment : Entity
+public class IssueAcceptanceCriterion : Entity
 {
 
   public string Content { get; private set; } = string.Empty;
   public Guid IssueId { get; private set; }
 
-  private IssueComment() { }
+  private IssueAcceptanceCriterion() { }
 
 
-  public static Result<IssueComment> Create(Guid issueId, string content)
+  public static Result<IssueAcceptanceCriterion> Create(Guid issueId, string content)
   {
     var validationErrors = new List<ValidationError>();
     if (string.IsNullOrWhiteSpace(content))
       validationErrors.Add(new ValidationError("content", "cannot be empty"));
-    if (content.Length > IssueCommentConstraints.CONTENT_MAX_LENGTH)
-      validationErrors.Add(new ValidationError("content", $"cannot be longer than {IssueCommentConstraints.CONTENT_MAX_LENGTH} characters"));
+    if (content.Length > IssueAcceptanceCriterionConstraints.CONTENT_MAX_LENGTH)
+      validationErrors.Add(new ValidationError("content", $"cannot be longer than {IssueAcceptanceCriterionConstraints.CONTENT_MAX_LENGTH} characters"));
     if (validationErrors.Count > 0)
       return Result.Invalid(validationErrors);
 
-    var issueComment = new IssueComment()
+    var issueAcceptanceCriterion = new IssueAcceptanceCriterion()
     {
       IssueId = issueId,
       Content = content.Trim(),
     };
-    return Result.Success(issueComment);
+    return Result.Success(issueAcceptanceCriterion);
   }
 
-  public Result<IssueComment> UpdateContent(string content)
+  public Result<IssueAcceptanceCriterion> UpdateContent(string content)
   {
     var validationErrors = new List<ValidationError>();
     if (string.IsNullOrWhiteSpace(content))
       validationErrors.Add(new ValidationError("content", "cannot be empty"));
-    if (content.Length > IssueCommentConstraints.CONTENT_MAX_LENGTH)
-      validationErrors.Add(new ValidationError("content", $"cannot be longer than {IssueCommentConstraints.CONTENT_MAX_LENGTH} characters"));
+    if (content.Length > IssueAcceptanceCriterionConstraints.CONTENT_MAX_LENGTH)
+      validationErrors.Add(new ValidationError("content", $"cannot be longer than {IssueAcceptanceCriterionConstraints.CONTENT_MAX_LENGTH} characters"));
     if (validationErrors.Count > 0)
       return Result.Invalid(validationErrors);
 
@@ -44,7 +44,7 @@ public class IssueComment : Entity
 }
 
 
-public static class IssueCommentConstraints
+public static class IssueAcceptanceCriterionConstraints
 {
   public const int CONTENT_MAX_LENGTH = 2000;
 }

@@ -52,29 +52,29 @@
       </select>
     </div>
     <div>
-      <p>Comments</p>
-      <div formArrayName="comments">
-        @for (comment of comments.controls; track $index) {
+      <p>Acceptance Criteria</p>
+      <div formArrayName="acceptanceCriteria">
+        @for (acceptanceCriterion of acceptanceCriteria.controls; track $index) {
           <div [formGroupName]="$index">
             <input type="text" formControlName="content" />
-            @if (comment.controls.content.errors) {
-              @if (comment.controls.content.errors['required']) {
-                <p>Comment is required</p>
+            @if (acceptanceCriterion.controls.content.errors) {
+              @if (acceptanceCriterion.controls.content.errors['required']) {
+                <p>Acceptance criterion is required</p>
               }
-              @if (comment.controls.content.errors['maxlength']) {
+              @if (acceptanceCriterion.controls.content.errors['maxlength']) {
                 <p>
-                  Comment must be less than
-                  {{ issueCommentConstraints.CONTENT_MAX_LENGTH }} characters
+                  Acceptance criterion must be less than
+                  {{ issueAcceptanceCriteriaConstraints.CONTENT_MAX_LENGTH }} characters
                 </p>
               }
             }
-            <button type="button" (click)="removeComment($index)">
-              Remove Comment
+            <button type="button" (click)="removeAcceptanceCriterion($index)">
+              Remove Acceptance Criterion
             </button>
           </div>
         }
       </div>
-      <button type="button" (click)="addComment()">Add Comment</button>
+      <button type="button" (click)="addAcceptanceCriterion()">Add Acceptance Criterion</button>
     </div>
     <button type="submit">Create Issue</button>
   </form>

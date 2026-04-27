@@ -14,7 +14,7 @@ namespace Laczynski.ChangeMe.Backend.IntegrationTests;
 public sealed class UpdateIssueEndpointTests(BackendWebApplicationFactory factory)
 {
   [Fact]
-  public async Task PutIssue_WhenRequestIsValid_ShouldUpdateIssueAndSynchronizeComments()
+  public async Task PutIssue_WhenRequestIsValid_ShouldUpdateIssueAndSynchronizeAcceptanceCriteria()
   {
     var cancellationToken = TestContext.Current.CancellationToken;
     using var client = await TestAuthHelper.CreateAuthenticatedClientAsync(factory, cancellationToken);
@@ -29,10 +29,10 @@ public sealed class UpdateIssueEndpointTests(BackendWebApplicationFactory factor
 
     await using var arrangeScope = factory.Services.CreateAsyncScope();
     var arrangeDb = arrangeScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    var existingCommentId = await arrangeDb.Issues
+    var existingAcceptanceCriterionId = await arrangeDb.Issues
       .AsNoTracking()
       .Where(x => x.Id == issueId)
-      .SelectMany(x => x.Comments)
+      .SelectMany(x => x.AcceptanceCriteria)
       .Select(x => x.Id)
       .FirstAsync(cancellationToken);
 
@@ -42,16 +42,16 @@ public sealed class UpdateIssueEndpointTests(BackendWebApplicationFactory factor
       Title = "Updated title",
       Description = "Updated description",
       Priority = 4,
-      Comments = new object[]
+      AcceptanceCriteria = new object[]
       {
         new
         {
-          Id = existingCommentId,
-          Content = "Updated comment"
+          Id = existingAcceptanceCriterionId,
+          Content = "Updated acceptance criterion"
         },
         new
         {
-          Content = "New comment"
+          Content = "New acceptance criterion"
         }
       }
     }, cancellationToken);
@@ -61,15 +61,15 @@ public sealed class UpdateIssueEndpointTests(BackendWebApplicationFactory factor
     await using var assertScope = factory.Services.CreateAsyncScope();
     var assertDb = assertScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     var issue = await assertDb.Issues
-      .Include(x => x.Comments)
+      .Include(x => x.AcceptanceCriteria)
       .SingleAsync(x => x.Id == issueId, cancellationToken);
 
     Assert.Equal("Updated title", issue.Title);
     Assert.Equal("Updated description", issue.Description);
     Assert.Equal(IssuePriority.CRITICAL, issue.Priority);
-    Assert.Equal(2, issue.Comments.Count);
-    Assert.Contains(issue.Comments, x => x.Content == "Updated comment");
-    Assert.Contains(issue.Comments, x => x.Content == "New comment");
-    Assert.DoesNotContain(issue.Comments, x => x.Content == "Remove me");
+    Assert.Equal(2, issue.AcceptanceCriteria.Count);
+    Assert.Contains(issue.AcceptanceCriteria, x => x.Content == "Updated acceptance criterion");
+    Assert.Contains(issue.AcceptanceCriteria, x => x.Content == "New acceptance criterion");
+    Assert.DoesNotContain(issue.AcceptanceCriteria, x => x.Content == "Remove me");
   }
 }

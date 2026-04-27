@@ -99,34 +99,34 @@ public sealed class IssueTests
   }
 
   [Fact]
-  public void AddComment_WhenContentIsValid_ShouldAddCommentToCollection()
+  public void AddAcceptanceCriterion_WhenContentIsValid_ShouldAddAcceptanceCriterionToCollection()
   {
     var issueResult = Issue.Create("Valid title", "Valid description");
 
-    var result = issueResult.Value.AddComment("First comment");
+    var result = issueResult.Value.AddAcceptanceCriterion("First acceptance criterion");
 
     Assert.True(result.IsSuccess);
-    Assert.Single(issueResult.Value.Comments);
-    Assert.Equal("First comment", issueResult.Value.Comments.Single().Content);
+    Assert.Single(issueResult.Value.AcceptanceCriteria);
+    Assert.Equal("First acceptance criterion", issueResult.Value.AcceptanceCriteria.Single().Content);
   }
 
   [Fact]
-  public void UpdateComment_WhenCommentDoesNotExist_ShouldReturnNotFound()
+  public void UpdateAcceptanceCriterion_WhenAcceptanceCriterionDoesNotExist_ShouldReturnNotFound()
   {
     var issueResult = Issue.Create("Valid title", "Valid description");
 
-    var result = issueResult.Value.UpdateComment(Guid.NewGuid(), "Updated comment");
+    var result = issueResult.Value.UpdateAcceptanceCriterion(Guid.NewGuid(), "Updated acceptance criterion");
 
     Assert.False(result.IsSuccess);
     Assert.Equal(ResultStatus.NotFound, result.Status);
   }
 
   [Fact]
-  public void RemoveComment_WhenCommentDoesNotExist_ShouldReturnNotFound()
+  public void RemoveAcceptanceCriterion_WhenAcceptanceCriterionDoesNotExist_ShouldReturnNotFound()
   {
     var issueResult = Issue.Create("Valid title", "Valid description");
 
-    var result = issueResult.Value.RemoveComment(Guid.NewGuid());
+    var result = issueResult.Value.RemoveAcceptanceCriterion(Guid.NewGuid());
 
     Assert.False(result.IsSuccess);
     Assert.Equal(ResultStatus.NotFound, result.Status);

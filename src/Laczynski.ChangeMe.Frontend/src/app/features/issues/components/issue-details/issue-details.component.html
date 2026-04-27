@@ -18,14 +18,14 @@
       <p>Updated At: {{ issueData.updatedAt | date: 'short' }}</p>
       <p>Created By: {{ issueData.createdBy }}</p>
       <p>Updated By: {{ issueData.updatedBy }}</p>
-      <h2>Comments</h2>
+      <h2>Acceptance Criteria</h2>
       <ul>
-        @if (issueData.comments.length > 0) {
-          @for (comment of issueData.comments; track comment.id) {
-            <li>{{ comment.content }}</li>
+        @if (issueData.acceptanceCriteria.length > 0) {
+          @for (acceptanceCriterion of issueData.acceptanceCriteria; track acceptanceCriterion.id) {
+            <li>{{ acceptanceCriterion.content }}</li>
           }
         } @else {
-          <p>No comments found</p>
+          <p>No acceptance criteria found</p>
         }
       </ul>
     </main>

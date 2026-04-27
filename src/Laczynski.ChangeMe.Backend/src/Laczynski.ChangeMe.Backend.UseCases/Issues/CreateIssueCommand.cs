@@ -8,10 +8,10 @@ public record CreateIssueCommand(
     string Title,
     string Description,
     IssuePriority Priority,
-    List<CreateIssueCommentPayload>? Comments = null
+    List<CreateIssueAcceptanceCriterionPayload>? AcceptanceCriteria = null
     ) : ICommand<IssueDetailsDto>;
 
-public record CreateIssueCommentPayload(
+public record CreateIssueAcceptanceCriterionPayload(
   string Content
 );
 
@@ -23,13 +23,13 @@ public class CreateIssueHandler(IMediator mediator, ApplicationDbContext context
     if (!result.IsSuccess)
       return result.Map();
 
-    foreach (var comment in command.Comments ?? [])
+    foreach (var acceptanceCriterion in command.AcceptanceCriteria ?? [])
     {
-      var commentResult = result.Value.AddComment(comment.Content);
-      if (!commentResult.IsSuccess)
-        return commentResult.Map();
+      var acceptanceCriterionResult = result.Value.AddAcceptanceCriterion(acceptanceCriterion.Content);
+      if (!acceptanceCriterionResult.IsSuccess)
+        return acceptanceCriterionResult.Map();
 
-      await context.AddAsync(commentResult.Value, cancellationToken);
+      await context.AddAsync(acceptanceCriterionResult.Value, cancellationToken);
     }
 
     await context.Issues.AddAsync(result.Value, cancellationToken);

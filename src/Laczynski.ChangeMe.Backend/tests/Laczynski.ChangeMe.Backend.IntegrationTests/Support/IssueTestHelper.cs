@@ -14,7 +14,7 @@ internal static class IssueTestHelper
     string title,
     string? description,
     IssuePriority priority,
-    string[]? comments,
+    string[]? acceptanceCriteria,
     CancellationToken cancellationToken)
   {
     await using var scope = factory.Services.CreateAsyncScope();
@@ -25,12 +25,12 @@ internal static class IssueTestHelper
     var issue = issueResult.Value;
     ApplyAudit(issue, actorId);
 
-    foreach (var comment in comments ?? [])
+    foreach (var acceptanceCriterion in acceptanceCriteria ?? [])
     {
-      var commentResult = issue.AddComment(comment);
-      if (commentResult.IsSuccess)
+      var acceptanceCriterionResult = issue.AddAcceptanceCriterion(acceptanceCriterion);
+      if (acceptanceCriterionResult.IsSuccess)
       {
-        ApplyAudit(commentResult.Value, actorId);
+        ApplyAudit(acceptanceCriterionResult.Value, actorId);
       }
     }
 
