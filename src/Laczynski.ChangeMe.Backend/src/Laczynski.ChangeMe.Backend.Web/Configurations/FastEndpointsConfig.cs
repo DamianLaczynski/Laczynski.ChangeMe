@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using NSwag;
+using System.Text.Json.Serialization;
 
 namespace Laczynski.ChangeMe.Backend.Web.Configurations;
 
@@ -7,6 +8,11 @@ public static class FastEndpointsConfig
 {
   public static IServiceCollection AddFastEndpointsWithSwagger(this IServiceCollection services)
   {
+    services.ConfigureHttpJsonOptions(options =>
+    {
+      options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
+
     services.AddFastEndpoints()
             .SwaggerDocument(o =>
             {
