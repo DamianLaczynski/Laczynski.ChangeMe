@@ -13,19 +13,10 @@ public static class CorsConfig
       options.AddPolicy(name: CorsPolicyName,
               policy =>
               {
-                if (builder.Environment.IsDevelopment())
-                {
-                  policy.AllowAnyOrigin()
-                          .AllowAnyMethod()
-                          .AllowAnyHeader();
-                }
-                else
-                {
-                  policy.WithOrigins(allowedOrigins)
-                          .AllowAnyMethod()
-                          .AllowAnyHeader()
-                          .AllowCredentials();
-                }
+                policy.WithOrigins(allowedOrigins)
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
               });
     });
 
