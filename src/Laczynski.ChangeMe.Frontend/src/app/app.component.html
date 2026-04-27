@@ -1,19 +1,18 @@
-<app-toast-container></app-toast-container>
-<app-tabs
-  [tabs]="tabs()"
-  [activeTabId]="activeTabId()"
-  (activeTabIdChange)="activeTabId.set($event)"
-  (tabChange)="activeTabId.set($event)"
->
-  <app-tab-panel tabId="tab1" [activeTabId]="activeTabId()">
-    @if (activeTabId() === 'tab1') {
-      <app-items-list></app-items-list>
+<header>
+  <nav>
+    <a [routerLink]="['/issues']">Issues</a>
+
+    @if (isAuthenticated()) {
+      <span>{{ currentUser()?.email }}</span>
+      <a [routerLink]="['/issues', 'create']">Create Issue</a>
+      <button type="button" (click)="logout()">Logout</button>
+    } @else {
+      <a [routerLink]="['/login']">Login</a>
+      <a [routerLink]="['/register']">Register</a>
     }
-  </app-tab-panel>
-  <app-tab-panel tabId="tab2" [activeTabId]="activeTabId()">
-    @if (activeTabId() === 'tab2') {
-      <app-items-infinite-list></app-items-infinite-list>
-    }
-  </app-tab-panel>
-</app-tabs>
-<router-outlet></router-outlet>
+  </nav>
+</header>
+
+<main>
+  <router-outlet></router-outlet>
+</main>

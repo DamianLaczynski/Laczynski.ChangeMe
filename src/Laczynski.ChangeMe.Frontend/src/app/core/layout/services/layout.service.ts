@@ -10,7 +10,7 @@ export type ThemeMode = 'light' | 'dark';
  * such as sidebar visibility and theme mode.
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class LayoutService {
   /**
@@ -46,7 +46,7 @@ export class LayoutService {
    * Toggles the sidebar visibility state
    */
   toggleSidebar(): void {
-    this._sidebarVisible.update(visible => !visible);
+    this._sidebarVisible.update((visible) => !visible);
   }
 
   /**
@@ -78,7 +78,10 @@ export class LayoutService {
       return savedTheme;
     }
 
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    if (
+      window.matchMedia &&
+      window.matchMedia('(prefers-color-scheme: dark)').matches
+    ) {
       return 'dark';
     }
 

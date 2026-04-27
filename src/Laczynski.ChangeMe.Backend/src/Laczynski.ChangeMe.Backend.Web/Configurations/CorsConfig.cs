@@ -1,12 +1,12 @@
-namespace Laczynski.ChangeMe.Backend.Web.Configurations;
+﻿namespace Laczynski.ChangeMe.Backend.Web.Configurations;
 
 public static class CorsConfig
 {
-  public const string CorsPolicyName = "LarczynskiArchiCorsPolicy";
+  public const string CorsPolicyName = "CorsPolicy";
 
-  public static IServiceCollection AddCorsConfig(this IServiceCollection services, IConfiguration configuration)
+  public static IServiceCollection AddCors(this IServiceCollection services, WebApplicationBuilder builder)
   {
-    var allowedOrigins = configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];
+    var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];
 
     services.AddCors(options =>
     {
@@ -14,9 +14,9 @@ public static class CorsConfig
               policy =>
               {
                 policy.WithOrigins(allowedOrigins)
-                          .AllowAnyMethod()
-                          .AllowAnyHeader()
-                          .AllowCredentials();
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
               });
     });
 

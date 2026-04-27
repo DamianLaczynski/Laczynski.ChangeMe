@@ -1,0 +1,32 @@
+using System.Net;
+using Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue.Enums;
+using Laczynski.ChangeMe.Backend.IntegrationTests.Fixtures;
+using Laczynski.ChangeMe.Backend.IntegrationTests.Support;
+using Microsoft.AspNetCore.Mvc.Testing;
+
+namespace Laczynski.ChangeMe.Backend.IntegrationTests;
+
+[Collection(IntegrationTestCollection.Name)]
+public sealed class GetAllIssuesEndpointTests(BackendWebApplicationFactory factory)
+{
+  [Fact]
+  public async Task GetAllIssues_WhenIssuesExist_ShouldReturnOkWithSeededItems()
+  {
+    var cancellationToken = TestContext.Current.CancellationToken;
+
+    await IssueTestHelper.SeedIssueAsync(factory, "Issue one", "First", IssuePriority.LOW, null, cancellationToken);
+    await IssueTestHelper.SeedIssueAsync(factory, "Issue two", "Second", IssuePriority.MEDIUM, null, cancellationToken);
+
+    using var client = factory.CreateClient(new WebApplicationFactoryClientOptions
+    {
+      BaseAddress = new Uri("https://localhost")
+    });
+
+    var response = await client.GetAsync("/api/issues?pageNumber=1&pageSize=10", cancellationToken);
+    var responseBody = await response.Content.ReadAsStringAsync(cancellationToken);
+
+    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    Assert.Contains("Issue one", responseBody, StringComparison.OrdinalIgnoreCase);
+    Assert.Contains("Issue two", responseBody, StringComparison.OrdinalIgnoreCase);
+  }
+}

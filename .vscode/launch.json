@@ -1,0 +1,36 @@
+{
+  "version": "0.2.0",
+  "compounds": [
+    {
+      "name": "Laczynski.ChangeMe Full Stack",
+      "configurations": [
+        "Laczynski.ChangeMe Backend",
+        "Laczynski.ChangeMe Frontend"
+      ]
+    }
+  ],
+  "configurations": [
+    {
+      "name": "Laczynski.ChangeMe Backend",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "laczynski-changeme-backend: build solution",
+      "program": "${workspaceFolder}/src/Laczynski.ChangeMe.Backend/src/Laczynski.ChangeMe.Backend.Web/bin/Debug/net10.0/Laczynski.ChangeMe.Backend.Web.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/src/Laczynski.ChangeMe.Backend/src/Laczynski.ChangeMe.Backend.Web",
+      "console": "integratedTerminal",
+      "stopAtEntry": false,
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "https://localhost:5001"
+      }
+    },
+    {
+      "name": "Laczynski.ChangeMe Frontend",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run start -- --host 0.0.0.0 --port 4200",
+      "cwd": "${workspaceFolder}/src/Laczynski.ChangeMe.Frontend"
+    }
+  ]
+}

@@ -1,11 +1,10 @@
 ﻿global using System;
-global using System.Collections.Generic;
 global using System.Linq;
-global using System.Net.Mail;
 global using System.Threading.Tasks;
-global using Ardalis.GuardClauses;
+global using Laczynski.ChangeMe.Backend.Domain.Common;
+global using Laczynski.ChangeMe.Backend.Infrastructure.Common;
 global using Microsoft.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore.Metadata.Builders;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Logging;
-global using Microsoft.Extensions.Options;

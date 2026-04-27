@@ -1,29 +1,22 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
-import { ToastContainerComponent } from '@shared/components/toast/toast-container.component';
-import { TabPanelComponent } from '@shared/components/tabs/tab-panel.component';
-import { TabItem, TabsComponent } from '@shared/components/tabs/tabs.component';
-import { ItemsListComponent, ItemsInfiniteListComponent } from '@features/items';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { AuthService } from '@features/auth/services/auth.service';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [
-    CommonModule,
-    RouterOutlet,
-    ToastContainerComponent,
-    TabPanelComponent,
-    TabsComponent,
-    ItemsListComponent,
-    ItemsInfiniteListComponent,
-  ],
-  templateUrl: './app.component.html',
+  imports: [CommonModule, RouterOutlet, RouterLink],
+  templateUrl: './app.component.html'
 })
 export class AppComponent {
-  tabs = signal<TabItem[]>([
-    { id: 'tab1', label: 'Tabela' },
-    { id: 'tab2', label: 'Lista' },
-  ]);
-  activeTabId = signal('tab1');
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+
+  readonly currentUser = this.authService.currentUser;
+  readonly isAuthenticated = this.authService.isAuthenticated;
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigateByUrl('/issues');
+  }
 }

@@ -1,0 +1,91 @@
+# Repository Map
+
+> Scope: where things live and which layer owns what. This is the quickest orientation document after `AGENTS.md`.
+
+## Top level
+
+- `docker-compose.yml` starts the local stack: Angular frontend, ASP.NET backend, PostgreSQL, and MailHog.
+- `src/Laczynski.ChangeMe.Frontend` contains the Angular application.
+- `src/Laczynski.ChangeMe.Backend` contains the .NET solution and tests.
+
+## Frontend map
+
+### Tooling and entry points
+
+- `package.json` defines `start`, `build`, `lint`, `format`, and `test`.
+- `src/main.ts` bootstraps the Angular app.
+- `src/app/app.config.ts` configures providers.
+- `src/app/app.routes.ts` defines route-to-component mapping.
+- `tsconfig.json` defines strict TypeScript settings and path aliases:
+  - `@core/*`
+  - `@features/*`
+  - `@shared/*`
+  - `@styles/*`
+  - `@environments/*`
+
+### Runtime structure
+
+- `src/app/core/` holds app-wide services and models that are not specific to one feature.
+- `src/app/features/` holds feature slices such as `auth` and `issues`.
+- `src/app/shared/` holds reusable API wrappers and shared data contracts.
+
+### Feature layout
+
+Each current feature follows a simple slice structure:
+
+- `components/` - standalone Angular components bound directly from routes or nested views.
+- `models/` - feature-specific TypeScript contracts.
+- `services/` - feature-specific data access and orchestration.
+- `guards/` or `interceptors/` - feature-specific Angular infrastructure where needed.
+
+## Backend map
+
+### Solution shape
+
+- `Laczynski.ChangeMe.Backend.sln` is the backend solution entry point.
+- `Directory.Packages.props` manages package versions centrally.
+- `Directory.Build.props` enables central package version management.
+
+### Layer responsibilities
+
+- `src/Laczynski.ChangeMe.Backend.Web`
+  - ASP.NET host startup in `Program.cs`
+  - endpoint definitions
+  - transport-level configuration
+  - common endpoint base types and pipeline behavior
+- `src/Laczynski.ChangeMe.Backend.UseCases`
+  - commands and queries
+  - handlers
+  - DTOs returned to the API
+  - request/response orchestration
+- `src/Laczynski.ChangeMe.Backend.Domain`
+  - aggregates and entities
+  - invariants and domain rules
+  - domain interfaces and shared primitives
+- `src/Laczynski.ChangeMe.Backend.Infrastructure`
+  - EF Core `ApplicationDbContext`
+  - entity configuration and migrations
+  - auth and email adapters
+  - persistence and infrastructure registrations
+
+### Endpoint flow
+
+Current issue endpoints illustrate the standard flow:
+
+1. HTTP endpoint class in `Web/Issues/*.cs`
+2. validation class near the endpoint
+3. command/query contract in `UseCases/Issues/*.cs`
+4. handler in the same use case file
+5. domain calls in `Domain/Aggregates/*`
+6. persistence through `ApplicationDbContext`
+
+## Test map
+
+- `tests/Laczynski.ChangeMe.Backend.UnitTests`
+  - domain and infrastructure helper tests
+- `tests/Laczynski.ChangeMe.Backend.IntegrationTests`
+  - endpoint-level tests through real HTTP
+  - `Fixtures/` for application factories and container-backed setup
+  - `Support/` for reusable auth and test helpers
+
+`BackendWebApplicationFactory` starts PostgreSQL via Testcontainers, applies test environment overrides, and replaces `IEmailService` with a fake implementation for integration tests.

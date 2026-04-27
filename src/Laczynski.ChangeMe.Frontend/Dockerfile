@@ -1,34 +1,16 @@
-# Build stage
-FROM node:20-alpine AS build
+FROM node:22-alpine AS build
 WORKDIR /app
 
-# Copy package.json and package-lock.json
-COPY ./src/Laczynski.ChangeMe.Frontend/package*.json ./
-
-# Install dependencies
+COPY src/Laczynski.ChangeMe.Frontend/package*.json ./
 RUN npm ci
 
-# Copy the rest of the application
-COPY ./src/Laczynski.ChangeMe.Frontend/ ./
-
-# Build the application
+COPY src/Laczynski.ChangeMe.Frontend/ ./
 RUN npm run build
 
-# Production stage
-FROM nginx:alpine
+FROM nginx:1.29-alpine AS final
 WORKDIR /usr/share/nginx/html
 
-# Remove default nginx static assets
-RUN rm -rf ./*
+COPY src/Laczynski.ChangeMe.Frontend/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/dist/Laczynski.ChangeMe.Frontend/browser/ ./
 
-# Copy static assets from builder stage
-COPY --from=build /app/dist/laczynski-change-me-frontend/browser/ .
-
-# Copy nginx configuration
-COPY ./nginx.conf /etc/nginx/conf.d/default.conf
-
-# Expose port
 EXPOSE 80
-
-# Start Nginx server
-CMD ["nginx", "-g", "daemon off;"] 

@@ -1,9 +1,8 @@
 ﻿global using Ardalis.Result;
 global using FastEndpoints;
 global using FastEndpoints.Swagger;
-global using Laczynski.ChangeMe.Backend.Core.Interfaces;
-global using Laczynski.ChangeMe.Backend.Shared.Pagination;
-global using Laczynski.ChangeMe.Backend.Shared.Web;
+global using FluentValidation;
+global using Laczynski.ChangeMe.Backend.Domain.Common;
+global using Laczynski.ChangeMe.Backend.Web.Common;
 global using MediatR;
 global using Serilog;
-global using Serilog.Extensions.Logging;

@@ -1,8 +1,7 @@
 import packageJson from '../../package.json';
 
 export const environment = {
-  production: false,
-  mockUser: true,
+  production: true,
   appVersion: packageJson.version,
-  apiUrl: 'http://localhost:5000/api',
+  apiUrl: 'https://localhost:5001/api'
 };
