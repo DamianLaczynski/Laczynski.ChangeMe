@@ -1,4 +1,4 @@
-﻿using Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue.Entities;
+using Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue.Entities;
 
 namespace Laczynski.ChangeMe.Backend.Infrastructure.Persistence.Config.Issues;
 
@@ -17,5 +17,5 @@ public class IssueAcceptanceCriterionConfiguration : BaseEntityTypeConfiguration
     builder.Property(ic => ic.Content)
       .IsRequired()
       .HasMaxLength(IssueAcceptanceCriterionConstraints.CONTENT_MAX_LENGTH);
-}
+  }
 }

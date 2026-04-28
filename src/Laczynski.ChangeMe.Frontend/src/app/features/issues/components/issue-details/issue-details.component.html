@@ -13,11 +13,13 @@
     <main>
       <h1>Title: {{ issueData.title }}</h1>
       <p>Description: {{ issueData.description }}</p>
+      <p>Status: {{ issueData.status }}</p>
       <p>Priority: {{ issueData.priority }}</p>
       <p>Created At: {{ issueData.createdAt | date: 'short' }}</p>
-      <p>Updated At: {{ issueData.updatedAt | date: 'short' }}</p>
-      <p>Created By: {{ issueData.createdBy }}</p>
-      <p>Updated By: {{ issueData.updatedBy }}</p>
+      <p>Updated At: {{ issueData.updatedAt ? (issueData.updatedAt | date: 'short') : '-' }}</p>
+      <p>Last Activity: {{ issueData.lastActivityAt | date: 'short' }}</p>
+      <p>Created By: {{ issueData.createdByName || issueData.createdBy }}</p>
+      <p>Assigned To: {{ issueData.assignedToUserName || 'Unassigned' }}</p>
       <h2>Acceptance Criteria</h2>
       <ul>
         @if (issueData.acceptanceCriteria.length > 0) {

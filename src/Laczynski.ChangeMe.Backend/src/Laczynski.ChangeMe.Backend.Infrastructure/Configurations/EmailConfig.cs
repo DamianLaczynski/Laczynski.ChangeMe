@@ -1,4 +1,4 @@
-﻿using Laczynski.ChangeMe.Backend.Domain.Interfaces;
+using Laczynski.ChangeMe.Backend.Domain.Interfaces;
 using Laczynski.ChangeMe.Backend.Infrastructure.Auth;
 using Laczynski.ChangeMe.Backend.Infrastructure.Email;
 

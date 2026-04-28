@@ -11,7 +11,16 @@ public sealed class UserTests
   [InlineData("invalid-email")]
   public void Create_WhenEmailIsInvalid_ShouldReturnInvalidResult(string email)
   {
-    var result = User.Create(email, "hashed-password");
+    var result = User.Create("John", "Doe", email, "hashed-password");
+
+    Assert.False(result.IsSuccess);
+    Assert.Equal(ResultStatus.Invalid, result.Status);
+  }
+
+  [Fact]
+  public void Create_WhenNamesAreMissing_ShouldReturnInvalidResult()
+  {
+    var result = User.Create("", " ", "john@example.com", "hashed-password");
 
     Assert.False(result.IsSuccess);
     Assert.Equal(ResultStatus.Invalid, result.Status);

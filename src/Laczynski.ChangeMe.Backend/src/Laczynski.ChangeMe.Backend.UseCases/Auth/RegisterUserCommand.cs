@@ -3,6 +3,8 @@
 namespace Laczynski.ChangeMe.Backend.UseCases.Auth;
 
 public sealed record RegisterUserCommand(
+  string FirstName,
+  string LastName,
   string Email,
   string Password) : ICommand<AuthResponseDto>;
 
@@ -19,7 +21,7 @@ public class RegisterUserHandler(
       return Result<AuthResponseDto>.Conflict("User with this email already exists.");
 
     var passwordHash = passwordHasher.HashPassword(command.Password);
-    var userResult = User.Create(command.Email, passwordHash);
+    var userResult = User.Create(command.FirstName, command.LastName, command.Email, passwordHash);
     if (!userResult.IsSuccess)
       return userResult.Map();
 
@@ -28,7 +30,13 @@ public class RegisterUserHandler(
 
     var accessToken = jwtTokenGenerator.GenerateToken(userResult.Value);
     return Result<AuthResponseDto>.Created(
-      new AuthResponseDto(userResult.Value.Id, userResult.Value.Email, accessToken.Token, accessToken.ExpiresAtUtc),
+      new AuthResponseDto(
+        userResult.Value.Id,
+        userResult.Value.FirstName,
+        userResult.Value.LastName,
+        userResult.Value.Email,
+        accessToken.Token,
+        accessToken.ExpiresAtUtc),
       $"/auth/users/{userResult.Value.Id}");
   }
 }

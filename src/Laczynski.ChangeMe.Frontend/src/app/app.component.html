@@ -3,7 +3,7 @@
     <a [routerLink]="['/issues']">Issues</a>
 
     @if (isAuthenticated()) {
-      <span>{{ currentUser()?.email }}</span>
+      <span>{{ currentUser()?.fullName }} ({{ currentUser()?.email }})</span>
       <a [routerLink]="['/issues', 'create']">Create Issue</a>
       <button type="button" (click)="logout()">Logout</button>
     } @else {

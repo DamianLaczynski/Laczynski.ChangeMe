@@ -12,7 +12,8 @@ import {
   CreateIssueRequest,
   IssueAcceptanceCriteriaConstraints,
   IssueConstraints,
-  IssuePriority
+  IssuePriority,
+  IssueStatus
 } from '@features/issues/models/issue.model';
 import { Router, RouterLink } from '@angular/router';
 
@@ -26,6 +27,7 @@ export class CreateIssueComponent {
   private readonly router = inject(Router);
 
   issuePriorities = this.issuesService.issuePriorities;
+  issueStatuses = this.issuesService.issueStatuses;
   issueConstraints = IssueConstraints;
   issueAcceptanceCriteriaConstraints = IssueAcceptanceCriteriaConstraints;
 
@@ -39,6 +41,7 @@ export class CreateIssueComponent {
       Validators.required,
       Validators.maxLength(IssueConstraints.DESCRIPTION_MAX_LENGTH)
     ]),
+    status: new FormControl<IssueStatus>(IssueStatus.NEW, [Validators.required]),
     priority: new FormControl<IssuePriority>(IssuePriority.MEDIUM, [
       Validators.required
     ]),
@@ -53,7 +56,10 @@ export class CreateIssueComponent {
     const request: CreateIssueRequest = {
       title: this.form.controls.title.value ?? '',
       description: this.form.controls.description.value ?? '',
+      status: this.form.controls.status.value ?? IssueStatus.NEW,
       priority: this.form.controls.priority.value ?? IssuePriority.MEDIUM,
+      assignedToUserId: null,
+      watchAfterCreate: true,
       acceptanceCriteria: this.acceptanceCriteria.controls
         .map((acceptanceCriterion) => ({
           content: acceptanceCriterion.controls.content.value?.trim() ?? ''

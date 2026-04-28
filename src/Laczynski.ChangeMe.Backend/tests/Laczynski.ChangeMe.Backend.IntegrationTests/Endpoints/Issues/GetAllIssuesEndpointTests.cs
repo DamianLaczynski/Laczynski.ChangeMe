@@ -2,7 +2,6 @@ using System.Net;
 using Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue.Enums;
 using Laczynski.ChangeMe.Backend.IntegrationTests.Fixtures;
 using Laczynski.ChangeMe.Backend.IntegrationTests.Support;
-using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace Laczynski.ChangeMe.Backend.IntegrationTests;
 
@@ -17,10 +16,7 @@ public sealed class GetAllIssuesEndpointTests(BackendWebApplicationFactory facto
     await IssueTestHelper.SeedIssueAsync(factory, "Issue one", "First", IssuePriority.LOW, null, cancellationToken);
     await IssueTestHelper.SeedIssueAsync(factory, "Issue two", "Second", IssuePriority.MEDIUM, null, cancellationToken);
 
-    using var client = factory.CreateClient(new WebApplicationFactoryClientOptions
-    {
-      BaseAddress = new Uri("https://localhost")
-    });
+    using var client = await TestAuthHelper.CreateAuthenticatedClientAsync(factory, cancellationToken);
 
     var response = await client.GetAsync("/api/issues?pageNumber=1&pageSize=10", cancellationToken);
     var responseBody = await response.Content.ReadAsStringAsync(cancellationToken);

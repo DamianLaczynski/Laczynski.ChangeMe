@@ -21,6 +21,14 @@ public sealed class RegisterUserCommandValidator : Validator<RegisterUserCommand
 {
   public RegisterUserCommandValidator()
   {
+    RuleFor(x => x.FirstName)
+      .NotEmpty()
+      .MaximumLength(UserConstraints.NAME_MAX_LENGTH);
+
+    RuleFor(x => x.LastName)
+      .NotEmpty()
+      .MaximumLength(UserConstraints.NAME_MAX_LENGTH);
+
     RuleFor(x => x.Email)
       .NotEmpty()
       .EmailAddress()

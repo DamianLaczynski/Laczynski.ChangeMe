@@ -1,4 +1,5 @@
-﻿using Laczynski.ChangeMe.Backend.Infrastructure.Configurations;
+using Laczynski.ChangeMe.Backend.Domain.Interfaces;
+using Laczynski.ChangeMe.Backend.Infrastructure.Configurations;
 using Laczynski.ChangeMe.Backend.Web.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,10 +16,9 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddDatabase(builder, logger);
 builder.Services.AddHangfire(builder, logger);
-
 builder.Services.AddInfrastructureServices(builder.Configuration, logger);
-
 builder.Services.AddMediator();
+builder.Services.AddNotifications(logger);
 
 logger.LogInformation("Starting web host");
 
@@ -27,7 +27,6 @@ builder.Services.AddFastEndpointsWithSwagger();
 var app = builder.Build();
 
 app.UseExceptionHandler();
-
 app.UseHttpsRedirection();
 
 app.UseCors(CorsConfig.CorsPolicyName);
@@ -38,6 +37,7 @@ app.UseFastEndpointsWithSwagger();
 app.UseHangfireDashboard();
 
 app.MapHealthChecks("/health");
+app.UseNotifications();
 
 await app.UseDatabase();
 

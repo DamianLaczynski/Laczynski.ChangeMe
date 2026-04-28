@@ -22,6 +22,8 @@ public sealed class RegisterEndpointTests(BackendWebApplicationFactory factory)
 
     var request = new
     {
+      FirstName = "John",
+      LastName = "Doe",
       Email = "john@example.com",
       Password = "StrongPass123!"
     };
@@ -35,6 +37,8 @@ public sealed class RegisterEndpointTests(BackendWebApplicationFactory factory)
     var user = dbContext.Users.SingleOrDefault(x => x.Email == request.Email);
 
     Assert.NotNull(user);
+    Assert.Equal(request.FirstName, user.FirstName);
+    Assert.Equal(request.LastName, user.LastName);
     Assert.NotEmpty(user.PasswordHash);
   }
 
@@ -50,6 +54,8 @@ public sealed class RegisterEndpointTests(BackendWebApplicationFactory factory)
 
     var request = new
     {
+      FirstName = "John",
+      LastName = "Short",
       Email = "john-short@example.com",
       Password = "short"
     };

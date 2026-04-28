@@ -13,6 +13,7 @@ import {
   IssueConstraints,
   IssueDetailsDto,
   IssuePriority,
+  IssueStatus,
   UpdateIssueRequest
 } from '@features/issues/models/issue.model';
 import { Router, RouterLink } from '@angular/router';
@@ -29,17 +30,21 @@ export class EditIssueComponent {
   private readonly router = inject(Router);
 
   issuePriorities = this.issuesService.issuePriorities;
+  issueStatuses = this.issuesService.issueStatuses;
   issueConstraints = IssueConstraints;
   issueAcceptanceCriteriaConstraints = IssueAcceptanceCriteriaConstraints;
+  private currentIssue: IssueDetailsDto | null = null;
 
   constructor() {
     effect(() => {
       const id = this.id();
       if (id && !this.form.dirty) {
         this.issuesService.getIssue(id).subscribe((issue) => {
+          this.currentIssue = issue;
           this.form.patchValue({
             title: issue.title,
-            description: issue.description ?? '',
+            description: issue.description,
+            status: issue.status,
             priority: issue.priority
           });
           this.setAcceptanceCriteria(issue);
@@ -58,6 +63,7 @@ export class EditIssueComponent {
       Validators.required,
       Validators.maxLength(IssueConstraints.DESCRIPTION_MAX_LENGTH)
     ]),
+    status: new FormControl<IssueStatus>(IssueStatus.NEW, [Validators.required]),
     priority: new FormControl<IssuePriority>(IssuePriority.MEDIUM, [
       Validators.required
     ]),
@@ -78,7 +84,9 @@ export class EditIssueComponent {
       id,
       title: this.form.controls.title.value ?? '',
       description: this.form.controls.description.value ?? '',
+      status: this.form.controls.status.value ?? IssueStatus.NEW,
       priority: this.form.controls.priority.value ?? IssuePriority.MEDIUM,
+      assignedToUserId: this.currentIssue?.assignedToUserId ?? null,
       acceptanceCriteria: this.acceptanceCriteria.controls
         .map((acceptanceCriterion) => ({
           id: acceptanceCriterion.controls.id.value || undefined,

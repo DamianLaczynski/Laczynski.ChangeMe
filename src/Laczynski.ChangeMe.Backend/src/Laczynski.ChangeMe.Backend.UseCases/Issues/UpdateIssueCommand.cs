@@ -1,46 +1,83 @@
-﻿using Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue;
+using Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue;
 using Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue.Enums;
 
 namespace Laczynski.ChangeMe.Backend.UseCases.Issues;
 
 public record UpdateIssueCommand(
-    Guid Id,
-    string Title,
-    string? Description,
-    IssuePriority Priority,
-    List<UpdateIssueAcceptanceCriterionPayload>? AcceptanceCriteria = null) : ICommand<IssueDetailsDto>;
+  Guid Id,
+  string Title,
+  string Description,
+  IssueStatus Status,
+  IssuePriority Priority,
+  Guid? AssignedToUserId,
+  List<UpdateIssueAcceptanceCriterionPayload>? AcceptanceCriteria = null) : ICommand<IssueDetailsDto>;
 
-public record UpdateIssueAcceptanceCriterionPayload(
-    Guid? Id,
-    string Content);
+public record UpdateIssueAcceptanceCriterionPayload(Guid? Id, string Content);
 
-public class UpdateIssueHandler(IMediator mediator, ApplicationDbContext context) : ICommandHandler<UpdateIssueCommand, IssueDetailsDto>
+public class UpdateIssueHandler(
+  IMediator mediator,
+  ApplicationDbContext context,
+  IUserAccessor userAccessor,
+  IssueNotificationService issueNotificationService) : ICommandHandler<UpdateIssueCommand, IssueDetailsDto>
 {
   public async Task<Result<IssueDetailsDto>> Handle(UpdateIssueCommand command, CancellationToken cancellationToken)
   {
+    if (userAccessor.UserId is not Guid actorUserId)
+      return Result<IssueDetailsDto>.Unauthorized();
+
     var issue = await context.Issues
       .Include(i => i.AcceptanceCriteria)
+      .Include(i => i.HistoryEntries)
+      .Include(i => i.Watchers)
       .FirstOrDefaultAsync(i => i.Id == command.Id, cancellationToken);
 
     if (issue is null)
       return Result.NotFound();
 
-    var result = issue.UpdateDetails(command.Title, command.Description, command.Priority);
-    if (!result.IsSuccess)
-      return result.Map();
+    if (command.AssignedToUserId.HasValue)
+    {
+      var assigneeExists = await context.Users
+        .AsNoTracking()
+        .AnyAsync(u => u.Id == command.AssignedToUserId.Value, cancellationToken);
 
+      if (!assigneeExists)
+        return Result<IssueDetailsDto>.Invalid([
+          new ValidationError(nameof(command.AssignedToUserId), "assigned user does not exist")
+        ]);
+    }
+
+    var updateResult = issue.UpdateDetails(
+      command.Title,
+      command.Description,
+      command.Priority,
+      command.Status,
+      command.AssignedToUserId,
+      actorUserId);
+
+    if (!updateResult.IsSuccess)
+      return updateResult.Map();
 
     var acceptanceCriteriaResult = UpdateAcceptanceCriteria(command.AcceptanceCriteria, issue);
     if (!acceptanceCriteriaResult.IsSuccess)
       return acceptanceCriteriaResult.Map();
 
+    var newHistoryEntries = issue.HistoryEntries
+      .Where(h => h.CreatedAt == default)
+      .ToList();
+
+    if (newHistoryEntries.Count > 0)
+      await context.IssueHistoryEntries.AddRangeAsync(newHistoryEntries, cancellationToken);
+
     await context.SaveChangesAsync(cancellationToken);
 
-    var issueResult = await mediator.Send(new GetIssueByIdQuery(result.Value.Id), cancellationToken);
-    if (!issueResult.IsSuccess)
-      return issueResult.Map();
+    foreach (var historyEntryId in newHistoryEntries.Select(h => h.Id))
+      await issueNotificationService.NotifyIssueActivityAsync(issue.Id, historyEntryId, actorUserId, cancellationToken);
 
-    return Result.Success(issueResult.Value);
+    var updatedIssueResult = await mediator.Send(new GetIssueByIdQuery(issue.Id), cancellationToken);
+    if (!updatedIssueResult.IsSuccess)
+      return updatedIssueResult.Map();
+
+    return Result.Success(updatedIssueResult.Value);
   }
 
   private Result UpdateAcceptanceCriteria(List<UpdateIssueAcceptanceCriterionPayload>? acceptanceCriteria, Issue issue)
@@ -66,7 +103,7 @@ public class UpdateIssueHandler(IMediator mediator, ApplicationDbContext context
         if (!addAcceptanceCriterionResult.IsSuccess)
           return addAcceptanceCriterionResult.Map();
 
-        context.Add(addAcceptanceCriterionResult.Value);
+        context.IssueAcceptanceCriteria.Add(addAcceptanceCriterionResult.Value);
         retainedAcceptanceCriteriaIds.Add(addAcceptanceCriterionResult.Value.Id);
       }
     }
@@ -81,7 +118,7 @@ public class UpdateIssueHandler(IMediator mediator, ApplicationDbContext context
       if (!removeAcceptanceCriterionResult.IsSuccess)
         return removeAcceptanceCriterionResult.Map();
 
-      context.Remove(removeAcceptanceCriterionResult.Value);
+      context.IssueAcceptanceCriteria.Remove(removeAcceptanceCriterionResult.Value);
     }
 
     return Result.Success();

@@ -44,6 +44,14 @@
       }
     </div>
     <div>
+      <label for="status">Status</label>
+      <select id="status" name="status" formControlName="status">
+        @for (status of issueStatuses(); track status.value) {
+          <option [ngValue]="status.value">{{ status.label }}</option>
+        }
+      </select>
+    </div>
+    <div>
       <label for="priority">Priority</label>
       <select id="priority" name="priority" formControlName="priority">
         @for (priority of issuePriorities(); track priority.value) {

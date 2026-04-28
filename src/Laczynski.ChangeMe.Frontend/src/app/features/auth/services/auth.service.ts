@@ -30,6 +30,9 @@ export class AuthService {
 
     return {
       id: session.userId,
+      firstName: session.firstName,
+      lastName: session.lastName,
+      fullName: `${session.firstName} ${session.lastName}`,
       email: session.email
     };
   });

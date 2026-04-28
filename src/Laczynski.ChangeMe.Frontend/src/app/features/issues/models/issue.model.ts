@@ -3,39 +3,73 @@ import { PaginationParameters } from '@shared/data/models/pagination-parameters.
 export interface IssueDto {
   id: string;
   title: string;
-  description?: string;
+  description: string;
+  status: IssueStatus;
   priority: IssuePriority;
-  createdAt: Date;
-  updatedAt: Date;
   createdBy: string;
-  updatedBy: string;
+  createdByName?: string | null;
+  assignedToUserId?: string | null;
+  assignedToUserName?: string | null;
+  createdAt: string;
+  updatedAt?: string | null;
+  lastActivityAt: string;
+  isWatchedByCurrentUser: boolean;
+  watchersCount: number;
 }
 
 export interface IssueDetailsDto {
   id: string;
   title: string;
-  description?: string;
+  description: string;
+  status: IssueStatus;
   priority: IssuePriority;
-  acceptanceCriteria: AcceptanceCriterionDto[];
-  createdAt: Date;
-  updatedAt: Date;
   createdBy: string;
-  updatedBy: string;
+  createdByName?: string | null;
+  assignedToUserId?: string | null;
+  assignedToUserName?: string | null;
+  createdAt: string;
+  updatedAt?: string | null;
+  lastActivityAt: string;
+  isWatchedByCurrentUser: boolean;
+  watchersCount: number;
+  acceptanceCriteria: AcceptanceCriterionDto[];
+  comments: IssueCommentDto[];
+  historyEntries: IssueHistoryEntryDto[];
 }
 
 export interface AcceptanceCriterionDto {
   id: string;
   content: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
   createdBy: string;
-  updatedBy: string;
+}
+
+export interface IssueCommentDto {
+  id: string;
+  content: string;
+  authorUserId: string;
+  authorName?: string | null;
+  createdAt: string;
+}
+
+export interface IssueHistoryEntryDto {
+  id: string;
+  eventType: IssueHistoryEventType;
+  actorUserId: string;
+  actorName?: string | null;
+  summary: string;
+  previousValue?: string | null;
+  currentValue?: string | null;
+  createdAt: string;
 }
 
 export interface CreateIssueRequest {
   title: string;
-  description?: string;
+  description: string;
+  status: IssueStatus;
   priority: IssuePriority;
+  assignedToUserId?: string | null;
+  watchAfterCreate: boolean;
   acceptanceCriteria: CreateIssueAcceptanceCriterionPayload[];
 }
 
@@ -46,8 +80,10 @@ export interface CreateIssueAcceptanceCriterionPayload {
 export interface UpdateIssueRequest {
   id: string;
   title: string;
-  description?: string;
+  description: string;
+  status: IssueStatus;
   priority: IssuePriority;
+  assignedToUserId?: string | null;
   acceptanceCriteria: UpdateIssueAcceptanceCriterionPayload[];
 }
 
@@ -58,11 +94,27 @@ export interface UpdateIssueAcceptanceCriterionPayload {
 
 export interface IssueSearchParameters extends PaginationParameters {}
 
+export enum IssueStatus {
+  NEW = 1,
+  IN_PROGRESS = 2,
+  RESOLVED = 3,
+  CLOSED = 4
+}
+
 export enum IssuePriority {
   LOW = 1,
   MEDIUM = 2,
   HIGH = 3,
   CRITICAL = 4
+}
+
+export enum IssueHistoryEventType {
+  ISSUE_CREATED = 0,
+  STATUS_CHANGED = 1,
+  PRIORITY_CHANGED = 2,
+  ASSIGNEE_CHANGED = 3,
+  TITLE_CHANGED = 4,
+  DESCRIPTION_CHANGED = 5
 }
 
 export const IssueConstraints = {

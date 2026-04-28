@@ -1,0 +1,16 @@
+using Laczynski.ChangeMe.Backend.UseCases.Notifications;
+
+namespace Laczynski.ChangeMe.Backend.Web.Notifications;
+
+public class GetNotifications(IMediator mediator) : BaseEndpoint<GetNotificationsQuery, NotificationListDto>(mediator)
+{
+  protected override void ConfigureEndpoint()
+  {
+    Get("/notifications");
+    Summary(s =>
+    {
+      s.Summary = "Get notifications";
+      s.Description = "Gets notifications for current user";
+    });
+  }
+}

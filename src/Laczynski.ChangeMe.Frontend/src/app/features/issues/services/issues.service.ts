@@ -7,6 +7,7 @@ import {
   UpdateIssueRequest,
   IssueSearchParameters,
   IssuePriority,
+  IssueStatus,
   IssueDetailsDto
 } from '../models/issue.model';
 import { PaginationResult } from '@shared/data/models/pagination-result.model';
@@ -50,5 +51,12 @@ export class IssuesService {
     { value: IssuePriority.MEDIUM, label: 'Medium' },
     { value: IssuePriority.HIGH, label: 'High' },
     { value: IssuePriority.CRITICAL, label: 'Critical' }
+  ]);
+
+  issueStatuses = signal<{ value: IssueStatus; label: string }[]>([
+    { value: IssueStatus.NEW, label: 'New' },
+    { value: IssueStatus.IN_PROGRESS, label: 'In Progress' },
+    { value: IssueStatus.RESOLVED, label: 'Resolved' },
+    { value: IssueStatus.CLOSED, label: 'Closed' }
   ]);
 }
