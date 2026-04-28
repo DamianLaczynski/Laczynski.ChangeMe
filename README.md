@@ -125,3 +125,7 @@ Use the smallest relevant test scope for the change:
 - backend endpoint or auth change: integration tests
 
 For more detail, see `docs/testing-playbook.md`.
+
+## License
+
+This project is licensed under the MIT License. See [`LICENSE`](LICENSE) for details.
