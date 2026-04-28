@@ -60,6 +60,19 @@
       </select>
     </div>
     <div>
+      <label for="assignedToUserId">Assigned To</label>
+      <select
+        id="assignedToUserId"
+        name="assignedToUserId"
+        formControlName="assignedToUserId"
+      >
+        <option [ngValue]="null">Unassigned</option>
+        @for (user of assignableUsers(); track user.id) {
+          <option [ngValue]="user.id">{{ user.fullName }}</option>
+        }
+      </select>
+    </div>
+    <div>
       <p>Acceptance Criteria</p>
       <div formArrayName="acceptanceCriteria">
         @for (acceptanceCriterion of acceptanceCriteria.controls; track $index) {

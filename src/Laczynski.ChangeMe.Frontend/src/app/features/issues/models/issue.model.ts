@@ -17,6 +17,11 @@ export interface IssueDto {
   watchersCount: number;
 }
 
+export interface IssueAssignableUserDto {
+  id: string;
+  fullName: string;
+}
+
 export interface IssueDetailsDto {
   id: string;
   title: string;
@@ -68,7 +73,7 @@ export interface CreateIssueRequest {
   description: string;
   status: IssueStatus;
   priority: IssuePriority;
-  assignedToUserId?: string | null;
+  assignedToUserId: string | null;
   watchAfterCreate: boolean;
   acceptanceCriteria: CreateIssueAcceptanceCriterionPayload[];
 }
@@ -83,7 +88,7 @@ export interface UpdateIssueRequest {
   description: string;
   status: IssueStatus;
   priority: IssuePriority;
-  assignedToUserId?: string | null;
+  assignedToUserId: string | null;
   acceptanceCriteria: UpdateIssueAcceptanceCriterionPayload[];
 }
 
@@ -92,29 +97,29 @@ export interface UpdateIssueAcceptanceCriterionPayload {
   content: string;
 }
 
-export interface IssueSearchParameters extends PaginationParameters {}
+export type IssueSearchParameters = PaginationParameters;
 
 export enum IssueStatus {
-  NEW = 1,
-  IN_PROGRESS = 2,
-  RESOLVED = 3,
-  CLOSED = 4
+  NEW = 'NEW',
+  IN_PROGRESS = 'IN_PROGRESS',
+  RESOLVED = 'RESOLVED',
+  CLOSED = 'CLOSED'
 }
 
 export enum IssuePriority {
-  LOW = 1,
-  MEDIUM = 2,
-  HIGH = 3,
-  CRITICAL = 4
+  LOW = 'LOW',
+  MEDIUM = 'MEDIUM',
+  HIGH = 'HIGH',
+  CRITICAL = 'CRITICAL'
 }
 
 export enum IssueHistoryEventType {
-  ISSUE_CREATED = 0,
-  STATUS_CHANGED = 1,
-  PRIORITY_CHANGED = 2,
-  ASSIGNEE_CHANGED = 3,
-  TITLE_CHANGED = 4,
-  DESCRIPTION_CHANGED = 5
+  ISSUE_CREATED = 'ISSUE_CREATED',
+  STATUS_CHANGED = 'STATUS_CHANGED',
+  PRIORITY_CHANGED = 'PRIORITY_CHANGED',
+  ASSIGNEE_CHANGED = 'ASSIGNEE_CHANGED',
+  TITLE_CHANGED = 'TITLE_CHANGED',
+  DESCRIPTION_CHANGED = 'DESCRIPTION_CHANGED'
 }
 
 export const IssueConstraints = {

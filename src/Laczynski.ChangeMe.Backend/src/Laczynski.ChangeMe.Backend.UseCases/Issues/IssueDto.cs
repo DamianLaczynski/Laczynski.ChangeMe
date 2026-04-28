@@ -22,6 +22,12 @@ public class IssueDto
   public int WatchersCount { get; set; }
 }
 
+public class IssueAssignableUserDto
+{
+  public Guid Id { get; set; }
+  public string FullName { get; set; } = string.Empty;
+}
+
 public class IssueDetailsDto
 {
   public Guid Id { get; set; }

@@ -8,7 +8,8 @@ import {
   IssueSearchParameters,
   IssuePriority,
   IssueStatus,
-  IssueDetailsDto
+  IssueDetailsDto,
+  IssueAssignableUserDto
 } from '../models/issue.model';
 import { PaginationResult } from '@shared/data/models/pagination-result.model';
 
@@ -29,6 +30,12 @@ export class IssuesService {
 
   getIssue(id: string): Observable<IssueDetailsDto> {
     return this.apiService.get<IssueDetailsDto>(`${this.baseEndpoint}/${id}`);
+  }
+
+  getAssignableUsers(): Observable<IssueAssignableUserDto[]> {
+    return this.apiService.get<IssueAssignableUserDto[]>(
+      `${this.baseEndpoint}/assignable-users`
+    );
   }
 
   createIssue(request: CreateIssueRequest): Observable<IssueDetailsDto> {

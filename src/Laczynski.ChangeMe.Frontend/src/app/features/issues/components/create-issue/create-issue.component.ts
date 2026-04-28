@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormArray,
@@ -10,6 +10,7 @@ import {
 import { IssuesService } from '@features/issues/services/issues.service';
 import {
   CreateIssueRequest,
+  IssueAssignableUserDto,
   IssueAcceptanceCriteriaConstraints,
   IssueConstraints,
   IssuePriority,
@@ -30,6 +31,13 @@ export class CreateIssueComponent {
   issueStatuses = this.issuesService.issueStatuses;
   issueConstraints = IssueConstraints;
   issueAcceptanceCriteriaConstraints = IssueAcceptanceCriteriaConstraints;
+  assignableUsers = signal<IssueAssignableUserDto[]>([]);
+
+  constructor() {
+    this.issuesService.getAssignableUsers().subscribe((users) => {
+      this.assignableUsers.set(users);
+    });
+  }
 
   form = new FormGroup({
     title: new FormControl('', [
@@ -45,6 +53,7 @@ export class CreateIssueComponent {
     priority: new FormControl<IssuePriority>(IssuePriority.MEDIUM, [
       Validators.required
     ]),
+    assignedToUserId: new FormControl<string | null>(null),
     acceptanceCriteria: new FormArray<FormGroup<AcceptanceCriterionForm>>([])
   });
 
@@ -58,7 +67,7 @@ export class CreateIssueComponent {
       description: this.form.controls.description.value ?? '',
       status: this.form.controls.status.value ?? IssueStatus.NEW,
       priority: this.form.controls.priority.value ?? IssuePriority.MEDIUM,
-      assignedToUserId: null,
+      assignedToUserId: this.form.controls.assignedToUserId.value,
       watchAfterCreate: true,
       acceptanceCriteria: this.acceptanceCriteria.controls
         .map((acceptanceCriterion) => ({

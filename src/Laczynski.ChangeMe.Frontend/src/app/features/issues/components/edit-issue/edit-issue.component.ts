@@ -1,4 +1,4 @@
-import { Component, effect, inject, input } from '@angular/core';
+import { Component, effect, inject, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormArray,
@@ -10,6 +10,7 @@ import {
 import { IssuesService } from '@features/issues/services/issues.service';
 import {
   IssueAcceptanceCriteriaConstraints,
+  IssueAssignableUserDto,
   IssueConstraints,
   IssueDetailsDto,
   IssuePriority,
@@ -33,9 +34,14 @@ export class EditIssueComponent {
   issueStatuses = this.issuesService.issueStatuses;
   issueConstraints = IssueConstraints;
   issueAcceptanceCriteriaConstraints = IssueAcceptanceCriteriaConstraints;
+  assignableUsers = signal<IssueAssignableUserDto[]>([]);
   private currentIssue: IssueDetailsDto | null = null;
 
   constructor() {
+    this.issuesService.getAssignableUsers().subscribe((users) => {
+      this.assignableUsers.set(users);
+    });
+
     effect(() => {
       const id = this.id();
       if (id && !this.form.dirty) {
@@ -45,7 +51,8 @@ export class EditIssueComponent {
             title: issue.title,
             description: issue.description,
             status: issue.status,
-            priority: issue.priority
+            priority: issue.priority,
+            assignedToUserId: issue.assignedToUserId ?? null
           });
           this.setAcceptanceCriteria(issue);
         });
@@ -67,6 +74,7 @@ export class EditIssueComponent {
     priority: new FormControl<IssuePriority>(IssuePriority.MEDIUM, [
       Validators.required
     ]),
+    assignedToUserId: new FormControl<string | null>(null),
     acceptanceCriteria: new FormArray<FormGroup<AcceptanceCriterionForm>>([])
   });
 
@@ -86,7 +94,7 @@ export class EditIssueComponent {
       description: this.form.controls.description.value ?? '',
       status: this.form.controls.status.value ?? IssueStatus.NEW,
       priority: this.form.controls.priority.value ?? IssuePriority.MEDIUM,
-      assignedToUserId: this.currentIssue?.assignedToUserId ?? null,
+      assignedToUserId: this.form.controls.assignedToUserId.value,
       acceptanceCriteria: this.acceptanceCriteria.controls
         .map((acceptanceCriterion) => ({
           id: acceptanceCriterion.controls.id.value || undefined,
