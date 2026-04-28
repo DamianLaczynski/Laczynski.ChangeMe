@@ -59,10 +59,10 @@ export interface UpdateIssueAcceptanceCriterionPayload {
 export interface IssueSearchParameters extends PaginationParameters {}
 
 export enum IssuePriority {
-  LOW = 1,
-  MEDIUM = 2,
-  HIGH = 3,
-  CRITICAL = 4
+  LOW = 'LOW',
+  MEDIUM = 'MEDIUM',
+  HIGH = 'HIGH',
+  CRITICAL = 'CRITICAL'
 }
 
 export const IssueConstraints = {
