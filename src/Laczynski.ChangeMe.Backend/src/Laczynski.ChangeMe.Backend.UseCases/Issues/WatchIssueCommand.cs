@@ -17,7 +17,7 @@ public class WatchIssueHandler(
   public async Task<Result<IssueWatchStateDto>> Handle(WatchIssueCommand command, CancellationToken cancellationToken)
   {
     if (userAccessor.UserId is not Guid actorUserId)
-      return Result<IssueWatchStateDto>.Unauthorized();
+      return Result.Unauthorized();
 
     var issue = await context.Issues
       .Include(i => i.Watchers)

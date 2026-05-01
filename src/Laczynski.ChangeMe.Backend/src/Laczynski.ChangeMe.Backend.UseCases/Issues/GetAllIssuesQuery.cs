@@ -18,7 +18,9 @@ public class GetAllIssuesHandler(
 {
   public async Task<Result<PaginationResult<IssueDto>>> Handle(GetAllIssuesQuery query, CancellationToken cancellationToken)
   {
-    var currentUserId = userAccessor.UserId;
+    if (userAccessor.UserId is not Guid currentUserId)
+      return Result.Unauthorized();
+
     var issuesQuery = context.Issues
       .AsNoTracking()
       .AsQueryable();
@@ -44,18 +46,12 @@ public class GetAllIssuesHandler(
 
     if (query.WatchedByMe)
     {
-      if (!currentUserId.HasValue)
-        return Result<PaginationResult<IssueDto>>.Unauthorized();
-
-      issuesQuery = issuesQuery.Where(i => i.Watchers.Any(w => w.UserId == currentUserId.Value));
+      issuesQuery = issuesQuery.Where(i => i.Watchers.Any(w => w.UserId == currentUserId));
     }
 
     if (query.CreatedByMe)
     {
-      if (!currentUserId.HasValue)
-        return Result<PaginationResult<IssueDto>>.Unauthorized();
-
-      issuesQuery = issuesQuery.Where(i => i.CreatedBy == currentUserId.Value || i.AssignedToUserId == currentUserId.Value);
+      issuesQuery = issuesQuery.Where(i => i.CreatedBy == currentUserId || i.AssignedToUserId == currentUserId);
     }
 
     var projectedIssues = issuesQuery
@@ -81,7 +77,7 @@ public class GetAllIssuesHandler(
         CreatedAt = i.CreatedAt,
         UpdatedAt = i.UpdatedAt,
         LastActivityAt = i.LastActivityAt,
-        IsWatchedByCurrentUser = currentUserId.HasValue && i.Watchers.Any(w => w.UserId == currentUserId.Value),
+        IsWatchedByCurrentUser = i.Watchers.Any(w => w.UserId == currentUserId),
         WatchersCount = i.Watchers.Count,
       });
 

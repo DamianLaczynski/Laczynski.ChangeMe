@@ -10,7 +10,7 @@ public class MarkNotificationAsReadHandler(
   public async Task<Result<NotificationDto>> Handle(MarkNotificationAsReadCommand command, CancellationToken cancellationToken)
   {
     if (userAccessor.UserId is not Guid currentUserId)
-      return Result<NotificationDto>.Unauthorized();
+      return Result.Unauthorized();
 
     var notification = await context.Notifications
       .FirstOrDefaultAsync(n => n.Id == command.NotificationId && n.RecipientUserId == currentUserId, cancellationToken);
@@ -43,7 +43,7 @@ public class MarkAllNotificationsAsReadHandler(
   public async Task<Result<NotificationListDto>> Handle(MarkAllNotificationsAsReadCommand command, CancellationToken cancellationToken)
   {
     if (userAccessor.UserId is not Guid currentUserId)
-      return Result<NotificationListDto>.Unauthorized();
+      return Result.Unauthorized();
 
     var notifications = await context.Notifications
       .Where(n => n.RecipientUserId == currentUserId && !n.IsRead)

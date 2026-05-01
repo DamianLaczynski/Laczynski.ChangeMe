@@ -11,7 +11,7 @@ public class AddIssueCommentHandler(
   public async Task<Result<IssueDetailsDto>> Handle(AddIssueCommentCommand command, CancellationToken cancellationToken)
   {
     if (userAccessor.UserId is not Guid actorUserId)
-      return Result<IssueDetailsDto>.Unauthorized();
+      return Result.Unauthorized();
 
     var issue = await context.Issues
       .Include(i => i.Comments)

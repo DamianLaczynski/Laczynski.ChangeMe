@@ -23,7 +23,7 @@ public class UpdateIssueHandler(
   public async Task<Result<IssueDetailsDto>> Handle(UpdateIssueCommand command, CancellationToken cancellationToken)
   {
     if (userAccessor.UserId is not Guid actorUserId)
-      return Result<IssueDetailsDto>.Unauthorized();
+      return Result.Unauthorized();
 
     var issue = await context.Issues
       .Include(i => i.AcceptanceCriteria)
@@ -41,7 +41,7 @@ public class UpdateIssueHandler(
         .AnyAsync(u => u.Id == command.AssignedToUserId.Value, cancellationToken);
 
       if (!assigneeExists)
-        return Result<IssueDetailsDto>.Invalid([
+        return Result.Invalid([
           new ValidationError(nameof(command.AssignedToUserId), "assigned user does not exist")
         ]);
     }
