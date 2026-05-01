@@ -1,9 +1,11 @@
 using System.Net;
 using System.Net.Http.Json;
+using Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue.Enums;
 using Laczynski.ChangeMe.Backend.Infrastructure.Persistence;
 using Laczynski.ChangeMe.Backend.IntegrationTests.Fixtures;
 using Laczynski.ChangeMe.Backend.IntegrationTests.Support;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Laczynski.ChangeMe.Backend.IntegrationTests;
@@ -12,16 +14,25 @@ namespace Laczynski.ChangeMe.Backend.IntegrationTests;
 public sealed class CreateIssueEndpointTests(BackendWebApplicationFactory factory)
 {
   [Fact]
-  public async Task PostIssues_WhenUserIsAuthenticated_ShouldCreateIssue()
+  public async Task PostIssues_WhenUserIsAuthenticated_ShouldCreateIssueWithWatcherAndAcceptanceCriteria()
   {
     var cancellationToken = TestContext.Current.CancellationToken;
-    using var client = await TestAuthHelper.CreateAuthenticatedClientAsync(factory, cancellationToken);
+    var user = await TestAuthHelper.CreateAuthenticatedUserAsync(factory, cancellationToken);
+    using var client = user.Client;
 
     var request = new
     {
       Title = "Issue created from integration test",
       Description = "Created through HTTP",
-      Priority = 2
+      Status = IssueStatus.NEW,
+      Priority = IssuePriority.HIGH,
+      AssignedToUserId = (Guid?)null,
+      WatchAfterCreate = true,
+      AcceptanceCriteria = new[]
+      {
+        new { Content = "First acceptance criterion" },
+        new { Content = "Second acceptance criterion" }
+      }
     };
 
     var response = await client.PostAsJsonAsync("/api/issues", request, cancellationToken);
@@ -30,10 +41,19 @@ public sealed class CreateIssueEndpointTests(BackendWebApplicationFactory factor
 
     await using var scope = factory.Services.CreateAsyncScope();
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    var issue = dbContext.Issues.SingleOrDefault(x => x.Title == request.Title);
+    var issue = await dbContext.Issues
+      .Include(x => x.Watchers)
+      .Include(x => x.AcceptanceCriteria)
+      .Include(x => x.HistoryEntries)
+      .SingleOrDefaultAsync(x => x.Title == request.Title, cancellationToken);
 
     Assert.NotNull(issue);
     Assert.Equal(request.Description, issue.Description);
+    Assert.Equal(IssuePriority.HIGH, issue.Priority);
+    Assert.Equal(IssueStatus.NEW, issue.Status);
+    Assert.Single(issue.Watchers, x => x.UserId == user.UserId);
+    Assert.Equal(2, issue.AcceptanceCriteria.Count);
+    Assert.Single(issue.HistoryEntries, x => x.EventType == IssueHistoryEventType.ISSUE_CREATED);
   }
 
   [Fact]
@@ -50,7 +70,9 @@ public sealed class CreateIssueEndpointTests(BackendWebApplicationFactory factor
     {
       Title = "Unauthorized issue",
       Description = "Should fail",
-      Priority = 2
+      Status = IssueStatus.NEW,
+      Priority = IssuePriority.HIGH,
+      WatchAfterCreate = false
     }, cancellationToken);
 
     Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);

@@ -1,10 +1,10 @@
-﻿using System.Net;
+using System.Net;
 using System.Net.Http.Json;
+using System.Text.Json;
 using Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue.Enums;
 using Laczynski.ChangeMe.Backend.Infrastructure.Persistence;
 using Laczynski.ChangeMe.Backend.IntegrationTests.Fixtures;
 using Laczynski.ChangeMe.Backend.IntegrationTests.Support;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -24,7 +24,7 @@ public sealed class UpdateIssueEndpointTests(BackendWebApplicationFactory factor
       "Initial title",
       "Initial description",
       IssuePriority.MEDIUM,
-      ["Old comment", "Remove me"],
+      ["Old criterion", "Remove me"],
       cancellationToken);
 
     await using var arrangeScope = factory.Services.CreateAsyncScope();
@@ -41,7 +41,9 @@ public sealed class UpdateIssueEndpointTests(BackendWebApplicationFactory factor
       Id = issueId,
       Title = "Updated title",
       Description = "Updated description",
-      Priority = 4,
+      Status = IssueStatus.IN_PROGRESS,
+      Priority = IssuePriority.CRITICAL,
+      AssignedToUserId = (Guid?)null,
       AcceptanceCriteria = new object[]
       {
         new
@@ -62,14 +64,69 @@ public sealed class UpdateIssueEndpointTests(BackendWebApplicationFactory factor
     var assertDb = assertScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     var issue = await assertDb.Issues
       .Include(x => x.AcceptanceCriteria)
+      .Include(x => x.HistoryEntries)
       .SingleAsync(x => x.Id == issueId, cancellationToken);
 
     Assert.Equal("Updated title", issue.Title);
     Assert.Equal("Updated description", issue.Description);
     Assert.Equal(IssuePriority.CRITICAL, issue.Priority);
+    Assert.Equal(IssueStatus.IN_PROGRESS, issue.Status);
     Assert.Equal(2, issue.AcceptanceCriteria.Count);
     Assert.Contains(issue.AcceptanceCriteria, x => x.Content == "Updated acceptance criterion");
     Assert.Contains(issue.AcceptanceCriteria, x => x.Content == "New acceptance criterion");
     Assert.DoesNotContain(issue.AcceptanceCriteria, x => x.Content == "Remove me");
+    Assert.Contains(issue.HistoryEntries, x => x.EventType == IssueHistoryEventType.STATUS_CHANGED);
+    Assert.Contains(issue.HistoryEntries, x => x.EventType == IssueHistoryEventType.PRIORITY_CHANGED);
+    Assert.Contains(issue.HistoryEntries, x => x.EventType == IssueHistoryEventType.ACCEPTANCE_CRITERION_ADDED);
+    Assert.Contains(issue.HistoryEntries, x => x.EventType == IssueHistoryEventType.ACCEPTANCE_CRITERION_UPDATED);
+    Assert.Contains(issue.HistoryEntries, x => x.EventType == IssueHistoryEventType.ACCEPTANCE_CRITERION_REMOVED);
+  }
+
+  [Fact]
+  public async Task PutIssue_WhenAssigneeChanges_ShouldExposeReadableAssigneeNamesInHistory()
+  {
+    var cancellationToken = TestContext.Current.CancellationToken;
+    var actor = await TestAuthHelper.CreateAuthenticatedUserAsync(factory, cancellationToken);
+    var assignee = await TestAuthHelper.CreateAuthenticatedUserAsync(factory, cancellationToken);
+    using var client = actor.Client;
+
+    var issueId = await IssueTestHelper.SeedIssueAsync(
+      factory,
+      "Issue with assignee change",
+      "Initial description",
+      IssuePriority.MEDIUM,
+      null,
+      cancellationToken,
+      actorId: actor.UserId);
+
+    var updateResponse = await client.PutAsJsonAsync($"/api/issues/{issueId}", new
+    {
+      Id = issueId,
+      Title = "Issue with assignee change",
+      Description = "Initial description",
+      Status = IssueStatus.NEW,
+      Priority = IssuePriority.MEDIUM,
+      AssignedToUserId = assignee.UserId,
+      AcceptanceCriteria = Array.Empty<object>()
+    }, cancellationToken);
+
+    Assert.Equal(HttpStatusCode.OK, updateResponse.StatusCode);
+
+    var getResponse = await client.GetAsync($"/api/issues/{issueId}", cancellationToken);
+    var responseBody = await getResponse.Content.ReadAsStringAsync(cancellationToken);
+
+    Assert.Equal(HttpStatusCode.OK, getResponse.StatusCode);
+
+    using var document = JsonDocument.Parse(responseBody);
+    var historyEntries = document.RootElement
+      .GetProperty("value")
+      .GetProperty("historyEntries");
+
+    var assigneeChangedEntry = historyEntries
+      .EnumerateArray()
+      .First(entry => entry.GetProperty("eventType").GetString() == IssueHistoryEventType.ASSIGNEE_CHANGED.ToString());
+
+    Assert.Equal("Unassigned", assigneeChangedEntry.GetProperty("previousValue").GetString());
+    Assert.Equal("Test User", assigneeChangedEntry.GetProperty("currentValue").GetString());
   }
 }

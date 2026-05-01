@@ -1,5 +1,7 @@
-﻿using System.Reflection;
+using System.Reflection;
 using Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue;
+using Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue.Entities;
+using Laczynski.ChangeMe.Backend.Domain.Aggregates.Notifications;
 using Laczynski.ChangeMe.Backend.Domain.Aggregates.Users;
 using Laczynski.ChangeMe.Backend.Domain.Interfaces;
 
@@ -11,6 +13,11 @@ public class ApplicationDbContext(
   IUserAccessor? userAccessor = null) : DbContext(options)
 {
   public DbSet<Issue> Issues => Set<Issue>();
+  public DbSet<IssueAcceptanceCriterion> IssueAcceptanceCriteria => Set<IssueAcceptanceCriterion>();
+  public DbSet<IssueComment> IssueComments => Set<IssueComment>();
+  public DbSet<IssueHistoryEntry> IssueHistoryEntries => Set<IssueHistoryEntry>();
+  public DbSet<IssueWatcher> IssueWatchers => Set<IssueWatcher>();
+  public DbSet<Notification> Notifications => Set<Notification>();
   public DbSet<User> Users => Set<User>();
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -18,7 +25,6 @@ public class ApplicationDbContext(
     base.OnModelCreating(modelBuilder);
 
     modelBuilder.HasDefaultSchema(DatabaseSchema.Default);
-
     modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
   }
 
@@ -83,9 +89,9 @@ public class ApplicationDbContext(
     if (dispatcher == null) return;
 
     var entitiesWithEvents = ChangeTracker.Entries<HasDomainEventsBase>()
-        .Select(e => e.Entity)
-        .Where(e => e.DomainEvents.Any())
-        .ToArray();
+      .Select(e => e.Entity)
+      .Where(e => e.DomainEvents.Any())
+      .ToArray();
 
     dispatcher.DispatchAndClearEvents(entitiesWithEvents);
   }

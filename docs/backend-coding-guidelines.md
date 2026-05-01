@@ -11,6 +11,7 @@ ASP.NET Core on .NET 10 with FastEndpoints, MediatR-style request handling, EF C
 ### Web
 
 - Owns application startup in `Program.cs`.
+- Startup registrations and middleware for one concern should be grouped in `Web/Configurations/*Config.cs` extension methods rather than added inline in `Program.cs`.
 - Owns HTTP endpoint declarations.
 - Owns API-facing validation classes placed next to endpoint definitions.
 - Owns endpoint base behavior such as auth scheme and `Result<T>` to HTTP status mapping through `Common/BaseEndpoint.cs`.
@@ -62,6 +63,7 @@ ASP.NET Core on .NET 10 with FastEndpoints, MediatR-style request handling, EF C
 ## Auth and cross-cutting concerns
 
 - JWT configuration lives in `Web/Configurations/AuthConfig.cs` and environment settings.
+- SignalR hubs and their DI registration should be configured through dedicated `Web/Configurations/*Config.cs` files, not inline in `Program.cs`.
 - Endpoint auth defaults come from `BaseEndpoint`.
 - Email is abstracted behind `IEmailService`.
 

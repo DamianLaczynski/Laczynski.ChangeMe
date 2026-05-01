@@ -12,27 +12,36 @@ internal static class IssueTestHelper
   public static async Task<Guid> SeedIssueAsync(
     BackendWebApplicationFactory factory,
     string title,
-    string? description,
+    string description,
     IssuePriority priority,
     string[]? acceptanceCriteria,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken,
+    IssueStatus status = IssueStatus.NEW,
+    Guid? assignedToUserId = null,
+    Guid? actorId = null,
+    bool addActorAsWatcher = false)
   {
     await using var scope = factory.Services.CreateAsyncScope();
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    var actorId = Guid.CreateVersion7();
+    var effectiveActorId = actorId ?? Guid.CreateVersion7();
 
-    var issueResult = Issue.Create(title, description, priority);
+    var issueResult = Issue.Create(title, description, priority, status, assignedToUserId);
     var issue = issueResult.Value;
-    ApplyAudit(issue, actorId);
+    issue.RecordCreation(effectiveActorId);
 
     foreach (var acceptanceCriterion in acceptanceCriteria ?? [])
     {
-      var acceptanceCriterionResult = issue.AddAcceptanceCriterion(acceptanceCriterion);
-      if (acceptanceCriterionResult.IsSuccess)
-      {
-        ApplyAudit(acceptanceCriterionResult.Value, actorId);
-      }
+      issue.AddAcceptanceCriterion(acceptanceCriterion);
     }
+
+    if (addActorAsWatcher)
+      issue.StartWatching(effectiveActorId);
+
+    ApplyAudit(issue, effectiveActorId);
+    ApplyAudit(issue.HistoryEntries, effectiveActorId);
+    ApplyAudit(issue.AcceptanceCriteria, effectiveActorId);
+    ApplyAudit(issue.Comments, effectiveActorId);
+    ApplyAudit(issue.Watchers, effectiveActorId);
 
     dbContext.Issues.Add(issue);
     await dbContext.SaveChangesAsync(cancellationToken);
@@ -44,5 +53,11 @@ internal static class IssueTestHelper
   {
     entity.CreatedBy = actorId;
     entity.UpdatedBy = actorId;
+  }
+
+  private static void ApplyAudit(IEnumerable<Entity> entities, Guid actorId)
+  {
+    foreach (var entity in entities)
+      ApplyAudit(entity, actorId);
   }
 }

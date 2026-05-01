@@ -22,6 +22,8 @@ public sealed class LoginEndpointTests(BackendWebApplicationFactory factory)
 
     await client.PostAsJsonAsync("/api/auth/register", new
     {
+      FirstName = "Login",
+      LastName = "User",
       Email = email,
       Password = password
     }, cancellationToken);
@@ -52,6 +54,8 @@ public sealed class LoginEndpointTests(BackendWebApplicationFactory factory)
 
     await client.PostAsJsonAsync("/api/auth/register", new
     {
+      FirstName = "Login",
+      LastName = "Invalid",
       Email = email,
       Password = "StrongPass123!"
     }, cancellationToken);

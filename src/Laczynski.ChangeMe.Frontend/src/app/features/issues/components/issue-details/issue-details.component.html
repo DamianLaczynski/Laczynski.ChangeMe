@@ -1,34 +1,139 @@
 <section>
   <h1>Issue Details</h1>
-  <p>View details of an issue.</p>
-  @let issueData = issue();
+  <p>Review issue data, comments, history and watch state.</p>
+
   <div>
-    <button [routerLink]="['/issues']">Back</button>
-    @if (issueData && isAuthenticated()) {
-      <button [routerLink]="['/issues', issueData.id, 'edit']">Edit</button>
-      <button (click)="deleteIssue()">Delete</button>
+    <a [routerLink]="['/issues']">Back to issues list</a>
+    @if (issue() && isAuthenticated()) {
+      <a [routerLink]="['/issues', issue()!.id, 'edit']">Edit issue</a>
+      <button type="button" (click)="toggleWatch()" [disabled]="isTogglingWatch()">
+        {{ issue()!.isWatchedByCurrentUser ? 'Unwatch' : 'Watch' }}
+        ({{ issue()!.watchersCount }})
+      </button>
     }
   </div>
-  @if (issueData) {
-    <main>
-      <h1>Title: {{ issueData.title }}</h1>
-      <p>Description: {{ issueData.description }}</p>
-      <p>Priority: {{ issueData.priority }}</p>
-      <p>Created At: {{ issueData.createdAt | date: 'short' }}</p>
-      <p>Updated At: {{ issueData.updatedAt | date: 'short' }}</p>
-      <p>Created By: {{ issueData.createdBy }}</p>
-      <p>Updated By: {{ issueData.updatedBy }}</p>
-      <h2>Acceptance Criteria</h2>
-      <ul>
-        @if (issueData.acceptanceCriteria.length > 0) {
-          @for (acceptanceCriterion of issueData.acceptanceCriteria; track acceptanceCriterion.id) {
-            <li>{{ acceptanceCriterion.content }}</li>
-          }
+
+  @if (isLoading() && !hasLoaded()) {
+    <section aria-busy="true">
+      <h2>Loading issue details...</h2>
+      <p>Loading issue header...</p>
+      <p>Loading acceptance criteria...</p>
+      <p>Loading comments...</p>
+      <p>Loading history...</p>
+    </section>
+  } @else if (loadError()) {
+    <p>{{ loadError() }}</p>
+  } @else if (issue()) {
+    <article>
+      <header>
+        <h2>{{ issue()!.title }}</h2>
+        <p>ID: {{ issue()!.id }}</p>
+        <p>Status: {{ issue()!.status }}</p>
+        <p>Priority: {{ issue()!.priority }}</p>
+        <p>Author: {{ issue()!.createdByName || issue()!.createdBy }}</p>
+        <p>Assigned to: {{ issue()!.assignedToUserName || 'Unassigned' }}</p>
+        <p>Created at: {{ issue()!.createdAt | date: 'short' }}</p>
+        <p>Last activity: {{ issue()!.lastActivityAt | date: 'short' }}</p>
+        <p>
+          Watch state:
+          {{ issue()!.isWatchedByCurrentUser ? 'Watching' : 'Not watching' }}
+        </p>
+      </header>
+
+      <section>
+        <h3>Description</h3>
+        <p>{{ issue()!.description }}</p>
+      </section>
+
+      <section>
+        <h3>Acceptance Criteria</h3>
+        @if (issue()!.acceptanceCriteria.length > 0) {
+          <ul>
+            @for (criterion of issue()!.acceptanceCriteria; track criterion.id) {
+              <li>{{ criterion.content }}</li>
+            }
+          </ul>
         } @else {
-          <p>No acceptance criteria found</p>
+          <p>No acceptance criteria defined</p>
         }
-      </ul>
-    </main>
+      </section>
+
+      <section>
+        <h3>Comments</h3>
+
+        @if (isAuthenticated()) {
+          <form [formGroup]="commentForm" (ngSubmit)="addComment()">
+            <div>
+              <label for="comment-content">Comment</label>
+              <textarea id="comment-content" formControlName="content"></textarea>
+            </div>
+
+            @if (shouldShowCommentError()) {
+              @if (commentForm.controls.content.errors?.['required']) {
+                <p>Comment content is required</p>
+              }
+              @if (commentForm.controls.content.errors?.['maxlength']) {
+                <p>
+                  Comment must be at most
+                  {{ issueCommentConstraints.CONTENT_MAX_LENGTH }} characters
+                </p>
+              }
+            }
+
+            @if (commentError()) {
+              <p>{{ commentError() }}</p>
+            }
+
+            <button type="submit" [disabled]="isSubmittingComment()">
+              {{ isSubmittingComment() ? 'Adding comment...' : 'Add comment' }}
+            </button>
+          </form>
+        } @else {
+          <p>Log in to add comments</p>
+        }
+
+        @if (sortedComments().length > 0) {
+          <ul>
+            @for (comment of sortedComments(); track comment.id) {
+              <li>
+                <p>{{ comment.authorName || comment.authorUserId }}</p>
+                <p>{{ comment.createdAt | date: 'short' }}</p>
+                <p>{{ comment.content }}</p>
+              </li>
+            }
+          </ul>
+        } @else {
+          <p>No comments yet</p>
+        }
+      </section>
+
+      <section>
+        <h3>History</h3>
+        @if (sortedHistoryEntries().length > 0) {
+          <ul>
+            @for (
+              entry of sortedHistoryEntries();
+              track trackHistoryEntry($index, entry)
+            ) {
+              <li>
+                <p>{{ entry.eventType }}</p>
+                <p>{{ entry.actorName || entry.actorUserId }}</p>
+                <p>{{ entry.createdAt | date: 'short' }}</p>
+                <p>{{ entry.summary }}</p>
+                @if (entry.previousValue || entry.currentValue) {
+                  <p>
+                    Before: {{ entry.previousValue || '-' }} | After:
+                    {{ entry.currentValue || '-' }}
+                  </p>
+                }
+              </li>
+            }
+          </ul>
+        } @else {
+          <p>No history entries found</p>
+        }
+      </section>
+    </article>
   } @else {
     <p>Issue not found</p>
   }

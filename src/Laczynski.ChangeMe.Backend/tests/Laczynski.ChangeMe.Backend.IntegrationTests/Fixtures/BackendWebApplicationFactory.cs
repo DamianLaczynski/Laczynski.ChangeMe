@@ -1,7 +1,6 @@
+﻿using Laczynski.ChangeMe.Backend.Domain.Interfaces;
 using Laczynski.ChangeMe.Backend.Infrastructure.Persistence;
-using Laczynski.ChangeMe.Backend.Domain.Interfaces;
 using Laczynski.ChangeMe.Backend.IntegrationTests.Support.Fakes;
-using Laczynski.ChangeMe.Backend.Web;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
@@ -13,8 +12,7 @@ namespace Laczynski.ChangeMe.Backend.IntegrationTests.Fixtures;
 public sealed class BackendWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
   private readonly Dictionary<string, string?> environmentOverrides = new();
-  private readonly PostgreSqlContainer postgresContainer = new PostgreSqlBuilder()
-    .WithImage("postgres:15.1")
+  private readonly PostgreSqlContainer postgresContainer = new PostgreSqlBuilder("postgres:15.1")
     .Build();
 
   public async ValueTask InitializeAsync()

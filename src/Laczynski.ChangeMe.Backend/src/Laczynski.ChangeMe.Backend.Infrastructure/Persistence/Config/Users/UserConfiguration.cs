@@ -10,6 +10,14 @@ public class UserConfiguration : BaseEntityTypeConfiguration<User>
   {
     base.Configure(builder);
 
+    builder.Property(x => x.FirstName)
+      .IsRequired()
+      .HasMaxLength(UserConstraints.NAME_MAX_LENGTH);
+
+    builder.Property(x => x.LastName)
+      .IsRequired()
+      .HasMaxLength(UserConstraints.NAME_MAX_LENGTH);
+
     builder.Property(x => x.Email)
       .IsRequired()
       .HasMaxLength(UserConstraints.EMAIL_MAX_LENGTH);

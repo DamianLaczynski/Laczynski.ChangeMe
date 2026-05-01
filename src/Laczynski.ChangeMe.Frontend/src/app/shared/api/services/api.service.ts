@@ -15,7 +15,7 @@ export class ApiService {
 
   private readonly http = inject(HttpClient);
 
-  public get<T>(endpoint: string, params?: unknown): Observable<T> {
+  public get<T>(endpoint: string, params?: object): Observable<T> {
     const httpParams = this.buildHttpParams(params);
 
     return this.http
@@ -30,7 +30,9 @@ export class ApiService {
     const httpParams = this.buildHttpParams(params);
 
     return this.http
-      .get<Result<any>>(`${this.baseUrl}${endpoint}`, { params: httpParams })
+      .get<Result<PaginationResult<T>>>(`${this.baseUrl}${endpoint}`, {
+        params: httpParams
+      })
       .pipe(map((response) => this.handleResponse(response)));
   }
 
@@ -120,14 +122,26 @@ export class ApiService {
     }
   }
 
-  private buildHttpParams(params?: any): HttpParams {
+  private buildHttpParams(params?: object): HttpParams {
     let httpParams = new HttpParams();
 
     if (params) {
-      Object.keys(params).forEach((key) => {
-        if (params[key] !== null && params[key] !== undefined) {
-          httpParams = httpParams.set(key, params[key].toString());
+      Object.entries(params as Record<string, unknown>).forEach(([key, value]) => {
+        if (value === null || value === undefined) {
+          return;
         }
+
+        if (Array.isArray(value)) {
+          value.forEach((item) => {
+            if (item !== null && item !== undefined) {
+              httpParams = httpParams.append(key, item.toString());
+            }
+          });
+
+          return;
+        }
+
+        httpParams = httpParams.set(key, value.toString());
       });
     }
 

@@ -1,47 +1,88 @@
-﻿
 using Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue;
 using Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue.Enums;
 
 namespace Laczynski.ChangeMe.Backend.UseCases.Issues;
 
 public record CreateIssueCommand(
-    string Title,
-    string Description,
-    IssuePriority Priority,
-    List<CreateIssueAcceptanceCriterionPayload>? AcceptanceCriteria = null
-    ) : ICommand<IssueDetailsDto>;
+  string Title,
+  string Description,
+  IssueStatus Status,
+  IssuePriority Priority,
+  Guid? AssignedToUserId,
+  bool WatchAfterCreate,
+  List<CreateIssueAcceptanceCriterionPayload>? AcceptanceCriteria = null) : ICommand<IssueDetailsDto>;
 
-public record CreateIssueAcceptanceCriterionPayload(
-  string Content
-);
+public record CreateIssueAcceptanceCriterionPayload(string Content);
 
-public class CreateIssueHandler(IMediator mediator, ApplicationDbContext context, IEmailService emailService) : ICommandHandler<CreateIssueCommand, IssueDetailsDto>
+public class CreateIssueHandler(
+  IMediator mediator,
+  ApplicationDbContext context,
+  IUserAccessor userAccessor,
+  IIssueRealtimePublisher issueRealtimePublisher) : ICommandHandler<CreateIssueCommand, IssueDetailsDto>
 {
   public async Task<Result<IssueDetailsDto>> Handle(CreateIssueCommand command, CancellationToken cancellationToken)
   {
-    var result = Issue.Create(command.Title, command.Description, command.Priority);
-    if (!result.IsSuccess)
-      return result.Map();
+    if (userAccessor.UserId is not Guid actorUserId)
+      return Result.Unauthorized();
 
-    foreach (var acceptanceCriterion in command.AcceptanceCriteria ?? [])
+    if (command.AssignedToUserId.HasValue)
     {
-      var acceptanceCriterionResult = result.Value.AddAcceptanceCriterion(acceptanceCriterion.Content);
-      if (!acceptanceCriterionResult.IsSuccess)
-        return acceptanceCriterionResult.Map();
+      var assigneeExists = await context.Users
+        .AsNoTracking()
+        .AnyAsync(u => u.Id == command.AssignedToUserId.Value, cancellationToken);
 
-      await context.AddAsync(acceptanceCriterionResult.Value, cancellationToken);
+      if (!assigneeExists)
+        return Result.Invalid([
+          new ValidationError(nameof(command.AssignedToUserId), "assigned user does not exist")
+        ]);
     }
 
-    await context.Issues.AddAsync(result.Value, cancellationToken);
-    await context.SaveChangesAsync(cancellationToken);
+    var issueResult = Issue.Create(
+      command.Title,
+      command.Description,
+      command.Priority,
+      command.Status,
+      command.AssignedToUserId);
 
-    await emailService.SendEmailAsync("test@test.com", "Issue created", $"Issue {result.Value.Title} has been created");
-
-    var issueResult = await mediator.Send(new GetIssueByIdQuery(result.Value.Id), cancellationToken);
     if (!issueResult.IsSuccess)
       return issueResult.Map();
 
-    return Result.Created(issueResult.Value, $"/issues/{issueResult.Value.Id}");
-  }
+    var creationResult = issueResult.Value.RecordCreation(actorUserId);
+    if (!creationResult.IsSuccess)
+      return creationResult.Map();
 
+    foreach (var acceptanceCriterion in command.AcceptanceCriteria ?? [])
+    {
+      var acceptanceCriterionResult = issueResult.Value.AddAcceptanceCriterion(acceptanceCriterion.Content);
+      if (!acceptanceCriterionResult.IsSuccess)
+        return acceptanceCriterionResult.Map();
+
+      await context.IssueAcceptanceCriteria.AddAsync(acceptanceCriterionResult.Value, cancellationToken);
+    }
+
+    if (command.WatchAfterCreate)
+    {
+      var watchResult = issueResult.Value.StartWatching(actorUserId);
+      if (!watchResult.IsSuccess)
+        return watchResult.Map();
+
+      await context.IssueWatchers.AddAsync(watchResult.Value, cancellationToken);
+    }
+
+    await context.Issues.AddAsync(issueResult.Value, cancellationToken);
+    await context.SaveChangesAsync(cancellationToken);
+
+    await issueRealtimePublisher.PublishAsync(new IssueRealtimeMessage
+    {
+      IssueId = issueResult.Value.Id,
+      EventType = "ISSUE_CREATED",
+      OccurredAt = issueResult.Value.LastActivityAt
+    }, cancellationToken);
+
+    var createdIssueResult = await mediator.Send(new GetIssueByIdQuery(issueResult.Value.Id), cancellationToken);
+    if (!createdIssueResult.IsSuccess)
+      return createdIssueResult.Map();
+
+    return Result.Created(createdIssueResult.Value, $"/issues/{createdIssueResult.Value.Id}");
+  }
 }

@@ -15,10 +15,9 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddDatabase(builder, logger);
 builder.Services.AddHangfire(builder, logger);
-
 builder.Services.AddInfrastructureServices(builder.Configuration, logger);
-
 builder.Services.AddMediator();
+builder.Services.AddNotifications(builder, logger);
 
 logger.LogInformation("Starting web host");
 
@@ -27,7 +26,6 @@ builder.Services.AddFastEndpointsWithSwagger();
 var app = builder.Build();
 
 app.UseExceptionHandler();
-
 app.UseHttpsRedirection();
 
 app.UseCors(CorsConfig.CorsPolicyName);
@@ -38,6 +36,7 @@ app.UseFastEndpointsWithSwagger();
 app.UseHangfireDashboard();
 
 app.MapHealthChecks("/health");
+app.UseNotifications();
 
 await app.UseDatabase();
 

@@ -1,9 +1,8 @@
-using System.Net;
+﻿using System.Net;
 using Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue.Enums;
 using Laczynski.ChangeMe.Backend.Infrastructure.Persistence;
 using Laczynski.ChangeMe.Backend.IntegrationTests.Fixtures;
 using Laczynski.ChangeMe.Backend.IntegrationTests.Support;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Laczynski.ChangeMe.Backend.IntegrationTests;

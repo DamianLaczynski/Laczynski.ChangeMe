@@ -1,14 +1,25 @@
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
+using Laczynski.ChangeMe.Backend.Infrastructure.Persistence;
 using Laczynski.ChangeMe.Backend.IntegrationTests.Fixtures;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Laczynski.ChangeMe.Backend.IntegrationTests.Support;
 
 internal static class TestAuthHelper
 {
   public static async Task<HttpClient> CreateAuthenticatedClientAsync(
+    BackendWebApplicationFactory factory,
+    CancellationToken cancellationToken = default)
+  {
+    var user = await CreateAuthenticatedUserAsync(factory, cancellationToken);
+    return user.Client;
+  }
+
+  public static async Task<AuthenticatedTestUser> CreateAuthenticatedUserAsync(
     BackendWebApplicationFactory factory,
     CancellationToken cancellationToken = default)
   {
@@ -22,6 +33,8 @@ internal static class TestAuthHelper
 
     await anonymousClient.PostAsJsonAsync("/api/auth/register", new
     {
+      FirstName = "Test",
+      LastName = "User",
       Email = email,
       Password = password
     }, cancellationToken);
@@ -43,7 +56,16 @@ internal static class TestAuthHelper
     });
 
     authenticatedClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-    return authenticatedClient;
+
+    await using var scope = factory.Services.CreateAsyncScope();
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var userId = await dbContext.Users
+      .AsNoTracking()
+      .Where(u => u.Email == email)
+      .Select(u => u.Id)
+      .SingleAsync(cancellationToken);
+
+    return new AuthenticatedTestUser(authenticatedClient, userId, email);
   }
 
   private static string ExtractToken(string responseBody)
@@ -59,3 +81,5 @@ internal static class TestAuthHelper
     throw new InvalidOperationException("Token was not found in login response.");
   }
 }
+
+internal sealed record AuthenticatedTestUser(HttpClient Client, Guid UserId, string Email);

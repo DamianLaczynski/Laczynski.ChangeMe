@@ -3,8 +3,11 @@
     <a [routerLink]="['/issues']">Issues</a>
 
     @if (isAuthenticated()) {
-      <span>{{ currentUser()?.email }}</span>
+      <span>{{ currentUser()?.fullName }} ({{ currentUser()?.email }})</span>
       <a [routerLink]="['/issues', 'create']">Create Issue</a>
+      <a [routerLink]="['/notifications']">
+        Notifications ({{ unreadNotificationsCount() }})
+      </a>
       <button type="button" (click)="logout()">Logout</button>
     } @else {
       <a [routerLink]="['/login']">Login</a>

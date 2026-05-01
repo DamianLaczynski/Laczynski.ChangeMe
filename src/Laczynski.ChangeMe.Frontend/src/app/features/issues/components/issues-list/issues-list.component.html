@@ -1,28 +1,221 @@
 <section>
   <h1>Issues</h1>
-  <p>List of all issues. Only authenticated users can create issues.</p>
-  @let issuesData = issues();
-  <div>
-    @if (isAuthenticated()) {
-      <button [routerLink]="['/issues', 'create']">Create Issue</button>
-    }
-  </div>
-  @if (issuesData.length > 0) {
-    <main>
-      <ul>
-        @for (issue of issuesData; track issue.id) {
-          <li>
-            <a [routerLink]="['/issues', issue.id]">{{ issue.title }}</a>
-          </li>
+  <p>Browse, filter and monitor issues.</p>
+
+  <form [formGroup]="filtersForm" (ngSubmit)="applyFilters()">
+    <div>
+      <label for="searchText">Search</label>
+      <input
+        id="searchText"
+        type="text"
+        formControlName="searchText"
+        placeholder="Search issues..."
+      />
+      <button type="submit">Search</button>
+      @if (isAuthenticated()) {
+        <a [routerLink]="['/issues', 'create']">+ Add issue</a>
+      }
+    </div>
+
+    <fieldset>
+      <legend>Filters</legend>
+
+      <div>
+        <label for="statuses">Status</label>
+        <select id="statuses" formControlName="statuses" multiple>
+          @for (status of issueStatuses(); track status.value) {
+            <option [ngValue]="status.value">{{ status.label }}</option>
+          }
+        </select>
+      </div>
+
+      <div>
+        <label for="priorities">Priority</label>
+        <select id="priorities" formControlName="priorities" multiple>
+          @for (priority of issuePriorities(); track priority.value) {
+            <option [ngValue]="priority.value">{{ priority.label }}</option>
+          }
+        </select>
+      </div>
+
+      <div>
+        <label for="assignedToUserId">Assigned to</label>
+        <select id="assignedToUserId" formControlName="assignedToUserId">
+          <option [ngValue]="null">Any assignee</option>
+          @for (user of assignableUsers(); track user.id) {
+            <option [ngValue]="user.id">{{ user.fullName }}</option>
+          }
+        </select>
+        @if (isLoadingAssignableUsers()) {
+          <p>Loading assignable users...</p>
         }
-      </ul>
-    </main>
-  } @else {
-    <p>No issues found</p>
+      </div>
+
+      <div>
+        <label>
+          <input type="checkbox" formControlName="watchedByMe" />
+          Watched by me
+        </label>
+      </div>
+
+      <div>
+        <label>
+          <input type="checkbox" formControlName="createdByMe" />
+          My issues
+        </label>
+      </div>
+
+      <div>
+        <button type="submit">Apply filters</button>
+        <button type="button" (click)="clearFilters()">Clear filters</button>
+      </div>
+    </fieldset>
+  </form>
+
+  @if (errorMessage()) {
+    <p>{{ errorMessage() }}</p>
   }
-  <div>
-    <button (click)="previousPage()">Previous</button>
-    <p>Page {{ paginationParameters().pageNumber }}</p>
-    <button (click)="nextPage()">Next</button>
-  </div>
+
+  @if (isLoading() && !hasLoaded()) {
+    <section aria-busy="true">
+      <h2>Loading issues...</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Priority</th>
+            <th>Assigned to</th>
+            <th>Created at</th>
+            <th>Last activity</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (_row of skeletonRows; track $index) {
+            <tr>
+              <td>Loading...</td>
+              <td>Loading issue title...</td>
+              <td>Loading...</td>
+              <td>Loading...</td>
+              <td>Loading...</td>
+              <td>Loading...</td>
+              <td>Loading...</td>
+              <td>Loading...</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </section>
+  } @else {
+    <p>
+      Results: {{ pagination()?.totalCount ?? 0 }} | Page
+      {{ pagination()?.currentPage ?? 1 }} of {{ pagination()?.totalPages ?? 0 }}
+    </p>
+
+    @if (issues().length > 0) {
+      <table>
+        <thead>
+          <tr>
+            <th>
+              <button type="button" (click)="toggleSort('Id')">
+                ID
+                @if (getSortDirection('Id') === 'ascending') {
+                  <span>(asc)</span>
+                } @else if (getSortDirection('Id') === 'descending') {
+                  <span>(desc)</span>
+                }
+              </button>
+            </th>
+            <th>
+              <button type="button" (click)="toggleSort('Title')">
+                Title
+                @if (getSortDirection('Title') === 'ascending') {
+                  <span>(asc)</span>
+                } @else if (getSortDirection('Title') === 'descending') {
+                  <span>(desc)</span>
+                }
+              </button>
+            </th>
+            <th>Status</th>
+            <th>Priority</th>
+            <th>Assigned to</th>
+            <th>
+              <button type="button" (click)="toggleSort('CreatedAt')">
+                Created at
+                @if (getSortDirection('CreatedAt') === 'ascending') {
+                  <span>(asc)</span>
+                } @else if (getSortDirection('CreatedAt') === 'descending') {
+                  <span>(desc)</span>
+                }
+              </button>
+            </th>
+            <th>
+              <button type="button" (click)="toggleSort('LastActivityAt')">
+                Last activity
+                @if (getSortDirection('LastActivityAt') === 'ascending') {
+                  <span>(asc)</span>
+                } @else if (getSortDirection('LastActivityAt') === 'descending') {
+                  <span>(desc)</span>
+                }
+              </button>
+            </th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (issue of issues(); track issue.id) {
+            <tr>
+              <td>
+                <a [routerLink]="['/issues', issue.id]">{{ issue.id }}</a>
+              </td>
+              <td>
+                <a [routerLink]="['/issues', issue.id]">{{ issue.title }}</a>
+              </td>
+              <td>{{ issue.status }}</td>
+              <td>{{ issue.priority }}</td>
+              <td>{{ issue.assignedToUserName || 'Unassigned' }}</td>
+              <td>{{ issue.createdAt | date: 'short' }}</td>
+              <td>{{ issue.lastActivityAt | date: 'short' }}</td>
+              <td>
+                <a [routerLink]="['/issues', issue.id]">Show details</a>
+                @if (isAuthenticated()) {
+                  <button
+                    type="button"
+                    (click)="toggleWatch(issue)"
+                    [disabled]="isWatchPending(issue.id)"
+                  >
+                    {{ issue.isWatchedByCurrentUser ? 'Unwatch' : 'Watch' }}
+                    ({{ issue.watchersCount }})
+                  </button>
+                } @else {
+                  <span>Watchers: {{ issue.watchersCount }}</span>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    } @else {
+      <p>No issues found</p>
+    }
+
+    <div>
+      <button
+        type="button"
+        (click)="changePage((pagination()?.currentPage ?? 1) - 1)"
+        [disabled]="!pagination()?.hasPrevious"
+      >
+        Previous
+      </button>
+      <button
+        type="button"
+        (click)="changePage((pagination()?.currentPage ?? 1) + 1)"
+        [disabled]="!pagination()?.hasNext"
+      >
+        Next
+      </button>
+    </div>
+  }
 </section>

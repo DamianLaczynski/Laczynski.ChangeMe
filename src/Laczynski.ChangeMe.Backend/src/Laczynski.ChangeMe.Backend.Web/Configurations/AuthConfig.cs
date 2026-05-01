@@ -1,6 +1,7 @@
-﻿using System.Text;
+using System.Text;
 using Laczynski.ChangeMe.Backend.Infrastructure.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Laczynski.ChangeMe.Backend.Web.Configurations;
@@ -26,7 +27,22 @@ public static class AuthConfig
           ValidIssuer = jwtOptions.Issuer,
           ValidAudience = jwtOptions.Audience,
           IssuerSigningKey = new SymmetricSecurityKey(signingKey),
-          ClockSkew = TimeSpan.Zero
+          ClockSkew = TimeSpan.Zero,
+          NameClaimType = JwtRegisteredClaimNames.Sub
+        };
+
+        options.Events = new JwtBearerEvents
+        {
+          OnMessageReceived = context =>
+          {
+            var accessToken = context.Request.Query["access_token"];
+            var path = context.HttpContext.Request.Path;
+
+            if (!string.IsNullOrWhiteSpace(accessToken) && path.StartsWithSegments("/hubs"))
+              context.Token = accessToken;
+
+            return Task.CompletedTask;
+          }
         };
       });
 

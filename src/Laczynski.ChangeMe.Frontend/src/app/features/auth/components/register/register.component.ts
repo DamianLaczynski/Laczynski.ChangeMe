@@ -27,6 +27,20 @@ export class RegisterComponent {
 
   readonly form = new FormGroup(
     {
+      firstName: new FormControl('', {
+        nonNullable: true,
+        validators: [
+          Validators.required,
+          Validators.maxLength(AuthConstraints.NAME_MAX_LENGTH)
+        ]
+      }),
+      lastName: new FormControl('', {
+        nonNullable: true,
+        validators: [
+          Validators.required,
+          Validators.maxLength(AuthConstraints.NAME_MAX_LENGTH)
+        ]
+      }),
       email: new FormControl('', {
         nonNullable: true,
         validators: [
@@ -60,9 +74,9 @@ export class RegisterComponent {
     this.isSubmitting.set(true);
     this.errorMessage.set('');
 
-    const { email, password } = this.form.getRawValue();
+    const { firstName, lastName, email, password } = this.form.getRawValue();
 
-    this.authService.register({ email, password }).subscribe({
+    this.authService.register({ firstName, lastName, email, password }).subscribe({
       next: () => {
         this.router.navigateByUrl('/issues');
       },

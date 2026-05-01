@@ -4,6 +4,42 @@
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div>
+      <label for="firstName">First name</label>
+      <input id="firstName" type="text" formControlName="firstName" />
+      @if (
+        form.controls.firstName.touched && form.controls.firstName.errors?.['required']
+      ) {
+        <p>First name is required.</p>
+      }
+      @if (
+        form.controls.firstName.touched && form.controls.firstName.errors?.['maxlength']
+      ) {
+        <p>
+          First name must be less than {{ authConstraints.NAME_MAX_LENGTH }} characters
+          long.
+        </p>
+      }
+    </div>
+
+    <div>
+      <label for="lastName">Last name</label>
+      <input id="lastName" type="text" formControlName="lastName" />
+      @if (
+        form.controls.lastName.touched && form.controls.lastName.errors?.['required']
+      ) {
+        <p>Last name is required.</p>
+      }
+      @if (
+        form.controls.lastName.touched && form.controls.lastName.errors?.['maxlength']
+      ) {
+        <p>
+          Last name must be less than {{ authConstraints.NAME_MAX_LENGTH }} characters
+          long.
+        </p>
+      }
+    </div>
+
+    <div>
       <label for="email">Email</label>
       <input id="email" type="email" formControlName="email" />
       @if (form.controls.email.touched && form.controls.email.errors?.['required']) {

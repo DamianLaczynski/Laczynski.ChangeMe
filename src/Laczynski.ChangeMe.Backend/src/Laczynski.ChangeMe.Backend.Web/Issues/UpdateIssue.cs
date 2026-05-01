@@ -1,10 +1,10 @@
-﻿using Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue;
+using Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue;
 using Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue.Entities;
 using Laczynski.ChangeMe.Backend.UseCases.Issues;
 
 namespace Laczynski.ChangeMe.Backend.Web.Issues;
 
-public class UpdateIssue(IMediator _mediator) : BaseEndpoint<UpdateIssueCommand, IssueDetailsDto>(_mediator)
+public class UpdateIssue(IMediator mediator) : BaseEndpoint<UpdateIssueCommand, IssueDetailsDto>(mediator)
 {
   protected override void ConfigureEndpoint()
   {
@@ -12,7 +12,7 @@ public class UpdateIssue(IMediator _mediator) : BaseEndpoint<UpdateIssueCommand,
     Summary(s =>
     {
       s.Summary = "Update issue";
-      s.Description = "Update a issue by ID";
+      s.Description = "Updates an issue by ID";
     });
   }
 }
@@ -30,7 +30,11 @@ public sealed class UpdateIssueCommandValidator : Validator<UpdateIssueCommand>
       .MaximumLength(IssueConstraints.TITLE_MAX_LENGTH);
 
     RuleFor(x => x.Description)
+      .NotEmpty()
       .MaximumLength(IssueConstraints.DESCRIPTION_MAX_LENGTH);
+
+    RuleFor(x => x.Status)
+      .IsInEnum();
 
     RuleFor(x => x.Priority)
       .IsInEnum();

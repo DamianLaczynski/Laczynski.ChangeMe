@@ -2,12 +2,16 @@ import { Injectable, inject, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from '@shared/api/services/api.service';
 import {
+  AddIssueCommentRequest,
   IssueDto,
   CreateIssueRequest,
   UpdateIssueRequest,
   IssueSearchParameters,
   IssuePriority,
-  IssueDetailsDto
+  IssueStatus,
+  IssueDetailsDto,
+  IssueAssignableUserDto,
+  IssueWatchStateDto
 } from '../models/issue.model';
 import { PaginationResult } from '@shared/data/models/pagination-result.model';
 
@@ -30,6 +34,12 @@ export class IssuesService {
     return this.apiService.get<IssueDetailsDto>(`${this.baseEndpoint}/${id}`);
   }
 
+  getAssignableUsers(): Observable<IssueAssignableUserDto[]> {
+    return this.apiService.get<IssueAssignableUserDto[]>(
+      `${this.baseEndpoint}/assignable-users`
+    );
+  }
+
   createIssue(request: CreateIssueRequest): Observable<IssueDetailsDto> {
     return this.apiService.post<IssueDetailsDto>(this.baseEndpoint, request);
   }
@@ -38,6 +48,29 @@ export class IssuesService {
     return this.apiService.put<IssueDetailsDto>(
       `${this.baseEndpoint}/${request.id}`,
       request
+    );
+  }
+
+  addComment(
+    issueId: string,
+    request: AddIssueCommentRequest
+  ): Observable<IssueDetailsDto> {
+    return this.apiService.post<IssueDetailsDto>(
+      `${this.baseEndpoint}/${issueId}/comments`,
+      request
+    );
+  }
+
+  watchIssue(issueId: string): Observable<IssueWatchStateDto> {
+    return this.apiService.post<IssueWatchStateDto>(
+      `${this.baseEndpoint}/${issueId}/watch`,
+      {}
+    );
+  }
+
+  unwatchIssue(issueId: string): Observable<IssueWatchStateDto> {
+    return this.apiService.delete<IssueWatchStateDto>(
+      `${this.baseEndpoint}/${issueId}/watch`
     );
   }
 
@@ -50,5 +83,12 @@ export class IssuesService {
     { value: IssuePriority.MEDIUM, label: 'Medium' },
     { value: IssuePriority.HIGH, label: 'High' },
     { value: IssuePriority.CRITICAL, label: 'Critical' }
+  ]);
+
+  issueStatuses = signal<{ value: IssueStatus; label: string }[]>([
+    { value: IssueStatus.NEW, label: 'New' },
+    { value: IssueStatus.IN_PROGRESS, label: 'In Progress' },
+    { value: IssueStatus.RESOLVED, label: 'Resolved' },
+    { value: IssueStatus.CLOSED, label: 'Closed' }
   ]);
 }

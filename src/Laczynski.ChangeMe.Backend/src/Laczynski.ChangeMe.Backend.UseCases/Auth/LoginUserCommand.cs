@@ -23,6 +23,12 @@ public class LoginUserHandler(
       return Result<AuthResponseDto>.Unauthorized();
 
     var accessToken = jwtTokenGenerator.GenerateToken(user);
-    return Result<AuthResponseDto>.Success(new AuthResponseDto(user.Id, user.Email, accessToken.Token, accessToken.ExpiresAtUtc));
+    return Result<AuthResponseDto>.Success(new AuthResponseDto(
+      user.Id,
+      user.FirstName,
+      user.LastName,
+      user.Email,
+      accessToken.Token,
+      accessToken.ExpiresAtUtc));
   }
 }
