@@ -3,6 +3,7 @@ import { IssuesComponent } from '@features/issues/components/issues-list/issues-
 import { CreateIssueComponent } from '@features/issues/components/create-issue/create-issue.component';
 import { IssueDetailsComponent } from '@features/issues/components/issue-details/issue-details.component';
 import { EditIssueComponent } from '@features/issues/components/edit-issue/edit-issue.component';
+import { NotificationsCenterComponent } from '@features/notifications/components/notifications-center/notifications-center.component';
 import { LoginComponent } from '@features/auth/components/login/login.component';
 import { RegisterComponent } from '@features/auth/components/register/register.component';
 import { authGuard } from '@features/auth/guards/auth.guard';
@@ -26,7 +27,8 @@ export const routes: Routes = [
   },
   {
     path: 'issues',
-    component: IssuesComponent
+    component: IssuesComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'issues/create',
@@ -35,11 +37,17 @@ export const routes: Routes = [
   },
   {
     path: 'issues/:id',
-    component: IssueDetailsComponent
+    component: IssueDetailsComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'issues/:id/edit',
     component: EditIssueComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'notifications',
+    component: NotificationsCenterComponent,
     canActivate: [authGuard]
   }
 ];

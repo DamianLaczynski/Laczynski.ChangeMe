@@ -57,6 +57,10 @@ export interface IssueCommentDto {
   createdAt: string;
 }
 
+export interface AddIssueCommentRequest {
+  content: string;
+}
+
 export interface IssueHistoryEntryDto {
   id: string;
   eventType: IssueHistoryEventType;
@@ -97,7 +101,20 @@ export interface UpdateIssueAcceptanceCriterionPayload {
   content: string;
 }
 
-export type IssueSearchParameters = PaginationParameters;
+export interface IssueSearchParameters extends PaginationParameters {
+  searchText?: string;
+  statuses?: IssueStatus[];
+  priorities?: IssuePriority[];
+  assignedToUserId?: string | null;
+  watchedByMe?: boolean;
+  createdByMe?: boolean;
+}
+
+export interface IssueWatchStateDto {
+  issueId: string;
+  isWatchedByCurrentUser: boolean;
+  watchersCount: number;
+}
 
 export enum IssueStatus {
   NEW = 'NEW',
@@ -130,4 +147,8 @@ export const IssueConstraints = {
 
 export const IssueAcceptanceCriteriaConstraints = {
   CONTENT_MAX_LENGTH: 2000
+};
+
+export const IssueCommentConstraints = {
+  CONTENT_MAX_LENGTH: 4000
 };

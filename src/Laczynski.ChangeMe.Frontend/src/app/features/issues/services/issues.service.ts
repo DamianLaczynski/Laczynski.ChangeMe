@@ -2,6 +2,7 @@ import { Injectable, inject, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from '@shared/api/services/api.service';
 import {
+  AddIssueCommentRequest,
   IssueDto,
   CreateIssueRequest,
   UpdateIssueRequest,
@@ -9,7 +10,8 @@ import {
   IssuePriority,
   IssueStatus,
   IssueDetailsDto,
-  IssueAssignableUserDto
+  IssueAssignableUserDto,
+  IssueWatchStateDto
 } from '../models/issue.model';
 import { PaginationResult } from '@shared/data/models/pagination-result.model';
 
@@ -46,6 +48,26 @@ export class IssuesService {
     return this.apiService.put<IssueDetailsDto>(
       `${this.baseEndpoint}/${request.id}`,
       request
+    );
+  }
+
+  addComment(issueId: string, request: AddIssueCommentRequest): Observable<IssueDetailsDto> {
+    return this.apiService.post<IssueDetailsDto>(
+      `${this.baseEndpoint}/${issueId}/comments`,
+      request
+    );
+  }
+
+  watchIssue(issueId: string): Observable<IssueWatchStateDto> {
+    return this.apiService.post<IssueWatchStateDto>(
+      `${this.baseEndpoint}/${issueId}/watch`,
+      {}
+    );
+  }
+
+  unwatchIssue(issueId: string): Observable<IssueWatchStateDto> {
+    return this.apiService.delete<IssueWatchStateDto>(
+      `${this.baseEndpoint}/${issueId}/watch`
     );
   }
 

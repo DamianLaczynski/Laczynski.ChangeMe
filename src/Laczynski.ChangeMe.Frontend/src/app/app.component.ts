@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { AuthService } from '@features/auth/services/auth.service';
+import { NotificationsService } from '@features/notifications/services/notifications.service';
 
 @Component({
   selector: 'app-root',
@@ -11,9 +12,11 @@ import { AuthService } from '@features/auth/services/auth.service';
 export class AppComponent {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly notificationsService = inject(NotificationsService);
 
   readonly currentUser = this.authService.currentUser;
   readonly isAuthenticated = this.authService.isAuthenticated;
+  readonly unreadNotificationsCount = this.notificationsService.unreadCount;
 
   logout(): void {
     this.authService.logout();
