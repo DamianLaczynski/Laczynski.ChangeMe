@@ -6,16 +6,18 @@ public record GetNotificationsQuery(bool? IsRead = null) : IQuery<NotificationLi
 
 public class GetNotificationsHandler(
   ApplicationDbContext context,
-  IUserAccessor userAccessor) : IQueryHandler<GetNotificationsQuery, NotificationListDto>
+  IUserAccessor userAccessor,
+  NotificationRetentionPolicy retentionPolicy) : IQueryHandler<GetNotificationsQuery, NotificationListDto>
 {
   public async Task<Result<NotificationListDto>> Handle(GetNotificationsQuery query, CancellationToken cancellationToken)
   {
     if (userAccessor.UserId is not Guid currentUserId)
       return Result<NotificationListDto>.Unauthorized();
 
-    var notificationsQuery = context.Notifications
-      .AsNoTracking()
-      .Where(n => n.RecipientUserId == currentUserId);
+    var notificationsQuery = retentionPolicy.ApplyActiveFilter(
+        context.Notifications
+          .AsNoTracking()
+          .Where(n => n.RecipientUserId == currentUserId));
 
     if (query.IsRead.HasValue)
       notificationsQuery = notificationsQuery.Where(n => n.IsRead == query.IsRead.Value);
@@ -36,9 +38,12 @@ public class GetNotificationsHandler(
       })
       .ToListAsync(cancellationToken);
 
-    var unreadCount = await context.Notifications
+    var unreadNotificationsQuery = context.Notifications
       .AsNoTracking()
-      .CountAsync(n => n.RecipientUserId == currentUserId && !n.IsRead, cancellationToken);
+      .Where(n => n.RecipientUserId == currentUserId);
+
+    var unreadCount = await retentionPolicy.ApplyActiveFilter(unreadNotificationsQuery)
+      .CountAsync(n => !n.IsRead, cancellationToken);
 
     return Result.Success(new NotificationListDto
     {

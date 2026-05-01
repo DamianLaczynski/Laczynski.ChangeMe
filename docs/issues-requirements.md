@@ -259,6 +259,15 @@ Użytkownik musi mieć dostęp do osobistego centrum powiadomień, w którym wid
 - Powiadomienie nie znika po przeczytaniu; przechodzi do stanu historycznego.
 - Powiadomienia historyczne pozostają dostępne użytkownikowi przez okres zgodny z polityką retencji systemu.
 - System rozróżnia co najmniej dwa stany: **nieprzeczytane** i **przeczytane**.
+- Polityka retencji powiadomień musi być jawnie zdefiniowana i konfigurowalna po stronie backendu.
+- Domyślna polityka retencji:
+  - powiadomienie **nieprzeczytane** pozostaje dostępne przez **90 dni** od czasu zdarzenia,
+  - powiadomienie **przeczytane** pozostaje dostępne przez **30 dni** od momentu oznaczenia jako przeczytane,
+  - niezależnie od stanu, pojedyncze powiadomienie nie może być przechowywane dłużej niż **180 dni** od czasu zdarzenia.
+- Po upływie okresu retencji powiadomienie znika z centrum powiadomień użytkownika i może zostać fizycznie usunięte z bazy danych.
+- Retencja dotyczy wyłącznie rekordu powiadomienia w centrum powiadomień; nie usuwa komentarzy, historii zmian ani samego issue.
+- Mechanizm czyszczenia przeterminowanych powiadomień musi działać automatycznie po stronie systemu i nie może wymagać akcji użytkownika.
+- Odczyt listy powiadomień nie może zwracać rekordów przeterminowanych, nawet jeśli cleanup fizyczny nie został jeszcze wykonany.
 
 ### Spójność z issue
 

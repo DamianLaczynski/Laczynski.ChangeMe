@@ -5,14 +5,15 @@ public record MarkAllNotificationsAsReadCommand(bool doNothing) : ICommand<Notif
 
 public class MarkNotificationAsReadHandler(
   ApplicationDbContext context,
-  IUserAccessor userAccessor) : ICommandHandler<MarkNotificationAsReadCommand, NotificationDto>
+  IUserAccessor userAccessor,
+  NotificationRetentionPolicy retentionPolicy) : ICommandHandler<MarkNotificationAsReadCommand, NotificationDto>
 {
   public async Task<Result<NotificationDto>> Handle(MarkNotificationAsReadCommand command, CancellationToken cancellationToken)
   {
     if (userAccessor.UserId is not Guid currentUserId)
       return Result.Unauthorized();
 
-    var notification = await context.Notifications
+    var notification = await retentionPolicy.ApplyActiveFilter(context.Notifications)
       .FirstOrDefaultAsync(n => n.Id == command.NotificationId && n.RecipientUserId == currentUserId, cancellationToken);
 
     if (notification is null)
@@ -38,14 +39,15 @@ public class MarkNotificationAsReadHandler(
 
 public class MarkAllNotificationsAsReadHandler(
   ApplicationDbContext context,
-  IUserAccessor userAccessor) : ICommandHandler<MarkAllNotificationsAsReadCommand, NotificationListDto>
+  IUserAccessor userAccessor,
+  NotificationRetentionPolicy retentionPolicy) : ICommandHandler<MarkAllNotificationsAsReadCommand, NotificationListDto>
 {
   public async Task<Result<NotificationListDto>> Handle(MarkAllNotificationsAsReadCommand command, CancellationToken cancellationToken)
   {
     if (userAccessor.UserId is not Guid currentUserId)
       return Result.Unauthorized();
 
-    var notifications = await context.Notifications
+    var notifications = await retentionPolicy.ApplyActiveFilter(context.Notifications)
       .Where(n => n.RecipientUserId == currentUserId && !n.IsRead)
       .ToListAsync(cancellationToken);
 
@@ -54,9 +56,10 @@ public class MarkAllNotificationsAsReadHandler(
 
     await context.SaveChangesAsync(cancellationToken);
 
-    var items = await context.Notifications
-      .AsNoTracking()
-      .Where(n => n.RecipientUserId == currentUserId)
+    var items = await retentionPolicy.ApplyActiveFilter(
+        context.Notifications
+          .AsNoTracking()
+          .Where(n => n.RecipientUserId == currentUserId))
       .OrderByDescending(n => n.OccurredAt)
       .Select(n => new NotificationDto
       {
@@ -75,7 +78,7 @@ public class MarkAllNotificationsAsReadHandler(
     return Result.Success(new NotificationListDto
     {
       Items = items,
-      UnreadCount = 0,
+      UnreadCount = items.Count(n => !n.IsRead),
     });
   }
 }
