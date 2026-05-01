@@ -11,6 +11,7 @@ public static class NotificationsConfig
     services.AddSignalR();
     services.AddScoped<IssueNotificationService>();
     services.AddSingleton<INotificationRealtimePublisher, SignalRNotificationRealtimePublisher>();
+    services.AddSingleton<IIssueRealtimePublisher, SignalRIssueRealtimePublisher>();
 
     logger.LogInformation("{Project} services configured", "Notifications");
     return services;
