@@ -184,6 +184,78 @@ public sealed class NotificationsEndpointTests(BackendWebApplicationFactory fact
     Assert.DoesNotContain(expiredNotificationId, remainingNotifications);
   }
 
+  [Fact]
+  public async Task MarkAllNotificationsAsRead_ShouldUpdateUnreadNotificationsAndReturnZeroUnreadCount()
+  {
+    var cancellationToken = TestContext.Current.CancellationToken;
+    var user = await CreateAuthenticatedUserAsync(cancellationToken);
+    using var client = user.Client;
+
+    await using var scope = factory.Services.CreateAsyncScope();
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+    var firstNotificationId = await SeedNotificationAsync(
+      dbContext,
+      user.UserId,
+      "Unread notification 1",
+      NotificationEventType.STATUS_CHANGED,
+      DateTime.UtcNow.AddMinutes(-5),
+      isRead: false,
+      readAt: null,
+      cancellationToken);
+
+    var secondNotificationId = await SeedNotificationAsync(
+      dbContext,
+      user.UserId,
+      "Unread notification 2",
+      NotificationEventType.PRIORITY_CHANGED,
+      DateTime.UtcNow.AddMinutes(-4),
+      isRead: false,
+      readAt: null,
+      cancellationToken);
+
+    var existingReadNotificationId = await SeedNotificationAsync(
+      dbContext,
+      user.UserId,
+      "Already read notification",
+      NotificationEventType.COMMENT_CREATED,
+      DateTime.UtcNow.AddMinutes(-3),
+      isRead: true,
+      readAt: DateTime.UtcNow.AddMinutes(-2),
+      cancellationToken);
+
+    var response = await client.PutAsJsonAsync("/api/notifications/read-all", new
+    {
+      doNothing = true
+    }, cancellationToken);
+
+    var responseBody = await response.Content.ReadAsStringAsync(cancellationToken);
+
+    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+    using var document = JsonDocument.Parse(responseBody);
+    var value = document.RootElement.GetProperty("value");
+    Assert.Equal(0, value.GetProperty("unreadCount").GetInt32());
+
+    var items = value.GetProperty("items").EnumerateArray().ToList();
+    Assert.Equal(3, items.Count);
+    Assert.All(items, item => Assert.True(item.GetProperty("isRead").GetBoolean()));
+
+    await using var assertScope = factory.Services.CreateAsyncScope();
+    var assertDb = assertScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var notifications = await assertDb.Notifications
+      .AsNoTracking()
+      .Where(n => n.RecipientUserId == user.UserId)
+      .ToDictionaryAsync(n => n.Id, cancellationToken);
+
+    Assert.True(notifications[firstNotificationId].IsRead);
+    Assert.True(notifications[secondNotificationId].IsRead);
+    Assert.True(notifications[existingReadNotificationId].IsRead);
+    Assert.NotNull(notifications[firstNotificationId].ReadAt);
+    Assert.NotNull(notifications[secondNotificationId].ReadAt);
+    Assert.NotNull(notifications[existingReadNotificationId].ReadAt);
+  }
+
   private async Task<AuthenticatedNotificationUser> CreateAuthenticatedUserAsync(CancellationToken cancellationToken)
   {
     var email = $"user-{Guid.NewGuid():N}@example.com";
