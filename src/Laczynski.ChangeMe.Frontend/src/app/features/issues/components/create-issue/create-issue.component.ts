@@ -147,11 +147,15 @@ export class CreateIssueComponent {
       });
   }
 
-  shouldShowError(control: FormControl<string> | FormControl<IssueStatus> | FormControl<IssuePriority>): boolean {
+  shouldShowError(
+    control: FormControl<string> | FormControl<IssueStatus> | FormControl<IssuePriority>
+  ): boolean {
     return !!control.errors && (control.touched || this.isSubmitted());
   }
 
-  private createAcceptanceCriterionGroup(content = ''): FormGroup<AcceptanceCriterionForm> {
+  private createAcceptanceCriterionGroup(
+    content = ''
+  ): FormGroup<AcceptanceCriterionForm> {
     return new FormGroup({
       content: new FormControl(content, {
         nonNullable: true,

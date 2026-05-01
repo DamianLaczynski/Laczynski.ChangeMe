@@ -1,5 +1,9 @@
 import { DestroyRef, Injectable, effect, inject, signal } from '@angular/core';
-import { HubConnection, HubConnectionBuilder, HubConnectionState } from '@microsoft/signalr';
+import {
+  HubConnection,
+  HubConnectionBuilder,
+  HubConnectionState
+} from '@microsoft/signalr';
 import { AuthService } from '@features/auth/services/auth.service';
 import { environment } from '@environments/environment';
 import {

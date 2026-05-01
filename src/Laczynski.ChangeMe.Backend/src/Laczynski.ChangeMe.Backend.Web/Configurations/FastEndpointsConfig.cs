@@ -1,6 +1,6 @@
+﻿using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using NSwag;
-using System.Text.Json.Serialization;
 
 namespace Laczynski.ChangeMe.Backend.Web.Configurations;
 

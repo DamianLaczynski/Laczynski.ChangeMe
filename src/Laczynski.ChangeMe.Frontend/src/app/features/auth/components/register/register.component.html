@@ -6,10 +6,14 @@
     <div>
       <label for="firstName">First name</label>
       <input id="firstName" type="text" formControlName="firstName" />
-      @if (form.controls.firstName.touched && form.controls.firstName.errors?.['required']) {
+      @if (
+        form.controls.firstName.touched && form.controls.firstName.errors?.['required']
+      ) {
         <p>First name is required.</p>
       }
-      @if (form.controls.firstName.touched && form.controls.firstName.errors?.['maxlength']) {
+      @if (
+        form.controls.firstName.touched && form.controls.firstName.errors?.['maxlength']
+      ) {
         <p>
           First name must be less than {{ authConstraints.NAME_MAX_LENGTH }} characters
           long.
@@ -20,10 +24,14 @@
     <div>
       <label for="lastName">Last name</label>
       <input id="lastName" type="text" formControlName="lastName" />
-      @if (form.controls.lastName.touched && form.controls.lastName.errors?.['required']) {
+      @if (
+        form.controls.lastName.touched && form.controls.lastName.errors?.['required']
+      ) {
         <p>Last name is required.</p>
       }
-      @if (form.controls.lastName.touched && form.controls.lastName.errors?.['maxlength']) {
+      @if (
+        form.controls.lastName.touched && form.controls.lastName.errors?.['maxlength']
+      ) {
         <p>
           Last name must be less than {{ authConstraints.NAME_MAX_LENGTH }} characters
           long.

@@ -32,10 +32,15 @@
               <p>Title is required</p>
             }
             @if (form.controls.title.errors?.['minlength']) {
-              <p>Title must be at least {{ issueConstraints.TITLE_MIN_LENGTH }} characters</p>
+              <p>
+                Title must be at least
+                {{ issueConstraints.TITLE_MIN_LENGTH }} characters
+              </p>
             }
             @if (form.controls.title.errors?.['maxlength']) {
-              <p>Title must be at most {{ issueConstraints.TITLE_MAX_LENGTH }} characters</p>
+              <p>
+                Title must be at most {{ issueConstraints.TITLE_MAX_LENGTH }} characters
+              </p>
             }
           }
         </div>
@@ -111,7 +116,10 @@
                 @if (criterion.controls.content.errors['maxlength']) {
                   <p>
                     Acceptance criterion must be at most
-                    {{ issueAcceptanceCriteriaConstraints.CONTENT_MAX_LENGTH }} characters
+                    {{
+                      issueAcceptanceCriteriaConstraints.CONTENT_MAX_LENGTH
+                    }}
+                    characters
                   </p>
                 }
               }

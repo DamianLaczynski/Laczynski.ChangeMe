@@ -6,14 +6,8 @@
     <a [routerLink]="['/issues']">Back to issues list</a>
     @if (issue() && isAuthenticated()) {
       <a [routerLink]="['/issues', issue()!.id, 'edit']">Edit issue</a>
-      <button
-        type="button"
-        (click)="toggleWatch()"
-        [disabled]="isTogglingWatch()"
-      >
-        {{
-          issue()!.isWatchedByCurrentUser ? 'Unwatch' : 'Watch'
-        }}
+      <button type="button" (click)="toggleWatch()" [disabled]="isTogglingWatch()">
+        {{ issue()!.isWatchedByCurrentUser ? 'Unwatch' : 'Watch' }}
         ({{ issue()!.watchersCount }})
       </button>
     }
@@ -117,7 +111,10 @@
         <h3>History</h3>
         @if (sortedHistoryEntries().length > 0) {
           <ul>
-            @for (entry of sortedHistoryEntries(); track trackHistoryEntry($index, entry)) {
+            @for (
+              entry of sortedHistoryEntries();
+              track trackHistoryEntry($index, entry)
+            ) {
               <li>
                 <p>{{ entry.eventType }}</p>
                 <p>{{ entry.actorName || entry.actorUserId }}</p>
@@ -125,8 +122,8 @@
                 <p>{{ entry.summary }}</p>
                 @if (entry.previousValue || entry.currentValue) {
                   <p>
-                    Before: {{ entry.previousValue || '-' }} |
-                    After: {{ entry.currentValue || '-' }}
+                    Before: {{ entry.previousValue || '-' }} | After:
+                    {{ entry.currentValue || '-' }}
                   </p>
                 }
               </li>

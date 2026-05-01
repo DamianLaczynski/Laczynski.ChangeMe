@@ -6,11 +6,7 @@
     <button type="button" (click)="notificationsService.loadNotifications()">
       Refresh notifications
     </button>
-    <button
-      type="button"
-      (click)="markAllAsRead()"
-      [disabled]="unreadCount() === 0"
-    >
+    <button type="button" (click)="markAllAsRead()" [disabled]="unreadCount() === 0">
       Mark all as read
     </button>
   </div>

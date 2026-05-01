@@ -1,5 +1,4 @@
-using System.Linq.Expressions;
-using Laczynski.ChangeMe.Backend.Domain.Aggregates.Notifications;
+﻿using Laczynski.ChangeMe.Backend.Domain.Aggregates.Notifications;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 

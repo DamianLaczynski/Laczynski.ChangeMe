@@ -110,8 +110,8 @@
     </section>
   } @else {
     <p>
-      Results: {{ pagination()?.totalCount ?? 0 }} |
-      Page {{ pagination()?.currentPage ?? 1 }} of {{ pagination()?.totalPages ?? 0 }}
+      Results: {{ pagination()?.totalCount ?? 0 }} | Page
+      {{ pagination()?.currentPage ?? 1 }} of {{ pagination()?.totalPages ?? 0 }}
     </p>
 
     @if (issues().length > 0) {
@@ -205,14 +205,14 @@
       <button
         type="button"
         (click)="changePage((pagination()?.currentPage ?? 1) - 1)"
-        [disabled]="!(pagination()?.hasPrevious)"
+        [disabled]="!pagination()?.hasPrevious"
       >
         Previous
       </button>
       <button
         type="button"
         (click)="changePage((pagination()?.currentPage ?? 1) + 1)"
-        [disabled]="!(pagination()?.hasNext)"
+        [disabled]="!pagination()?.hasNext"
       >
         Next
       </button>

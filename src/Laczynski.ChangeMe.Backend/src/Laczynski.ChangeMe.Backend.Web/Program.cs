@@ -1,5 +1,4 @@
-using Laczynski.ChangeMe.Backend.Domain.Interfaces;
-using Laczynski.ChangeMe.Backend.Infrastructure.Configurations;
+﻿using Laczynski.ChangeMe.Backend.Infrastructure.Configurations;
 using Laczynski.ChangeMe.Backend.Web.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);

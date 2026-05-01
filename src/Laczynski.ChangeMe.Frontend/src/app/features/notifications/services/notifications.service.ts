@@ -1,7 +1,11 @@
 import { computed, effect, Injectable, inject, signal, untracked } from '@angular/core';
 import { AuthService } from '@features/auth/services/auth.service';
 import { ApiService } from '@shared/api/services/api.service';
-import { NotificationDto, NotificationListDto, NotificationRealtimeMessage } from '../models/notification.model';
+import {
+  NotificationDto,
+  NotificationListDto,
+  NotificationRealtimeMessage
+} from '../models/notification.model';
 import { NotificationsRealtimeConnectionService } from './notifications-realtime-connection.service';
 
 @Injectable({

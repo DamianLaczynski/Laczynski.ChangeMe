@@ -193,7 +193,9 @@ export class EditIssueComponent {
       });
   }
 
-  shouldShowError(control: FormControl<string> | FormControl<IssueStatus> | FormControl<IssuePriority>): boolean {
+  shouldShowError(
+    control: FormControl<string> | FormControl<IssueStatus> | FormControl<IssuePriority>
+  ): boolean {
     return !!control.errors && (control.touched || this.isSubmitted());
   }
 

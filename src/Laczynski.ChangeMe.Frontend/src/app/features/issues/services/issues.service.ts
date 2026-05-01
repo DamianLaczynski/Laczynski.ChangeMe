@@ -51,7 +51,10 @@ export class IssuesService {
     );
   }
 
-  addComment(issueId: string, request: AddIssueCommentRequest): Observable<IssueDetailsDto> {
+  addComment(
+    issueId: string,
+    request: AddIssueCommentRequest
+  ): Observable<IssueDetailsDto> {
     return this.apiService.post<IssueDetailsDto>(
       `${this.baseEndpoint}/${issueId}/comments`,
       request

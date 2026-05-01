@@ -1,4 +1,11 @@
-import { Component, DestroyRef, effect, inject, signal, untracked } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  effect,
+  inject,
+  signal,
+  untracked
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -151,7 +158,11 @@ export class IssuesComponent {
 
   changePage(pageNumber: number): void {
     const currentPagination = this.pagination();
-    if (!currentPagination || pageNumber < 1 || pageNumber > currentPagination.totalPages) {
+    if (
+      !currentPagination ||
+      pageNumber < 1 ||
+      pageNumber > currentPagination.totalPages
+    ) {
       return;
     }
 
@@ -164,7 +175,9 @@ export class IssuesComponent {
   toggleSort(field: IssueSortField): void {
     const currentQuery = this.query();
     const isSameField = currentQuery.sortField === field;
-    const ascending = isSameField ? !currentQuery.ascending : this.getDefaultAscending(field);
+    const ascending = isSameField
+      ? !currentQuery.ascending
+      : this.getDefaultAscending(field);
 
     this.query.set({
       ...currentQuery,
