@@ -1,6 +1,6 @@
 using Laczynski.ChangeMe.Backend.Domain.Aggregates.Notifications.Enums;
 
-namespace Laczynski.ChangeMe.Backend.UseCases.Notifications;
+namespace Laczynski.ChangeMe.Backend.UseCases.Notifications.Dtos;
 
 public class NotificationDto
 {

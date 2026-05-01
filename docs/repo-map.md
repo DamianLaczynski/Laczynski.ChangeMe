@@ -54,9 +54,10 @@ Each current feature follows a simple slice structure:
   - transport-level configuration
   - common endpoint base types and pipeline behavior
 - `src/Laczynski.ChangeMe.Backend.UseCases`
-  - commands and queries
-  - handlers
-  - DTOs returned to the API
+  - top level of each feature folder contains only command and query files
+  - handlers stay in the same files as their commands and queries
+  - `Dtos/` contains API-facing DTOs for the feature
+  - `Services/` contains feature-scoped orchestration services
   - request/response orchestration
 - `src/Laczynski.ChangeMe.Backend.Domain`
   - aggregates and entities
@@ -75,7 +76,7 @@ Current issue endpoints illustrate the standard flow:
 1. HTTP endpoint class in `Web/Issues/*.cs`
 2. validation class near the endpoint
 3. command/query contract in `UseCases/Issues/*.cs`
-4. handler in the same use case file
+4. handler in the same command/query file
 5. domain calls in `Domain/Aggregates/*`
 6. persistence through `ApplicationDbContext`
 

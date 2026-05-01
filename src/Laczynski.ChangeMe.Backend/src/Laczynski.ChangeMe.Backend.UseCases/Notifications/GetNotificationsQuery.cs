@@ -1,4 +1,7 @@
-﻿namespace Laczynski.ChangeMe.Backend.UseCases.Notifications;
+using Laczynski.ChangeMe.Backend.UseCases.Notifications.Dtos;
+using Laczynski.ChangeMe.Backend.UseCases.Notifications.Services;
+
+namespace Laczynski.ChangeMe.Backend.UseCases.Notifications;
 
 public record GetNotificationsQuery(bool? IsRead = null) : IQuery<NotificationListDto>;
 

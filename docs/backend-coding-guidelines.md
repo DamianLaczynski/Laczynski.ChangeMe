@@ -18,9 +18,12 @@ ASP.NET Core on .NET 10 with FastEndpoints, MediatR-style request handling, EF C
 
 ### UseCases
 
-- Owns commands, queries, handlers, and API DTOs.
+- Owns commands, queries, handlers, API DTOs, and feature-scoped orchestration services.
 - Orchestrates domain operations and infrastructure dependencies.
 - Should not duplicate domain invariants that already belong in aggregates.
+- Keep only `*Command.cs` and `*Query.cs` files at the top level of each feature folder.
+- Place feature DTOs under `UseCases/<Feature>/Dtos/`.
+- Place feature services under `UseCases/<Feature>/Services/`.
 
 ### Domain
 
@@ -36,9 +39,11 @@ ASP.NET Core on .NET 10 with FastEndpoints, MediatR-style request handling, EF C
 1. Add or extend the endpoint in `Web/<Feature>/`.
 2. Add or update the validator in the same file if the request shape changes.
 3. Add or update the command/query and handler in `UseCases/<Feature>/`.
-4. Reuse or extend domain methods in `Domain/`.
-5. Update EF configuration or migrations in `Infrastructure/` if persistence changes.
-6. Add or update integration tests under `tests/...IntegrationTests/Endpoints/<Feature>/`.
+4. Add or update feature DTOs in `UseCases/<Feature>/Dtos/` when the API contract changes.
+5. Add or update feature services in `UseCases/<Feature>/Services/` when orchestration is shared.
+6. Reuse or extend domain methods in `Domain/`.
+7. Update EF configuration or migrations in `Infrastructure/` if persistence changes.
+8. Add or update integration tests under `tests/...IntegrationTests/Endpoints/<Feature>/`.
 
 ## Endpoint conventions
 
@@ -49,7 +54,7 @@ ASP.NET Core on .NET 10 with FastEndpoints, MediatR-style request handling, EF C
 
 ## Handler conventions
 
-- Handlers currently live in the same file as their request contract in `UseCases`.
+- Handlers live in the same file as their request contract in `UseCases/<Feature>/`.
 - Return `Result<T>` consistently.
 - Use `ApplicationDbContext` for persistence from the handler layer.
 - Use mediator chaining when the workflow should return a fully built DTO already supported by an existing query.

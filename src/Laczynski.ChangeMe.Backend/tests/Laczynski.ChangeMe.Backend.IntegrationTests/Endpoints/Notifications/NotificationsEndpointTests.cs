@@ -9,7 +9,7 @@ using Laczynski.ChangeMe.Backend.Domain.Interfaces;
 using Laczynski.ChangeMe.Backend.Infrastructure.Persistence;
 using Laczynski.ChangeMe.Backend.IntegrationTests.Fixtures;
 using Laczynski.ChangeMe.Backend.IntegrationTests.Support.Fakes;
-using Laczynski.ChangeMe.Backend.UseCases.Notifications;
+using Laczynski.ChangeMe.Backend.UseCases.Notifications.Services;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

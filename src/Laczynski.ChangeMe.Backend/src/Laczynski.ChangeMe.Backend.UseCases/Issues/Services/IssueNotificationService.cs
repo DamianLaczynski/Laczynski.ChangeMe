@@ -2,7 +2,7 @@ using Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue.Enums;
 using Laczynski.ChangeMe.Backend.Domain.Aggregates.Notifications;
 using Laczynski.ChangeMe.Backend.Domain.Aggregates.Notifications.Enums;
 
-namespace Laczynski.ChangeMe.Backend.UseCases.Issues;
+namespace Laczynski.ChangeMe.Backend.UseCases.Issues.Services;
 
 public class IssueNotificationService(
   ApplicationDbContext context,

@@ -1,5 +1,6 @@
 using Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue;
 using Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue.Enums;
+using Laczynski.ChangeMe.Backend.UseCases.Issues.Dtos;
 
 namespace Laczynski.ChangeMe.Backend.UseCases.Issues;
 

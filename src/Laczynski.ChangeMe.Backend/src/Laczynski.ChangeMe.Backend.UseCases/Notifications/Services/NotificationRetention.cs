@@ -1,8 +1,8 @@
-﻿using Laczynski.ChangeMe.Backend.Domain.Aggregates.Notifications;
+using Laczynski.ChangeMe.Backend.Domain.Aggregates.Notifications;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Laczynski.ChangeMe.Backend.UseCases.Notifications;
+namespace Laczynski.ChangeMe.Backend.UseCases.Notifications.Services;
 
 public sealed class NotificationRetentionOptions
 {

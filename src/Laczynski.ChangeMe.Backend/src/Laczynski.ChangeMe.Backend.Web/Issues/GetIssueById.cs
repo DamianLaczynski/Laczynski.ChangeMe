@@ -1,4 +1,5 @@
 ﻿using Laczynski.ChangeMe.Backend.UseCases.Issues;
+using Laczynski.ChangeMe.Backend.UseCases.Issues.Dtos;
 
 namespace Laczynski.ChangeMe.Backend.Web.Issues;
 

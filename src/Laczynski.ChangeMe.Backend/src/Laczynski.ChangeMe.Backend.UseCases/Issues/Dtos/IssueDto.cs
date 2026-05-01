@@ -1,7 +1,7 @@
-﻿using Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue;
+using Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue;
 using Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue.Enums;
 
-namespace Laczynski.ChangeMe.Backend.UseCases.Issues;
+namespace Laczynski.ChangeMe.Backend.UseCases.Issues.Dtos;
 
 public class IssueDto
 {

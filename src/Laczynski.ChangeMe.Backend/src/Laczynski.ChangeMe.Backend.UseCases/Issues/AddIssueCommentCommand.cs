@@ -1,3 +1,6 @@
+using Laczynski.ChangeMe.Backend.UseCases.Issues.Dtos;
+using Laczynski.ChangeMe.Backend.UseCases.Issues.Services;
+
 namespace Laczynski.ChangeMe.Backend.UseCases.Issues;
 
 public record AddIssueCommentCommand(Guid IssueId, string Content) : ICommand<IssueDetailsDto>;

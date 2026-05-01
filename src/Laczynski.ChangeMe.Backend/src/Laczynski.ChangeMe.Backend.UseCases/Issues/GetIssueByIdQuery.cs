@@ -1,3 +1,5 @@
+using Laczynski.ChangeMe.Backend.UseCases.Issues.Dtos;
+
 namespace Laczynski.ChangeMe.Backend.UseCases.Issues;
 
 public record GetIssueByIdQuery(Guid Id) : IQuery<IssueDetailsDto>;

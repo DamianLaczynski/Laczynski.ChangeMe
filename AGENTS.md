@@ -52,7 +52,11 @@ Run backend commands from `src/Laczynski.ChangeMe.Backend`.
 ### Backend
 
 - HTTP endpoints live in `src/Laczynski.ChangeMe.Backend.Web`.
-- Request DTOs, handlers, and query/command contracts live in `src/Laczynski.ChangeMe.Backend.UseCases`.
+- Query and command contracts live in `src/Laczynski.ChangeMe.Backend.UseCases/<Feature>/`.
+- Keep only `*Query.cs` and `*Command.cs` files at the top level of each `UseCases` feature folder.
+- Place feature DTOs in `src/Laczynski.ChangeMe.Backend.UseCases/<Feature>/Dtos/`.
+- Place feature services in `src/Laczynski.ChangeMe.Backend.UseCases/<Feature>/Services/`.
+- Handlers still live with their matching command or query file.
 - Domain rules and aggregates live in `src/Laczynski.ChangeMe.Backend.Domain`.
 - EF Core, persistence, auth, and adapters live in `src/Laczynski.ChangeMe.Backend.Infrastructure`.
 - Integration tests mirror API behavior under `tests/Laczynski.ChangeMe.Backend.IntegrationTests`.

@@ -1,4 +1,5 @@
 using Laczynski.ChangeMe.Backend.UseCases.Notifications;
+using Laczynski.ChangeMe.Backend.UseCases.Notifications.Dtos;
 
 namespace Laczynski.ChangeMe.Backend.Web.Notifications;
 

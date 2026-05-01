@@ -1,6 +1,7 @@
 using Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue;
 using Laczynski.ChangeMe.Backend.Domain.Aggregates.Issue.Entities;
 using Laczynski.ChangeMe.Backend.UseCases.Issues;
+using Laczynski.ChangeMe.Backend.UseCases.Issues.Dtos;
 
 namespace Laczynski.ChangeMe.Backend.Web.Issues;
 

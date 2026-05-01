@@ -1,7 +1,7 @@
 using Hangfire;
 using Laczynski.ChangeMe.Backend.Domain.Interfaces;
-using Laczynski.ChangeMe.Backend.UseCases.Issues;
-using Laczynski.ChangeMe.Backend.UseCases.Notifications;
+using Laczynski.ChangeMe.Backend.UseCases.Issues.Services;
+using Laczynski.ChangeMe.Backend.UseCases.Notifications.Services;
 using Laczynski.ChangeMe.Backend.Web.Notifications;
 using Microsoft.Extensions.Options;
 

@@ -1,4 +1,5 @@
-﻿using Laczynski.ChangeMe.Backend.Domain.Aggregates.Users;
+using Laczynski.ChangeMe.Backend.Domain.Aggregates.Users;
+using Laczynski.ChangeMe.Backend.UseCases.Auth.Dtos;
 
 namespace Laczynski.ChangeMe.Backend.UseCases.Auth;
 
@@ -16,27 +17,27 @@ public class RegisterUserHandler(
   public async Task<Result<AuthResponseDto>> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
   {
     var normalizedEmail = User.NormalizeEmail(command.Email);
-    var emailExists = await context.Users.AnyAsync(x => x.NormalizedEmail == normalizedEmail, cancellationToken);
-    if (emailExists)
+    var userExists = await context.Users.AnyAsync(x => x.NormalizedEmail == normalizedEmail, cancellationToken);
+    if (userExists)
       return Result<AuthResponseDto>.Conflict("User with this email already exists.");
 
     var passwordHash = passwordHasher.HashPassword(command.Password);
-    var userResult = User.Create(command.FirstName, command.LastName, command.Email, passwordHash);
-    if (!userResult.IsSuccess)
-      return userResult.Map();
+    var createUserResult = User.Create(command.FirstName, command.LastName, command.Email, passwordHash);
+    if (!createUserResult.IsSuccess)
+      return createUserResult.Map();
 
-    await context.Users.AddAsync(userResult.Value, cancellationToken);
+    await context.Users.AddAsync(createUserResult.Value, cancellationToken);
     await context.SaveChangesAsync(cancellationToken);
 
-    var accessToken = jwtTokenGenerator.GenerateToken(userResult.Value);
+    var accessToken = jwtTokenGenerator.GenerateToken(createUserResult.Value);
     return Result<AuthResponseDto>.Created(
       new AuthResponseDto(
-        userResult.Value.Id,
-        userResult.Value.FirstName,
-        userResult.Value.LastName,
-        userResult.Value.Email,
+        createUserResult.Value.Id,
+        createUserResult.Value.FirstName,
+        createUserResult.Value.LastName,
+        createUserResult.Value.Email,
         accessToken.Token,
         accessToken.ExpiresAtUtc),
-      $"/auth/users/{userResult.Value.Id}");
+      $"/users/{createUserResult.Value.Id}");
   }
 }
