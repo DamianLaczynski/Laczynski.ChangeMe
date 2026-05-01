@@ -13,8 +13,7 @@ namespace Laczynski.ChangeMe.Backend.IntegrationTests.Fixtures;
 public sealed class BackendWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
   private readonly Dictionary<string, string?> environmentOverrides = new();
-  private readonly PostgreSqlContainer postgresContainer = new PostgreSqlBuilder()
-    .WithImage("postgres:15.1")
+  private readonly PostgreSqlContainer postgresContainer = new PostgreSqlBuilder("postgres:15.1")
     .Build();
 
   public async ValueTask InitializeAsync()
