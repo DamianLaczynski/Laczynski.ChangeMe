@@ -12,6 +12,8 @@ public class IssueAcceptanceCriterion : Entity
   public static Result<IssueAcceptanceCriterion> Create(Guid issueId, string content)
   {
     var validationErrors = new List<ValidationError>();
+    if (issueId == Guid.Empty)
+      validationErrors.Add(new ValidationError("issueId", "cannot be empty"));
     if (string.IsNullOrWhiteSpace(content))
       validationErrors.Add(new ValidationError("content", "cannot be empty"));
     if (content.Length > IssueAcceptanceCriterionConstraints.CONTENT_MAX_LENGTH)

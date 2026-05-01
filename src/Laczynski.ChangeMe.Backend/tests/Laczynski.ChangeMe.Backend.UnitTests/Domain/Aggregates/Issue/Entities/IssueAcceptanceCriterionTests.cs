@@ -5,6 +5,16 @@ namespace Laczynski.ChangeMe.Backend.UnitTests;
 
 public sealed class IssueAcceptanceCriterionTests
 {
+  [Fact]
+  public void Create_WhenIssueIdIsEmpty_ShouldReturnInvalidResult()
+  {
+    var result = IssueAcceptanceCriterion.Create(Guid.Empty, "Acceptance criterion");
+
+    Assert.False(result.IsSuccess);
+    Assert.Equal(ResultStatus.Invalid, result.Status);
+    Assert.Contains(result.ValidationErrors, error => error.Identifier == "issueId");
+  }
+
   [Theory]
   [InlineData("")]
   [InlineData(" ")]
@@ -14,6 +24,18 @@ public sealed class IssueAcceptanceCriterionTests
 
     Assert.False(result.IsSuccess);
     Assert.Equal(ResultStatus.Invalid, result.Status);
+  }
+
+  [Fact]
+  public void Create_WhenContentExceedsMaxLength_ShouldReturnInvalidResult()
+  {
+    var result = IssueAcceptanceCriterion.Create(
+      Guid.NewGuid(),
+      new string('A', IssueAcceptanceCriterionConstraints.CONTENT_MAX_LENGTH + 1));
+
+    Assert.False(result.IsSuccess);
+    Assert.Equal(ResultStatus.Invalid, result.Status);
+    Assert.Contains(result.ValidationErrors, error => error.Identifier == "content");
   }
 
   [Theory]
