@@ -80,30 +80,7 @@ public class IssueHistoryEntryDto
 
 public static class IssueExtensions
 {
-  public static IssueDto ToListDto(
-    this Issue issue,
-    string? createdByName,
-    string? assignedToUserName,
-    Guid? currentUserId)
-  {
-    return new IssueDto
-    {
-      Id = issue.Id,
-      Title = issue.Title,
-      Description = issue.Description,
-      Status = issue.Status,
-      Priority = issue.Priority,
-      CreatedBy = issue.CreatedBy,
-      CreatedByName = createdByName,
-      AssignedToUserId = issue.AssignedToUserId,
-      AssignedToUserName = assignedToUserName,
-      CreatedAt = issue.CreatedAt,
-      UpdatedAt = issue.UpdatedAt,
-      LastActivityAt = issue.LastActivityAt,
-      IsWatchedByCurrentUser = currentUserId.HasValue && issue.Watchers.Any(w => w.UserId == currentUserId.Value),
-      WatchersCount = issue.Watchers.Count,
-    };
-  }
+  private const string UnassignedHistoryValue = "Unassigned";
 
   public static IssueDetailsDto ToDetailsDto(
     this Issue issue,
@@ -156,11 +133,27 @@ public static class IssueExtensions
           ActorUserId = h.ActorUserId,
           ActorName = userLookup.GetValueOrDefault(h.ActorUserId),
           Summary = h.Summary,
-          PreviousValue = h.PreviousValue,
-          CurrentValue = h.CurrentValue,
+          PreviousValue = FormatHistoryValue(h.EventType, h.PreviousValue, userLookup),
+          CurrentValue = FormatHistoryValue(h.EventType, h.CurrentValue, userLookup),
           CreatedAt = h.CreatedAt,
         })
         .ToList(),
     };
+  }
+
+  private static string? FormatHistoryValue(
+    IssueHistoryEventType eventType,
+    string? value,
+    IReadOnlyDictionary<Guid, string> userLookup)
+  {
+    if (eventType != IssueHistoryEventType.ASSIGNEE_CHANGED)
+      return value;
+
+    if (string.IsNullOrWhiteSpace(value))
+      return UnassignedHistoryValue;
+
+    return Guid.TryParse(value, out var userId)
+      ? userLookup.GetValueOrDefault(userId, value)
+      : value;
   }
 }

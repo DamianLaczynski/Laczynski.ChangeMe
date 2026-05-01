@@ -172,6 +172,25 @@ public class Issue : Entity, IAggregateRoot
     return Result.Success(acceptanceCriterion.Value);
   }
 
+  public Result<IssueAcceptanceCriterion> AddAcceptanceCriterion(string content, Guid actorUserId)
+  {
+    var acceptanceCriterionResult = AddAcceptanceCriterion(content);
+    if (!acceptanceCriterionResult.IsSuccess)
+      return acceptanceCriterionResult.Map();
+
+    var historyResult = AddHistoryEntry(
+      IssueHistoryEventType.ACCEPTANCE_CRITERION_ADDED,
+      actorUserId,
+      "Acceptance criterion added.",
+      null,
+      acceptanceCriterionResult.Value.Content);
+    if (!historyResult.IsSuccess)
+      return historyResult.Map();
+
+    LastActivityAt = DateTime.UtcNow;
+    return acceptanceCriterionResult;
+  }
+
   public Result<IssueAcceptanceCriterion> UpdateAcceptanceCriterion(Guid acceptanceCriterionId, string content)
   {
     var acceptanceCriterion = acceptanceCriteria.FirstOrDefault(c => c.Id == acceptanceCriterionId);
@@ -181,6 +200,34 @@ public class Issue : Entity, IAggregateRoot
     return acceptanceCriterion.UpdateContent(content);
   }
 
+  public Result<IssueAcceptanceCriterion> UpdateAcceptanceCriterion(Guid acceptanceCriterionId, string content, Guid actorUserId)
+  {
+    var acceptanceCriterion = acceptanceCriteria.FirstOrDefault(c => c.Id == acceptanceCriterionId);
+    if (acceptanceCriterion is null)
+      return Result.NotFound();
+
+    var previousContent = acceptanceCriterion.Content;
+    var updateResult = acceptanceCriterion.UpdateContent(content);
+    if (!updateResult.IsSuccess)
+      return updateResult.Map();
+
+    if (!string.Equals(previousContent, updateResult.Value.Content, StringComparison.Ordinal))
+    {
+      var historyResult = AddHistoryEntry(
+        IssueHistoryEventType.ACCEPTANCE_CRITERION_UPDATED,
+        actorUserId,
+        "Acceptance criterion updated.",
+        previousContent,
+        updateResult.Value.Content);
+      if (!historyResult.IsSuccess)
+        return historyResult.Map();
+
+      LastActivityAt = DateTime.UtcNow;
+    }
+
+    return updateResult;
+  }
+
   public Result<IssueAcceptanceCriterion> RemoveAcceptanceCriterion(Guid acceptanceCriterionId)
   {
     var acceptanceCriterion = acceptanceCriteria.FirstOrDefault(c => c.Id == acceptanceCriterionId);
@@ -188,6 +235,26 @@ public class Issue : Entity, IAggregateRoot
       return Result.NotFound();
 
     acceptanceCriteria.Remove(acceptanceCriterion);
+    return Result.Success(acceptanceCriterion);
+  }
+
+  public Result<IssueAcceptanceCriterion> RemoveAcceptanceCriterion(Guid acceptanceCriterionId, Guid actorUserId)
+  {
+    var acceptanceCriterion = acceptanceCriteria.FirstOrDefault(c => c.Id == acceptanceCriterionId);
+    if (acceptanceCriterion is null)
+      return Result.NotFound();
+
+    var historyResult = AddHistoryEntry(
+      IssueHistoryEventType.ACCEPTANCE_CRITERION_REMOVED,
+      actorUserId,
+      "Acceptance criterion removed.",
+      acceptanceCriterion.Content,
+      null);
+    if (!historyResult.IsSuccess)
+      return historyResult.Map();
+
+    acceptanceCriteria.Remove(acceptanceCriterion);
+    LastActivityAt = DateTime.UtcNow;
     return Result.Success(acceptanceCriterion);
   }
 

@@ -27,6 +27,15 @@ public class GetIssueByIdHandler(
     if (issue.AssignedToUserId.HasValue)
       userIds.Add(issue.AssignedToUserId.Value);
 
+    foreach (var assigneeHistoryEntry in issue.HistoryEntries.Where(h => h.EventType == Domain.Aggregates.Issue.Enums.IssueHistoryEventType.ASSIGNEE_CHANGED))
+    {
+      if (Guid.TryParse(assigneeHistoryEntry.PreviousValue, out var previousAssigneeId))
+        userIds.Add(previousAssigneeId);
+
+      if (Guid.TryParse(assigneeHistoryEntry.CurrentValue, out var currentAssigneeId))
+        userIds.Add(currentAssigneeId);
+    }
+
     foreach (var comment in issue.Comments)
       userIds.Add(comment.CreatedBy);
 

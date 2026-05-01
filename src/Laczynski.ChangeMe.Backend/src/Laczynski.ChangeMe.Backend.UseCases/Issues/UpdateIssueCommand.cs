@@ -58,7 +58,7 @@ public class UpdateIssueHandler(
     if (!updateResult.IsSuccess)
       return updateResult.Map();
 
-    var acceptanceCriteriaResult = UpdateAcceptanceCriteria(command.AcceptanceCriteria, issue);
+    var acceptanceCriteriaResult = UpdateAcceptanceCriteria(command.AcceptanceCriteria, issue, actorUserId);
     if (!acceptanceCriteriaResult.IsSuccess)
       return acceptanceCriteriaResult.Map();
 
@@ -71,7 +71,9 @@ public class UpdateIssueHandler(
 
     await context.SaveChangesAsync(cancellationToken);
 
-    foreach (var historyEntryId in newHistoryEntries.Select(h => h.Id))
+    foreach (var historyEntryId in newHistoryEntries
+               .Where(h => IsNotificationEligible(h.EventType))
+               .Select(h => h.Id))
       await issueNotificationService.NotifyIssueActivityAsync(issue.Id, historyEntryId, actorUserId, cancellationToken);
 
     await issueRealtimePublisher.PublishAsync(new IssueRealtimeMessage
@@ -88,7 +90,7 @@ public class UpdateIssueHandler(
     return Result.Success(updatedIssueResult.Value);
   }
 
-  private Result UpdateAcceptanceCriteria(List<UpdateIssueAcceptanceCriterionPayload>? acceptanceCriteria, Issue issue)
+  private Result UpdateAcceptanceCriteria(List<UpdateIssueAcceptanceCriterionPayload>? acceptanceCriteria, Issue issue, Guid actorUserId)
   {
     if (acceptanceCriteria is null)
       return Result.Success();
@@ -99,7 +101,10 @@ public class UpdateIssueHandler(
     {
       if (acceptanceCriterion.Id.HasValue)
       {
-        var updateAcceptanceCriterionResult = issue.UpdateAcceptanceCriterion(acceptanceCriterion.Id.Value, acceptanceCriterion.Content);
+        var updateAcceptanceCriterionResult = issue.UpdateAcceptanceCriterion(
+          acceptanceCriterion.Id.Value,
+          acceptanceCriterion.Content,
+          actorUserId);
         if (!updateAcceptanceCriterionResult.IsSuccess)
           return updateAcceptanceCriterionResult.Map();
 
@@ -107,7 +112,7 @@ public class UpdateIssueHandler(
       }
       else
       {
-        var addAcceptanceCriterionResult = issue.AddAcceptanceCriterion(acceptanceCriterion.Content);
+        var addAcceptanceCriterionResult = issue.AddAcceptanceCriterion(acceptanceCriterion.Content, actorUserId);
         if (!addAcceptanceCriterionResult.IsSuccess)
           return addAcceptanceCriterionResult.Map();
 
@@ -122,7 +127,7 @@ public class UpdateIssueHandler(
 
     foreach (var acceptanceCriterion in acceptanceCriteriaToRemove)
     {
-      var removeAcceptanceCriterionResult = issue.RemoveAcceptanceCriterion(acceptanceCriterion.Id);
+      var removeAcceptanceCriterionResult = issue.RemoveAcceptanceCriterion(acceptanceCriterion.Id, actorUserId);
       if (!removeAcceptanceCriterionResult.IsSuccess)
         return removeAcceptanceCriterionResult.Map();
 
@@ -130,5 +135,15 @@ public class UpdateIssueHandler(
     }
 
     return Result.Success();
+  }
+
+  private static bool IsNotificationEligible(IssueHistoryEventType eventType)
+  {
+    return eventType is
+      IssueHistoryEventType.STATUS_CHANGED or
+      IssueHistoryEventType.PRIORITY_CHANGED or
+      IssueHistoryEventType.ASSIGNEE_CHANGED or
+      IssueHistoryEventType.TITLE_CHANGED or
+      IssueHistoryEventType.DESCRIPTION_CHANGED;
   }
 }

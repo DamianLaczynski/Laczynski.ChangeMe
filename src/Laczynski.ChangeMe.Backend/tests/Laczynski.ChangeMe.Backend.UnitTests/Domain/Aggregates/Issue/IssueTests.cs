@@ -204,4 +204,51 @@ public sealed class IssueTests
     Assert.False(result.IsSuccess);
     Assert.Equal(ResultStatus.NotFound, result.Status);
   }
+
+  [Fact]
+  public void AddAcceptanceCriterion_WithActor_ShouldAddHistoryEntryAndUpdateLastActivity()
+  {
+    var actorId = Guid.CreateVersion7();
+    var issueResult = Issue.Create("Valid title", "Valid description");
+    var initialLastActivityAt = issueResult.Value.LastActivityAt;
+
+    var result = issueResult.Value.AddAcceptanceCriterion("First acceptance criterion", actorId);
+
+    Assert.True(result.IsSuccess);
+    Assert.Contains(issueResult.Value.HistoryEntries, x =>
+      x.EventType == IssueHistoryEventType.ACCEPTANCE_CRITERION_ADDED
+      && x.CurrentValue == "First acceptance criterion");
+    Assert.True(issueResult.Value.LastActivityAt >= initialLastActivityAt);
+  }
+
+  [Fact]
+  public void UpdateAcceptanceCriterion_WithActor_ShouldAddHistoryEntryWhenContentChanges()
+  {
+    var actorId = Guid.CreateVersion7();
+    var issueResult = Issue.Create("Valid title", "Valid description");
+    var criterion = issueResult.Value.AddAcceptanceCriterion("Initial criterion").Value;
+
+    var result = issueResult.Value.UpdateAcceptanceCriterion(criterion.Id, "Updated criterion", actorId);
+
+    Assert.True(result.IsSuccess);
+    Assert.Contains(issueResult.Value.HistoryEntries, x =>
+      x.EventType == IssueHistoryEventType.ACCEPTANCE_CRITERION_UPDATED
+      && x.PreviousValue == "Initial criterion"
+      && x.CurrentValue == "Updated criterion");
+  }
+
+  [Fact]
+  public void RemoveAcceptanceCriterion_WithActor_ShouldAddHistoryEntry()
+  {
+    var actorId = Guid.CreateVersion7();
+    var issueResult = Issue.Create("Valid title", "Valid description");
+    var criterion = issueResult.Value.AddAcceptanceCriterion("Criterion to remove").Value;
+
+    var result = issueResult.Value.RemoveAcceptanceCriterion(criterion.Id, actorId);
+
+    Assert.True(result.IsSuccess);
+    Assert.Contains(issueResult.Value.HistoryEntries, x =>
+      x.EventType == IssueHistoryEventType.ACCEPTANCE_CRITERION_REMOVED
+      && x.PreviousValue == "Criterion to remove");
+  }
 }
