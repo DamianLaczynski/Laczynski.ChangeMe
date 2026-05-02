@@ -26,7 +26,6 @@ builder.Services.AddFastEndpointsWithSwagger();
 var app = builder.Build();
 
 app.UseExceptionHandler();
-app.UseHttpsRedirection();
 
 app.UseCors(CorsConfig.CorsPolicyName);
 app.UseAuthentication();

@@ -16,7 +16,7 @@ services:
       context: .
       dockerfile: src/ChangeMe.Backend/Dockerfile
     ports:
-      - "5001:8080"
+      - "5000:8080"
     depends_on:
       - postgres
       - mailhog
