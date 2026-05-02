@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <NoDefaultExcludes>true</NoDefaultExcludes>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <NoWarn>$(NoWarn);NU5128</NoWarn>
+
+    <PackageId>ChangeMe</PackageId>
+    <Version>1.0.0</Version>
+    <Title>ChangeMe</Title>
+    <Authors>Damian Laczynski</Authors>
+    <Description>Full-stack dotnet new starter template with Angular frontend, layered ASP.NET backend, PostgreSQL, Docker Compose, tests, and project documentation.</Description>
+    <PackageTags>dotnet-new;template;starter;angular;aspnetcore;fullstack</PackageTags>
+    <PackageType>Template</PackageType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>NuGetPackageREADME.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/DamianLaczynski/ChangeMe</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/DamianLaczynski/ChangeMe</PackageProjectUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="NuGetPackageREADME.md" Pack="true" PackagePath="\" />
+    <Content Include="..\**\*"
+             Exclude="
+               ..\.git\**;
+               ..\.angular\**;
+               ..\.tmp-template-inspect\**;
+               ..\.template-test-output\**;
+               ..\template-pack\**;
+               ..\**\bin\**;
+               ..\**\obj\**;
+               ..\**\node_modules\**;
+               ..\**\dist\**;
+               ..\**\.vs\**;
+               ..\**\TestResults\**;
+               ..\**\logs\**;
+               ..\**\*.log;
+               ..\*.nupkg"
+             Pack="true"
+             PackagePath="content" />
+  </ItemGroup>
+
+</Project>

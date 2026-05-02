@@ -41,6 +41,46 @@ This repository is meant to provide:
 
 ## Getting Started
 
+## Install As a `dotnet new` Template
+
+Install the template from NuGet:
+
+```powershell
+dotnet new install ChangeMe
+```
+
+Or install the template directly from the repository root during local development:
+
+```powershell
+dotnet new install .
+```
+
+Create a new solution from the installed template:
+
+```powershell
+dotnet new <installed-short-name> -n IssuesDemo -o IssuesDemo
+```
+
+The installed short name is visible in the `Short Name` column of `dotnet new list`.
+
+This replaces `ChangeMe` across the solution, project names, folders, Docker configuration, docs, and frontend package metadata. Use a .NET-friendly project name such as `IssuesDemo` so generated solution and namespace names stay valid.
+
+### Publish The NuGet Package
+
+Create the template package:
+
+```powershell
+dotnet pack template-pack/ChangeMe.Templates.csproj -c Release
+```
+
+Publish it to NuGet:
+
+```powershell
+dotnet nuget push template-pack/bin/Release/ChangeMe.<version>.nupkg --source https://api.nuget.org/v3/index.json --api-key <your-api-key>
+```
+
+The packaging project targets `net10.0` only as a carrier for NuGet metadata and `dotnet pack`. It does not affect the generated solution structure or the target frameworks used by the projects created from the template.
+
 ### Frontend
 
 Run from `src/ChangeMe.Frontend`:
@@ -93,6 +133,8 @@ The `docs/` directory contains the focused guidance for working in this reposito
 - `docs/backend-coding-guidelines.md` - backend conventions
 - `docs/testing-playbook.md` - how to verify changes
 - `docs/feature-recipes.md` - implementation recipes for common feature work
+- `docs/req/` - functional requirements documents for specific product areas
+- `docs/templates/` - reusable document templates
 
 ## About `AGENTS.md`
 

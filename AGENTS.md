@@ -7,7 +7,7 @@
 - `src/ChangeMe.Frontend` - Angular 21 frontend.
 - `src/ChangeMe.Backend` - .NET backend solution.
 - `docker-compose.yml` - local full-stack environment with frontend, backend, PostgreSQL, and MailHog.
-- `docs/` - repo-specific implementation and testing guidance.
+- `docs/` - repo-specific implementation, testing, requirements, and template guidance.
 
 ## Start here by task
 
