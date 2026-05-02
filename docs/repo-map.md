@@ -5,8 +5,8 @@
 ## Top level
 
 - `docker-compose.yml` starts the local stack: Angular frontend, ASP.NET backend, PostgreSQL, and MailHog.
-- `src/Laczynski.ChangeMe.Frontend` contains the Angular application.
-- `src/Laczynski.ChangeMe.Backend` contains the .NET solution and tests.
+- `src/ChangeMe.Frontend` contains the Angular application.
+- `src/ChangeMe.Backend` contains the .NET solution and tests.
 
 ## Frontend map
 
@@ -42,28 +42,28 @@ Each current feature follows a simple slice structure:
 
 ### Solution shape
 
-- `Laczynski.ChangeMe.Backend.sln` is the backend solution entry point.
+- `ChangeMe.Backend.sln` is the backend solution entry point.
 - `Directory.Packages.props` manages package versions centrally.
 - `Directory.Build.props` enables central package version management.
 
 ### Layer responsibilities
 
-- `src/Laczynski.ChangeMe.Backend.Web`
+- `src/ChangeMe.Backend.Web`
   - ASP.NET host startup in `Program.cs`
   - endpoint definitions
   - transport-level configuration
   - common endpoint base types and pipeline behavior
-- `src/Laczynski.ChangeMe.Backend.UseCases`
+- `src/ChangeMe.Backend.UseCases`
   - top level of each feature folder contains only command and query files
   - handlers stay in the same files as their commands and queries
   - `Dtos/` contains API-facing DTOs for the feature
   - `Services/` contains feature-scoped orchestration services
   - request/response orchestration
-- `src/Laczynski.ChangeMe.Backend.Domain`
+- `src/ChangeMe.Backend.Domain`
   - aggregates and entities
   - invariants and domain rules
   - domain interfaces and shared primitives
-- `src/Laczynski.ChangeMe.Backend.Infrastructure`
+- `src/ChangeMe.Backend.Infrastructure`
   - EF Core `ApplicationDbContext`
   - entity configuration and migrations
   - auth and email adapters
@@ -82,9 +82,9 @@ Current issue endpoints illustrate the standard flow:
 
 ## Test map
 
-- `tests/Laczynski.ChangeMe.Backend.UnitTests`
+- `tests/ChangeMe.Backend.UnitTests`
   - domain and infrastructure helper tests
-- `tests/Laczynski.ChangeMe.Backend.IntegrationTests`
+- `tests/ChangeMe.Backend.IntegrationTests`
   - endpoint-level tests through real HTTP
   - `Fixtures/` for application factories and container-backed setup
   - `Support/` for reusable auth and test helpers

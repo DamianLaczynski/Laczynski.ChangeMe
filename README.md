@@ -1,6 +1,6 @@
-# Laczynski.ChangeMe
+# ChangeMe
 
-Laczynski.ChangeMe is a template full-stack issue tracking application. It is intended as a practical starter repository for building and extending a modern web app with a typed frontend, a layered .NET backend, authentication, persistence, and automated testing already in place.
+ChangeMe is a template full-stack issue tracking application. It is intended as a practical starter repository for building and extending a modern web app with a typed frontend, a layered .NET backend, authentication, persistence, and automated testing already in place.
 
 The current feature set centers around user authentication and issue management: users can register, sign in, browse issues, and authenticated users can create, edit, and delete issues.
 
@@ -25,8 +25,8 @@ This repository is meant to provide:
 
 ## Repository Structure
 
-- `src/Laczynski.ChangeMe.Frontend` - Angular application
-- `src/Laczynski.ChangeMe.Backend` - .NET solution with source projects and tests
+- `src/ChangeMe.Frontend` - Angular application
+- `src/ChangeMe.Backend` - .NET solution with source projects and tests
 - `docs/` - repository-specific implementation and testing guidance
 - `docker-compose.yml` - local full-stack environment
 - `AGENTS.md` - working guide for AI agents and contributors
@@ -43,7 +43,7 @@ This repository is meant to provide:
 
 ### Frontend
 
-Run from `src/Laczynski.ChangeMe.Frontend`:
+Run from `src/ChangeMe.Frontend`:
 
 ```powershell
 npm install
@@ -60,18 +60,18 @@ npm test
 
 ### Backend
 
-Run from `src/Laczynski.ChangeMe.Backend`:
+Run from `src/ChangeMe.Backend`:
 
 ```powershell
-dotnet build Laczynski.ChangeMe.Backend.sln
-dotnet run --project src/Laczynski.ChangeMe.Backend.Web
+dotnet build ChangeMe.Backend.sln
+dotnet run --project src/ChangeMe.Backend.Web
 ```
 
 Useful commands:
 
 ```powershell
-dotnet test tests/Laczynski.ChangeMe.Backend.UnitTests
-dotnet test tests/Laczynski.ChangeMe.Backend.IntegrationTests
+dotnet test tests/ChangeMe.Backend.UnitTests
+dotnet test tests/ChangeMe.Backend.IntegrationTests
 ```
 
 ### Full Stack with Docker
@@ -111,10 +111,10 @@ If you are making code changes, `AGENTS.md` should be treated as the first orien
 
 - Frontend routes are defined in `src/app/app.routes.ts`.
 - Frontend feature code lives under `src/app/features/<feature>/`.
-- Backend endpoints live in `src/Laczynski.ChangeMe.Backend.Web`.
-- Use case contracts and handlers live in `src/Laczynski.ChangeMe.Backend.UseCases`.
-- Domain rules live in `src/Laczynski.ChangeMe.Backend.Domain`.
-- Persistence and integrations live in `src/Laczynski.ChangeMe.Backend.Infrastructure`.
+- Backend endpoints live in `src/ChangeMe.Backend.Web`.
+- Use case contracts and handlers live in `src/ChangeMe.Backend.UseCases`.
+- Domain rules live in `src/ChangeMe.Backend.Domain`.
+- Persistence and integrations live in `src/ChangeMe.Backend.Infrastructure`.
 
 ## Testing
 

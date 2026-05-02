@@ -2,22 +2,19 @@
   "version": "0.2.0",
   "compounds": [
     {
-      "name": "Laczynski.ChangeMe Full Stack",
-      "configurations": [
-        "Laczynski.ChangeMe Backend",
-        "Laczynski.ChangeMe Frontend"
-      ]
+      "name": "ChangeMe Full Stack",
+      "configurations": ["ChangeMe Backend", "ChangeMe Frontend"]
     }
   ],
   "configurations": [
     {
-      "name": "Laczynski.ChangeMe Backend",
+      "name": "ChangeMe Backend",
       "type": "coreclr",
       "request": "launch",
-      "preLaunchTask": "laczynski-changeme-backend: build solution",
-      "program": "${workspaceFolder}/src/Laczynski.ChangeMe.Backend/src/Laczynski.ChangeMe.Backend.Web/bin/Debug/net10.0/Laczynski.ChangeMe.Backend.Web.dll",
+      "preLaunchTask": "changeme-backend: build solution",
+      "program": "${workspaceFolder}/src/ChangeMe.Backend/src/ChangeMe.Backend.Web/bin/Debug/net10.0/ChangeMe.Backend.Web.dll",
       "args": [],
-      "cwd": "${workspaceFolder}/src/Laczynski.ChangeMe.Backend/src/Laczynski.ChangeMe.Backend.Web",
+      "cwd": "${workspaceFolder}/src/ChangeMe.Backend/src/ChangeMe.Backend.Web",
       "console": "integratedTerminal",
       "stopAtEntry": false,
       "env": {
@@ -26,11 +23,11 @@
       }
     },
     {
-      "name": "Laczynski.ChangeMe Frontend",
+      "name": "ChangeMe Frontend",
       "type": "node-terminal",
       "request": "launch",
       "command": "npm run start -- --host 0.0.0.0 --port 4200",
-      "cwd": "${workspaceFolder}/src/Laczynski.ChangeMe.Frontend"
+      "cwd": "${workspaceFolder}/src/ChangeMe.Frontend"
     }
   ]
 }

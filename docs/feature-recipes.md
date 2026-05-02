@@ -4,11 +4,11 @@
 
 ## Add a backend endpoint
 
-1. Create or update the endpoint in `src/Laczynski.ChangeMe.Backend.Web/<Feature>/`.
+1. Create or update the endpoint in `src/ChangeMe.Backend.Web/<Feature>/`.
 2. Add or update the validator in the same file.
-3. Add the request contract and handler in `src/Laczynski.ChangeMe.Backend.UseCases/<Feature>/`.
+3. Add the request contract and handler in `src/ChangeMe.Backend.UseCases/<Feature>/`.
 4. Reuse domain behavior or add it in `Domain` if new invariants are introduced.
-5. Add integration tests under `tests/Laczynski.ChangeMe.Backend.IntegrationTests/Endpoints/<Feature>/`.
+5. Add integration tests under `tests/ChangeMe.Backend.IntegrationTests/Endpoints/<Feature>/`.
 
 ## Add a persisted field
 

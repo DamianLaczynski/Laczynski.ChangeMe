@@ -4,8 +4,8 @@
 
 ## Repository shape
 
-- `src/Laczynski.ChangeMe.Frontend` - Angular 21 frontend.
-- `src/Laczynski.ChangeMe.Backend` - .NET backend solution.
+- `src/ChangeMe.Frontend` - Angular 21 frontend.
+- `src/ChangeMe.Backend` - .NET backend solution.
 - `docker-compose.yml` - local full-stack environment with frontend, backend, PostgreSQL, and MailHog.
 - `docs/` - repo-specific implementation and testing guidance.
 
@@ -20,7 +20,7 @@
 
 ### Frontend
 
-- Install dependencies: `npm install` in `src/Laczynski.ChangeMe.Frontend`
+- Install dependencies: `npm install` in `src/ChangeMe.Frontend`
 - Run dev server: `npm start`
 - Lint: `npm run lint`
 - Format: `npm run format`
@@ -28,12 +28,12 @@
 
 ### Backend
 
-- Restore/build solution: `dotnet build Laczynski.ChangeMe.Backend.sln`
-- Run web app: `dotnet run --project src/Laczynski.ChangeMe.Backend.Web`
-- Unit tests: `dotnet test tests/Laczynski.ChangeMe.Backend.UnitTests`
-- Integration tests: `dotnet test tests/Laczynski.ChangeMe.Backend.IntegrationTests`
+- Restore/build solution: `dotnet build ChangeMe.Backend.sln`
+- Run web app: `dotnet run --project src/ChangeMe.Backend.Web`
+- Unit tests: `dotnet test tests/ChangeMe.Backend.UnitTests`
+- Integration tests: `dotnet test tests/ChangeMe.Backend.IntegrationTests`
 
-Run backend commands from `src/Laczynski.ChangeMe.Backend`.
+Run backend commands from `src/ChangeMe.Backend`.
 
 ### Full stack
 
@@ -51,16 +51,16 @@ Run backend commands from `src/Laczynski.ChangeMe.Backend`.
 
 ### Backend
 
-- HTTP endpoints live in `src/Laczynski.ChangeMe.Backend.Web`.
-- Query and command contracts live in `src/Laczynski.ChangeMe.Backend.UseCases/<Feature>/`.
+- HTTP endpoints live in `src/ChangeMe.Backend.Web`.
+- Query and command contracts live in `src/ChangeMe.Backend.UseCases/<Feature>/`.
 - Keep only `*Query.cs` and `*Command.cs` files at the top level of each `UseCases` feature folder.
-- Place feature DTOs in `src/Laczynski.ChangeMe.Backend.UseCases/<Feature>/Dtos/`.
-- Place feature services in `src/Laczynski.ChangeMe.Backend.UseCases/<Feature>/Services/`.
+- Place feature DTOs in `src/ChangeMe.Backend.UseCases/<Feature>/Dtos/`.
+- Place feature services in `src/ChangeMe.Backend.UseCases/<Feature>/Services/`.
 - Handlers still live with their matching command or query file.
-- Domain rules and aggregates live in `src/Laczynski.ChangeMe.Backend.Domain`.
-- EF Core, persistence, auth, and adapters live in `src/Laczynski.ChangeMe.Backend.Infrastructure`.
-- Integration tests mirror API behavior under `tests/Laczynski.ChangeMe.Backend.IntegrationTests`.
-- Unit tests cover domain/infrastructure helpers under `tests/Laczynski.ChangeMe.Backend.UnitTests`.
+- Domain rules and aggregates live in `src/ChangeMe.Backend.Domain`.
+- EF Core, persistence, auth, and adapters live in `src/ChangeMe.Backend.Infrastructure`.
+- Integration tests mirror API behavior under `tests/ChangeMe.Backend.IntegrationTests`.
+- Unit tests cover domain/infrastructure helpers under `tests/ChangeMe.Backend.UnitTests`.
 
 ## Change coupling checklist
 

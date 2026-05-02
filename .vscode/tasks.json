@@ -2,12 +2,12 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "laczynski-changeme-frontend: serve",
+      "label": "changeme-frontend: serve",
       "type": "process",
       "command": "npm",
       "args": ["run", "start", "--", "--host", "0.0.0.0", "--port", "4200"],
       "options": {
-        "cwd": "${workspaceFolder}/src/Laczynski.ChangeMe.Frontend"
+        "cwd": "${workspaceFolder}/src/ChangeMe.Frontend"
       },
       "isBackground": true,
       "presentation": {
@@ -28,12 +28,12 @@
       }
     },
     {
-      "label": "laczynski-changeme-frontend: build",
+      "label": "changeme-frontend: build",
       "type": "process",
       "command": "npm",
       "args": ["run", "build"],
       "options": {
-        "cwd": "${workspaceFolder}/src/Laczynski.ChangeMe.Frontend"
+        "cwd": "${workspaceFolder}/src/ChangeMe.Frontend"
       },
       "group": "build",
       "presentation": {
@@ -42,12 +42,12 @@
       }
     },
     {
-      "label": "laczynski-changeme-frontend: lint",
+      "label": "changeme-frontend: lint",
       "type": "process",
       "command": "npm",
       "args": ["run", "lint"],
       "options": {
-        "cwd": "${workspaceFolder}/src/Laczynski.ChangeMe.Frontend"
+        "cwd": "${workspaceFolder}/src/ChangeMe.Frontend"
       },
       "presentation": {
         "reveal": "silent",
@@ -55,12 +55,12 @@
       }
     },
     {
-      "label": "laczynski-changeme-frontend: format",
+      "label": "changeme-frontend: format",
       "type": "process",
       "command": "npm",
       "args": ["run", "format"],
       "options": {
-        "cwd": "${workspaceFolder}/src/Laczynski.ChangeMe.Frontend"
+        "cwd": "${workspaceFolder}/src/ChangeMe.Frontend"
       },
       "presentation": {
         "reveal": "silent",
@@ -68,12 +68,12 @@
       }
     },
     {
-      "label": "laczynski-changeme-frontend: format check",
+      "label": "changeme-frontend: format check",
       "type": "process",
       "command": "npm",
       "args": ["run", "format:check"],
       "options": {
-        "cwd": "${workspaceFolder}/src/Laczynski.ChangeMe.Frontend"
+        "cwd": "${workspaceFolder}/src/ChangeMe.Frontend"
       },
       "presentation": {
         "reveal": "silent",
@@ -81,17 +81,17 @@
       }
     },
     {
-      "label": "laczynski-changeme-backend: build",
+      "label": "changeme-backend: build",
       "command": "dotnet",
       "type": "process",
       "args": [
         "build",
-        "${workspaceFolder}/src/Laczynski.ChangeMe.Backend/src/Laczynski.ChangeMe.Backend.Web/Laczynski.ChangeMe.Backend.Web.csproj",
+        "${workspaceFolder}/src/ChangeMe.Backend/src/ChangeMe.Backend.Web/ChangeMe.Backend.Web.csproj",
         "/property:GenerateFullPaths=true",
         "/consoleloggerparameters:NoSummary;ForceNoAlign"
       ],
       "options": {
-        "cwd": "${workspaceFolder}/src/Laczynski.ChangeMe.Backend/src/Laczynski.ChangeMe.Backend.Web"
+        "cwd": "${workspaceFolder}/src/ChangeMe.Backend/src/ChangeMe.Backend.Web"
       },
       "group": "build",
       "presentation": {
@@ -101,17 +101,17 @@
       "problemMatcher": "$msCompile"
     },
     {
-      "label": "laczynski-changeme-backend: build solution",
+      "label": "changeme-backend: build solution",
       "command": "dotnet",
       "type": "process",
       "args": [
         "build",
-        "${workspaceFolder}/src/Laczynski.ChangeMe.Backend/Laczynski.ChangeMe.Backend.sln",
+        "${workspaceFolder}/src/ChangeMe.Backend/ChangeMe.Backend.sln",
         "/property:GenerateFullPaths=true",
         "/consoleloggerparameters:NoSummary;ForceNoAlign"
       ],
       "options": {
-        "cwd": "${workspaceFolder}/src/Laczynski.ChangeMe.Backend"
+        "cwd": "${workspaceFolder}/src/ChangeMe.Backend"
       },
       "group": "build",
       "presentation": {
@@ -121,15 +121,15 @@
       "problemMatcher": "$msCompile"
     },
     {
-      "label": "laczynski-changeme-backend: format",
+      "label": "changeme-backend: format",
       "type": "process",
       "command": "dotnet",
       "args": [
         "format",
-        "${workspaceFolder}/src/Laczynski.ChangeMe.Backend/Laczynski.ChangeMe.Backend.sln"
+        "${workspaceFolder}/src/ChangeMe.Backend/ChangeMe.Backend.sln"
       ],
       "options": {
-        "cwd": "${workspaceFolder}/src/Laczynski.ChangeMe.Backend"
+        "cwd": "${workspaceFolder}/src/ChangeMe.Backend"
       },
       "presentation": {
         "reveal": "silent",
@@ -137,16 +137,16 @@
       }
     },
     {
-      "label": "laczynski-changeme-backend: format check",
+      "label": "changeme-backend: format check",
       "type": "process",
       "command": "dotnet",
       "args": [
         "format",
-        "${workspaceFolder}/src/Laczynski.ChangeMe.Backend/Laczynski.ChangeMe.Backend.sln",
+        "${workspaceFolder}/src/ChangeMe.Backend/ChangeMe.Backend.sln",
         "--verify-no-changes"
       ],
       "options": {
-        "cwd": "${workspaceFolder}/src/Laczynski.ChangeMe.Backend"
+        "cwd": "${workspaceFolder}/src/ChangeMe.Backend"
       },
       "presentation": {
         "reveal": "silent",
@@ -154,16 +154,16 @@
       }
     },
     {
-      "label": "laczynski-changeme: lint all",
+      "label": "changeme: lint all",
       "dependsOrder": "sequence",
-      "dependsOn": ["laczynski-changeme-frontend: lint"]
+      "dependsOn": ["changeme-frontend: lint"]
     },
     {
-      "label": "laczynski-changeme: build all",
+      "label": "changeme: build all",
       "dependsOrder": "sequence",
       "dependsOn": [
-        "laczynski-changeme-frontend: build",
-        "laczynski-changeme-backend: build solution"
+        "changeme-frontend: build",
+        "changeme-backend: build solution"
       ],
       "group": {
         "kind": "build",
@@ -171,21 +171,18 @@
       }
     },
     {
-      "label": "laczynski-changeme: format all",
+      "label": "changeme: format all",
       "dependsOrder": "sequence",
-      "dependsOn": [
-        "laczynski-changeme-frontend: format",
-        "laczynski-changeme-backend: format"
-      ]
+      "dependsOn": ["changeme-frontend: format", "changeme-backend: format"]
     },
     {
-      "label": "laczynski-changeme: verify all",
+      "label": "changeme: verify all",
       "dependsOrder": "sequence",
       "dependsOn": [
-        "laczynski-changeme-frontend: format check",
-        "laczynski-changeme-frontend: lint",
-        "laczynski-changeme-backend: format check",
-        "laczynski-changeme-backend: build solution"
+        "changeme-frontend: format check",
+        "changeme-frontend: lint",
+        "changeme-backend: format check",
+        "changeme-backend: build solution"
       ],
       "group": "test"
     }

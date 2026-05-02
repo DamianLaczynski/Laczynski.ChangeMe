@@ -1,0 +1,11 @@
+﻿global using System.Linq.Expressions;
+global using Ardalis.Result;
+global using ChangeMe.Backend.Domain.Common;
+global using ChangeMe.Backend.Domain.Interfaces;
+global using ChangeMe.Backend.Infrastructure.Common;
+global using ChangeMe.Backend.Infrastructure.Persistence;
+global using ChangeMe.Backend.UseCases.Common;
+global using MediatR;
+global using Microsoft.EntityFrameworkCore;
+
+

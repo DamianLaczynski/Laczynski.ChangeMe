@@ -2,7 +2,7 @@ services:
   frontend:
     build:
       context: .
-      dockerfile: src/Laczynski.ChangeMe.Frontend/Dockerfile
+      dockerfile: src/ChangeMe.Frontend/Dockerfile
     ports:
       - "4200:80"
     depends_on:
@@ -14,7 +14,7 @@ services:
   backend:
     build:
       context: .
-      dockerfile: src/Laczynski.ChangeMe.Backend/Dockerfile
+      dockerfile: src/ChangeMe.Backend/Dockerfile
     ports:
       - "5001:8080"
     depends_on:
@@ -22,7 +22,7 @@ services:
       - mailhog
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Host=postgres;Database=Laczynski.ChangeMe;Username=postgres;Password=postgres
+      - ConnectionStrings__DefaultConnection=Host=postgres;Database=ChangeMe;Username=postgres;Password=postgres
     networks:
       - app-network
     restart: unless-stopped
@@ -34,7 +34,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=Laczynski.ChangeMe
+      - POSTGRES_DB=ChangeMe
     volumes:
       - postgres-data:/var/lib/postgresql/data
     networks:

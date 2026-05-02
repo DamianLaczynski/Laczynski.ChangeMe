@@ -4,9 +4,9 @@
 
 ## Test projects
 
-- Backend unit tests: `src/Laczynski.ChangeMe.Backend/tests/Laczynski.ChangeMe.Backend.UnitTests`
-- Backend integration tests: `src/Laczynski.ChangeMe.Backend/tests/Laczynski.ChangeMe.Backend.IntegrationTests`
-- Frontend tests: run through Angular with `npm test` in `src/Laczynski.ChangeMe.Frontend`
+- Backend unit tests: `src/ChangeMe.Backend/tests/ChangeMe.Backend.UnitTests`
+- Backend integration tests: `src/ChangeMe.Backend/tests/ChangeMe.Backend.IntegrationTests`
+- Frontend tests: run through Angular with `npm test` in `src/ChangeMe.Frontend`
 
 ## Backend unit tests
 
@@ -19,13 +19,13 @@ Use unit tests for:
 Command:
 
 ```powershell
-dotnet test tests/Laczynski.ChangeMe.Backend.UnitTests
+dotnet test tests/ChangeMe.Backend.UnitTests
 ```
 
 Run from:
 
 ```powershell
-src/Laczynski.ChangeMe.Backend
+src/ChangeMe.Backend
 ```
 
 ## Backend integration tests
@@ -48,7 +48,7 @@ Current setup:
 Command:
 
 ```powershell
-dotnet test tests/Laczynski.ChangeMe.Backend.IntegrationTests
+dotnet test tests/ChangeMe.Backend.IntegrationTests
 ```
 
 ## Frontend checks
@@ -69,7 +69,7 @@ npm run format:check
 Run from:
 
 ```powershell
-src/Laczynski.ChangeMe.Frontend
+src/ChangeMe.Frontend
 ```
 
 ## Change-based checklist
