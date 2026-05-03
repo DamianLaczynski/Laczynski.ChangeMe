@@ -42,4 +42,4 @@ dotnet new uninstall ChangeMe
 
 ## Source repository
 
-https://github.com/DamianLaczynski/ChangeMe
+https://github.com/damianlaczynski/ChangeMe

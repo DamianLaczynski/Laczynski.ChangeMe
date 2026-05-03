@@ -15,11 +15,12 @@
     <PackageType>Template</PackageType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>NuGetPackageREADME.md</PackageReadmeFile>
-    <RepositoryUrl>https://github.com/DamianLaczynski/ChangeMe</RepositoryUrl>
+    <RepositoryUrl>https://github.com/damianlaczynski/ChangeMe</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageProjectUrl>https://github.com/DamianLaczynski/ChangeMe</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/damianlaczynski/ChangeMe</PackageProjectUrl>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <Copyright>Copyright (c) 2026 Damian Laczynski</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
