@@ -9,7 +9,7 @@
     <PackageId>ChangeMe</PackageId>
     <Version>1.0.0</Version>
     <Title>ChangeMe</Title>
-    <Authors>Damian Laczynski</Authors>
+    <Authors>Damian Łączyński</Authors>
     <Description>Full-stack dotnet new starter template with Angular frontend, layered ASP.NET backend, PostgreSQL, Docker Compose, tests, and project documentation.</Description>
     <PackageTags>dotnet-new;template;starter;angular;aspnetcore;fullstack</PackageTags>
     <PackageType>Template</PackageType>
@@ -20,7 +20,7 @@
     <PackageProjectUrl>https://github.com/damianlaczynski/ChangeMe</PackageProjectUrl>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <Copyright>Copyright (c) 2026 Damian Laczynski</Copyright>
+    <Copyright>Copyright (c) 2026 Damian Łączyński</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
