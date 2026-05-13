@@ -1,0 +1,62 @@
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+.issues-filters {
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-4;
+  padding: v.$space-5;
+  margin-bottom: v.$space-5;
+  @include m.card;
+
+  &__row {
+    display: grid;
+    grid-template-columns: 1fr repeat(2, minmax(11rem, 14rem)) minmax(10rem, 13rem);
+    gap: v.$space-3;
+    align-items: end;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__checkboxes {
+    display: flex;
+    align-items: center;
+    gap: v.$space-5;
+    flex-wrap: wrap;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: v.$space-3;
+  }
+}
+
+.issues-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: v.$space-3;
+  padding: v.$space-12;
+  text-align: center;
+
+  &__title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-neutral-foreground-rest);
+  }
+
+  &__text {
+    font-size: 0.875rem;
+    color: var(--color-neutral-foreground2-rest);
+  }
+}
+
+.issues-pagination {
+  display: flex;
+  justify-content: center;
+  padding: v.$space-5 0 v.$space-4;
+}

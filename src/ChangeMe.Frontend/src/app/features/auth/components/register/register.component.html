@@ -1,112 +1,77 @@
-<section>
-  <h1>Register</h1>
-  <p>Create an account to manage issues.</p>
-
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div>
-      <label for="firstName">First name</label>
-      <input id="firstName" type="text" formControlName="firstName" />
-      @if (
-        form.controls.firstName.touched && form.controls.firstName.errors?.['required']
-      ) {
-        <p>First name is required.</p>
-      }
-      @if (
-        form.controls.firstName.touched && form.controls.firstName.errors?.['maxlength']
-      ) {
-        <p>
-          First name must be less than {{ authConstraints.NAME_MAX_LENGTH }} characters
-          long.
-        </p>
-      }
-    </div>
-
-    <div>
-      <label for="lastName">Last name</label>
-      <input id="lastName" type="text" formControlName="lastName" />
-      @if (
-        form.controls.lastName.touched && form.controls.lastName.errors?.['required']
-      ) {
-        <p>Last name is required.</p>
-      }
-      @if (
-        form.controls.lastName.touched && form.controls.lastName.errors?.['maxlength']
-      ) {
-        <p>
-          Last name must be less than {{ authConstraints.NAME_MAX_LENGTH }} characters
-          long.
-        </p>
-      }
-    </div>
-
-    <div>
-      <label for="email">Email</label>
-      <input id="email" type="email" formControlName="email" />
-      @if (form.controls.email.touched && form.controls.email.errors?.['required']) {
-        <p>Email is required.</p>
-      }
-      @if (form.controls.email.touched && form.controls.email.errors?.['email']) {
-        <p>Enter a valid email address.</p>
-      }
-      @if (form.controls.email.touched && form.controls.email.errors?.['maxlength']) {
-        <p>
-          Email must be less than {{ authConstraints.EMAIL_MAX_LENGTH }} characters
-          long.
-        </p>
-      }
-    </div>
-
-    <div>
-      <label for="password">Password</label>
-      <input id="password" type="password" formControlName="password" />
-      @if (
-        form.controls.password.touched && form.controls.password.errors?.['required']
-      ) {
-        <p>Password is required.</p>
-      }
-      @if (
-        form.controls.password.touched && form.controls.password.errors?.['minlength']
-      ) {
-        <p>
-          Password must be at least {{ authConstraints.PASSWORD_MIN_LENGTH }} characters
-          long.
-        </p>
-      }
-      @if (
-        form.controls.password.touched && form.controls.password.errors?.['maxlength']
-      ) {
-        <p>
-          Password must be less than
-          {{ authConstraints.PASSWORD_MAX_LENGTH }} characters long.
-        </p>
-      }
-    </div>
-
-    <div>
-      <label for="confirmPassword">Confirm password</label>
-      <input id="confirmPassword" type="password" formControlName="confirmPassword" />
-      @if (
-        form.controls.confirmPassword.touched &&
-        form.controls.confirmPassword.errors?.['required']
-      ) {
-        <p>Confirm your password.</p>
-      }
-      @if (form.touched && form.errors?.['passwordMismatch']) {
-        <p>Passwords must match.</p>
-      }
+<div class="auth-page">
+  <div class="auth-page__card">
+    <div class="auth-page__header">
+      <h1 class="auth-page__title">Create account</h1>
+      <p class="auth-page__subtitle">
+        Join ChangeMe and start tracking issues with your team.
+      </p>
     </div>
 
     @if (errorMessage()) {
-      <p>{{ errorMessage() }}</p>
+      <ui-message-bar
+        [message]="errorMessage()"
+        variant="danger"
+        appearance="tint"
+        [dismissible]="false"
+      />
     }
 
-    <button type="submit" [disabled]="isSubmitting()">
-      {{ isSubmitting() ? 'Creating account...' : 'Register' }}
-    </button>
-  </form>
+    <form class="auth-page__form" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <ui-text
+        label="First name"
+        placeholder="Jan"
+        autocomplete="given-name"
+        formControlName="firstName"
+        [required]="true"
+      />
+      <ui-text
+        label="Last name"
+        placeholder="Kowalski"
+        autocomplete="family-name"
+        formControlName="lastName"
+        [required]="true"
+      />
+      <ui-text
+        label="Email"
+        placeholder="you@example.com"
+        autocomplete="email"
+        formControlName="email"
+        [required]="true"
+      />
+      <ui-password
+        label="Password"
+        placeholder="Create a password"
+        autocomplete="new-password"
+        formControlName="password"
+        [required]="true"
+        helpText="At least {{ authConstraints.PASSWORD_MIN_LENGTH }} characters."
+      />
+      <ui-password
+        label="Confirm password"
+        placeholder="Repeat the password"
+        autocomplete="new-password"
+        formControlName="confirmPassword"
+        [required]="true"
+        [errorText]="
+          form.hasError('passwordMismatch') && form.get('confirmPassword')?.touched
+            ? 'Passwords do not match.'
+            : ''
+        "
+      />
+      <ui-button
+        type="submit"
+        variant="primary"
+        [fullWidth]="true"
+        [loading]="isSubmitting()"
+        [disabled]="isSubmitting()"
+      >
+        Create account
+      </ui-button>
+    </form>
 
-  <p>
-    Already have an account?
-    <a [routerLink]="['/login']">Login</a>
-  </p>
-</section>
+    <div class="auth-page__footer">
+      <span>Already have an account?</span>
+      <a [routerLink]="['/login']">Sign in</a>
+    </div>
+  </div>
+</div>

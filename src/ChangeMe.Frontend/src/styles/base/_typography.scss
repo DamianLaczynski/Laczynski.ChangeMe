@@ -1,0 +1,41 @@
+@use '../abstracts/variables' as v;
+
+.text-heading-1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-neutral-foreground-rest);
+  letter-spacing: -0.02em;
+}
+
+.text-heading-2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-neutral-foreground-rest);
+  letter-spacing: -0.01em;
+}
+
+.text-heading-3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-neutral-foreground-rest);
+}
+
+.text-body {
+  font-size: 0.875rem;
+  color: var(--color-neutral-foreground-rest);
+  line-height: 1.5;
+}
+
+.text-secondary {
+  color: var(--color-neutral-foreground2-rest);
+}
+
+.text-tertiary {
+  font-size: 0.8125rem;
+  color: var(--color-neutral-foreground3-rest);
+}
+
+.text-meta {
+  font-size: 0.75rem;
+  color: var(--color-neutral-foreground2-rest);
+}

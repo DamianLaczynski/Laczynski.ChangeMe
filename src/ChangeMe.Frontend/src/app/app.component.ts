@@ -1,12 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from '@features/auth/services/auth.service';
 import { NotificationsService } from '@features/notifications/services/notifications.service';
+import { BadgeComponent, ButtonComponent } from '@laczynski/ui';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, RouterOutlet, RouterLink],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, BadgeComponent, ButtonComponent],
   templateUrl: './app.component.html'
 })
 export class AppComponent {

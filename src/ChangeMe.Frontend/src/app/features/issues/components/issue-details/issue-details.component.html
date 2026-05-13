@@ -1,140 +1,303 @@
-<section>
-  <h1>Issue Details</h1>
-  <p>Review issue data, comments, history and watch state.</p>
-
-  <div>
-    <a [routerLink]="['/issues']">Back to issues list</a>
-    @if (issue() && isAuthenticated()) {
-      <a [routerLink]="['/issues', issue()!.id, 'edit']">Edit issue</a>
-      <button type="button" (click)="toggleWatch()" [disabled]="isTogglingWatch()">
-        {{ issue()!.isWatchedByCurrentUser ? 'Unwatch' : 'Watch' }}
-        ({{ issue()!.watchersCount }})
-      </button>
-    }
-  </div>
-
-  @if (isLoading() && !hasLoaded()) {
-    <section aria-busy="true">
-      <h2>Loading issue details...</h2>
-      <p>Loading issue header...</p>
-      <p>Loading acceptance criteria...</p>
-      <p>Loading comments...</p>
-      <p>Loading history...</p>
-    </section>
+<div class="page-content">
+  @if (isLoading()) {
+    <div style="display: flex; flex-direction: column; gap: 1.5rem">
+      <div
+        style="
+          padding: 1.5rem;
+          border: 1px solid var(--color-neutral-stroke-rest);
+          border-radius: 1rem;
+          background: var(--color-neutral-background-rest);
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+        "
+      >
+        <ui-skeleton width="65%" height="1.5rem" />
+        <div style="display: flex; gap: 0.5rem">
+          <ui-skeleton width="5rem" height="1.5rem" borderRadius="9999px" />
+          <ui-skeleton width="5rem" height="1.5rem" borderRadius="9999px" />
+        </div>
+        <div style="display: flex; gap: 2rem; padding-top: 0.75rem">
+          <ui-skeleton width="7rem" height="2.5rem" />
+          <ui-skeleton width="7rem" height="2.5rem" />
+          <ui-skeleton width="7rem" height="2.5rem" />
+        </div>
+      </div>
+      <div
+        style="
+          display: grid;
+          grid-template-columns: 1fr 20rem;
+          gap: 1.25rem;
+          align-items: start;
+        "
+      >
+        <div
+          style="
+            padding: 1.5rem;
+            border: 1px solid var(--color-neutral-stroke-rest);
+            border-radius: 1rem;
+            background: var(--color-neutral-background-rest);
+            display: flex;
+            flex-direction: column;
+            gap: 0.625rem;
+          "
+        >
+          <ui-skeleton width="100%" height="0.875rem" />
+          <ui-skeleton width="94%" height="0.875rem" />
+          <ui-skeleton width="87%" height="0.875rem" />
+          <ui-skeleton width="91%" height="0.875rem" />
+          <ui-skeleton width="72%" height="0.875rem" />
+        </div>
+        <div
+          style="
+            padding: 1.25rem;
+            border: 1px solid var(--color-neutral-stroke-rest);
+            border-radius: 1rem;
+            background: var(--color-neutral-background-rest);
+            display: flex;
+            flex-direction: column;
+            gap: 0.625rem;
+          "
+        >
+          <ui-skeleton width="60%" height="0.875rem" />
+          <ui-skeleton width="80%" height="0.875rem" />
+          <ui-skeleton width="70%" height="0.875rem" />
+        </div>
+      </div>
+    </div>
   } @else if (loadError()) {
-    <p>{{ loadError() }}</p>
+    <ui-message-bar
+      title="Failed to load issue"
+      [message]="loadError()!"
+      variant="danger"
+      appearance="tint"
+      [dismissible]="false"
+    />
   } @else if (issue()) {
-    <article>
-      <header>
-        <h2>{{ issue()!.title }}</h2>
-        <p>ID: {{ issue()!.id }}</p>
-        <p>Status: {{ issue()!.status }}</p>
-        <p>Priority: {{ issue()!.priority }}</p>
-        <p>Author: {{ issue()!.createdByName || issue()!.createdBy }}</p>
-        <p>Assigned to: {{ issue()!.assignedToUserName || 'Unassigned' }}</p>
-        <p>Created at: {{ issue()!.createdAt | date: 'short' }}</p>
-        <p>Last activity: {{ issue()!.lastActivityAt | date: 'short' }}</p>
-        <p>
-          Watch state:
-          {{ issue()!.isWatchedByCurrentUser ? 'Watching' : 'Not watching' }}
-        </p>
-      </header>
-
-      <section>
-        <h3>Description</h3>
-        <p>{{ issue()!.description }}</p>
-      </section>
-
-      <section>
-        <h3>Acceptance Criteria</h3>
-        @if (issue()!.acceptanceCriteria.length > 0) {
-          <ul>
-            @for (criterion of issue()!.acceptanceCriteria; track criterion.id) {
-              <li>{{ criterion.content }}</li>
-            }
-          </ul>
-        } @else {
-          <p>No acceptance criteria defined</p>
-        }
-      </section>
-
-      <section>
-        <h3>Comments</h3>
-
-        @if (isAuthenticated()) {
-          <form [formGroup]="commentForm" (ngSubmit)="addComment()">
-            <div>
-              <label for="comment-content">Comment</label>
-              <textarea id="comment-content" formControlName="content"></textarea>
-            </div>
-
-            @if (shouldShowCommentError()) {
-              @if (commentForm.controls.content.errors?.['required']) {
-                <p>Comment content is required</p>
-              }
-              @if (commentForm.controls.content.errors?.['maxlength']) {
-                <p>
-                  Comment must be at most
-                  {{ issueCommentConstraints.CONTENT_MAX_LENGTH }} characters
-                </p>
-              }
-            }
-
-            @if (commentError()) {
-              <p>{{ commentError() }}</p>
-            }
-
-            <button type="submit" [disabled]="isSubmittingComment()">
-              {{ isSubmittingComment() ? 'Adding comment...' : 'Add comment' }}
-            </button>
-          </form>
-        } @else {
-          <p>Log in to add comments</p>
-        }
-
-        @if (sortedComments().length > 0) {
-          <ul>
-            @for (comment of sortedComments(); track comment.id) {
-              <li>
-                <p>{{ comment.authorName || comment.authorUserId }}</p>
-                <p>{{ comment.createdAt | date: 'short' }}</p>
-                <p>{{ comment.content }}</p>
-              </li>
-            }
-          </ul>
-        } @else {
-          <p>No comments yet</p>
-        }
-      </section>
-
-      <section>
-        <h3>History</h3>
-        @if (sortedHistoryEntries().length > 0) {
-          <ul>
-            @for (
-              entry of sortedHistoryEntries();
-              track trackHistoryEntry($index, entry)
-            ) {
-              <li>
-                <p>{{ entry.eventType }}</p>
-                <p>{{ entry.actorName || entry.actorUserId }}</p>
-                <p>{{ entry.createdAt | date: 'short' }}</p>
-                <p>{{ entry.summary }}</p>
-                @if (entry.previousValue || entry.currentValue) {
-                  <p>
-                    Before: {{ entry.previousValue || '-' }} | After:
-                    {{ entry.currentValue || '-' }}
-                  </p>
+    <div class="issue-details-page">
+      <div class="issue-details-header">
+        <div class="issue-details-header__top">
+          <div class="issue-details-header__title-block">
+            <h1 class="issue-details-header__title">{{ issue()?.title }}</h1>
+            <div class="issue-details-header__badges">
+              @switch (issue()?.status) {
+                @case ('NEW') {
+                  <ui-badge text="New" variant="info" appearance="tint" />
                 }
-              </li>
+                @case ('IN_PROGRESS') {
+                  <ui-badge text="In Progress" variant="primary" appearance="tint" />
+                }
+                @case ('RESOLVED') {
+                  <ui-badge text="Resolved" variant="success" appearance="tint" />
+                }
+                @case ('CLOSED') {
+                  <ui-badge text="Closed" variant="secondary" appearance="subtle" />
+                }
+              }
+              @switch (issue()?.priority) {
+                @case ('CRITICAL') {
+                  <ui-badge text="Critical" variant="danger" />
+                }
+                @case ('HIGH') {
+                  <ui-badge text="High" variant="warning" appearance="tint" />
+                }
+                @case ('MEDIUM') {
+                  <ui-badge text="Medium" variant="secondary" appearance="subtle" />
+                }
+                @case ('LOW') {
+                  <ui-badge text="Low" variant="secondary" appearance="subtle" />
+                }
+              }
+            </div>
+          </div>
+          <div class="issue-details-header__actions">
+            @if (isAuthenticated()) {
+              <ui-button
+                [variant]="issue()?.isWatchedByCurrentUser ? 'primary' : 'secondary'"
+                [appearance]="issue()?.isWatchedByCurrentUser ? 'tint' : 'outline'"
+                [loading]="isTogglingWatch()"
+                (click)="toggleWatch()"
+              >
+                {{ issue()?.isWatchedByCurrentUser ? 'Watching' : 'Watch' }}
+              </ui-button>
+              <ui-button
+                [routerLink]="['/issues', issue()?.id, 'edit']"
+                variant="secondary"
+                appearance="outline"
+                icon="edit"
+              >
+                Edit
+              </ui-button>
             }
-          </ul>
-        } @else {
-          <p>No history entries found</p>
-        }
-      </section>
-    </article>
-  } @else {
-    <p>Issue not found</p>
+            <ui-button
+              [routerLink]="['/issues']"
+              variant="secondary"
+              appearance="subtle"
+            >
+              Back
+            </ui-button>
+          </div>
+        </div>
+
+        <div class="issue-details-header__meta">
+          @if (issue()?.createdByName) {
+            <div class="issue-details-header__meta-item">
+              <span class="issue-details-header__meta-label">Created by</span>
+              <span class="issue-details-header__meta-value">
+                {{ issue()?.createdByName }}
+              </span>
+            </div>
+          }
+          @if (issue()?.assignedToUserName) {
+            <div class="issue-details-header__meta-item">
+              <span class="issue-details-header__meta-label">Assigned to</span>
+              <span class="issue-details-header__meta-value">
+                {{ issue()?.assignedToUserName }}
+              </span>
+            </div>
+          } @else {
+            <div class="issue-details-header__meta-item">
+              <span class="issue-details-header__meta-label">Assigned to</span>
+              <span
+                class="issue-details-header__meta-value"
+                style="color: var(--color-neutral-foreground2-rest)"
+              >
+                Unassigned
+              </span>
+            </div>
+          }
+          <div class="issue-details-header__meta-item">
+            <span class="issue-details-header__meta-label">Created</span>
+            <span class="issue-details-header__meta-value">
+              {{ issue()?.createdAt | date: 'dd MMM yyyy' }}
+            </span>
+          </div>
+          <div class="issue-details-header__meta-item">
+            <span class="issue-details-header__meta-label">Watchers</span>
+            <span class="issue-details-header__meta-value">
+              {{ issue()?.watchersCount }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="issue-details-body">
+        <div style="display: flex; flex-direction: column; gap: 1.25rem">
+          <div class="issue-description">
+            <p class="issue-description__text">{{ issue()?.description }}</p>
+          </div>
+
+          @if (isAuthenticated()) {
+            <div class="comment-form" [formGroup]="commentForm">
+              <h3 class="comment-form__title">Add comment</h3>
+              @if (commentError()) {
+                <ui-message-bar
+                  [message]="commentError()!"
+                  variant="danger"
+                  appearance="tint"
+                  [dismissible]="false"
+                  style="margin-bottom: 0.5rem; display: block"
+                />
+              }
+              <ui-textarea
+                label="Comment"
+                placeholder="Write a comment..."
+                formControlName="content"
+                [required]="true"
+                [rows]="4"
+                [helpText]="
+                  'Max ' + issueCommentConstraints.CONTENT_MAX_LENGTH + ' characters.'
+                "
+              />
+              <div class="comment-form__actions">
+                <ui-button
+                  type="button"
+                  variant="primary"
+                  [loading]="isSubmittingComment()"
+                  [disabled]="isSubmittingComment()"
+                  (click)="addComment()"
+                >
+                  Post comment
+                </ui-button>
+              </div>
+            </div>
+          }
+
+          @if (sortedComments().length > 0) {
+            <div class="issue-activity">
+              <h3 class="issue-activity__title">
+                Comments ({{ sortedComments().length }})
+              </h3>
+              @for (comment of sortedComments(); track comment.id) {
+                <div class="comment-item">
+                  <div class="comment-item__header">
+                    <span class="comment-item__author">
+                      {{ comment.authorName ?? 'Unknown' }}
+                    </span>
+                    <span class="comment-item__time">
+                      {{ comment.createdAt | date: 'dd MMM yyyy, HH:mm' }}
+                    </span>
+                  </div>
+                  <p class="comment-item__text">{{ comment.content }}</p>
+                </div>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="issue-sidebar">
+          @if ((issue()?.acceptanceCriteria?.length ?? 0) > 0) {
+            <div class="issue-criteria">
+              <h3 class="issue-criteria__title">Acceptance criteria</h3>
+              <div class="issue-criteria__list">
+                @for (criterion of issue()?.acceptanceCriteria; track criterion.id) {
+                  <div class="issue-criteria__item">
+                    <span class="issue-criteria__item-index">{{ $index + 1 }}.</span>
+                    <span class="issue-criteria__item-text">
+                      {{ criterion.content }}
+                    </span>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+
+          @if (sortedHistoryEntries().length > 0) {
+            <div
+              style="
+                padding: 1.25rem;
+                border: 1px solid var(--color-neutral-stroke-rest);
+                border-radius: 1rem;
+                background: var(--color-neutral-background-rest);
+              "
+            >
+              <h3
+                style="
+                  font-size: 0.875rem;
+                  font-weight: 600;
+                  color: var(--color-neutral-foreground-rest);
+                  margin-bottom: 1rem;
+                "
+              >
+                Activity
+              </h3>
+              <div style="display: flex; flex-direction: column; gap: 0.875rem">
+                @for (entry of sortedHistoryEntries(); track entry.id) {
+                  <div class="activity-entry">
+                    <div class="activity-entry__dot"></div>
+                    <div class="activity-entry__content">
+                      <p class="activity-entry__summary">{{ entry.summary }}</p>
+                      <span class="activity-entry__time">
+                        {{ entry.createdAt | date: 'dd MMM yyyy, HH:mm' }}
+                      </span>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
   }
-</section>
+</div>

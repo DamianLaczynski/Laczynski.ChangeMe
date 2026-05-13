@@ -9,10 +9,11 @@ import {
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthConstraints } from '@features/auth/models/auth.model';
 import { AuthService } from '@features/auth/services/auth.service';
+import { ButtonComponent, MessageBarComponent, PasswordComponent, TextComponent } from '@laczynski/ui';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, TextComponent, PasswordComponent, ButtonComponent, MessageBarComponent],
   templateUrl: './login.component.html'
 })
 export class LoginComponent {

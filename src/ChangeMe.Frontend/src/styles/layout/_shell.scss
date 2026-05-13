@@ -1,0 +1,157 @@
+@use '../abstracts/variables' as v;
+
+@mixin _truncate {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  &__header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    height: v.$shell-header-height;
+    border-bottom: 1px solid var(--color-neutral-stroke-rest);
+    background: var(--color-neutral-background-rest);
+  }
+
+  &__nav {
+    display: flex;
+    align-items: center;
+    gap: v.$space-4;
+    max-width: v.$shell-max-width;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 v.$space-6;
+  }
+
+  &__brand {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--color-neutral-foreground-rest);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+    flex-shrink: 0;
+
+    &:hover {
+      color: var(--color-brand-primary);
+    }
+  }
+
+  &__nav-links {
+    display: flex;
+    align-items: center;
+    gap: v.$space-1;
+    flex: 1;
+  }
+
+  &__nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: v.$space-2;
+    padding: v.$space-2 v.$space-3;
+    border-radius: v.$radius-sm;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-neutral-foreground2-rest);
+    text-decoration: none;
+    transition:
+      color v.$transition-fast,
+      background v.$transition-fast;
+
+    &:hover {
+      color: var(--color-neutral-foreground-rest);
+      background: var(--color-neutral-background3-rest);
+    }
+
+    &.active {
+      color: var(--color-neutral-foreground-rest);
+      background: var(--color-neutral-background3-rest);
+      font-weight: 600;
+    }
+  }
+
+  &__nav-actions {
+    display: flex;
+    align-items: center;
+    gap: v.$space-3;
+    flex-shrink: 0;
+  }
+
+  &__user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.125rem;
+  }
+
+  &__user-name {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-neutral-foreground-rest);
+    @include _truncate;
+    max-width: 12rem;
+  }
+
+  &__user-email {
+    font-size: 0.75rem;
+    color: var(--color-neutral-foreground2-rest);
+    @include _truncate;
+    max-width: 12rem;
+  }
+
+  &__main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.page-content {
+  max-width: v.$content-max-width;
+  margin: 0 auto;
+  padding: v.$space-8 v.$space-6;
+  width: 100%;
+
+  &--full {
+    max-width: none;
+  }
+}
+
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: v.$space-4;
+  flex-wrap: wrap;
+  margin-bottom: v.$space-6;
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    gap: v.$space-1;
+  }
+
+  &__title {
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: var(--color-neutral-foreground-rest);
+    letter-spacing: -0.02em;
+  }
+
+  &__subtitle {
+    font-size: 0.875rem;
+    color: var(--color-neutral-foreground2-rest);
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: v.$space-3;
+  }
+}

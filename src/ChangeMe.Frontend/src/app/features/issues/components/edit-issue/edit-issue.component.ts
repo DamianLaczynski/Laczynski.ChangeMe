@@ -1,4 +1,4 @@
-import { Component, DestroyRef, effect, inject, input, signal } from '@angular/core';
+import { Component, DestroyRef, computed, effect, inject, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormArray,
@@ -8,6 +8,15 @@ import {
   Validators
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import {
+  ButtonComponent,
+  DropdownComponent,
+  MessageBarComponent,
+  SkeletonComponent,
+  TextComponent,
+  TextareaComponent,
+  type DropdownItem
+} from '@laczynski/ui';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   IssueAcceptanceCriteriaConstraints,
@@ -36,7 +45,17 @@ type EditAcceptanceCriterionForm = {
 
 @Component({
   selector: 'app-edit-issue',
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterLink,
+    ButtonComponent,
+    DropdownComponent,
+    MessageBarComponent,
+    SkeletonComponent,
+    TextComponent,
+    TextareaComponent
+  ],
   templateUrl: './edit-issue.component.html'
 })
 export class EditIssueComponent {
@@ -51,6 +70,9 @@ export class EditIssueComponent {
   readonly issueConstraints = IssueConstraints;
   readonly issueAcceptanceCriteriaConstraints = IssueAcceptanceCriteriaConstraints;
   readonly assignableUsers = signal<IssueAssignableUserDto[]>([]);
+  readonly assignableUserItems = computed<DropdownItem[]>(() =>
+    this.assignableUsers().map((u) => ({ value: u.id, label: u.fullName }))
+  );
   readonly issue = signal<IssueDetailsDto | null>(null);
   readonly isLoadingIssue = signal(true);
   readonly isLoadingAssignableUsers = signal(true);

@@ -16,6 +16,13 @@ import {
   Validators
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import {
+  BadgeComponent,
+  ButtonComponent,
+  MessageBarComponent,
+  SkeletonComponent,
+  TextareaComponent
+} from '@laczynski/ui';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '@features/auth/services/auth.service';
 import {
@@ -32,7 +39,16 @@ type CommentForm = {
 
 @Component({
   selector: 'app-issue-details',
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterLink,
+    BadgeComponent,
+    ButtonComponent,
+    MessageBarComponent,
+    SkeletonComponent,
+    TextareaComponent
+  ],
   templateUrl: './issue-details.component.html'
 })
 export class IssueDetailsComponent {

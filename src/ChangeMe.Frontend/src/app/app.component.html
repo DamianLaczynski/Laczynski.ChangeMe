@@ -1,21 +1,61 @@
-<header>
-  <nav>
-    <a [routerLink]="['/issues']">Issues</a>
+@if (isAuthenticated()) {
+  <div class="app-shell">
+    <header class="app-shell__header">
+      <nav class="app-shell__nav">
+        <a class="app-shell__brand" [routerLink]="['/issues']">ChangeMe</a>
 
-    @if (isAuthenticated()) {
-      <span>{{ currentUser()?.fullName }} ({{ currentUser()?.email }})</span>
-      <a [routerLink]="['/issues', 'create']">Create Issue</a>
-      <a [routerLink]="['/notifications']">
-        Notifications ({{ unreadNotificationsCount() }})
-      </a>
-      <button type="button" (click)="logout()">Logout</button>
-    } @else {
-      <a [routerLink]="['/login']">Login</a>
-      <a [routerLink]="['/register']">Register</a>
-    }
-  </nav>
-</header>
+        <div class="app-shell__nav-links">
+          <a
+            class="app-shell__nav-link"
+            [routerLink]="['/issues']"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            Issues
+          </a>
+          <a
+            class="app-shell__nav-link"
+            [routerLink]="['/issues', 'create']"
+            routerLinkActive="active"
+          >
+            New issue
+          </a>
+          <a
+            class="app-shell__nav-link"
+            [routerLink]="['/notifications']"
+            routerLinkActive="active"
+          >
+            Notifications
+            @if (unreadNotificationsCount() > 0) {
+              <ui-badge
+                size="small"
+                [text]="unreadNotificationsCount().toString()"
+                shape="circular"
+                variant="danger"
+                [ariaLabel]="unreadNotificationsCount() + ' unread notifications'"
+              />
+            }
+          </a>
+        </div>
 
-<main>
-  <router-outlet></router-outlet>
-</main>
+        <div class="app-shell__nav-actions">
+          @if (currentUser()) {
+            <div class="app-shell__user-info">
+              <span class="app-shell__user-name">{{ currentUser()?.fullName }}</span>
+              <span class="app-shell__user-email">{{ currentUser()?.email }}</span>
+            </div>
+          }
+          <ui-button variant="secondary" appearance="outline" (click)="logout()">
+            Sign out
+          </ui-button>
+        </div>
+      </nav>
+    </header>
+
+    <main class="app-shell__main">
+      <router-outlet />
+    </main>
+  </div>
+} @else {
+  <router-outlet />
+}

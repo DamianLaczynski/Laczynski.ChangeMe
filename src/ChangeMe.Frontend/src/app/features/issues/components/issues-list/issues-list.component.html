@@ -1,221 +1,248 @@
-<section>
-  <h1>Issues</h1>
-  <p>Browse, filter and monitor issues.</p>
+<div class="page-content">
+  <div class="page-header">
+    <div class="page-header__text">
+      <h1 class="page-header__title">Issues</h1>
+      <p class="page-header__subtitle">
+        @if (pagination()) {
+          {{ pagination()?.totalCount }} total
+        }
+      </p>
+    </div>
+    <div class="page-header__actions">
+      <ui-button [routerLink]="['/issues', 'create']" variant="primary" icon="add">
+        New issue
+      </ui-button>
+    </div>
+  </div>
 
-  <form [formGroup]="filtersForm" (ngSubmit)="applyFilters()">
-    <div>
-      <label for="searchText">Search</label>
-      <input
-        id="searchText"
-        type="text"
-        formControlName="searchText"
+  <div class="issues-filters" [formGroup]="filtersForm">
+    <div class="issues-filters__row">
+      <ui-text
+        label="Search"
         placeholder="Search issues..."
+        formControlName="searchText"
       />
-      <button type="submit">Search</button>
-      @if (isAuthenticated()) {
-        <a [routerLink]="['/issues', 'create']">+ Add issue</a>
-      }
+      <ui-dropdown
+        label="Status"
+        placeholder="All statuses"
+        [items]="issueStatuses()"
+        mode="multi"
+        formControlName="statuses"
+      />
+      <ui-dropdown
+        label="Priority"
+        placeholder="All priorities"
+        [items]="issuePriorities()"
+        mode="multi"
+        formControlName="priorities"
+      />
+      <ui-dropdown
+        label="Assigned to"
+        placeholder="Anyone"
+        [items]="assignableUserItems()"
+        [disabled]="isLoadingAssignableUsers()"
+        formControlName="assignedToUserId"
+      />
     </div>
 
-    <fieldset>
-      <legend>Filters</legend>
-
-      <div>
-        <label for="statuses">Status</label>
-        <select id="statuses" formControlName="statuses" multiple>
-          @for (status of issueStatuses(); track status.value) {
-            <option [ngValue]="status.value">{{ status.label }}</option>
-          }
-        </select>
+    <div
+      style="
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      "
+    >
+      <div class="issues-filters__checkboxes">
+        <ui-checkbox label="Watched by me" formControlName="watchedByMe" />
+        <ui-checkbox label="Created by me" formControlName="createdByMe" />
       </div>
-
-      <div>
-        <label for="priorities">Priority</label>
-        <select id="priorities" formControlName="priorities" multiple>
-          @for (priority of issuePriorities(); track priority.value) {
-            <option [ngValue]="priority.value">{{ priority.label }}</option>
-          }
-        </select>
+      <div class="issues-filters__actions">
+        <ui-button
+          variant="primary"
+          appearance="outline"
+          icon="filter"
+          (click)="applyFilters()"
+        >
+          Apply
+        </ui-button>
+        <ui-button variant="secondary" appearance="subtle" (click)="clearFilters()">
+          Clear
+        </ui-button>
       </div>
-
-      <div>
-        <label for="assignedToUserId">Assigned to</label>
-        <select id="assignedToUserId" formControlName="assignedToUserId">
-          <option [ngValue]="null">Any assignee</option>
-          @for (user of assignableUsers(); track user.id) {
-            <option [ngValue]="user.id">{{ user.fullName }}</option>
-          }
-        </select>
-        @if (isLoadingAssignableUsers()) {
-          <p>Loading assignable users...</p>
-        }
-      </div>
-
-      <div>
-        <label>
-          <input type="checkbox" formControlName="watchedByMe" />
-          Watched by me
-        </label>
-      </div>
-
-      <div>
-        <label>
-          <input type="checkbox" formControlName="createdByMe" />
-          My issues
-        </label>
-      </div>
-
-      <div>
-        <button type="submit">Apply filters</button>
-        <button type="button" (click)="clearFilters()">Clear filters</button>
-      </div>
-    </fieldset>
-  </form>
+    </div>
+  </div>
 
   @if (errorMessage()) {
-    <p>{{ errorMessage() }}</p>
+    <ui-message-bar
+      [message]="errorMessage()!"
+      variant="danger"
+      appearance="tint"
+      [dismissible]="false"
+      style="margin-bottom: 1.25rem; display: block"
+    />
   }
 
-  @if (isLoading() && !hasLoaded()) {
-    <section aria-busy="true">
-      <h2>Loading issues...</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Title</th>
-            <th>Status</th>
-            <th>Priority</th>
-            <th>Assigned to</th>
-            <th>Created at</th>
-            <th>Last activity</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (_row of skeletonRows; track $index) {
-            <tr>
-              <td>Loading...</td>
-              <td>Loading issue title...</td>
-              <td>Loading...</td>
-              <td>Loading...</td>
-              <td>Loading...</td>
-              <td>Loading...</td>
-              <td>Loading...</td>
-              <td>Loading...</td>
-            </tr>
+  <div class="issues-table">
+    <div class="issues-table__header">
+      <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap">
+        <button
+          class="issues-table__sort-btn"
+          [class.issues-table__sort-btn--active]="query().sortField === 'Title'"
+          type="button"
+          (click)="toggleSort('Title')"
+        >
+          Title
+          @if (getSortDirection('Title') === 'ascending') {
+            ↑
+          } @else if (getSortDirection('Title') === 'descending') {
+            ↓
           }
-        </tbody>
-      </table>
-    </section>
-  } @else {
-    <p>
-      Results: {{ pagination()?.totalCount ?? 0 }} | Page
-      {{ pagination()?.currentPage ?? 1 }} of {{ pagination()?.totalPages ?? 0 }}
-    </p>
+        </button>
+        <button
+          class="issues-table__sort-btn"
+          [class.issues-table__sort-btn--active]="query().sortField === 'CreatedAt'"
+          type="button"
+          (click)="toggleSort('CreatedAt')"
+        >
+          Created
+          @if (getSortDirection('CreatedAt') === 'ascending') {
+            ↑
+          } @else if (getSortDirection('CreatedAt') === 'descending') {
+            ↓
+          }
+        </button>
+        <button
+          class="issues-table__sort-btn"
+          [class.issues-table__sort-btn--active]="
+            query().sortField === 'LastActivityAt'
+          "
+          type="button"
+          (click)="toggleSort('LastActivityAt')"
+        >
+          Last activity
+          @if (getSortDirection('LastActivityAt') === 'ascending') {
+            ↑
+          } @else if (getSortDirection('LastActivityAt') === 'descending') {
+            ↓
+          }
+        </button>
+      </div>
+    </div>
 
-    @if (issues().length > 0) {
-      <table>
-        <thead>
-          <tr>
-            <th>
-              <button type="button" (click)="toggleSort('Id')">
-                ID
-                @if (getSortDirection('Id') === 'ascending') {
-                  <span>(asc)</span>
-                } @else if (getSortDirection('Id') === 'descending') {
-                  <span>(desc)</span>
-                }
-              </button>
-            </th>
-            <th>
-              <button type="button" (click)="toggleSort('Title')">
-                Title
-                @if (getSortDirection('Title') === 'ascending') {
-                  <span>(asc)</span>
-                } @else if (getSortDirection('Title') === 'descending') {
-                  <span>(desc)</span>
-                }
-              </button>
-            </th>
-            <th>Status</th>
-            <th>Priority</th>
-            <th>Assigned to</th>
-            <th>
-              <button type="button" (click)="toggleSort('CreatedAt')">
-                Created at
-                @if (getSortDirection('CreatedAt') === 'ascending') {
-                  <span>(asc)</span>
-                } @else if (getSortDirection('CreatedAt') === 'descending') {
-                  <span>(desc)</span>
-                }
-              </button>
-            </th>
-            <th>
-              <button type="button" (click)="toggleSort('LastActivityAt')">
-                Last activity
-                @if (getSortDirection('LastActivityAt') === 'ascending') {
-                  <span>(asc)</span>
-                } @else if (getSortDirection('LastActivityAt') === 'descending') {
-                  <span>(desc)</span>
-                }
-              </button>
-            </th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (issue of issues(); track issue.id) {
-            <tr>
-              <td>
-                <a [routerLink]="['/issues', issue.id]">{{ issue.id }}</a>
-              </td>
-              <td>
-                <a [routerLink]="['/issues', issue.id]">{{ issue.title }}</a>
-              </td>
-              <td>{{ issue.status }}</td>
-              <td>{{ issue.priority }}</td>
-              <td>{{ issue.assignedToUserName || 'Unassigned' }}</td>
-              <td>{{ issue.createdAt | date: 'short' }}</td>
-              <td>{{ issue.lastActivityAt | date: 'short' }}</td>
-              <td>
-                <a [routerLink]="['/issues', issue.id]">Show details</a>
-                @if (isAuthenticated()) {
-                  <button
-                    type="button"
-                    (click)="toggleWatch(issue)"
-                    [disabled]="isWatchPending(issue.id)"
-                  >
-                    {{ issue.isWatchedByCurrentUser ? 'Unwatch' : 'Watch' }}
-                    ({{ issue.watchersCount }})
-                  </button>
-                } @else {
-                  <span>Watchers: {{ issue.watchersCount }}</span>
-                }
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
+    @if (isLoading()) {
+      @for (row of skeletonRows; track row) {
+        <div
+          style="
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 0.75rem 1rem;
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid
+              color-mix(in srgb, var(--color-neutral-stroke-rest) 60%, transparent);
+          "
+        >
+          <div style="display: flex; flex-direction: column; gap: 0.5rem">
+            <ui-skeleton width="55%" height="1rem" />
+            <div style="display: flex; gap: 0.5rem">
+              <ui-skeleton width="4.5rem" height="1.375rem" borderRadius="9999px" />
+              <ui-skeleton width="4.5rem" height="1.375rem" borderRadius="9999px" />
+            </div>
+            <ui-skeleton width="35%" height="0.75rem" />
+          </div>
+          <ui-skeleton
+            width="2rem"
+            height="2rem"
+            borderRadius="0.5rem"
+            [animated]="false"
+          />
+        </div>
+      }
+    } @else if (issues().length === 0) {
+      <div class="issues-empty">
+        <div class="issues-empty__title">No issues found</div>
+        <div class="issues-empty__text">
+          Try adjusting filters or create a new issue.
+        </div>
+      </div>
     } @else {
-      <p>No issues found</p>
+      @for (issue of issues(); track issue.id) {
+        <div class="issue-row">
+          <div class="issue-row__main">
+            <div class="issue-row__title-row">
+              <a class="issue-row__title" [routerLink]="['/issues', issue.id]">
+                {{ issue.title }}
+              </a>
+              <div class="issue-row__badges">
+                @switch (issue.status) {
+                  @case ('NEW') {
+                    <ui-badge text="New" variant="info" appearance="tint" />
+                  }
+                  @case ('IN_PROGRESS') {
+                    <ui-badge text="In Progress" variant="primary" appearance="tint" />
+                  }
+                  @case ('RESOLVED') {
+                    <ui-badge text="Resolved" variant="success" appearance="tint" />
+                  }
+                  @case ('CLOSED') {
+                    <ui-badge text="Closed" variant="secondary" appearance="subtle" />
+                  }
+                }
+                @switch (issue.priority) {
+                  @case ('CRITICAL') {
+                    <ui-badge text="Critical" variant="danger" />
+                  }
+                  @case ('HIGH') {
+                    <ui-badge text="High" variant="warning" appearance="tint" />
+                  }
+                  @case ('MEDIUM') {
+                    <ui-badge text="Medium" variant="secondary" appearance="subtle" />
+                  }
+                  @case ('LOW') {
+                    <ui-badge text="Low" variant="secondary" appearance="subtle" />
+                  }
+                }
+              </div>
+            </div>
+            <div class="issue-row__meta">
+              @if (issue.assignedToUserName) {
+                <span class="issue-row__meta-item">
+                  → {{ issue.assignedToUserName }}
+                </span>
+              }
+              @if (issue.createdByName) {
+                <span class="issue-row__meta-item">by {{ issue.createdByName }}</span>
+              }
+              <span class="issue-row__meta-item">
+                {{ issue.lastActivityAt | date: 'dd MMM yyyy' }}
+              </span>
+              <span class="issue-row__meta-item">
+                {{ issue.watchersCount }} watching
+              </span>
+            </div>
+          </div>
+          <div class="issue-row__actions">
+            @if (isAuthenticated()) {
+              <ui-button
+                [variant]="issue.isWatchedByCurrentUser ? 'primary' : 'secondary'"
+                [appearance]="issue.isWatchedByCurrentUser ? 'tint' : 'subtle'"
+                [loading]="isWatchPending(issue.id)"
+                [disabled]="isWatchPending(issue.id)"
+                (click)="toggleWatch(issue)"
+              >
+                {{ issue.isWatchedByCurrentUser ? 'Watching' : 'Watch' }}
+              </ui-button>
+            }
+          </div>
+        </div>
+      }
     }
+  </div>
 
-    <div>
-      <button
-        type="button"
-        (click)="changePage((pagination()?.currentPage ?? 1) - 1)"
-        [disabled]="!pagination()?.hasPrevious"
-      >
-        Previous
-      </button>
-      <button
-        type="button"
-        (click)="changePage((pagination()?.currentPage ?? 1) + 1)"
-        [disabled]="!pagination()?.hasNext"
-      >
-        Next
-      </button>
+  @if (!isLoading() && (pagination()?.totalPages ?? 0) > 1) {
+    <div class="issues-pagination">
+      <ui-pagination [config]="paginationConfig()" (pageChange)="changePage($event)" />
     </div>
   }
-</section>
+</div>

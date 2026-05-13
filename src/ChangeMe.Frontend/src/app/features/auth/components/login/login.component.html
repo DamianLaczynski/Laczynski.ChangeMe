@@ -1,54 +1,46 @@
-<section>
-  <h1>Login</h1>
-  <p>Sign in to create, edit and delete issues.</p>
-
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div>
-      <label for="email">Email</label>
-      <input id="email" type="email" formControlName="email" />
-      @if (form.controls.email.touched && form.controls.email.errors?.['required']) {
-        <p>Email is required.</p>
-      }
-      @if (form.controls.email.touched && form.controls.email.errors?.['email']) {
-        <p>Enter a valid email address.</p>
-      }
-      @if (form.controls.email.touched && form.controls.email.errors?.['maxlength']) {
-        <p>
-          Email must be less than {{ authConstraints.EMAIL_MAX_LENGTH }} characters
-          long.
-        </p>
-      }
-    </div>
-
-    <div>
-      <label for="password">Password</label>
-      <input id="password" type="password" formControlName="password" />
-      @if (
-        form.controls.password.touched && form.controls.password.errors?.['required']
-      ) {
-        <p>Password is required.</p>
-      }
-      @if (
-        form.controls.password.touched && form.controls.password.errors?.['minlength']
-      ) {
-        <p>
-          Password must be at least {{ authConstraints.PASSWORD_MIN_LENGTH }} characters
-          long.
-        </p>
-      }
+<div class="auth-page">
+  <div class="auth-page__card">
+    <div class="auth-page__header">
+      <h1 class="auth-page__title">Sign in</h1>
+      <p class="auth-page__subtitle">Welcome back. Enter your credentials to continue.</p>
     </div>
 
     @if (errorMessage()) {
-      <p>{{ errorMessage() }}</p>
+      <ui-message-bar
+        [message]="errorMessage()"
+        variant="danger"
+        appearance="tint"
+        [dismissible]="false"
+      />
     }
 
-    <button type="submit" [disabled]="isSubmitting()">
-      {{ isSubmitting() ? 'Signing in...' : 'Login' }}
-    </button>
-  </form>
+    <form class="auth-page__form" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <ui-text
+        label="Email"
+        placeholder="you@example.com"
+        autocomplete="email"
+        formControlName="email"
+        [required]="true"
+      />
+      <ui-password
+        label="Password"
+        placeholder="Enter your password"
+        autocomplete="current-password"
+        formControlName="password"
+        [required]="true"
+      />
+      <ui-button
+        type="submit"
+        variant="primary"
+        [fullWidth]="true"
+        [loading]="isSubmitting()"
+        [disabled]="isSubmitting()"
+      >Sign in</ui-button>
+    </form>
 
-  <p>
-    No account yet?
-    <a [routerLink]="['/register']">Create one</a>
-  </p>
-</section>
+    <div class="auth-page__footer">
+      <span>Don't have an account?</span>
+      <a [routerLink]="['/register']">Create account</a>
+    </div>
+  </div>
+</div>

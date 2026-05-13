@@ -1,0 +1,72 @@
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+.issue-form {
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-6;
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: v.$space-4;
+    padding: v.$space-6;
+    @include m.card;
+  }
+
+  &__section-title {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--color-neutral-foreground-rest);
+    padding-bottom: v.$space-3;
+    border-bottom: 1px solid
+      color-mix(in srgb, var(--color-neutral-stroke-rest) 70%, transparent);
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: v.$space-4;
+  }
+
+  &__criterion {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: start;
+    gap: v.$space-3;
+  }
+
+  &__criterion-index {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-neutral-foreground2-rest);
+    padding-top: 0.45rem;
+    white-space: nowrap;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: v.$space-3;
+    padding: v.$space-5 v.$space-6;
+    @include m.card;
+  }
+
+  &__empty-criteria {
+    display: flex;
+    align-items: center;
+    gap: v.$space-3;
+    padding: v.$space-4;
+    border: 1px dashed var(--color-neutral-stroke-rest);
+    border-radius: v.$radius-md;
+    font-size: 0.875rem;
+    color: var(--color-neutral-foreground2-rest);
+  }
+}
+
+.form-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: v.$space-4;
+}

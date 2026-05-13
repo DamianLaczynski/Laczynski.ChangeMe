@@ -28,9 +28,17 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/@laczynski/ui/assets/icons",
+                "output": "/assets/icons"
               }
             ],
-            "styles": ["src/styles.scss"]
+            "styles": [
+              "node_modules/@laczynski/ui/src/lib/scss/main.scss",
+              "src/styles.scss"
+            ]
           },
           "configurations": {
             "production": {

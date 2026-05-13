@@ -1,0 +1,256 @@
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+.issue-details-page {
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-6;
+}
+
+.issue-details-header {
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-4;
+  padding: v.$space-6;
+  @include m.card;
+
+  &__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: v.$space-4;
+    flex-wrap: wrap;
+  }
+
+  &__title-block {
+    display: flex;
+    flex-direction: column;
+    gap: v.$space-3;
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-neutral-foreground-rest);
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+  }
+
+  &__badges {
+    display: flex;
+    align-items: center;
+    gap: v.$space-2;
+    flex-wrap: wrap;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: v.$space-2;
+    flex-shrink: 0;
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: v.$space-6;
+    flex-wrap: wrap;
+    padding-top: v.$space-3;
+    border-top: 1px solid color-mix(in srgb, var(--color-neutral-stroke-rest) 60%, transparent);
+  }
+
+  &__meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: v.$space-1;
+  }
+
+  &__meta-label {
+    @include m.label-caps;
+  }
+
+  &__meta-value {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-neutral-foreground-rest);
+  }
+}
+
+.issue-details-body {
+  display: grid;
+  grid-template-columns: 1fr 20rem;
+  gap: v.$space-5;
+  align-items: start;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.issue-description {
+  padding: v.$space-6;
+  @include m.card;
+
+  &__text {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--color-neutral-foreground-rest);
+    white-space: pre-wrap;
+  }
+}
+
+.issue-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-4;
+}
+
+.issue-criteria {
+  padding: v.$space-5;
+  @include m.card;
+
+  &__title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-neutral-foreground-rest);
+    margin-bottom: v.$space-4;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: v.$space-3;
+  }
+
+  &__item {
+    display: flex;
+    align-items: flex-start;
+    gap: v.$space-3;
+    padding: v.$space-3;
+    border-radius: v.$radius-md;
+    background: var(--color-neutral-background2-rest);
+  }
+
+  &__item-index {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-neutral-foreground2-rest);
+    min-width: 1.25rem;
+    padding-top: 0.125rem;
+  }
+
+  &__item-text {
+    font-size: 0.875rem;
+    color: var(--color-neutral-foreground-rest);
+    line-height: 1.5;
+  }
+
+  &__empty {
+    font-size: 0.875rem;
+    color: var(--color-neutral-foreground2-rest);
+    text-align: center;
+    padding: v.$space-4;
+  }
+}
+
+.issue-activity {
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-5;
+
+  &__title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-neutral-foreground-rest);
+    padding-bottom: v.$space-3;
+    border-bottom: 1px solid var(--color-neutral-stroke-rest);
+  }
+}
+
+.activity-entry {
+  display: flex;
+  align-items: flex-start;
+  gap: v.$space-3;
+
+  &__dot {
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 50%;
+    background: var(--color-neutral-background3-rest);
+    border: 2px solid var(--color-neutral-stroke-rest);
+    margin-top: 0.3rem;
+    flex-shrink: 0;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: v.$space-1;
+  }
+
+  &__summary {
+    font-size: 0.875rem;
+    color: var(--color-neutral-foreground-rest);
+    line-height: 1.4;
+  }
+
+  &__time {
+    font-size: 0.75rem;
+    color: var(--color-neutral-foreground3-rest);
+  }
+}
+
+.comment-item {
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-2;
+  padding: v.$space-4;
+  @include m.card;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: v.$space-3;
+  }
+
+  &__author {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-neutral-foreground-rest);
+  }
+
+  &__time {
+    font-size: 0.75rem;
+    color: var(--color-neutral-foreground3-rest);
+  }
+
+  &__text {
+    font-size: 0.875rem;
+    color: var(--color-neutral-foreground-rest);
+    line-height: 1.55;
+    white-space: pre-wrap;
+  }
+}
+
+.comment-form {
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-3;
+  padding: v.$space-5;
+  @include m.card;
+
+  &__title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-neutral-foreground-rest);
+    margin-bottom: v.$space-1;
+  }
+
+  &__actions {
+    display: flex;
+    gap: v.$space-3;
+  }
+}

@@ -1,6 +1,7 @@
 import {
   Component,
   DestroyRef,
+  computed,
   effect,
   inject,
   signal,
@@ -9,6 +10,18 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import {
+  BadgeComponent,
+  ButtonComponent,
+  CheckboxComponent,
+  DropdownComponent,
+  MessageBarComponent,
+  PaginationComponent,
+  SkeletonComponent,
+  TextComponent,
+  type DropdownItem,
+  type PaginationConfig
+} from '@laczynski/ui';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { catchError, of, switchMap, tap } from 'rxjs';
 import { AuthService } from '@features/auth/services/auth.service';
@@ -36,7 +49,19 @@ type IssueSortField = 'Id' | 'Title' | 'CreatedAt' | 'LastActivityAt';
 
 @Component({
   selector: 'app-issues',
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterLink,
+    BadgeComponent,
+    ButtonComponent,
+    CheckboxComponent,
+    DropdownComponent,
+    MessageBarComponent,
+    PaginationComponent,
+    SkeletonComponent,
+    TextComponent
+  ],
   templateUrl: './issues-list.component.html'
 })
 export class IssuesComponent {
@@ -64,6 +89,25 @@ export class IssuesComponent {
   readonly isLoadingAssignableUsers = signal(false);
   readonly pendingWatchIssueIds = signal<string[]>([]);
   readonly skeletonRows = Array.from({ length: 5 }, (_, index) => index);
+
+  readonly assignableUserItems = computed<DropdownItem[]>(() =>
+    this.assignableUsers().map((u) => ({ value: u.id, label: u.fullName }))
+  );
+
+  readonly paginationConfig = computed<PaginationConfig>(() => {
+    const p = this.pagination();
+    return {
+      currentPage: p?.currentPage ?? 1,
+      totalPages: p?.totalPages ?? 0,
+      totalItems: p?.totalCount ?? 0,
+      pageSize: this.query().pageSize,
+      showPageNumbers: true,
+      maxVisiblePages: 7,
+      showFirstLast: true,
+      showInfo: true,
+      showPageSizeSelector: false
+    };
+  });
 
   readonly filtersForm = new FormGroup<IssuesFilterForm>({
     searchText: new FormControl('', { nonNullable: true }),

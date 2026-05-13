@@ -1,0 +1,64 @@
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+.auth-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: v.$space-6;
+  background: var(--color-neutral-background2-rest);
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    gap: v.$space-6;
+    width: 100%;
+    max-width: v.$auth-card-width;
+    padding: v.$space-8;
+    @include m.card;
+  }
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: v.$space-2;
+  }
+
+  &__title {
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: var(--color-neutral-foreground-rest);
+    letter-spacing: -0.02em;
+  }
+
+  &__subtitle {
+    font-size: 0.875rem;
+    color: var(--color-neutral-foreground2-rest);
+    line-height: 1.5;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: v.$space-4;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: v.$space-2;
+    font-size: 0.875rem;
+    color: var(--color-neutral-foreground2-rest);
+
+    a {
+      color: var(--color-brand-primary);
+      font-weight: 500;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

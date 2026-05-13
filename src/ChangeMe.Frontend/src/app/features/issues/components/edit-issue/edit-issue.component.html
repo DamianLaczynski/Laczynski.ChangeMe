@@ -1,150 +1,187 @@
-<section>
-  <h1>Edit Issue</h1>
-  <p>Update issue data, acceptance criteria and assignee.</p>
-
-  <div>
-    <a [routerLink]="['/issues', id()]">Cancel</a>
-  </div>
-
+<div class="page-content">
   @if (isLoadingIssue()) {
-    <section aria-busy="true">
-      <h2>Loading issue form...</h2>
-      <p>Loading issue data...</p>
-      <p>Loading acceptance criteria...</p>
-    </section>
+    <div style="display: flex; flex-direction: column; gap: 1.5rem">
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 0.5rem;
+        "
+      >
+        <ui-skeleton width="12rem" height="1.75rem" />
+        <ui-skeleton width="6rem" height="2rem" borderRadius="0.5rem" />
+      </div>
+      <div
+        style="
+          padding: 1.5rem;
+          border: 1px solid var(--color-neutral-stroke-rest);
+          border-radius: 1rem;
+          background: var(--color-neutral-background-rest);
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+        "
+      >
+        <ui-skeleton width="4rem" height="0.875rem" />
+        <ui-skeleton width="100%" height="2.25rem" borderRadius="0.5rem" />
+        <ui-skeleton width="4rem" height="0.875rem" />
+        <ui-skeleton width="100%" height="7rem" borderRadius="0.5rem" />
+      </div>
+    </div>
   } @else if (loadError()) {
-    <p>{{ loadError() }}</p>
+    <ui-message-bar
+      title="Failed to load issue"
+      [message]="loadError()!"
+      variant="danger"
+      appearance="tint"
+      [dismissible]="false"
+    />
   } @else {
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <fieldset>
-        <legend>Basic issue data</legend>
+    <div class="page-header">
+      <div class="page-header__text">
+        <h1 class="page-header__title">Edit issue</h1>
+        @if (issue()) {
+          <p class="page-header__subtitle">{{ issue()?.title }}</p>
+        }
+      </div>
+      <div class="page-header__actions">
+        <ui-button
+          [routerLink]="['/issues', id()]"
+          variant="secondary"
+          appearance="outline"
+        >
+          Cancel
+        </ui-button>
+      </div>
+    </div>
 
-        <p>Issue ID: {{ issue()?.id }}</p>
-        <p>Author: {{ issue()?.createdByName || issue()?.createdBy }}</p>
-        <p>Created at: {{ issue()?.createdAt | date: 'short' }}</p>
-        <p>Last activity: {{ issue()?.lastActivityAt | date: 'short' }}</p>
+    @if (submitError()) {
+      <ui-message-bar
+        [message]="submitError()!"
+        variant="danger"
+        appearance="tint"
+        [dismissible]="false"
+        style="margin-bottom: 1.5rem; display: block"
+      />
+    }
 
-        <div>
-          <label for="title">Title</label>
-          <input id="title" type="text" formControlName="title" />
-          @if (shouldShowError(form.controls.title)) {
-            @if (form.controls.title.errors?.['required']) {
-              <p>Title is required</p>
-            }
-            @if (form.controls.title.errors?.['minlength']) {
-              <p>
-                Title must be at least
-                {{ issueConstraints.TITLE_MIN_LENGTH }} characters
-              </p>
-            }
-            @if (form.controls.title.errors?.['maxlength']) {
-              <p>
-                Title must be at most {{ issueConstraints.TITLE_MAX_LENGTH }} characters
-              </p>
-            }
-          }
+    <form class="issue-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="issue-form__section">
+        <h2 class="issue-form__section-title">Details</h2>
+        <ui-text
+          label="Title"
+          placeholder="Brief, descriptive title"
+          formControlName="title"
+          [required]="true"
+          [helpText]="
+            'Min ' +
+            issueConstraints.TITLE_MIN_LENGTH +
+            ', max ' +
+            issueConstraints.TITLE_MAX_LENGTH +
+            ' characters.'
+          "
+        />
+        <ui-textarea
+          label="Description"
+          placeholder="Describe the issue"
+          formControlName="description"
+          [required]="true"
+          [rows]="6"
+          [helpText]="'Max ' + issueConstraints.DESCRIPTION_MAX_LENGTH + ' characters.'"
+        />
+      </div>
+
+      <div class="issue-form__section">
+        <h2 class="issue-form__section-title">Status & priority</h2>
+        <div class="issue-form__grid">
+          <ui-dropdown
+            label="Status"
+            [items]="issueStatuses()"
+            formControlName="status"
+            [required]="true"
+          />
+          <ui-dropdown
+            label="Priority"
+            [items]="issuePriorities()"
+            formControlName="priority"
+            [required]="true"
+          />
+          <ui-dropdown
+            label="Assigned to"
+            placeholder="Unassigned"
+            [items]="assignableUserItems()"
+            [disabled]="isLoadingAssignableUsers()"
+            formControlName="assignedToUserId"
+          />
+        </div>
+      </div>
+
+      <div class="issue-form__section">
+        <div class="form-section-header">
+          <h2 class="issue-form__section-title">Acceptance criteria</h2>
+          <ui-button
+            type="button"
+            variant="secondary"
+            appearance="outline"
+            icon="add"
+            (click)="addAcceptanceCriterion()"
+          >
+            Add criterion
+          </ui-button>
         </div>
 
-        <div>
-          <label for="description">Description</label>
-          <textarea id="description" formControlName="description"></textarea>
-          @if (shouldShowError(form.controls.description)) {
-            @if (form.controls.description.errors?.['required']) {
-              <p>Description is required</p>
-            }
-            @if (form.controls.description.errors?.['maxlength']) {
-              <p>
-                Description must be at most
-                {{ issueConstraints.DESCRIPTION_MAX_LENGTH }} characters
-              </p>
-            }
-          }
-        </div>
-
-        <div>
-          <label for="status">Status</label>
-          <select id="status" formControlName="status">
-            @for (status of issueStatuses(); track status.value) {
-              <option [ngValue]="status.value">{{ status.label }}</option>
-            }
-          </select>
-        </div>
-
-        <div>
-          <label for="priority">Priority</label>
-          <select id="priority" formControlName="priority">
-            @for (priority of issuePriorities(); track priority.value) {
-              <option [ngValue]="priority.value">{{ priority.label }}</option>
-            }
-          </select>
-        </div>
-
-        <div>
-          <label for="assignedToUserId">Assigned to</label>
-          <select id="assignedToUserId" formControlName="assignedToUserId">
-            <option [ngValue]="null">Unassigned</option>
-            @for (user of assignableUsers(); track user.id) {
-              <option [ngValue]="user.id">{{ user.fullName }}</option>
-            }
-          </select>
-          @if (isLoadingAssignableUsers()) {
-            <p>Loading assignable users...</p>
-          }
-        </div>
-      </fieldset>
-
-      <fieldset>
-        <legend>Acceptance criteria</legend>
+        @if (acceptanceCriteria.length === 0) {
+          <div class="issue-form__empty-criteria">
+            No acceptance criteria. Click "Add criterion" to define done conditions.
+          </div>
+        }
 
         <div formArrayName="acceptanceCriteria">
           @for (criterion of acceptanceCriteria.controls; track $index) {
-            <div [formGroupName]="$index">
-              <label [for]="'acceptance-criterion-' + $index">
-                Acceptance criterion {{ $index + 1 }}
-              </label>
-              <textarea
-                [id]="'acceptance-criterion-' + $index"
+            <div
+              class="issue-form__criterion"
+              [formGroupName]="$index"
+              style="margin-bottom: 0.75rem"
+            >
+              <input type="hidden" formControlName="id" />
+              <ui-textarea
+                [label]="'Criterion ' + ($index + 1)"
+                placeholder="Describe the acceptance condition"
                 formControlName="content"
-              ></textarea>
-              @if (
-                criterion.controls.content.errors &&
-                (criterion.controls.content.touched || isSubmitted())
-              ) {
-                @if (criterion.controls.content.errors['required']) {
-                  <p>Acceptance criterion is required</p>
-                }
-                @if (criterion.controls.content.errors['maxlength']) {
-                  <p>
-                    Acceptance criterion must be at most
-                    {{
-                      issueAcceptanceCriteriaConstraints.CONTENT_MAX_LENGTH
-                    }}
-                    characters
-                  </p>
-                }
-              }
-              <button type="button" (click)="removeAcceptanceCriterion($index)">
-                Remove acceptance criterion
-              </button>
+                [required]="true"
+                [rows]="2"
+              />
+              <ui-button
+                type="button"
+                variant="danger"
+                appearance="subtle"
+                icon="delete"
+                ariaLabel="Remove criterion"
+                style="margin-top: 1.5rem"
+                (click)="removeAcceptanceCriterion($index)"
+              />
             </div>
           }
         </div>
+      </div>
 
-        <button type="button" (click)="addAcceptanceCriterion()">
-          Add acceptance criterion
-        </button>
-      </fieldset>
-
-      @if (submitError()) {
-        <p>{{ submitError() }}</p>
-      }
-
-      <div>
-        <a [routerLink]="['/issues', id()]">Cancel</a>
-        <button type="submit" [disabled]="isSubmitting()">
-          {{ isSubmitting() ? 'Saving changes...' : 'Save changes' }}
-        </button>
+      <div class="issue-form__actions">
+        <ui-button
+          type="submit"
+          variant="primary"
+          icon="save"
+          [loading]="isSubmitting()"
+          [disabled]="isSubmitting()"
+        >
+          Save changes
+        </ui-button>
+        <a [routerLink]="['/issues', id()]">
+          <ui-button type="button" variant="secondary" appearance="outline">
+            Cancel
+          </ui-button>
+        </a>
       </div>
     </form>
   }
-</section>
+</div>

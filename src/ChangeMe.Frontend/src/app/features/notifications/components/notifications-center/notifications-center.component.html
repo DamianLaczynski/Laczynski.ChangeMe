@@ -1,71 +1,181 @@
-<section>
-  <h1>Notifications</h1>
-  <p>Unread notifications: {{ unreadCount() }}</p>
-
-  <div>
-    <button type="button" (click)="notificationsService.loadNotifications()">
-      Refresh notifications
-    </button>
-    <button type="button" (click)="markAllAsRead()" [disabled]="unreadCount() === 0">
-      Mark all as read
-    </button>
+<div class="page-content">
+  <div class="page-header">
+    <div class="page-header__text">
+      <h1 class="page-header__title">
+        Notifications
+        @if (unreadCount() > 0) {
+          <ui-badge
+            [text]="unreadCount().toString()"
+            shape="circular"
+            variant="danger"
+            style="margin-left: 0.5rem; vertical-align: middle"
+          />
+        }
+      </h1>
+      <p class="page-header__subtitle">Updates on issues you are watching.</p>
+    </div>
+    @if (unreadCount() > 0) {
+      <div class="page-header__actions">
+        <ui-button variant="secondary" appearance="outline" (click)="markAllAsRead()">
+          Mark all as read
+        </ui-button>
+      </div>
+    }
   </div>
 
   @if (errorMessage()) {
-    <p>{{ errorMessage() }}</p>
+    <ui-message-bar
+      [message]="errorMessage()!"
+      variant="danger"
+      appearance="tint"
+      [dismissible]="false"
+      style="margin-bottom: 1.25rem; display: block"
+    />
   }
 
-  @if (isLoading() && !hasLoaded()) {
-    <section aria-busy="true">
-      <h2>Loading unread notifications...</h2>
-      <p>Loading notification...</p>
-      <p>Loading notification...</p>
-      <p>Loading notification...</p>
-    </section>
+  @if (isLoading()) {
+    <div
+      style="
+        border: 1px solid var(--color-neutral-stroke-rest);
+        border-radius: 1rem;
+        overflow: hidden;
+        background: var(--color-neutral-background-rest);
+      "
+    >
+      @for (i of [1, 2, 3, 4, 5]; track i) {
+        <div
+          style="
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: start;
+            gap: 0.75rem;
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid
+              color-mix(in srgb, var(--color-neutral-stroke-rest) 60%, transparent);
+          "
+        >
+          <ui-skeleton
+            shape="circular"
+            width="0.5rem"
+            height="0.5rem"
+            style="margin-top: 0.375rem"
+          />
+          <div style="display: flex; flex-direction: column; gap: 0.45rem">
+            <ui-skeleton width="40%" height="0.875rem" />
+            <ui-skeleton width="75%" height="0.75rem" />
+          </div>
+          <ui-skeleton width="3.5rem" height="0.75rem" [animated]="false" />
+        </div>
+      }
+    </div>
+  } @else if (notifications().length === 0) {
+    <div
+      style="
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        padding: 4rem 1.5rem;
+        border: 1px solid var(--color-neutral-stroke-rest);
+        border-radius: 1rem;
+        background: var(--color-neutral-background-rest);
+        text-align: center;
+      "
+    >
+      <p
+        style="
+          font-size: 1rem;
+          font-weight: 600;
+          color: var(--color-neutral-foreground-rest);
+        "
+      >
+        You're all caught up
+      </p>
+      <p style="font-size: 0.875rem; color: var(--color-neutral-foreground2-rest)">
+        Watch issues to receive updates here.
+      </p>
+    </div>
   } @else {
-    <section>
-      <h2>Unread</h2>
+    <div
+      style="
+        border: 1px solid var(--color-neutral-stroke-rest);
+        border-radius: 1rem;
+        overflow: hidden;
+      "
+    >
       @if (unreadNotifications().length > 0) {
-        <ul>
-          @for (notification of unreadNotifications(); track notification.id) {
-            <li>
-              <button type="button" (click)="openNotification(notification)">
-                {{ notification.eventType }} - {{ notification.issueTitle }} -
-                {{ notification.message }} -
-                {{ notification.occurredAt | date: 'short' }}
-              </button>
-              <button type="button" (click)="markAsRead(notification)">
-                Mark as read
-              </button>
-            </li>
-          }
-        </ul>
-      } @else {
-        <p>No unread notifications</p>
-      }
-    </section>
-
-    <section>
-      <h2>Read</h2>
-      @if (readNotifications().length > 0) {
-        <ul>
-          @for (notification of readNotifications(); track notification.id) {
-            <li>
-              <button type="button" (click)="openNotification(notification)">
-                {{ notification.eventType }} - {{ notification.issueTitle }} -
-                {{ notification.message }} -
-                {{ notification.occurredAt | date: 'short' }}
-              </button>
-              <span>
-                Read
-                {{ notification.readAt ? (notification.readAt | date: 'short') : '' }}
+        <div class="notifications-section__header">Unread</div>
+        @for (notification of unreadNotifications(); track notification.id) {
+          <div
+            class="notification-item notification-item--unread"
+            (click)="openNotification(notification)"
+            role="button"
+            tabindex="0"
+            (keydown.enter)="openNotification(notification)"
+          >
+            <div
+              class="notification-item__indicator notification-item__indicator--unread"
+            ></div>
+            <div class="notification-item__content">
+              <span class="notification-item__title">
+                {{ notification.issueTitle }}
               </span>
-            </li>
-          }
-        </ul>
-      } @else {
-        <p>No read notifications</p>
+              <span class="notification-item__message">{{ notification.message }}</span>
+            </div>
+            <div
+              style="
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                gap: 0.375rem;
+              "
+            >
+              <span class="notification-item__time">
+                {{ notification.occurredAt | date: 'dd MMM, HH:mm' }}
+              </span>
+              <ui-button
+                variant="secondary"
+                appearance="subtle"
+                (click)="markAsRead(notification); $event.stopPropagation()"
+              >
+                Mark read
+              </ui-button>
+            </div>
+          </div>
+        }
       }
-    </section>
+
+      @if (readNotifications().length > 0) {
+        <div
+          class="notifications-section__header"
+          [style.margin-top]="unreadNotifications().length > 0 ? '0' : '0'"
+        >
+          Read
+        </div>
+        @for (notification of readNotifications(); track notification.id) {
+          <div
+            class="notification-item"
+            (click)="openNotification(notification)"
+            role="button"
+            tabindex="0"
+            (keydown.enter)="openNotification(notification)"
+          >
+            <div
+              class="notification-item__indicator notification-item__indicator--read"
+            ></div>
+            <div class="notification-item__content">
+              <span class="notification-item__title">
+                {{ notification.issueTitle }}
+              </span>
+              <span class="notification-item__message">{{ notification.message }}</span>
+            </div>
+            <span class="notification-item__time">
+              {{ notification.occurredAt | date: 'dd MMM, HH:mm' }}
+            </span>
+          </div>
+        }
+      }
+    </div>
   }
-</section>
+</div>
