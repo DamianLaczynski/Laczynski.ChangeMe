@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json.schemastore.org/template",
+  "author": "Damian Łączyński",
+  "classifications": ["Web", "API", "SPA"],
+  "identity": "ChangeMe.FullStack",
+  "name": "ChangeMe full-stack",
+  "shortName": "changeme",
+  "sourceName": "ChangeMe",
+  "preferNameDirectory": true,
+  "tags": {
+    "language": "C#",
+    "type": "solution"
+  },
+  "symbols": {
+    "Database": {
+      "type": "parameter",
+      "datatype": "choice",
+      "choices": [
+        {
+          "choice": "PostgreSQL",
+          "description": "PostgreSQL (Npgsql, Hangfire.PostgreSql, Docker postgres image)"
+        },
+        {
+          "choice": "SqlServer",
+          "description": "SQL Server (EF Core SqlServer, Hangfire.SqlServer, Docker mssql image)"
+        }
+      ],
+      "defaultValue": "PostgreSQL",
+      "description": "Database stack for EF Core migrations, Hangfire, integration tests, and docker-compose."
+    },
+    "PostgreSQL": {
+      "type": "computed",
+      "value": "(Database == \"PostgreSQL\")"
+    },
+    "SqlServer": {
+      "type": "computed",
+      "value": "(Database == \"SqlServer\")"
+    }
+  },
+  "specialCustomOperations": {
+    "**/docker-compose.yml": {
+      "operations": [
+        {
+          "type": "conditional",
+          "configuration": {
+            "if": ["#if"],
+            "else": ["#else"],
+            "elseif": ["#elseif"],
+            "endif": ["#endif"],
+            "trim": true,
+            "wholeLine": true,
+            "evaluator": "C++"
+          }
+        }
+      ]
+    }
+  },
+  "sources": [
+    {
+      "source": "./",
+      "target": "./",
+      "modifiers": [
+        {
+          "condition": "(Database == \"SqlServer\")",
+          "exclude": [
+            "src/ChangeMe.Backend/src/ChangeMe.Backend.Infrastructure/Persistence/Migrations/**"
+          ]
+        },
+        {
+          "exclude": [
+            ".template.config/**",
+            "template-content/**",
+            ".git/**",
+            ".angular/**",
+            ".tmp-template-inspect/**",
+            ".template-test-output/**",
+            "artifacts/**",
+            "template-pack/**",
+            "**/node_modules/**",
+            "**/bin/**",
+            "**/obj/**",
+            "**/dist/**",
+            "**/.vs/**",
+            "**/TestResults/**",
+            "**/logs/**",
+            "*.nupkg"
+          ]
+        }
+      ]
+    }
+  ]
+}

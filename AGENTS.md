@@ -6,7 +6,13 @@
 
 - `src/ChangeMe.Frontend` - Angular 21 frontend.
 - `src/ChangeMe.Backend` - .NET backend solution.
+<!--#if (PostgreSQL) -->
 - `docker-compose.yml` - local full-stack environment with frontend, backend, PostgreSQL, and MailHog.
+  <!--#endif-->
+  <!--#if (SqlServer) -->
+- `docker-compose.yml` - local full-stack environment with frontend, backend, SQL Server, and MailHog.
+<!--#endif-->
+- `.template.config/` - `dotnet new` template manifest (`changeme`, `sourceName` token `ChangeMe`).
 - `docs/` - repo-specific implementation, testing, requirements, and template guidance.
 
 ## Start here by task

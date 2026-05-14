@@ -1,29 +1,60 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+
+
   <PropertyGroup>
+
     <TargetFramework>net10.0</TargetFramework>
+
     <ImplicitUsings>enable</ImplicitUsings>
+
     <Nullable>enable</Nullable>
+
     <IsPackable>false</IsPackable>
+
     <OutputType>Exe</OutputType>
+
     <RootNamespace>ChangeMe.Backend.IntegrationTests</RootNamespace>
+
   </PropertyGroup>
 
+
+
   <ItemGroup>
+
     <Using Include="Xunit" />
+
   </ItemGroup>
 
+
+
   <ItemGroup>
+
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
+
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
+
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
-    <PackageReference Include="Testcontainers.PostgreSql" />
+
+    <PackageReference Include="Testcontainers.PostgreSql" Condition="$(DefineConstants.Contains('PostgreSQL'))" />
+
+    <PackageReference Include="Testcontainers.MsSql" Condition="!$(DefineConstants.Contains('PostgreSQL'))" />
+
     <PackageReference Include="xunit.runner.visualstudio" />
+
     <PackageReference Include="xunit.v3" />
+
   </ItemGroup>
 
+
+
   <ItemGroup>
+
     <ProjectReference Include="..\..\src\ChangeMe.Backend.Web\ChangeMe.Backend.Web.csproj" />
+
   </ItemGroup>
+
+
 
 </Project>
+

@@ -24,12 +24,13 @@ public static class DatabaseConfig
           $"Connection string 'DefaultConnection' is not configured. Available connection string keys: {keys}");
     }
 
+#if PostgreSQL
     logger.LogInformation("Using PostgreSQL database");
 
     services.AddDbContext<ApplicationDbContext>(options =>
     {
       options.UseNpgsql(connectionString, npgsql =>
-        npgsql.MigrationsHistoryTable("__EFMigrationsHistory", DatabaseSchema.Default));
+          npgsql.MigrationsHistoryTable("__EFMigrationsHistory", DatabaseSchema.Default));
 
       if (builder.Environment.IsDevelopment())
       {
@@ -39,13 +40,31 @@ public static class DatabaseConfig
       }
     });
 
-
     services.AddHealthChecks()
         .AddNpgSql(connectionString, name: "postgres", tags: ["db", "ready"]);
 
-
-
     logger.LogInformation("PostgreSQL database connection configured");
+#else
+    logger.LogInformation("Using SQL Server database");
+
+    services.AddDbContext<ApplicationDbContext>(options =>
+    {
+      options.UseSqlServer(connectionString, sql =>
+          sql.MigrationsHistoryTable("__EFMigrationsHistory", DatabaseSchema.Default));
+
+      if (builder.Environment.IsDevelopment())
+      {
+        options.EnableSensitiveDataLogging();
+        options.EnableDetailedErrors();
+        logger.LogInformation("Sensitive data logging enabled for development");
+      }
+    });
+
+    services.AddHealthChecks()
+        .AddSqlServer(connectionString, name: "sqlserver", tags: ["db", "ready"]);
+
+    logger.LogInformation("SQL Server database connection configured");
+#endif
     return services;
   }
 

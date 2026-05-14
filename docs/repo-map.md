@@ -4,7 +4,13 @@
 
 ## Top level
 
+<!--#if (PostgreSQL) -->
+
 - `docker-compose.yml` starts the local stack: Angular frontend, ASP.NET backend, PostgreSQL, and MailHog.
+  <!--#endif-->
+  <!--#if (SqlServer) -->
+- `docker-compose.yml` starts the local stack: Angular frontend, ASP.NET backend, SQL Server (with `sqlserver-init` creating the application database), and MailHog.
+<!--#endif-->
 - `src/ChangeMe.Frontend` contains the Angular application.
 - `src/ChangeMe.Backend` contains the .NET solution and tests.
 
@@ -89,4 +95,13 @@ Current issue endpoints illustrate the standard flow:
   - `Fixtures/` for application factories and container-backed setup
   - `Support/` for reusable auth and test helpers
 
-`BackendWebApplicationFactory` starts PostgreSQL via Testcontainers, applies test environment overrides, and replaces `IEmailService` with a fake implementation for integration tests.
+<!--#if (PostgreSQL) -->
+
+`BackendWebApplicationFactory` starts disposable PostgreSQL via Testcontainers, applies test environment overrides, and replaces `IEmailService` with a fake implementation for integration tests.
+
+<!--#endif-->
+<!--#if (SqlServer) -->
+
+`BackendWebApplicationFactory` starts disposable SQL Server via Testcontainers, applies test environment overrides, and replaces `IEmailService` with a fake implementation for integration tests.
+
+<!--#endif-->

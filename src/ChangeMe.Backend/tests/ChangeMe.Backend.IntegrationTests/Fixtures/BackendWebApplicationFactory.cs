@@ -5,21 +5,34 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+#if PostgreSQL
 using Testcontainers.PostgreSql;
+#else
+using Testcontainers.MsSql;
+#endif
 
 namespace ChangeMe.Backend.IntegrationTests.Fixtures;
 
 public sealed class BackendWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
   private readonly Dictionary<string, string?> environmentOverrides = new();
+#if PostgreSQL
   private readonly PostgreSqlContainer postgresContainer = new PostgreSqlBuilder("postgres:15.1")
     .Build();
+#else
+  private readonly MsSqlContainer msSqlContainer = new MsSqlBuilder("mcr.microsoft.com/mssql/server:2022-latest")
+    .Build();
+#endif
 
   public async ValueTask InitializeAsync()
   {
     var cancellationToken = TestContext.Current.CancellationToken;
 
+#if PostgreSQL
     await postgresContainer.StartAsync(cancellationToken);
+#else
+    await msSqlContainer.StartAsync(cancellationToken);
+#endif
     ApplyEnvironmentOverrides();
 
     using var client = CreateClient(new WebApplicationFactoryClientOptions
@@ -37,7 +50,11 @@ public sealed class BackendWebApplicationFactory : WebApplicationFactory<Program
     var cancellationToken = TestContext.Current.CancellationToken;
 
     ClearEnvironmentOverrides();
+#if PostgreSQL
     await postgresContainer.DisposeAsync().AsTask().WaitAsync(cancellationToken);
+#else
+    await msSqlContainer.DisposeAsync().AsTask().WaitAsync(cancellationToken);
+#endif
     await base.DisposeAsync();
   }
 
@@ -58,7 +75,11 @@ public sealed class BackendWebApplicationFactory : WebApplicationFactory<Program
 
   private void ApplyEnvironmentOverrides()
   {
+#if PostgreSQL
     environmentOverrides["ConnectionStrings__DefaultConnection"] = postgresContainer.GetConnectionString();
+#else
+    environmentOverrides["ConnectionStrings__DefaultConnection"] = msSqlContainer.GetConnectionString();
+#endif
     environmentOverrides["Database__ApplyMigrationsOnStartup"] = "false";
     environmentOverrides["DatabaseOptions__ApplyMigrationsOnStartup"] = "false";
     environmentOverrides["Jwt__Issuer"] = "ChangeMe.Tests";

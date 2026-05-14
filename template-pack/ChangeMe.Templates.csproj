@@ -32,6 +32,7 @@
                ..\.tmp-template-inspect\**;
                ..\.template-test-output\**;
                ..\template-pack\**;
+               ..\artifacts\**;
                ..\**\bin\**;
                ..\**\obj\**;
                ..\**\node_modules\**;

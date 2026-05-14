@@ -18,6 +18,10 @@ This repository is meant to provide:
 - Frontend: Angular 21, TypeScript, RxJS
 - Backend: ASP.NET Core, FastEndpoints, MediatR-style use case flow
 - Database: PostgreSQL
+  <!--#endif-->
+  <!--#if (SqlServer) -->
+- Database: SQL Server
+<!--#endif-->
 - Background jobs: Hangfire
 - Local email testing: MailHog
 - Testing: Angular test runner, .NET unit tests, .NET integration tests with Testcontainers
@@ -27,8 +31,13 @@ This repository is meant to provide:
 
 - `src/ChangeMe.Frontend` - Angular application
 - `src/ChangeMe.Backend` - .NET solution with source projects and tests
-- `docs/` - repository-specific implementation and testing guidance
-- `docker-compose.yml` - local full-stack environment
+- `docs/` - implementation and testing guidance
+<!--#if (PostgreSQL) -->
+- `docker-compose.yml` - local full-stack environment (frontend, backend, PostgreSQL, MailHog)
+  <!--#endif-->
+  <!--#if (SqlServer) -->
+- `docker-compose.yml` - local full-stack environment (frontend, backend, SQL Server, MailHog)
+<!--#endif-->
 - `AGENTS.md` - working guide for AI agents and contributors
 
 ## Main Features
@@ -57,13 +66,28 @@ dotnet new install .
 
 Create a new solution from the installed template:
 
+<!--#if (PostgreSQL) -->
+
 ```powershell
-dotnet new <installed-short-name> -n IssuesDemo -o IssuesDemo
+dotnet new changeme -n IssuesDemo -o IssuesDemo
 ```
+
+This variant uses PostgreSQL for persistence, Hangfire storage, Docker Compose, and integration tests.
+
+<!--#endif-->
+<!--#if (SqlServer) -->
+
+```powershell
+dotnet new changeme -n IssuesDemo -o IssuesDemo --Database SqlServer
+```
+
+This variant uses SQL Server for persistence, Hangfire storage, Docker Compose, and integration tests. Add an EF Core migration for SQL Server before the first run if none are present yet.
+
+<!--#endif-->
 
 The installed short name is visible in the `Short Name` column of `dotnet new list`.
 
-This replaces `ChangeMe` across the solution, project names, folders, Docker configuration, docs, and frontend package metadata. Use a .NET-friendly project name such as `IssuesDemo` so generated solution and namespace names stay valid.
+This replaces `ChangeMe` across the solution, project names, folders, Docker configuration, docs, and frontend package metadata. Use a .NET-friendly project name such as `IssuesDemo` so generated solution and namespace names stay valid. Avoid embedding the substring `ChangeMe` in secrets you expect to stay literal after generation (template renames that token everywhere).
 
 ### Publish The NuGet Package
 
@@ -122,7 +146,7 @@ Run from the repository root:
 docker compose up --build
 ```
 
-This starts the frontend, backend, PostgreSQL, and MailHog together.
+This starts the frontend, backend, MailHog, and the database service defined in this solution's Compose file.
 
 ## Documentation
 

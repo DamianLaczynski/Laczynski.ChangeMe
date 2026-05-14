@@ -40,7 +40,13 @@ Use integration tests for:
 
 Current setup:
 
+<!--#if (PostgreSQL) -->
+
 - `BackendWebApplicationFactory` starts PostgreSQL via Testcontainers.
+  <!--#endif-->
+  <!--#if (SqlServer) -->
+- `BackendWebApplicationFactory` starts SQL Server via Testcontainers.
+<!--#endif-->
 - Test environment variables override connection string, JWT settings, and email settings.
 - `IEmailService` is replaced with `FakeEmailService`.
 - `TestAuthHelper` creates a registered and authenticated client through real API calls.
