@@ -8,6 +8,7 @@
 - `src/ChangeMe.Backend` - .NET backend solution.
 - `docker-compose.yml` - local full-stack environment with frontend, backend, PostgreSQL, and MailHog.
 - `docs/` - repo-specific implementation, testing, requirements, and template guidance.
+- Root `package.json` - optional npm scripts that run frontend and backend tasks from the repository root (see Commands).
 
 ## Start here by task
 
@@ -18,26 +19,37 @@
 
 ## Commands
 
-### Frontend
+### Repository root (npm)
 
-- Install dependencies: `npm install` in `src/ChangeMe.Frontend`
+From the repository root, run `npm install` once to install root devDependencies (`concurrently` is required for `start:all` and `test:all`). Frontend packages still live under `src/ChangeMe.Frontend`; use `npm run install:frontend` after clone or when frontend dependencies change.
+
+- Install frontend dependencies: `npm run install:frontend`
+- Start dev servers: `npm run start:frontend`, `npm run start:backend`, or both in parallel with `npm run start:all`
+- Build: `npm run build:frontend`, `npm run build:backend`, or `npm run build:all`
+- Frontend quality: `npm run lint:frontend`, `npm run format:frontend`, `npm run test:frontend` (interactive watch when TTY), or `npm run test:frontend:ci` (single run, `--watch=false`)
+- Backend tests: `npm run test:backend` (entire solution — unit and integration projects), `npm run test:backend:unit`, or `npm run test:backend:integration`
+- Full automated check (frontend CI tests + full backend solution tests, parallel): `npm run test:all` — backend integration tests use Testcontainers and need a running Docker engine
+
+### Frontend (in `src/ChangeMe.Frontend`)
+
+- Install dependencies: `npm install`
 - Run dev server: `npm start`
 - Lint: `npm run lint`
 - Format: `npm run format`
 - Tests: `npm test`
 
-### Backend
+### Backend (in `src/ChangeMe.Backend`)
 
 - Restore/build solution: `dotnet build ChangeMe.Backend.sln`
 - Run web app: `dotnet run --project src/ChangeMe.Backend.Web`
-- Unit tests: `dotnet test tests/ChangeMe.Backend.UnitTests`
-- Integration tests: `dotnet test tests/ChangeMe.Backend.IntegrationTests`
-
-Run backend commands from `src/ChangeMe.Backend`.
+- All tests in the solution: `dotnet test ChangeMe.Backend.sln`
+- Unit tests only: `dotnet test tests/ChangeMe.Backend.UnitTests`
+- Integration tests only: `dotnet test tests/ChangeMe.Backend.IntegrationTests`
 
 ### Full stack
 
 - Start dependencies and app containers: `docker compose up --build`
+- Run all backend tests inside a container (bind-mounts the repo; integration tests need the host Docker socket): `docker compose --profile test run --rm backend-tests`
 
 ## Repo navigation rules
 

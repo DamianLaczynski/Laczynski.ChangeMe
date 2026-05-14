@@ -8,6 +8,23 @@
 - Backend integration tests: `src/ChangeMe.Backend/tests/ChangeMe.Backend.IntegrationTests`
 - Frontend tests: run through Angular with `npm test` in `src/ChangeMe.Frontend`
 
+## From repository root
+
+After `npm install` in the repository root (for `concurrently`), you can run:
+
+- `npm run test:all` — in parallel: frontend tests once (`test:frontend:ci`, no watch) and **all** backend tests via `dotnet test` on `ChangeMe.Backend.sln`. Integration tests need Docker (Testcontainers).
+- `npm run test:backend` — same as `dotnet test` on the whole backend solution (unit + integration projects).
+- `npm run test:backend:unit` — unit project only.
+- `npm run test:backend:integration` — integration project only.
+
+## Backend tests in Docker
+
+The `backend-tests` service in `docker-compose.yml` uses the .NET SDK image, mounts the repository at `/repo`, and runs `dotnet test ChangeMe.Backend.sln` from `src/ChangeMe.Backend`. The host Docker socket is mounted so Testcontainers can start PostgreSQL for integration tests.
+
+```powershell
+docker compose --profile test run --rm backend-tests
+```
+
 ## Backend unit tests
 
 Use unit tests for:
@@ -16,16 +33,16 @@ Use unit tests for:
 - aggregate/entity behavior
 - small infrastructure helpers that do not need full app startup
 
-Command:
+Command (from `src/ChangeMe.Backend`):
 
 ```powershell
 dotnet test tests/ChangeMe.Backend.UnitTests
 ```
 
-Run from:
+From repository root:
 
 ```powershell
-src/ChangeMe.Backend
+npm run test:backend:unit
 ```
 
 ## Backend integration tests
@@ -45,20 +62,26 @@ Current setup:
 - `IEmailService` is replaced with `FakeEmailService`.
 - `TestAuthHelper` creates a registered and authenticated client through real API calls.
 
-Command:
+Command (from `src/ChangeMe.Backend`):
 
 ```powershell
 dotnet test tests/ChangeMe.Backend.IntegrationTests
 ```
 
+From repository root:
+
+```powershell
+npm run test:backend:integration
+```
+
 ## Frontend checks
 
-Minimum checks for frontend work:
+Minimum checks for frontend work (from `src/ChangeMe.Frontend`, or use the `npm run …:frontend` equivalents from the repository root — see `AGENTS.md`):
 
 - `npm run lint`
 - `npm test` when component or service behavior changes
 
-Useful commands:
+Useful commands (from `src/ChangeMe.Frontend`):
 
 ```powershell
 npm run lint
@@ -66,10 +89,12 @@ npm test
 npm run format:check
 ```
 
-Run from:
+From repository root (delegates into the frontend folder):
 
 ```powershell
-src/ChangeMe.Frontend
+npm run lint:frontend
+npm run test:frontend
+npm run test:frontend:ci
 ```
 
 ## Change-based checklist
@@ -100,3 +125,4 @@ For any non-trivial change, prefer running the smallest relevant automated check
 - frontend-only UI/service change: lint plus affected frontend tests when available
 - backend domain change: unit tests first
 - backend endpoint change: integration tests for the affected area, then broader tests if needed
+- cross-stack or wide regression: from repository root, `npm run test:all` when Docker is available; otherwise `npm run test:frontend:ci` plus `npm run test:backend:unit`, then integration tests separately when the stack is up
