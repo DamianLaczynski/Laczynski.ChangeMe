@@ -24,12 +24,13 @@ public static class DatabaseConfig
           $"Connection string 'DefaultConnection' is not configured. Available connection string keys: {keys}");
     }
 
+#if PostgreSQL
     logger.LogInformation("Using PostgreSQL database");
 
     services.AddDbContext<ApplicationDbContext>(options =>
     {
       options.UseNpgsql(connectionString, npgsql =>
-        npgsql.MigrationsHistoryTable("__EFMigrationsHistory", DatabaseSchema.Default));
+          npgsql.MigrationsHistoryTable("__EFMigrationsHistory", DatabaseSchema.Default));
 
       if (builder.Environment.IsDevelopment())
       {
@@ -39,13 +40,31 @@ public static class DatabaseConfig
       }
     });
 
-
     services.AddHealthChecks()
         .AddNpgSql(connectionString, name: "postgres", tags: ["db", "ready"]);
 
-
-
     logger.LogInformation("PostgreSQL database connection configured");
+#else
+    logger.LogInformation("Using SQL Server database");
+
+    services.AddDbContext<ApplicationDbContext>(options =>
+    {
+      options.UseSqlServer(connectionString, sql =>
+          sql.MigrationsHistoryTable("__EFMigrationsHistory", DatabaseSchema.Default));
+
+      if (builder.Environment.IsDevelopment())
+      {
+        options.EnableSensitiveDataLogging();
+        options.EnableDetailedErrors();
+        logger.LogInformation("Sensitive data logging enabled for development");
+      }
+    });
+
+    services.AddHealthChecks()
+        .AddSqlServer(connectionString, name: "sqlserver", tags: ["db", "ready"]);
+
+    logger.LogInformation("SQL Server database connection configured");
+#endif
     return services;
   }
 
@@ -56,7 +75,26 @@ public static class DatabaseConfig
 
     await using var scope = app.Services.CreateAsyncScope();
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    await db.Database.MigrateAsync();
+    await ApplyPendingMigrationsAsync(db);
+  }
+
+  public static async Task ApplyPendingMigrationsAsync(
+    ApplicationDbContext dbContext,
+    CancellationToken cancellationToken = default)
+  {
+    if (!dbContext.Database.GetMigrations().Any())
+    {
+      throw new InvalidOperationException(
+        """
+        No EF Core migrations were found in the Infrastructure assembly. MigrateAsync() succeeds with zero migrations but creates no tables.
+        Add an initial migration from the solution root (see docs/database-and-docker.md):
+          dotnet tool restore
+          dotnet ef migrations add InitialCreate --project src/ChangeMe.Backend/src/ChangeMe.Backend.Infrastructure/ChangeMe.Backend.Infrastructure.csproj --startup-project src/ChangeMe.Backend/src/ChangeMe.Backend.Web/ChangeMe.Backend.Web.csproj --output-dir Persistence/Migrations
+        Then set Database:ApplyMigrationsOnStartup to true in appsettings.Development.json, or run dotnet ef database update.
+        """);
+    }
+
+    await dbContext.Database.MigrateAsync(cancellationToken);
   }
 
 }

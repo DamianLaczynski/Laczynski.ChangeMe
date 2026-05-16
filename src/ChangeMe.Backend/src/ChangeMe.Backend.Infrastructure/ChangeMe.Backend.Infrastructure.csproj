@@ -16,9 +16,7 @@
 
    <ItemGroup>
    <PackageReference Include="MediatR" />
-    <PackageReference Include="AspNetCore.HealthChecks.Npgsql" />
     <PackageReference Include="Hangfire.AspNetCore" />
-    <PackageReference Include="Hangfire.PostgreSql" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
@@ -26,8 +24,13 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
     <PackageReference Include="MailKit" />
+    <PackageReference Include="AspNetCore.HealthChecks.Npgsql" Condition="$(DefineConstants.Contains('PostgreSQL'))" />
+    <PackageReference Include="Hangfire.PostgreSql" Condition="$(DefineConstants.Contains('PostgreSQL'))" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Condition="$(DefineConstants.Contains('PostgreSQL'))" />
+    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Condition="!$(DefineConstants.Contains('PostgreSQL'))" />
+    <PackageReference Include="Hangfire.SqlServer" Condition="!$(DefineConstants.Contains('PostgreSQL'))" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Condition="!$(DefineConstants.Contains('PostgreSQL'))" />
   </ItemGroup>
 
   <ItemGroup>

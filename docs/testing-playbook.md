@@ -8,6 +8,8 @@
 - Backend integration tests: `src/ChangeMe.Backend/tests/ChangeMe.Backend.IntegrationTests`
 - Frontend tests: run through Angular with `npm test` in `src/ChangeMe.Frontend`
 
+**First-time EF migrations:** migration `.cs` files are not shipped. Ensure `Infrastructure/Persistence/Migrations` exists by adding a migration from the solution root before integration tests that call `MigrateAsync()` (see `docs/database-and-docker.md`).
+
 ## From repository root
 
 After `npm install` in the repository root (for `concurrently`), you can run:
@@ -19,7 +21,7 @@ After `npm install` in the repository root (for `concurrently`), you can run:
 
 ## Backend tests in Docker
 
-The `backend-tests` service in `docker-compose.yml` uses the .NET SDK image, mounts the repository at `/repo`, and runs `dotnet test ChangeMe.Backend.sln -c Release` from `src/ChangeMe.Backend`. The host Docker socket is mounted so Testcontainers can start PostgreSQL for integration tests.
+The `backend-tests` service in `docker-compose.yml` uses the .NET SDK image, mounts the repository at `/repo`, and runs `dotnet test ChangeMe.Backend.sln -c Release` from `src/ChangeMe.Backend`. The host Docker socket is mounted so Testcontainers can start the database for integration tests.
 
 ```powershell
 docker compose --profile test run --rm backend-tests
@@ -57,7 +59,13 @@ Use integration tests for:
 
 Current setup:
 
+<!--#if (PostgreSQL) -->
+
 - `BackendWebApplicationFactory` starts PostgreSQL via Testcontainers.
+  <!--#endif-->
+  <!--#if (SqlServer) -->
+- `BackendWebApplicationFactory` starts SQL Server via Testcontainers.
+<!--#endif-->
 - Test environment variables override connection string, JWT settings, and email settings.
 - `IEmailService` is replaced with `FakeEmailService`.
 - `TestAuthHelper` creates a registered and authenticated client through real API calls.

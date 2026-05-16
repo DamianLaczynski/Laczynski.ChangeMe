@@ -1,5 +1,9 @@
 ﻿using Hangfire;
+#if PostgreSQL
 using Hangfire.PostgreSql;
+#else
+using Hangfire.SqlServer;
+#endif
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Options;
 
@@ -29,7 +33,11 @@ public static class HangfireConfig
         .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
         .UseSimpleAssemblyNameTypeSerializer()
         .UseRecommendedSerializerSettings()
+#if PostgreSQL
         .UsePostgreSqlStorage(options => options.UseNpgsqlConnection(connectionString)));
+#else
+        .UseSqlServerStorage(connectionString, new SqlServerStorageOptions()));
+#endif
 
     services.AddHangfireServer();
 

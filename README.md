@@ -17,7 +17,12 @@ This repository is meant to provide:
 
 - Frontend: Angular 21, TypeScript, RxJS
 - Backend: ASP.NET Core, FastEndpoints, MediatR-style use case flow
+<!--#if (PostgreSQL) -->
 - Database: PostgreSQL
+  <!--#endif-->
+  <!--#if (SqlServer) -->
+- Database: SQL Server
+<!--#endif-->
 - Background jobs: Hangfire
 - Local email testing: MailHog
 - Testing: Angular test runner, .NET unit tests, .NET integration tests with Testcontainers
@@ -27,9 +32,17 @@ This repository is meant to provide:
 
 - `src/ChangeMe.Frontend` - Angular application
 - `src/ChangeMe.Backend` - .NET solution with source projects and tests
-- `docs/` - repository-specific implementation and testing guidance
-- `docker-compose.yml` - local full-stack environment
+- `docs/` - implementation and testing guidance
+<!--#if (PostgreSQL) -->
+- `docker-compose.yml` - local full-stack environment (frontend, backend, PostgreSQL, MailHog)
+  <!--#endif-->
+  <!--#if (SqlServer) -->
+- `docker-compose.yml` - local full-stack environment (frontend, backend, SQL Server, MailHog)
+<!--#endif-->
 - `AGENTS.md` - working guide for AI agents and contributors
+- `.template.config/` - `dotnet new` template manifest (`changeme`, `sourceName` token `ChangeMe`)
+- `template-pack/` - NuGet packaging project for the template
+- `template-content/` - overlays and **generated-project** `README.md` (consumer readme for `dotnet new` output)
 
 ## Main Features
 
@@ -41,7 +54,7 @@ This repository is meant to provide:
 
 ## Getting Started
 
-## Install As a `dotnet new` Template
+### Install as a `dotnet new` template
 
 Install the template from NuGet:
 
@@ -49,7 +62,7 @@ Install the template from NuGet:
 dotnet new install ChangeMe
 ```
 
-Or install the template directly from the repository root during local development:
+Or install from this repository root during local development:
 
 ```powershell
 dotnet new install .
@@ -57,23 +70,36 @@ dotnet new install .
 
 Create a new solution from the installed template:
 
+<!--#if (PostgreSQL) -->
+
 ```powershell
-dotnet new <installed-short-name> -n IssuesDemo -o IssuesDemo
+dotnet new changeme -n IssuesDemo -o IssuesDemo
 ```
 
-The installed short name is visible in the `Short Name` column of `dotnet new list`.
+PostgreSQL persistence, Hangfire storage, Docker Compose, and integration tests.
 
-This replaces `ChangeMe` across the solution, project names, folders, Docker configuration, docs, and frontend package metadata. Use a .NET-friendly project name such as `IssuesDemo` so generated solution and namespace names stay valid.
+<!--#endif-->
+<!--#if (SqlServer) -->
 
-### Publish The NuGet Package
+```powershell
+dotnet new changeme -n IssuesDemo -o IssuesDemo --Database SqlServer
+```
 
-Create the template package:
+SQL Server persistence, Hangfire storage, Docker Compose, and integration tests. Add an EF Core migration before the first run (see `docs/database-and-docker.md` in the generated tree).
+
+<!--#endif-->
+
+The installed short name appears in the `Short Name` column of `dotnet new list`.
+
+This replaces `ChangeMe` across the solution, project names, folders, Docker configuration, docs, and frontend package metadata. Use a .NET-friendly project name such as `IssuesDemo` so generated solution and namespace names stay valid. Avoid embedding the substring `ChangeMe` in secrets you expect to stay literal after generation (the template renames that token everywhere).
+
+**Generated projects** receive a different root `README.md` (product-focused, no template packaging steps); that file is maintained under `template-content/generated-readme/README.md`.
+
+### Publish the NuGet package
 
 ```powershell
 dotnet pack template-pack/ChangeMe.Templates.csproj -c Release
 ```
-
-Publish it to NuGet:
 
 ```powershell
 dotnet nuget push template-pack/bin/Release/ChangeMe.<version>.nupkg --source https://api.nuget.org/v3/index.json --api-key <your-api-key>
@@ -81,7 +107,7 @@ dotnet nuget push template-pack/bin/Release/ChangeMe.<version>.nupkg --source ht
 
 The packaging project targets `net10.0` only as a carrier for NuGet metadata and `dotnet pack`. It does not affect the generated solution structure or the target frameworks used by the projects created from the template.
 
-### Frontend
+### Frontend (this repository)
 
 Run from `src/ChangeMe.Frontend`:
 
@@ -98,9 +124,16 @@ npm run format
 npm test
 ```
 
-### Backend
+### Backend (this repository)
 
-Run from `src/ChangeMe.Backend`:
+Add EF Core migrations when working on a clone of this repo (see `docs/database-and-docker.md`). From the **repository root**:
+
+```powershell
+dotnet tool restore
+dotnet ef migrations add InitialCreate --project src/ChangeMe.Backend/src/ChangeMe.Backend.Infrastructure/ChangeMe.Backend.Infrastructure.csproj --startup-project src/ChangeMe.Backend/src/ChangeMe.Backend.Web/ChangeMe.Backend.Web.csproj --output-dir Persistence/Migrations
+```
+
+From `src/ChangeMe.Backend`:
 
 ```powershell
 dotnet build ChangeMe.Backend.sln
@@ -114,20 +147,21 @@ dotnet test tests/ChangeMe.Backend.UnitTests
 dotnet test tests/ChangeMe.Backend.IntegrationTests
 ```
 
-### Full Stack with Docker
+### Full stack with Docker
 
-Run from the repository root:
+From the repository root:
 
 ```powershell
 docker compose up --build
 ```
 
-This starts the frontend, backend, PostgreSQL, and MailHog together.
+This starts the frontend, backend, MailHog, and the database service defined in this solution's Compose file.
 
 ## Documentation
 
-The `docs/` directory contains the focused guidance for working in this repository:
+The `docs/` directory contains guidance that is also shipped into generated solutions (with conditional sections for the selected database):
 
+- `docs/database-and-docker.md` - persistence, Compose, EF migration notes
 - `docs/repo-map.md` - where code lives and which layer owns what
 - `docs/frontend-coding-guidelines.md` - frontend conventions
 - `docs/backend-coding-guidelines.md` - backend conventions
@@ -135,6 +169,8 @@ The `docs/` directory contains the focused guidance for working in this reposito
 - `docs/feature-recipes.md` - implementation recipes for common feature work
 - `docs/req/` - functional requirements documents for specific product areas
 - `docs/templates/` - reusable document templates
+
+Maintainers of the template package: see [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ## About `AGENTS.md`
 

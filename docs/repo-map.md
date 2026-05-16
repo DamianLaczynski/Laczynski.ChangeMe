@@ -4,7 +4,13 @@
 
 ## Top level
 
+<!--#if (PostgreSQL) -->
+
 - `docker-compose.yml` starts the local stack: Angular frontend, ASP.NET backend, PostgreSQL, and MailHog. The same file defines `backend-tests` (Compose profile `test`): an SDK container that runs `dotnet test` on the backend solution with the repository mounted from the host.
+  <!--#endif-->
+  <!--#if (SqlServer) -->
+- `docker-compose.yml` starts the local stack: Angular frontend, ASP.NET backend, SQL Server (with `sqlserver-init` creating the application database), and MailHog. The same file defines `backend-tests` (Compose profile `test`): an SDK container that runs `dotnet test` on the backend solution with the repository mounted from the host.
+<!--#endif-->
 - Root `package.json` defines optional npm scripts (`start:*`, `build:*`, `test:*`, `install:frontend`, and frontend `lint`/`format`) so you can run common frontend and `dotnet` backend tasks from the repository root. Run `npm install` in the repository root to install root devDependencies such as `concurrently` (used by `start:all` and `test:all`). Frontend `node_modules` still live under `src/ChangeMe.Frontend` — refresh them with `npm run install:frontend` from the root or `npm install` inside that folder.
 - `src/ChangeMe.Frontend` contains the Angular application.
 - `src/ChangeMe.Backend` contains the .NET solution and tests.
@@ -90,4 +96,13 @@ Current issue endpoints illustrate the standard flow:
   - `Fixtures/` for application factories and container-backed setup
   - `Support/` for reusable auth and test helpers
 
-`BackendWebApplicationFactory` starts PostgreSQL via Testcontainers, applies test environment overrides, and replaces `IEmailService` with a fake implementation for integration tests.
+<!--#if (PostgreSQL) -->
+
+`BackendWebApplicationFactory` starts disposable PostgreSQL via Testcontainers, applies test environment overrides, and replaces `IEmailService` with a fake implementation for integration tests.
+
+<!--#endif-->
+<!--#if (SqlServer) -->
+
+`BackendWebApplicationFactory` starts disposable SQL Server via Testcontainers, applies test environment overrides, and replaces `IEmailService` with a fake implementation for integration tests.
+
+<!--#endif-->

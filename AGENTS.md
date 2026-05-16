@@ -1,13 +1,19 @@
 # AI Working Guide
 
-> Scope: fast-start context for AI agents and contributors working in this repository. Load this file first, then open the focused docs under `docs/` for the area you are changing.
+> Scope: fast-start context for AI agents and contributors in **this solution**. Load this file first, then open the focused docs under `docs/` for the area you are changing.
 
 ## Repository shape
 
 - `src/ChangeMe.Frontend` - Angular 21 frontend.
 - `src/ChangeMe.Backend` - .NET backend solution.
+<!--#if (PostgreSQL) -->
 - `docker-compose.yml` - local full-stack environment with frontend, backend, PostgreSQL, and MailHog.
-- `docs/` - repo-specific implementation, testing, requirements, and template guidance.
+  <!--#endif-->
+  <!--#if (SqlServer) -->
+- `docker-compose.yml` - local full-stack environment with frontend, backend, SQL Server, and MailHog.
+<!--#endif-->
+- `.config/dotnet-tools.json` - pins **`dotnet-ef`** for `dotnet ef migrations add` (optional; see `docs/database-and-docker.md`).
+- `docs/` - implementation, testing, and requirements guidance.
 - Root `package.json` - optional npm scripts that run frontend and backend tasks from the repository root (see Commands).
 
 ## Start here by task
@@ -40,6 +46,7 @@ From the repository root, run `npm install` once to install root devDependencies
 
 ### Backend (in `src/ChangeMe.Backend`)
 
+- First-time migrations: add an EF migration from the solution root (`dotnet tool restore` then `dotnet ef migrations add ...`; see `docs/database-and-docker.md`).
 - Restore/build solution: `dotnet build ChangeMe.Backend.sln`
 - Run web app: `dotnet run --project src/ChangeMe.Backend.Web`
 - All tests in the solution: `dotnet test ChangeMe.Backend.sln`

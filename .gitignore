@@ -99,4 +99,6 @@ TestResults/
 *.sqlite3
 
 # Template test
+artifacts/
 .template-test/
+.template-test-output/
