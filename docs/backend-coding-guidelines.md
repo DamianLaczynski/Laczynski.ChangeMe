@@ -6,6 +6,8 @@
 
 ASP.NET Core on .NET 10 with FastEndpoints, MediatR-style request handling, EF Core for persistence, FluentValidation validators declared near endpoints, and xUnit v3 tests. The backend is split into `Web`, `UseCases`, `Domain`, and `Infrastructure`.
 
+For build, run, and test commands from `src/ChangeMe.Backend` or from the repository root (`npm run build:backend`, `npm run test:backend`, and scoped scripts), see `AGENTS.md`.
+
 ## Layer ownership
 
 ### Web

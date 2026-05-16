@@ -29,8 +29,7 @@
              Exclude="
                ..\.git\**;
                ..\.angular\**;
-               ..\.tmp-template-inspect\**;
-               ..\.template-test-output\**;
+               ..\.template-test\**;
                ..\template-pack\**;
                ..\artifacts\**;
                ..\**\bin\**;

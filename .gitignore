@@ -100,3 +100,5 @@ TestResults/
 
 # Template test
 artifacts/
+.template-test/
+.template-test-output/
