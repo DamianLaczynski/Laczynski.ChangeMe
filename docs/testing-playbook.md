@@ -19,7 +19,7 @@ After `npm install` in the repository root (for `concurrently`), you can run:
 
 ## Backend tests in Docker
 
-The `backend-tests` service in `docker-compose.yml` uses the .NET SDK image, mounts the repository at `/repo`, and runs `dotnet test ChangeMe.Backend.sln` from `src/ChangeMe.Backend`. The host Docker socket is mounted so Testcontainers can start PostgreSQL for integration tests.
+The `backend-tests` service in `docker-compose.yml` uses the .NET SDK image, mounts the repository at `/repo`, and runs `dotnet test ChangeMe.Backend.sln -c Release` from `src/ChangeMe.Backend`. The host Docker socket is mounted so Testcontainers can start PostgreSQL for integration tests.
 
 ```powershell
 docker compose --profile test run --rm backend-tests
