@@ -1,0 +1,24 @@
+{
+  "name": "changeme",
+  "private": true,
+  "scripts": {
+    "start:frontend": "npm --prefix src/ChangeMe.Frontend run start",
+    "install:frontend": "npm --prefix src/ChangeMe.Frontend install",
+    "build:frontend": "npm --prefix src/ChangeMe.Frontend run build",
+    "lint:frontend": "npm --prefix src/ChangeMe.Frontend run lint",
+    "format:frontend": "npm --prefix src/ChangeMe.Frontend run format",
+    "test:frontend": "npm --prefix src/ChangeMe.Frontend run test",
+    "test:frontend:ci": "npm --prefix src/ChangeMe.Frontend run test -- --watch=false",
+    "start:backend": "dotnet run --project src/ChangeMe.Backend/src/ChangeMe.Backend.Web/ChangeMe.Backend.Web.csproj",
+    "build:backend": "dotnet build src/ChangeMe.Backend/ChangeMe.Backend.sln",
+    "test:backend": "dotnet test src/ChangeMe.Backend/ChangeMe.Backend.sln",
+    "test:backend:unit": "dotnet test src/ChangeMe.Backend/tests/ChangeMe.Backend.UnitTests",
+    "test:backend:integration": "dotnet test src/ChangeMe.Backend/tests/ChangeMe.Backend.IntegrationTests",
+    "start:all": "concurrently -n frontend,backend -c cyan,green \"npm run start:frontend\" \"npm run start:backend\"",
+    "test:all": "concurrently -n fe,be -c cyan,blue \"npm run test:frontend:ci\" \"npm run test:backend\"",
+    "build:all": "npm run build:frontend && npm run build:backend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0"
+  }
+}
