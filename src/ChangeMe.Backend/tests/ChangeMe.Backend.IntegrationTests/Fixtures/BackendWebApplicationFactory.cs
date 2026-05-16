@@ -1,9 +1,9 @@
 ﻿using ChangeMe.Backend.Domain.Interfaces;
+using ChangeMe.Backend.Infrastructure.Configurations;
 using ChangeMe.Backend.Infrastructure.Persistence;
 using ChangeMe.Backend.IntegrationTests.Support.Fakes;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 #if PostgreSQL
 using Testcontainers.PostgreSql;
@@ -42,7 +42,7 @@ public sealed class BackendWebApplicationFactory : WebApplicationFactory<Program
 
     await using var scope = Services.CreateAsyncScope();
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    await dbContext.Database.MigrateAsync(cancellationToken);
+    await DatabaseConfig.ApplyPendingMigrationsAsync(dbContext, cancellationToken);
   }
 
   public new async ValueTask DisposeAsync()

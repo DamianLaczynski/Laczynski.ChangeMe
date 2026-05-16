@@ -20,7 +20,7 @@ Migration **`.cs` files are not shipped with this starter.** Add them when you a
 
    If you do not use the local tool manifest, install the global tool once: `dotnet tool install --global dotnet-ef` (version aligned with your SDK), then run the same `dotnet ef` command.
 
-3. **`Database:ApplyMigrationsOnStartup`** in `appsettings.Development.json` (default `true`) applies pending migrations when the API starts, **after** migration files exist.
+3. **`Database:ApplyMigrationsOnStartup`** defaults to `false` in `appsettings.json` and `appsettings.Development.json`. After migration files exist, set it to `true` in Development (or run `dotnet ef database update`) so pending migrations apply when the API starts. If enabled with zero migrations, startup fails with a clear error instead of creating an empty database.
 
 **Production:** Prefer migrations applied from CI/CD (`dotnet ef database update`, reviewed SQL, or dedicated migration jobs) rather than many concurrent app instances all racing `Migrate()` at startup.
 
