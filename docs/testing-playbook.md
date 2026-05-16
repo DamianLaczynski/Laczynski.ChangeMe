@@ -8,6 +8,8 @@
 - Backend integration tests: `src/ChangeMe.Backend/tests/ChangeMe.Backend.IntegrationTests`
 - Frontend tests: run through Angular with `npm test` in `src/ChangeMe.Frontend`
 
+**First-time EF migrations:** migration `.cs` files are not shipped. Ensure `Infrastructure/Persistence/Migrations` exists by adding a migration from the solution root before integration tests that call `MigrateAsync()` (see `docs/database-and-docker.md`).
+
 ## Backend unit tests
 
 Use unit tests for:

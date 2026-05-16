@@ -9,6 +9,7 @@ It generates:
 - **PostgreSQL** (default) or **SQL Server** for EF Core, Hangfire, integration tests, and Docker Compose
 - MailHog for local email capture
 - backend unit and integration test projects
+- `docs/` with database and Docker notes (`docs/database-and-docker.md`)
 
 ## Install
 
@@ -18,19 +19,23 @@ dotnet new install ChangeMe
 
 ## Create a project
 
-**PostgreSQL** (default) - Npgsql, Hangfire.PostgreSql, Postgres in Docker:
+**PostgreSQL** (default):
 
 ```powershell
 dotnet new changeme -n IssuesDemo -o IssuesDemo
 ```
 
-**SQL Server** - EF Core SqlServer, Hangfire.SqlServer, SQL Server in Docker (PostgreSQL-specific EF migrations are not copied; add a migration before first run):
+**SQL Server:**
 
 ```powershell
 dotnet new changeme -n IssuesDemo -o IssuesDemo --Database SqlServer
 ```
 
-Parameter name: `--Database` with values `PostgreSQL` or `SqlServer`.
+Parameter: `--Database` (`PostgreSQL` or `SqlServer`).
+
+## After generation
+
+- Read `docs/database-and-docker.md` for the first `dotnet ef migrations add`, Compose, `ApplyMigrationsOnStartup`, and production migration guidance.
 
 ## Verify the install
 

@@ -1,6 +1,6 @@
 # AI Working Guide
 
-> Scope: fast-start context for AI agents and contributors working in this repository. Load this file first, then open the focused docs under `docs/` for the area you are changing.
+> Scope: fast-start context for AI agents and contributors in **this solution**. Load this file first, then open the focused docs under `docs/` for the area you are changing.
 
 ## Repository shape
 
@@ -12,8 +12,8 @@
   <!--#if (SqlServer) -->
 - `docker-compose.yml` - local full-stack environment with frontend, backend, SQL Server, and MailHog.
 <!--#endif-->
-- `.template.config/` - `dotnet new` template manifest (`changeme`, `sourceName` token `ChangeMe`).
-- `docs/` - repo-specific implementation, testing, requirements, and template guidance.
+- `.config/dotnet-tools.json` - pins **`dotnet-ef`** for `dotnet ef migrations add` (optional; see `docs/database-and-docker.md`).
+- `docs/` - implementation, testing, and requirements guidance.
 
 ## Start here by task
 
@@ -34,6 +34,7 @@
 
 ### Backend
 
+- First-time migrations: add an EF migration from the solution root (`dotnet tool restore` then `dotnet ef migrations add ...`; see `docs/database-and-docker.md`).
 - Restore/build solution: `dotnet build ChangeMe.Backend.sln`
 - Run web app: `dotnet run --project src/ChangeMe.Backend.Web`
 - Unit tests: `dotnet test tests/ChangeMe.Backend.UnitTests`

@@ -37,6 +37,7 @@
       "value": "(Database == \"SqlServer\")"
     }
   },
+  "primaryOutputs": [{ "path": "src/ChangeMe.Backend/ChangeMe.Backend.sln" }],
   "specialCustomOperations": {
     "**/docker-compose.yml": {
       "operations": [
@@ -61,12 +62,6 @@
       "target": "./",
       "modifiers": [
         {
-          "condition": "(Database == \"SqlServer\")",
-          "exclude": [
-            "src/ChangeMe.Backend/src/ChangeMe.Backend.Infrastructure/Persistence/Migrations/**"
-          ]
-        },
-        {
           "exclude": [
             ".template.config/**",
             "template-content/**",
@@ -83,10 +78,22 @@
             "**/.vs/**",
             "**/TestResults/**",
             "**/logs/**",
-            "*.nupkg"
+            "*.nupkg",
+            "README.md",
+            "CONTRIBUTING.md",
+            "src/ChangeMe.Backend/src/ChangeMe.Backend.Infrastructure/Persistence/Migrations/**"
           ]
         }
       ]
+    },
+    {
+      "condition": "(Database == \"SqlServer\")",
+      "source": "template-content/sqlserver-web/",
+      "target": "./src/ChangeMe.Backend/src/ChangeMe.Backend.Web/"
+    },
+    {
+      "source": "template-content/generated-readme/",
+      "target": "./"
     }
   ]
 }
