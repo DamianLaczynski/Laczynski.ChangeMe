@@ -3,6 +3,7 @@
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
     "ms-dotnettools.csharp",
+    "adrianwilczynski.user-secrets",
     "Angular.ng-template",
     "bradlc.vscode-tailwindcss"
   ]
