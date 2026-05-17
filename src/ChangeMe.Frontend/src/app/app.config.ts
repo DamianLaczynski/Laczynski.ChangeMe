@@ -9,7 +9,7 @@ import {
   provideBrowserGlobalErrorListeners
 } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { providePrimeNG } from 'primeng/config';
 
 import { LayoutService } from '@core/layout/services/layout.service';
@@ -41,6 +41,7 @@ export const appConfig: ApplicationConfig = {
       }
     }),
     ConfirmationService,
+    MessageService,
     { provide: LOCALE_ID, useValue: 'pl' }
   ]
 };

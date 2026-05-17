@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NavigationHistoryService } from '@core/navigation/services/navigation-history.service';
+import { ToastService } from '@core/toast/services/toast.service';
 import {
   CreateIssueRequest,
   IssueAssignableUserDto,
@@ -66,6 +67,7 @@ export class CreateIssueComponent {
   private readonly issuesService = inject(IssuesService);
   private readonly router = inject(Router);
   private readonly navigationHistory = inject(NavigationHistoryService);
+  private readonly toastService = inject(ToastService);
   private readonly destroyRef = inject(DestroyRef);
 
   readonly issuePriorities = issuePriorities;
@@ -165,6 +167,7 @@ export class CreateIssueComponent {
       .subscribe({
         next: (issue) => {
           this.isSubmitting.set(false);
+          this.toastService.success('Issue created', issue.title);
           void this.router.navigate(['/issues', issue.id]);
         },
         error: (error: Error) => {

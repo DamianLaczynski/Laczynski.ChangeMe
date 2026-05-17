@@ -1,16 +1,16 @@
 # Requirements - Issues
 
 This document covers five REQs for the **Issues** area:
-issue list, issue create/edit flow, issue details page, watching and notifications, and the user notification center.
+issue list, issue create/edit flow, issue details page, watching and notifications, and the in-app notification dropdown in the top bar.
 
 The scope also includes comments, change history, issue deletion, and delivering notifications in real time and by email.
 
 ## Shared UX and data-loading rules
 
-- The issues list, issue details page, create flow, edit flow, and notification center are available only to authenticated users. Route guards enforce access; do not add guest or `isAuthenticated` UI branches inside issues screens.
+- The issues list, issue details page, create flow, and edit flow are available only to authenticated users. Route guards enforce access; do not add guest or `isAuthenticated` UI branches inside issues screens.
 - Screens and sections in the `issues` module that load data asynchronously should show a **local loading indicator** (for example `p-progressSpinner` or the built-in `p-table` loading state).
 - A full-page blocking loader must not be used as the primary loading mechanism for `issues` screens, except as a brief initial load state on detail/form screens before the first payload arrives.
-- Loading indicators should be displayed within the list, form, details panel, or notification center section depending on where data is being fetched.
+- Loading indicators should be displayed within the list, form, details panel, or notification dropdown panel depending on where data is being fetched.
 - After data is loaded, the loading indicator disappears without a full view reload.
 - The real-time refresh mechanism for the issues list and issue details page is independent from the watch mechanism. Watching is used only to deliver user notifications.
 - In-app back navigation uses `app-back-button` and `NavigationHistoryService` (session-scoped stack in `sessionStorage`, including query params such as `tab`). After deleting an issue, call `removeIssue()` / `navigateAfterIssueRemoval()` before navigating away so stale detail URLs are not restored.
@@ -183,7 +183,7 @@ Access to the issue details page requires authentication.
 
 ### Actions and navigation
 
-- **Back** returns to the previous in-app URL (for example the issues list or notification center), not always a fixed “back to list” label.
+- **Back** returns to the previous in-app URL (for example the issues list), not always a fixed “back to list” label.
 - After saving an edit, the user returns to the issue details page with refreshed data.
 - After adding a comment, the user stays on the issue page and sees the new comment without manually refreshing the view.
 - Real-time issue events reload the open details page when the viewed issue is affected (REQ-ISS-004).
@@ -222,7 +222,7 @@ The user must be able to watch selected issues and receive notifications about a
 
 - A watching user receives a notification in the UI without manually refreshing the page.
 - A real-time notification payload includes at least: **notification id**, **event type**, **issue id**, **issue title**, **message**, **event time**, and **link** to the issue.
-- If the user is authenticated and active in the application, new notifications update the menubar badge and, when open, the notification center list.
+- If the user is authenticated and active in the application, new notifications update the top-bar bell badge and, when the dropdown is open, the notification list inside the panel.
 - The frontend keeps an active real-time connection to the notifications hub for the authenticated user.
 - The frontend listens to at least two classes of real-time events:
   - **NotificationCreated** for newly created in-app notifications,
@@ -237,7 +237,7 @@ The user must be able to watch selected issues and receive notifications about a
 - The system also sends an email notification for every in-app notification event described above.
 - The email contains at least: **issue title**, **change type**, **short summary**, **event time**, and **link to issue details**.
 - An event covered by such an email must also be stored as an in-app notification so the user can see it after signing in.
-- After signing in, the user sees the notification in the notification center and can navigate directly to the issue by opening it.
+- After signing in, the user sees the notification in the bell dropdown and can navigate directly to the issue by opening it.
 - The system avoids creating duplicate notification records for the same history entry and recipient.
 
 ### Business rules
@@ -247,38 +247,41 @@ The user must be able to watch selected issues and receive notifications about a
 
 ---
 
-# REQ-ISS-005: User Notification Center
+# REQ-ISS-005: Notification Bell and Dropdown
 
 ## Goal
 
-The user must have access to a personal notification center where they can see new and historical notifications related to watched issues and mark them as read.
+The user must be able to review new and historical notifications related to watched issues from a bell control in the top application bar, without leaving the current screen.
+
+There is no separate **Notifications** route or sidebar entry.
 
 ## Features
 
-### Notification entry in the shell
+### Notification bell in the top bar
 
-- A **Notifications** control with a bell icon is available in the top application menubar for authenticated users.
-- The control shows a **badge** with the unread notification count when greater than zero.
-- The control navigates to the full **Notifications** page, not an inline dropdown panel.
-- New notifications update the badge in real time via real-time without navigating away from the current view.
+- A **bell** icon control is available in the authenticated shell header (top bar), next to theme and account actions.
+- The bell shows a **badge** with the unread notification count when greater than zero.
+- Clicking the bell toggles a **dropdown panel** anchored to the control; it does not navigate to another page.
+- Clicking outside the panel or pressing Escape closes the dropdown.
+- New notifications update the badge and the open panel list in real time via real-time without reloading the page.
 
-### Notification list page
+### Notification dropdown panel
 
-- The notifications page shows a subtitle with **unread count** and **total count** when loaded.
+- The panel header shows **Notifications**, **unread count**, and **total count** when loaded.
 - **Refresh** reloads notifications from the API.
 - **Mark all as read** marks every unread notification as read when any unread items exist.
-- Notifications are grouped in tabs: **Unread** and **Read**.
-- Each notification displays at least: **read state** (tag), **issue title**, **message** (summary), **event time** (`occurredAt`), and actions.
-- Read notifications may also show **read at** when available.
-- **Open** navigates using the notification **link** (and marks unread items as read when opened).
-- **Mark as read** is available per unread item without opening the issue.
+- The panel body is scrollable and uses tabs: **Unread** and **Read**.
+- Each notification displays at least: **issue title**, **message** (summary), **event time** (`occurredAt`), and actions.
+- **Open** navigates using the notification **link**, marks unread items as read when opened, and closes the dropdown.
+- **Mark read** is available per unread item without opening the issue.
 - Empty states are shown when a tab has no items.
+- A local loading indicator is shown inside the panel while the first load is in progress.
 
 ### Mark as read
 
 - The user can mark a single notification as read.
 - The user can mark all visible unread notifications as read (**Mark all as read**).
-- Marking notifications as read updates the menubar badge without reloading the page.
+- Marking notifications as read updates the bell badge without reloading the page.
 
 ### States and retention
 
@@ -290,16 +293,16 @@ The user must have access to a personal notification center where they can see n
   - an **unread** notification remains available for **90 days** from the event time,
   - a **read** notification remains available for **30 days** from the moment it is marked as read,
   - regardless of state, a single notification must not be stored longer than **180 days** from the event time.
-- After the retention period expires, the notification disappears from the user's notification center and may be physically removed from the database.
-- Retention applies only to the notification record in the notification center; it does not remove comments, change history, or the issue itself.
+- After the retention period expires, the notification disappears from the user's dropdown list and may be physically removed from the database.
+- Retention applies only to the notification record in the in-app notification list; it does not remove comments, change history, or the issue itself.
 - The expired-notification cleanup mechanism runs automatically on the system side and must not require user action.
 - Reading the notifications list must not return expired records even if physical cleanup has not yet run.
 
 ### Consistency with issues
 
-- Opening a notification navigates to the linked issue details page (and preserves or sets detail context as appropriate).
+- Opening a notification from the dropdown navigates to the linked issue details page (and preserves or sets detail context as appropriate).
 - After navigating from a notification to an issue, the user sees the current issue state, comments, and change history.
-- The notification center is a source of information about new events, but it does not replace the change history on the issue page.
+- The notification dropdown is a source of information about new events, but it does not replace the change history on the issue page.
 
 ---
 
@@ -311,7 +314,7 @@ The user must have access to a personal notification center where they can see n
 - The user can start and stop watching an issue from both the list and the issue details page.
 - The user can delete an issue from the list overflow menu and from the issue details page, with confirmation.
 - If a watched issue changes in a notification-eligible way, the system sends an email and stores an in-app notification at the same time.
-- After signing in again, the user sees unread notifications in the menubar badge and can open the notification center and navigate to the correct issue.
+- After signing in again, the user sees unread notifications on the bell badge and can open the dropdown to navigate to the correct issue.
 - Adding a comment updates the issue last activity and is visible without manually refreshing the page.
-- The frontend keeps the issues list, open issue details page, and notification center up to date through real-time mechanism without forcing manual page refresh.
+- The frontend keeps the issues list, open issue details page, and open notification dropdown up to date through a real-time mechanism without forcing a full manual page refresh.
 - Loss of the real-time connection must not block the core application flow; after reconnection the frontend resumes listening and resynchronizes UI state.

@@ -1,15 +1,18 @@
-<p-card
-  class="mb-4"
-  header="Login"
-  subheader="Sign in to create, edit and delete issues."
+<app-auth-page
+  title="Welcome back"
+  subtitle="Sign in to create, edit and delete issues."
+  footerPrompt="No account yet?"
+  footerLinkLabel="Create an account"
+  footerRoute="/register"
 >
-  <form class="p-fluid" [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div class="flex flex-col gap-1.5 mb-4">
-      <label for="email">Email</label>
+  <form class="p-fluid flex flex-col gap-4" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="flex flex-col gap-1.5">
+      <label class="text-color text-sm font-medium" for="email">Email</label>
       <input
         id="email"
         type="email"
         pInputText
+        autocomplete="email"
         [formControl]="form.controls.email"
         [invalid]="form.controls.email.touched && form.controls.email.errors"
       />
@@ -29,10 +32,11 @@
       }
     </div>
 
-    <div class="flex flex-col gap-1.5 mb-4">
-      <label for="password">Password</label>
+    <div class="flex flex-col gap-1.5">
+      <label class="text-color text-sm font-medium" for="password">Password</label>
       <p-password
         inputId="password"
+        autocomplete="current-password"
         [formControl]="form.controls.password"
         [feedback]="false"
         [toggleMask]="true"
@@ -58,18 +62,12 @@
       <p-message severity="error">{{ errorMessage() }}</p-message>
     }
 
-    <div class="flex flex-wrap items-center gap-3 mt-4">
-      <p-button
-        type="submit"
-        [label]="isSubmitting() ? 'Signing in...' : 'Login'"
-        icon="pi pi-sign-in"
-        [loading]="isSubmitting()"
-      />
-    </div>
+    <p-button
+      type="submit"
+      [label]="isSubmitting() ? 'Signing in...' : 'Sign in'"
+      icon="pi pi-sign-in"
+      [loading]="isSubmitting()"
+      styleClass="w-full"
+    />
   </form>
-
-  <div class="flex flex-wrap items-center gap-2">
-    <span>No account yet?</span>
-    <p-button label="Create one" [link]="true" [routerLink]="['/register']" />
-  </div>
-</p-card>
+</app-auth-page>

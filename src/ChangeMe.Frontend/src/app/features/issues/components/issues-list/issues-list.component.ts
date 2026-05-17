@@ -12,6 +12,7 @@ import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { NavigationHistoryService } from '@core/navigation/services/navigation-history.service';
+import { ToastService } from '@core/toast/services/toast.service';
 import {
   IssueAssignableUserDto,
   IssueDto,
@@ -87,6 +88,7 @@ export class IssuesComponent {
   private readonly issueRealtimeService = inject(IssueRealtimeService);
   private readonly navigationHistory = inject(NavigationHistoryService);
   private readonly confirmationService = inject(ConfirmationService);
+  private readonly toastService = inject(ToastService);
   private readonly destroyRef = inject(DestroyRef);
 
   readonly issuePriorities = issuePriorities;
@@ -320,9 +322,10 @@ export class IssuesComponent {
           this.navigationHistory.removeIssue(issue.id);
           this.refreshCurrentPage();
           this.setDeletePending(issue.id, false);
+          this.toastService.success('Issue deleted', issue.title);
         },
         error: (error: Error) => {
-          this.errorMessage.set(error.message);
+          this.toastService.showApiError(error, 'Could not delete issue');
           this.setDeletePending(issue.id, false);
         }
       });

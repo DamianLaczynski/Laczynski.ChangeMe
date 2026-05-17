@@ -18,6 +18,7 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NavigationHistoryService } from '@core/navigation/services/navigation-history.service';
+import { ToastService } from '@core/toast/services/toast.service';
 import {
   IssueDetailsDto,
   IssueHistoryEntryDto
@@ -84,6 +85,7 @@ export class IssueDetailsComponent {
   private readonly issueRealtimeService = inject(IssueRealtimeService);
   private readonly navigationHistory = inject(NavigationHistoryService);
   private readonly confirmationService = inject(ConfirmationService);
+  private readonly toastService = inject(ToastService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
@@ -219,6 +221,7 @@ export class IssueDetailsComponent {
           this.commentForm.markAsUntouched();
           this.isSubmitted.set(false);
           this.isSubmittingComment.set(false);
+          this.toastService.success('Comment added');
         },
         error: (error: Error) => {
           this.commentError.set(error.message);
@@ -295,10 +298,11 @@ export class IssueDetailsComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
+          this.toastService.success('Issue deleted');
           this.navigationHistory.navigateAfterIssueRemoval(issueId);
         },
         error: (error: Error) => {
-          this.loadError.set(error.message);
+          this.toastService.showApiError(error, 'Could not delete issue');
           this.isDeleting.set(false);
         }
       });
