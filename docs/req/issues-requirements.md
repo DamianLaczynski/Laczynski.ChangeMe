@@ -214,8 +214,8 @@ The user must be able to watch selected issues and receive notifications about a
   - priority change,
   - assignee change,
   - title edit,
-  - description edit.
-- Changes to **acceptance criteria** are recorded in issue history but do **not** generate watcher notifications or emails in the current implementation.
+  - description edit,
+  - acceptance-criterion add, update, and remove.
 - Watch / unwatch actions update watcher counts and may publish real-time **watchers changed** events for list/details refresh; they do not create in-app notifications.
 
 ### Real-time notifications
