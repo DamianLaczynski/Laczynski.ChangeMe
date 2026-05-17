@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import {
   AbstractControl,
@@ -9,12 +8,25 @@ import {
   Validators
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { AuthConstraints } from '@features/auth/models/auth.model';
 import { AuthService } from '@features/auth/services/auth.service';
+import { AuthConstraints } from '@features/auth/utils/auth.utils';
+import { Button } from 'primeng/button';
+import { Card } from 'primeng/card';
+import { InputText } from 'primeng/inputtext';
+import { Message } from 'primeng/message';
+import { Password } from 'primeng/password';
 
 @Component({
   selector: 'app-register',
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [
+    ReactiveFormsModule,
+    RouterLink,
+    Card,
+    Button,
+    InputText,
+    Password,
+    Message
+  ],
   templateUrl: './register.component.html'
 })
 export class RegisterComponent {

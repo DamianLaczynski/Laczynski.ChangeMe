@@ -1,12 +1,30 @@
-import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { NotificationsService } from '@features/notifications/services/notifications.service';
 import { NotificationDto } from '@features/notifications/models/notification.model';
+import { NotificationsService } from '@features/notifications/services/notifications.service';
+import { Button } from 'primeng/button';
+import { Card } from 'primeng/card';
+import { Message } from 'primeng/message';
+import { ProgressSpinner } from 'primeng/progressspinner';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
+import { Tag } from 'primeng/tag';
 
 @Component({
   selector: 'app-notifications-center',
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    Card,
+    Button,
+    Message,
+    ProgressSpinner,
+    Tag,
+    Tabs,
+    TabList,
+    Tab,
+    TabPanels,
+    TabPanel
+  ],
   templateUrl: './notifications-center.component.html'
 })
 export class NotificationsCenterComponent {

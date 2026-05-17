@@ -1,54 +1,75 @@
-<section>
-  <h1>Login</h1>
-  <p>Sign in to create, edit and delete issues.</p>
-
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div>
+<p-card
+  class="mb-4"
+  header="Login"
+  subheader="Sign in to create, edit and delete issues."
+>
+  <form class="p-fluid" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="flex flex-col gap-1.5 mb-4">
       <label for="email">Email</label>
-      <input id="email" type="email" formControlName="email" />
+      <input
+        id="email"
+        type="email"
+        pInputText
+        [formControl]="form.controls.email"
+        [invalid]="form.controls.email.touched && form.controls.email.errors"
+      />
       @if (form.controls.email.touched && form.controls.email.errors?.['required']) {
-        <p>Email is required.</p>
+        <p-message severity="error" variant="simple">Email is required.</p-message>
       }
       @if (form.controls.email.touched && form.controls.email.errors?.['email']) {
-        <p>Enter a valid email address.</p>
+        <p-message severity="error" variant="simple">
+          Enter a valid email address.
+        </p-message>
       }
       @if (form.controls.email.touched && form.controls.email.errors?.['maxlength']) {
-        <p>
+        <p-message severity="error" variant="simple">
           Email must be less than {{ authConstraints.EMAIL_MAX_LENGTH }} characters
           long.
-        </p>
+        </p-message>
       }
     </div>
 
-    <div>
+    <div class="flex flex-col gap-1.5 mb-4">
       <label for="password">Password</label>
-      <input id="password" type="password" formControlName="password" />
+      <p-password
+        inputId="password"
+        [formControl]="form.controls.password"
+        [feedback]="false"
+        [toggleMask]="true"
+        fluid
+        [invalid]="form.controls.password.touched && form.controls.password.errors"
+      />
       @if (
         form.controls.password.touched && form.controls.password.errors?.['required']
       ) {
-        <p>Password is required.</p>
+        <p-message severity="error" variant="simple">Password is required.</p-message>
       }
       @if (
         form.controls.password.touched && form.controls.password.errors?.['minlength']
       ) {
-        <p>
-          Password must be at least {{ authConstraints.PASSWORD_MIN_LENGTH }} characters
-          long.
-        </p>
+        <p-message severity="error" variant="simple">
+          Password must be at least
+          {{ authConstraints.PASSWORD_MIN_LENGTH }} characters long.
+        </p-message>
       }
     </div>
 
     @if (errorMessage()) {
-      <p>{{ errorMessage() }}</p>
+      <p-message severity="error">{{ errorMessage() }}</p-message>
     }
 
-    <button type="submit" [disabled]="isSubmitting()">
-      {{ isSubmitting() ? 'Signing in...' : 'Login' }}
-    </button>
+    <div class="flex flex-wrap items-center gap-3 mt-4">
+      <p-button
+        type="submit"
+        [label]="isSubmitting() ? 'Signing in...' : 'Login'"
+        icon="pi pi-sign-in"
+        [loading]="isSubmitting()"
+      />
+    </div>
   </form>
 
-  <p>
-    No account yet?
-    <a [routerLink]="['/register']">Create one</a>
-  </p>
-</section>
+  <div class="flex flex-wrap items-center gap-2">
+    <span>No account yet?</span>
+    <p-button label="Create one" [link]="true" [routerLink]="['/register']" />
+  </div>
+</p-card>

@@ -73,19 +73,8 @@ export class LayoutService {
    * @private
    */
   private getInitialThemeMode(): ThemeMode {
-    const savedTheme = localStorage.getItem('theme') as ThemeMode;
-    if (savedTheme) {
-      return savedTheme;
-    }
-
-    if (
-      window.matchMedia &&
-      window.matchMedia('(prefers-color-scheme: dark)').matches
-    ) {
-      return 'dark';
-    }
-
-    return 'light';
+    const savedTheme = localStorage.getItem('theme');
+    return savedTheme === 'dark' ? 'dark' : 'light';
   }
 
   /**
@@ -103,14 +92,6 @@ export class LayoutService {
    * @private
    */
   private applyTheme(mode: ThemeMode): void {
-    document.documentElement.setAttribute('data-theme', mode);
-
-    if (mode === 'dark') {
-      document.documentElement.classList.add('dark');
-      document.body.classList.add('dark-theme');
-    } else {
-      document.documentElement.classList.remove('dark');
-      document.body.classList.remove('dark-theme');
-    }
+    document.documentElement.classList.toggle('app-dark', mode === 'dark');
   }
 }

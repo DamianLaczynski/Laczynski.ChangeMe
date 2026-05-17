@@ -1,5 +1,14 @@
-import { Component, DestroyRef, effect, inject, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {
+  Component,
+  DestroyRef,
+  computed,
+  effect,
+  inject,
+  input,
+  signal
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FormArray,
   FormControl,
@@ -7,18 +16,31 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Router } from '@angular/router';
+import { NavigationHistoryService } from '@core/navigation/services/navigation-history.service';
 import {
-  IssueAcceptanceCriteriaConstraints,
   IssueAssignableUserDto,
-  IssueConstraints,
   IssueDetailsDto,
   IssuePriority,
   IssueStatus,
   UpdateIssueRequest
 } from '@features/issues/models/issue.model';
 import { IssuesService } from '@features/issues/services/issues.service';
+import {
+  IssueAcceptanceCriteriaConstraints,
+  IssueConstraints,
+  issuePriorities,
+  issueStatuses
+} from '@features/issues/utils/issue.utils';
+import { BackButtonComponent } from '@shared/components/back-button/back-button.component';
+import { Button } from 'primeng/button';
+import { Card } from 'primeng/card';
+import { InputText } from 'primeng/inputtext';
+import { Message } from 'primeng/message';
+import { Panel } from 'primeng/panel';
+import { ProgressSpinner } from 'primeng/progressspinner';
+import { Select } from 'primeng/select';
+import { Textarea } from 'primeng/textarea';
 
 type EditIssueForm = {
   title: FormControl<string>;
@@ -36,7 +58,19 @@ type EditAcceptanceCriterionForm = {
 
 @Component({
   selector: 'app-edit-issue',
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    Card,
+    BackButtonComponent,
+    Button,
+    InputText,
+    Textarea,
+    Select,
+    Message,
+    Panel,
+    ProgressSpinner
+  ],
   templateUrl: './edit-issue.component.html'
 })
 export class EditIssueComponent {
@@ -44,14 +78,19 @@ export class EditIssueComponent {
 
   private readonly issuesService = inject(IssuesService);
   private readonly router = inject(Router);
+  private readonly navigationHistory = inject(NavigationHistoryService);
   private readonly destroyRef = inject(DestroyRef);
 
-  readonly issuePriorities = this.issuesService.issuePriorities;
-  readonly issueStatuses = this.issuesService.issueStatuses;
+  readonly issuePriorities = issuePriorities;
+  readonly issueStatuses = issueStatuses;
   readonly issueConstraints = IssueConstraints;
   readonly issueAcceptanceCriteriaConstraints = IssueAcceptanceCriteriaConstraints;
   readonly assignableUsers = signal<IssueAssignableUserDto[]>([]);
   readonly issue = signal<IssueDetailsDto | null>(null);
+  readonly pageTitle = computed(() => {
+    const currentIssue = this.issue();
+    return currentIssue ? `Edit: ${currentIssue.title}` : 'Edit Issue';
+  });
   readonly isLoadingIssue = signal(true);
   readonly isLoadingAssignableUsers = signal(true);
   readonly isSubmitting = signal(false);
@@ -137,16 +176,16 @@ export class EditIssueComponent {
     });
   }
 
-  get acceptanceCriteria(): FormArray<FormGroup<EditAcceptanceCriterionForm>> {
-    return this.form.controls.acceptanceCriteria;
-  }
-
   addAcceptanceCriterion(): void {
-    this.acceptanceCriteria.push(this.createAcceptanceCriterionGroup());
+    this.form.controls.acceptanceCriteria.push(this.createAcceptanceCriterionGroup());
   }
 
   removeAcceptanceCriterion(index: number): void {
-    this.acceptanceCriteria.removeAt(index);
+    this.form.controls.acceptanceCriteria.removeAt(index);
+  }
+
+  cancel(): void {
+    this.navigationHistory.goBack('/issues');
   }
 
   onSubmit(): void {
@@ -170,10 +209,12 @@ export class EditIssueComponent {
       status: this.form.controls.status.value,
       priority: this.form.controls.priority.value,
       assignedToUserId: this.form.controls.assignedToUserId.value,
-      acceptanceCriteria: this.acceptanceCriteria.controls.map((criterion) => ({
-        id: criterion.controls.id.value || undefined,
-        content: criterion.controls.content.value.trim()
-      }))
+      acceptanceCriteria: this.form.controls.acceptanceCriteria.controls.map(
+        (criterion) => ({
+          id: criterion.controls.id.value || undefined,
+          content: criterion.controls.content.value.trim()
+        })
+      )
     };
 
     this.isSubmitting.set(true);
@@ -200,10 +241,10 @@ export class EditIssueComponent {
   }
 
   private setAcceptanceCriteria(issue: IssueDetailsDto): void {
-    this.acceptanceCriteria.clear();
+    this.form.controls.acceptanceCriteria.clear();
 
     issue.acceptanceCriteria.forEach((criterion) => {
-      this.acceptanceCriteria.push(
+      this.form.controls.acceptanceCriteria.push(
         this.createAcceptanceCriterionGroup(criterion.id, criterion.content)
       );
     });

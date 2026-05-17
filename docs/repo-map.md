@@ -41,7 +41,8 @@
 Each current feature follows a simple slice structure:
 
 - `components/` - standalone Angular components bound directly from routes or nested views.
-- `models/` - feature-specific TypeScript contracts.
+- `models/` - feature-specific TypeScript contracts (DTOs, enums, request/response shapes).
+- `utils/<feature>.utils.ts` - one file per feature for validation limits, labeled select options, and other UI constants.
 - `services/` - feature-specific data access and orchestration.
 - `guards/` or `interceptors/` - feature-specific Angular infrastructure where needed.
 
