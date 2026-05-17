@@ -1,4 +1,4 @@
-using System.Text;
+﻿using System.Text;
 using ChangeMe.Backend.Infrastructure.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.JsonWebTokens;

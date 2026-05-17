@@ -1,4 +1,4 @@
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using ChangeMe.Backend.Domain.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 

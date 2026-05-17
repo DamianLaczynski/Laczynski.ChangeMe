@@ -4,31 +4,31 @@ public abstract class BaseEntityTypeConfiguration<TEntity> : IEntityTypeConfigur
     where TEntity : Entity
 {
 
-    protected abstract string TableName { get; }
+  protected abstract string TableName { get; }
 
-    public virtual void Configure(EntityTypeBuilder<TEntity> builder)
-    {
-        builder.ToTable(TableName);
+  public virtual void Configure(EntityTypeBuilder<TEntity> builder)
+  {
+    builder.ToTable(TableName);
 
-        builder.HasKey(e => e.Id);
+    builder.HasKey(e => e.Id);
 
-        builder.Property(e => e.CreatedAt)
-            .IsRequired();
+    builder.Property(e => e.CreatedAt)
+        .IsRequired();
 
-        builder.Property(e => e.UpdatedAt)
-            .IsRequired();
+    builder.Property(e => e.UpdatedAt)
+        .IsRequired();
 
-        builder.Property(e => e.IsDeleted)
-            .HasDefaultValue(false);
+    builder.Property(e => e.IsDeleted)
+        .HasDefaultValue(false);
 
-        builder.Property(e => e.CreatedBy)
-            .IsRequired();
+    builder.Property(e => e.CreatedBy)
+        .IsRequired();
 
-        builder.Property(e => e.UpdatedBy)
-            .IsRequired();
+    builder.Property(e => e.UpdatedBy)
+        .IsRequired();
 
-        builder.HasIndex(e => e.Id);
+    builder.HasIndex(e => e.Id);
 
-        builder.HasQueryFilter(nameof(Entity.IsDeleted), e => !e.IsDeleted);
-    }
+    builder.HasQueryFilter(nameof(Entity.IsDeleted), e => !e.IsDeleted);
+  }
 }

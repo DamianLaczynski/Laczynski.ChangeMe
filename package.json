@@ -14,9 +14,11 @@
     "test:backend": "dotnet test src/ChangeMe.Backend/ChangeMe.Backend.sln",
     "test:backend:unit": "dotnet test src/ChangeMe.Backend/tests/ChangeMe.Backend.UnitTests",
     "test:backend:integration": "dotnet test src/ChangeMe.Backend/tests/ChangeMe.Backend.IntegrationTests",
+    "format:backend": "dotnet format src/ChangeMe.Backend/ChangeMe.Backend.sln",
     "start:all": "concurrently -n frontend,backend -c cyan,green \"npm run start:frontend\" \"npm run start:backend\"",
     "test:all": "concurrently -n fe,be -c cyan,blue \"npm run test:frontend:ci\" \"npm run test:backend\"",
-    "build:all": "npm run build:frontend && npm run build:backend"
+    "build:all": "npm run build:frontend && npm run build:backend",
+    "format:all": "npm run format:frontend && npm run format:backend"
   },
   "devDependencies": {
     "concurrently": "^9.2.0"

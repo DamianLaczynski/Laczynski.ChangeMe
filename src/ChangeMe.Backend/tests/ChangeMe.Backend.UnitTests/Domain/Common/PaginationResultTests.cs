@@ -1,4 +1,4 @@
-using ChangeMe.Backend.Domain.Common;
+﻿using ChangeMe.Backend.Domain.Common;
 
 namespace ChangeMe.Backend.UnitTests;
 
